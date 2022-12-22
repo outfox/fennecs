@@ -12,48 +12,26 @@ public class Query
     internal readonly Archetypes Archetypes;
     internal readonly Mask Mask;
 
-    protected readonly Dictionary<int, Array[]> Storages = new();
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Query(Archetypes archetypes, Mask mask, List<Table> tables)
     {
         Tables = tables;
         Archetypes = archetypes;
         Mask = mask;
-
-        UpdateStorages();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        return Storages.ContainsKey(meta.TableId);
+        var table = Archetypes.GetTable(meta.TableId);
+        return Tables.Contains(table);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal void AddTable(Table table)
     {
         Tables.Add(table);
-        UpdateStorages();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected virtual Array[] GetStorages(Table table)
-    {
-        throw new Exception("Invalid Enumerator");
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    void UpdateStorages()
-    {
-        Storages.Clear();
-
-        foreach (var table in Tables)
-        {
-            var storages = GetStorages(table);
-            Storages.Add(table.Id, storages);
-        }
     }
 }
 
@@ -65,16 +43,11 @@ public class Query<C> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[] { table.GetStorage<C>(Identity.None) };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ref C Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storage = (C[])Storages[meta.TableId][0];
+        var table = Archetypes.GetTable(meta.TableId);
+        var storage = table.GetStorage<C>(Identity.None);
         return ref storage[meta.Row];
     }
 
@@ -88,11 +61,9 @@ public class Query<C> : Query
 
             if (table.IsEmpty) continue;
 
-            var storages = Storages[table.Id];
+            var s = table.GetStorage<C>(Identity.None);
 
-            var s1 = (C[])storages[0];
-
-            action(table.Count, s1);
+            action(table.Count, s);
         }
         
         Archetypes.Unlock();
@@ -108,9 +79,7 @@ public class Query<C> : Query
             
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-            
-            var s = (C[])storages[0];
+            var s = table.GetStorage<C>(Identity.None);
             
             action(table.Count, s);
         });
@@ -128,22 +97,12 @@ public class Query<C1, C2> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[]
-        {
-            table.GetStorage<C1>(Identity.None),
-            table.GetStorage<C2>(Identity.None),
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RefValueTuple<C1, C2> Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storages = Storages[meta.TableId];
-        var storage1 = (C1[])storages[0];
-        var storage2 = (C2[])storages[1];
+        var table = Archetypes.GetTable(meta.TableId);
+        var storage1 = table.GetStorage<C1>(Identity.None);
+        var storage2 = table.GetStorage<C2>(Identity.None);
         return new RefValueTuple<C1, C2>(ref storage1[meta.Row], ref storage2[meta.Row]);
     }
 
@@ -157,10 +116,8 @@ public class Query<C1, C2> : Query
 
             if (table.IsEmpty) continue;
 
-            var storages = Storages[table.Id];
-
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
 
             action(table.Count, s1, s2);
         }
@@ -178,10 +135,8 @@ public class Query<C1, C2> : Query
 
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
 
             action(table.Count, s1, s2);
         });
@@ -200,24 +155,13 @@ public class Query<C1, C2, C3> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[]
-        {
-            table.GetStorage<C1>(Identity.None),
-            table.GetStorage<C2>(Identity.None),
-            table.GetStorage<C3>(Identity.None),
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RefValueTuple<C1, C2, C3> Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storages = Storages[meta.TableId];
-        var storage1 = (C1[])storages[0];
-        var storage2 = (C2[])storages[1];
-        var storage3 = (C3[])storages[2];
+        var table = Archetypes.GetTable(meta.TableId);
+        var storage1 = table.GetStorage<C1>(Identity.None);
+        var storage2 = table.GetStorage<C2>(Identity.None);
+        var storage3 = table.GetStorage<C3>(Identity.None);
         return new RefValueTuple<C1, C2, C3>(ref storage1[meta.Row], ref storage2[meta.Row],
             ref storage3[meta.Row]);
     }
@@ -232,11 +176,9 @@ public class Query<C1, C2, C3> : Query
 
             if (table.IsEmpty) continue;
 
-            var storages = Storages[table.Id];
-
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
 
             action(table.Count, s1, s2, s3);
         }
@@ -254,11 +196,9 @@ public class Query<C1, C2, C3> : Query
             
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-            
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
             
             action(table.Count, s1, s2, s3);
         });
@@ -278,28 +218,16 @@ public class Query<C1, C2, C3, C4> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[]
-        {
-            table.GetStorage<C1>(Identity.None),
-            table.GetStorage<C2>(Identity.None),
-            table.GetStorage<C3>(Identity.None),
-            table.GetStorage<C4>(Identity.None),
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RefValueTuple<C1, C2, C3, C4> Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storages = Storages[meta.TableId];
-        var storage1 = (C1[])storages[0];
-        var storage2 = (C2[])storages[1];
-        var storage3 = (C3[])storages[2];
-        var storage4 = (C4[])storages[3];
-        return new RefValueTuple<C1, C2, C3, C4>(ref storage1[meta.Row], ref storage2[meta.Row],
-            ref storage3[meta.Row], ref storage4[meta.Row]);
+        var table = Archetypes.GetTable(meta.TableId);
+        var s1 = table.GetStorage<C1>(Identity.None);
+        var s2 = table.GetStorage<C2>(Identity.None);
+        var s3 = table.GetStorage<C3>(Identity.None);
+        var s4 = table.GetStorage<C4>(Identity.None);
+        return new RefValueTuple<C1, C2, C3, C4>(ref s1[meta.Row], ref s2[meta.Row],
+            ref s3[meta.Row], ref s4[meta.Row]);
     }
 
     public void Run(Action<int, C1[], C2[], C3[], C4[]> action)
@@ -311,13 +239,11 @@ public class Query<C1, C2, C3, C4> : Query
             var table = Tables[t];
 
             if (table.IsEmpty) continue;
-
-            var storages = Storages[table.Id];
-
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
+            
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
 
             action(table.Count, s1, s2, s3, s4);
         }
@@ -335,12 +261,10 @@ public class Query<C1, C2, C3, C4> : Query
             
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-            
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
             
             action(table.Count, s1, s2, s3, s4);
         });
@@ -361,30 +285,17 @@ public class Query<C1, C2, C3, C4, C5> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[]
-        {
-            table.GetStorage<C1>(Identity.None),
-            table.GetStorage<C2>(Identity.None),
-            table.GetStorage<C3>(Identity.None),
-            table.GetStorage<C4>(Identity.None),
-            table.GetStorage<C5>(Identity.None),
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RefValueTuple<C1, C2, C3, C4, C5> Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storages = Storages[meta.TableId];
-        var storage1 = (C1[])storages[0];
-        var storage2 = (C2[])storages[1];
-        var storage3 = (C3[])storages[2];
-        var storage4 = (C4[])storages[3];
-        var storage5 = (C5[])storages[4];
-        return new RefValueTuple<C1, C2, C3, C4, C5>(ref storage1[meta.Row], ref storage2[meta.Row],
-            ref storage3[meta.Row], ref storage4[meta.Row], ref storage5[meta.Row]);
+        var table = Archetypes.GetTable(meta.TableId);
+        var s1 = table.GetStorage<C1>(Identity.None);
+        var s2 = table.GetStorage<C2>(Identity.None);
+        var s3 = table.GetStorage<C3>(Identity.None);
+        var s4 = table.GetStorage<C4>(Identity.None);
+        var s5 = table.GetStorage<C5>(Identity.None);
+        return new RefValueTuple<C1, C2, C3, C4, C5>(ref s1[meta.Row], ref s2[meta.Row],
+            ref s3[meta.Row], ref s4[meta.Row], ref s5[meta.Row]);
     }
 
     public void Run(Action<int, C1[], C2[], C3[], C4[], C5[]> action)
@@ -397,13 +308,11 @@ public class Query<C1, C2, C3, C4, C5> : Query
 
             if (table.IsEmpty) continue;
 
-            var storages = Storages[table.Id];
-
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
 
             action(table.Count, s1, s2, s3, s4, s5);
         }
@@ -421,13 +330,11 @@ public class Query<C1, C2, C3, C4, C5> : Query
             
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-            
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
             
             action(table.Count, s1, s2, s3, s4, s5);
         });
@@ -449,33 +356,19 @@ public class Query<C1, C2, C3, C4, C5, C6> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[]
-        {
-            table.GetStorage<C1>(Identity.None),
-            table.GetStorage<C2>(Identity.None),
-            table.GetStorage<C3>(Identity.None),
-            table.GetStorage<C4>(Identity.None),
-            table.GetStorage<C5>(Identity.None),
-            table.GetStorage<C6>(Identity.None),
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RefValueTuple<C1, C2, C3, C4, C5, C6> Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storages = Storages[meta.TableId];
-        var storage1 = (C1[])storages[0];
-        var storage2 = (C2[])storages[1];
-        var storage3 = (C3[])storages[2];
-        var storage4 = (C4[])storages[3];
-        var storage5 = (C5[])storages[4];
-        var storage6 = (C6[])storages[5];
-        return new RefValueTuple<C1, C2, C3, C4, C5, C6>(ref storage1[meta.Row], ref storage2[meta.Row],
-            ref storage3[meta.Row], ref storage4[meta.Row], ref storage5[meta.Row],
-            ref storage6[meta.Row]);
+        var table = Archetypes.GetTable(meta.TableId);
+        var s1 = table.GetStorage<C1>(Identity.None);
+        var s2 = table.GetStorage<C2>(Identity.None);
+        var s3 = table.GetStorage<C3>(Identity.None);
+        var s4 = table.GetStorage<C4>(Identity.None);
+        var s5 = table.GetStorage<C5>(Identity.None);
+        var s6 = table.GetStorage<C6>(Identity.None);
+        return new RefValueTuple<C1, C2, C3, C4, C5, C6>(ref s1[meta.Row], ref s2[meta.Row],
+            ref s3[meta.Row], ref s4[meta.Row], ref s5[meta.Row],
+            ref s6[meta.Row]);
     }
 
     public void Run(Action<int, C1[], C2[], C3[], C4[], C5[], C6[]> action)
@@ -488,14 +381,12 @@ public class Query<C1, C2, C3, C4, C5, C6> : Query
 
             if (table.IsEmpty) continue;
 
-            var storages = Storages[table.Id];
-
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
-            var s6 = (C6[])storages[5];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
+            var s6 = table.GetStorage<C6>(Identity.None);
 
             action(table.Count, s1, s2, s3, s4, s5, s6);
         }
@@ -513,14 +404,12 @@ public class Query<C1, C2, C3, C4, C5, C6> : Query
             
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-            
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
-            var s6 = (C6[])storages[5];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
+            var s6 = table.GetStorage<C6>(Identity.None);
             
             action(table.Count, s1, s2, s3, s4, s5, s6);
         });
@@ -543,35 +432,20 @@ public class Query<C1, C2, C3, C4, C5, C6, C7> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[]
-        {
-            table.GetStorage<C1>(Identity.None),
-            table.GetStorage<C2>(Identity.None),
-            table.GetStorage<C3>(Identity.None),
-            table.GetStorage<C4>(Identity.None),
-            table.GetStorage<C5>(Identity.None),
-            table.GetStorage<C6>(Identity.None),
-            table.GetStorage<C7>(Identity.None),
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RefValueTuple<C1, C2, C3, C4, C5, C6, C7> Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storages = Storages[meta.TableId];
-        var storage1 = (C1[])storages[0];
-        var storage2 = (C2[])storages[1];
-        var storage3 = (C3[])storages[2];
-        var storage4 = (C4[])storages[3];
-        var storage5 = (C5[])storages[4];
-        var storage6 = (C6[])storages[5];
-        var storage7 = (C7[])storages[6];
-        return new RefValueTuple<C1, C2, C3, C4, C5, C6, C7>(ref storage1[meta.Row], ref storage2[meta.Row],
-            ref storage3[meta.Row], ref storage4[meta.Row], ref storage5[meta.Row],
-            ref storage6[meta.Row], ref storage7[meta.Row]);
+        var table = Archetypes.GetTable(meta.TableId);
+        var s1 = table.GetStorage<C1>(Identity.None);
+        var s2 = table.GetStorage<C2>(Identity.None);
+        var s3 = table.GetStorage<C3>(Identity.None);
+        var s4 = table.GetStorage<C4>(Identity.None);
+        var s5 = table.GetStorage<C5>(Identity.None);
+        var s6 = table.GetStorage<C6>(Identity.None);
+        var s7 = table.GetStorage<C7>(Identity.None);
+        return new RefValueTuple<C1, C2, C3, C4, C5, C6, C7>(ref s1[meta.Row], ref s2[meta.Row],
+            ref s3[meta.Row], ref s4[meta.Row], ref s5[meta.Row],
+            ref s6[meta.Row], ref s7[meta.Row]);
     }
 
     public void Run(Action<int, C1[], C2[], C3[], C4[], C5[], C6[], C7[]> action)
@@ -584,15 +458,13 @@ public class Query<C1, C2, C3, C4, C5, C6, C7> : Query
 
             if (table.IsEmpty) continue;
 
-            var storages = Storages[table.Id];
-
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
-            var s6 = (C6[])storages[5];
-            var s7 = (C7[])storages[6];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
+            var s6 = table.GetStorage<C6>(Identity.None);
+            var s7 = table.GetStorage<C7>(Identity.None);
 
             action(table.Count, s1, s2, s3, s4, s5, s6, s7);
         }
@@ -610,15 +482,13 @@ public class Query<C1, C2, C3, C4, C5, C6, C7> : Query
             
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-            
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
-            var s6 = (C6[])storages[5];
-            var s7 = (C7[])storages[6];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
+            var s6 = table.GetStorage<C6>(Identity.None);
+            var s7 = table.GetStorage<C7>(Identity.None);
             
             action(table.Count, s1, s2, s3, s4, s5, s6, s7);
         });
@@ -642,37 +512,21 @@ public class Query<C1, C2, C3, C4, C5, C6, C7, C8> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[]
-        {
-            table.GetStorage<C1>(Identity.None),
-            table.GetStorage<C2>(Identity.None),
-            table.GetStorage<C3>(Identity.None),
-            table.GetStorage<C4>(Identity.None),
-            table.GetStorage<C5>(Identity.None),
-            table.GetStorage<C6>(Identity.None),
-            table.GetStorage<C7>(Identity.None),
-            table.GetStorage<C8>(Identity.None),
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RefValueTuple<C1, C2, C3, C4, C5, C6, C7, C8> Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storages = Storages[meta.TableId];
-        var storage1 = (C1[])storages[0];
-        var storage2 = (C2[])storages[1];
-        var storage3 = (C3[])storages[2];
-        var storage4 = (C4[])storages[3];
-        var storage5 = (C5[])storages[4];
-        var storage6 = (C6[])storages[5];
-        var storage7 = (C7[])storages[6];
-        var storage8 = (C8[])storages[7];
-        return new RefValueTuple<C1, C2, C3, C4, C5, C6, C7, C8>(ref storage1[meta.Row], ref storage2[meta.Row],
-            ref storage3[meta.Row], ref storage4[meta.Row], ref storage5[meta.Row],
-            ref storage6[meta.Row], ref storage7[meta.Row], ref storage8[meta.Row]);
+        var table = Archetypes.GetTable(meta.TableId);
+        var s1 = table.GetStorage<C1>(Identity.None);
+        var s2 = table.GetStorage<C2>(Identity.None);
+        var s3 = table.GetStorage<C3>(Identity.None);
+        var s4 = table.GetStorage<C4>(Identity.None);
+        var s5 = table.GetStorage<C5>(Identity.None);
+        var s6 = table.GetStorage<C6>(Identity.None);
+        var s7 = table.GetStorage<C7>(Identity.None);
+        var s8 = table.GetStorage<C8>(Identity.None);
+        return new RefValueTuple<C1, C2, C3, C4, C5, C6, C7, C8>(ref s1[meta.Row], ref s2[meta.Row],
+            ref s3[meta.Row], ref s4[meta.Row], ref s5[meta.Row],
+            ref s6[meta.Row], ref s7[meta.Row], ref s8[meta.Row]);
     }
 
     public void Run(Action<int, C1[], C2[], C3[], C4[], C5[], C6[], C7[], C8[]> action)
@@ -685,16 +539,14 @@ public class Query<C1, C2, C3, C4, C5, C6, C7, C8> : Query
 
             if (table.IsEmpty) continue;
 
-            var storages = Storages[table.Id];
-
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
-            var s6 = (C6[])storages[5];
-            var s7 = (C7[])storages[6];
-            var s8 = (C8[])storages[7];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
+            var s6 = table.GetStorage<C6>(Identity.None);
+            var s7 = table.GetStorage<C7>(Identity.None);
+            var s8 = table.GetStorage<C8>(Identity.None);
 
             action(table.Count, s1, s2, s3, s4, s5, s6, s7, s8);
         }
@@ -712,16 +564,14 @@ public class Query<C1, C2, C3, C4, C5, C6, C7, C8> : Query
             
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-            
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
-            var s6 = (C6[])storages[5];
-            var s7 = (C7[])storages[6];
-            var s8 = (C8[])storages[7];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
+            var s6 = table.GetStorage<C6>(Identity.None);
+            var s7 = table.GetStorage<C7>(Identity.None);
+            var s8 = table.GetStorage<C8>(Identity.None);
             
             action(table.Count, s1, s2, s3, s4, s5, s6, s7, s8);
         });
@@ -746,39 +596,22 @@ public class Query<C1, C2, C3, C4, C5, C6, C7, C8, C9> : Query
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override Array[] GetStorages(Table table)
-    {
-        return new Array[]
-        {
-            table.GetStorage<C1>(Identity.None),
-            table.GetStorage<C2>(Identity.None),
-            table.GetStorage<C3>(Identity.None),
-            table.GetStorage<C4>(Identity.None),
-            table.GetStorage<C5>(Identity.None),
-            table.GetStorage<C6>(Identity.None),
-            table.GetStorage<C7>(Identity.None),
-            table.GetStorage<C8>(Identity.None),
-            table.GetStorage<C9>(Identity.None),
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RefValueTuple<C1, C2, C3, C4, C5, C6, C7, C8, C9> Get(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var storages = Storages[meta.TableId];
-        var storage1 = (C1[])storages[0];
-        var storage2 = (C2[])storages[1];
-        var storage3 = (C3[])storages[2];
-        var storage4 = (C4[])storages[3];
-        var storage5 = (C5[])storages[4];
-        var storage6 = (C6[])storages[5];
-        var storage7 = (C7[])storages[6];
-        var storage8 = (C8[])storages[7];
-        var storage9 = (C9[])storages[8];
-        return new RefValueTuple<C1, C2, C3, C4, C5, C6, C7, C8, C9>(ref storage1[meta.Row], ref storage2[meta.Row],
-            ref storage3[meta.Row], ref storage4[meta.Row], ref storage5[meta.Row],
-            ref storage6[meta.Row], ref storage7[meta.Row], ref storage8[meta.Row], ref storage9[meta.Row]);
+        var table = Archetypes.GetTable(meta.TableId);
+        var s1 = table.GetStorage<C1>(Identity.None);
+        var s2 = table.GetStorage<C2>(Identity.None);
+        var s3 = table.GetStorage<C3>(Identity.None);
+        var s4 = table.GetStorage<C4>(Identity.None);
+        var s5 = table.GetStorage<C5>(Identity.None);
+        var s6 = table.GetStorage<C6>(Identity.None);
+        var s7 = table.GetStorage<C7>(Identity.None);
+        var s8 = table.GetStorage<C8>(Identity.None);
+        var s9 = table.GetStorage<C9>(Identity.None);
+        return new RefValueTuple<C1, C2, C3, C4, C5, C6, C7, C8, C9>(ref s1[meta.Row], ref s2[meta.Row],
+            ref s3[meta.Row], ref s4[meta.Row], ref s5[meta.Row],
+            ref s6[meta.Row], ref s7[meta.Row], ref s8[meta.Row], ref s9[meta.Row]);
     }
 
     public void Run(Action<int, C1[], C2[], C3[], C4[], C5[], C6[], C7[], C8[], C9[]> action)
@@ -791,17 +624,15 @@ public class Query<C1, C2, C3, C4, C5, C6, C7, C8, C9> : Query
             
             if (table.IsEmpty) continue;
 
-            var storages = Storages[table.Id];
-            
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
-            var s6 = (C6[])storages[5];
-            var s7 = (C7[])storages[6];
-            var s8 = (C8[])storages[7];
-            var s9 = (C9[])storages[8];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
+            var s6 = table.GetStorage<C6>(Identity.None);
+            var s7 = table.GetStorage<C7>(Identity.None);
+            var s8 = table.GetStorage<C8>(Identity.None);
+            var s9 = table.GetStorage<C9>(Identity.None);
             
             action(table.Count, s1, s2, s3, s4, s5, s6, s7, s8, s9);
         }
@@ -819,17 +650,15 @@ public class Query<C1, C2, C3, C4, C5, C6, C7, C8, C9> : Query
             
             if (table.IsEmpty) return;
 
-            var storages = Storages[table.Id];
-            
-            var s1 = (C1[])storages[0];
-            var s2 = (C2[])storages[1];
-            var s3 = (C3[])storages[2];
-            var s4 = (C4[])storages[3];
-            var s5 = (C5[])storages[4];
-            var s6 = (C6[])storages[5];
-            var s7 = (C7[])storages[6];
-            var s8 = (C8[])storages[7];
-            var s9 = (C9[])storages[8];
+            var s1 = table.GetStorage<C1>(Identity.None);
+            var s2 = table.GetStorage<C2>(Identity.None);
+            var s3 = table.GetStorage<C3>(Identity.None);
+            var s4 = table.GetStorage<C4>(Identity.None);
+            var s5 = table.GetStorage<C5>(Identity.None);
+            var s6 = table.GetStorage<C6>(Identity.None);
+            var s7 = table.GetStorage<C7>(Identity.None);
+            var s8 = table.GetStorage<C8>(Identity.None);
+            var s9 = table.GetStorage<C9>(Identity.None);
             
             action(table.Count, s1, s2, s3, s4, s5, s6, s7, s8, s9);
         });
