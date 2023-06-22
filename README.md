@@ -136,7 +136,7 @@ public void Run(World world)
     var appleLovers = world.QueryBuilder<Entity, Name>().Has<Owes>(bob).Not<Dead>().Build();
     
     // Note that we only get the components inside Query<>.
-    // Has<T>, Not<T> and Any<T> only filter, but we don't actually get T int he loop.
+    // Has<T>, Not<T> and Any<T> only filter, but we don't actually get T in the loop.
     appleLovers.Run((count, entities, names) => 
     {
         for (var i = 0; i < count; i++)
