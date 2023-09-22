@@ -121,7 +121,7 @@ public sealed class World
             return false;
         }
 
-        component = new Ref<T>(ref _archetypes.GetComponent<T>(_world.Identity, Identity.None));
+        component = new Ref<T>(ref _archetypes.GetComponent<T>(entity.Identity, Identity.None));
         return true;
     }
 

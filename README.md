@@ -1,4 +1,4 @@
-# RelEcs
+# HypEcs
 
 ### A lightweight and easy to use entity component system with an effective feature set for making games.
 
@@ -192,8 +192,8 @@ group.Run(world);
 ```csharp
 // In this example, we are using the Godot Engine.
 using Godot;
-using RelEcs;
-using World = RelEcs.World; // Godot also has a World class, so we need to specify this.
+using HypEcs;
+using World = HypEcs.World; // Godot also has a World class, so we need to specify this.
 
 public class GameLoop : Node
 {
@@ -231,7 +231,7 @@ public class GameLoop : Node
         // Run the run systems.
         runSystems.Run(world);
 
-        // IMPORTANT: For RelEcs to work properly, we need to tell the world when a frame is done.
+        // IMPORTANT: For HypEcs to work properly, we need to tell the world when a frame is done.
         // For that, we call Tick() on the world, at the end of the function.
         world.Tick();
     }
