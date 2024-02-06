@@ -23,6 +23,8 @@ public class Query(Archetypes archetypes, Mask mask, List<Table> tables)
     {
         Tables.Add(table);
     }
+
+    public int Count => Tables.Sum(t => t.Count);
 }
 
 // ReSharper disable InconsistentNaming

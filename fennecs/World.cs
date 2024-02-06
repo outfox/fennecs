@@ -68,8 +68,7 @@ public sealed class World : IDisposable
     }
 
     
-    public void AddComponent<T>(Entity entity, T component) where T : struct
-    {
+    public void AddComponent<T>(Entity entity, T component) {
         var type = TypeExpression.Create<T>(Identity.None);
         _archetypes.AddComponent(type, entity.Identity, component);
     }
@@ -233,12 +232,12 @@ public sealed class World : IDisposable
         return new QueryBuilder<Entity>(_archetypes);
     }
 
-    public QueryBuilder<C> Query<C>() where C : struct
+    public QueryBuilder<C> Query<C>()
     {
         return new QueryBuilder<C>(_archetypes);
     }
 
-    public QueryBuilder<C1, C2> Query<C1, C2>() where C1 : struct where C2 : struct
+    public QueryBuilder<C1, C2> Query<C1, C2>() where C2 : struct
     {
         return new QueryBuilder<C1, C2>(_archetypes);
     }
@@ -249,18 +248,11 @@ public sealed class World : IDisposable
     }
 
     public QueryBuilder<C1, C2, C3, C4> Query<C1, C2, C3, C4>() where C1 : struct
-        where C2 : struct
-        where C3 : struct
-        where C4 : struct
     {
         return new QueryBuilder<C1, C2, C3, C4>(_archetypes);
     }
 
     public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>() where C1 : struct
-        where C2 : struct
-        where C3 : struct
-        where C4 : struct
-        where C5 : struct
     {
         return new QueryBuilder<C1, C2, C3, C4, C5>(_archetypes);
     }

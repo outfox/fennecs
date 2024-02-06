@@ -3,10 +3,6 @@
 namespace fennecs;
 
 public class Query<C1, C2, C3, C4>(Archetypes archetypes, Mask mask, List<Table> tables) : Query(archetypes, mask, tables)
-    where C1 : struct
-    where C2 : struct
-    where C3 : struct
-    where C4 : struct
 {
     public RefValueTuple<C1, C2, C3, C4> Get(Entity entity)
     {

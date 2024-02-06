@@ -61,7 +61,7 @@ public readonly struct EntityBuilder(World world, Entity entity)
     }
 
     
-    public EntityBuilder Add<T>(T data) where T : struct
+    public EntityBuilder Add<T>(T data)
     {
         world.AddComponent(entity, data);
         return this;
