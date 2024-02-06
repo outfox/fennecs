@@ -25,4 +25,21 @@ public class WorldTests
         Assert.NotEqual(entity, Entity.Any);
         return entity;
     }
+    
+    [Fact]
+    public void World_Count_Accurate()
+    {
+        using var world = new World();
+        Assert.Equal(0, world.Count);
+
+        var e1 = world.Spawn().Id();
+        Assert.Equal(1, world.Count);
+
+        world.On(e1).Add<int>(typeof(bool));
+        Assert.Equal(2, world.Count);
+
+        var e2 = world.Spawn().Id();
+        world.On(e2).Add<int>(typeof(bool));
+        Assert.Equal(3, world.Count);
+    }
 }

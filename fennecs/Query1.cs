@@ -14,7 +14,7 @@ public class Query<C>(Archetypes archetypes, Mask mask, List<Table> tables) : Qu
 
     #region Runners
 
-    public void Run(QueryAction_C<C> action)
+    public void Run(RefAction_C<C> action)
     {
         Archetypes.Lock();
 
@@ -28,7 +28,7 @@ public class Query<C>(Archetypes archetypes, Mask mask, List<Table> tables) : Qu
         Archetypes.Unlock();
     }
 
-    public void RunParallel(QueryAction_C<C> action, int chunkSize = int.MaxValue)
+    public void RunParallel(RefAction_C<C> action, int chunkSize = int.MaxValue)
     {
         Archetypes.Lock();
 
@@ -70,7 +70,7 @@ public class Query<C>(Archetypes archetypes, Mask mask, List<Table> tables) : Qu
         Archetypes.Unlock();
     }
     
-    public void Run<U>(QueryAction_CU<C, U> action, U uniform)
+    public void Run<U>(RefAction_CU<C, U> action, U uniform)
     {
         Archetypes.Lock();
 
@@ -85,7 +85,7 @@ public class Query<C>(Archetypes archetypes, Mask mask, List<Table> tables) : Qu
     }
 
 
-    public void RunParallel<U>(QueryAction_CU<C, U> action, U uniform, int chunkSize = int.MaxValue)
+    public void RunParallel<U>(RefAction_CU<C, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         Archetypes.Lock();
         var queued = 0;

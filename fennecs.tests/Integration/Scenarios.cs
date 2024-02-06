@@ -4,17 +4,18 @@ public class Scenarios
 {
     [Theory]
     [InlineData(1_000, 2, 3, 5, 7)]
-    [InlineData(10_000, 2, 3, 5, 7)]
+    [InlineData(1_000, 23, 17, 19, 7)]
+    [InlineData(1_000, 19, 31, 37, 43)]
+    [InlineData(10_000, 23, 17, 19, 7)]
+    [InlineData(10_000, 19, 31, 37, 43)]
     [InlineData(100_000, 19, 31, 37, 43)]
-    [InlineData(1_000_000, 23, 17, 19, 7)]
     public void Can_Iterate_many_Entities(int count, int floatRate, int doubleRate, int stringRate, int shortRate)
     {
         using var world = new World();
         
         var random = new Random(9001);
         var entities = new List<Entity>();
-
-
+        
         var floats = 0;
         var doubles = 0;
         var strings = 0;
@@ -22,7 +23,7 @@ public class Scenarios
         
         for (var i = 1; i < count; i++)
         {
-            var builder = world.Spawn().Add<int>(count);
+            var builder = world.Spawn().Add(count);
             if (i % floatRate == 0)
             {
                 floats++;

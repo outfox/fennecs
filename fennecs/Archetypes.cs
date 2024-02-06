@@ -16,8 +16,8 @@ public sealed class Archetypes
 
     private readonly ConcurrentBag<Identity> _unusedIds = [];
     private Table entityRoot => _tables[0];
-    private int _entityCount;
 
+    internal int Count { get; private set; }
 
     private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
     private readonly Dictionary<Type, Entity> _typeEntities = new();
@@ -45,7 +45,7 @@ public sealed class Archetypes
         {
             if (!_unusedIds.TryTake(out var identity))
             {
-                identity = new Identity(++_entityCount);
+                identity = new Identity(++Count);
             }
 
             //Rebuild entity if it's a type entity
@@ -57,7 +57,7 @@ public sealed class Archetypes
 
             var row = entityRoot.Add(identity);
 
-            if (_meta.Length == _entityCount) Array.Resize(ref _meta, _entityCount * 2);
+            if (_meta.Length == Count) Array.Resize(ref _meta, Count * 2);
 
             _meta[identity.Id] = new EntityMeta(identity, entityRoot.Id, row);
 

@@ -8,7 +8,8 @@ public sealed class World : IDisposable
 
     private readonly Archetypes _archetypes = new();
 
-
+    public int Count => _archetypes.Count;
+    
     public EntityBuilder Spawn()
     {
         return new EntityBuilder(this, _archetypes.Spawn());
