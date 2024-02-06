@@ -7,3 +7,5 @@ bin
 obj
 Library
 Temp
+*.DotSettings.user
+*.Artifacts
