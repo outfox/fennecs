@@ -182,7 +182,10 @@ public class TypeIdTests
         
         var id3 = TypeRegistry.Identify(typeof(bool));
         var id4 = TypeExpression.Create<bool>().TypeId;
-        Assert.Equal(id1, id2);
+        Assert.Equal(id3, id4);
+        
+        Assert.NotEqual( id1, id3);
+        Assert.NotEqual( id2, id4);
     }
 
 }
