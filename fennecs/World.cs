@@ -116,9 +116,7 @@ public sealed class World : IDisposable
     
     public bool HasComponent<T>(Entity entity, Type target) where T : struct
     {
-        var targetEntity = GetTypeEntity(target);
-
-        var type = TypeExpression.Create<T>(targetEntity.Identity);
+        var type = TypeExpression.Create<T>(new Identity(target));
         return _archetypes.HasComponent(type, entity.Identity);
     }    
 
@@ -158,10 +156,8 @@ public sealed class World : IDisposable
     }
 
 
-    internal Entity GetTypeEntity(Type type)
-    {
-        return _archetypes.GetTypeEntity(type);
-    }
+    [Obsolete("Use new Identity(Type) instead.")]
+    internal Entity GetTypeEntity(Type type) => new Identity(type);
 
     public void Dispose()
     {

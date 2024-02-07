@@ -9,7 +9,7 @@ namespace fennecs;
 
 public sealed class Archetypes
 {
-    private EntityMeta[] _meta = new EntityMeta[512];
+    private EntityMeta[] _meta = new EntityMeta[65536];
     private readonly List<Table> _tables = [];
     private readonly Dictionary<int, Query> _queries = new();
 
@@ -20,8 +20,8 @@ public sealed class Archetypes
     internal int Count { get; private set; }
 
     private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
-    private readonly Dictionary<Type, Entity> _typeEntities = new();
     private readonly Dictionary<TypeExpression, List<Table>> _tablesByType = new();
+    
     private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
     private readonly Dictionary<ushort, HashSet<Entity>> _targetsByRelationType = new();
     private readonly Dictionary<int, HashSet<TypeExpression>> _relationsByTypes = new();
@@ -47,14 +47,7 @@ public sealed class Archetypes
             {
                 identity = new Identity(++Count);
             }
-
-            //Rebuild entity if it's a type entity
-            if (type != null)
-            {
-                //TODO: Unify this with the TypeId system
-                //identity = new Identity(identity.Id, TypeRegistry.Resolve(type));
-            }
-
+            
             var row = entityRoot.Add(identity);
 
             if (_meta.Length == Count) Array.Resize(ref _meta, Count * 2);
@@ -88,8 +81,7 @@ public sealed class Archetypes
         meta.Clear();
 
         _unusedIds.Add(identity.Successor);
-
-
+        
         // Find entity-entity relation reverse lookup (if applicable)
         if (!_typesByRelationTarget.TryGetValue(identity, out var list)) return;
 
@@ -258,64 +250,6 @@ public sealed class Archetypes
         return query;
     }
 
-    /*
-     TODO: Remove this comment, function is now in Table and much simpler.
-    private bool IsMaskCompatibleWith_old(Mask mask, Table table)
-    {
-        var has = ListPool<TypeExpression>.Get();
-        var not = ListPool<TypeExpression>.Get();
-        var any = ListPool<TypeExpression>.Get();
-
-        var hasAnyTarget = ListPool<TypeExpression>.Get();
-        var notAnyTarget = ListPool<TypeExpression>.Get();
-        var anyAnyTarget = ListPool<TypeExpression>.Get();
-
-        foreach (var type in mask.HasTypes)
-        {
-            if (type.Target == Identity.Any) hasAnyTarget.Add(type);
-            else has.Add(type);
-        }
-
-        foreach (var type in mask.NotTypes)
-        {
-            if (type.Target == Identity.Any) notAnyTarget.Add(type);
-            else not.Add(type);
-        }
-
-        foreach (var type in mask.AnyTypes)
-        {
-            if (type.Target == Identity.Any) anyAnyTarget.Add(type);
-            else any.Add(type);
-        }
-        
-        var matchesComponents = table.Types.IsSupersetOf(has);
-        matchesComponents &= !table.Types.Overlaps(not);
-        matchesComponents &= mask.AnyTypes.Count == 0 || table.Types.Overlaps(any);
-
-        var matchesRelation = true;
-
-        foreach (var type in hasAnyTarget)
-        {
-            if (!_relationsByTypes.TryGetValue(type.TypeId, out var list))
-            {
-                matchesRelation = false;
-                continue;
-            }
-
-            matchesRelation &= table.Types.Overlaps(list);
-        }
-
-        ListPool<TypeExpression>.Add(has);
-        ListPool<TypeExpression>.Add(not);
-        ListPool<TypeExpression>.Add(any);
-
-        ListPool<TypeExpression>.Add(hasAnyTarget);
-        ListPool<TypeExpression>.Add(notAnyTarget);
-        ListPool<TypeExpression>.Add(anyAnyTarget);
-
-        return matchesComponents && matchesRelation;
-    }
-*/
 
     internal bool IsAlive(Identity identity)
     {
@@ -442,14 +376,10 @@ public sealed class Archetypes
     }
 
 
-    internal Entity GetTypeEntity(Type type)
+    [Obsolete("Use new Identity(type)")]
+    internal static Entity GetTypeEntity(Type type)
     {
-        if (_typeEntities.TryGetValue(type, out var entity)) return entity;
-        
-        entity = Spawn();
-        _typeEntities.Add(type, entity);
-
-        return entity;
+        return new Identity(type);
     }
 
 

@@ -171,4 +171,18 @@ public class TypeIdTests
         Assert.False(id1.Matches(id3));
     }
 
+    [Fact]
+    public void TypeId_from_Generic_is_same_as_Identify()
+    {
+        var id1 = TypeExpression.Create<int>().TypeId;
+        var id2 = TypeRegistry.Identify(typeof(int));
+        Assert.Equal(id1, id2);
+
+        _ = TypeExpression.Create<string>();
+        
+        var id3 = TypeRegistry.Identify(typeof(bool));
+        var id4 = TypeExpression.Create<bool>().TypeId;
+        Assert.Equal(id1, id2);
+    }
+
 }

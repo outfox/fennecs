@@ -27,6 +27,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //Identity Components
     [FieldOffset(0)] public readonly int Id;
     [FieldOffset(4)] public readonly ushort Generation;
+    [FieldOffset(4)] public readonly ushort Decoration;
     [FieldOffset(6)] public readonly ushort TypeId;
 
     public Identity Target => new(Value);
@@ -123,38 +124,5 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     public override string ToString()
     {
         return $"{TypeId:x4}/{Target} {TypeRegistry.Resolve(TypeId).Name}";
-    }
-}
-
-public interface IRelationBacklink;
-
-internal class TypeRegistry
-{
-    protected internal static Type Resolve(ushort id) => Types[id];
-    protected internal static ushort Resolve(Type type) => Ids[type];
-    
-    // ReSharper disable once StaticMemberInGenericType
-    protected static ushort Counter;
-    protected static readonly Dictionary<ushort, Type> Types = new();
-    protected static readonly Dictionary<Type, ushort> Ids = new();
-    
-    protected static readonly object RegistryLock = new();
-}
-
-// ReSharper disable once UnusedTypeParameter
-// ReSharper disable once ClassNeverInstantiated.Global
-internal class LanguageType<T> : TypeRegistry
-{
-    // ReSharper disable once StaticMemberInGenericType
-    public static readonly ushort Id;
-    static LanguageType()
-    {
-        lock (RegistryLock)
-        {
-            if (Counter >= ushort.MaxValue) throw new InvalidOperationException("Language Level TypeIds exhausted.");
-            Id = ++Counter;
-            Types.Add(Id, typeof(T));
-            Ids.Add(typeof(T), Id);
-        }
     }
 }

@@ -1,20 +1,38 @@
 // SPDX-License-Identifier: MIT
 
+using System.Runtime.InteropServices;
+
 namespace fennecs;
 
-public readonly struct Identity(int id, ushort gen = 1) : IEquatable<Identity>
+[StructLayout(LayoutKind.Explicit)]
+public readonly struct Identity(ulong value) : IEquatable<Identity>
 {
-    public readonly int Id = id;
-    public readonly ushort Generation = gen;
+    [FieldOffset(0)] public readonly ulong Value = value;
+    [FieldOffset(0)] public readonly int Id;
+    [FieldOffset(4)] public readonly ushort Generation;
+    [FieldOffset(4)] public readonly ushort Decoration;
 
-    public ulong Value => (uint) Id | (ulong) Generation << 32;
+    [FieldOffset(6)] public readonly short RESERVED = 0;
+
+    [FieldOffset(0)] public readonly uint DWordLow;
+    [FieldOffset(4)] public readonly uint DWordHigh;
+    
+    //public ulong Value => (uint) Id | (ulong) Generation << 32;
 
     public static readonly Identity None = new(0, 0);
-    public static readonly Identity Any = new(int.MaxValue, 0);
+    public static readonly Identity Any = new(-1, ushort.MaxValue);
+    
 
-    public Identity(ulong value) : this((int) (value & uint.MaxValue), (ushort) (value >> 32))
+    public bool IsEntity => Id > 0;
+    public bool IsVirtual => !IsEntity;
+    public bool IsType => IsVirtual && Decoration is > 0 and < ushort.MaxValue;
+
+    public Identity(int id, ushort generation = 1) : this((uint) id | (ulong) generation << 32)
     {
-        //Placeholder constructor until we can merge Identity and TypeExpression
+    }
+
+    public Identity(Type type) : this(0, TypeRegistry.Identify(type))
+    {
     }
 
     public bool Equals(Identity other) => Id == other.Id && Generation == other.Generation;
@@ -29,45 +47,32 @@ public readonly struct Identity(int id, ushort gen = 1) : IEquatable<Identity>
     {
         unchecked
         {
-            var low = (uint) Id;
-            var high = (uint) Generation;
-            return (int) (0x811C9DC5u * low + 0x1000193u * high + 0xc4ceb9fe1a85ec53u);
+            return (int) (0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
         }
     }
 
-    public bool IsType()
-    {
-        return Generation < 0;
-    }
 
     public override string ToString()
     {
-        if (IsType()) return $"\u2b1b{Type.Name}";
-        if (Equals(None)) return $"\u25c7none";
-        if (Equals(Any)) return $"\u2bc1any";
-
-        return $"\u2756{Id:x4}:{Generation:D5}";
+        if (IsType) return $"\u2b1b{Type.Name}";
+        return $"\u2756{Id:x8}:{Generation:D5}";
     }
 
     public static implicit operator Entity(Identity id) => new(id);
     public static bool operator ==(Identity left, Identity right) => left.Equals(right);
     public static bool operator !=(Identity left, Identity right) => !left.Equals(right);
 
-    public Type Type => Generation switch
+    public Type Type => Id switch
     {
-        _ => typeof(System.Type),
-        /*
-        > 0 => typeof(Entity),
-        < 0 => TypeRegistry.Resolve(Generation),
-        _ => throw new InvalidCastException($"Entity: Cannot resolve type of pseudo-entity {this}")
-        */
+        <= 0 => TypeRegistry.Resolve(Decoration),
+        _ => typeof(Entity),
     };
 
     public Identity Successor
     {
         get
         {
-            if (IsType()) throw new InvalidCastException("Cannot reuse type Identities");
+            if (IsVirtual) throw new InvalidCastException("Cannot reuse virtual Identities");
             var generationWrappedStartingAtOne = (ushort) (Generation % (ushort.MaxValue - 1) + 1);
             return new Identity(Id, generationWrappedStartingAtOne);
         }

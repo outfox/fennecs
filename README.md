@@ -71,27 +71,27 @@ The 💫*real magic*💫 is that none of this brevity compromises on performance
 Here are some of the key properties where fennECS might be a better or worse choice than its peers. Our resident fennecs have worked with all of these ECSs, and we're happy to answer any questions you might have.
 
 
-|                                                               |            fennECS            | HypEcs | Entitas |       Unity DOTS       |                DefaultECS                 |
-|:--------------------------------------------------------------|:-----------------------------:|:------:|:-------:|:----------------------:|:-----------------------------------------:|
-| Boilerplate-to-Feature Ratio                                  |            3-to-1             | 5-to-1 | 12-to-1 |       27-to-1 😱       |                  7-to-1                   |
-| Entity-Target Relations                                       |               ✅               |   ✅    |    ❌    |           ❌            |                     ❌                     |
-| Target Querying<br/>*(find all targets of relations of type)* |               ✅               |   ❌    |    ❌    |           ❌            |                     ❌                     |
-| Entity-Component Queries                                      |               ✅               |   ✅    |    ✅    |           ✅            |                     ✅                     |
-| Add Shared Components                                         |               ✅               |   ❌    |    ❌    |           🟨           |                     ✅                     | 
-| Change Shared Components                                      |               ✅               |   ❌    |    ❌    |           ❌            |                     ✅                     | 
-| Entity-Type-Relations                                         |               ✅               |   ✅    |    ❌    |           ❌            |                     ❌                     |
-| Reference Component Types                                     |               ✅               |   ❌    |    ❌    |           ❌            |                     ❌                     |
-| Entity-Target-Querying                                        |               ✅               |   ❌    |    ❌    |           ❌            |                     ✅                     |
-| Arbitrary Component Types                                     |               ✅               |   ✅    |    ❌    | 🟨<br>(with drawbacks) |                     ✅                     |
-| Structural Change Responders                                  |     🟨<br/>(coming soon)      |   ❌    |    ✅    |  ☠️<br> (unreliable)   |                     ❌                     |
-| Balanced Workload Scheduling                                  |  🟨<br/>(coming soon)  |   ❌    |      ❌  |  ✅<br>(highly static)  |                     ✅                     |
-| No Code Generation Required                                   |               ✅               |   ✅    |    ❌    |           ❌            | 🟨<br> (roslyn analyzer<br>adds features) |
-| Enqueue Structural Changes at Any Time                        |               ✅               |   ✅    |    ✅    |           🟨           |                    🟨                     |
-| Apply Structural Changes at Any Time                          |               ❌               |   ❌    |    ✅    |           ❌            |                     ❌                     |
-| C# 12 support                                                 |               ✅               |   ❌    |    ❌    |           ❌            |                     ❌                     |
-| Parallel Processing                                           |              ⭐⭐               |   ⭐    |    ❌    |          ⭐⭐⭐           |                    ⭐⭐                     |
-| Singleton / Unique Components                                 |    🟨<br/>(ref types only)    |   ❌    |    ✅    |  🟨<br/>(per system)   |                     ✅                     |
-| Journaling                                                    |               ❌               |   ❌    |   🟨    |           ✅            |                     ❌                     |
+|                                                               |            fennECS            | HypEcs | Entitas |      Unity DOTS      |                DefaultECS                 |
+|:--------------------------------------------------------------|:-----------------------------:|:------:|:-------:|:--------------------:|:-----------------------------------------:|
+| Boilerplate-to-Feature Ratio                                  |            3-to-1             | 5-to-1 | 12-to-1 |      27-to-1 😱      |                  7-to-1                   |
+| Entity-Target Relations                                       |               ✅               |   ✅    |    ❌    |          ❌           |                     ❌                     |
+| Target Querying<br/>*(find all targets of relations of type)* |               ✅               |   ❌    |    ❌    |          ❌           |                     ❌                     |
+| Entity-Component Queries                                      |               ✅               |   ✅    |    ✅    |          ✅           |                     ✅                     |
+| Journaling                                                    |               ❌               |   ❌    |   🟨    |          ✅           |                     ❌                     |
+| Add Shared Components                                         |               ✅               |   ❌    |    ❌    |          🟨          |                     ✅                     | 
+| Change Shared Components                                      |               ✅               |   ❌    |    ❌    |          ❌           |                     ✅                     | 
+| Entity-Type-Relations                                         |               ✅               |   ✅    |    ❌    |          ❌           |                     ❌                     |
+| Reference Component Types                                     |               ✅               |   ❌    |    ❌    |          ❌           |                     ❌                     |
+| Entity-Target-Querying                                        |               ✅               |   ❌    |    ❌    |          ❌           |                     ✅                     |
+| Arbitrary Component Types                                     |               ✅               |   ✅    |    ❌    |          ❌           |                     ✅                     |
+| Structural Change Responders                                  |     🟨<br/>(coming soon)      |   ❌    |    ✅    | ☠️<br> (unreliable)  |                     ❌                     |
+| Balanced Workload Scheduling                                  |  🟨<br/>(coming soon)  |   ❌    |      ❌  | ✅<br>(highly static) |                     ✅                     |
+| No Code Generation Required                                   |               ✅               |   ✅    |    ❌    |          ❌           | 🟨<br> (roslyn analyzer<br>adds features) |
+| Enqueue Structural Changes at Any Time                        |               ✅               |   ✅    |    ✅    |          🟨          |                    🟨                     |
+| Apply Structural Changes at Any Time                          |               ❌               |   ❌    |    ✅    |          ❌           |                     ❌                     |
+| C# 12 support                                                 |               ✅               |   ❌    |    ❌    |          ❌           |                     ❌                     |
+| Parallel Processing                                           |              ⭐⭐               |   ⭐    |    ❌    |         ⭐⭐⭐          |                    ⭐⭐                     |
+| Singleton / Unique Components                                 |    🟨<br/>(ref types only)    |   ❌    |    ✅    | 🟨<br/>(per system)  |                     ✅                     |
 
 
 </details>
@@ -121,18 +121,18 @@ Fennecs provides a variety of ways to iterate over and modify components, to off
 Here are some raw results from our benchmark suite, from the Vector3 operations parts, better ones coming soon.
 (don't @ us)
 
-| Method                            | entityCount | Mean           | Error         | StdDev       | Gen0   | Allocated |
-|---------------------------------- |-------------|---------------:|--------------:|-------------:|-------:|----------:|
-| PerItemIncrementSpanLocalDelegate | 1_000       |       506.7 ns |      85.17 ns |      4.67 ns |      - |         - |
-| PerItemIncrementSpanLocalFunction | 1_000       |     1,733.6 ns |   3,299.99 ns |    180.88 ns | 0.0038 |      64 B |
-| PerItemDotParallel                | 1_000       |    15,383.5 ns |     926.06 ns |     50.76 ns | 0.3052 |    5128 B |
-| PerItemIncrementSpan              | 1_000_000   |   464,778.8 ns | 164,803.67 ns |  9,033.45 ns |      - |         - |
-| PerItemIncrementSpanRef           | 1_000_000   |   453,499.5 ns |  36,784.10 ns |  2,016.26 ns |      - |         - |
-| PerItemIncrementSpanCall          | 1_000_000   |   512,373.4 ns | 821,209.05 ns | 45,013.24 ns |      - |         - |
-| PerItemIncrementSpanDelegate      | 1_000_000   |   481,745.5 ns |  49,017.22 ns |  2,686.80 ns |      - |         - |
-| PerItemIncrementSpanLambda        | 1_000_000   |   702,645.4 ns | 650,761.46 ns | 35,670.43 ns |      - |         - |
-| PerItemIncrementSpanLocalDelegate | 1_000_000   |   509,718.7 ns |  41,673.97 ns |  2,284.29 ns |      - |         - |
-| PerItemDotParallel                | 1_000_000   |   447,106.2 ns | 308,580.84 ns | 16,914.36 ns |      - |    6692 B |
+| Method                            | entityCount | Mean           | StdDev       | Gen0   | Allocated |
+|---------------------------------- |-------------|---------------:|-------------:|-------:|----------:|
+| PerItemIncrementSpanLocalDelegate | 1_000       |       506.7 ns |      4.67 ns |      - |         - |
+| PerItemIncrementSpanLocalFunction | 1_000       |     1,733.6 ns |    180.88 ns | 0.0038 |      64 B |
+| PerItemDotParallel                | 1_000       |    15,383.5 ns |     50.76 ns | 0.3052 |    5128 B |
+| PerItemIncrementSpan              | 1_000_000   |   464,778.8 ns |  9,033.45 ns |      - |         - |
+| PerItemIncrementSpanRef           | 1_000_000   |   453,499.5 ns |  2,016.26 ns |      - |         - |
+| PerItemIncrementSpanCall          | 1_000_000   |   512,373.4 ns | 45,013.24 ns |      - |         - |
+| PerItemIncrementSpanDelegate      | 1_000_000   |   481,745.5 ns |  2,686.80 ns |      - |         - |
+| PerItemIncrementSpanLambda        | 1_000_000   |   702,645.4 ns | 35,670.43 ns |      - |         - |
+| PerItemIncrementSpanLocalDelegate | 1_000_000   |   509,718.7 ns |  2,284.29 ns |      - |         - |
+| PerItemDotParallel                | 1_000_000   |   447,106.2 ns | 16,914.36 ns |      - |    6692 B |
 
 
 ## Future Roadmap

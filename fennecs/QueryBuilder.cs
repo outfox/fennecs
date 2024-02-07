@@ -15,51 +15,47 @@ public class QueryBuilder
 
     protected QueryBuilder Has<T>(Identity target = default)
     {
-        var typeIndex = TypeExpression.Create<T>(target);
-        Mask.Has(typeIndex);
+        var typeExpression = TypeExpression.Create<T>(target);
+        Mask.Has(typeExpression);
         return this;
     }
 
 
     protected QueryBuilder Has<T>(Type type)
     {
-        var entity = Archetypes.GetTypeEntity(type);
-        var typeIndex = TypeExpression.Create<T>(entity.Identity);
-        Mask.Has(typeIndex);
+        var identity = new Identity(type);
+        var typeExpression = TypeExpression.Create<T>(identity);
+        Mask.Has(typeExpression);
         return this;
     }
 
 
     protected QueryBuilder Not<T>(Identity target = default)
     {
-        var typeIndex = TypeExpression.Create<T>(target);
-        Mask.Not(typeIndex);
+        Mask.Not(TypeExpression.Create<T>(target));
         return this;
     }
 
 
     protected QueryBuilder Not<T>(Type type)
     {
-        var entity = Archetypes.GetTypeEntity(type);
-        var typeIndex = TypeExpression.Create<T>(entity.Identity);
-        Mask.Not(typeIndex);
+        var identity = new Identity(type);
+        Mask.Not(TypeExpression.Create<T>(identity));
         return this;
     }
 
 
     protected QueryBuilder Any<T>(Identity target = default)
     {
-        var typeIndex = TypeExpression.Create<T>(target);
-        Mask.Any(typeIndex);
+        Mask.Any(TypeExpression.Create<T>(target));
         return this;
     }
-
-
+    
+    
     protected QueryBuilder Any<T>(Type type)
     {
-        var entity = Archetypes.GetTypeEntity(type);
-        var typeIndex = TypeExpression.Create<T>(entity.Identity);
-        Mask.Any(typeIndex);
+        var identity = new Identity(type);
+        Mask.Any(TypeExpression.Create<T>(identity));
         return this;
     }
 }

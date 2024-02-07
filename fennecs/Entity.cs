@@ -9,7 +9,7 @@ public readonly struct Entity(Identity identity)
 
     internal Identity Identity { get; } = identity;
 
-    public bool IsType => Identity.IsType();
+    public bool IsType => Identity.IsType;
 
     public override bool Equals(object? obj)
     {
@@ -54,9 +54,8 @@ public readonly struct EntityBuilder(World world, Entity entity)
     }
 
     public EntityBuilder Add<T>(Type type) where T : struct
-    {
-        var typeEntity = world.GetTypeEntity(type);
-        world.AddComponent<T>(entity, typeEntity);
+    { 
+        world.AddComponent<T>(entity, new Identity(type));
         return this;
     }
 
@@ -79,8 +78,7 @@ public readonly struct EntityBuilder(World world, Entity entity)
     
     public EntityBuilder Add<T>(T data, Type type) where T : struct
     {
-        var typeEntity = world.GetTypeEntity(type);
-        world.AddComponent(entity, data, typeEntity);
+        world.AddComponent(entity, data, new Identity(type));
         return this;
     }
 
@@ -101,8 +99,7 @@ public readonly struct EntityBuilder(World world, Entity entity)
     
     public EntityBuilder Remove<T>(Type type) where T : struct
     {
-        var typeEntity = world.GetTypeEntity(type);
-        world.RemoveComponent<T>(entity, typeEntity);
+        world.RemoveComponent<T>(entity, new Identity(type));
         return this;
     }
 

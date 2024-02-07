@@ -36,10 +36,10 @@ public class WorldTests
         Assert.Equal(1, world.Count);
 
         world.On(e1).Add<int>(typeof(bool));
-        Assert.Equal(2, world.Count);
+        Assert.Equal(1, world.Count);
 
         var e2 = world.Spawn().Id();
         world.On(e2).Add<int>(typeof(bool));
-        Assert.Equal(3, world.Count);
+        Assert.Equal(2, world.Count);
     }
 }
