@@ -6,7 +6,7 @@ namespace fennecs;
 public class QueryBuilder
 {
     internal readonly Archetypes Archetypes;
-    protected readonly Mask Mask = MaskPool.Get();
+    protected readonly Mask Mask = MaskPool.Rent();
 
     internal QueryBuilder(Archetypes archetypes)
     {

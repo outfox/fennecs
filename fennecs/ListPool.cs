@@ -7,15 +7,22 @@ namespace fennecs;
 public static class ListPool<T>
 {
     private static readonly ConcurrentBag<List<T>> Bag = [];
+    private const int Capacity = 32;
     
-    public static List<T> Get()
+    public static List<T> Rent()
     {
-        return Bag.TryTake(out var list) ? list : [];
+        return Bag.TryTake(out var list) ? list : new List<T>(Capacity);
     }
     
-    public static void Add(List<T> list)
+    public static void Return(List<T> list)
     {
         list.Clear();
         Bag.Add(list);
     }
+
+    static ListPool()
+    {
+        for (var i = 0; i < 32; i++) Bag.Add(new List<T>(Capacity));
+    }
+
 }

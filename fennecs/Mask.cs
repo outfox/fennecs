@@ -4,9 +4,9 @@ namespace fennecs;
 
 public sealed class Mask : IEquatable<Mask>, IDisposable
 {
-    internal readonly List<TypeExpression> HasTypes = [];
-    internal readonly List<TypeExpression> NotTypes = [];
-    internal readonly List<TypeExpression> AnyTypes = [];
+    internal readonly List<TypeExpression> HasTypes = new(32);
+    internal readonly List<TypeExpression> NotTypes = new(32);
+    internal readonly List<TypeExpression> AnyTypes = new(32);
     
     public void Has(TypeExpression type)
     {

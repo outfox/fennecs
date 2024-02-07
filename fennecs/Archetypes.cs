@@ -239,14 +239,14 @@ public sealed class Archetypes
     public void DiscardQuery(Mask mask)
     {
         _queries.Remove(mask);
-        MaskPool.Add(mask);
+        MaskPool.Return(mask);
     }
 
     public Query GetQuery(Mask mask, Func<Archetypes, Mask, List<Table>, Query> createQuery)
     {
         if (_queries.TryGetValue(mask, out var query))
         {
-            MaskPool.Add(mask);
+            MaskPool.Return(mask);
             return query;
         }
 
@@ -312,7 +312,7 @@ public sealed class Archetypes
 
         AssertAlive(identity);
 
-        var list = ListPool<Entity>.Get();
+        var list = ListPool<Entity>.Rent();
         var meta = _meta[identity.Id];
         var table = _tables[meta.TableId];
         foreach (var storageType in table.Types)
@@ -322,7 +322,7 @@ public sealed class Archetypes
         }
 
         var targetEntities = list.ToArray();
-        ListPool<Entity>.Add(list);
+        ListPool<Entity>.Return(list);
 
         return targetEntities;
     }
@@ -332,7 +332,7 @@ public sealed class Archetypes
     {
         AssertAlive(identity);
 
-        var list = ListPool<(TypeExpression, object)>.Get();
+        var list = ListPool<(TypeExpression, object)>.Rent();
 
         var meta = _meta[identity.Id];
         var table = _tables[meta.TableId];
@@ -345,7 +345,7 @@ public sealed class Archetypes
         }
 
         var array = list.ToArray();
-        ListPool<(TypeExpression, object)>.Add(list);
+        ListPool<(TypeExpression, object)>.Return(list);
         return array;
     }
 
