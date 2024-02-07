@@ -58,6 +58,12 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>
 
     public override string ToString()
     {
+        if (this == None)
+            return $"\u25C7None";
+
+        if (this == Any)
+            return $"\u25C6Any";
+
         if (IsType) return $"\u2b1b{Type.Name}";
         return $"\u2756{Id:x8}:{Generation:D5}";
     }

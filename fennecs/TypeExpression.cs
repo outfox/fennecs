@@ -36,8 +36,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     private struct None;
     
     public bool isRelation => TypeId != 0 && Target != Identity.None;
-    public bool isEntity => TypeId == 0;
-
     public Type Type
     {
         get
@@ -67,7 +65,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         // Most common case.
         if (Target == Identity.None) return other.Target == Identity.None;
         
-        // Any only matches other Relations, not None.
+        // Any only matches other Relations, not pure components (Target == None).
         if (Target == Identity.Any) return other.Target != Identity.None;
 
         // Direct match.
@@ -130,6 +128,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     public override string ToString()
     {
-        return $"{TypeId:x4}/{Target} {LanguageType.Resolve(TypeId).Name}";
+        return $"{TypeId:x4}/{Target}<{LanguageType.Resolve(TypeId).Name}>";
     }
 }
