@@ -47,13 +47,21 @@ public class WorldTests
     public void Can_Find_Targets_of_Relation()
     {
         using var world = new World();
-        var target = world.Spawn().Id();
-        var r1 = world.Spawn().Add<int>(666, target).Id();
-        var r2 = world.Spawn().Add<float>(1.0f, target).Id();
+        var target1 = world.Spawn().Id();
+        var target2 = world.Spawn().Add("hallo dieter").Id();
+
+        world.Spawn().Add(666, target1).Id();
+        world.Spawn().Add(1.0f, target2).Id();
+        world.Spawn().Add("hunter2", typeof(Thread)).Id();
         
         var targets = new HashSet<Entity>();
         world._archetypes.GetTargets<int>(targets);
         Assert.Single(targets);
-        Assert.Contains(target, targets);
+        Assert.Contains(target1, targets);
+        targets.Clear();
+        
+        world._archetypes.GetTargets<float>(targets);
+        Assert.Single(targets);
+        Assert.Contains(target2, targets);
     }
 }

@@ -128,6 +128,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     public override string ToString()
     {
-        return $"{TypeId:x4}/{Target}<{LanguageType.Resolve(TypeId).Name}>";
+        return isRelation ? $"<{LanguageType.Resolve(TypeId)}\u2192{Target}>" : $"<{LanguageType.Resolve(TypeId)}>";
     }
 }

@@ -55,19 +55,6 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>
         }
     }
 
-
-    public override string ToString()
-    {
-        if (this == None)
-            return $"\u25C7None";
-
-        if (this == Any)
-            return $"\u25C6Any";
-
-        if (IsType) return $"\u2b1b{Type.Name}";
-        return $"\u2756{Id:x8}:{Generation:D5}";
-    }
-
     public static implicit operator Entity(Identity id) => new(id);
     public static bool operator ==(Identity left, Identity right) => left.Equals(right);
     public static bool operator !=(Identity left, Identity right) => !left.Equals(right);
@@ -86,5 +73,16 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>
             var generationWrappedStartingAtOne = (ushort) (Generation % (ushort.MaxValue - 1) + 1);
             return new Identity(Id, generationWrappedStartingAtOne);
         }
+    }
+
+    public override string ToString()
+    {
+        if (this == None)
+            return $"None";
+
+        if (this == Any)
+            return $"Any";
+
+        return IsType ? $"{Type}" : $"\u2756{Id:x8}:{Generation:D5}";
     }
 }
