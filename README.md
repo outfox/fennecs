@@ -127,41 +127,41 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 
 | Method                                       | entityCount | Mean         | StdDev     | Ratio |
 |--------------------------------------------- |------------ |-------------:|-----------:|------:|
-| CrossProduct_Single_ECS_Lambda               | 1000        |     2.004 us |  0.0978 us |  1.43 |
-| CrossProduct_Parallel_ECS_Lambda             | 1000        |     2.211 us |  0.0255 us |  1.58 |
-| CrossProduct_Single_Span_Delegate            | 1000        |     1.397 us |  0.0081 us |  1.00 |
-| CrossProduct_Single_ECS_Delegate             | 1000        |     2.085 us |  0.1131 us |  1.49 |
-| CrossProduct_Single_ECS_Raw                  | 1000        |     1.402 us |  0.0047 us |  1.00 |
-| CrossProduct_Parallel_ECS_Raw                | 1000        |     3.135 us |  0.0791 us |  2.24 |
-| CrossProduct_Parallel_ECS_Delegate_Archetype | 1000        |     2.211 us |  0.0163 us |  1.58 |
-| CrossProduct_Parallel_ECS_Delegate_Chunk1k   | 1000        |     2.195 us |  0.0013 us |  1.57 |
-|                                              |             |              |            |       |
-| CrossProduct_Single_ECS_Lambda               | 10000       |    21.225 us |  1.4498 us |  1.73 |
-| CrossProduct_Parallel_ECS_Lambda             | 10000       |    24.437 us |  4.3404 us |  1.99 |
-| CrossProduct_Single_Span_Delegate            | 10000       |    12.288 us |  0.0282 us |  1.00 |
-| CrossProduct_Single_ECS_Delegate             | 10000       |    23.880 us |  1.9409 us |  1.94 |
-| CrossProduct_Single_ECS_Raw                  | 10000       |    12.388 us |  0.2673 us |  1.01 |
-| CrossProduct_Parallel_ECS_Raw                | 10000       |     8.111 us |  0.2773 us |  0.66 |
-| CrossProduct_Parallel_ECS_Delegate_Archetype | 10000       |    19.933 us |  0.0618 us |  1.62 |
-| CrossProduct_Parallel_ECS_Delegate_Chunk1k   | 10000       |    27.770 us |  0.2301 us |  2.26 |
-|                                              |             |              |            |       |
-| CrossProduct_Single_ECS_Lambda               | 100000      |   173.340 us |  0.1528 us |  1.43 |
-| CrossProduct_Parallel_ECS_Lambda             | 100000      |   198.162 us |  1.7237 us |  1.64 |
-| CrossProduct_Single_Span_Delegate            | 100000      |   120.979 us |  0.8806 us |  1.00 |
-| CrossProduct_Single_ECS_Delegate             | 100000      |   195.004 us | 30.5909 us |  1.61 |
-| CrossProduct_Single_ECS_Raw                  | 100000      |   120.062 us |  0.2062 us |  0.99 |
-| CrossProduct_Parallel_ECS_Raw                | 100000      |    53.235 us |  1.2900 us |  0.44 |
-| CrossProduct_Parallel_ECS_Delegate_Archetype | 100000      |   197.735 us |  1.1834 us |  1.63 |
-| CrossProduct_Parallel_ECS_Delegate_Chunk1k   | 100000      |    67.614 us |  1.4787 us |  0.56 |
-|                                              |             |              |            |       |
-| CrossProduct_Single_ECS_Lambda               | 1000000     | 1,789.284 us | 71.5104 us |  1.49 |
-| CrossProduct_Parallel_ECS_Lambda             | 1000000     | 1,978.499 us |  9.4791 us |  1.65 |
-| CrossProduct_Single_Span_Delegate            | 1000000     | 1,197.915 us |  2.9327 us |  1.00 |
-| CrossProduct_Single_ECS_Delegate             | 1000000     | 1,734.629 us |  2.4107 us |  1.45 |
-| CrossProduct_Single_ECS_Raw                  | 1000000     | 1,208.246 us |  4.2537 us |  1.01 |
-| CrossProduct_Parallel_ECS_Raw                | 1000000     |   363.921 us |  5.6343 us |  0.30 |
-| CrossProduct_Parallel_ECS_Delegate_Archetype | 1000000     | 1,980.063 us | 18.7070 us |  1.65 |
-| CrossProduct_Parallel_ECS_Delegate_Chunk1k   | 1000000     |   305.559 us |  1.2544 us |  0.26 |
+| CrossProduct_Single_ECS_Lambda               | 1_000        |     2.004 us |  0.0978 us |  1.43 |
+| CrossProduct_Parallel_ECS_Lambda             | 1_000        |     2.211 us |  0.0255 us |  1.58 |
+| CrossProduct_Single_Span_Delegate            | 1_000        |     1.397 us |  0.0081 us |  1.00 |
+| CrossProduct_Single_ECS_Delegate             | 1_000        |     2.085 us |  0.1131 us |  1.49 |
+| CrossProduct_Single_ECS_Raw                  | 1_000        |     1.402 us |  0.0047 us |  1.00 |
+| CrossProduct_Parallel_ECS_Raw                | 1_000        |     3.135 us |  0.0791 us |  2.24 |
+| CrossProduct_Parallel_ECS_Delegate_Archetype | 1_000        |     2.211 us |  0.0163 us |  1.58 |
+| CrossProduct_Parallel_ECS_Delegate_Chunk1k   | 1_000        |     2.195 us |  0.0013 us |  1.57 |
+|                                              |              |              |            |       |
+| CrossProduct_Single_ECS_Lambda               | 10_000       |    21.225 us |  1.4498 us |  1.73 |
+| CrossProduct_Parallel_ECS_Lambda             | 10_000       |    24.437 us |  4.3404 us |  1.99 |
+| CrossProduct_Single_Span_Delegate            | 10_000       |    12.288 us |  0.0282 us |  1.00 |
+| CrossProduct_Single_ECS_Delegate             | 10_000       |    23.880 us |  1.9409 us |  1.94 |
+| CrossProduct_Single_ECS_Raw                  | 10_000       |    12.388 us |  0.2673 us |  1.01 |
+| CrossProduct_Parallel_ECS_Raw                | 10_000       |     8.111 us |  0.2773 us |  0.66 |
+| CrossProduct_Parallel_ECS_Delegate_Archetype | 10_000       |    19.933 us |  0.0618 us |  1.62 |
+| CrossProduct_Parallel_ECS_Delegate_Chunk1k   | 10_000       |    27.770 us |  0.2301 us |  2.26 |
+|                                              |              |              |            |       |
+| CrossProduct_Single_ECS_Lambda               | 100_000      |   173.340 us |  0.1528 us |  1.43 |
+| CrossProduct_Parallel_ECS_Lambda             | 100_000      |   198.162 us |  1.7237 us |  1.64 |
+| CrossProduct_Single_Span_Delegate            | 100_000      |   120.979 us |  0.8806 us |  1.00 |
+| CrossProduct_Single_ECS_Delegate             | 100_000      |   195.004 us | 30.5909 us |  1.61 |
+| CrossProduct_Single_ECS_Raw                  | 100_000      |   120.062 us |  0.2062 us |  0.99 |
+| CrossProduct_Parallel_ECS_Raw                | 100_000      |    53.235 us |  1.2900 us |  0.44 |
+| CrossProduct_Parallel_ECS_Delegate_Archetype | 100_000      |   197.735 us |  1.1834 us |  1.63 |
+| CrossProduct_Parallel_ECS_Delegate_Chunk1k   | 100_000      |    67.614 us |  1.4787 us |  0.56 |
+|                                              |              |              |            |       |
+| CrossProduct_Single_ECS_Lambda               | 1_000_000    | 1,789.284 us | 71.5104 us |  1.49 |
+| CrossProduct_Parallel_ECS_Lambda             | 1_000_000    | 1,978.499 us |  9.4791 us |  1.65 |
+| CrossProduct_Single_Span_Delegate            | 1_000_000    | 1,197.915 us |  2.9327 us |  1.00 |
+| CrossProduct_Single_ECS_Delegate             | 1_000_000    | 1,734.629 us |  2.4107 us |  1.45 |
+| CrossProduct_Single_ECS_Raw                  | 1_000_000    | 1,208.246 us |  4.2537 us |  1.01 |
+| CrossProduct_Parallel_ECS_Raw                | 1_000_000    |   363.921 us |  5.6343 us |  0.30 |
+| CrossProduct_Parallel_ECS_Delegate_Archetype | 1_000_000    | 1,980.063 us | 18.7070 us |  1.65 |
+| CrossProduct_Parallel_ECS_Delegate_Chunk1k   | 1_000_000    |   305.559 us |  1.2544 us |  0.26 |
 
 </details>
 
