@@ -31,7 +31,11 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>
     {
     }
 
-    public Identity(Type type) : this(0, LanguageType.Identify(type))
+    internal Identity(ushort typeId) : this(0, typeId)
+    {
+    }
+
+    public Identity(Type type) : this(LanguageType.Identify(type))
     {
     }
 

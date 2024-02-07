@@ -113,42 +113,59 @@ public sealed class World : IDisposable
         return _archetypes.HasComponent(type, entity.Identity);
     }
 
-    
+
     public bool HasComponent<T>(Entity entity, Type target) where T : struct
     {
         var type = TypeExpression.Create<T>(new Identity(target));
         return _archetypes.HasComponent(type, entity.Identity);
-    }    
+    }
 
-    
+    /* Todo: probably not worth it
+    public bool HasComponent<T, Target>(Entity entity) where T : struct
+    {
+        var type = TypeExpression.Create<T>(new Identity(LanguageType<Target>.Id));
+        return _archetypes.HasComponent(type, entity.Identity);
+    }
+    */
+
+
     public void AddComponent<T>(Entity entity, Entity target) where T : struct
     {
         var type = TypeExpression.Create<T>(target.Identity);
         _archetypes.AddComponent(type, entity.Identity, new T(), target);
     }
 
-    
+
+    /* Todo: probably not worth it
+    public void AddComponent<T, Target>(Entity entity) where T : struct
+    {
+        var type = TypeExpression.Create<T, Target>();
+        _archetypes.AddComponent(type, entity.Identity, new T());
+    }
+    */
+
+
     public void AddComponent<T>(Entity entity, T component, Entity target) where T : struct
     {
         var type = TypeExpression.Create<T>(target.Identity);
         _archetypes.AddComponent(type, entity.Identity, component, target);
     }
 
-    
+
     public void RemoveComponent<T>(Entity entity, Entity target) where T : struct
     {
         var type = TypeExpression.Create<T>(target.Identity);
         _archetypes.RemoveComponent(type, entity.Identity);
     }
 
-    
+
     public Entity GetTarget<T>(Entity entity) where T : struct
     {
         var type = TypeExpression.Create<T>(Identity.None);
         return _archetypes.GetTarget(type, entity.Identity);
     }
 
-    
+
     public IEnumerable<Entity> GetTargets<T>(Entity entity) where T : struct
     {
         var type = TypeExpression.Create<T>(Identity.None);
@@ -163,14 +180,14 @@ public sealed class World : IDisposable
     {
     }
 
-    
+
     /* I don't think this is necessary.
     public T GetElement<T>() where T : class
     {
         return _archetypes.GetComponent<Element<T>>(_world.Identity, Identity.None).Value;
     }
 
-    
+
     public bool TryGetElement<T>(out T? element) where T : class
     {
         if (!HasElement<T>())
@@ -183,28 +200,28 @@ public sealed class World : IDisposable
         return true;
     }
 
-    
+
     public bool HasElement<T>() where T : class
     {
         var type = TypeExpression.Create<Element<T>>(Identity.None);
         return _archetypes.HasComponent(type, _world.Identity);
     }
 
-    
+
     public void AddElement<T>(T element) where T : class
     {
         var type = TypeExpression.Create<Element<T>>(Identity.None);
         _archetypes.AddComponent(type, _world.Identity, new Element<T> { Value = element });
     }
 
-    
+
     public void ReplaceElement<T>(T element) where T : class
     {
         RemoveElement<T>();
         AddElement(element);
     }
 
-    
+
     public void AddOrReplaceElement<T>(T element) where T : class
     {
         if (HasElement<T>())
@@ -214,8 +231,8 @@ public sealed class World : IDisposable
 
         AddElement(element);
     }
-        
-    
+
+
     public void RemoveElement<T>() where T : class
     {
         var type = TypeExpression.Create<Element<T>>(Identity.None);

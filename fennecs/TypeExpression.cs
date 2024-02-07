@@ -84,10 +84,18 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     public override bool Equals(object? obj) => throw new InvalidCastException("Boxing Disallowed; use TypeId.Equals(TypeId) instead.");
 
-    public static TypeExpression Create<T>(Identity target = default) 
+    public static TypeExpression Create<T>(Identity target = default)
     {
         return new TypeExpression(target, LanguageType<T>.Id);
     }
+
+    
+    /* TODO: Probably not worth it.
+    public static TypeExpression Create<T, Target>()
+    {
+        return new TypeExpression(new Identity(LanguageType<Target>.Id), LanguageType<T>.Id);
+    }
+    */
 
     public override int GetHashCode()
     {
