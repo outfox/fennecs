@@ -3,7 +3,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace Benchmark;
 
-[ShortRunJob]
+[DryJob]
 [MemoryDiagnoser]
 public class V3Benchmarks
 {

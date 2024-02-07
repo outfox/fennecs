@@ -16,7 +16,7 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
     }
 
     #region Runners
-
+    
      public void Run(RefAction_CCC<C1, C2, C3> action)
     {
         Archetypes.Lock();

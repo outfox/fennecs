@@ -10,25 +10,6 @@ public class TypeIdTests
 
     private struct Type2;
 
-    private struct Type3Backlink : IRelationBacklink;
-
-    [Fact]
-    public void BackLink_Correctly_Declarable()
-    {
-        var id1 = TypeExpression.Create<Type3Backlink>(new Identity(1234));
-        Assert.True(id1.isBacklink);
-        
-        var id2 = TypeExpression.Create<Type2>(new Identity(1234));
-        Assert.False(id2.isBacklink);
-    }
-
-    [Fact]
-    public void Non_BackLink_is_Default()
-    {
-        var id = TypeExpression.Create<Type2>(new Identity(1234));
-        Assert.False(id.isBacklink);
-        Assert.True(id.TypeId > 0);
-    }
 
     [Fact]
     public void TypeId_is_64_bits()

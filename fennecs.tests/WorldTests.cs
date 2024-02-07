@@ -42,4 +42,19 @@ public class WorldTests
         world.On(e2).Add<int>(typeof(bool));
         Assert.Equal(2, world.Count);
     }
+
+    [Fact]
+    public void Can_Find_Targets_of_Relation()
+    {
+        using var world = new World();
+        var target = world.Spawn().Id();
+        var r1 = world.Spawn().Add<bool>(true, target).Id();
+        var r2 = world.Spawn().Add<float>(1.0f, target).Id();
+        
+        var targets = new HashSet<Entity>();
+        world._archetypes.GetTargets<int>(targets);
+        Assert.Equal(2, targets.Count);
+        Assert.Contains(r1, targets);
+        Assert.Contains(r2, targets);
+    }
 }

@@ -6,7 +6,7 @@ public sealed class World : IDisposable
 {
     //private readonly Entity _world;
 
-    private readonly Archetypes _archetypes = new();
+    internal readonly Archetypes _archetypes = new();
 
     public int Count => _archetypes.Count;
     
@@ -28,7 +28,7 @@ public sealed class World : IDisposable
     }
 
     
-    public void DespawnAllWith<T>() where T : struct
+    public void DespawnAllWith<T>() 
     {
         var query = Query<Entity>().Has<T>().Build();
         query.Run(delegate (Span<Entity> entities)
@@ -44,25 +44,25 @@ public sealed class World : IDisposable
     }
 
 
-    public ref T GetComponent<T>(Entity entity) where T : struct
+    public ref T GetComponent<T>(Entity entity) 
     {
         return ref _archetypes.GetComponent<T>(entity);
     }
 
-    public ref T GetComponent<T>(Entity entity, Identity target) where T : struct
+    public ref T GetComponent<T>(Entity entity, Identity target) 
     {
         return ref _archetypes.GetComponent<T>(entity, target);
     }
 
     
-    public bool HasComponent<T>(Entity entity) where T : struct
+    public bool HasComponent<T>(Entity entity) 
     {
         var type = TypeExpression.Create<T>(Identity.None);
         return _archetypes.HasComponent(type, entity);
     }
 
     
-    public void AddComponent<T>(Entity entity) where T : struct
+    public void AddComponent<T>(Entity entity) where T : new()
     {
         var type = TypeExpression.Create<T>(Identity.None);
         _archetypes.AddComponent(type, entity.Identity, new T());
@@ -75,7 +75,7 @@ public sealed class World : IDisposable
     }
 
     
-    public void RemoveComponent<T>(Entity entity) where T : struct
+    public void RemoveComponent<T>(Entity entity) 
     {
         var type = TypeExpression.Create<T>(Identity.None);
         _archetypes.RemoveComponent(type, entity.Identity);
@@ -88,13 +88,13 @@ public sealed class World : IDisposable
     }
 
     
-    public Ref<T> GetComponent<T>(Entity entity, Entity target) where T : struct
+    public Ref<T> GetComponent<T>(Entity entity, Entity target) 
     {
         return new Ref<T>(ref _archetypes.GetComponent<T>(entity.Identity, target.Identity));
     }
         
     
-    public bool TryGetComponent<T>(Entity entity, out Ref<T> component) where T : struct
+    public bool TryGetComponent<T>(Entity entity, out Ref<T> component) 
     {
         if (!HasComponent<T>(entity))
         {
@@ -107,21 +107,21 @@ public sealed class World : IDisposable
     }
 
     
-    public bool HasComponent<T>(Entity entity, Entity target) where T : struct
+    public bool HasComponent<T>(Entity entity, Entity target) 
     {
         var type = TypeExpression.Create<T>(target.Identity);
         return _archetypes.HasComponent(type, entity.Identity);
     }
 
 
-    public bool HasComponent<T>(Entity entity, Type target) where T : struct
+    public bool HasComponent<T>(Entity entity, Type target) 
     {
         var type = TypeExpression.Create<T>(new Identity(target));
         return _archetypes.HasComponent(type, entity.Identity);
     }
 
     /* Todo: probably not worth it
-    public bool HasComponent<T, Target>(Entity entity) where T : struct
+    public bool HasComponent<T, Target>(Entity entity) 
     {
         var type = TypeExpression.Create<T>(new Identity(LanguageType<Target>.Id));
         return _archetypes.HasComponent(type, entity.Identity);
@@ -129,7 +129,7 @@ public sealed class World : IDisposable
     */
 
 
-    public void AddComponent<T>(Entity entity, Entity target) where T : struct
+    public void AddComponent<T>(Entity entity, Entity target) where T : new()
     {
         var type = TypeExpression.Create<T>(target.Identity);
         _archetypes.AddComponent(type, entity.Identity, new T(), target);
@@ -137,7 +137,7 @@ public sealed class World : IDisposable
 
 
     /* Todo: probably not worth it
-    public void AddComponent<T, Target>(Entity entity) where T : struct
+    public void AddComponent<T, Target>(Entity entity) 
     {
         var type = TypeExpression.Create<T, Target>();
         _archetypes.AddComponent(type, entity.Identity, new T());
@@ -145,28 +145,28 @@ public sealed class World : IDisposable
     */
 
 
-    public void AddComponent<T>(Entity entity, T component, Entity target) where T : struct
+    public void AddComponent<T>(Entity entity, T component, Entity target) 
     {
         var type = TypeExpression.Create<T>(target.Identity);
         _archetypes.AddComponent(type, entity.Identity, component, target);
     }
 
 
-    public void RemoveComponent<T>(Entity entity, Entity target) where T : struct
+    public void RemoveComponent<T>(Entity entity, Entity target) 
     {
         var type = TypeExpression.Create<T>(target.Identity);
         _archetypes.RemoveComponent(type, entity.Identity);
     }
 
 
-    public Entity GetTarget<T>(Entity entity) where T : struct
+    public Entity GetTarget<T>(Entity entity) 
     {
         var type = TypeExpression.Create<T>(Identity.None);
         return _archetypes.GetTarget(type, entity.Identity);
     }
 
 
-    public IEnumerable<Entity> GetTargets<T>(Entity entity) where T : struct
+    public IEnumerable<Entity> GetTargets<T>(Entity entity) 
     {
         var type = TypeExpression.Create<T>(Identity.None);
         return _archetypes.GetTargets(type, entity.Identity);

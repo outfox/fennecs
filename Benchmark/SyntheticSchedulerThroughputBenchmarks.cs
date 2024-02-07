@@ -4,7 +4,7 @@ using BenchmarkDotNet.Attributes;
 namespace Benchmark;
 
 
-[ShortRunJob]
+[DryJob]
 [ThreadingDiagnoser]
 [MemoryDiagnoser]
 public class SyntheticSchedulerThroughputBenchmarks

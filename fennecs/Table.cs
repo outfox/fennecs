@@ -12,7 +12,7 @@ public sealed class TableEdge
 
 public sealed class Table
 {
-    private const int StartCapacity = 16;
+    private const int StartCapacity = 4;
 
     public readonly int Id;
 
@@ -56,7 +56,20 @@ public sealed class Table
         }
     }
 
-    
+    internal bool Matches(TypeExpression type)
+    {
+        return type.Matches(Types);
+    }
+
+    internal void FindTargets(TypeExpression type, HashSet<Entity> output)
+    {
+        foreach (var candidate in Types)
+        {
+            //if (!candidate.isRelation) continue;
+            if (type.Matches(candidate)) output.Add(candidate.Target);
+        }
+    }
+
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.
@@ -120,7 +133,7 @@ public sealed class Table
     
     public T[] GetStorage<T>(Identity target)
     {
-        var type = fennecs.TypeExpression.Create<T>(target);
+        var type = TypeExpression.Create<T>(target);
         return (T[])GetStorage(type);
     }
 

@@ -56,20 +56,20 @@ public class SimpleEntityBenchmarks
 
     [Benchmark]
     //A lambda is passed each Vector3 by ref.
-    public void Single_ECS_Lambda()
+    public void CrossProduct_Single_ECS_Lambda()
     {
         _queryV3.Run((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     //Parallel.Foreach passes each Vector3 by ref to a lambda.
-    public void Parallel_ECS_Lambda()
+    public void CrossProduct_Parallel_ECS_Lambda()
     {
         _queryV3.RunParallel((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark(Baseline = true)]
-    public void Single_Span_Delegate()
+    public void CrossProduct_Single_Span_Delegate()
     {
         _queryV3.Run(delegate(Span<Vector3> vectors)
         {
@@ -79,14 +79,14 @@ public class SimpleEntityBenchmarks
 
     [Benchmark]
     //Work passed into delegate as ref Vector3.
-    public void Single_ECS_Delegate()
+    public void CrossProduct_Single_ECS_Delegate()
     {
         _queryV3.Run(delegate (ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     //Work parallelized by Archetype, passed into delegate as ref Vector3.
-    public void Single_ECS_Raw()
+    public void CrossProduct_Single_ECS_Raw()
     {
         _queryV3.Raw(delegate(Memory<Vector3> vectors)
         {
@@ -98,7 +98,7 @@ public class SimpleEntityBenchmarks
     }
 
     [Benchmark]
-    public void Parallel_ECS_Raw()
+    public void CrossProduct_Parallel_ECS_Raw()
     {
         _queryV3.RawParallel(delegate(Memory<Vector3> vectors)
         {
@@ -111,14 +111,14 @@ public class SimpleEntityBenchmarks
 
     [Benchmark]
     //Work parallelized by Archetype, passed into delegate as ref Vector3.
-    public void Parallel_ECS_Delegate_Archetype()
+    public void CrossProduct_Parallel_ECS_Delegate_Archetype()
     {
         _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     //Work parallelized by Archetype, passed into delegate as ref Vector3.
-    public void Parallel_ECS_Delegate_Chunk1k()
+    public void CrossProduct_Parallel_ECS_Delegate_Chunk1k()
     {
         _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, chunkSize: 1_000);
     }

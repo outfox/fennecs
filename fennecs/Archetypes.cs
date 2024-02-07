@@ -36,6 +36,23 @@ public sealed class Archetypes
         AddTable([TypeExpression.Create<Entity>(Identity.None)]);
     }
 
+    public Entity GetTarget(TypeExpression type)
+    {
+        if (type is {isRelation: true, Target.IsEntity: true})
+        {
+            return type.Target;
+        }
+
+        throw new InvalidCastException($"TypeExpression {type} is not a Entity-Component-Entity relation type");
+    }
+
+    public void GetTargets<T>(HashSet<Entity> result)
+    {
+        var type = TypeExpression.Create<T>(Identity.Any);
+
+        // Iterate through tables and get all concrete entities from all Archetype TypeExpressions
+        foreach (var table in _tables) table.FindTargets(type, result);
+    }
 
     private readonly object _spawnLock = new();
 

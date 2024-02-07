@@ -36,7 +36,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     private struct None;
     
     public bool isRelation => TypeId != 0 && Target != Identity.None;
-    public bool isBacklink => typeof(IRelationBacklink).IsAssignableFrom(Type);
     public bool isEntity => TypeId == 0;
 
     public Type Type

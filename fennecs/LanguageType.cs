@@ -61,5 +61,3 @@ internal class LanguageType<T> : LanguageType
     }
 }
 
-public interface IRelationBacklink;
-

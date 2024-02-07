@@ -57,8 +57,8 @@ public static class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var bob = world.Spawn().Add(p2).Add(alice, 111).Id();
-        /*var charlie = */world.Spawn().Add(p3).Add(bob, 222).Id();
+        var bob = world.Spawn().Add(p2).Add(111, alice).Id();
+        /*var charlie = */world.Spawn().Add(p3).Add(222, bob).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Any<int>(Identity.None)
@@ -84,8 +84,8 @@ public static class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var eve = world.Spawn().Add(p2).Add(alice, 111).Id();
-        var charlie = world.Spawn().Add(p3).Add(eve, 222).Id();
+        var eve = world.Spawn().Add(p2).Add(111, alice).Id();
+        var charlie = world.Spawn().Add(p3).Add(222, eve).Id();
 
         var query = world.Query<Entity, Vector3>().Any<int>(eve).Build();
 
@@ -111,8 +111,8 @@ public static class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var eve = world.Spawn().Add(p2).Add(alice, 111).Id();
-        var charlie = world.Spawn().Add(p3).Add(eve, 222).Id();
+        var eve = world.Spawn().Add(p2).Add(111, alice).Id();
+        var charlie = world.Spawn().Add(p3).Add(222, eve).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Any<int>(eve)
@@ -155,13 +155,13 @@ public static class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var bob = world.Spawn().Add(p2).Add(alice, 111).Id();
+        var bob = world.Spawn().Add(p2).Add(111, alice).Id();
         var eve = world.Spawn().Add(p1).Add(888).Id();
 
         /*var charlie = */
-        world.Spawn().Add(p3).Add(bob, 222).Id();
+        world.Spawn().Add(p3).Add(222, bob).Id();
         /*var charlie = */
-        world.Spawn().Add(p3).Add(eve, 222).Id();
+        world.Spawn().Add(p3).Add(222, eve).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Not<int>(bob)
@@ -202,10 +202,10 @@ public static class QueryTests
         var alice = world.Spawn().Add(p1).Add(0).Id();
         var eve = world.Spawn().Add(p1).Add(888).Id();
 
-        var bob = world.Spawn().Add(p2).Add(alice, 111).Id();
+        var bob = world.Spawn().Add(p2).Add(111, alice).Id();
 
-        world.Spawn().Add(p3).Add(bob, 555).Id();
-        world.Spawn().Add(p3).Add(eve, 666).Id();
+        world.Spawn().Add(p3).Add(555, bob).Id();
+        world.Spawn().Add(p3).Add(666, eve).Id();
 
         var query = world.Query<Entity, Vector3, int>()
             .Not<int>(bob)
