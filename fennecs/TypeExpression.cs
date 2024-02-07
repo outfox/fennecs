@@ -48,7 +48,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
                 (0, int.MaxValue) => typeof(Any),
                 (0, 0) => typeof(None),
                 (0, _) => typeof(Entity),
-                _ => TypeRegistry.Resolve(TypeId),
+                _ => LanguageType.Resolve(TypeId),
             };
         }
     }
@@ -123,6 +123,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     public override string ToString()
     {
-        return $"{TypeId:x4}/{Target} {TypeRegistry.Resolve(TypeId).Name}";
+        return $"{TypeId:x4}/{Target} {LanguageType.Resolve(TypeId).Name}";
     }
 }

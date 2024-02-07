@@ -44,7 +44,7 @@ public class TypeIdTests
 
     
 
-    /*
+    /* TODO: Remove obsolete tests that no longer apply to type structure.
     [Theory]
     [InlineData(0)]
     [InlineData(1848)]
@@ -175,17 +175,16 @@ public class TypeIdTests
     public void TypeId_from_Generic_is_same_as_Identify()
     {
         var id1 = TypeExpression.Create<int>().TypeId;
-        var id2 = TypeRegistry.Identify(typeof(int));
+        var id2 = LanguageType.Identify(typeof(int));
         Assert.Equal(id1, id2);
 
         _ = TypeExpression.Create<string>();
         
-        var id3 = TypeRegistry.Identify(typeof(bool));
+        var id3 = LanguageType.Identify(typeof(bool));
         var id4 = TypeExpression.Create<bool>().TypeId;
         Assert.Equal(id3, id4);
         
         Assert.NotEqual( id1, id3);
         Assert.NotEqual( id2, id4);
     }
-
 }

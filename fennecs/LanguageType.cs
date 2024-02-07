@@ -1,25 +1,8 @@
 ﻿namespace fennecs;
 
-internal class TypeRegistry
+internal class LanguageType
 {
     protected internal static Type Resolve(ushort id) => Types[id];
-
-    protected internal static ushort Identify(Type type)
-    {
-        lock (RegistryLock) //TODO: Maybe there's a nicer way for this.
-        {
-            // Query the registry
-            if (Ids.TryGetValue(type, out var id)) return id;
-
-            // Construct LanguageType<T> and invoke static constructor
-            Type[] typeArgs = [type];
-            var constructed = typeof(LanguageType<>).MakeGenericType(typeArgs);
-            constructed.TypeInitializer?.Invoke(null, null);
-
-            // Constructor should have added the type to the registry
-            return Ids[type];
-        }
-    }
 
     // ReSharper disable once StaticMemberInGenericType
     protected static ushort Counter;
@@ -27,8 +10,25 @@ internal class TypeRegistry
     protected static readonly Dictionary<Type, ushort> Ids = new();
     
     protected static readonly object RegistryLock = new();
+
+    protected internal static ushort Identify(Type type)
+    {
+        lock (RegistryLock) // Maybe there's a nicer/safer way for this?
+        {
+            // Query the registry directly.
+            if (Ids.TryGetValue(type, out var id)) return id;
+
+            // Construct LanguageType<T> and invoke static constructor.
+            Type[] typeArgs = [type];
+            var constructed = typeof(LanguageType<>).MakeGenericType(typeArgs);
+            constructed.TypeInitializer?.Invoke(null, null);
+
+            // Constructor should have added the type to the registry.
+            return Ids[type];
+        }
+    }
     
-    static TypeRegistry()
+    static LanguageType()
     {
         Types[0] = typeof(None);
         Ids[typeof(None)] = 0;
@@ -44,11 +44,11 @@ internal class TypeRegistry
 
 // ReSharper disable once UnusedTypeParameter
 // ReSharper disable once ClassNeverInstantiated.Global
-internal class LanguageType<T> : TypeRegistry
+internal class LanguageType<T> : LanguageType
 {
     // ReSharper disable once StaticMemberInGenericType
     public static readonly ushort Id;
-
+    
     static LanguageType()
     {
         lock (RegistryLock)

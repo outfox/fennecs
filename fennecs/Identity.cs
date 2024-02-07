@@ -31,7 +31,7 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>
     {
     }
 
-    public Identity(Type type) : this(0, TypeRegistry.Identify(type))
+    public Identity(Type type) : this(0, LanguageType.Identify(type))
     {
     }
 
@@ -64,7 +64,7 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>
 
     public Type Type => Id switch
     {
-        <= 0 => TypeRegistry.Resolve(Decoration),
+        <= 0 => LanguageType.Resolve(Decoration),
         _ => typeof(Entity),
     };
 
