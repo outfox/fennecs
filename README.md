@@ -71,26 +71,26 @@ The 💫*real magic*💫 is that none of this brevity compromises on performance
 Here are some of the key properties where fennECS might be a better or worse choice than its peers. Our resident fennecs have worked with all of these ECSs, and we're happy to answer any questions you might have.
 
 
-|                                                                                   |              fennECS               | HypEcs | Entitas |           Unity DOTS            |           DefaultECS            |
-|:----------------------------------------------------------------------------------|:----------------------------------:|:------:|:-------:|:-------------------------------:|:-------------------------------:|
-| Boilerplate-to-Feature Ratio                                                      |               3-to-1               | 5-to-1 | 12-to-1 |           27-to-1 😱            |             7-to-1              |
-| Entity-Component Queries                                                          |                 ✅                  |   ✅    |    ✅    |                ✅                |                ✅                |
-| Entity-Target Relations                                                           |                 ✅                  |   ✅    |    ❌    |                ❌                |                ❌                |
-| Entity-Type-Relations                                                             |                 ✅                  |   ✅    |    ❌    |                ❌                |                ❌                |
-| Target Querying<br/>*<sup>(find all targets of specific relations)</sup>* |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                |
-| Journaling                                                                        |                 ❌                  |   ❌    |   🟨    |                ✅                |                ❌                |
-| Add Shared Components                                                             |                 ✅                  |   ❌    |    ❌    |               🟨                |                ✅                | 
-| Change Shared Components                                                          |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                | 
-| Reference Component Types                                                         |                 ✅                  |   ❌    |    ❌    |                ❌                |                ❌                |
-| Arbitrary Component Types                                                         |                 ✅                  |   ✅    |    ❌    |                ❌                |                ✅                |
-| Structural Change Responders                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |    ✅    |  ☠️<br><sup>(unreliable)</sup>  |                ❌                |
-| Balanced Workload Scheduling                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |      ❌  | ✅<br><sup>(highly static)</sup> |                ✅                |
-| No Code Generation Required                                                       |                 ✅                  |   ✅    |    ❌    |                ❌                | 🟨<br><sup>(roslyn addon)</sup> |
-| Enqueue Structural Changes at Any Time                                            |                 ✅                  |   ✅    |    ✅    |               🟨                |               🟨                |
-| Apply Structural Changes at Any Time                                              |                 ❌                  |   ❌    |    ✅    |                ❌                |                ❌                |
-| C# 12 support                                                                     |                 ✅                  |   ❌    |    ❌    |                ❌                |                ❌                |
-| Parallel Processing                                                               |                 ⭐⭐                 |   ⭐    |    ❌    |               ⭐⭐⭐               |               ⭐⭐                |
-| Singleton / Unique Components                                                     | 🟨<br/><sup>(ref types only)</sup> |   ❌    |    ✅    | 🟨<br/><sup>(per system)</sup>  |                ✅                |
+|                                                                                   |              fennECS               | HypEcs | Entitas |           Unity DOTS            |            DefaultECS            |
+|:----------------------------------------------------------------------------------|:----------------------------------:|:------:|:-------:|:-------------------------------:|:--------------------------------:|
+| Boilerplate-to-Feature Ratio                                                      |               3-to-1               | 5-to-1 | 12-to-1 |           27-to-1 😱            |              7-to-1              |
+| Entity-Component Queries                                                          |                 ✅                  |   ✅    |    ✅    |                ✅                |                ✅                 |
+| Entity-Target Relations                                                           |                 ✅                  |   ✅    |    ❌    |                ❌                | ✅<br/><sup>(Map/MultiMap)</sup>  |
+| Entity-Type-Relations                                                             |                 ✅                  |   ✅    |    ❌    |                ❌                |                ❌                 |
+| Target Querying<br/>*<sup>(find all targets of specific relations)</sup>* |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                 |
+| Journaling                                                                        |                 ❌                  |   ❌    |   🟨    |                ✅                |                ❌                 |
+| Add Shared Components                                                             |                 ✅                  |   ❌    |    ❌    |               🟨                |                ✅                 | 
+| Change Shared Components                                                          |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                 | 
+| Reference Component Types                                                         |                 ✅                  |   ❌    |    ❌    |                ❌                |                ❌                 |
+| Arbitrary Component Types                                                         |                 ✅                  |   ✅    |    ❌    |                ❌                |                ✅                 |
+| Structural Change Responders                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |    ✅    |  ☠️<br><sup>(unreliable)</sup>  |                ❌                 |
+| Balanced Workload Scheduling                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |      ❌  | ✅<br><sup>(highly static)</sup> |                ✅                 |
+| No Code Generation Required                                                       |                 ✅                  |   ✅    |    ❌    |                ❌                | 🟨<br><sup>(roslyn addon)</sup>  |
+| Enqueue Structural Changes at Any Time                                            |                 ✅                  |   ✅    |    ✅    |               🟨                |                🟨                |
+| Apply Structural Changes at Any Time                                              |                 ❌                  |   ❌    |    ✅    |                ❌                |                ❌                 |
+| C# 12 support                                                                     |                 ✅                  |   ❌    |    ❌    |                ❌                |                ❌                 |
+| Parallel Processing                                                               |                 ⭐⭐                 |   ⭐    |    ❌    |               ⭐⭐⭐               |                ⭐⭐                |
+| Singleton / Unique Components                                                     | 🟨<br/><sup>(ref types only)</sup> |   ❌    |    ✅    | 🟨<br/><sup>(per system)</sup>  |                ✅                 |
 
 
 </details>
