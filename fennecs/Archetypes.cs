@@ -46,12 +46,26 @@ public sealed class Archetypes
         throw new InvalidCastException($"TypeExpression {type} is not a Entity-Component-Entity relation type");
     }
 
-    public void GetTargets<T>(HashSet<Entity> result)
+    public void CollectTargets<T>(List<Entity> entities)
     {
         var type = TypeExpression.Create<T>(Identity.Any);
 
-        // Iterate through tables and get all concrete entities from all Archetype TypeExpressions
-        foreach (var table in _tables) table.FindTargets(type, result);
+        // Iterate through tables and get all concrete entities from their Archetype TypeExpressions
+        foreach (var candidate in _tablesByType.Keys)
+        {
+            if (type.Matches(candidate)) entities.Add(new Entity(candidate.Target));
+        }
+    }
+
+    public void CollectTargets<T>(List<Entity> entities, Entity origin)
+    {
+        var type = TypeExpression.Create<T>(origin.Identity);
+
+        // Iterate through tables and get all concrete entities from their Archetype TypeExpressions
+        foreach (var candidate in _tablesByType.Keys)
+        {
+            if (type.Matches(candidate)) entities.Add(new Entity(candidate.Target));
+        }
     }
 
     private readonly object _spawnLock = new();
@@ -299,35 +313,7 @@ public sealed class Archetypes
 
         return Entity.None;
     }
-
-
-    internal Entity[] GetTargets(TypeExpression typeExpression, Identity identity)
-    {
-        if (identity == Identity.Any)
-        {
-            return _targetsByRelationType.TryGetValue(typeExpression.TypeId, out var entitySet)
-                ? entitySet.ToArray()
-                : Array.Empty<Entity>();
-        }
-
-        AssertAlive(identity);
-
-        var list = ListPool<Entity>.Rent();
-        var meta = _meta[identity.Id];
-        var table = _tables[meta.TableId];
-        foreach (var storageType in table.Types)
-        {
-            if (!storageType.isRelation || storageType.TypeId != typeExpression.TypeId) continue;
-            list.Add(new Entity(storageType.Target));
-        }
-
-        var targetEntities = list.ToArray();
-        ListPool<Entity>.Return(list);
-
-        return targetEntities;
-    }
-
-
+    
     internal (TypeExpression, object)[] GetComponents(Identity identity)
     {
         AssertAlive(identity);

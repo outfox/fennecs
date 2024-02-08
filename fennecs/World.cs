@@ -6,13 +6,13 @@ public sealed class World : IDisposable
 {
     //private readonly Entity _world;
 
-    internal readonly Archetypes _archetypes = new();
+    internal readonly Archetypes Archetypes = new();
 
-    public int Count => _archetypes.Count;
+    public int Count => Archetypes.Count;
     
     public EntityBuilder Spawn()
     {
-        return new EntityBuilder(this, _archetypes.Spawn());
+        return new EntityBuilder(this, Archetypes.Spawn());
     }
 
     
@@ -24,7 +24,7 @@ public sealed class World : IDisposable
     
     public void Despawn(Entity entity)
     {
-        _archetypes.Despawn(entity.Identity);
+        Archetypes.Despawn(entity.Identity);
     }
 
     
@@ -40,57 +40,57 @@ public sealed class World : IDisposable
     
     public bool IsAlive(Entity entity)
     {
-        return _archetypes.IsAlive(entity.Identity);
+        return Archetypes.IsAlive(entity.Identity);
     }
 
 
     public ref T GetComponent<T>(Entity entity) 
     {
-        return ref _archetypes.GetComponent<T>(entity);
+        return ref Archetypes.GetComponent<T>(entity);
     }
 
     public ref T GetComponent<T>(Entity entity, Identity target) 
     {
-        return ref _archetypes.GetComponent<T>(entity, target);
+        return ref Archetypes.GetComponent<T>(entity, target);
     }
 
     
     public bool HasComponent<T>(Entity entity) 
     {
         var type = TypeExpression.Create<T>(Identity.None);
-        return _archetypes.HasComponent(type, entity);
+        return Archetypes.HasComponent(type, entity);
     }
 
     
     public void AddComponent<T>(Entity entity) where T : new()
     {
         var type = TypeExpression.Create<T>(Identity.None);
-        _archetypes.AddComponent(type, entity.Identity, new T());
+        Archetypes.AddComponent(type, entity.Identity, new T());
     }
 
     
     public void AddComponent<T>(Entity entity, T component) {
         var type = TypeExpression.Create<T>(Identity.None);
-        _archetypes.AddComponent(type, entity.Identity, component);
+        Archetypes.AddComponent(type, entity.Identity, component);
     }
 
     
     public void RemoveComponent<T>(Entity entity) 
     {
         var type = TypeExpression.Create<T>(Identity.None);
-        _archetypes.RemoveComponent(type, entity.Identity);
+        Archetypes.RemoveComponent(type, entity.Identity);
     }
 
     
     public IEnumerable<(TypeExpression, object)> GetComponents(Entity entity)
     {
-        return _archetypes.GetComponents(entity.Identity);
+        return Archetypes.GetComponents(entity.Identity);
     }
 
     
     public Ref<T> GetComponent<T>(Entity entity, Entity target) 
     {
-        return new Ref<T>(ref _archetypes.GetComponent<T>(entity.Identity, target.Identity));
+        return new Ref<T>(ref Archetypes.GetComponent<T>(entity.Identity, target.Identity));
     }
         
     
@@ -102,7 +102,7 @@ public sealed class World : IDisposable
             return false;
         }
 
-        component = new Ref<T>(ref _archetypes.GetComponent<T>(entity.Identity, Identity.None));
+        component = new Ref<T>(ref Archetypes.GetComponent<T>(entity.Identity, Identity.None));
         return true;
     }
 
@@ -110,14 +110,14 @@ public sealed class World : IDisposable
     public bool HasComponent<T>(Entity entity, Entity target) 
     {
         var type = TypeExpression.Create<T>(target.Identity);
-        return _archetypes.HasComponent(type, entity.Identity);
+        return Archetypes.HasComponent(type, entity.Identity);
     }
 
 
     public bool HasComponent<T>(Entity entity, Type target) 
     {
         var type = TypeExpression.Create<T>(new Identity(target));
-        return _archetypes.HasComponent(type, entity.Identity);
+        return Archetypes.HasComponent(type, entity.Identity);
     }
 
     /* Todo: probably not worth it
@@ -132,7 +132,7 @@ public sealed class World : IDisposable
     public void AddComponent<T>(Entity entity, Entity target) where T : new()
     {
         var type = TypeExpression.Create<T>(target.Identity);
-        _archetypes.AddComponent(type, entity.Identity, new T(), target);
+        Archetypes.AddComponent(type, entity.Identity, new T(), target);
     }
 
 
@@ -148,28 +148,22 @@ public sealed class World : IDisposable
     public void AddComponent<T>(Entity entity, T component, Entity target) 
     {
         var type = TypeExpression.Create<T>(target.Identity);
-        _archetypes.AddComponent(type, entity.Identity, component, target);
+        Archetypes.AddComponent(type, entity.Identity, component, target);
     }
 
 
     public void RemoveComponent<T>(Entity entity, Entity target) 
     {
         var type = TypeExpression.Create<T>(target.Identity);
-        _archetypes.RemoveComponent(type, entity.Identity);
-    }
-
-
-    public Entity GetTarget<T>(Entity entity) 
-    {
-        var type = TypeExpression.Create<T>(Identity.None);
-        return _archetypes.GetTarget(type, entity.Identity);
+        Archetypes.RemoveComponent(type, entity.Identity);
     }
 
 
     public IEnumerable<Entity> GetTargets<T>(Entity entity) 
     {
-        var type = TypeExpression.Create<T>(Identity.None);
-        return _archetypes.GetTargets(type, entity.Identity);
+        var targets = new List<Entity>();
+        Archetypes.CollectTargets<T>(targets, entity);
+        return targets;
     }
 
 
@@ -181,94 +175,34 @@ public sealed class World : IDisposable
     }
 
 
-    /* I don't think this is necessary.
-    public T GetElement<T>() where T : class
-    {
-        return _archetypes.GetComponent<Element<T>>(_world.Identity, Identity.None).Value;
-    }
-
-
-    public bool TryGetElement<T>(out T? element) where T : class
-    {
-        if (!HasElement<T>())
-        {
-            element = null;
-            return false;
-        }
-
-        element = _archetypes.GetComponent<Element<T>>(_world.Identity, Identity.None).Value;
-        return true;
-    }
-
-
-    public bool HasElement<T>() where T : class
-    {
-        var type = TypeExpression.Create<Element<T>>(Identity.None);
-        return _archetypes.HasComponent(type, _world.Identity);
-    }
-
-
-    public void AddElement<T>(T element) where T : class
-    {
-        var type = TypeExpression.Create<Element<T>>(Identity.None);
-        _archetypes.AddComponent(type, _world.Identity, new Element<T> { Value = element });
-    }
-
-
-    public void ReplaceElement<T>(T element) where T : class
-    {
-        RemoveElement<T>();
-        AddElement(element);
-    }
-
-
-    public void AddOrReplaceElement<T>(T element) where T : class
-    {
-        if (HasElement<T>())
-        {
-            _archetypes.GetComponent<Element<T>>(_world.Identity, Identity.None).Value = element;
-        }
-
-        AddElement(element);
-    }
-
-
-    public void RemoveElement<T>() where T : class
-    {
-        var type = TypeExpression.Create<Element<T>>(Identity.None);
-        _archetypes.RemoveComponent(type, _world.Identity);
-    }
-     */
-    
-
     public QueryBuilder<Entity> Query()
     {
-        return new QueryBuilder<Entity>(_archetypes);
+        return new QueryBuilder<Entity>(Archetypes);
     }
 
     public QueryBuilder<C> Query<C>()
     {
-        return new QueryBuilder<C>(_archetypes);
+        return new QueryBuilder<C>(Archetypes);
     }
 
     public QueryBuilder<C1, C2> Query<C1, C2>() where C2 : struct
     {
-        return new QueryBuilder<C1, C2>(_archetypes);
+        return new QueryBuilder<C1, C2>(Archetypes);
     }
 
     public QueryBuilder<C1, C2, C3> Query<C1, C2, C3>() where C1 : struct where C2 : struct where C3 : struct
     {
-        return new QueryBuilder<C1, C2, C3>(_archetypes);
+        return new QueryBuilder<C1, C2, C3>(Archetypes);
     }
 
     public QueryBuilder<C1, C2, C3, C4> Query<C1, C2, C3, C4>() where C1 : struct
     {
-        return new QueryBuilder<C1, C2, C3, C4>(_archetypes);
+        return new QueryBuilder<C1, C2, C3, C4>(Archetypes);
     }
 
     public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>() where C1 : struct
     {
-        return new QueryBuilder<C1, C2, C3, C4, C5>(_archetypes);
+        return new QueryBuilder<C1, C2, C3, C4, C5>(Archetypes);
     }
 
     /*

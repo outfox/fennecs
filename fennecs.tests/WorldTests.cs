@@ -53,21 +53,21 @@ public class WorldTests
         world.Spawn().Add(666, target1).Id();
         world.Spawn().Add(1.0f, target2).Id();
         world.Spawn().Add("hunter2", typeof(Thread)).Id();
-
-        var targets = new HashSet<Entity>();
-        world._archetypes.GetTargets<int>(targets);
+        
+        var targets = new List<Entity>();
+        world.Archetypes.CollectTargets<int>(targets);
         Assert.Single(targets);
         Assert.Contains(target1, targets);
         targets.Clear();
 
-        world._archetypes.GetTargets<float>(targets);
+        world.Archetypes.CollectTargets<float>(targets);
         Assert.Single(targets);
         Assert.Contains(target2, targets);
     }
 
 
     [Fact]
-    public void Despawn_Relation_Target_Removes_Component_From_Origins()
+    public void Despawn_Target_Removes_Relation_From_Origins()
     {
         using var world = new World();
         var target1 = world.Spawn().Id();

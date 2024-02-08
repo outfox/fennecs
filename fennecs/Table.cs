@@ -61,14 +61,6 @@ public sealed class Table
         return type.Matches(Types);
     }
 
-    internal void FindTargets(TypeExpression type, HashSet<Entity> output)
-    {
-        foreach (var candidate in Types)
-        {
-            //if (!candidate.isRelation) continue;
-            if (type.Matches(candidate)) output.Add(candidate.Target);
-        }
-    }
 
     internal bool Matches(Mask mask)
     {
