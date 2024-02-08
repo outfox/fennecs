@@ -50,49 +50,48 @@ query.RunParallel((ref Position position, float dt) => {
 }, uniform: Time.Delta, chunkSize: 2048);
 ```
 
-### 💢... when we said minimal boilerplate, <em>we foxing meant it.</em>
 
-Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "infrastructure".
+> #### 💢... when we said minimal boilerplate, <em>we foxing meant it.</em>
+> Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "infrastructure".  
+> 
+> The 💫*real magic*💫 is that none of this brevity compromises on performance.
 
-The 💫*real magic*💫 is that none of this brevity compromises on performance.
-
-## Features: What's in the box?
+## 📦 Features: What's in the box?
 
 **fennECS** is a tiny, tiny ECS with a focus on performance and simplicity. And it cares enough to provide a few things you might not expect. Our competition sure didn't.
 
-## Pile it on: Comparison Matrix
+## 🥊 Punching above our weight: Comparison Matrix
 
 <!--<img src="Documentation/Logos/fennecs-group.png" width="768px" alt="Multiple colorful anthro fennecs in pixel art" />-->
 
-<details>
-
-<summary>🥇🥈🥉ECS Comparison Matrix<br/><b>Foxes are soft, choices are hard</b> - Unity dumb; .NET 8 really sharp.</summary>
-
-Here are some of the key properties where fennECS might be a better or worse choice than its peers. Our resident fennecs have worked with all of these ECSs, and we're happy to answer any questions you might have.
-
-
-|                                                                                   |              fennECS               | HypEcs | Entitas |           Unity DOTS            |            DefaultECS            |
-|:----------------------------------------------------------------------------------|:----------------------------------:|:------:|:-------:|:-------------------------------:|:--------------------------------:|
-| Boilerplate-to-Feature Ratio                                                      |               3-to-1               | 5-to-1 | 12-to-1 |           27-to-1 😱            |              7-to-1              |
-| Entity-Component Queries                                                          |                 ✅                  |   ✅    |    ✅    |                ✅                |                ✅                 |
-| Entity-Target Relations                                                           |                 ✅                  |   ✅    |    ❌    |                ❌                | ✅<br/><sup>(Map/MultiMap)</sup>  |
-| Entity-Type-Relations                                                             |                 ✅                  |   ✅    |    ❌    |                ❌                |                ❌                 |
-| Target Querying<br/>*<sup>(find all targets of specific relations)</sup>* |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                 |
-| Journaling                                                                        |                 ❌                  |   ❌    |   🟨    |                ✅                |                ❌                 |
-| Add Shared Components                                                             |                 ✅                  |   ❌    |    ❌    |               🟨                |                ✅                 | 
-| Change Shared Components                                                          |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                 | 
-| Reference Component Types                                                         |                 ✅                  |   ❌    |    ❌    |                ❌                |                ❌                 |
-| Arbitrary Component Types                                                         |                 ✅                  |   ✅    |    ❌    |                ❌                |                ✅                 |
-| Structural Change Responders                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |    ✅    |  ☠️<br/><sup>(unreliable)</sup>  |                ❌                 |
-| Balanced Workload Scheduling                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |      ❌  | ✅<br/><sup>(highly static)</sup> |                ✅                 |
-| No Code Generation Required                                                       |                 ✅                  |   ✅    |    ❌    |                ❌                | 🟨<br/><sup>(roslyn addon)</sup>  |
-| Enqueue Structural Changes at Any Time                                            |                 ✅                  |   ✅    |    ✅    |               🟨                |                🟨                |
-| Apply Structural Changes at Any Time                                              |                 ❌                  |   ❌    |    ✅    |                ❌                |                ❌                 |
-| Parallel Processing                                                               |                 ⭐⭐                 |   ⭐    |    ❌    |               ⭐⭐⭐               |                ⭐⭐                |
-| Singleton / Unique Components                                                     | 🟨<br/><sup>(ref types only)</sup> |   ❌    |    ✅    | 🟨<br/><sup>(per system)</sup>  |                ✅                 |
-
-
-</details>
+><details>
+><summary>🥇🥈🥉ECS Comparison Matrix<br/><b>Foxes are soft, choices are hard</b> - Unity dumb; .NET 8 really sharp.</summary>
+>
+>Here are some of the key properties where fennECS might be a better or worse choice than its peers. Our resident fennecs have worked with all of these ECSs, and we're happy to answer any questions you might have.
+>
+>
+>|                                                                             |              fennECS               | HypEcs | Entitas |           Unity DOTS            |            DefaultECS            |
+>|:----------------------------------------------------------------------------|:----------------------------------:|:------:|:-------:|:-------------------------------:|:--------------------------------:|
+>| Boilerplate-to-Feature Ratio                                                |               3-to-1               | 5-to-1 | 12-to-1 |           27-to-1 😱            |              7-to-1              |
+>| Entity-Component Queries                                                    |                 ✅                  |   ✅    |    ✅    |                ✅                |                ✅                 |
+>| Entity-Target Relations                                                     |                 ✅                  |   ✅    |    ❌    |                ❌                | ✅<br/><sup>(Map/MultiMap)</sup>  |
+>| Entity-Type-Relations                                                       |                 ✅                  |   ✅    |    ❌    |                ❌                |                ❌                 |
+>| Target Querying<br/>*<sup>(find all targets of specific relations)</sup>*   |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                 |
+>| Journaling                                                                  |                 ❌                  |   ❌    |   🟨    |                ✅                |                ❌                 |
+>| Add Shared Components                                                       |                 ✅                  |   ❌    |    ❌    |               🟨                |                ✅                 | 
+>| Change Shared Components                                                    |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                 | 
+>| Reference Component Types                                                   |                 ✅                  |   ❌    |    ❌    |                ❌                |                ❌                 |
+>| Arbitrary Component Types                                                   |                 ✅                  |   ✅    |    ❌    |                ❌                |                ✅                 |
+>| Structural Change Responders                                                |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |    ✅    |  ☠️<br/><sup>(unreliable)</sup>  |                ❌                 |
+>| Balanced Workload Scheduling                                                |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |      ❌  | ✅<br/><sup>(highly static)</sup> |                ✅                 |
+>| No Code Generation Required                                                 |                 ✅                  |   ✅    |    ❌    |                ❌                | 🟨<br/><sup>(roslyn addon)</sup>  |
+>| Enqueue Structural Changes at Any Time                                      |                 ✅                  |   ✅    |    ✅    |               🟨                |                🟨                |
+>| Apply Structural Changes at Any Time                                        |                 ❌                  |   ❌    |    ✅    |                ❌                |                ❌                 |
+>| Parallel Processing                                                         |                 ⭐⭐                 |   ⭐    |    ❌    |               ⭐⭐⭐               |                ⭐⭐                |
+>| Singleton / Unique Components                                               | 🟨<br/><sup>(ref types only)</sup> |   ❌    |    ✅    | 🟨<br/><sup>(per system)</sup>  |                ✅                 |
+>
+>
+></details>
 
 ## Highlights / Design Goals
 
@@ -120,7 +119,8 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 
 <details>
 
-<summary>📈 Click to Expand Benchmarks: <pre>executing a System.Numerics.Vector3 cross product and writing the result back with various calling methods</pre></summary>
+<summary>📈 Click to Expand Benchmarks: </summary>
+<pre>executing a System.Numerics.Vector3 cross product and writing the result back with various calling methods</pre>
 
 | Method                                       | entityCount | Mean         | StdDev     | Ratio |
 |--------------------------------------------- |------------ |-------------:|-----------:|------:|
@@ -164,13 +164,9 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 
 ## Future Roadmap
 
-- Unity Support: Planned for when Unity is on .NET 7 or later, and C# 12 or later.
-- fennECS as a NuGet package
-- fennECS as a Godot addon
-
-## Already plays well with Godot 4.x!
-
-<img src="Documentation/Logos/godot-icon.svg" width="128px" alt="Godot Engine Logo, Copyright (c) 2017 Andrea Calabró" />
+- 🟦 Unity Support: Planned for when Unity is on .NET 8 or later, and C# 12 or later. Or when we can't wait any longer.
+- ✅ ~~fennECS as a NuGet package~~ (done!)
+- 🟦 fennECS as a Godot addon
 
 # Legacy Documentation
 

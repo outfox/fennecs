@@ -22,9 +22,7 @@ public sealed class Archetypes
     private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
     private readonly Dictionary<TypeExpression, List<Table>> _tablesByType = new();
     
-    private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
-    //private readonly Dictionary<ushort, HashSet<Entity>> _targetsByRelationType = new();
-    //private readonly Dictionary<int, HashSet<TypeExpression>> _relationsByTypes = new();
+    private readonly SortedDictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
 
     private readonly object _modeChangeLock = new();
     private int _lockCount;
@@ -286,21 +284,7 @@ public sealed class Archetypes
     {
         return _tables[tableId];
     }
-
-
-    internal Entity GetTarget(TypeExpression typeExpression, Identity identity)
-    {
-        var meta = _meta[identity.Id];
-        var table = _tables[meta.TableId];
-
-        foreach (var storageType in table.Types)
-        {
-            if (!storageType.isRelation || storageType.TypeId != typeExpression.TypeId) continue;
-            return new Entity(storageType.Target);
-        }
-
-        return Entity.None;
-    }
+    
     
     internal (TypeExpression, object)[] GetComponents(Identity identity)
     {
