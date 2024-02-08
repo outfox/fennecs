@@ -253,7 +253,7 @@ public sealed class Archetypes
         var type = mask.HasTypes[0];
         if (!_tablesByType.TryGetValue(type, out var typeTables))
         {
-            typeTables = [];
+            typeTables = new(16);
             _tablesByType[type] = typeTables;
         }
 

@@ -98,17 +98,16 @@ Here are some of the key properties where fennECS might be a better or worse cho
 
 ## Highlights / Design Goals
 
-- Entity-Entity-Relations with O(1) lookup time complexity.
-- Entity-Component Queries with O(1) lookup time complexity.
-- Entity Spawning and De-Spawning with O(1) time complexity.
+- Workloads can be easily parallelized across Archetypes (old) and within Archetypes (new).
+- Entity-Entity-, and Entity-Type-Relations with O(1) runtime lookup time complexity.
 - Entity Structural Changes with O(1) time complexity (per individual change).
+- Entity-Component Queries with O(1) runtime lookup time complexity. 
+- No code generation required.
+- No reflection required.
 
-- Workloads can be parallelized across Archetypes (old) and within Archetypes (new).
-
-- Unit Test coverage.
-- Benchmarking suite.
+- Full Unit Test coverage. (Work in Progress)
+- Benchmarking suite. (Work in Progress)
 - Modern C# 12 codebase, targeting .NET 8.
-- Godot 4.x Sample Integrations.
 
 
 ## fennecs is nimble
