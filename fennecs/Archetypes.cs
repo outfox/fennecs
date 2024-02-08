@@ -22,7 +22,7 @@ public sealed class Archetypes
     private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
     private readonly Dictionary<TypeExpression, List<Table>> _tablesByType = new();
     
-    private readonly SortedDictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
+    private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
 
     private readonly object _modeChangeLock = new();
     private int _lockCount;
