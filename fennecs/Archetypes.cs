@@ -23,8 +23,8 @@ public sealed class Archetypes
     private readonly Dictionary<TypeExpression, List<Table>> _tablesByType = new();
     
     private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
-    private readonly Dictionary<ushort, HashSet<Entity>> _targetsByRelationType = new();
-    private readonly Dictionary<int, HashSet<TypeExpression>> _relationsByTypes = new();
+    //private readonly Dictionary<ushort, HashSet<Entity>> _targetsByRelationType = new();
+    //private readonly Dictionary<int, HashSet<TypeExpression>> _relationsByTypes = new();
 
     private readonly object _modeChangeLock = new();
     private int _lockCount;
@@ -119,8 +119,6 @@ public sealed class Archetypes
         //Remove components from all entities that had a relation
         foreach (var type in list)
         {
-            _targetsByRelationType[type.TypeId].Remove(identity);
-
             var tablesWithType = _tablesByType[type];
 
             //TODO: There should be a bulk remove method instead.
@@ -152,9 +150,6 @@ public sealed class Archetypes
             _deferredOperations.Enqueue(new DeferredOperation {Operation = Deferred.Add, Identity = identity, TypeExpression = typeExpression, Data = data!});
             return;
         }
-
-        _targetsByRelationType.TryAdd(typeExpression.TypeId, []);
-        _targetsByRelationType[typeExpression.TypeId].Add(identity);
 
         var oldEdge = oldTable.GetTableEdge(typeExpression);
 
@@ -219,13 +214,6 @@ public sealed class Archetypes
             return;
         }
 
-
-        // could be _targetsByRelationType[type.Wildcard()].Remove(identity);
-        //(with enough unit test coverage)
-        if (_targetsByRelationType.TryGetValue(typeExpression.TypeId, out var targetSet))
-        {
-            targetSet.Remove(identity);
-        }
 
         var oldEdge = oldTable.GetTableEdge(typeExpression);
 
@@ -360,14 +348,6 @@ public sealed class Archetypes
             }
 
             typeList.Add(type);
-
-            if (!_relationsByTypes.TryGetValue(type.TypeId, out var relationTypeSet))
-            {
-                relationTypeSet = [];
-                _relationsByTypes[type.TypeId] = relationTypeSet;
-            }
-
-            relationTypeSet.Add(type);
         }
 
         foreach (var query in _queries.Values.Where(query => table.Matches(query.Mask)))
