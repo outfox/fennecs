@@ -1,7 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Numerics;
 using BenchmarkDotNet.Attributes;
-namespace Benchmark;
+
+namespace Benchmark.Conceptual;
 
 [MemoryDiagnoser(false)]
 public class ConcurrentArrayBenchmarks

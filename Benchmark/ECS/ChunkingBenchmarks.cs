@@ -2,7 +2,7 @@
 using BenchmarkDotNet.Attributes;
 using fennecs;
 
-namespace Benchmark;
+namespace Benchmark.ECS;
 
 
 [ShortRunJob]

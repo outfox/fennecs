@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using BenchmarkDotNet.Attributes;
 
-namespace Benchmark;
+namespace Benchmark.Conceptual;
 
 [DryJob]
 [MemoryDiagnoser]
