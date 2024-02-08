@@ -1,4 +1,4 @@
 ﻿using Benchmark;
 using BenchmarkDotNet.Running;
 
-BenchmarkRunner.Run<SimpleEntityBenchmarks>();
+BenchmarkRunner.Run<ChunkingBenchmarks>();

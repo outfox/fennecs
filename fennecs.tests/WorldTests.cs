@@ -53,15 +53,39 @@ public class WorldTests
         world.Spawn().Add(666, target1).Id();
         world.Spawn().Add(1.0f, target2).Id();
         world.Spawn().Add("hunter2", typeof(Thread)).Id();
-        
+
         var targets = new HashSet<Entity>();
         world._archetypes.GetTargets<int>(targets);
         Assert.Single(targets);
         Assert.Contains(target1, targets);
         targets.Clear();
-        
+
         world._archetypes.GetTargets<float>(targets);
         Assert.Single(targets);
         Assert.Contains(target2, targets);
+    }
+
+
+    [Fact]
+    public void Despawn_Relation_Target_Removes_Component_From_Origins()
+    {
+        using var world = new World();
+        var target1 = world.Spawn().Id();
+        var target2 = world.Spawn().Id();
+
+        for (var i = 0; i < 1000; i++)
+        {
+            world.Spawn().Add(666, target1).Id();
+            world.Spawn().Add(444, target2).Id();
+        }
+
+        var query1 = world.Query<Entity>().Has<int>(target1).Build();
+        var query2 = world.Query<Entity>().Has<int>(target2).Build();
+
+        Assert.Equal(1000, query1.Count);
+        Assert.Equal(1000, query2.Count);
+        world.Despawn(target1);
+        Assert.Equal(0, query1.Count);
+        Assert.Equal(1000, query2.Count);
     }
 }

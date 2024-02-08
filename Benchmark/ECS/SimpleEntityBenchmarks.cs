@@ -11,7 +11,7 @@ namespace Benchmark;
 public class SimpleEntityBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(1_000, 10_000, 100_000, 1_000_000)] 
+    [Params(1_000, 10_000, 100_000, 1_000_000)]
     public int entityCount { get; set; }
 
     private static readonly Random random = new(1337);
@@ -53,6 +53,20 @@ public class SimpleEntityBenchmarks
 
     private static readonly Vector3 UniformConstantVector = new(3, 4, 5);
     private static readonly ParallelOptions options = new() {MaxDegreeOfParallelism = 12};
+
+    [Benchmark]
+    //Work parallelized by Archetype, passed into delegate as ref Vector3.
+    public void CrossProduct_Parallel_ECS_Delegate_Chunk1k()
+    {
+        _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 1024);
+    }
+
+    [Benchmark]
+    //Work parallelized by Archetype, passed into delegate as ref Vector3.
+    public void CrossProduct_Parallel_ECS_Delegate_Chunk4k()
+    {
+        _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 4096);
+    }
 
     [Benchmark]
     //A lambda is passed each Vector3 by ref.
@@ -114,12 +128,5 @@ public class SimpleEntityBenchmarks
     public void CrossProduct_Parallel_ECS_Delegate_Archetype()
     {
         _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
-    }
-
-    [Benchmark]
-    //Work parallelized by Archetype, passed into delegate as ref Vector3.
-    public void CrossProduct_Parallel_ECS_Delegate_Chunk1k()
-    {
-        _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, chunkSize: 1_000);
     }
 }

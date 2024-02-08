@@ -109,10 +109,10 @@ public sealed class Archetypes
 
             var tablesWithType = _tablesByType[type];
 
+            //TODO: There should be a bulk remove method instead.
             foreach (var tableWithType in tablesWithType)
             {
-                //TODO: There should be a bulk remove method instead.
-                for (var i = 0; i < tableWithType.Count; i++)
+                for (var i = tableWithType.Count-1; i >= 0; i--)
                 {
                     RemoveComponent(type, tableWithType.Identities[i]);
                 }
