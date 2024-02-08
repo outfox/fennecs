@@ -19,7 +19,7 @@
             which <em>feels just right<a href="#quickstart-lets-go">*</a></em> for high performance game development in any modern C# engine. Including, of course, the fantastic <a href="https://godotengine.org">Godot</a>.</p>
         </td>
     </tr>
-<tr><td><i>👍9 out of 10 fennecs<br>recommend: <b>fennecs</b>!</i></td><td><img alt="GitHub top language" src="https://img.shields.io/github/languages/top/thygrrr/fennECS">
+<tr><td><i>👍9 out of 10 fennecs<br/>recommend: <b>fennecs</b>!</i></td><td><img alt="GitHub top language" src="https://img.shields.io/github/languages/top/thygrrr/fennECS">
 <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennECS?color=blue"></a>
 <a href="https://github.com/thygrrr/fennECS/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/thygrrr/fennECS"></a>
 <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennECS/xUnit.yml"></a>
@@ -83,12 +83,11 @@ Here are some of the key properties where fennECS might be a better or worse cho
 | Change Shared Components                                                          |                 ✅                  |   ❌    |    ❌    |                ❌                |                ✅                 | 
 | Reference Component Types                                                         |                 ✅                  |   ❌    |    ❌    |                ❌                |                ❌                 |
 | Arbitrary Component Types                                                         |                 ✅                  |   ✅    |    ❌    |                ❌                |                ✅                 |
-| Structural Change Responders                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |    ✅    |  ☠️<br><sup>(unreliable)</sup>  |                ❌                 |
-| Balanced Workload Scheduling                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |      ❌  | ✅<br><sup>(highly static)</sup> |                ✅                 |
-| No Code Generation Required                                                       |                 ✅                  |   ✅    |    ❌    |                ❌                | 🟨<br><sup>(roslyn addon)</sup>  |
+| Structural Change Responders                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |    ✅    |  ☠️<br/><sup>(unreliable)</sup>  |                ❌                 |
+| Balanced Workload Scheduling                                                      |  🟨<br/><sup>(coming soon)</sup>   |   ❌    |      ❌  | ✅<br/><sup>(highly static)</sup> |                ✅                 |
+| No Code Generation Required                                                       |                 ✅                  |   ✅    |    ❌    |                ❌                | 🟨<br/><sup>(roslyn addon)</sup>  |
 | Enqueue Structural Changes at Any Time                                            |                 ✅                  |   ✅    |    ✅    |               🟨                |                🟨                |
 | Apply Structural Changes at Any Time                                              |                 ❌                  |   ❌    |    ✅    |                ❌                |                ❌                 |
-| C# 12 support                                                                     |                 ✅                  |   ❌    |    ❌    |                ❌                |                ❌                 |
 | Parallel Processing                                                               |                 ⭐⭐                 |   ⭐    |    ❌    |               ⭐⭐⭐               |                ⭐⭐                |
 | Singleton / Unique Components                                                     | 🟨<br/><sup>(ref types only)</sup> |   ❌    |    ✅    | 🟨<br/><sup>(per system)</sup>  |                ✅                 |
 
