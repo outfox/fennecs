@@ -7,7 +7,7 @@
         <td>
             <h1>What the fox!? Another ECS?</h1>
             <p>We know... oh, <em>we know.</em> 😩️</p>  
-            <h3>But in a nutshell, <a href="https://fennecs.tech"><span style="font-size: larger">fennecs</span></a> is...</h3>
+            <h3>But in a nutshell, <a href="https://github.com/thygrrr/fennecs"><span style="font-size: larger">fennecs</span></a> is...</h3>
             <ul style="list-style-type: '🐾 ';">
                 <li>zero codegen</li>
                 <li>minimal boilerplate</li>
