@@ -7,7 +7,7 @@
         <td>
             <h1>What the fox!? Another ECS?</h1>
             <p>We know... oh, <em>we know.</em> 😩️</p>  
-            <h3>But in a nutshell, <a href="https://github.com/thygrrr/fennecs"><span style="font-size: larger">fenn<b>ecs</b></span></a> is...</h3>
+            <h3>But in a nutshell, <a href="https://github.com/thygrrr/fennecs"><span style="font-size: larger"><em>fenn<b>ecs</b></em></span></a> is...</h3>
             <ul style="list-style-type: '🐾 ';">
                 <li>zero codegen</li>
                 <li>minimal boilerplate</li>
@@ -50,27 +50,32 @@ query.RunParallel((ref Position position, float dt) => {
 }, uniform: Time.Delta, chunkSize: 2048);
 ```
 
+#### 💢... when we said minimal boilerplate, <em>we foxing meant it.</em>
+Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "infrastructure".  
 
-> #### 💢... when we said minimal boilerplate, <em>we foxing meant it.</em>
-> Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "infrastructure".  
-> 
-> The 💫*real magic*💫 is that none of this brevity compromises on performance.
+The 💫*real magic*💫 is that none of this brevity compromises on performance.
 
-## 📦 Features: What's in the box?
+------------------------
 
-_fenn**ecs**_ is a tiny, tiny ECS with a focus on performance and simplicity. And it cares enough to provide a few things you might not expect. Our competition sure didn't.
+## 🥊 Comparisons: Punching above our weight?
+So how does _fenn**ecs**_ compare to other ECSs? 
 
-## 🥊 Punching above our weight: Comparison Matrix
+This library is a tiny, tiny ECS with a focus on good performance and great simplicity. But it *cares enough* to provide a few things you might not expect.
 
-<!--<img src="Documentation/Logos/fennecs-group.png" width="768px" alt="Multiple colorful anthro fennecs in pixel art" />-->
+> [!IMPORTANT]
+> The idea of _fenn**ecs**_ was to fill the gaps that the author felt working with various established Entity Component Systems. This is why this matrix is clearly imbalanced, it's a shopping list of things that _fenn**ecs**_ does well and was made to do
+well; and things it may aspire to do but compromised on in order to be able to achieve the others.
+>
+> <em>(TLDR; Foxes are soft, choices are hard - Unity dumb, .NET 8 really sharp.)</em>
+
 
 <details>
-<summary>🥇🥈🥉ECS Comparison Matrix<br/><b>Foxes are soft, choices are hard</b> - Unity dumb; .NET 8 really sharp.</summary>
 
-Here are some of the key properties where _fenn**ecs**_ might be a better or worse choice than its peers. Our resident fennecs have worked with all of these ECSs, and we're happy to answer any questions you might have.
+<summary>🥇🥈🥉 (click to expand) ECS Comparison Matrix<br/><b></b></summary>
 
+> Here are some of the key properties where _fenn**ecs**_ might be a better or worse choice than its peers. Our resident fennecs have worked with all of these ECSs, and we're happy to answer any questions you might have.
 
-|                                                                             |              fennECS               | HypEcs | Entitas |           Unity DOTS            |            DefaultECS            |
+|                                                                             |           _fenn**ecs**_            | HypEcs | Entitas |           Unity DOTS            |            DefaultECS            |
 |:----------------------------------------------------------------------------|:----------------------------------:|:------:|:-------:|:-------------------------------:|:--------------------------------:|
 | Boilerplate-to-Feature Ratio                                                |               3-to-1               | 5-to-1 | 12-to-1 |           27-to-1 😱            |              7-to-1              |
 | Entity-Component Queries                                                    |                 ✅                  |   ✅    |    ✅    |                ✅                |                ✅                 |
@@ -90,10 +95,11 @@ Here are some of the key properties where _fenn**ecs**_ might be a better or wor
 | Parallel Processing                                                         |                 ⭐⭐                 |   ⭐    |    ❌    |               ⭐⭐⭐               |                ⭐⭐                |
 | Singleton / Unique Components                                               | 🟨<br/><sup>(ref types only)</sup> |   ❌    |    ✅    | 🟨<br/><sup>(per system)</sup>  |                ✅                 |
 
-
 </details>
 
-## Highlights / Design Goals
+------------------------
+
+## 💡Highlights / Design Goals
 
 - Workloads can be easily parallelized across Archetypes (old) and within Archetypes (new).
 - Entity-Entity-, and Entity-Type-Relations with O(1) runtime lookup time complexity.
@@ -106,10 +112,11 @@ Here are some of the key properties where _fenn**ecs**_ might be a better or wor
 - Benchmarking suite. (Work in Progress)
 - Modern C# 12 codebase, targeting .NET 8.
 
+------------------------
 
-## _fenn**ecs**_ is nimble
+## ⏩ Nimble: _fenn**ecs**_ benchmarks
 
-Current benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU.
+Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU.
 We worked hard to minimize allocations, though convenience, especially parallelization, has a tiny GC cost. 
 
 _fenn**ecs**_ provides a variety of ways to iterate over and modify components, to offer a good balance of control and elegance without compromising too much. 
@@ -162,15 +169,23 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 
 </details>
 
-## Future Roadmap
+------------------------
+
+## 📅 Future Roadmap
 
 - 🟦 Unity Support: Planned for when Unity is on .NET 8 or later, and C# 12 or later. Or when we can't wait any longer.
 - ✅ ~~_fenn**ecs**_ as a NuGet package~~ (done!)
 - 🟦 _fenn**ecs**_ as a Godot addon
 
-# Legacy Documentation
+------------------------
+
+# 🧡 Acknowledgements
+Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating [HypEcs](https://github.com/Byteron/HypEcs) and [RelEcs](https://github.com/Byteron/RelEcs), the inspiring libraries that _fenn**ecs**_ evolved from.
+
+
+------------------------
+
+# 🕸️ Legacy Documentation
 
 The old HypEcs [documentation can be found here](Documentation/legacy.md) while our fennecs are frantically writing up new docs for the new APIs.
 
-# Acknowledgements
-Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating [HypEcs](https://github.com/Byteron/HypEcs) and [RelEcs](https://github.com/Byteron/RelEcs), the inspiring libraries that _fenn**ecs**_ evolved from.
