@@ -2,7 +2,7 @@
 <table style="border: none; border-collapse: collapse; width: 80%">
     <tr>
         <td style="width: fit-content">
-            <img src="Documentation/Logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
+            <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
         </td>
         <td>
             <h1>What the fox!? Another ECS?</h1>
@@ -187,5 +187,5 @@ Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating
 
 # 🕸️ Legacy Documentation
 
-The old HypEcs [documentation can be found here](Documentation/legacy.md) while our fennecs are frantically writing up new docs for the new APIs.
+The old HypEcs [documentation can be found here](docs/legacy.md) while our fennecs are frantically writing up new docs for the new APIs.
 

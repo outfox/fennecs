@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.0.1-pre</Version>
+        <Version>0.0.2-pre</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -35,6 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../Documentation/overview.md" Pack="true" PackagePath="\"/>
+        <None Include="../docs/overview.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 </Project>

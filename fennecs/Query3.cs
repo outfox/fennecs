@@ -61,7 +61,7 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
                     var s2 = storage2.AsSpan(part * partitionSize, partitionSize);
                     var s3 = storage3.AsSpan(part * partitionSize, partitionSize);
                     
-                    for (var i = part * partitionSize; i < (part + 1) * partitionSize; i++)
+                    for (var i = 0; i < s1.Length; i++)
                     {
                         action(ref s1[i], ref s2[i], ref s3[i]);
                     }
@@ -128,7 +128,7 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
                     var s2 = storage2.AsSpan(part * partitionSize, partitionSize);
                     var s3 = storage3.AsSpan(part * partitionSize, partitionSize);
 
-                    for (var i = part * partitionSize; i < (part + 1) * partitionSize; i++)
+                    for (var i = 0; i < s1.Length; i++)
                     {
                         action(ref s1[i], ref s2[i], ref s3[i], uniform);
                     }
