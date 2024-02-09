@@ -1,4 +1,6 @@
 ## ... the tiny, tiny, high-energy Entity Component System!
+[View on Github](https://github.com/thygrrr/fennecs)
+
 <table style="border: none; border-collapse: collapse; width: 80%">
     <tr>
         <td style="width: fit-content">
