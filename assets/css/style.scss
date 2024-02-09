@@ -1,8 +1,6 @@
 ﻿---
 ---
 
-@import "{{ site.theme }}";
-
 section {
   max-width: 1024px;
 }
@@ -10,3 +8,6 @@ section {
 .wrapper {
   max-width: 1024px;
 }
+
+@import "{{ site.theme }}";
+
