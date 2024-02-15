@@ -57,14 +57,14 @@ public class SimpleEntityBenchmarks
     //Work parallelized by Archetype, passed into delegate as ref Vector3.
     public void CrossProduct_Parallel_ECS_Delegate_Chunk1k()
     {
-        _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 1024);
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 1024);
     }
 
     [Benchmark]
     //Work parallelized by Archetype, passed into delegate as ref Vector3.
     public void CrossProduct_Parallel_ECS_Delegate_Chunk4k()
     {
-        _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 4096);
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 4096);
     }
 
     [Benchmark]
@@ -78,7 +78,7 @@ public class SimpleEntityBenchmarks
     //Parallel.Foreach passes each Vector3 by ref to a lambda.
     public void CrossProduct_Parallel_ECS_Lambda()
     {
-        _queryV3.RunParallel((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.Job((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark(Baseline = true)]
@@ -113,7 +113,7 @@ public class SimpleEntityBenchmarks
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Raw()
     {
-        _queryV3.RawParallel(delegate(Memory<Vector3> vectors)
+        _queryV3.Raw(delegate(Memory<Vector3> vectors)
         {
             foreach (ref var v in vectors.Span)
             {
@@ -126,6 +126,6 @@ public class SimpleEntityBenchmarks
     //Work parallelized by Archetype, passed into delegate as ref Vector3.
     public void CrossProduct_Parallel_ECS_Delegate_Archetype()
     {
-        _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 }

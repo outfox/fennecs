@@ -22,7 +22,6 @@ public static class ListPool<T>
 
     static ListPool()
     {
-        for (var i = 0; i < 32; i++) Bag.Add(new List<T>(Capacity));
+        for (var i = 0; i < 128; i++) Bag.Add(new List<T>(Capacity));
     }
-
 }

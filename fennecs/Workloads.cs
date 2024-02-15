@@ -1,0 +1,207 @@
+﻿namespace fennecs;
+
+internal class Work<C1> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public RefAction_C<C1> Action = null!;
+    public CountdownEvent CountDown = null!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        foreach (ref var c in Memory1.Span) Action(ref c);
+        CountDown.Signal();
+    }
+}
+
+internal class UniformWork<C1, U> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory = null!;
+    public RefAction_CU<C1, U> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public U Uniform = default!;
+
+    public void Execute()
+    {
+        using var _1 = Memory.Pin();
+        foreach (ref var c in Memory.Span) Action(ref c, Uniform);
+        CountDown.Signal();
+    }
+}
+
+internal class Work<C1, C2> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public RefAction_CC<C1, C2> Action = null!;
+    public CountdownEvent CountDown = null!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        using var _2 = Memory2.Pin();
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i]);
+        CountDown.Signal();
+    }
+}
+
+internal class UniformWork<C1, C2, U> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public RefAction_CCU<C1, C2, U> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public U Uniform = default!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        using var _2 = Memory2.Pin();
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], Uniform);
+        CountDown.Signal();
+    }
+}
+
+internal class Work<C1, C2, C3> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public Memory<C3> Memory3 = null!;
+    public RefAction_CCC<C1, C2, C3> Action = null!;
+    public CountdownEvent CountDown = null!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        using var _2 = Memory2.Pin();
+        using var _3 = Memory3.Pin();
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i]);
+        CountDown.Signal();
+    }
+}
+
+internal class UniformWork<C1, C2, C3, U> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public Memory<C3> Memory3 = null!;
+    public RefAction_CCCU<C1, C2, C3, U> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public U Uniform = default!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        using var _2 = Memory2.Pin();
+        using var _3 = Memory3.Pin();
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i], Uniform);
+        CountDown.Signal();
+    }
+}
+
+internal class Work<C1, C2, C3, C4> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public Memory<C3> Memory3 = null!;
+    public Memory<C4> Memory4 = null!;
+    public RefAction_CCCC<C1, C2, C3, C4> Action = null!;
+    public CountdownEvent CountDown = null!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        using var _2 = Memory2.Pin();
+        using var _3 = Memory3.Pin();
+        using var _4 = Memory4.Pin();
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i], ref Memory4.Span[i]);
+        CountDown.Signal();
+    }
+}
+
+internal class UniformWork<C1, C2, C3, C4, U> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public Memory<C3> Memory3 = null!;
+    public Memory<C4> Memory4 = null!;
+    public RefAction_CCCCU<C1, C2, C3, C4, U> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public U Uniform = default!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        using var _2 = Memory2.Pin();
+        using var _3 = Memory3.Pin();
+        using var _4 = Memory4.Pin();
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i], ref Memory4.Span[i], Uniform);
+        CountDown.Signal();
+    }
+}
+
+internal class Work<C1, C2, C3, C4, C5> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public Memory<C3> Memory3 = null!;
+    public Memory<C4> Memory4 = null!;
+    public Memory<C5> Memory5 = null!;
+    public RefAction_CCCCC<C1, C2, C3, C4, C5> Action = null!;
+    public CountdownEvent CountDown = null!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        using var _2 = Memory2.Pin();
+        using var _3 = Memory3.Pin();
+        using var _4 = Memory4.Pin();
+        using var _5 = Memory5.Pin();
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i], ref Memory4.Span[i], ref Memory5.Span[i]);
+        CountDown.Signal();
+    }
+}
+
+internal class UniformWork<C1, C2, C3, C4, C5, U> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public Memory<C3> Memory3 = null!;
+    public Memory<C4> Memory4 = null!;
+    public Memory<C5> Memory5 = null!;
+    public RefAction_CCCCCU<C1, C2, C3, C4, C5, U> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public U Uniform = default!;
+
+    public void Execute()
+    {
+        using var _1 = Memory1.Pin();
+        using var _2 = Memory2.Pin();
+        using var _3 = Memory3.Pin();
+        using var _4 = Memory4.Pin();
+        using var _5 = Memory5.Pin();
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i], ref Memory4.Span[i], ref Memory5.Span[i], Uniform);
+        CountDown.Signal();
+    }
+}
+
+
+/*
+internal class RawWork<C1> : IThreadPoolWorkItem
+{
+    public Memory<C1> Memory = null!;
+    public MemoryAction_C<C1> Action = null!;
+    public CountdownEvent CountDown = null!;
+
+    public WaitCallback WaitCallback => Execute;
+
+    private void Execute(object? state) => Execute();
+
+    public void Execute()
+    {
+        using var _ = Memory.Pin();
+        Action(Memory);
+        CountDown.Signal();
+    }
+}
+*/

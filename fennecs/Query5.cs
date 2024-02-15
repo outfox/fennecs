@@ -41,8 +41,8 @@ public class Query<C1, C2, C3, C4, C5>(Archetypes archetypes, Mask mask, List<Ta
     public void RunParallel(RefAction_CCCCC<C1, C2, C3, C4, C5> action, int chunkSize = int.MaxValue)
     {
         Archetypes.Lock();
-
-        var queued = 0;
+        
+        using var countdown = new CountdownEvent(1);
 
         foreach (var table in Tables)
         {
@@ -54,12 +54,12 @@ public class Query<C1, C2, C3, C4, C5>(Archetypes archetypes, Mask mask, List<Ta
             var storage5 = table.GetStorage<C5>(Identity.None);
             var length = table.Count;
 
-            var partitions = Math.Clamp(length / chunkSize, 1, Options.MaxDegreeOfParallelism);
+            var partitions = Math.Max(length / chunkSize, 1);
             var partitionSize = length / partitions;
 
-            for (var partition = 1; partition < partitions; partition++)
+            for (var partition = 0; partition < partitions; partition++)
             {
-                Interlocked.Increment(ref queued);
+                countdown.AddCount(1);
 
                 ThreadPool.QueueUserWorkItem(delegate(int part)
                 {
@@ -74,11 +74,12 @@ public class Query<C1, C2, C3, C4, C5>(Archetypes archetypes, Mask mask, List<Ta
                         action(ref s1[i], ref s2[i], ref s3[i], ref s4[i], ref s5[i]);
                     }
 
-                    // ReSharper disable once AccessToModifiedClosure
-                    Interlocked.Decrement(ref queued);
+                    // ReSharper disable once AccessToDisposedClosure
+                    countdown.Signal();
                 }, partition, preferLocal: true);
             }
 
+            /*
             //Optimization: Also process one partition right here on the calling thread.
             var s1 = storage1.AsSpan(0, partitionSize);
             var s2 = storage2.AsSpan(0, partitionSize);
@@ -89,9 +90,11 @@ public class Query<C1, C2, C3, C4, C5>(Archetypes archetypes, Mask mask, List<Ta
             {
                 action(ref s1[i], ref s2[i], ref s3[i], ref s4[i], ref s5[i]);
             }
+            */
         }
 
-        while (queued > 0) Thread.SpinWait(SpinTimeout);
+        countdown.Signal();
+        countdown.Wait();
         Archetypes.Unlock();
     }
     
@@ -117,7 +120,7 @@ public class Query<C1, C2, C3, C4, C5>(Archetypes archetypes, Mask mask, List<Ta
     public void RunParallel<U>(RefAction_CCCCCU<C1, C2, C3, C4, C5, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         Archetypes.Lock();
-        var queued = 0;
+        using var countdown = new CountdownEvent(1);
 
         foreach (var table in Tables)
         {
@@ -129,12 +132,12 @@ public class Query<C1, C2, C3, C4, C5>(Archetypes archetypes, Mask mask, List<Ta
             var storage5 = table.GetStorage<C5>(Identity.None);
             var length = table.Count;
 
-            var partitions = Math.Clamp(length / chunkSize, 1, Options.MaxDegreeOfParallelism);
+            var partitions = Math.Max(length / chunkSize, 1);
             var partitionSize = length / partitions;
 
-            for (var partition = 1; partition < partitions; partition++)
+            for (var partition = 0; partition < partitions; partition++)
             {
-                Interlocked.Increment(ref queued);
+                countdown.AddCount();
 
                 ThreadPool.QueueUserWorkItem(delegate(int part)
                 {
@@ -149,11 +152,12 @@ public class Query<C1, C2, C3, C4, C5>(Archetypes archetypes, Mask mask, List<Ta
                         action(ref s1[i], ref s2[i], ref s3[i], ref s4[i], ref s5[i], uniform);
                     }
 
-                    // ReSharper disable once AccessToModifiedClosure
-                    Interlocked.Decrement(ref queued);
+                    // ReSharper disable once AccessToDisposedClosure
+                    countdown.Signal();
                 }, partition, preferLocal: true);
             }
 
+            /*
             //Optimization: Also process one partition right here on the calling thread.
             var s1 = storage1.AsSpan(0, partitionSize);
             var s2 = storage2.AsSpan(0, partitionSize);
@@ -164,9 +168,10 @@ public class Query<C1, C2, C3, C4, C5>(Archetypes archetypes, Mask mask, List<Ta
             {
                 action(ref s1[i], ref s2[i], ref s3[i], ref s4[i], ref s5[i], uniform);
             }
+            */
         }
 
-        while (queued > 0) Thread.SpinWait(SpinTimeout);
+        countdown.Signal(); countdown.Wait();
         Archetypes.Unlock();
 
     }

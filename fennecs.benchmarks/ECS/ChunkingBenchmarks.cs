@@ -1,21 +1,20 @@
 ﻿using System.Numerics;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
 using fennecs;
 
 namespace Benchmark.ECS;
 
-
 [ShortRunJob]
 [ThreadingDiagnoser]
 [MemoryDiagnoser]
+[HardwareCounters(HardwareCounter.CacheMisses)]
 [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
 public class ChunkingBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(1_000, 10_000, 100_000, 1_000_000)]
-    public int entityCount { get; set; }
-
-    [Params(128, 512, 1024, 2048, 4096, 8192, 16384, 32768)] public int chunkSize { get; set; }
+    [Params(10_000, 1_000_000)] public int entityCount { get; set; } = 1_000_000;
+    [Params(4096, 16384, 32768)] public int chunkSize { get; set; } = 16384;
 
     private static readonly Random random = new(1337);
 
@@ -27,6 +26,24 @@ public class ChunkingBenchmarks
     [GlobalSetup]
     public void Setup()
     {
+        ListPool<Work<Vector3>>.Return(ListPool<Work<Vector3>>.Rent());
+        ListPool<UniformWork<Vector3, Vector3>>.Return(ListPool<UniformWork<Vector3, Vector3>>.Rent());
+        
+        //ThreadPool.SetMaxThreads(24, 24);
+        using var countdown = new CountdownEvent(500);
+        for (var i = 0; i < 500; i++)
+        {
+            ThreadPool.UnsafeQueueUserWorkItem
+            (_ =>
+            {
+                Thread.Sleep(1);
+                // ReSharper disable once AccessToDisposedClosure
+                countdown.Signal();
+            }, true);
+        }
+        countdown.Wait();
+        Thread.Yield();
+
         _world = new World();
         _queryV3 = _world.Query<Vector3>().Build();
         _vectorsRaw = new Vector3[entityCount];
@@ -54,13 +71,32 @@ public class ChunkingBenchmarks
         }
     }
 
+    [GlobalCleanup]
+    public void Cleanup()
+    {
+        _queryV3 = null!;
+        _world.Dispose();
+        _world = null!;
+    }
+
+
     private static readonly Vector3 UniformConstantVector = new(3, 4, 5);
-    private static readonly ParallelOptions options = new() {MaxDegreeOfParallelism = 12};
 
     [Benchmark]
-    //Work parallelized by Archetype, passed into delegate as ref Vector3.
-    public void CrossProduct_Parallel_ECS_Delegate_Chunk()
+    public void CrossProduct_Run()
     {
-        _queryV3.RunParallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, chunkSize);
+        _queryV3.Run(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+    }
+
+    [Benchmark]
+    public void CrossProduct_Job()
+    {
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, chunkSize);
+    }
+
+    [Benchmark]
+    public void CrossProduct_JobU()
+    {
+        _queryV3.Job(delegate(ref Vector3 v, Vector3 uniform) { v = Vector3.Cross(v, uniform); }, UniformConstantVector, chunkSize);
     }
 }

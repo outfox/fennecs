@@ -18,6 +18,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ecs, gamedev, entity, entity component system, game, gamedev, game development, godot, dots, defaultecs, hypecs, relecs, entt, flecs</PackageTags>
         <TargetFramework>net8.0</TargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -29,12 +30,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-        <_Parameter1>$(AssemblyName).tests</_Parameter1>
-      </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>$(AssemblyName).tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>$(AssemblyName).benchmarks</_Parameter1>
+        </AssemblyAttribute>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../docs/overview.md" Pack="true" PackagePath="\"/>
+        <None Include="../docs/overview.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 </Project>

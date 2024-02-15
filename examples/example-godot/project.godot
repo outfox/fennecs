@@ -11,9 +11,17 @@ config_version=5
 [application]
 
 config/name="example-godot"
-run/main_scene="res://3d_test_scene.tscn"
+config/description="A set of examples using the fennecs Entity Component System
+"
+run/main_scene="res://BasicCubes/BasicCubes.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
@@ -22,4 +30,13 @@ project/assembly_name="example-godot"
 [editor]
 
 movie_writer/movie_file="C:/Users/micro/Desktop/recording.avi"
-movie_writer/disable_vsync=true
+movie_writer/fps=120
+
+[gui]
+
+common/snap_controls_to_pixels=false
+
+[rendering]
+
+textures/default_filters/anisotropic_filtering_level=3
+textures/decals/filter=5

@@ -3,7 +3,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace Benchmark.Conceptual;
 
-[DryJob]
+[ShortRunJob]
 [MemoryDiagnoser]
 public class V3Benchmarks
 {
@@ -41,6 +41,33 @@ public class V3Benchmarks
         for (var i = 0; i < lim; i++)
         {
             _input[i] += new Vector3(1, 2, 3);
+        }
+    }
+
+    [Benchmark]
+    public unsafe void PerItemIncrementArrayHalfSizeUnsafe()
+    {
+        var lim = _input.Length;
+        var len = lim/2;
+
+        fixed (Vector3* f = _input) ((nint*) f)[-sizeof(nint)] = len;
+        
+        for (var i = 0; i < len; i++)
+        {
+            _input[i] += new Vector3(1, 2, 3);
+        }
+
+        fixed (Vector3* f = _input) ((nint*) f)[-sizeof(nint)] = lim;
+    }
+
+    [Benchmark]
+    public void PerItemIncrementSpanHalfSize()
+    {
+        var span = _input.AsSpan(0, _input.Length/2);
+        var lim = span.Length;
+        for (var i = 0; i < lim; i++)
+        {
+            span[i] += new Vector3(1, 2, 3);
         }
     }
 

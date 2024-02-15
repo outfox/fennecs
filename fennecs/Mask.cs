@@ -58,8 +58,5 @@ public sealed class Mask : IEquatable<Mask>, IDisposable
         return ReferenceEquals(this, obj) || obj is Mask other && Equals(other);
     }
 
-    public void Dispose()
-    {
-        Clear();
-    }
+    public void Dispose() => MaskPool.Return(this);
 }

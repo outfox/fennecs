@@ -3,7 +3,7 @@
 namespace Benchmark.Conceptual;
 
 [ShortRunJob]
-public class ECSBenchmarks
+public class SimpleArrayBenchmarks
 {
     [Params(1_000, 1_000_000)] 
     public int entityCount { get; set; }

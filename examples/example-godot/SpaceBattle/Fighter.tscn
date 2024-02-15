@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://clf0tfajjxsgn"]
+
+[ext_resource type="Script" path="res://SpaceBattle/Fighter.cs" id="1_kx8jw"]
+[ext_resource type="Shader" path="res://SpaceBattle/Fighter.gdshader" id="2_awabw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_31mre"]
+render_priority = 0
+shader = ExtResource("2_awabw")
+
+[sub_resource type="PrismMesh" id="PrismMesh_6g8t8"]
+material = SubResource("ShaderMaterial_31mre")
+size = Vector3(1, 1.2, 0.2)
+
+[node name="Fighter" type="Node3D"]
+script = ExtResource("1_kx8jw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("PrismMesh_6g8t8")

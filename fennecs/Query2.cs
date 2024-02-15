@@ -13,9 +13,9 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
         return new RefValueTuple<C1, C2>(ref storage1[meta.Row], ref storage2[meta.Row]);
     }
 
-     #region Runners
+    #region Runners
 
-     public void Run(RefAction_CC<C1, C2> action)
+    public void Run(RefAction_CC<C1, C2> action)
     {
         Archetypes.Lock();
 
@@ -35,7 +35,7 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
     {
         Archetypes.Lock();
 
-        var queued = 0;
+        using var countdown = new CountdownEvent(1);
 
         foreach (var table in Tables)
         {
@@ -44,28 +44,29 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
             var storage2 = table.GetStorage<C2>(Identity.None);
             var length = table.Count;
 
-            var partitions = Math.Clamp(length / chunkSize, 1, Options.MaxDegreeOfParallelism);
+            var partitions = Math.Max(length / chunkSize, 1);
             var partitionSize = length / partitions;
 
-            for (var partition = 1; partition < partitions; partition++)
+            for (var partition = 0; partition < partitions; partition++)
             {
-                Interlocked.Increment(ref queued);
+                countdown.AddCount();
 
                 ThreadPool.QueueUserWorkItem(delegate(int part)
                 {
                     var s1 = storage1.AsSpan(part * partitionSize, partitionSize);
                     var s2 = storage2.AsSpan(part * partitionSize, partitionSize);
-                    
+
                     for (var i = 0; i < s1.Length; i++)
                     {
                         action(ref s1[i], ref s2[i]);
                     }
 
-                    // ReSharper disable once AccessToModifiedClosure
-                    Interlocked.Decrement(ref queued);
+                    // ReSharper disable once AccessToDisposedClosure // we won't leave here until it's done
+                    countdown.Signal();
                 }, partition, preferLocal: true);
             }
 
+            /*
             //Optimization: Also process one partition right here on the calling thread.
             var s1 = storage1.AsSpan();
             var s2 = storage2.AsSpan();
@@ -73,12 +74,14 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
             {
                 action(ref s1[i], ref s2[i]);
             }
+            */
         }
 
-        while (queued > 0) Thread.SpinWait(SpinTimeout);
+        countdown.Signal();
+        countdown.Wait();
         Archetypes.Unlock();
     }
-    
+
     public void Run<U>(RefAction_CCU<C1, C2, U> action, U uniform)
     {
         Archetypes.Lock();
@@ -98,7 +101,7 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
     public void RunParallel<U>(RefAction_CCU<C1, C2, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         Archetypes.Lock();
-        var queued = 0;
+        using var countdown = new CountdownEvent(1);
 
         foreach (var table in Tables)
         {
@@ -107,12 +110,12 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
             var storage2 = table.GetStorage<C2>(Identity.None);
             var length = table.Count;
 
-            var partitions = Math.Clamp(length / chunkSize, 1, Options.MaxDegreeOfParallelism);
+            var partitions = Math.Max(length / chunkSize, 1);
             var partitionSize = length / partitions;
 
-            for (var partition = 1; partition < partitions; partition++)
+            for (var partition = 0; partition < partitions; partition++)
             {
-                Interlocked.Increment(ref queued);
+                countdown.AddCount();
 
                 ThreadPool.QueueUserWorkItem(delegate(int part)
                 {
@@ -124,11 +127,12 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
                         action(ref s1[i], ref s2[i], uniform);
                     }
 
-                    // ReSharper disable once AccessToModifiedClosure
-                    Interlocked.Decrement(ref queued);
+                    // ReSharper disable once AccessToDisposedClosure
+                    countdown.Signal();
                 }, partition, preferLocal: true);
             }
 
+            /*
             //Optimization: Also process one partition right here on the calling thread.
             var s1 = storage1.AsSpan(0, partitionSize);
             var s2 = storage2.AsSpan(0, partitionSize);
@@ -136,9 +140,11 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
             {
                 action(ref s1[i], ref s2[i], uniform);
             }
+            */
         }
 
-        while (queued > 0) Thread.SpinWait(SpinTimeout);
+        countdown.Signal();
+        countdown.Wait();
         Archetypes.Unlock();
 
     }
@@ -175,7 +181,7 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
     public void RawParallel(Action<Memory<C1>, Memory<C2>> action)
     {
         Archetypes.Lock();
-        
+
         Parallel.ForEach(Tables, Options,
             table =>
             {
@@ -187,6 +193,7 @@ public class Query<C1, C2>(Archetypes archetypes, Mask mask, List<Table> tables)
 
         Archetypes.Unlock();
     }
+
     #endregion
 
 }
