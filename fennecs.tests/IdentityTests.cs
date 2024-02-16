@@ -5,6 +5,28 @@ namespace fennecs.tests;
 public class IdentityTests(ITestOutputHelper output)
 {
     [Fact]
+    public void Virtual_Entities_have_no_Successors()
+    {
+        Assert.Throws<InvalidCastException>(() => Identity.Any.Successor);
+        Assert.Throws<InvalidCastException>(() => Identity.None.Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(typeof(bool)).Successor);
+    }
+
+    [Fact]
+    public void Identity_Resolves_Type()
+    {
+        var boolType = new Identity(typeof(bool));
+        Assert.Equal(typeof(bool), boolType.Type);
+
+        Assert.Equal(typeof(LanguageType.Any), Identity.Any.Type);
+        Assert.Equal(typeof(LanguageType.None), Identity.None.Type);
+
+        using var world = new World();
+        var entity = world.Spawn().Id();
+        Assert.Equal(typeof(Entity), entity.Identity.Type);
+    }
+    
+    [Fact]
     public void Identity_None_is_Zeros()
     {
         var none = Identity.None;
@@ -12,6 +34,14 @@ public class IdentityTests(ITestOutputHelper output)
         output.WriteLine(none.Generation.ToString());
         output.WriteLine(none.ToString());
         Assert.Equal(default, none.Id);
+    }
+
+    [Fact]
+    public void Identity_ToString()
+    {
+        output.WriteLine(Identity.None.ToString());
+        output.WriteLine(Identity.Any.ToString());
+        output.WriteLine(new Identity(123).ToString());
     }
 
     [Fact]

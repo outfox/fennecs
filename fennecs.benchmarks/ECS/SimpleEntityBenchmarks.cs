@@ -71,7 +71,7 @@ public class SimpleEntityBenchmarks
     //A lambda is passed each Vector3 by ref.
     public void CrossProduct_Single_ECS_Lambda()
     {
-        _queryV3.Run((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.ForEach((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
@@ -94,7 +94,7 @@ public class SimpleEntityBenchmarks
     //Work passed into delegate as ref Vector3.
     public void CrossProduct_Single_ECS_Delegate()
     {
-        _queryV3.Run(delegate (ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.ForEach(delegate (ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]

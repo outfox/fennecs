@@ -5,6 +5,27 @@ namespace fennecs.tests;
 public class MaskTests
 {
     [Fact]
+    public void Reference_Equality_Only()
+    {
+        var mask1 = new Mask();
+        Assert.True(mask1.Equals(mask1));
+
+        var mask2 = new Mask();
+        Assert.False(mask1.Equals(mask2));
+
+        Mask? mask3 = default;
+        Assert.False(mask1.Equals(mask3));
+    }
+
+    [Fact]
+    public void Reference_Equality_Object()
+    {
+        var mask1 = new Mask();
+        object mask2 = mask1;
+        Assert.True(mask1.Equals(mask2));
+    }
+
+    [Fact]
     public void Masks_are_distinct_from_default()
     {
         var mask1 = new Mask();
@@ -13,49 +34,11 @@ public class MaskTests
     }
 
     [Fact]
-    public void Empty_Masks_are_Indistinct()
+    public void Can_Be_Disposed()
     {
-        var mask1 = new Mask();
-        var mask2 = new Mask();
-        Assert.Equal(mask1, mask2);
-    }
-
-    [Fact]
-    public void Masks_can_become_Distinct()
-    {
-        var mask1 = new Mask();
-        var mask2 = new Mask();
-
-        mask2.Has(TypeExpression.Create<int>());
-        Assert.NotEqual(mask1, mask2);
-
-        mask1.Has(TypeExpression.Create<int>());
-        Assert.Equal(mask1, mask2);
-
-        mask1.Any(TypeExpression.Create<float>());
-        Assert.NotEqual(mask1, mask2);
-
-        mask2.Any(TypeExpression.Create<float>());
-        Assert.Equal(mask1, mask2);
-
-        mask2.Not(TypeExpression.Create<string>());
-        Assert.NotEqual(mask1, mask2);
-
-        mask1.Not(TypeExpression.Create<string>());
-        Assert.Equal(mask1, mask2);
-    }
-
-    [Fact]
-    public void Clear_makes_masks_Equal_to_empty()
-    {
-        var mask1 = new Mask();
-        var mask2 = new Mask();
-
-        mask2.Has(TypeExpression.Create<int>());
-        mask2.Any(TypeExpression.Create<float>());
-        mask2.Not(TypeExpression.Create<string>());
-        
-        mask2.Clear();
-        Assert.Equal(mask1, mask2);
+        var mask = new Mask();
+        Assert.DoesNotContain(mask, MaskPool.Pool);
+        mask.Dispose();
+        Assert.Contains(mask, MaskPool.Pool);
     }
 }

@@ -26,8 +26,8 @@ public class ChunkingBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        ListPool<Work<Vector3>>.Return(ListPool<Work<Vector3>>.Rent());
-        ListPool<UniformWork<Vector3, Vector3>>.Return(ListPool<UniformWork<Vector3, Vector3>>.Rent());
+        PooledList<Work<Vector3>>.Rent().Dispose();
+        PooledList<UniformWork<Vector3, Vector3>>.Rent().Dispose();
         
         //ThreadPool.SetMaxThreads(24, 24);
         using var countdown = new CountdownEvent(500);
@@ -85,7 +85,7 @@ public class ChunkingBenchmarks
     [Benchmark]
     public void CrossProduct_Run()
     {
-        _queryV3.Run(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.ForEach(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]

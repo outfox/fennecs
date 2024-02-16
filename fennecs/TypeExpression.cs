@@ -86,6 +86,11 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         return new TypeExpression(target, LanguageType<T>.Id);
     }
 
+    public static TypeExpression Create(Type type, Identity target = default)
+    {
+        return new TypeExpression(target, LanguageType.Identify(type));
+    }
+
     
     /* TODO: Probably not worth it.
     public static TypeExpression Create<T, Target>()

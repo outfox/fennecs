@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace fennecs;
 
 [StructLayout(LayoutKind.Explicit)]
-public readonly struct Identity(ulong value) : IEquatable<Identity>
+public readonly struct Identity(ulong value) : IEquatable<Identity>, IComparable<Identity>
 {
     [FieldOffset(0)] public readonly ulong Value = value;
     [FieldOffset(0)] public readonly int Id;
@@ -40,6 +40,11 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>
     }
 
     public bool Equals(Identity other) => Id == other.Id && Generation == other.Generation;
+
+    public int CompareTo(Identity other)
+    {
+        return Value.CompareTo(other.Value);
+    }
 
     public override bool Equals(object? obj)
     {

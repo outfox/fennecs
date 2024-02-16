@@ -1,9 +1,68 @@
-﻿using System.Numerics;
+﻿using System.Collections;
+using System.Numerics;
 
 namespace fennecs.tests.Integration;
 
 public static class QueryTests
 {
+    [Fact]
+    private static void Can_Enumerate_PlainEnumerator()
+    {
+        using var world = new World();
+
+        var entities = new List<Entity>();
+        for (var i = 0; i < 234; i++)
+        {
+            var entity = world.Spawn().Add(new object()).Id();
+            entities.Add(entity);
+        }
+        
+        var query = world.Query<object>().Build();
+        var plain = query as IEnumerable;
+        
+        var enumerator = plain.GetEnumerator();
+        using var disposable = enumerator as IDisposable;
+        while (enumerator.MoveNext())
+        {
+            Assert.IsType<Entity>(enumerator.Current);
+            
+            var entity = (Entity) enumerator.Current;
+            Assert.Contains(entity, entities);
+            entities.Remove(entity);            
+        }
+        Assert.Empty(entities);
+    }
+
+    [Fact]
+    private static void Contains_Finds_Entity()
+    {
+        using var world = new World();
+
+        var random = new Random(1234);
+        var entities = new List<Entity>();
+        for (var i = 0; i < 2345; i++)
+        {
+            var entity = world.Spawn().Add(i).Id();
+            entities.Add(entity);
+        }
+
+        var query = world.Query<int>().Build();
+
+        Assert.True(entities.All(e => query.Contains(e)));
+
+        var former = entities.ToArray(); 
+        while (entities.Count > 0)
+        {
+            var index = random.Next(entities.Count);
+            var entity = entities[index];
+            world.Despawn(entity);
+            Assert.False(query.Contains(entity));
+            entities.RemoveAt(index);
+        }
+        
+        Assert.True(!former.Any(e => query.Contains(e))); 
+    }
+    
     [Fact]
     private static void Has_Matches()
     {

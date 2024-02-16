@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections;
+
 namespace fennecs;
 
-public class Query(Archetypes archetypes, Mask mask, List<Table> tables)
+public class Query(Archetypes archetypes, Mask mask, List<Table> tables) : IEnumerable<Entity>, IEnumerable
 {
     protected readonly ParallelOptions Options = new() {MaxDegreeOfParallelism = 24};
 
@@ -10,8 +12,40 @@ public class Query(Archetypes archetypes, Mask mask, List<Table> tables)
     private protected readonly Archetypes Archetypes = archetypes;
 
     protected internal readonly Mask Mask = mask;
+    
 
-    public bool Has(Entity entity)
+    #region IEnumerable<Entity>
+    /// <summary>
+    /// Enumerator over all the entities in the query.
+    /// Do not make modifications to the world affecting the query while enumerating.
+    /// </summary>
+    /// <returns>
+    ///  An enumerator over all the entities in the query.
+    /// </returns>
+    public IEnumerator<Entity> GetEnumerator()
+    {
+        foreach (var table in Tables)
+        {
+            var snapshot = table.Version;
+            for (var i = 0; i < table.Count; i++)
+            {
+                if (snapshot != table.Version)
+                {
+                    throw new InvalidOperationException("Query was modified while enumerating.");
+                }
+
+                yield return table.Identities[i];
+            }
+        }
+    }
+    
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+    #endregion
+    
+    public bool Contains(Entity entity)
     {
         var meta = Archetypes.GetEntityMeta(entity.Identity);
         var table = Archetypes.GetTable(meta.TableId);

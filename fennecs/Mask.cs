@@ -17,7 +17,6 @@ public sealed class Mask : IEquatable<Mask>, IDisposable
     {
         NotTypes.Add(type);
     }
-
     
     public void Any(TypeExpression type)
     {
@@ -45,12 +44,7 @@ public sealed class Mask : IEquatable<Mask>, IDisposable
 
     public bool Equals(Mask? other)
     {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-
-        return HasTypes.SequenceEqual(other.HasTypes)
-            && NotTypes.SequenceEqual(other.NotTypes)
-            && AnyTypes.SequenceEqual(other.AnyTypes);
+        return ReferenceEquals(this, other);
     }
 
     public override bool Equals(object? obj)

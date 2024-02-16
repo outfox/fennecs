@@ -25,6 +25,9 @@ public sealed class Table
     public int Count { get; private set; }
     public bool IsEmpty => Count == 0;
 
+    internal int Version => Volatile.Read(ref _version);
+    public int Capacity => _identities.Length;
+
     private readonly Archetypes _archetypes;
 
     private Identity[] _identities;
@@ -33,7 +36,10 @@ public sealed class Table
     private readonly Dictionary<TypeExpression, TableEdge> _edges = new();
     private readonly Dictionary<TypeExpression, int> _indices = new();
 
-    
+    // Used by Queries to check if the table has been modified while enumerating.
+    private int _version;
+
+
     public Table(int id, Archetypes archetypes, SortedSet<TypeExpression> types)
     {
         _archetypes = archetypes;
@@ -83,6 +89,8 @@ public sealed class Table
     
     public int Add(Identity identity)
     {
+        Interlocked.Increment(ref _version);
+        
         EnsureCapacity(Count + 1);
         _identities[Count] = identity;
         return Count++;
@@ -91,6 +99,8 @@ public sealed class Table
     
     public void Remove(int row)
     {
+        Interlocked.Increment(ref _version);
+        
         ArgumentOutOfRangeException.ThrowIfGreaterThan(row, Count, nameof(row));
         
         Count--;
@@ -147,18 +157,18 @@ public sealed class Table
 
     private void EnsureCapacity(int capacity)
     {
-        if (capacity <= 0) throw new ArgumentOutOfRangeException(nameof(capacity), "minCapacity must be positive");
+        ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));
+        
         if (capacity <= _identities.Length) return;
 
         Resize(Math.Max(capacity, StartCapacity) * 2);
     }
 
 
-    private void Resize(int length)
+    internal void Resize(int length)
     {
-        if (length < 0) throw new ArgumentOutOfRangeException(nameof(length), "length cannot be negative");
-        if (length < Count)
-            throw new ArgumentOutOfRangeException(nameof(length), "length cannot be smaller than Count");
+        ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
+        ArgumentOutOfRangeException.ThrowIfLessThan(length, Count, nameof(length));
 
         Array.Resize(ref _identities, length);
 

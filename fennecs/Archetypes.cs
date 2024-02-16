@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections;
 using System.Collections.Concurrent;
+using System.Data;
+using System.Runtime.CompilerServices;
 
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 // ReSharper disable ReturnTypeCanBeEnumerable.Global
 
 namespace fennecs;
 
-public sealed class Archetypes
+public sealed class Archetypes : IEnumerable<Table>
 {
     private EntityMeta[] _meta = new EntityMeta[65536];
     private readonly List<Table> _tables = [];
@@ -95,7 +98,7 @@ public sealed class Archetypes
 
     public void Despawn(Identity identity)
     {
-        if (!IsAlive(identity)) return;
+        AssertAlive(identity);
 
         if (_mode == Mode.Deferred)
         {
@@ -129,7 +132,6 @@ public sealed class Archetypes
             }
         }
     }
-
 
     internal void AddComponent<T>(TypeExpression typeExpression, Identity identity, T data, Entity target = default)
     {
@@ -180,7 +182,6 @@ public sealed class Archetypes
 
         var type = TypeExpression.Create<T>(target);
         var meta = _meta[identity.Id];
-        AssertEqual(meta.Identity, identity);
         var table = _tables[meta.TableId];
         var storage = (T[]) table.GetStorage(type);
         return ref storage[meta.Row];
@@ -270,7 +271,7 @@ public sealed class Archetypes
 
     internal bool IsAlive(Identity identity)
     {
-        return identity != Identity.None && _meta[identity.Id].Identity == identity;
+        return identity.IsEntity && _meta[identity.Id].Identity == identity;
     }
 
 
@@ -278,19 +279,19 @@ public sealed class Archetypes
     {
         return ref _meta[identity.Id];
     }
-
+    
+    public Table this[int tableId] => _tables[tableId];
 
     internal Table GetTable(int tableId)
     {
         return _tables[tableId];
     }
     
-    
     internal (TypeExpression, object)[] GetComponents(Identity identity)
     {
         AssertAlive(identity);
 
-        var list = ListPool<(TypeExpression, object)>.Rent();
+        using var list = PooledList<(TypeExpression, object)>.Rent();
 
         var meta = _meta[identity.Id];
         var table = _tables[meta.TableId];
@@ -303,7 +304,6 @@ public sealed class Archetypes
         }
 
         var array = list.ToArray();
-        ListPool<(TypeExpression, object)>.Return(list);
         return array;
     }
 
@@ -424,25 +424,23 @@ public sealed class Archetypes
         Despawn,
     }
 
-
     #region Assert Helpers
 
-    private void AssertAlive(Identity identity)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal void AssertAlive(Identity identity)
     {
-        if (!IsAlive(identity))
-        {
-            throw new Exception($"Entity {identity} is not alive.");
-        }
+        if (IsAlive(identity)) return;
+        
+        throw new ObjectDisposedException($"Entity {identity} is no longer alive.");
     }
+    
+    #endregion
 
-
-    private static void AssertEqual(Identity metaIdentity, Identity identity)
-    {
-        if (metaIdentity != identity)
-        {
-            throw new Exception($"Entity {identity} meta/generation mismatch.");
-        }
-    }
+    #region Enumerators
+    public IEnumerator<Table> GetEnumerator() => _tables.GetEnumerator();
+    
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _tables).GetEnumerator();
 
     #endregion
+
 }

@@ -27,18 +27,19 @@ internal class LanguageType
             return Ids[type];
         }
     }
-    
+
     static LanguageType()
     {
         Types[0] = typeof(None);
         Ids[typeof(None)] = 0;
-        
+
         Types[ushort.MaxValue] = typeof(Any);
         Ids[typeof(Any)] = ushort.MaxValue;
     }
 
-    private struct Any;
-    private struct None;
+    protected internal struct Any;
+
+    protected internal struct None;
 }
 
 
@@ -48,13 +49,12 @@ internal class LanguageType<T> : LanguageType
 {
     // ReSharper disable once StaticMemberInGenericType
     public static readonly ushort Id;
-    
+
     static LanguageType()
     {
         lock (RegistryLock)
         {
-            if (++Counter >= ushort.MaxValue) throw new InvalidOperationException("Language Level TypeIds exhausted.");
-            Id = Counter;
+            Id = ++Counter;
             Types.Add(Id, typeof(T));
             Ids.Add(typeof(T), Id);
         }

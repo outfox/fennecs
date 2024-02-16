@@ -28,10 +28,4 @@ public static class JobPool<T> where T : class, new()
         foreach (var job in jobs) Return(job);
         jobs.Clear();
     }
-
-    public static void Return(List<IThreadPoolWorkItem> jobs)
-    {
-        foreach (var job in jobs) Return((T) job);
-        jobs.Clear();
-    }
 }

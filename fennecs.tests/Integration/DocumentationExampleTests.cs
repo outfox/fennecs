@@ -33,7 +33,7 @@ public class DocumentationExampleTests
     public void Can_Iterate_Multiple_Chunks(int count, int chunkSize)
     {
         using var world = new World();
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
         {
             world.Spawn()
                 .Add(new Position(1,2,3))

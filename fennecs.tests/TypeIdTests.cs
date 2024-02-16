@@ -23,55 +23,6 @@ public class TypeIdTests
         Assert.Equal(64 / 8, Marshal.SizeOf<Identity>());
     }
 
-    
-
-    /* TODO: Remove obsolete tests that no longer apply to type structure.
-    [Theory]
-    [InlineData(0)]
-    [InlineData(1848)]
-    [InlineData(0x7FFF)]
-    [InlineData(0xFFFF)]
-    [InlineData(0x1111)]
-    [InlineData(0xABCD)]
-    public void TypeId_Generation_is_Congruent(ushort input)
-    {
-        var id = new TypeId {Generation = input};
-        Assert.Equal(input, id.Generation);
-        Assert.Equal(input, id.Target.Generation);
-        Assert.Equal(0, id.TypeNumber);
-        Assert.Equal(0, id.Target.Id);
-        Assert.Equal(0, id.Id);
-    }
-
-    [Fact]
-    public void TypeId_Identity_is_Congruent()
-    {
-        var id = new TypeId {Id = 900069420};
-        Assert.Equal(900069420, id.Id);
-        Assert.Equal(900069420, id.Target.Id);
-        Assert.Equal(0, id.TypeNumber);
-        Assert.Equal(0, id.Generation);
-        Assert.Equal(0, id.Target.Generation);
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(42069)]
-    [InlineData(0x7FFF)]
-    [InlineData(0xFFFF)]
-    [InlineData(0x1111)]
-    [InlineData(0xABCD)]
-    public void TypeId_TypeNumber_is_Congruent(ushort input)
-    {
-        var id = new TypeId {TypeNumber = input};
-        Assert.Equal(input, id.TypeNumber);
-        Assert.Equal(0, id.Generation);
-        Assert.Equal(0, id.Target.Generation);
-        Assert.Equal(0, id.Target.Id);
-        Assert.Equal(0, id.Id);
-    }
-    */
-
     [Fact]
     public void TypeAssigner_Id_Unique()
     {

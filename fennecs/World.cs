@@ -151,8 +151,13 @@ public sealed class World : IDisposable
         Archetypes.AddComponent(type, entity.Identity, component, target);
     }
 
+    public void RemoveComponent(Entity entity, Type type, Entity target)
+    {
+        var typeExpression = TypeExpression.Create(type, target.Identity);
+        Archetypes.RemoveComponent(typeExpression, entity.Identity);
+    }
 
-    public void RemoveComponent<T>(Entity entity, Entity target) 
+    public void RemoveComponent<T>(Entity entity, Entity target)
     {
         var type = TypeExpression.Create<T>(target.Identity);
         Archetypes.RemoveComponent(type, entity.Identity);
