@@ -6,7 +6,7 @@ namespace fennecs;
 
 public class QueryBuilder
 {
-    internal readonly Archetypes Archetypes;
+    internal readonly World World;
     protected readonly Mask Mask = MaskPool.Rent();
 
     /* TODO: Implement deferred builder
@@ -15,14 +15,14 @@ public class QueryBuilder
     private List<ValueTuple<Type, Identity, object>> _any;
     */
 
-    internal QueryBuilder(Archetypes archetypes)
+    internal QueryBuilder(World world)
     {
+        World = world;
         /* TODO: Implement deferred builder
         ListPool<ValueTuple<Type, Identity, object>>.Rent(out _has);
         ListPool<ValueTuple<Type, Identity, object>>.Rent(out _not);
         ListPool<ValueTuple<Type, Identity, object>>.Rent(out _any);
         */
-        Archetypes = archetypes;
     }
 
     protected QueryBuilder Has<T>(Identity target = default)
@@ -74,11 +74,11 @@ public class QueryBuilder
 
 public sealed class QueryBuilder<C> : QueryBuilder
 {
-    private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-        (archetypes, mask, matchingTables) => new Query<C>(archetypes, mask, matchingTables);
+    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+        (world, mask, matchingTables) => new Query<C>(world, mask, matchingTables);
 
 
-    internal QueryBuilder(Archetypes archetypes) : base(archetypes)
+    internal QueryBuilder(World world) : base(world)
     {
         Has<C>();
     }
@@ -122,17 +122,17 @@ public sealed class QueryBuilder<C> : QueryBuilder
 
     public Query<C> Build()
     {
-        return (Query<C>) Archetypes.GetQuery(Mask, CreateQuery);
+        return (Query<C>) World.GetQuery(Mask, CreateQuery);
     }
 }
 
 public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : struct
 {
-    private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-        (archetypes, mask, matchingTables) => new Query<C1, C2>(archetypes, mask, matchingTables);
+    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+        (world, mask, matchingTables) => new Query<C1, C2>(world, mask, matchingTables);
 
 
-    public QueryBuilder(Archetypes archetypes) : base(archetypes)
+    public QueryBuilder(World world) : base(world)
     {
         Has<C1>().Has<C2>();
     }
@@ -176,7 +176,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : struct
 
     public Query<C1, C2> Build()
     {
-        return (Query<C1, C2>) Archetypes.GetQuery(Mask, CreateQuery);
+        return (Query<C1, C2>) World.GetQuery(Mask, CreateQuery);
     }
 }
 
@@ -185,11 +185,11 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
     where C2 : struct
     where C3 : struct
 {
-    private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-        (archetypes, mask, matchingTables) => new Query<C1, C2, C3>(archetypes, mask, matchingTables);
+    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+        (world, mask, matchingTables) => new Query<C1, C2, C3>(world, mask, matchingTables);
 
 
-    public QueryBuilder(Archetypes archetypes) : base(archetypes)
+    public QueryBuilder(World world) : base(world)
     {
         Has<C1>().Has<C2>().Has<C3>();
     }
@@ -233,18 +233,18 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
 
     public Query<C1, C2, C3> Build()
     {
-        return (Query<C1, C2, C3>) Archetypes.GetQuery(Mask, CreateQuery);
+        return (Query<C1, C2, C3>) World.GetQuery(Mask, CreateQuery);
     }
 }
 
 public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
     where C1 : struct
 {
-    private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-        (archetypes, mask, matchingTables) => new Query<C1, C2, C3, C4>(archetypes, mask, matchingTables);
+    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+        (world, mask, matchingTables) => new Query<C1, C2, C3, C4>(world, mask, matchingTables);
 
 
-    public QueryBuilder(Archetypes archetypes) : base(archetypes)
+    public QueryBuilder(World world) : base(world)
     {
         Has<C1>().Has<C2>().Has<C3>().Has<C4>();
     }
@@ -288,18 +288,18 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
 
     public Query<C1, C2, C3, C4> Build()
     {
-        return (Query<C1, C2, C3, C4>) Archetypes.GetQuery(Mask, CreateQuery);
+        return (Query<C1, C2, C3, C4>) World.GetQuery(Mask, CreateQuery);
     }
 }
 
 public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
     where C1 : struct
 {
-    private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-        (archetypes, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(archetypes, mask, matchingTables);
+    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+        (world, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(world, mask, matchingTables);
 
 
-    public QueryBuilder(Archetypes archetypes) : base(archetypes)
+    public QueryBuilder(World world) : base(world)
     {
         Has<C1>().Has<C2>().Has<C3>().Has<C4>().Has<C5>();
     }
@@ -343,7 +343,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
 
     public Query<C1, C2, C3, C4, C5> Build()
     {
-        return (Query<C1, C2, C3, C4, C5>) Archetypes.GetQuery(Mask, CreateQuery);
+        return (Query<C1, C2, C3, C4, C5>) World.GetQuery(Mask, CreateQuery);
     }
 }
 
@@ -356,11 +356,11 @@ where C4 : struct
 where C5 : struct
 where C6 : struct
 {
-private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-    (archetypes, mask, matchingTables) => new Query<C1, C2, C3, C4, C5, C6>(archetypes, mask, matchingTables);
+private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    (World, mask, matchingTables) => new Query<C1, C2, C3, C4, C5, C6>(World, mask, matchingTables);
 
 
-public QueryBuilder(Archetypes archetypes) : base(archetypes)
+public QueryBuilder(World World) : base(World)
 {
     Has<C1>().Has<C2>().Has<C3>().Has<C4>().Has<C5>().Has<C6>();
 }
@@ -404,7 +404,7 @@ public new QueryBuilder<C1, C2, C3, C4, C5, C6> Any<T>(Type type)
 
 public Query<C1, C2, C3, C4, C5, C6> Build()
 {
-    return (Query<C1, C2, C3, C4, C5, C6>)Archetypes.GetQuery(Mask, CreateQuery);
+    return (Query<C1, C2, C3, C4, C5, C6>)World.GetQuery(Mask, CreateQuery);
 }
 }
 
@@ -417,11 +417,11 @@ where C5 : struct
 where C6 : struct
 where C7 : struct
 {
-private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-    (archetypes, mask, matchingTables) => new Query<C1, C2, C3, C4, C5, C6, C7>(archetypes, mask, matchingTables);
+private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    (World, mask, matchingTables) => new Query<C1, C2, C3, C4, C5, C6, C7>(World, mask, matchingTables);
 
 
-public QueryBuilder(Archetypes archetypes) : base(archetypes)
+public QueryBuilder(World World) : base(World)
 {
     Has<C1>().Has<C2>().Has<C3>().Has<C4>().Has<C5>().Has<C6>().Has<C7>();
 }
@@ -465,7 +465,7 @@ public new QueryBuilder<C1, C2, C3, C4, C5, C6, C7> Any<T>(Type type)
 
 public Query<C1, C2, C3, C4, C5, C6, C7> Build()
 {
-    return (Query<C1, C2, C3, C4, C5, C6, C7>)Archetypes.GetQuery(Mask, CreateQuery);
+    return (Query<C1, C2, C3, C4, C5, C6, C7>)World.GetQuery(Mask, CreateQuery);
 }
 }
 
@@ -479,11 +479,11 @@ where C6 : struct
 where C7 : struct
 where C8 : struct
 {
-private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-    (archetypes, mask, matchingTables) => new Query<C1, C2, C3, C4, C5, C6, C7, C8>(archetypes, mask, matchingTables);
+private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    (World, mask, matchingTables) => new Query<C1, C2, C3, C4, C5, C6, C7, C8>(World, mask, matchingTables);
 
 
-public QueryBuilder(Archetypes archetypes) : base(archetypes)
+public QueryBuilder(World World) : base(World)
 {
     Has<C1>().Has<C2>().Has<C3>().Has<C4>().Has<C5>().Has<C6>().Has<C7>().Has<C8>();
 }
@@ -527,7 +527,7 @@ public new QueryBuilder<C1, C2, C3, C4, C5, C6, C7, C8> Any<T>(Type type)
 
 public Query<C1, C2, C3, C4, C5, C6, C7, C8> Build()
 {
-    return (Query<C1, C2, C3, C4, C5, C6, C7, C8>)Archetypes.GetQuery(Mask, CreateQuery);
+    return (Query<C1, C2, C3, C4, C5, C6, C7, C8>)World.GetQuery(Mask, CreateQuery);
 }
 }
 
@@ -542,11 +542,11 @@ where C7 : struct
 where C8 : struct
 where C9 : struct
 {
-private static readonly Func<Archetypes, Mask, List<Table>, Query> CreateQuery =
-    (archetypes, mask, matchingTables) => new Query<C1, C2, C3, C4, C5, C6, C7, C8, C9>(archetypes, mask, matchingTables);
+private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    (World, mask, matchingTables) => new Query<C1, C2, C3, C4, C5, C6, C7, C8, C9>(World, mask, matchingTables);
 
 
-public QueryBuilder(Archetypes archetypes) : base(archetypes)
+public QueryBuilder(World World) : base(World)
 {
     Has<C1>().Has<C2>().Has<C3>().Has<C4>().Has<C5>().Has<C6>().Has<C7>().Has<C8>().Has<C9>();
 }
@@ -590,7 +590,7 @@ public new QueryBuilder<C1, C2, C3, C4, C5, C6, C7, C8, C9> Any<T>(Type type)
 
 public Query<C1, C2, C3, C4, C5, C6, C7, C8, C9> Build()
 {
-    return (Query<C1, C2, C3, C4, C5, C6, C7, C8, C9>)Archetypes.GetQuery(Mask, CreateQuery);
+    return (Query<C1, C2, C3, C4, C5, C6, C7, C8, C9>)World.GetQuery(Mask, CreateQuery);
 }
 }
 */

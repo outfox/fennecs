@@ -301,4 +301,33 @@ public static class QueryTests
         });
         Assert.Equal(2, count);
     }
+
+    [Fact]
+    private static void Queries_are_Cached()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(123);
+
+        var query1A = world.Query().Build();
+        var query1B = world.Query().Build();
+
+        var query2A = world.Query<Entity>().Build();
+        var query2B = world.Query<Entity>().Build();
+
+        var query3A = world.Query().Has<int>().Build();
+        var query3B = world.Query().Has<int>().Build();
+
+        var query4A = world.Query<Entity>().Not<int>().Build();
+        var query4B = world.Query<Entity>().Not<int>().Build();
+
+        var query5A = world.Query<Entity>().Any<int>().Any<float>().Build();
+        var query5B = world.Query<Entity>().Any<int>().Any<float>().Build();
+
+        Assert.True(ReferenceEquals(query1A, query1B));
+        Assert.True(ReferenceEquals(query2A, query2B));
+        Assert.True(ReferenceEquals(query3A, query3B));
+        Assert.True(ReferenceEquals(query4A, query4B));
+        Assert.True(ReferenceEquals(query5A, query5B));
+    }
 }

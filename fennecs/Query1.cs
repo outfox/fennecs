@@ -2,7 +2,7 @@
 
 namespace fennecs;
 
-public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Query(archetypes, mask, tables)
+public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
 {
     private readonly CountdownEvent _countdown = new(1);
     
@@ -22,7 +22,7 @@ public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Q
         {
             throw new TypeAccessException("Can't request a mutable ref to type <Entity>.");
         }
-        return ref archetypes.GetComponent<C1>(entity);
+        return ref world.GetComponent<C1>(entity);
     }
 
 
@@ -30,7 +30,7 @@ public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Q
 
     public void ForEach(RefAction_C<C1> action)
     {
-        Archetypes.Lock();
+        world.Lock();
 
         foreach (var table in Tables)
         {
@@ -39,12 +39,12 @@ public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Q
             foreach (ref var c in storage) action(ref c);
         }
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     public void ForEach<U>(RefAction_CU<C1, U> action, U uniform)
     {
-        Archetypes.Lock();
+        world.Lock();
 
         foreach (var table in Tables)
         {
@@ -53,12 +53,12 @@ public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Q
             foreach (ref var c in storage) action(ref c, uniform);
         }
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     public void Run(SpanAction_C<C1> action)
     {
-        Archetypes.Lock();
+        world.Lock();
 
         foreach (var table in Tables)
         {
@@ -66,13 +66,13 @@ public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Q
             action(table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count));
         }
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
 
     public void Job(RefAction_C<C1> action, int chunkSize = int.MaxValue)
     {
-        Archetypes.Lock();
+        world.Lock();
         _countdown.Reset();
 
         using var jobs = PooledList<Work<C1>>.Rent();
@@ -107,12 +107,12 @@ public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Q
 
         JobPool<Work<C1>>.Return(jobs);
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     public void Job<U>(RefAction_CU<C1, U> action, U uniform, int chunkSize = int.MaxValue)
     {
-        Archetypes.Lock();
+        world.Lock();
         _countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C1, U>>.Rent();
@@ -147,12 +147,12 @@ public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Q
 
         JobPool<UniformWork<C1, U>>.Return(jobs);
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     public void Raw(MemoryAction_C<C1> action)
     {
-        Archetypes.Lock();
+        world.Lock();
 
         foreach (var table in Tables)
         {
@@ -160,7 +160,7 @@ public class Query<C1>(Archetypes archetypes, Mask mask, List<Table> tables) : Q
             action(table.Memory<C1>(Identity.None));
         }
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     #endregion

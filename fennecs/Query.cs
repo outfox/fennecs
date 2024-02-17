@@ -4,12 +4,12 @@ using System.Collections;
 
 namespace fennecs;
 
-public class Query(Archetypes archetypes, Mask mask, List<Table> tables) : IEnumerable<Entity>, IEnumerable
+public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Entity>, IEnumerable
 {
     protected readonly ParallelOptions Options = new() {MaxDegreeOfParallelism = 24};
 
     private protected readonly List<Table> Tables = tables;
-    private protected readonly Archetypes Archetypes = archetypes;
+    private protected readonly World world = world;
 
     protected internal readonly Mask Mask = mask;
     
@@ -47,8 +47,8 @@ public class Query(Archetypes archetypes, Mask mask, List<Table> tables) : IEnum
     
     public bool Contains(Entity entity)
     {
-        var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var table = Archetypes.GetTable(meta.TableId);
+        var meta = world.GetEntityMeta(entity.Identity);
+        var table = world.GetTable(meta.TableId);
         return Tables.Contains(table);
     }
     
@@ -97,6 +97,13 @@ public delegate void SpanAction_CCC<C0, C1, C2>(Span<C0> c0, Span<C1> c1, Span<C
 public delegate void SpanAction_CCCC<C0, C1, C2, C3>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3);
 
 public delegate void SpanAction_CCCCC<C0, C1, C2, C3, C4>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4);
+
+
+public delegate void SpanAction_CU<C0, U>(Span<C0> c0, U uniform);
+public delegate void SpanAction_CCU<C0, C1, U>(Span<C0> c0, Span<C1> c1, U uniform);
+public delegate void SpanAction_CCCU<C0, C1, C2, U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, U uniform);
+public delegate void SpanAction_CCCCU<C0, C1, C2, C3, U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, U uniform); 
+public delegate void SpanAction_CCCCCU<C0, C1, C2, C3, C4, U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4, U uniform);
 
 
 // ReSharper enable IdentifierTypo

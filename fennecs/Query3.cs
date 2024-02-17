@@ -2,12 +2,12 @@
 
 namespace fennecs;
 
-public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tables) : Query(archetypes, mask, tables)
+public class Query<C1, C2, C3>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
 {
     public RefValueTuple<C1, C2, C3> Get(Entity entity)
     {
-        var meta = Archetypes.GetEntityMeta(entity.Identity);
-        var table = Archetypes.GetTable(meta.TableId);
+        var meta = world.GetEntityMeta(entity.Identity);
+        var table = world.GetTable(meta.TableId);
         var storage1 = table.GetStorage<C1>(Identity.None);
         var storage2 = table.GetStorage<C2>(Identity.None);
         var storage3 = table.GetStorage<C3>(Identity.None);
@@ -19,7 +19,7 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
 
     public void Run(RefAction_CCC<C1, C2, C3> action)
     {
-        Archetypes.Lock();
+        world.Lock();
 
         foreach (var table in Tables)
         {
@@ -31,12 +31,12 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
             for (var i = 0; i < table.Count; i++) action(ref s1[i], ref s2[i], ref s3[i]);
         }
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     public void RunParallel(RefAction_CCC<C1, C2, C3> action, int chunkSize = int.MaxValue)
     {
-        Archetypes.Lock();
+        world.Lock();
 
         using var countdown = new CountdownEvent(1);
 
@@ -85,12 +85,12 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
 
         countdown.Signal();
         countdown.Wait();
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     public void Run<U>(RefAction_CCCU<C1, C2, C3, U> action, U uniform)
     {
-        Archetypes.Lock();
+        world.Lock();
 
         foreach (var table in Tables)
         {
@@ -101,13 +101,13 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
             for (var i = 0; i < table.Count; i++) action(ref s1[i], ref s2[i], ref s3[i], uniform);
         }
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
 
     public void RunParallel<U>(RefAction_CCCU<C1, C2, C3, U> action, U uniform, int chunkSize = int.MaxValue)
     {
-        Archetypes.Lock();
+        world.Lock();
         using var countdown = new CountdownEvent(1);
 
         foreach (var table in Tables)
@@ -154,14 +154,14 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
         }
 
         countdown.Signal();
-        Archetypes.Unlock();
+        world.Unlock();
 
     }
 
 
     public void Run(SpanAction_CCC<C1, C2, C3> action)
     {
-        Archetypes.Lock();
+        world.Lock();
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
@@ -171,12 +171,12 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
             action(s1, s2, s3);
         }
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     public void Raw(Action<Memory<C1>, Memory<C2>, Memory<C3>> action)
     {
-        Archetypes.Lock();
+        world.Lock();
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
@@ -186,12 +186,12 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
             action(m1, m2, m3);
         }
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     public void RawParallel(Action<Memory<C1>, Memory<C2>, Memory<C3>> action)
     {
-        Archetypes.Lock();
+        world.Lock();
 
         Parallel.ForEach(Tables, Options,
             table =>
@@ -203,7 +203,7 @@ public class Query<C1, C2, C3>(Archetypes archetypes, Mask mask, List<Table> tab
                 action(m1, m2, m3);
             });
 
-        Archetypes.Unlock();
+        world.Unlock();
     }
 
     #endregion

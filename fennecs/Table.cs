@@ -28,7 +28,7 @@ public sealed class Table
     internal int Version => Volatile.Read(ref _version);
     public int Capacity => _identities.Length;
 
-    private readonly Archetypes _archetypes;
+    private readonly World _archetypes;
 
     private Identity[] _identities;
     private readonly Array[] _storages;
@@ -40,7 +40,7 @@ public sealed class Table
     private int _version;
 
 
-    public Table(int id, Archetypes archetypes, SortedSet<TypeExpression> types)
+    public Table(int id, World archetypes, SortedSet<TypeExpression> types)
     {
         _archetypes = archetypes;
 

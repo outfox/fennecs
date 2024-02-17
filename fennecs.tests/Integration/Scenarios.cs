@@ -11,6 +11,7 @@ public class Scenarios
     [InlineData(100_000, 19, 31, 37, 43)]
     public void Can_Iterate_many_Entities(int count, int floatRate, int doubleRate, int stringRate, int shortRate)
     {
+        //BUG: This test intermittently fails (very rarely) after larger domain reloads.
         using var world = new World();
         
         var random = new Random(9001);

@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 
+using System.Runtime.CompilerServices;
+
 namespace fennecs;
 
-public sealed class Mask : IEquatable<Mask>, IDisposable
+public sealed class Mask : IDisposable
 {
     internal readonly List<TypeExpression> HasTypes = new(8);
     internal readonly List<TypeExpression> NotTypes = new(8);
@@ -30,18 +32,35 @@ public sealed class Mask : IEquatable<Mask>, IDisposable
         AnyTypes.Clear();
     }
 
-
-    public override int GetHashCode()
+    public int Key()
     {
-        // ReSharper disable once NonReadonlyMemberInGetHashCode
-        return HashCode.Combine(HasTypes, NotTypes, AnyTypes);
+        var hash = HashCode.Combine(HasTypes.Count);
+
+        foreach (var type in HasTypes)
+        {
+            hash = HashCode.Combine(hash, type);
+        }
+
+        HashCode.Combine(NotTypes.Count);
+
+        foreach (var type in NotTypes)
+        {
+            hash = HashCode.Combine(hash, type);
+        }
+
+        HashCode.Combine(AnyTypes.Count);
+
+        foreach (var type in AnyTypes)
+        {
+            hash = HashCode.Combine(hash, type);
+        }
+
+        return hash;
     }
 
-    public static implicit operator int(Mask self)
-    {
-        return self.GetHashCode();
-    }
+    public static implicit operator int(Mask self) => self.Key();
 
+    /*
     public bool Equals(Mask? other)
     {
         return ReferenceEquals(this, other);
@@ -51,6 +70,7 @@ public sealed class Mask : IEquatable<Mask>, IDisposable
     {
         return ReferenceEquals(this, obj) || obj is Mask other && Equals(other);
     }
-
+    */
+    
     public void Dispose() => MaskPool.Return(this);
 }

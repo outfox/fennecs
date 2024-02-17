@@ -104,6 +104,7 @@ public partial class MultiMeshExample : Node
 		}
 
 		MeshInstance.Multimesh.InstanceCount += spawnCount;
+		Array.Resize(ref _submissionArray, InstanceCount * 12);
 	}
 
 	public override void _Ready()
@@ -115,18 +116,20 @@ public partial class MultiMeshExample : Node
 
 		MeshInstance.Multimesh.VisibleInstanceCount = -1;
 
-		SpawnWave(SpawnCount * 5);
+		SpawnWave(200_000);
+		
+		query = _world.Query<int, Matrix4X3>().Build();
 	}
 
 	private float[] _submissionArray = Array.Empty<float>();
+	private Query<int, Matrix4X3> query;
 
 	public override void _Process(double delta)
 	{
-		var query = _world.Query<int, Matrix4X3>().Build();
 		_time += delta * TimeScale;
 
 		//Update positions
-		query.RunParallel((ref int index, ref Matrix4X3 transform) =>
+		query.Job(static (ref int index, ref Matrix4X3 transform, (float time, Vector3 amplitude) uniform) => 
 		{
 			var phase1 = index / 5000f * 2f;
 			var group1 = 1 + (index / 1000)%5;
@@ -137,8 +140,8 @@ public partial class MultiMeshExample : Node
 			var phase3 = index / 1000f * 2f;
 			var group3 = 1 + (index / 1000)%10;
 
-			var value1 = phase1 * Mathf.Pi * (group1 + Mathf.Sin(_time) * 1f);
-			var value2 = phase2 * Mathf.Pi * (group2 + Mathf.Sin(_time * 1f) * 3f) ;
+			var value1 = phase1 * Mathf.Pi * (group1 + Mathf.Sin(uniform.time) * 1f);
+			var value2 = phase2 * Mathf.Pi * (group2 + Mathf.Sin(uniform.time * 1f) * 3f) ;
 			var value3 = phase3 * Mathf.Pi * group3;
 
 			var scale1 = 3f;
@@ -147,23 +150,22 @@ public partial class MultiMeshExample : Node
 
 			var vector = new Vector3
 			{
-				X = (float)Math.Sin(value1 + _time * scale1),
-				Y = (float)Math.Sin(value2 + _time * scale2),
-				Z = (float)Math.Sin(value3 + _time * scale3),
+				X = (float)Math.Sin(value1 + uniform.time * scale1),
+				Y = (float)Math.Sin(value2 + uniform.time * scale2),
+				Z = (float)Math.Sin(value3 + uniform.time * scale3),
 			};
 
-			transform = new Matrix4X3(vector * _amplitude);
-		}, chunkSize: 4096);
-
+			transform = new Matrix4X3(vector * uniform.amplitude);
+		}, ((float) _time, _amplitude), chunkSize: 4096);
+		
 		// Write transforms into Multimesh
-		query.Run((_, transforms) =>
+		query.Span(static (Span<int> _, Span<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform) =>
 		{
 			var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms);
 
 			//We must copy the data manually once, into a pooled array.
-			Array.Resize(ref _submissionArray, floatSpan.Length);
-			floatSpan.CopyTo(_submissionArray);
-			RenderingServer.MultimeshSetBuffer(MeshInstance.Multimesh.GetRid(), _submissionArray);
+			floatSpan.CopyTo(uniform.submission);
+			RenderingServer.MultimeshSetBuffer(uniform.mesh, uniform.submission);
 
 			// Ideal way - raw query to pass Memory<T>, Godot Memory<TY overload not yet available.
 			// query.Raw((_, transforms) => RenderingServer.MultimeshSetBuffer(MeshInstance.Multimesh.GetRid(), transforms));
@@ -173,7 +175,7 @@ public partial class MultiMeshExample : Node
 			// match the internal API 1:1 (the System.Array parameter is the odd one out).
 			// Calling Span.ToArray() makes an expensive allocation; and is unusable for this purpose.
 			// RenderingServer.MultimeshSetBuffer(MeshInstance.Multimesh.GetRid(), floatSpan);
-		});
+		}, (MeshInstance.Multimesh.GetRid(), _submissionArray));
 	}
 
 	private void _on_button_pressed()

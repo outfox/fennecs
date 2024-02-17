@@ -91,13 +91,10 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         return new TypeExpression(target, LanguageType.Identify(type));
     }
 
-    
-    /* TODO: Probably not worth it.
     public static TypeExpression Create<T, Target>()
     {
         return new TypeExpression(new Identity(LanguageType<Target>.Id), LanguageType<T>.Id);
     }
-    */
 
     public override int GetHashCode()
     {
