@@ -5,6 +5,111 @@ using Godot;
 using Vector3 = System.Numerics.Vector3;
 
 namespace examples.godot.BasicCubes;
+[GlobalClass]
+public partial class MultiMeshExample : Node
+{
+	[Export] public int SpawnCount = 10_000;
+	[Export] public MultiMeshInstance3D MeshInstance;
+
+	private int InstanceCount => MeshInstance.Multimesh.InstanceCount;
+
+	private readonly Vector3 _amplitude = new(120f, 90f, 120f);
+	private const float TimeScale = 0.001f;
+
+	private readonly World _world = new();
+	private Query<int, Matrix4X3> _query;
+
+	private double _time;
+	private float[] _submissionArray = Array.Empty<float>();
+
+
+	private void SpawnWave(int spawnCount)
+	{
+		for (var i = 0; i < spawnCount; i++)
+		{
+			_world.Spawn()
+				.Add(i + MeshInstance.Multimesh.InstanceCount)
+				.Add<Matrix4X3>()
+				.Id();
+		}
+
+		MeshInstance.Multimesh.InstanceCount += spawnCount;
+		Array.Resize(ref _submissionArray, InstanceCount * 12);
+	}
+
+	public override void _Ready()
+	{
+		MeshInstance.Multimesh = new MultiMesh();
+		MeshInstance.Multimesh.TransformFormat = MultiMesh.TransformFormatEnum.Transform3D;
+		MeshInstance.Multimesh.Mesh = new BoxMesh();
+		MeshInstance.Multimesh.Mesh.SurfaceSetMaterial(0, ResourceLoader.Load<Material>("res://BasicCubes/box_material.tres"));
+
+		MeshInstance.Multimesh.VisibleInstanceCount = -1;
+
+		SpawnWave(200_000);
+		
+		_query = _world.Query<int, Matrix4X3>().Build();
+	}
+
+	public override void _Process(double delta)
+	{
+		_time += delta * TimeScale;
+
+		//Update positions
+		_query.Job(UpdatePositionForCube, ((float) _time, _amplitude), chunkSize: 4096);
+		
+		// Write transforms into Multimesh
+		_query.Raw(static (Memory<int> _, Memory<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform) =>
+		{
+			var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
+
+			//We must copy the data manually once, into a pre-created array.
+			//ISSUE: (Godot) It cannot come from an ArrayPool because it needs to have the exact size.
+			floatSpan.CopyTo(uniform.submission);
+			RenderingServer.MultimeshSetBuffer(uniform.mesh, uniform.submission);
+
+			// Ideal way - raw query to pass Memory<T>, Godot Memory<TY overload not yet available.
+			//_query.Raw((_, transforms) => RenderingServer.MultimeshSetBuffer(MeshInstance.Multimesh.GetRid(), transforms));
+			
+			// This variant is also fast, but it doesn't work with the Godot API as that expects an array.
+			// We're waiting on a change to the Godot API to expose the Span<float> overloads, which actually
+			// match the internal API 1:1 (the System.Array parameter is the odd one out).
+			// Calling Span.ToArray() makes an expensive allocation; and is unusable for this purpose.
+			//RenderingServer.MultimeshSetBuffer(uniform.mesh, floatSpan);
+		}, (MeshInstance.Multimesh.GetRid(), _submissionArray));
+	}
+
+	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, (float time, Vector3 amplitude) uniform)
+	{
+		var phase1 = index / 5000f * 2f;
+		var group1 = 1 + (index / 1000) % 5;
+
+		var phase2 = index / 3000f * 2f;
+		var group2 = 1 + (index / 1000) % 3;
+
+		var phase3 = index / 1000f * 2f;
+		var group3 = 1 + (index / 1000) % 10;
+
+		var value1 = phase1 * Mathf.Pi * (group1 + Mathf.Sin(uniform.time) * 1f);
+		var value2 = phase2 * Mathf.Pi * (group2 + Mathf.Sin(uniform.time * 1f) * 3f);
+		var value3 = phase3 * Mathf.Pi * group3;
+
+		var scale1 = 3f;
+		var scale2 = 5f - group2;
+		var scale3 = 4f;
+
+		var vector = new Vector3 {X = (float) Math.Sin(value1 + uniform.time * scale1), Y = (float) Math.Sin(value2 + uniform.time * scale2), Z = (float) Math.Sin(value3 + uniform.time * scale3),};
+
+		transform = new Matrix4X3(vector * uniform.amplitude);
+	}
+
+	private void _on_button_pressed()
+	{
+		SpawnWave(SpawnCount);
+	}
+}
+
+
 
 [StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct Matrix4X3
@@ -77,111 +182,3 @@ public struct Matrix4X3
 		return $"Matrix4X3({M00}, {M01}, {M02}, {M03}, {M10}, {M11}, {M12}, {M13}, {M20}, {M21}, {M22}, {M23})";
 	}
 }
-
-
-[GlobalClass]
-public partial class MultiMeshExample : Node
-{
-	[Export] public int SpawnCount = 10_000;
-	[Export] public MultiMeshInstance3D MeshInstance;
-
-	private int InstanceCount => MeshInstance.Multimesh.InstanceCount;
-
-	private readonly Vector3 _amplitude = new(120f, 90f, 120f);
-	private const float TimeScale = 0.001f;
-
-	private readonly World _world = new();
-	private double _time;
-
-	private void SpawnWave(int spawnCount)
-	{
-		for (var i = 0; i < spawnCount; i++)
-		{
-			_world.Spawn()
-				.Add(i+ MeshInstance.Multimesh.InstanceCount)
-				.Add<Matrix4X3>()
-				.Id();
-		}
-
-		MeshInstance.Multimesh.InstanceCount += spawnCount;
-		Array.Resize(ref _submissionArray, InstanceCount * 12);
-	}
-
-	public override void _Ready()
-	{
-		MeshInstance.Multimesh = new MultiMesh();
-		MeshInstance.Multimesh.TransformFormat = MultiMesh.TransformFormatEnum.Transform3D;
-		MeshInstance.Multimesh.Mesh = new BoxMesh();
-		MeshInstance.Multimesh.Mesh.SurfaceSetMaterial(0, ResourceLoader.Load<Material>("res://BasicCubes/box_material.tres"));
-
-		MeshInstance.Multimesh.VisibleInstanceCount = -1;
-
-		SpawnWave(200_000);
-		
-		query = _world.Query<int, Matrix4X3>().Build();
-	}
-
-	private float[] _submissionArray = Array.Empty<float>();
-	private Query<int, Matrix4X3> query;
-
-	public override void _Process(double delta)
-	{
-		_time += delta * TimeScale;
-
-		//Update positions
-		query.Job(static (ref int index, ref Matrix4X3 transform, (float time, Vector3 amplitude) uniform) => 
-		{
-			var phase1 = index / 5000f * 2f;
-			var group1 = 1 + (index / 1000)%5;
-
-			var phase2 = index / 3000f * 2f;
-			var group2 = 1 + (index / 1000)%3;
-
-			var phase3 = index / 1000f * 2f;
-			var group3 = 1 + (index / 1000)%10;
-
-			var value1 = phase1 * Mathf.Pi * (group1 + Mathf.Sin(uniform.time) * 1f);
-			var value2 = phase2 * Mathf.Pi * (group2 + Mathf.Sin(uniform.time * 1f) * 3f) ;
-			var value3 = phase3 * Mathf.Pi * group3;
-
-			var scale1 = 3f;
-			var scale2 = 5f - group2;
-			var scale3 = 4f;
-
-			var vector = new Vector3
-			{
-				X = (float)Math.Sin(value1 + uniform.time * scale1),
-				Y = (float)Math.Sin(value2 + uniform.time * scale2),
-				Z = (float)Math.Sin(value3 + uniform.time * scale3),
-			};
-
-			transform = new Matrix4X3(vector * uniform.amplitude);
-		}, ((float) _time, _amplitude), chunkSize: 4096);
-		
-		// Write transforms into Multimesh
-		query.Span(static (Span<int> _, Span<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform) =>
-		{
-			var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms);
-
-			//We must copy the data manually once, into a pooled array.
-			floatSpan.CopyTo(uniform.submission);
-			RenderingServer.MultimeshSetBuffer(uniform.mesh, uniform.submission);
-
-			// Ideal way - raw query to pass Memory<T>, Godot Memory<TY overload not yet available.
-			// query.Raw((_, transforms) => RenderingServer.MultimeshSetBuffer(MeshInstance.Multimesh.GetRid(), transforms));
-			
-			// This variant is also fast, but it doesn't work with the Godot API as that expects an array.
-			// We're waiting on a change to the Godot API to expose the Span<float> overloads, which actually
-			// match the internal API 1:1 (the System.Array parameter is the odd one out).
-			// Calling Span.ToArray() makes an expensive allocation; and is unusable for this purpose.
-			// RenderingServer.MultimeshSetBuffer(MeshInstance.Multimesh.GetRid(), floatSpan);
-		}, (MeshInstance.Multimesh.GetRid(), _submissionArray));
-	}
-
-	private void _on_button_pressed()
-	{
-		SpawnWave(SpawnCount);
-	}
-}
-
-

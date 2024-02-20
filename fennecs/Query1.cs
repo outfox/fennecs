@@ -1,64 +1,20 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using fennecs.pools;
+
 namespace fennecs;
 
 public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
 {
     private readonly CountdownEvent _countdown = new(1);
-    
-    public ref C1 this[Entity entity] => ref Ref(entity);
-
-    /// <summary>
-    /// Gets a reference to the component of type <typeparamref name="C1"/> for the entity.
-    /// </summary>
-    /// <param name="entity">The entity to get the component from.</param>
-    /// <typeparam name="C1">The type of the component to get.</typeparam>
-    /// <returns>A reference to the component of type <typeparamref name="C1"/> for the entity.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when trying to get a reference to
-    /// <see cref="Entity"/> itself, because its immutability is crucial for the integrity of the tables.</exception>
-    public ref C1 Ref(Entity entity)
-    {
-        if (typeof(C1) == typeof(Entity))
-        {
-            throw new TypeAccessException("Can't request a mutable ref to type <Entity>.");
-        }
-        return ref world.GetComponent<C1>(entity);
-    }
-
 
     #region Runners
 
-    public void ForEach(RefAction_C<C1> action)
-    {
-        world.Lock();
-
-        foreach (var table in Tables)
-        {
-            if (table.IsEmpty) continue;
-            var storage = table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count);
-            foreach (ref var c in storage) action(ref c);
-        }
-
-        world.Unlock();
-    }
-
-    public void ForEach<U>(RefAction_CU<C1, U> action, U uniform)
-    {
-        world.Lock();
-
-        foreach (var table in Tables)
-        {
-            if (table.IsEmpty) continue;
-            var storage = table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count);
-            foreach (ref var c in storage) action(ref c, uniform);
-        }
-
-        world.Unlock();
-    }
-
     public void Run(SpanAction_C<C1> action)
     {
-        world.Lock();
+        AssertNotDisposed();
+
+        World.Lock();
 
         foreach (var table in Tables)
         {
@@ -66,13 +22,46 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
             action(table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count));
         }
 
-        world.Unlock();
+        World.Unlock();
     }
 
+    public void ForEach(RefAction_C<C1> action)
+    {
+        AssertNotDisposed();
+        
+        World.Lock();
 
+        foreach (var table in Tables)
+        {
+            if (table.IsEmpty) continue;
+            var storage = table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count);
+            for (var i = 0; i < storage.Length; i++) action(ref storage[i]);
+        }
+
+        World.Unlock();
+    }
+    
+    public void ForEach<U>(RefAction_CU<C1, U> action, U uniform)
+    {
+        AssertNotDisposed();
+        
+        World.Lock();
+
+        foreach (var table in Tables)
+        {
+            if (table.IsEmpty) continue;
+            var storage = table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count);
+            for (var i = 0; i < storage.Length; i++) action(ref storage[i], uniform);
+        }
+
+        World.Unlock();
+    }
+    
     public void Job(RefAction_C<C1> action, int chunkSize = int.MaxValue)
     {
-        world.Lock();
+        AssertNotDisposed();
+        
+        World.Lock();
         _countdown.Reset();
 
         using var jobs = PooledList<Work<C1>>.Rent();
@@ -107,12 +96,14 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
 
         JobPool<Work<C1>>.Return(jobs);
 
-        world.Unlock();
+        World.Unlock();
     }
 
     public void Job<U>(RefAction_CU<C1, U> action, U uniform, int chunkSize = int.MaxValue)
     {
-        world.Lock();
+        AssertNotDisposed();
+        
+        World.Lock();
         _countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C1, U>>.Rent();
@@ -133,7 +124,7 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
                 var length = Math.Min(chunkSize, count - start);
 
                 var job = JobPool<UniformWork<C1, U>>.Rent();
-                job.Memory = storage.AsMemory(start, length);
+                job.Memory1 = storage.AsMemory(start, length);
                 job.Action = action;
                 job.Uniform = uniform;
                 job.CountDown = _countdown;
@@ -147,12 +138,14 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
 
         JobPool<UniformWork<C1, U>>.Return(jobs);
 
-        world.Unlock();
+        World.Unlock();
     }
 
     public void Raw(MemoryAction_C<C1> action)
     {
-        world.Lock();
+        AssertNotDisposed();
+        
+        World.Lock();
 
         foreach (var table in Tables)
         {
@@ -160,7 +153,7 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
             action(table.Memory<C1>(Identity.None));
         }
 
-        world.Unlock();
+        World.Unlock();
     }
 
     #endregion

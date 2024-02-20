@@ -2,7 +2,7 @@
 
 using System.Collections.Concurrent;
 
-namespace fennecs;
+namespace fennecs.pools;
 
 public static class MaskPool
 {

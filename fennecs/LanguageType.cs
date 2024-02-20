@@ -1,27 +1,34 @@
-﻿namespace fennecs;
+﻿global using TypeID = short;
+
+namespace fennecs;
 
 internal class LanguageType
 {
-    protected internal static Type Resolve(ushort id) => Types[id];
-
-    // ReSharper disable once StaticMemberInGenericType
-    protected static ushort Counter;
-    protected static readonly Dictionary<ushort, Type> Types = new();
-    protected static readonly Dictionary<Type, ushort> Ids = new();
+    protected internal static Type Resolve(TypeID id) => Types[id];
+    
+    // Shared ID counter
+    protected static TypeID Counter;
+    
+    protected static readonly Dictionary<TypeID, Type> Types = new();
+    protected static readonly Dictionary<Type, TypeID> Ids = new();
     
     protected static readonly object RegistryLock = new();
 
-    protected internal static ushort Identify(Type type)
+    protected internal static TypeID Identify(Type type)
     {
-        lock (RegistryLock) // Maybe there's a nicer/safer way for this?
+        lock (RegistryLock)
         {
-            // Query the registry directly.
+            // Query the registry directly for a fast response.
             if (Ids.TryGetValue(type, out var id)) return id;
-
-            // Construct LanguageType<T> and invoke static constructor.
+        
+            // TODO: Pattern: double-checked locking (DCL); move lock here
+            // Query the registry again, this time synchronized.
+            //if (Ids.TryGetValue(type, out id)) return id;
+            
+            // Construct LanguageType<T>, invoking its static constructor.
             Type[] typeArgs = [type];
             var constructed = typeof(LanguageType<>).MakeGenericType(typeArgs);
-            constructed.TypeInitializer?.Invoke(null, null);
+            constructed.TypeInitializer!.Invoke(null, null);
 
             // Constructor should have added the type to the registry.
             return Ids[type];
@@ -30,11 +37,12 @@ internal class LanguageType
 
     static LanguageType()
     {
+        // Register the None and Any types, blocking off the first and last IDs.
         Types[0] = typeof(None);
         Ids[typeof(None)] = 0;
 
-        Types[ushort.MaxValue] = typeof(Any);
-        Ids[typeof(Any)] = ushort.MaxValue;
+        Types[TypeID.MaxValue] = typeof(Any);
+        Ids[typeof(Any)] = TypeID.MaxValue;
     }
 
     protected internal struct Any;
@@ -43,12 +51,10 @@ internal class LanguageType
 }
 
 
-// ReSharper disable once UnusedTypeParameter
-// ReSharper disable once ClassNeverInstantiated.Global
 internal class LanguageType<T> : LanguageType
 {
-    // ReSharper disable once StaticMemberInGenericType
-    public static readonly ushort Id;
+    // ReSharper disable once StaticMemberInGenericType (we indeed want this unique for each T)
+    public static readonly TypeID Id;
 
     static LanguageType()
     {
@@ -59,5 +65,7 @@ internal class LanguageType<T> : LanguageType
             Ids.Add(typeof(T), Id);
         }
     }
-}
 
+    //FIXME: This collides with certain entity types and generations.
+    public static TypeID TargetId => (TypeID) (-Id);
+}

@@ -4,43 +4,6 @@
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Query1Tests
 {
-    [Fact]
-    private void Indexer_disallows_Component_Type_Entity()
-    {
-        using var world = new World();
-        var entity = world.Spawn().Id();
-        var query = world.Query<Entity>().Build();
-
-        Assert.Throws<TypeAccessException>(() => query[entity]);
-    }
-
-    [Fact]
-    private void Indexer_disallows_Dead_Entity()
-    {
-        using var world = new World();
-        var entity = world.Spawn().Add<int>().Id();
-        world.Despawn(entity);
-        Assert.False(world.IsAlive(entity));
-
-        var query = world.Query<int>().Build();
-        Assert.Throws<ObjectDisposedException>(() => query[entity]);
-    }
-
-    [Fact]
-    private void Indexer_gets_Mutable_Component()
-    {
-        using var world = new World();
-        var entity = world.Spawn().Add(23).Id();
-        var query = world.Query<int>().Build();
-
-        ref var gotten = ref query.Ref(entity);
-        Assert.Equal(23, gotten);
-
-        // Entity can't be a ref (is readonly - make sure!)
-        gotten = 42;
-        Assert.Equal(42, query.Ref(entity));
-    }
-
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void Query_Count_Accurate(int count, bool createEmptyTable)

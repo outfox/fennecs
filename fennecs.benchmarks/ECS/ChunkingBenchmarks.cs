@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using BenchmarkDotNet.Attributes;
 using fennecs;
+using fennecs.pools;
 
 namespace Benchmark.ECS;
 

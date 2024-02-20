@@ -1,40 +1,49 @@
-﻿namespace fennecs;
+﻿using fennecs.pools;
 
-public readonly struct EntityBuilder(World world, Entity entity)
+namespace fennecs;
+
+public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
 {
-    public EntityBuilder Add<T>(Entity target = default) where T : new() 
+    private readonly PooledList<World.DeferredOperation> _operations = PooledList<World.DeferredOperation>.Rent();
+
+/*
+ TODO: Introduce to this pattern.
+_operations.Add(
+    new World.DeferredOperation()
     {
-        if (target.Identity == Identity.Any) throw new InvalidOperationException("EntityBuilder: Cannot relate to Identity.Any.");
-        world.AddComponent<T>(entity, target);
+        Operation = World.Operation.Add,
+        Identity = entity,
+        Data = target,
+    });
+*/
+    public EntityBuilder Link<T>(Entity target) where T : notnull, new()
+    {
+        world.Link(entity, target, new T());
         return this;
     }
 
-    public EntityBuilder Add<T>(Type type) where T : new()
+    public EntityBuilder Link<T>(Entity target, T data)
     {
-        world.AddComponent<T>(entity, new Identity(type));
+        world.Link(entity, target, data);
         return this;
     }
-    
-    
+
+    public EntityBuilder Link<T>(T target) where T : class
+    {
+        world.Link(entity, target);
+        return this;
+    }
+
     public EntityBuilder Add<T>(T data)
     {
         world.AddComponent(entity, data);
         return this;
     }
 
-    
-    public EntityBuilder Add<T>(T data, Entity target) 
-    {
-        if (target.Identity == Identity.Any) throw new InvalidOperationException("EntityBuilder: Cannot relate to Identity.Any.");
-        
-        world.AddComponent(entity, data, target);
-        return this;
-    }
 
-    
-    public EntityBuilder Add<T>(T data, Type target) 
+    public EntityBuilder Add<T>() where T : new()
     {
-        world.AddComponent(entity, data, new Identity(target));
+        world.AddComponent(entity, new T());
         return this;
     }
 
@@ -44,23 +53,21 @@ public readonly struct EntityBuilder(World world, Entity entity)
         world.RemoveComponent<T>(entity);
         return this;
     }
-
     
     public EntityBuilder Remove<T>(Entity target) 
     {
-        world.RemoveComponent<T>(entity, target);
+        world.Unlink<T>(entity, target);
         return this;
     }
-
     
-    public EntityBuilder Remove<T>(Type target) 
-    {
-        world.RemoveComponent<T>(entity, new Identity(target));
-        return this;
-    }
-
     public Entity Id()
     {
+        Dispose();
         return entity;
+    }
+
+    public void Dispose()
+    {
+        _operations.Dispose();
     }
 }

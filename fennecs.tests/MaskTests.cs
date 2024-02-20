@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 
+using fennecs.pools;
+
 namespace fennecs.tests;
 
 public class MaskTests

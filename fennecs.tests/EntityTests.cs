@@ -34,15 +34,6 @@ public class EntityTests
         }
     }
     #endregion
-
-    [Fact]
-    public void Virtual_Entities_are_not_Alive()
-    {
-        using var world = new World();
-        Assert.False(world.IsAlive(Entity.None));
-        Assert.False(world.IsAlive(Entity.Any));
-    }
-
     [Fact]
     public Entity Entity_is_Alive_after_Spawn()
     {

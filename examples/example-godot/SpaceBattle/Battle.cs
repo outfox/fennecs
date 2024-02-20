@@ -30,10 +30,11 @@ public partial class Battle : Node3D
         for (var i = 0; i < _wave; i++)
         {
 //            var fighter = ResourceLoader.Pre<Fighter>("res://SpaceBattle/Fighter.tscn");
-        
+        /*
             World.Spawn()
-                .Add(faction, factionIdentity)
+                .Add(factionIdentity, faction)
                 .Id();
+                */
         }
     }
     

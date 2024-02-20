@@ -21,36 +21,49 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //   | Identity                     | TypeNumber |
     //   | 48 bits                      |  16 bits   |
     
+    //   PLANNED:
+    //   TypeNumber
+    //   | Type    | Flags |
+    //   | 14 bits | 2 bits |
+    
+    //   Flags
+    //   00 - Component Type
+    //   01 - Component Type Targeting Entity
+    //   10 - Component Type Targeting WeakReference
+    //   11 - Reserved (for potential hash-bucket storage features)
+    
+    
     //Union Backing Store
     [FieldOffset(0)] public readonly ulong Value;
 
     //Identity Components
     [FieldOffset(0)] public readonly int Id;
     [FieldOffset(4)] public readonly ushort Generation;
-    [FieldOffset(4)] public readonly ushort Decoration;
-    [FieldOffset(6)] public readonly ushort TypeId;
+    [FieldOffset(4)] public readonly TypeID Decoration;
+    
+    // Type Header
+    [FieldOffset(6)] public readonly TypeID TypeId;
 
     public Identity Target => new(Value);
 
-    private struct Any;
-    private struct None;
-    
     public bool isRelation => TypeId != 0 && Target != Identity.None;
-    public Type Type
-    {
-        get
+
+    public Type Type => LanguageType.Resolve(TypeId);
+    
+    /* TODO: Handle different flags if needed
         {
             return (TypeId, Id) switch
             {
                 (0, int.MaxValue) => typeof(Any),
                 (0, 0) => typeof(None),
                 (0, _) => typeof(Entity),
-                _ => LanguageType.Resolve(TypeId),
+                    _ => LanguageType.Resolve(TypeId),
             };
         }
-    }
-    
-    
+        internal struct None;
+        internal struct Any;    
+    */
+
     public bool Matches(IEnumerable<TypeExpression> other)
     {
         var self = this;
@@ -90,11 +103,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         return new TypeExpression(target, LanguageType.Identify(type));
     }
-
-    public static TypeExpression Create<T, Target>()
-    {
-        return new TypeExpression(new Identity(LanguageType<Target>.Id), LanguageType<T>.Id);
-    }
+    
 
     public override int GetHashCode()
     {
@@ -122,7 +131,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
 
     [SetsRequiredMembers]
-    private TypeExpression(Identity target, ushort typeId)
+    private TypeExpression(Identity target, TypeID typeId)
     {
         Value = target.Value;
         TypeId = typeId;

@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace fennecs.tests.Integration;
 
-public static class QueryTests
+public class QueryTests
 {
     [Fact]
     private static void Can_Enumerate_PlainEnumerator()
@@ -116,8 +116,8 @@ public static class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var bob = world.Spawn().Add(p2).Add(111, alice).Id();
-        /*var charlie = */world.Spawn().Add(p3).Add(222, bob).Id();
+        var bob = world.Spawn().Add(p2).Link(alice, 111).Id();
+        /*var charlie = */world.Spawn().Add(p3).Link(bob, 222).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Any<int>(Identity.None)
@@ -143,8 +143,8 @@ public static class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var eve = world.Spawn().Add(p2).Add(111, alice).Id();
-        var charlie = world.Spawn().Add(p3).Add(222, eve).Id();
+        var eve = world.Spawn().Add(p2).Link(alice, 111).Id();
+        var charlie = world.Spawn().Add(p3).Link(eve, 222).Id();
 
         var query = world.Query<Entity, Vector3>().Any<int>(eve).Build();
 
@@ -170,8 +170,8 @@ public static class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var eve = world.Spawn().Add(p2).Add(111, alice).Id();
-        var charlie = world.Spawn().Add(p3).Add(222, eve).Id();
+        var eve = world.Spawn().Add(p2).Link(alice, 111).Id();
+        var charlie = world.Spawn().Add(p3).Link(eve, 222).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Any<int>(eve)
@@ -214,13 +214,13 @@ public static class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var bob = world.Spawn().Add(p2).Add(111, alice).Id();
+        var bob = world.Spawn().Add(p2).Link(alice, 111).Id();
         var eve = world.Spawn().Add(p1).Add(888).Id();
 
         /*var charlie = */
-        world.Spawn().Add(p3).Add(222, bob).Id();
+        world.Spawn().Add(p3).Link(bob, 222).Id();
         /*var charlie = */
-        world.Spawn().Add(p3).Add(222, eve).Id();
+        world.Spawn().Add(p3).Link(eve, 222).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Not<int>(bob)
@@ -261,10 +261,10 @@ public static class QueryTests
         var alice = world.Spawn().Add(p1).Add(0).Id();
         var eve = world.Spawn().Add(p1).Add(888).Id();
 
-        var bob = world.Spawn().Add(p2).Add(111, alice).Id();
+        var bob = world.Spawn().Add(p2).Link(alice, 111).Id();
 
-        world.Spawn().Add(p3).Add(555, bob).Id();
-        world.Spawn().Add(p3).Add(666, eve).Id();
+        world.Spawn().Add(p3).Link(bob, 555).Id();
+        world.Spawn().Add(p3).Link(eve, 666).Id();
 
         var query = world.Query<Entity, Vector3, int>()
             .Not<int>(bob)
@@ -329,5 +329,70 @@ public static class QueryTests
         Assert.True(ReferenceEquals(query3A, query3B));
         Assert.True(ReferenceEquals(query4A, query4B));
         Assert.True(ReferenceEquals(query5A, query5B));
+    }
+
+    [Fact]
+    private static void Queries_are_Disposable()
+    {
+        using var world = new World();
+
+        var query = world.Query().Build();
+        query.Dispose();
+        Assert.Throws<ObjectDisposedException>(() => query.Raw(memory => { }));
+        Assert.Throws<ObjectDisposedException>(() =>
+        {
+            foreach (var _ in query)
+            {
+                Assert.Fail("Should not enumerate disposed Query.");
+            }
+        });
+    }
+
+
+    [Fact]
+    private void Ref_disallows_Component_Type_Entity()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Id();
+        var query = world.Query<Entity>().Build();
+        
+        Assert.Throws<TypeAccessException>(() => query.Ref<Entity>(entity));
+    }
+
+    [Fact]
+    private void Ref_disallows_Dead_Entity()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add<int>().Id();
+        world.Despawn(entity);
+        Assert.False(world.IsAlive(entity));
+
+        var query = world.Query<int>().Build();
+        Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
+    }
+
+    [Fact]
+    private void Ref_disallows_Nonexistent_Component()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add<int>().Id();
+
+        var query = world.Query<int>().Build();
+        Assert.Throws<KeyNotFoundException>(() => query.Ref<float>(entity));
+    }
+
+    [Fact]
+    private void Ref_gets_Mutable_Component()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(23).Id();
+        var query = world.Query<int>().Build();
+
+        ref var gotten = ref query.Ref<int>(entity);
+        Assert.Equal(23, gotten);
+
+        // Entity can't be a ref (is readonly - make sure!)
+        gotten = 42;
+        Assert.Equal(42, query.Ref<int>(entity));
     }
 }

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace fennecs.tests;

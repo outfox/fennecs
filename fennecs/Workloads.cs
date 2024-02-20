@@ -16,15 +16,15 @@ internal class Work<C1> : IThreadPoolWorkItem
 
 internal class UniformWork<C1, U> : IThreadPoolWorkItem
 {
-    public Memory<C1> Memory = null!;
+    public Memory<C1> Memory1 = null!;
     public RefAction_CU<C1, U> Action = null!;
     public CountdownEvent CountDown = null!;
     public U Uniform = default!;
 
     public void Execute()
     {
-        using var _1 = Memory.Pin();
-        foreach (ref var c in Memory.Span) Action(ref c, Uniform);
+        using var _1 = Memory1.Pin();
+        foreach (ref var c in Memory1.Span) Action(ref c, Uniform);
         CountDown.Signal();
     }
 }
@@ -184,24 +184,3 @@ internal class UniformWork<C1, C2, C3, C4, C5, U> : IThreadPoolWorkItem
         CountDown.Signal();
     }
 }
-
-
-/*
-internal class RawWork<C1> : IThreadPoolWorkItem
-{
-    public Memory<C1> Memory = null!;
-    public MemoryAction_C<C1> Action = null!;
-    public CountdownEvent CountDown = null!;
-
-    public WaitCallback WaitCallback => Execute;
-
-    private void Execute(object? state) => Execute();
-
-    public void Execute()
-    {
-        using var _ = Memory.Pin();
-        Action(Memory);
-        CountDown.Signal();
-    }
-}
-*/

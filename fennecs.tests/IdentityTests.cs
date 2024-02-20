@@ -70,7 +70,7 @@ public class IdentityTests(ITestOutputHelper output)
 
     [Theory]
     [InlineData(1500, 1500)]
-    internal void Identity_HashCodes_are_Unique(ushort idCount, ushort genCount)
+    internal void Identity_HashCodes_are_Unique(TypeID idCount, TypeID genCount)
     {
         var ids = new Dictionary<int, Identity>((int) (idCount * genCount * 4f));
 
@@ -78,7 +78,7 @@ public class IdentityTests(ITestOutputHelper output)
         for (var i = 0; i < idCount ; i++)
         {
             //Generations
-            for (ushort g = 1; g < genCount; g++)
+            for (TypeID g = 1; g < genCount; g++)
             {
                 var identity = new Identity(i, g);
 
@@ -119,12 +119,20 @@ public class IdentityTests(ITestOutputHelper output)
         for (var i = 0; i < 1_000; i++)
         {
             var id = random.Next();
-            var gen = (ushort) random.Next();
+            var gen = (TypeID) random.Next();
             
             var self = new Identity(id, gen);
             var other = new Identity(id, gen);
 
             Assert.Equal(self, other);
         }
+    }
+
+    [Fact]
+    private void Implicit_Cast_From_Type()
+    {
+        var type = typeof(int);
+        Identity identity= type;
+        Assert.Equal(type, identity.Type);
     }
 }

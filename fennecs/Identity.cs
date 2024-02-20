@@ -4,15 +4,20 @@ using System.Runtime.InteropServices;
 
 namespace fennecs;
 
+/// <summary>
+/// Refers to an entity, object, or virtual concept (e.g. any/none wildcard).
+/// </summary>
+/// <param name="value"></param>
 [StructLayout(LayoutKind.Explicit)]
 public readonly struct Identity(ulong value) : IEquatable<Identity>, IComparable<Identity>
 {
     [FieldOffset(0)] public readonly ulong Value = value;
     [FieldOffset(0)] public readonly int Id;
+    
     [FieldOffset(4)] public readonly ushort Generation;
-    [FieldOffset(4)] public readonly ushort Decoration;
+    [FieldOffset(4)] public readonly TypeID Decoration;
 
-    [FieldOffset(6)] public readonly short RESERVED = 0;
+    [FieldOffset(6)] public readonly TypeID RESERVED = 0;
 
     [FieldOffset(0)] public readonly uint DWordLow;
     [FieldOffset(4)] public readonly uint DWordHigh;
@@ -20,19 +25,24 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>, IComparable
     //public ulong Value => (uint) Id | (ulong) Generation << 32;
 
     public static readonly Identity None = new(0, 0);
-    public static readonly Identity Any = new(-1, ushort.MaxValue);
+    public static readonly Identity Any = new(0, TypeID.MaxValue);
     
-    public bool IsEntity => Id > 0;
-    public bool IsVirtual => !IsEntity;
-    public bool IsType => IsVirtual && Decoration is > 0 and < ushort.MaxValue;
+    // Entity Reference.
+    public bool IsEntity => Id > 0 && Generation > 0;
+
+    // Tracked Object Reference.
+    public bool IsObject => Decoration < 0;
+
+    // Special Entities, such as None, Any, and others.
+    public bool IsVirtual => Decoration >= 0 && Id <= 0;
 
     public static implicit operator Identity(Type type) => new(type);
 
-    public Identity(int id, ushort generation = 1) : this((uint) id | (ulong) generation << 32)
+    public Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)
     {
     }
-
-    internal Identity(ushort typeId) : this(0, typeId)
+    
+    internal Identity(TypeID typeId) : this(0, typeId)
     {
     }
 
@@ -40,6 +50,11 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>, IComparable
     {
     }
 
+    public static Identity Of<T>(T item) where T : class
+    {
+        return new(item.GetHashCode(), LanguageType<T>.TargetId);
+    }
+    
     public bool Equals(Identity other) => Id == other.Id && Generation == other.Generation;
 
     public int CompareTo(Identity other)
@@ -75,8 +90,9 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>, IComparable
     {
         get
         {
-            if (IsVirtual) throw new InvalidCastException("Cannot reuse virtual Identities");
-            var generationWrappedStartingAtOne = (ushort) (Generation % (ushort.MaxValue - 1) + 1);
+            if (!IsEntity) throw new InvalidCastException("Cannot reuse virtual Identities");
+                
+            var generationWrappedStartingAtOne = (TypeID) (Generation % (TypeID.MaxValue - 1) + 1);
             return new Identity(Id, generationWrappedStartingAtOne);
         }
     }
@@ -89,6 +105,6 @@ public readonly struct Identity(ulong value) : IEquatable<Identity>, IComparable
         if (this == Any)
             return $"Any";
 
-        return IsType ? $"{Type}" : $"\u2756{Id:x8}:{Generation:D5}";
+        return IsObject ? $"{Type}" : $"\u2756{Id:x8}:{Generation:D5}";
     }
 }

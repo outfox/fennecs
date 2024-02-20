@@ -31,6 +31,8 @@ public sealed class Table
     private readonly World _archetypes;
 
     private Identity[] _identities;
+    
+    // Storages is a fixed size array because an Archetype doesn't ahcnge.
     private readonly Array[] _storages;
 
     private readonly Dictionary<TypeExpression, TableEdge> _edges = new();
@@ -46,7 +48,7 @@ public sealed class Table
 
         Id = id;
         Types = types;
-
+        
         _identities = new Identity[StartCapacity];
 
         var i = 0;

@@ -4,23 +4,11 @@ namespace fennecs;
 
 public class Query<C1, C2, C3, C4>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
 {
-    public RefValueTuple<C1, C2, C3, C4> Get(Entity entity)
-    {
-        var meta = world.GetEntityMeta(entity.Identity);
-        var table = world.GetTable(meta.TableId);
-        var s1 = table.GetStorage<C1>(Identity.None);
-        var s2 = table.GetStorage<C2>(Identity.None);
-        var s3 = table.GetStorage<C3>(Identity.None);
-        var s4 = table.GetStorage<C4>(Identity.None);
-        return new RefValueTuple<C1, C2, C3, C4>(ref s1[meta.Row], ref s2[meta.Row],
-            ref s3[meta.Row], ref s4[meta.Row]);
-    }
-
-    #region Runner
+    #region Runners
 
     public void Run(RefAction_CCCC<C1, C2, C3, C4> action)
     {
-        world.Lock();
+        World.Lock();
 
         foreach (var table in Tables)
         {
@@ -33,12 +21,12 @@ public class Query<C1, C2, C3, C4>(World world, Mask mask, List<Table> tables) :
             for (var i = 0; i < table.Count; i++) action(ref s1[i], ref s2[i], ref s3[i], ref s4[i]);
         }
 
-        world.Unlock();
+        World.Unlock();
     }
 
     public void RunParallel(RefAction_CCCC<C1, C2, C3, C4> action, int chunkSize = int.MaxValue)
     {
-        world.Lock();
+        World.Lock();
 
         using var countdown = new CountdownEvent(1);
 
@@ -90,12 +78,12 @@ public class Query<C1, C2, C3, C4>(World world, Mask mask, List<Table> tables) :
 
         countdown.Signal();
         countdown.Wait();
-        world.Unlock();
+        World.Unlock();
     }
 
     public void Run<U>(RefAction_CCCCU<C1, C2, C3, C4, U> action, U uniform)
     {
-        world.Lock();
+        World.Lock();
 
         foreach (var table in Tables)
         {
@@ -107,13 +95,13 @@ public class Query<C1, C2, C3, C4>(World world, Mask mask, List<Table> tables) :
             for (var i = 0; i < table.Count; i++) action(ref s1[i], ref s2[i], ref s3[i], ref s4[i], uniform);
         }
 
-        world.Unlock();
+        World.Unlock();
     }
 
 
     public void RunParallel<U>(RefAction_CCCCU<C1, C2, C3, C4, U> action, U uniform, int chunkSize = int.MaxValue)
     {
-        world.Lock();
+        World.Lock();
         using var countdown = new CountdownEvent(1);
 
         foreach (var table in Tables)
@@ -164,14 +152,14 @@ public class Query<C1, C2, C3, C4>(World world, Mask mask, List<Table> tables) :
 
         countdown.Signal();
         countdown.Wait();
-        world.Unlock();
+        World.Unlock();
 
     }
 
 
     public void Run(SpanAction_CCCC<C1, C2, C3, C4> action)
     {
-        world.Lock();
+        World.Lock();
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
@@ -182,12 +170,12 @@ public class Query<C1, C2, C3, C4>(World world, Mask mask, List<Table> tables) :
             action(s1, s2, s3, s4);
         }
 
-        world.Unlock();
+        World.Unlock();
     }
 
     public void Raw(Action<Memory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
     {
-        world.Lock();
+        World.Lock();
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
@@ -198,12 +186,12 @@ public class Query<C1, C2, C3, C4>(World world, Mask mask, List<Table> tables) :
             action(m1, m2, m3, m4);
         }
 
-        world.Unlock();
+        World.Unlock();
     }
 
     public void RawParallel(Action<Memory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
     {
-        world.Lock();
+        World.Lock();
         Parallel.ForEach(Tables, Options,
             table =>
             {
@@ -215,7 +203,7 @@ public class Query<C1, C2, C3, C4>(World world, Mask mask, List<Table> tables) :
                 action(m1, m2, m3, m4);
             });
 
-        world.Unlock();
+        World.Unlock();
     }
 
     #endregion
