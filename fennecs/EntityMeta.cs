@@ -2,15 +2,15 @@
 
 namespace fennecs;
 
-public struct EntityMeta(Identity identity, int tableId, int row)
+public struct EntityMeta(Entity entity, int tableId, int row)
 {
-    public Identity Identity = identity;
+    public Entity Entity = entity;
     public int TableId = tableId;
     public int Row = row;
 
     public void Clear()
     {
-        Identity = Identity.None;
+        Entity = Entity.None;
         TableId = 0;
         Row = 0;
     }

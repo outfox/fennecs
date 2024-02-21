@@ -6,10 +6,6 @@ namespace fennecs;
 
 public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
 {
-    private readonly CountdownEvent _countdown = new(1);
-
-    #region Runners
-    
     public void ForEach(RefAction_CC<C1, C2> action)
     {
         World.Lock();
@@ -17,8 +13,8 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count);
-            var storage2 = table.GetStorage<C2>(Identity.None).AsSpan(0, table.Count);
+            var storage1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
+            var storage2 = table.GetStorage<C2>(Entity.None).AsSpan(0, table.Count);
             for (var i = 0; i < table.Count; i++)
             {
                 action(ref storage1[i], ref storage2[i]);
@@ -35,8 +31,8 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count);
-            var storage2 = table.GetStorage<C2>(Identity.None).AsSpan(0, table.Count);
+            var storage1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
+            var storage2 = table.GetStorage<C2>(Entity.None).AsSpan(0, table.Count);
             for (var i = 0; i < table.Count; i++)
             {
                 action(ref storage1[i], ref storage2[i], uniform);
@@ -53,8 +49,8 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.Memory<C1>(Identity.None);
-            var storage2 = table.Memory<C2>(Identity.None);
+            var storage1 = table.Memory<C1>(Entity.None);
+            var storage2 = table.Memory<C2>(Entity.None);
             action(storage1.Span, storage2.Span, uniform);
         }
 
@@ -68,8 +64,8 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
-            var span1 = table.GetStorage<C1>(Identity.None).AsSpan(0, table.Count);
-            var span2 = table.GetStorage<C2>(Identity.None).AsSpan(0, table.Count);
+            var span1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
+            var span2 = table.GetStorage<C2>(Entity.None).AsSpan(0, table.Count);
             action(span1, span2);
         }
 
@@ -80,22 +76,22 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
     public void Job(RefAction_CC<C1, C2> action, int chunkSize = int.MaxValue)
     {
         World.Lock();
-        _countdown.Reset();
+        Countdown.Reset();
 
         using var jobs = PooledList<Work<C1, C2>>.Rent();
 
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.GetStorage<C1>(Identity.None);
-            var storage2 = table.GetStorage<C2>(Identity.None);
+            var storage1 = table.GetStorage<C1>(Entity.None);
+            var storage2 = table.GetStorage<C2>(Entity.None);
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
 
             for (var chunk = 0; chunk < partitions; chunk++)
             {
-                _countdown.AddCount();
+                Countdown.AddCount();
 
                 var start = chunk * chunkSize;
                 var length = Math.Min(chunkSize, count - start);
@@ -104,15 +100,15 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
                 job.Memory1 = storage1.AsMemory(start, length);
                 job.Memory2 = storage2.AsMemory(start, length);
                 job.Action = action;
-                job.CountDown = _countdown;
+                job.CountDown = Countdown;
                 jobs.Add(job);
 
                 ThreadPool.UnsafeQueueUserWorkItem(job, true);
             }
         }
 
-        _countdown.Signal();
-        _countdown.Wait();
+        Countdown.Signal();
+        Countdown.Wait();
 
         JobPool<Work<C1, C2>>.Return(jobs);
 
@@ -122,22 +118,22 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
     public void Job<U>(RefAction_CCU<C1, C2, U> action, in U uniform, int chunkSize = int.MaxValue)
     {
         World.Lock();
-        _countdown.Reset();
+        Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C1, C2, U>>.Rent();
 
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.GetStorage<C1>(Identity.None);
-            var storage2 = table.GetStorage<C2>(Identity.None);
+            var storage1 = table.GetStorage<C1>(Entity.None);
+            var storage2 = table.GetStorage<C2>(Entity.None);
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
 
             for (var chunk = 0; chunk < partitions; chunk++)
             {
-                _countdown.AddCount();
+                Countdown.AddCount();
 
                 var start = chunk * chunkSize;
                 var length = Math.Min(chunkSize, count - start);
@@ -147,14 +143,14 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
                 job.Memory2 = storage2.AsMemory(start, length);
                 job.Action = action;
                 job.Uniform = uniform;
-                job.CountDown = _countdown;
+                job.CountDown = Countdown;
                 jobs.Add(job);
                 ThreadPool.UnsafeQueueUserWorkItem(job, true);
             }
         }
 
-        _countdown.Signal();
-        _countdown.Wait();
+        Countdown.Signal();
+        Countdown.Wait();
 
         JobPool<UniformWork<C1, C2, U>>.Return(jobs);
 
@@ -168,7 +164,7 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
-            action(table.Memory<C1>(Identity.None), table.Memory<C2>(Identity.None));
+            action(table.Memory<C1>(Entity.None), table.Memory<C2>(Entity.None));
         }
 
         World.Unlock();
@@ -181,11 +177,9 @@ public class Query<C1, C2>(World world, Mask mask, List<Table> tables) : Query(w
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
-            action(table.Memory<C1>(Identity.None), table.Memory<C2>(Identity.None), uniform);
+            action(table.Memory<C1>(Entity.None), table.Memory<C2>(Entity.None), uniform);
         }
 
         World.Unlock();
     }
-
-    #endregion
 }

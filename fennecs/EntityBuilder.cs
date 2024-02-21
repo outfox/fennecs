@@ -12,7 +12,7 @@ _operations.Add(
     new World.DeferredOperation()
     {
         Operation = World.Operation.Add,
-        Identity = entity,
+        IdIdentity = identity,
         Data = target,
     });
 */

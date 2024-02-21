@@ -15,7 +15,6 @@ public partial class World : IDisposable
     #region Archetypes
 
     private readonly IdentityPool _identityPool;
-    private readonly ReferenceStore _referenceStore;
 
     private EntityMeta[] _meta;
 
@@ -33,14 +32,14 @@ public partial class World : IDisposable
     private readonly List<Table> _tables = [];
     private readonly Dictionary<int, Query> _queries = new();
 
-    // The "Entity" Archetype, which is the root of the Archetype Graph.
+    // The "Identity" Archetype, which is the root of the Archetype Graph.
     private readonly Table _root;
 
 
     private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
+    
     private readonly Dictionary<TypeExpression, List<Table>> _tablesByType = new();
-
-    private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
+    private readonly Dictionary<Entity, HashSet<TypeExpression>> _typesByRelationTarget = new();
 
     private readonly object _modeChangeLock = new();
 
@@ -48,12 +47,12 @@ public partial class World : IDisposable
 
     public void CollectTargets<T>(List<Entity> entities)
     {
-        var type = TypeExpression.Create<T>(Identity.Any);
+        var type = TypeExpression.Create<T>(Entity.Any);
 
         // Iterate through tables and get all concrete entities from their Archetype TypeExpressions
         foreach (var candidate in _tablesByType.Keys)
         {
-            if (type.Matches(candidate)) entities.Add(new Entity(candidate.Target));
+            if (type.Matches(candidate)) entities.Add(candidate.Target);
         }
     }
 
@@ -72,37 +71,35 @@ public partial class World : IDisposable
 
             _meta[identity.Id] = new EntityMeta(identity, _root.Id, row);
 
-            var entity = new Entity(identity);
-
             var entityStorage = (Entity[]) _root.Storages.First();
-            entityStorage[row] = entity;
+            entityStorage[row] = identity;
 
-            return entity;
+            return identity;
         }
     }
 
-    private bool HasComponent(Identity identity, TypeExpression typeExpression)
+    private bool HasComponent(Entity entity, TypeExpression typeExpression)
     {
-        var meta = _meta[identity.Id];
-        return meta.Identity != Identity.None
-               && meta.Identity == identity
+        var meta = _meta[entity.Id];
+        return meta.Entity != Entity.None
+               && meta.Entity == entity
                && typeExpression.Matches(_tables[meta.TableId].Types);
     }
 
-    private void RemoveComponent(Identity identity, TypeExpression typeExpression)
+    private void RemoveComponent(Entity entity, TypeExpression typeExpression)
     {
         if (_mode == Mode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Code = OpCode.Remove, Identity = identity, TypeExpression = typeExpression});
+            _deferredOperations.Enqueue(new DeferredOperation {Code = OpCode.Remove, Entity = entity, TypeExpression = typeExpression});
             return;
         }
 
-        ref var meta = ref _meta[identity.Id];
+        ref var meta = ref _meta[entity.Id];
         var oldTable = _tables[meta.TableId];
 
         if (!oldTable.Types.Contains(typeExpression))
         {
-            throw new ArgumentException($"cannot remove non-existent component {typeExpression} from entity {identity}");
+            throw new ArgumentException($"cannot remove non-existent component {typeExpression} from identity {entity}");
         }
 
         var oldEdge = oldTable.GetTableEdge(typeExpression);
@@ -120,7 +117,7 @@ public partial class World : IDisposable
             newEdge.Add = oldTable;
         }
 
-        var newRow = Table.MoveEntry(identity, meta.Row, oldTable, newTable);
+        var newRow = Table.MoveEntry(entity, meta.Row, oldTable, newTable);
 
         meta.Row = newRow;
         meta.TableId = newTable.Id;
@@ -160,9 +157,9 @@ public partial class World : IDisposable
     }
 
 
-    internal ref EntityMeta GetEntityMeta(Identity identity)
+    internal ref EntityMeta GetEntityMeta(Entity entity)
     {
-        return ref _meta[identity.Id];
+        return ref _meta[entity.Id];
     }
 
     internal Table GetTable(int tableId)
@@ -170,13 +167,13 @@ public partial class World : IDisposable
         return _tables[tableId];
     }
 
-    internal (TypeExpression, object)[] GetComponents(Identity identity)
+    internal (TypeExpression, object)[] GetComponents(Entity entity)
     {
-        AssertAlive(identity);
+        AssertAlive(entity);
 
         using var list = PooledList<(TypeExpression, object)>.Rent();
 
-        var meta = _meta[identity.Id];
+        var meta = _meta[entity.Id];
         var table = _tables[meta.TableId];
 
 
@@ -253,18 +250,18 @@ public partial class World : IDisposable
     {
         while (operations.TryDequeue(out var op))
         {
-            AssertAlive(op.Identity);
+            AssertAlive(op.Entity);
 
             switch (op.Code)
             {
                 case OpCode.Add:
-                    AddComponent(op.Identity, op.TypeExpression, op.Data);
+                    AddComponent(op.Entity, op.TypeExpression, op.Data);
                     break;
                 case OpCode.Remove:
-                    RemoveComponent(op.Identity, op.TypeExpression);
+                    RemoveComponent(op.Entity, op.TypeExpression);
                     break;
                 case OpCode.Despawn:
-                    Despawn(op.Identity);
+                    Despawn(op.Entity);
                     break;
             }
         }
@@ -275,7 +272,7 @@ public partial class World : IDisposable
     {
         public required OpCode Code;
         public TypeExpression TypeExpression;
-        public Identity Identity;
+        public Entity Entity;
         public object Data;
     }
 
@@ -296,11 +293,11 @@ public partial class World : IDisposable
     #region Assert Helpers
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void AssertAlive(Identity identity)
+    private void AssertAlive(Entity entity)
     {
-        if (IsAlive(identity)) return;
+        if (IsAlive(entity)) return;
 
-        throw new ObjectDisposedException($"Entity {identity} is no longer alive.");
+        throw new ObjectDisposedException($"Identity {entity} is no longer alive.");
     }
 
     #endregion

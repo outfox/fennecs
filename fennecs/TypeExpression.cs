@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace fennecs;
@@ -18,7 +17,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //   | Id              | Generation | TypeNumber |
     //   | 32 bits         |  16 bits   |  16 bits   |
     //   |-------------------------------------------|
-    //   | Identity                     | TypeNumber |
+    //   | Entity (Identity)            | TypeNumber |
     //   | 48 bits                      |  16 bits   |
     
     //   PLANNED:
@@ -44,26 +43,17 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     // Type Header
     [FieldOffset(6)] public readonly TypeID TypeId;
 
-    public Identity Target => new(Value);
+    //Constituents for GetHashCode()
+    [FieldOffset(0)] internal readonly uint DWordLow;
+    [FieldOffset(4)] internal readonly uint DWordHigh;
 
-    public bool isRelation => TypeId != 0 && Target != Identity.None;
+    
+    public Entity Target => new(Id, Decoration);
+
+    public bool isRelation => TypeId != 0 && Target != Entity.None;
 
     public Type Type => LanguageType.Resolve(TypeId);
     
-    /* TODO: Handle different flags if needed
-        {
-            return (TypeId, Id) switch
-            {
-                (0, int.MaxValue) => typeof(Any),
-                (0, 0) => typeof(None),
-                (0, _) => typeof(Entity),
-                    _ => LanguageType.Resolve(TypeId),
-            };
-        }
-        internal struct None;
-        internal struct Any;    
-    */
-
     public bool Matches(IEnumerable<TypeExpression> other)
     {
         var self = this;
@@ -76,16 +66,16 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         if (TypeId != other.TypeId) return false;
 
         // Most common case.
-        if (Target == Identity.None) return other.Target == Identity.None;
+        if (Target == Entity.None) return other.Target == Entity.None;
         
         // Any only matches other Relations, not pure components (Target == None).
-        if (Target == Identity.Any) return other.Target != Identity.None;
+        if (Target == Entity.Any) return other.Target != Entity.None;
 
         // Direct match.
         if (Target == other.Target) return true;
         
         // For commutative matching only. (usually a TypeId from a Query is matched against one from a Table)
-        return other.Target == Identity.Any;
+        return other.Target == Entity.Any;
     } 
 
     public bool Equals(TypeExpression other) => Value == other.Value;
@@ -94,12 +84,12 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     public override bool Equals(object? obj) => throw new InvalidCastException("Boxing Disallowed; use TypeId.Equals(TypeId) instead.");
 
-    public static TypeExpression Create<T>(Identity target = default)
+    public static TypeExpression Create<T>(Entity target = default)
     {
         return new TypeExpression(target, LanguageType<T>.Id);
     }
 
-    public static TypeExpression Create(Type type, Identity target = default)
+    public static TypeExpression Create(Type type, Entity target = default)
     {
         return new TypeExpression(target, LanguageType.Identify(type));
     }
@@ -109,9 +99,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         unchecked
         {
-            var low = (uint) (Value & 0xFFFFFFFFu);
-            var high = (uint) (Value >> 32);
-            return (int) (0x811C9DC5u * low + 0x1000193u * high + 0xc4ceb9fe1a85ec53u);
+            return (int) (0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
         }
     }
 
@@ -128,10 +116,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     }
 
     public static implicit operator ulong(TypeExpression self) => self.Value;
-
-
-    [SetsRequiredMembers]
-    private TypeExpression(Identity target, TypeID typeId)
+    
+    private TypeExpression(Entity target, TypeID typeId)
     {
         Value = target.Value;
         TypeId = typeId;

@@ -7,10 +7,14 @@ namespace fennecs;
 public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Entity>, IDisposable
 {
     protected readonly ParallelOptions Options = new() {MaxDegreeOfParallelism = 24};
+    
+    /// <summary>
+    /// Countdown event for parallel runners.
+    /// </summary>
+    protected readonly CountdownEvent Countdown = new(1);
 
-    private protected readonly List<Table> Tables = tables;
-    private protected readonly World World = world;
-
+    protected readonly List<Table> Tables = tables;
+    protected readonly World World = world;
     protected internal readonly Mask Mask = mask;
 
     /// <summary>
@@ -21,9 +25,11 @@ public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Ent
     /// <typeparam name="C">any component type</typeparam>
     /// <returns>ref C, the component.</returns>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the query's tables for Entity entity.</exception>
-    public ref C Ref<C>(Entity entity, Identity target = default)
+    public ref C Ref<C>(Entity entity, Entity target = default)
     {
         AssertNotDisposed();
+        //TODO: Returning this ref should lock the world for the ref's scope?
+        //TODO: This is just a facade for World.GetComponent, should it be removed?
         return ref World.GetComponent<C>(entity, target);
     }
 
@@ -68,7 +74,7 @@ public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Ent
     {
         AssertNotDisposed();
         
-        var meta = World.GetEntityMeta(entity.Identity);
+        var meta = World.GetEntityMeta(entity);
         var table = World.GetTable(meta.TableId);
         return Tables.Contains(table);
     }
@@ -134,11 +140,11 @@ public delegate void MemoryAction_CU<C0, U>(Memory<C0> c0, in U uniform);
 
 public delegate void MemoryAction_CCU<C0, C1, in U>(Memory<C0> c0, Memory<C1> c1, U uniform);
 
-public delegate void MemoryAction_CCCU<C0, C1, C2, U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, in U uniform);
+public delegate void MemoryAction_CCCU<C0, C1, C2, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, U uniform);
 
-public delegate void MemoryAction_CCCCU<C0, C1, C2, C3, U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, in U uniform);
+public delegate void MemoryAction_CCCCU<C0, C1, C2, C3, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, U uniform);
 
-public delegate void MemoryAction_CCCCCU<C0, C1, C2, C3, C4, U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, Memory<C4> c4, in U uniform);
+public delegate void MemoryAction_CCCCCU<C0, C1, C2, C3, C4, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, Memory<C4> c4, U uniform);
 
 
 public delegate void SpanAction_C<C0>(Span<C0> c0);
@@ -152,37 +158,8 @@ public delegate void SpanAction_CCCC<C0, C1, C2, C3>(Span<C0> c0, Span<C1> c1, S
 public delegate void SpanAction_CCCCC<C0, C1, C2, C3, C4>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4);
 
 
-public delegate void SpanAction_CU<C0, U>(Span<C0> c0, in U uniform);
-public delegate void SpanAction_CCU<C0, C1, U>(Span<C0> c0, Span<C1> c1, in U uniform);
-public delegate void SpanAction_CCCU<C0, C1, C2, U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, in U uniform);
-public delegate void SpanAction_CCCCU<C0, C1, C2, C3, U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, in U uniform); 
-public delegate void SpanAction_CCCCCU<C0, C1, C2, C3, C4, U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4, in U uniform);
-
-
-// ReSharper enable IdentifierTypo
-// ReSharper enable InconsistentNaming
-
-// ReSharper disable CommentTypo
-/* TODO: These would be used for "early out" and search type algorithms.
- public delegate void RefAction_CS<C0>(ref C0 comp0, ParallelLoopState state);
-
-public delegate void RefAction_CCS<C0, C1>(ref C0 comp0, ref C1 comp1, ParallelLoopState state);
-
-public delegate void RefAction_CCCS<C0, C1, C2>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ParallelLoopState state);
-
-public delegate void RefAction_CCCCS<C0, C1, C2, C3>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ParallelLoopState state);
-
-public delegate void RefAction_CCCCCS<C0, C1, C2, C3, C4>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4, ParallelLoopState state);
-
-
-public delegate void RefAction_CUS<C0, in U>(ref C0 comp0, U uniform, ParallelLoopState state);
-
-public delegate void RefAction_CCUS<C0, C1, in U>(ref C0 comp0, ref C1 comp1, U uniform, ParallelLoopState state);
-
-public delegate void RefAction_CCCUS<C0, C1, C2, in U>(ref C0 comp0, ref C1 comp1, ref C2 comp2, U uniform, ParallelLoopState state);
-
-public delegate void RefAction_CCCCUS<C0, C1, C2, C3, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, U uniform, ParallelLoopState state);
-
-public delegate void RefAction_CCCCCUS<C0, C1, C2, C3, C4, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4, U uniform, ParallelLoopState state);
-*/
-// ReSharper enable CommentTypo
+public delegate void SpanAction_CU<C0, in U>(Span<C0> c0, U uniform);
+public delegate void SpanAction_CCU<C0, C1, in U>(Span<C0> c0, Span<C1> c1, U uniform);
+public delegate void SpanAction_CCCU<C0, C1, C2, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, U uniform);
+public delegate void SpanAction_CCCCU<C0, C1, C2, C3, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, U uniform); 
+public delegate void SpanAction_CCCCCU<C0, C1, C2, C3, C4, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4, U uniform);

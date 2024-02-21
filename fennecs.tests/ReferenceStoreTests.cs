@@ -58,21 +58,21 @@ public class ReferenceStoreTests(ITestOutputHelper output)
     {
         var store = new ReferenceStore();
         var item = new object();
-        Identity identity = default;
+        Entity entity = default;
         
         for (var i = 0; i < count; i++)
         {
-            identity = store.Request(item);
+            entity = store.Request(item);
         }
         
-        Assert.Equal(item, store.Get<object>(identity));
+        Assert.Equal(item, store.Get<object>(entity));
         
         for (var i = 0; i < count; i++)
         {
-            store.Release(identity);
+            store.Release(entity);
         }
 
-        Assert.Throws<KeyNotFoundException>(() => store.Get<object>(identity));
+        Assert.Throws<KeyNotFoundException>(() => store.Get<object>(entity));
     }
 
     [Fact]
@@ -109,12 +109,13 @@ public class ReferenceStoreTests(ITestOutputHelper output)
     [Fact]
     public void StoredReference_ToString()
     {
-        var store = new ReferenceStore.StoredReference<List<int>>
+        var reference = new ReferenceStore.StoredReference<List<int>>
         {
             Item = new List<int>(3),
-            Count = 7
+            Count = 7,
         };
-        Assert.Equal($"{typeof(List<int>)} x7", store.ToString());
+        output.WriteLine(reference.ToString());
+        Assert.Equal($"{typeof(List<int>)} x7", reference.ToString());
     }
     
 }

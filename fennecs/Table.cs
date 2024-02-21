@@ -18,7 +18,7 @@ public sealed class Table
 
     public readonly SortedSet<TypeExpression> Types;
 
-    public Identity[] Identities => _identities;
+    public Entity[] Identities => _identities;
     
     internal Array[] Storages => _storages;
 
@@ -30,7 +30,7 @@ public sealed class Table
 
     private readonly World _archetypes;
 
-    private Identity[] _identities;
+    private Entity[] _identities;
     
     // Storages is a fixed size array because an Archetype doesn't ahcnge.
     private readonly Array[] _storages;
@@ -49,7 +49,7 @@ public sealed class Table
         Id = id;
         Types = types;
         
-        _identities = new Identity[StartCapacity];
+        _identities = new Entity[StartCapacity];
 
         var i = 0;
         foreach (var type in types)
@@ -89,12 +89,12 @@ public sealed class Table
     }
 
     
-    public int Add(Identity identity)
+    public int Add(Entity entity)
     {
         Interlocked.Increment(ref _version);
         
         EnsureCapacity(Count + 1);
-        _identities[Count] = identity;
+        _identities[Count] = entity;
         return Count++;
     }
 
@@ -136,14 +136,14 @@ public sealed class Table
     }
 
 
-    public T[] GetStorage<T>(Identity target)
+    public T[] GetStorage<T>(Entity target)
     {
         var type = TypeExpression.Create<T>(target);
         return (T[]) GetStorage(type);
     }
 
 
-    public Memory<T> Memory<T>(Identity target)
+    public Memory<T> Memory<T>(Entity target)
     {
         var type = TypeExpression.Create<T>(target);
         var storage = (T[]) GetStorage(type);
@@ -184,9 +184,9 @@ public sealed class Table
     }
 
     
-    public static int MoveEntry(Identity identity, int oldRow, Table oldTable, Table newTable)
+    public static int MoveEntry(Entity entity, int oldRow, Table oldTable, Table newTable)
     {
-        var newRow = newTable.Add(identity);
+        var newRow = newTable.Add(entity);
 
         foreach (var (type, oldIndex) in oldTable._indices)
         {

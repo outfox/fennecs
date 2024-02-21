@@ -13,7 +13,7 @@ public class QueryCountGenerator : IEnumerable<object[]>
         // common powers of 2
         for (var i = 4; i <= 12; i++) yield return [(int) Math.Pow(2, i), i % 2 == 0];
 
-        yield return [151, true];   // prime number
+        yield return [151, true]; // prime number
         yield return [6_197, false]; // prime number
     }
 

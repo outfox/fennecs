@@ -22,7 +22,7 @@ public class QueryBuilder : IDisposable
         World = world;
     }
 
-    public virtual QueryBuilder Has<T>(Identity target = default)
+    public virtual QueryBuilder Has<T>(Entity target = default)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         Mask.Has(typeExpression);
@@ -32,12 +32,12 @@ public class QueryBuilder : IDisposable
 
     public virtual QueryBuilder Has<T>(T target) where T : class
     {
-        Mask.Has(TypeExpression.Create<T>(Identity.Of(target)));
+        Mask.Has(TypeExpression.Create<T>(Entity.Of(target)));
         return this;
     }
 
 
-    public virtual QueryBuilder Not<T>(Identity target = default)
+    public virtual QueryBuilder Not<T>(Entity target = default)
     {
         Mask.Not(TypeExpression.Create<T>(target));
         return this;
@@ -45,12 +45,12 @@ public class QueryBuilder : IDisposable
 
     public virtual QueryBuilder Not<T>(T target) where T : class
     {
-        Mask.Not(TypeExpression.Create<T>(Identity.Of(target)));
+        Mask.Not(TypeExpression.Create<T>(Entity.Of(target)));
         return this;
     }
 
 
-    public virtual QueryBuilder Any<T>(Identity target = default)
+    public virtual QueryBuilder Any<T>(Entity target = default)
     {
         Mask.Any(TypeExpression.Create<T>(target));
         return this;
@@ -59,7 +59,7 @@ public class QueryBuilder : IDisposable
 
     public virtual QueryBuilder Any<T>(T target) where T : class
     {
-        Mask.Any(TypeExpression.Create<T>(Identity.Of(target)));
+        Mask.Any(TypeExpression.Create<T>(Entity.Of(target)));
         return this;
     }
 
@@ -82,7 +82,7 @@ public sealed class QueryBuilder<C> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C> Has<T>(Identity target = default)
+    public override QueryBuilder<C> Has<T>(Entity target = default)
     {
         return (QueryBuilder<C>) base.Has<T>(target);
     }
@@ -94,7 +94,7 @@ public sealed class QueryBuilder<C> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C> Not<T>(Identity target = default)
+    public override QueryBuilder<C> Not<T>(Entity target = default)
     {
         return (QueryBuilder<C>) base.Not<T>(target);
     }
@@ -106,7 +106,7 @@ public sealed class QueryBuilder<C> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C> Any<T>(Identity target = default)
+    public override QueryBuilder<C> Any<T>(Entity target = default)
     {
         return (QueryBuilder<C>) base.Any<T>(target);
     }
@@ -137,7 +137,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2> Has<T>(Identity target = default)
+    public override QueryBuilder<C1, C2> Has<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2>) base.Has<T>(target);
     }
@@ -149,7 +149,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2> Not<T>(Identity target = default)
+    public override QueryBuilder<C1, C2> Not<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2>) base.Not<T>(target);
     }
@@ -161,7 +161,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2> Any<T>(Identity target = default)
+    public override QueryBuilder<C1, C2> Any<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2>) base.Any<T>(target);
     }
@@ -191,7 +191,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2, C3> Has<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3> Has<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3>) base.Has<T>(target);
     }
@@ -203,7 +203,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2, C3> Not<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3> Not<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3>) base.Not<T>(target);
     }
@@ -215,7 +215,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2, C3> Any<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3> Any<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3>) base.Any<T>(target);
     }
@@ -245,7 +245,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Has<T>(target);
     }
@@ -257,7 +257,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Not<T>(target);
     }
@@ -269,7 +269,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Any<T>(target);
     }
@@ -299,7 +299,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has<T>(target);
     }
@@ -310,7 +310,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has(target);
     }
 
-    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Not<T>(target);
     }
@@ -322,7 +322,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
     }
 
 
-    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Entity target = default)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any<T>(target);
     }

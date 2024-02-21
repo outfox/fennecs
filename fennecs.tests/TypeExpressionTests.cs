@@ -81,8 +81,8 @@ public class TypeExpressionTests
     public void Can_Create_For_Type()
     {
         var tx1 = TypeExpression.Create(typeof(TypeA));
-        var tx2 = TypeExpression.Create(typeof(TypeA), Identity.Any);
-        var tx3 = TypeExpression.Create(typeof(TypeA), new Identity(123));
+        var tx2 = TypeExpression.Create(typeof(TypeA), Entity.Any);
+        var tx3 = TypeExpression.Create(typeof(TypeA), new Entity(123));
 
         Assert.False(tx1.isRelation);
         Assert.True(tx2.isRelation);

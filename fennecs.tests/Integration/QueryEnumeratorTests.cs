@@ -51,15 +51,15 @@ public static class QueryEnumeration
             {
                 foreach (var _ in query)
                 {
-                    world.Spawn().Add<int>(4).Id();
+                    world.Spawn().Add(4).Id();
                 }
             });
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                foreach (var entity in query)
+                foreach (var identity in query)
                 {
-                    world.On(entity).Add("structural change");
+                    world.On(identity).Add("structural change");
                 }
             });
         }
