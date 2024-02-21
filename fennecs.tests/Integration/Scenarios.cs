@@ -44,7 +44,7 @@ public class Scenarios
             if (i % shortRate == 0)
             {
                 shorts++;
-                builder.Link<short>(entities[random.Next(entities.Count)]);
+                builder.Link<ushort>(entities[random.Next(entities.Count)]);
             }
 
             entities.Add(builder.Id());
@@ -63,10 +63,10 @@ public class Scenarios
         var stringsAndDoublesActual = world.Query<string, double>().Build().Count;
         Assert.Equal(count / (stringRate * doubleRate), stringsAndDoublesActual);
 
-        var floatsAndShortsActual = world.Query().Any<float>().Has<short>(Entity.Any).Build().Count;
+        var floatsAndShortsActual = world.Query().Any<float>().Has<ushort>(Entity.Any).Build().Count;
         Assert.Equal(count / (floatRate * shortRate), floatsAndShortsActual);
 
-        var shortsActual = world.Query().Has<short>(Entity.Any).Build().Count;
+        var shortsActual = world.Query().Has<ushort>(Entity.Any).Build().Count;
         Assert.Equal(shorts, shortsActual);
     }
 }

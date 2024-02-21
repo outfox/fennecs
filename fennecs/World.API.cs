@@ -271,7 +271,7 @@ public partial class World
             newEdge.Remove = oldTable;
         }
 
-        var newRow = Table.MoveEntry(entity, meta.Row, oldTable, newTable);
+        var newRow = Archetype.MoveEntry(entity, meta.Row, oldTable, newTable);
 
         meta.Row = newRow;
         meta.TableId = newTable.Id;

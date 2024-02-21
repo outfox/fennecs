@@ -72,7 +72,7 @@ public class QueryBuilder : IDisposable
 
 public sealed class QueryBuilder<C> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C>(world, mask, matchingTables);
 
 
@@ -127,7 +127,7 @@ public sealed class QueryBuilder<C> : QueryBuilder
 
 public sealed class QueryBuilder<C1, C2> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2>(world, mask, matchingTables);
 
 
@@ -181,7 +181,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
 
 public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2, C3>(world, mask, matchingTables);
 
 
@@ -235,7 +235,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
 
 public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2, C3, C4>(world, mask, matchingTables);
 
 
@@ -289,7 +289,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
 
 public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(world, mask, matchingTables);
 
 

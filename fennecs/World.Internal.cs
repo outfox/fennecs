@@ -29,16 +29,16 @@ public partial class World : IDisposable
         }
     }
 
-    private readonly List<Table> _tables = [];
+    private readonly List<Archetype> _tables = [];
     private readonly Dictionary<int, Query> _queries = new();
 
     // The "Identity" Archetype, which is the root of the Archetype Graph.
-    private readonly Table _root;
+    private readonly Archetype _root;
 
 
     private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
     
-    private readonly Dictionary<TypeExpression, List<Table>> _tablesByType = new();
+    private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
     private readonly Dictionary<Entity, HashSet<TypeExpression>> _typesByRelationTarget = new();
 
     private readonly object _modeChangeLock = new();
@@ -117,14 +117,14 @@ public partial class World : IDisposable
             newEdge.Add = oldTable;
         }
 
-        var newRow = Table.MoveEntry(entity, meta.Row, oldTable, newTable);
+        var newRow = Archetype.MoveEntry(entity, meta.Row, oldTable, newTable);
 
         meta.Row = newRow;
         meta.TableId = newTable.Id;
     }
     #endregion
 
-    internal Query GetQuery(Mask mask, Func<World, Mask, List<Table>, Query> createQuery)
+    internal Query GetQuery(Mask mask, Func<World, Mask, List<Archetype>, Query> createQuery)
     {
         if (_queries.TryGetValue(mask, out var query))
         {
@@ -139,7 +139,7 @@ public partial class World : IDisposable
             _tablesByType[type] = typeTables;
         }
 
-        var matchingTables = PooledList<Table>.Rent();
+        var matchingTables = PooledList<Archetype>.Rent();
         foreach (var table in _tables)
         {
             if (table.Matches(mask)) matchingTables.Add(table);
@@ -162,7 +162,7 @@ public partial class World : IDisposable
         return ref _meta[entity.Id];
     }
 
-    internal Table GetTable(int tableId)
+    internal Archetype GetTable(int tableId)
     {
         return _tables[tableId];
     }
@@ -188,9 +188,9 @@ public partial class World : IDisposable
     }
 
 
-    private Table AddTable(SortedSet<TypeExpression> types)
+    private Archetype AddTable(SortedSet<TypeExpression> types)
     {
-        var table = new Table(_tables.Count, this, types);
+        var table = new Archetype(_tables.Count, this, types);
         _tables.Add(table);
 
         foreach (var type in types)

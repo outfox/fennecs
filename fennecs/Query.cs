@@ -4,16 +4,14 @@ using System.Collections;
 
 namespace fennecs;
 
-public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Entity>, IDisposable
+public class Query(World world, Mask mask, List<Archetype> archetypes) : IEnumerable<Entity>, IDisposable
 {
-    protected readonly ParallelOptions Options = new() {MaxDegreeOfParallelism = 24};
-    
     /// <summary>
     /// Countdown event for parallel runners.
     /// </summary>
     protected readonly CountdownEvent Countdown = new(1);
 
-    protected readonly List<Table> Tables = tables;
+    protected readonly List<Archetype> Archetypes = archetypes;
     protected readonly World World = world;
     protected internal readonly Mask Mask = mask;
 
@@ -47,7 +45,7 @@ public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Ent
     {
         AssertNotDisposed();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             var snapshot = table.Version;
             for (var i = 0; i < table.Count; i++)
@@ -76,23 +74,23 @@ public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Ent
         
         var meta = World.GetEntityMeta(entity);
         var table = World.GetTable(meta.TableId);
-        return Tables.Contains(table);
+        return Archetypes.Contains(table);
     }
     
-    internal void AddTable(Table table)
+    internal void AddTable(Archetype archetype)
     {
         AssertNotDisposed();
         
-        Tables.Add(table);
+        Archetypes.Add(archetype);
     }
 
-    public int Count => Tables.Sum(t => t.Count);
+    public int Count => Archetypes.Sum(t => t.Count);
 
     public void Dispose()
     {
         AssertNotDisposed();
         
-        Tables.Clear();
+        Archetypes.Clear();
         disposed = true;
         World.RemoveQuery(this);
         Mask.Dispose();

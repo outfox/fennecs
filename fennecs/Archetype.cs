@@ -6,11 +6,11 @@ namespace fennecs;
 
 public sealed class TableEdge
 {
-    public Table? Add;
-    public Table? Remove;
+    public Archetype? Add;
+    public Archetype? Remove;
 }
 
-public sealed class Table
+public sealed class Archetype
 {
     private const int StartCapacity = 4;
 
@@ -42,7 +42,7 @@ public sealed class Table
     private int _version;
 
 
-    public Table(int id, World archetypes, SortedSet<TypeExpression> types)
+    public Archetype(int id, World archetypes, SortedSet<TypeExpression> types)
     {
         _archetypes = archetypes;
 
@@ -184,21 +184,21 @@ public sealed class Table
     }
 
     
-    public static int MoveEntry(Entity entity, int oldRow, Table oldTable, Table newTable)
+    public static int MoveEntry(Entity entity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
     {
-        var newRow = newTable.Add(entity);
+        var newRow = newArchetype.Add(entity);
 
-        foreach (var (type, oldIndex) in oldTable._indices)
+        foreach (var (type, oldIndex) in oldArchetype._indices)
         {
-            if (!newTable._indices.TryGetValue(type, out var newIndex) || newIndex < 0) continue;
+            if (!newArchetype._indices.TryGetValue(type, out var newIndex) || newIndex < 0) continue;
 
-            var oldStorage = oldTable._storages[oldIndex];
-            var newStorage = newTable._storages[newIndex];
+            var oldStorage = oldArchetype._storages[oldIndex];
+            var newStorage = newArchetype._storages[newIndex];
 
             Array.Copy(oldStorage, oldRow, newStorage, newRow, 1);
         }
 
-        oldTable.Remove(oldRow);
+        oldArchetype.Remove(oldRow);
 
         return newRow;
     }

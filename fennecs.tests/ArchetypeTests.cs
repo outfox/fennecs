@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests;
 
-public class TableTests(ITestOutputHelper output)
+public class ArchetypeTests(ITestOutputHelper output)
 {
     [Fact]
     public void Table_String_Contains_Types()

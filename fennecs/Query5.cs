@@ -4,13 +4,13 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
+public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Archetype> archetypes) : Query(world, mask, archetypes)
 {
      public void ForEach(RefAction<C1, C2, C3, C4, C5> action)
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
@@ -31,7 +31,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
@@ -52,7 +52,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.Memory<C1>(Entity.None);
@@ -70,7 +70,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
     {
         World.Lock();
         
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.Memory<C1>(Entity.None);
@@ -91,7 +91,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
 
         using var jobs = PooledList<Work<C1, C2, C3, C4, C5>>.Rent();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.GetStorage<C1>(Entity.None);
@@ -140,7 +140,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
 
         using var jobs = PooledList<UniformWork<C1, C2, C3, C4, C5, U>>.Rent();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.GetStorage<C1>(Entity.None);
@@ -185,7 +185,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             action(
@@ -204,7 +204,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             action(
