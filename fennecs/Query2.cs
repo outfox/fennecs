@@ -4,8 +4,12 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public class Query<C1, C2>(World world, Mask mask, List<Archetype> archetypes) : Query(world, mask, archetypes)
+public class Query<C1, C2> : Query
 {
+    internal Query(World world, Mask mask, List<Archetype> archetypes) : base(world, mask, archetypes)
+    {
+    }
+
     public void ForEach(RefAction<C1, C2> action)
     {
         World.Lock();

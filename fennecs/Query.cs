@@ -4,16 +4,28 @@ using System.Collections;
 
 namespace fennecs;
 
-public class Query(World world, Mask mask, List<Archetype> archetypes) : IEnumerable<Entity>, IDisposable
+public class Query : IEnumerable<Entity>, IDisposable
 {
     /// <summary>
     /// Countdown event for parallel runners.
     /// </summary>
     protected readonly CountdownEvent Countdown = new(1);
 
-    protected readonly List<Archetype> Archetypes = archetypes;
-    protected readonly World World = world;
-    protected internal readonly Mask Mask = mask;
+    private protected readonly List<Archetype> Archetypes;
+    private protected readonly World World;
+    protected internal readonly Mask Mask;
+
+    internal Query(World world, Mask mask, List<Archetype> archetypes)
+    {
+        Archetypes = archetypes;
+        World = world;
+        Mask = mask;
+    }
+
+    private Query()
+    {
+        throw new NotSupportedException("Query cannot be created on its own.");
+    }
 
     /// <summary>
     /// Gets a reference to the component of type <typeparamref name="C"/> for the entity.

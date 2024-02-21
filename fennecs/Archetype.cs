@@ -4,14 +4,17 @@ using System.Text;
 
 namespace fennecs;
 
-public sealed class TableEdge
+internal sealed class Archetype
 {
-    public Archetype? Add;
-    public Archetype? Remove;
-}
-
-public sealed class Archetype
-{
+    /// <summary>
+    /// An Edge in the Graph that this Archetype is a member of.
+    /// </summary>
+    internal sealed class Edge
+    {
+        internal Archetype? Add;
+        internal Archetype? Remove;
+    }
+    
     private const int StartCapacity = 4;
 
     public readonly int Id;
@@ -32,10 +35,10 @@ public sealed class Archetype
 
     private Entity[] _identities;
     
-    // Storages is a fixed size array because an Archetype doesn't ahcnge.
+    // Storages is a fixed size array because an Archetype doesn't change.
     private readonly Array[] _storages;
 
-    private readonly Dictionary<TypeExpression, TableEdge> _edges = new();
+    private readonly Dictionary<TypeExpression, Edge> _edges = new();
     private readonly Dictionary<TypeExpression, int> _indices = new();
 
     // Used by Queries to check if the table has been modified while enumerating.
@@ -125,11 +128,11 @@ public sealed class Archetype
     }
 
     
-    public TableEdge GetTableEdge(TypeExpression typeExpression)
+    public Edge GetTableEdge(TypeExpression typeExpression)
     {
         if (_edges.TryGetValue(typeExpression, out var edge)) return edge;
 
-        edge = new TableEdge();
+        edge = new Edge();
         _edges[typeExpression] = edge;
 
         return edge;
