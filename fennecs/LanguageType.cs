@@ -21,7 +21,7 @@ internal class LanguageType
             // Query the registry directly for a fast response.
             if (Ids.TryGetValue(type, out var id)) return id;
         
-            // TODO: Pattern: double-checked locking (DCL); move lock here
+            // ^^^ Optional Pattern: double-checked locking (DCL); move lock down here.
             // Query the registry again, this time synchronized.
             //if (Ids.TryGetValue(type, out id)) return id;
             
