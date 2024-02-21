@@ -6,7 +6,7 @@ namespace fennecs;
 
 public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
 {
-     public void ForEach(RefAction_CCCCC<C1, C2, C3, C4, C5> action)
+     public void ForEach(RefAction<C1, C2, C3, C4, C5> action)
     {
         World.Lock();
 
@@ -27,7 +27,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void ForEach<U>(RefAction_CCCCCU<C1, C2, C3, C4, C5, U> action, U uniform)
+    public void ForEach<U>(RefActionU<C1, C2, C3, C4, C5, U> action, U uniform)
     {
         World.Lock();
 
@@ -48,7 +48,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void ForSpan<U>(SpanAction_CCCCCU<C1, C2, C3, C4, C5, U> action, U uniform)
+    public void ForSpan<U>(SpanActionU<C1, C2, C3, C4, C5, U> action, U uniform)
     {
         World.Lock();
 
@@ -66,7 +66,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void ForSpan(SpanAction_CCCCC<C1, C2, C3, C4, C5> action)
+    public void ForSpan(SpanAction<C1, C2, C3, C4, C5> action)
     {
         World.Lock();
         
@@ -84,7 +84,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
 
-    public void Job(RefAction_CCCCC<C1, C2, C3, C4, C5> action, int chunkSize = int.MaxValue)
+    public void Job(RefAction<C1, C2, C3, C4, C5> action, int chunkSize = int.MaxValue)
     {
         World.Lock();
         Countdown.Reset();
@@ -133,7 +133,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void Job<U>(RefAction_CCCCCU<C1, C2, C3, C4, C5, U> action, in U uniform, int chunkSize = int.MaxValue)
+    public void Job<U>(RefActionU<C1, C2, C3, C4, C5, U> action, in U uniform, int chunkSize = int.MaxValue)
     {
         World.Lock();
         Countdown.Reset();
@@ -181,7 +181,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void Raw(MemoryAction_CCCCC<C1, C2, C3, C4, C5> action)
+    public void Raw(MemoryAction<C1, C2, C3, C4, C5> action)
     {
         World.Lock();
 
@@ -200,7 +200,7 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
 
-    public void Raw<U>(MemoryAction_CCCCCU<C1, C2, C3, C4, C5, U> action, U uniform)
+    public void Raw<U>(MemoryActionU<C1, C2, C3, C4, C5, U> action, U uniform)
     {
         World.Lock();
 

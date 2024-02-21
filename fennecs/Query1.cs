@@ -6,7 +6,7 @@ namespace fennecs;
 
 public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
 {
-    public void Run(SpanAction_C<C1> action)
+    public void ForSpan(SpanAction<C1> action)
     {
         AssertNotDisposed();
 
@@ -21,7 +21,25 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
         World.Unlock();
     }
 
-    public void ForEach(RefAction_C<C1> action)
+    
+    public void ForSpan<U>(SpanActionU<C1, U> action, U uniform)
+    {
+        AssertNotDisposed();
+
+        World.Lock();
+
+        foreach (var table in Tables)
+        {
+            if (table.IsEmpty) continue;
+            var storage = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
+            action(storage, uniform);
+        }
+
+        World.Unlock();
+    }
+    
+    
+    public void ForEach(RefAction<C1> action)
     {
         AssertNotDisposed();
         
@@ -37,7 +55,7 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
         World.Unlock();
     }
     
-    public void ForEach<U>(RefAction_CU<C1, U> action, U uniform)
+    public void ForEach<U>(RefActionU<C1, U> action, U uniform)
     {
         AssertNotDisposed();
         
@@ -53,7 +71,7 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
         World.Unlock();
     }
     
-    public void Job(RefAction_C<C1> action, int chunkSize = int.MaxValue)
+    public void Job(RefAction<C1> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
         
@@ -95,7 +113,7 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
         World.Unlock();
     }
 
-    public void Job<U>(RefAction_CU<C1, U> action, U uniform, int chunkSize = int.MaxValue)
+    public void Job<U>(RefActionU<C1, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
         
@@ -137,16 +155,32 @@ public class Query<C1>(World world, Mask mask, List<Table> tables) : Query(world
         World.Unlock();
     }
 
-    public void Raw(MemoryAction_C<C1> action)
+    public void Raw(MemoryAction<C1> action)
     {
         AssertNotDisposed();
-        
+
         World.Lock();
 
         foreach (var table in Tables)
         {
             if (table.IsEmpty) continue;
             action(table.Memory<C1>(Entity.None));
+        }
+
+        World.Unlock();
+    }
+
+    
+    public void Raw<U>(MemoryActionU<C1, U> action, U uniform)
+    {
+        AssertNotDisposed();
+
+        World.Lock();
+
+        foreach (var table in Tables)
+        {
+            if (table.IsEmpty) continue;
+            action(table.Memory<C1>(Entity.None), uniform);
         }
 
         World.Unlock();

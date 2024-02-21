@@ -182,7 +182,7 @@ public partial class World
     public void DespawnAllWith<T>(Entity target = default)
     {
         using var query = Query<Entity>().Has<T>(target).Build();
-        query.Run(delegate(Span<Entity> entities)
+        query.ForSpan(delegate(Span<Entity> entities)
         {
             foreach (var identity in entities) Despawn(identity);
         });
