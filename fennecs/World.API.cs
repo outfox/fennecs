@@ -188,13 +188,6 @@ public partial class World
         });
     }
     
-    /*
-    public IEnumerable<(TypeExpression, object)> GetComponents(Identity identity)
-    {
-        return GetComponents(identity);
-    }
-*/
-    
     public World(int capacity = 4096)
     {
         _identityPool = new IdentityPool(capacity);
