@@ -49,7 +49,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     
     public Entity Target => new(Id, Decoration);
-
+    
     public bool isRelation => TypeId != 0 && Target != Entity.None;
 
     public Type Type => LanguageType.Resolve(TypeId);
@@ -67,6 +67,9 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
         // Most common case.
         if (Target == Entity.None) return other.Target == Entity.None;
+        
+        //TODO: Testing what happens... :)
+        //if (Target == Entity.Any) return true;
         
         // Any only matches other Relations, not pure components (Target == None).
         if (Target == Entity.Any) return other.Target != Entity.None;

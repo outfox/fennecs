@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 using System.Text;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -19,7 +22,7 @@ internal sealed class Archetype
 
     public readonly int Id;
 
-    public readonly SortedSet<TypeExpression> Types;
+    public readonly ImmutableSortedSet<TypeExpression> Types;
 
     public Entity[] Identities => _identities;
     
@@ -35,17 +38,25 @@ internal sealed class Archetype
 
     private Entity[] _identities;
     
-    // Storages is a fixed size array because an Archetype doesn't change.
+    /// <summary>
+    /// Actual component data storages. It' is a fixed size array because an Archetype doesn't change.
+    /// </summary>
     private readonly Array[] _storages;
-
+    
+    private readonly Dictionary<TypeExpression, int> _storageIndices = new();
+    
     private readonly Dictionary<TypeExpression, Edge> _edges = new();
-    private readonly Dictionary<TypeExpression, int> _indices = new();
+
+    /// <summary>
+    /// Buckets for Wildcard Joins
+    /// </summary>
+    private readonly ImmutableDictionary<TypeID, Array[]> _buckets;
 
     // Used by Queries to check if the table has been modified while enumerating.
     private int _version;
 
 
-    public Archetype(int id, World archetypes, SortedSet<TypeExpression> types)
+    public Archetype(int id, World archetypes, ImmutableSortedSet<TypeExpression> types)
     {
         _archetypes = archetypes;
 
@@ -54,25 +65,54 @@ internal sealed class Archetype
         
         _identities = new Entity[StartCapacity];
 
-        var i = 0;
-        foreach (var type in types)
-        {
-            _indices.Add(type, i++);
-        }
+        _storages = new Array[types.Count];
 
-        _storages = new Array[_indices.Count];
-
-        foreach (var (type, index) in _indices)
+        // Build the relation between storages and types, as well as type wildcards in buckets.
+        var finishedTypes = PooledList<TypeID>.Rent();
+        var finishedBuckets = PooledList<Array[]>.Rent();
+        var currentBucket = PooledList<Array>.Rent();
+        TypeID currentTypeId = 0;
+        for (var index = 0; index < types.Count; index++)
         {
+            var type = types[index];
+            _storageIndices.Add(type, index);
             _storages[index] = Array.CreateInstance(type.Type, StartCapacity);
+            
+            // New bucket?
+            if (currentTypeId != type.TypeId)
+            {
+                //Finish bucket (exclude null type)
+                if (currentTypeId != 0)
+                {
+                    finishedTypes.Add(currentTypeId);
+                    finishedBuckets.Add(currentBucket.ToArray());
+                    currentBucket.Dispose();
+                    currentBucket = PooledList<Array>.Rent();
+                }
+                currentTypeId = type.TypeId;
+            }
+
+            //TODO: Harmless assert, but...  is it pretty? We could disallow type 0, or skip null types.
+            Debug.Assert(currentTypeId != 0, "Trying to create bucket for a null type.");
+            currentBucket.Add(_storages[index]);
         }
+        
+        // Bake buckets dictionary - TODO: Maybe cheaper to do without LINQ.
+        _buckets = finishedTypes
+            .Zip(finishedBuckets, (k, v) => new {Key = k, Value = v})
+            .ToImmutableDictionary(item => item.Key, item => item.Value);
+        
+        currentBucket.Dispose();
+        finishedBuckets.Dispose();
+        finishedTypes.Dispose();
     }
 
+    
     internal bool Matches(TypeExpression type)
     {
         return type.Matches(Types);
     }
-
+    
 
     internal bool Matches(Mask mask)
     {
@@ -156,7 +196,7 @@ internal sealed class Archetype
 
     public Array GetStorage(TypeExpression typeExpression)
     {
-        return _storages[_indices[typeExpression]];
+        return _storages[_storageIndices[typeExpression]];
     }
 
 
@@ -191,9 +231,9 @@ internal sealed class Archetype
     {
         var newRow = newArchetype.Add(entity);
 
-        foreach (var (type, oldIndex) in oldArchetype._indices)
+        foreach (var (type, oldIndex) in oldArchetype._storageIndices)
         {
-            if (!newArchetype._indices.TryGetValue(type, out var newIndex) || newIndex < 0) continue;
+            if (!newArchetype._storageIndices.TryGetValue(type, out var newIndex) || newIndex < 0) continue;
 
             var oldStorage = oldArchetype._storages[oldIndex];
             var newStorage = newArchetype._storages[newIndex];

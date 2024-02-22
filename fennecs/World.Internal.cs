@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -108,9 +109,8 @@ public partial class World : IDisposable
 
         if (newTable == null)
         {
-            var newTypes = oldTable.Types.ToList();
-            newTypes.Remove(typeExpression);
-            newTable = AddTable(new SortedSet<TypeExpression>(newTypes));
+            var newTypes = oldTable.Types.Remove(typeExpression);
+            newTable = AddTable(newTypes);
             oldEdge.Remove = newTable;
 
             var newEdge = newTable.GetTableEdge(typeExpression);
@@ -188,7 +188,7 @@ public partial class World : IDisposable
     }
 
 
-    private Archetype AddTable(SortedSet<TypeExpression> types)
+    private Archetype AddTable(ImmutableSortedSet<TypeExpression> types)
     {
         var table = new Archetype(_tables.Count, this, types);
         _tables.Add(table);

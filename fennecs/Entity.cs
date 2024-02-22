@@ -26,7 +26,9 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
     [FieldOffset(4)] internal readonly uint DWordHigh;
     
     public static readonly Entity None = default; // == 0-bit == new(0,0)
-    public static readonly Entity Any = new(-1, TypeID.MaxValue);
+    public static readonly Entity Any = new(-1, 0);
+    public static readonly Entity Object = new(-1, TypeID.MaxValue);
+    
     
     // Entity Reference.
     public bool IsReal => Id > 0 && Generation > 0;

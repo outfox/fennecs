@@ -76,9 +76,9 @@ public sealed class QueryBuilder<C> : QueryBuilder
         (world, mask, matchingTables) => new Query<C>(world, mask, matchingTables);
 
 
-    internal QueryBuilder(World world) : base(world)
+    internal QueryBuilder(World world, Entity target = default) : base(world)
     {
-        Has<C>();
+        Has<C>(target);
     }
 
 
@@ -131,9 +131,9 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
         (world, mask, matchingTables) => new Query<C1, C2>(world, mask, matchingTables);
 
 
-    public QueryBuilder(World world) : base(world)
+    public QueryBuilder(World world, Entity target1 = default, Entity target2 = default) : base(world)
     {
-        Has<C1>().Has<C2>();
+        Has<C1>(target1).Has<C2>(target2);
     }
 
 

@@ -7,14 +7,14 @@ public partial class World
         return new QueryBuilder<Entity>(this);
     }
 
-    public QueryBuilder<C> Query<C>()
+    public QueryBuilder<C> Query<C>(Entity target = default)
     {
-        return new QueryBuilder<C>(this);
+        return new QueryBuilder<C>(this, target);
     }
 
-    public QueryBuilder<C1, C2> Query<C1, C2>()
+    public QueryBuilder<C1, C2> Query<C1, C2>(Entity target1 = default, Entity target2 = default)
     {
-        return new QueryBuilder<C1, C2>(this);
+        return new QueryBuilder<C1, C2>(this, target1, target2);
     }
 
     public QueryBuilder<C1, C2, C3> Query<C1, C2, C3>()

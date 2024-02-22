@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using fennecs.pools;
 
 namespace fennecs;
@@ -262,9 +263,8 @@ public partial class World
 
         if (newTable == null)
         {
-            var newTypes = oldTable.Types.ToList();
-            newTypes.Add(typeExpression);
-            newTable = AddTable(new SortedSet<TypeExpression>(newTypes));
+            var newTypes = oldTable.Types.Add(typeExpression);
+            newTable = AddTable(newTypes);
             oldEdge.Add = newTable;
 
             var newEdge = newTable.GetTableEdge(typeExpression);
