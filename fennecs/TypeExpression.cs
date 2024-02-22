@@ -11,6 +11,7 @@ namespace fennecs;
 [StructLayout(LayoutKind.Explicit)]
 public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
+    #region Struct Data Layout
     //             This is a 64 bit union struct.
     //                 Layout: (little endian)
     //   | LSB                                   MSB |
@@ -38,7 +39,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
-
+    #endregion
 
     /// <summary>
     /// The target of this <see cref="TypeExpression"/>. If <see cref="Entity.None"/>, this is a plain component.
@@ -181,7 +182,9 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         return new TypeExpression(target, LanguageType.Identify(type));
     }
     
-
+    /// <summary>
+    /// Implements a hash function that aims for a low collision rate.
+    /// </summary>
     public override int GetHashCode()
     {
         unchecked
@@ -190,26 +193,30 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         }
     }
 
+    /// <inheritdoc cref="object.ToString"/>
+    public override string ToString()
+    {
+        return isRelation ? $"<{LanguageType.Resolve(TypeId)}\u2192{Target}>" : $"<{LanguageType.Resolve(TypeId)}>";
+    }
 
     public static bool operator ==(TypeExpression left, TypeExpression right)
     {
         return left.Equals(right);
     }
 
-
     public static bool operator !=(TypeExpression left, TypeExpression right)
     {
         return !(left == right);
     }
 
+    /// <summary>
+    /// Internal constructor, used by <see cref="Create{T}"/> and by unit tests.
+    /// </summary>
+    /// <param name="target">literal target Entity value</param>
+    /// <param name="typeId">literal TypeID value</param>
     internal TypeExpression(Entity target, TypeID typeId)
     {
         Value = target.Value;
         TypeId = typeId;
-    }
-
-    public override string ToString()
-    {
-        return isRelation ? $"<{LanguageType.Resolve(TypeId)}\u2192{Target}>" : $"<{LanguageType.Resolve(TypeId)}>";
     }
 }
