@@ -27,7 +27,24 @@ public class TypeExpressionTests
     {
         var t1 = TypeExpression.Create<int>();
         var t2 = TypeExpression.Create<ushort>();
-        Assert.NotEqual(t1 , t2);
+        Assert.NotEqual(t1, t2);
+    }
+
+    [Fact]
+    public void Is_Sorted_By_TypeId_First()
+    {
+        var random = new Random(4711);
+        for (var i = 0; i < 10_000; i++)
+        {
+            var id = random.Next();
+            var deco = (TypeID) (random.Next() % TypeID.MaxValue);
+            var t1 = new TypeExpression(new Entity(id, deco), (TypeID) i);
+            var t2 = new TypeExpression(new Entity(id, deco), (TypeID) (i + 1));
+
+            //  If this test fails, Archetypes will not be able to build immutable buckets for wildcards.
+            Assert.True(t1.CompareTo(t2) < 0);
+            Assert.True(t2.CompareTo(t1) > 0);
+        }
     }
 
     [Fact]
@@ -58,7 +75,7 @@ public class TypeExpressionTests
         Assert.True(t1 == t2);
         Assert.False(t1 == t3);
     }
-    
+
     [Fact]
     public void Has_Inequality_Operator()
     {

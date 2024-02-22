@@ -3,6 +3,7 @@
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.IO.Compression;
 using fennecs.pools;
 
 namespace fennecs;
@@ -17,7 +18,7 @@ internal sealed class Archetype
         internal Archetype? Add;
         internal Archetype? Remove;
     }
-    
+
     private const int StartCapacity = 4;
 
     public readonly int Id;
@@ -25,7 +26,7 @@ internal sealed class Archetype
     public readonly ImmutableSortedSet<TypeExpression> Types;
 
     public Entity[] Identities => _identities;
-    
+
     internal Array[] Storages => _storages;
 
     public int Count { get; private set; }
@@ -37,14 +38,15 @@ internal sealed class Archetype
     private readonly World _archetypes;
 
     private Entity[] _identities;
-    
+
     /// <summary>
     /// Actual component data storages. It' is a fixed size array because an Archetype doesn't change.
     /// </summary>
     private readonly Array[] _storages;
-    
+
+    private readonly ImmutableDictionary<TypeExpression, Array> _storageDict;
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
-    
+
     private readonly Dictionary<TypeExpression, Edge> _edges = new();
 
     /// <summary>
@@ -62,23 +64,26 @@ internal sealed class Archetype
 
         Id = id;
         Types = types;
-        
+
         _identities = new Entity[StartCapacity];
 
         _storages = new Array[types.Count];
+        _storageDict = Zip(types, _storages);
 
         // Build the relation between storages and types, as well as type wildcards in buckets.
         var finishedTypes = PooledList<TypeID>.Rent();
         var finishedBuckets = PooledList<Array[]>.Rent();
         var currentBucket = PooledList<Array>.Rent();
         TypeID currentTypeId = 0;
+
+        // Types are sorted by TypeID first, so we can iterate them in order to add them to wildcard buckets.
         for (var index = 0; index < types.Count; index++)
         {
             var type = types[index];
             _storageIndices.Add(type, index);
             _storages[index] = Array.CreateInstance(type.Type, StartCapacity);
-            
-            // New bucket?
+
+            // Time for a new bucket?
             if (currentTypeId != type.TypeId)
             {
                 //Finish bucket (exclude null type)
@@ -89,41 +94,49 @@ internal sealed class Archetype
                     currentBucket.Dispose();
                     currentBucket = PooledList<Array>.Rent();
                 }
+
                 currentTypeId = type.TypeId;
             }
 
-            //TODO: Harmless assert, but...  is it pretty? We could disallow type 0, or skip null types.
+            //TODO: Harmless assert, but...  is it pretty? We could disallow TypeExpression 0, or skip null types.
             Debug.Assert(currentTypeId != 0, "Trying to create bucket for a null type.");
             currentBucket.Add(_storages[index]);
         }
-        
-        // Bake buckets dictionary - TODO: Maybe cheaper to do without LINQ.
-        _buckets = finishedTypes
-            .Zip(finishedBuckets, (k, v) => new {Key = k, Value = v})
-            .ToImmutableDictionary(item => item.Key, item => item.Value);
-        
+
+        // Bake buckets dictionary
+        _buckets = Zip(finishedTypes, finishedBuckets);
+
         currentBucket.Dispose();
         finishedBuckets.Dispose();
         finishedTypes.Dispose();
     }
 
-    
+
+    private static ImmutableDictionary<T, U> Zip<T, U>(IReadOnlyList<T> finishedTypes, IReadOnlyList<U> finishedBuckets) where T : notnull
+    {
+        var result = finishedTypes
+            .Zip(finishedBuckets, (k, v) => new {Key = k, Value = v})
+            .ToImmutableDictionary(item => item.Key, item => item.Value);
+        return result;
+    }
+
+
     internal bool Matches(TypeExpression type)
     {
         return type.Matches(Types);
     }
-    
+
 
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.
         var matchesNot = !mask.NotTypes.Any(t => t.Matches(Types));
         if (!matchesNot) return false;
-        
+
         //If already matching, no need to check any further. 
         var matchesHas = mask.HasTypes.All(t => t.Matches(Types));
         if (!matchesHas) return false;
-        
+
         //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
         var matchesAny = mask.AnyTypes.Count == 0;
         matchesAny |= mask.AnyTypes.Any(t => t.Matches(Types));
@@ -131,23 +144,23 @@ internal sealed class Archetype
         return matchesHas && matchesNot && matchesAny;
     }
 
-    
+
     public int Add(Entity entity)
     {
         Interlocked.Increment(ref _version);
-        
+
         EnsureCapacity(Count + 1);
         _identities[Count] = entity;
         return Count++;
     }
 
-    
+
     public void Remove(int row)
     {
         Interlocked.Increment(ref _version);
-        
+
         ArgumentOutOfRangeException.ThrowIfGreaterThan(row, Count, nameof(row));
-        
+
         Count--;
 
         // If removing not the last row, move the last row to the removed row
@@ -158,16 +171,17 @@ internal sealed class Archetype
             {
                 Array.Copy(storage, Count, storage, row, 1);
             }
+
             _archetypes.GetEntityMeta(_identities[row]).Row = row;
         }
 
         // Free the last row
         _identities[Count] = default;
-        
+
         foreach (var storage in _storages) Array.Clear(storage, Count, 1);
     }
 
-    
+
     public Edge GetTableEdge(TypeExpression typeExpression)
     {
         if (_edges.TryGetValue(typeExpression, out var edge)) return edge;
@@ -177,23 +191,28 @@ internal sealed class Archetype
 
         return edge;
     }
-
-
+    
+    
     public T[] GetStorage<T>(Entity target)
     {
         var type = TypeExpression.Create<T>(target);
         return (T[]) GetStorage(type);
     }
 
-
+    
+    public T[][] GetBucket<T>()
+    {
+        return (T[][]) _buckets[LanguageType<T>.Id];
+    }
+    
+    
     public Memory<T> Memory<T>(Entity target)
     {
         var type = TypeExpression.Create<T>(target);
         var storage = (T[]) GetStorage(type);
         return storage.AsMemory(0, Count);
     }
-
-
+    
     public Array GetStorage(TypeExpression typeExpression)
     {
         return _storages[_storageIndices[typeExpression]];

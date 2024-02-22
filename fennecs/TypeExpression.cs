@@ -119,8 +119,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     }
 
     public static implicit operator ulong(TypeExpression self) => self.Value;
-    
-    private TypeExpression(Entity target, TypeID typeId)
+
+    internal TypeExpression(Entity target, TypeID typeId)
     {
         Value = target.Value;
         TypeId = typeId;
