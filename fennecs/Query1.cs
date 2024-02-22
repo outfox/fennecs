@@ -1,28 +1,17 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System.Data;
 using fennecs.pools;
 
 namespace fennecs;
 
 public class Query<C0> : Query
 {
+    private readonly List<C0[]> _storages0 = new(64);
+    private readonly int[] _counter = new int[1];
+    private readonly int[] _limiter = new int[1];
+    
     internal Query(World world, Mask mask, List<Archetype> archetypes) : base(world, mask, archetypes)
     {
-    }
-
-    private void Comb1(SpanAction<C0> action, PooledList<C0[]> l0)
-    {
-        Span<int> counters = stackalloc int[1];
-
-        counters[0] = l0.Count;
-        
-        for (var i = 0; i < l0.Count; i++)
-        {
-            action(l0[i]);
-        }
-        
-        l0.Dispose();
     }
 
     public void ForSpan(SpanAction<C0> action)
@@ -39,16 +28,18 @@ public class Query<C0> : Query
             if (table.IsEmpty) continue;
             var count = table.Count;
 
-            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            table.Match<C0>(Mask.HasTypes[0], _storages0);
 
             counters[0] = 0;
-            goals[0] = storages0.Count;
+            goals[0] = _storages0.Count;
 
             do
             {
-                var span0 = storages0[counters[0]].AsSpan(0, count);
+                var span0 = _storages0[counters[0]].AsSpan(0, count);
                 action(span0);
-            } while (FullJoin(ref counters, ref goals));
+            } while (CrossJoin(counters, goals));
+
+            _storages0.Clear();
         }
 
         World.Unlock();
@@ -70,40 +61,61 @@ public class Query<C0> : Query
 
         World.Unlock();
     }
-    
-    
+
+
     public void ForEach(RefAction<C0> action)
     {
         AssertNotDisposed();
-        
-        World.Lock();
 
+        World.Lock();
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage = table.GetStorage<C0>(Entity.None).AsSpan(0, table.Count);
-            for (var i = 0; i < storage.Length; i++) action(ref storage[i]);
+
+            table.Match<C0>(Mask.HasTypes[0], _storages0);
+
+            _counter[0] = 0;
+            _limiter[0] = _storages0.Count;
+
+            do
+            {
+                var span0 = _storages0[_counter[0]].AsSpan(0, table.Count);
+                foreach (ref var c0 in span0) action(ref c0);
+            } while (CrossJoin(_counter, _limiter));
+
+            _storages0.Clear();
         }
 
         World.Unlock();
     }
-    
+
     public void ForEach<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
-        
+
         World.Lock();
 
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage = table.GetStorage<C0>(Entity.None).AsSpan(0, table.Count);
-            for (var i = 0; i < storage.Length; i++) action(ref storage[i], uniform);
+
+            table.Match<C0>(Mask.HasTypes[0], _storages0);
+
+            _counter[0] = 0;
+            _limiter[0] = _storages0.Count;
+
+            do
+            {
+                var span0 = _storages0[_counter[0]].AsSpan(0, table.Count);
+                foreach (ref var c0 in span0) action(ref c0, uniform);
+            } while (CrossJoin(_counter, _limiter));
+
+            _storages0.Clear();
         }
 
         World.Unlock();
     }
-    
+
     public void Job(RefAction<C0> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();

@@ -109,10 +109,8 @@ internal sealed class Archetype
     }
 
 
-    internal PooledList<T[]> Match<T>(TypeExpression expression)
+    internal void Match<T>(TypeExpression expression, List<T[]> result)
     {
-        var result = PooledList<T[]>.Rent();
-
         //TODO: Use TypeBuckets as optimization (much faster!).
         foreach (var (type, index) in _storageIndices)
         {
@@ -121,8 +119,6 @@ internal sealed class Archetype
                 result.Add((T[]) _storages[index]);
             }
         }
-        
-        return result;
     }
 
     

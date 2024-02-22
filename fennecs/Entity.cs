@@ -27,35 +27,43 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
 
 
     /// <summary>
-    /// Query Matching; matches only plain components (target == None)
-    /// - plain components
+    /// In Query Matching; matches only (target == None)
+    /// <ul><li>plain components</li></ul>
     /// </summary>
     public static readonly Entity None = default; // == 0-bit == new(0,0)
 
     /// <summary>
-    /// Query Matching; matches any component target, including None:
-    /// - plain components
-    /// - entity-entity relations
-    /// - entity-object relations
+    /// In Query Matching; matches any component target, including None:
+    /// <ul>
+    /// <li>(target == none, i.e. plain components)</li>
+    /// <li>(entity-entity relations)</li>
+    /// <li>(entity-object relations)</li>
+    /// </ul>
     /// </summary>
     public static readonly Entity Any = new(-1, 0);
 
     /// <summary>
-    ///  Query Matching; matches all relations with a target:
-    ///  - entity-entity relations
-    ///  - entity-object relations
+    ///  In Query Matching; matches all relations with a target:
+    /// <ul>
+    /// <li>(entity-entity relations)</li>
+    /// <li>(entity-object relations)</li>
+    /// </ul>
     /// </summary>
     public static readonly Entity Target = new(-2, 0);
 
     /// <summary>
-    /// Query Matching; matches only Entity links.
-    /// - entity-entity relations
+    /// In Query Matching; matches only Entity links.
+    /// <ul>
+    /// <li>(entity-entity relations)</li>
+    /// </ul>
     /// </summary>
     public static readonly Entity Relation = new(-3, 0);
 
     /// <summary>
-    /// Query Matching; matches only object links.
-    /// - entity-object relations
+    /// In Query Matching; matches only object links.
+    /// <ul>
+    /// <li>(entity-object relations)</li>
+    /// </ul>
     /// </summary>
     public static readonly Entity Object = new(-4, 0);
 

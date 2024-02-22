@@ -66,6 +66,12 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         return other.Any(type => self.Matches(type));
     }
     
+    /// <summary>
+    /// Match against another TypeExpression; used for Query Matching, and is Non-Commutative.
+    /// Examines the Target field and decides whether the other TypeExpression is a match.
+    /// </summary>
+    /// <param name="other">another type expression</param>
+    /// <returns>true if matched</returns>
     public bool Matches(TypeExpression other)
     {
         // Reject if Types are incompatible. 

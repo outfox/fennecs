@@ -109,7 +109,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
     
-    internal static bool FullJoin(ref Span<int> counters, ref Span<int> goals)
+    internal static bool CrossJoin(Span<int> counters, Span<int> goals)
     {
         // Loop through all counters, counting up to goal and wrapping until saturated
         // Example: 0-0-0 to 1-3-2:
