@@ -122,6 +122,22 @@ internal sealed class Archetype
     }
 
     
+    internal PooledList<T[]> Match<T>(TypeExpression expression)
+    {
+        var result = PooledList<T[]>.Rent();
+        //TODO: Use TypeBuckets as optimization (much faster!).
+        foreach (var (type, index) in _storageIndices)
+        {
+            if (type.Matches(expression))
+            {
+                result.Add((T[]) _storages[index]);
+            }
+        }
+
+        return result;
+    }
+
+    
     private static ImmutableDictionary<T, U> Zip<T, U>(IReadOnlyList<T> finishedTypes, IReadOnlyList<U> finishedBuckets) where T : notnull
     {
         var result = finishedTypes

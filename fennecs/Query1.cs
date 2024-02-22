@@ -6,7 +6,9 @@ namespace fennecs;
 
 public class Query<C0> : Query
 {
-    private readonly List<C0[]> _storages0 = new(64);
+    // The counters backing the Query's Cross Join.
+    // CAVEAT: stackalloc prevents inlining, this is why we preallocate these.
+    // If we want thread safety, we'd have to get them from a pool.
     private readonly int[] _counter = new int[1];
     private readonly int[] _limiter = new int[1];
     
@@ -20,26 +22,21 @@ public class Query<C0> : Query
 
         World.Lock();
 
-        Span<int> counters = stackalloc int[1];
-        Span<int> goals    = stackalloc int[1];
-        
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var count = table.Count;
 
-            table.Match<C0>(Mask.HasTypes[0], _storages0);
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
 
-            counters[0] = 0;
-            goals[0] = _storages0.Count;
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
 
             do
             {
-                var span0 = _storages0[counters[0]].AsSpan(0, count);
+                var span0 = storages0[_counter[0]].AsSpan(0, count);
                 action(span0);
-            } while (CrossJoin(counters, goals));
-
-            _storages0.Clear();
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -72,18 +69,16 @@ public class Query<C0> : Query
         {
             if (table.IsEmpty) continue;
 
-            table.Match<C0>(Mask.HasTypes[0], _storages0);
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
 
             _counter[0] = 0;
-            _limiter[0] = _storages0.Count;
+            _limiter[0] = storages0.Count;
 
             do
             {
-                var span0 = _storages0[_counter[0]].AsSpan(0, table.Count);
+                var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
                 foreach (ref var c0 in span0) action(ref c0);
             } while (CrossJoin(_counter, _limiter));
-
-            _storages0.Clear();
         }
 
         World.Unlock();
@@ -99,18 +94,16 @@ public class Query<C0> : Query
         {
             if (table.IsEmpty) continue;
 
-            table.Match<C0>(Mask.HasTypes[0], _storages0);
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
 
             _counter[0] = 0;
-            _limiter[0] = _storages0.Count;
+            _limiter[0] = storages0.Count;
 
             do
             {
-                var span0 = _storages0[_counter[0]].AsSpan(0, table.Count);
+                var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
                 foreach (ref var c0 in span0) action(ref c0, uniform);
             } while (CrossJoin(_counter, _limiter));
-
-            _storages0.Clear();
         }
 
         World.Unlock();
