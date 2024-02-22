@@ -219,13 +219,22 @@ public class Query<C0> : Query
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            action(table.Memory<C0>(Entity.None));
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+
+            do
+            {
+                var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
+                action(mem0);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
     }
 
-    
     public void Raw<U>(MemoryActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -235,7 +244,17 @@ public class Query<C0> : Query
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            action(table.Memory<C0>(Entity.None), uniform);
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+
+            do
+            {
+                var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
+                action(mem0, uniform);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();

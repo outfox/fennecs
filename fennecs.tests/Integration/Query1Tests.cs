@@ -4,7 +4,7 @@
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Query1Tests
 {
-        [Theory]
+    [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)
     {
