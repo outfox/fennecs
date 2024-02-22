@@ -57,16 +57,6 @@ public class TypeExpressionTests
     }
 
     [Fact]
-    public void Implicitly_decays_to_ulong()
-    {
-        ulong t1 = TypeExpression.Create<TypeA>();
-        ulong t2 = TypeExpression.Create<TypeA>();
-        ulong t3 = TypeExpression.Create<string>();
-        Assert.Equal(t2, t1);
-        Assert.NotEqual(t3, t1);
-    }
-
-    [Fact]
     public void Has_Equality_Operator()
     {
         var t1 = TypeExpression.Create<TypeA>();

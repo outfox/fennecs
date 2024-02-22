@@ -4,6 +4,10 @@ using System.Runtime.InteropServices;
 
 namespace fennecs;
 
+/// <summary>
+/// Represents a union structure that encapsulates type expressions, including components,
+/// entity-entity relations, entity-object relations, and wildcard expressions matching multiple.
+/// </summary>
 [StructLayout(LayoutKind.Explicit)]
 public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
@@ -20,40 +24,57 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //   | Entity (Identity)            | TypeNumber |
     //   | 48 bits                      |  16 bits   |
     
-    //   PLANNED:
-    //   TypeNumber
-    //   | Type    | Flags |
-    //   | 14 bits | 2 bits |
-    
-    //   Flags
-    //   00 - Component Type
-    //   01 - Component Type Targeting Entity
-    //   10 - Component Type Targeting WeakReference
-    //   11 - Reserved (for potential hash-bucket storage features)
-    
-    
     //Union Backing Store
-    [FieldOffset(0)] public readonly ulong Value;
+    [FieldOffset(0)] internal readonly ulong Value;
 
     //Identity Components
-    [FieldOffset(0)] public readonly int Id;
-    [FieldOffset(4)] public readonly ushort Generation;
-    [FieldOffset(4)] public readonly TypeID Decoration;
+    [FieldOffset(0)] internal readonly int Id;
+    [FieldOffset(4)] internal readonly ushort Generation;
+    [FieldOffset(4)] internal readonly TypeID Decoration;
     
     // Type Header
-    [FieldOffset(6)] public readonly TypeID TypeId;
+    [FieldOffset(6)] internal readonly TypeID TypeId;
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
 
-    
+
+    /// <summary>
+    /// The target of this <see cref="TypeExpression"/>. If <see cref="Entity.None"/>, this is a plain component.
+    /// If it is a concrete entity, it is a entity relation. If it is a object entity, it is an object relation.
+    /// Special virtual Entities <see cref="Entity.Any"/>, <see cref="Entity.Target"/>,
+    /// <see cref="Entity.Relation"/>, or <see cref="Entity.Object"/> will create a wildcard expression.
+    /// </summary>
+    /// <remarks>
+    /// <ul>
+    /// <li>If <paramref name="target"/> is <see cref="Entity.Any"/>, the type expression acts as a wildcard 
+    ///   expression that matches any target, INCLUDING <see cref="Entity.None"/>.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Target"/>, the type expression acts as a wildcard 
+    ///   expression that matches any relation target, EXCEPT <see cref="Entity.None"/>.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Relation"/>, the type expression acts as a wildcard 
+    ///   expression that matches ONLY entity-entity relations.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Object"/>, the type expression acts as a wildcard 
+    ///   expression that matches ONLY entity-object relations.</li>
+    /// </ul>
+    /// </remarks>
     public Entity Target => new(Id, Decoration);
     
+    /// <summary>
+    /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
+    /// </summary>
     public bool isRelation => TypeId != 0 && Target != Entity.None;
 
+    /// <summary>
+    /// Get the backing component type that this <see cref="TypeExpression"/> represents.
+    /// </summary>
     public Type Type => LanguageType.Resolve(TypeId);
 
+    /// <summary>
+    /// Does this <see cref="TypeExpression"/> match any of the given type expressions?
+    /// </summary>
+    /// <param name="other">a collection of type expressions</param>
+    /// <returns>true if matched</returns>
     public bool Matches(IEnumerable<TypeExpression> other)
     {
         var self = this;
@@ -88,19 +109,73 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
         // Direct match?
         return Target == other.Target;
-    } 
+    }
 
+    /// <inheritdoc cref="IEquatable{T}.Equals(T?)"/>
     public bool Equals(TypeExpression other) => Value == other.Value;
 
+    /// <inheritdoc cref="IComparable{T}.CompareTo"/>
     public int CompareTo(TypeExpression other) => Value.CompareTo(other.Value);
 
+    ///<summary>
+    /// Implements <see cref="IEquatable{T}.Equals(object?)"/>
+    /// </summary>
+    /// <remarks>
+    /// ⚠️This method ALWAYS throws InvalidCastException, as boxing of this type is disallowed.
+    /// </remarks>
     public override bool Equals(object? obj) => throw new InvalidCastException("Boxing Disallowed; use TypeId.Equals(TypeId) instead.");
 
+    /// <summary>
+    /// Creates a new <see cref="TypeExpression"/> for a given component type and target entity.
+    /// This may express a plain component if <paramref name="target"/> is <see cref="Entity.None"/>, 
+    /// or a relation if <paramref name="target"/> is a normal Entity or an object Entity obtained 
+    /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
+    /// Providing any of the special virtual Entities <see cref="Entity.Any"/>, <see cref="Entity.Target"/>,
+    /// <see cref="Entity.Relation"/>, or <see cref="Entity.Object"/> will create a wildcard expression.
+    /// </summary>
+    /// <remarks>
+    /// <ul>
+    /// <li>If <paramref name="target"/> is <see cref="Entity.Any"/>, the type expression acts as a wildcard 
+    ///   expression that matches any target, INCLUDING <see cref="Entity.None"/>.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Target"/>, the type expression acts as a wildcard 
+    ///   expression that matches any relation target, EXCEPT <see cref="Entity.None"/>.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Relation"/>, the type expression acts as a wildcard 
+    ///   expression that matches ONLY entity-entity relations.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Object"/>, the type expression acts as a wildcard 
+    ///   expression that matches ONLY entity-object relations.</li>
+    /// </ul>
+    /// </remarks>
+    /// <typeparam name="T">The backing type for which to generate the expression.</typeparam>
+    /// <param name="target">The target entity, with a default of <see cref="Entity.None"/>, specifically NO target.</param>
+    /// <returns>A new <see cref="TypeExpression"/> instance, configured according to the specified type and target.</returns>
     public static TypeExpression Create<T>(Entity target = default)
     {
         return new TypeExpression(target, LanguageType<T>.Id);
     }
 
+    /// <summary>
+    /// Creates a new <see cref="TypeExpression"/> for a given component type and target entity.
+    /// This may express a plain component if <paramref name="target"/> is <see cref="Entity.None"/>, 
+    /// or a relation if <paramref name="target"/> is a normal Entity or an object Entity obtained 
+    /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
+    /// Providing any of the special virtual Entities <see cref="Entity.Any"/>, <see cref="Entity.Target"/>,
+    /// <see cref="Entity.Relation"/>, or <see cref="Entity.Object"/> will create a wildcard expression.
+    /// </summary>
+    /// <remarks>
+    /// <ul>
+    /// <li>If <paramref name="target"/> is <see cref="Entity.Any"/>, the type expression acts as a wildcard 
+    ///   expression that matches any target, INCLUDING <see cref="Entity.None"/>.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Target"/>, the type expression acts as a wildcard 
+    ///   expression that matches any relation target, EXCEPT <see cref="Entity.None"/>.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Relation"/>, the type expression acts as a wildcard 
+    ///   expression that matches ONLY entity-entity relations.</li>
+    /// <li> If <paramref name="target"/> is <see cref="Entity.Object"/>, the type expression acts as a wildcard 
+    ///   expression that matches ONLY entity-object relations.</li>
+    /// </ul>
+    /// </remarks>
+    /// <param name="type">The component type.</param>
+    /// <param name="target">The target entity, with a default of <see cref="Entity.None"/>, specifically NO target.</param>
+    /// <returns>A new <see cref="TypeExpression"/> instance, configured according to the specified type and target.</returns>
     public static TypeExpression Create(Type type, Entity target = default)
     {
         return new TypeExpression(target, LanguageType.Identify(type));
@@ -126,8 +201,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         return !(left == right);
     }
-
-    public static implicit operator ulong(TypeExpression self) => self.Value;
 
     internal TypeExpression(Entity target, TypeID typeId)
     {
