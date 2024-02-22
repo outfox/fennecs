@@ -149,6 +149,7 @@ public class Query<C1, C2> : Query
                 job.Uniform = uniform;
                 job.CountDown = Countdown;
                 jobs.Add(job);
+                
                 ThreadPool.UnsafeQueueUserWorkItem(job, true);
             }
         }

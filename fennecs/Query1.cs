@@ -12,6 +12,10 @@ public class Query<C0> : Query
     private readonly int[] _counter = new int[1];
     private readonly int[] _limiter = new int[1];
     
+    //Maybe we want shorthand one day, or not use the PooledList<T> at all.
+    //private C0[] s0 => storages0[_counter[0]];
+    //private readonly List<C0[]> storages0 = new(32);
+    
     internal Query(World world, Mask mask, List<Archetype> archetypes) : base(world, mask, archetypes)
     {
     }
@@ -121,26 +125,33 @@ public class Query<C0> : Query
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage = table.GetStorage<C0>(Entity.None);
+            if (table.IsEmpty) continue;
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-
-            for (var chunk = 0; chunk < partitions; chunk++)
+            do
             {
-                Countdown.AddCount();
+                for (var chunk = 0; chunk < partitions; chunk++)
+                {
+                    Countdown.AddCount();
 
-                var start = chunk * chunkSize;
-                var length = Math.Min(chunkSize, count - start);
+                    var start = chunk * chunkSize;
+                    var length = Math.Min(chunkSize, count - start);
 
-                var job = JobPool<Work<C0>>.Rent();
-                job.Memory1 = storage.AsMemory(start, length);
-                job.Action = action;
-                job.CountDown = Countdown;
-                jobs.Add(job);
+                    var job = JobPool<Work<C0>>.Rent();
+                    job.Memory1 = storages0[_counter[0]].AsMemory(start, length);
+                    job.Action = action;
+                    job.CountDown = Countdown;
+                    jobs.Add(job);
 
-                ThreadPool.UnsafeQueueUserWorkItem(job, true);
-            }
+                    ThreadPool.UnsafeQueueUserWorkItem(job, true);
+                }
+            } while (CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
@@ -163,26 +174,32 @@ public class Query<C0> : Query
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage = table.GetStorage<C0>(Entity.None);
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-
-            for (var chunk = 0; chunk < partitions; chunk++)
+            do
             {
-                Countdown.AddCount();
+                for (var chunk = 0; chunk < partitions; chunk++)
+                {
+                    Countdown.AddCount();
 
-                var start = chunk * chunkSize;
-                var length = Math.Min(chunkSize, count - start);
+                    var start = chunk * chunkSize;
+                    var length = Math.Min(chunkSize, count - start);
 
-                var job = JobPool<UniformWork<C0, U>>.Rent();
-                job.Memory1 = storage.AsMemory(start, length);
-                job.Action = action;
-                job.Uniform = uniform;
-                job.CountDown = Countdown;
-                jobs.Add(job);
-                ThreadPool.UnsafeQueueUserWorkItem(job, true);
-            }
+                    var job = JobPool<UniformWork<C0, U>>.Rent();
+                    job.Memory1 = storages0[_counter[0]].AsMemory(start, length);
+                    job.Action = action;
+                    job.Uniform = uniform;
+                    job.CountDown = Countdown;
+                    jobs.Add(job);
+
+                    ThreadPool.UnsafeQueueUserWorkItem(job, true);
+                }
+            } while (CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
