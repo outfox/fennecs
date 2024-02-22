@@ -68,28 +68,26 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     
     public bool Matches(TypeExpression other)
     {
-        // Reject if Type completely incompatible. 
+        // Reject if Types are incompatible. 
         if (TypeId != other.TypeId) return false;
 
-        // Direct match.
-        if (Target == other.Target) return true;
-
-        // None matches only None. (plain components)
+        // Entity.None matches only None. (plain components)
         if (Target == Entity.None) return other.Target == Entity.None;
-        
-        // Any matches everything; relations and pure components (target == none).
+
+        // Entity.Any matches everything; relations and pure components (target == none).
         if (Target == Entity.Any) return true;
         
-        // Relation matches all Entity-Target Relations.
+        // Entity.Target matches all Entity-Target Relations.
         if (Target == Entity.Target) return other.Target != Entity.None;
         
-        // Relation matches only Entity-Entity relations.
+        // Entity.Relation matches only Entity-Entity relations.
         if (Target == Entity.Relation) return other.Target.IsEntity;
         
-        // Object matches only Entity-Object relations.
+        // Entity.Object matches only Entity-Object relations.
         if (Target == Entity.Object) return other.Target.IsObject;
-        
-        return false;
+
+        // Direct match?
+        return Target == other.Target;
     } 
 
     public bool Equals(TypeExpression other) => Value == other.Value;
