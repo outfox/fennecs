@@ -49,6 +49,8 @@ public partial class MultiMeshExample : Node
 		SpawnWave(200_000);
 		
 		_query = _world.Query<int, Matrix4X3>().Build();
+		
+		_Process(0);
 	}
 
 	public override void _Process(double delta)

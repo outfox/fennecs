@@ -22,11 +22,6 @@ public class Query : IEnumerable<Entity>, IDisposable
         Mask = mask;
     }
 
-    private Query()
-    {
-        throw new NotSupportedException("Query cannot be created on its own.");
-    }
-
     /// <summary>
     /// Gets a reference to the component of type <typeparamref name="C"/> for the entity.
     /// </summary>

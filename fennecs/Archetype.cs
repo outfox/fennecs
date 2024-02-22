@@ -109,7 +109,7 @@ internal sealed class Archetype
     }
 
 
-    internal void Match<T>(TypeExpression expression, List<T[]> result)
+    internal void Match<T>(TypeExpression expression, IList<T[]> result)
     {
         //TODO: Use TypeBuckets as optimization (much faster!).
         foreach (var (type, index) in _storageIndices)
@@ -125,15 +125,7 @@ internal sealed class Archetype
     internal PooledList<T[]> Match<T>(TypeExpression expression)
     {
         var result = PooledList<T[]>.Rent();
-        //TODO: Use TypeBuckets as optimization (much faster!).
-        foreach (var (type, index) in _storageIndices)
-        {
-            if (type.Matches(expression))
-            {
-                result.Add((T[]) _storages[index]);
-            }
-        }
-
+        Match(expression, result);
         return result;
     }
 
@@ -224,13 +216,7 @@ internal sealed class Archetype
         var type = TypeExpression.Create<T>(target);
         return (T[]) GetStorage(type);
     }
-
-
-    public T[][] GetBucket<T>()
-    {
-        return (T[][]) _buckets[LanguageType<T>.Id];
-    }
-
+    
 
     public Memory<T> Memory<T>(Entity target)
     {
@@ -239,10 +225,10 @@ internal sealed class Archetype
         return storage.AsMemory(0, Count);
     }
 
-    //[Obsolete("Need to refactor.")]
+    
     internal Array GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
 
-
+    
     private void EnsureCapacity(int capacity)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));

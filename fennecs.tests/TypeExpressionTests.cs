@@ -105,4 +105,92 @@ public class TypeExpressionTests
         Assert.True(tx2.isRelation);
         Assert.True(tx3.isRelation);
     }
+
+    [Fact]
+    public void None_Matches_only_None()
+    {
+        var none = TypeExpression.Create<TypeA>(Entity.None);
+        var any = TypeExpression.Create<TypeA>(Entity.Any);
+        var obj = TypeExpression.Create<TypeA>(Entity.Object);
+        var rel = TypeExpression.Create<TypeA>(Entity.Relation);
+
+        var ent = TypeExpression.Create<TypeA>(new Entity(123));
+        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+
+        Assert.True(none.Matches(none));
+        Assert.False(none.Matches(any));
+        Assert.False(none.Matches(obj));
+        Assert.False(none.Matches(rel));
+        Assert.False(none.Matches(ent));
+        Assert.False(none.Matches(lnk));
+    }
+
+    [Fact]
+    public void Any_Matches_only_All()
+    {
+        var any = TypeExpression.Create<TypeA>(Entity.Any);
+        
+        var typ = TypeExpression.Create<TypeA>();
+        var ent = TypeExpression.Create<TypeA>(new Entity(123));
+        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+
+        Assert.True(any.Matches(typ));
+        Assert.True(any.Matches(ent));
+        Assert.True(any.Matches(lnk));
+    }
+
+    [Fact]
+    public void Object_Matches_only_Objects()
+    {
+        var obj = TypeExpression.Create<TypeA>(Entity.Object);
+        
+        var typ = TypeExpression.Create<TypeA>();
+        var ent = TypeExpression.Create<TypeA>(new Entity(123));
+        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+
+        Assert.False(obj.Matches(typ));
+        Assert.False(obj.Matches(ent));
+        Assert.True(obj.Matches(lnk));
+    }
+
+    [Fact]
+    public void Relation_Matches_only_Relations()
+    {
+        var rel = TypeExpression.Create<TypeA>(Entity.Relation);
+        
+        var typ = TypeExpression.Create<TypeA>();
+        var ent = TypeExpression.Create<TypeA>(new Entity(123));
+        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+
+        Assert.False(rel.Matches(typ));
+        Assert.True(rel.Matches(ent));
+        Assert.False(rel.Matches(lnk));
+    }
+    
+    [Fact]
+    public void Target_Matches_all_Entity_Target_Relations()
+    {
+        var rel = TypeExpression.Create<TypeA>(Entity.Target);
+        
+        var typ = TypeExpression.Create<TypeA>();
+        var ent = TypeExpression.Create<TypeA>(new Entity(123));
+        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+
+        Assert.False(rel.Matches(typ));
+        Assert.True(rel.Matches(ent));
+        Assert.True(rel.Matches(lnk));
+    }
+
+    [Fact]
+    public void Entity_only_matches_Entity()
+    {
+        var ent = TypeExpression.Create<TypeA>(new Entity(123));
+        
+        var typ = TypeExpression.Create<TypeA>();
+        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+
+        Assert.False(ent.Matches(typ));
+        Assert.True(ent.Matches(ent));
+        Assert.False(ent.Matches(lnk));
+    }
 }

@@ -6,6 +6,21 @@ namespace fennecs.tests.Integration;
 public class QueryTests
 {
     [Fact]
+    private void CrossJoin_Counts_All()
+    {
+        int[] counter = [0, 0, 0];
+        int[] limiter = [9, 5, 3];
+
+        var count = 0;
+        do
+        {
+            count++;
+        } while (Query.CrossJoin(counter, limiter));
+        
+        Assert.Equal(9*5*3, count);
+    }
+    
+    [Fact]
     private static void Can_Enumerate_PlainEnumerator()
     {
         using var world = new World();

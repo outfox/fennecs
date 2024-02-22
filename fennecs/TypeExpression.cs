@@ -54,12 +54,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     public Type Type => LanguageType.Resolve(TypeId);
 
-    public bool Matches(Mask mask)
-    {
-        if (Matches(mask.NotTypes)) return false;
-        return Matches(mask.HasTypes) || Matches(mask.AnyTypes);
-    }
-    
     public bool Matches(IEnumerable<TypeExpression> other)
     {
         var self = this;

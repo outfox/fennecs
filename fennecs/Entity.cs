@@ -69,7 +69,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
 
     
     // Entity Reference.
-    public bool IsEntity => Id > 0 && Generation > 0;
+    public bool IsEntity => Id > 0 && Decoration > 0;
 
     // Tracked Object Reference.
     public bool IsObject => Decoration < 0;
@@ -147,6 +147,15 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
 
         if (Equals(Any))
             return "\u25c6[Any]";
+        
+        if (Equals(Target))
+            return "\u25c6[Target]";
+        
+        if (Equals(Relation))
+            return "\u25c6[Relation]";
+        
+        if (Equals(Object))
+            return "\u25c6[Object]";
 
         if (IsObject)
             return $"\u27d0<{Type}>#{Id:X8}";

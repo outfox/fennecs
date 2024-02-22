@@ -7,14 +7,9 @@ namespace fennecs;
 public class Query<C0> : Query
 {
     // The counters backing the Query's Cross Join.
-    // CAVEAT: stackalloc prevents inlining, this is why we preallocate these.
-    // If we want thread safety, we'd have to get them from a pool.
+    // CAVEAT: stackalloc prevents inlining, thus we preallocate.
     private readonly int[] _counter = new int[1];
     private readonly int[] _limiter = new int[1];
-    
-    //Maybe we want shorthand one day, or not use the PooledList<T> at all.
-    //private C0[] s0 => storages0[_counter[0]];
-    //private readonly List<C0[]> storages0 = new(32);
     
     internal Query(World world, Mask mask, List<Archetype> archetypes) : base(world, mask, archetypes)
     {
