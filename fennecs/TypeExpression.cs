@@ -57,7 +57,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     public bool Matches(Mask mask)
     {
         if (Matches(mask.NotTypes)) return false;
-        return Matches(mask.AnyTypes) || Matches(mask.AnyTypes);
+        return Matches(mask.HasTypes) || Matches(mask.AnyTypes);
     }
     
     public bool Matches(IEnumerable<TypeExpression> other)
@@ -68,23 +68,28 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     
     public bool Matches(TypeExpression other)
     {
-        // Reject if Type completely incompatible 
+        // Reject if Type completely incompatible. 
         if (TypeId != other.TypeId) return false;
-
-        // Most common case.
-        if (Target == Entity.None) return other.Target == Entity.None;
-        
-        //TODO: Testing what happens... :)
-        //if (Target == Entity.Any) return true;
-        
-        // Any only matches other Relations, not pure components (Target == None).
-        if (Target == Entity.Any) return other.Target != Entity.None;
 
         // Direct match.
         if (Target == other.Target) return true;
+
+        // None matches only None. (plain components)
+        if (Target == Entity.None) return other.Target == Entity.None;
         
-        // For commutative matching only. (usually a TypeId from a Query is matched against one from a Table)
-        return other.Target == Entity.Any;
+        // Any matches everything; relations and pure components (target == none).
+        if (Target == Entity.Any) return true;
+        
+        // Relation matches all Entity-Target Relations.
+        if (Target == Entity.Target) return other.Target != Entity.None;
+        
+        // Relation matches only Entity-Entity relations.
+        if (Target == Entity.Relation) return other.Target.IsEntity;
+        
+        // Object matches only Entity-Object relations.
+        if (Target == Entity.Object) return other.Target.IsObject;
+        
+        return false;
     } 
 
     public bool Equals(TypeExpression other) => Value == other.Value;

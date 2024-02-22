@@ -24,14 +24,44 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
-    
+
+
+    /// <summary>
+    /// Query Matching; matches only plain components (target == None)
+    /// - plain components
+    /// </summary>
     public static readonly Entity None = default; // == 0-bit == new(0,0)
+
+    /// <summary>
+    /// Query Matching; matches any component target, including None:
+    /// - plain components
+    /// - entity-entity relations
+    /// - entity-object relations
+    /// </summary>
     public static readonly Entity Any = new(-1, 0);
-    public static readonly Entity Object = new(-1, TypeID.MaxValue);
-    
+
+    /// <summary>
+    ///  Query Matching; matches all relations with a target:
+    ///  - entity-entity relations
+    ///  - entity-object relations
+    /// </summary>
+    public static readonly Entity Target = new(-2, 0);
+
+    /// <summary>
+    /// Query Matching; matches only Entity links.
+    /// - entity-entity relations
+    /// </summary>
+    public static readonly Entity Relation = new(-3, 0);
+
+    /// <summary>
+    /// Query Matching; matches only object links.
+    /// - entity-object relations
+    /// </summary>
+    public static readonly Entity Object = new(-4, 0);
+
     
     // Entity Reference.
-    public bool IsReal => Id > 0 && Generation > 0;
+    public bool IsEntity => Id > 0 && Generation > 0;
 
     // Tracked Object Reference.
     public bool IsObject => Decoration < 0;
@@ -93,7 +123,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
     {
         get
         {
-            if (!IsReal) throw new InvalidCastException("Cannot reuse virtual Identities");
+            if (!IsEntity) throw new InvalidCastException("Cannot reuse virtual Identities");
 
             var generationWrappedStartingAtOne = (TypeID) (Generation % (TypeID.MaxValue - 1) + 1);
             return new Entity(Id, generationWrappedStartingAtOne);

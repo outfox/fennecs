@@ -39,16 +39,16 @@ public class Query<C0> : Query
             if (table.IsEmpty) continue;
             var count = table.Count;
 
-            var storages0 = table.Match<C0>(Mask);
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
 
             counters[0] = 0;
             goals[0] = storages0.Count;
-            
-            while (FullJoin(counters, goals))
+
+            do
             {
                 var span0 = storages0[counters[0]].AsSpan(0, count);
                 action(span0);
-            }
+            } while (FullJoin(ref counters, ref goals));
         }
 
         World.Unlock();

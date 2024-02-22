@@ -21,7 +21,7 @@ public class WorldTests
     {
         using var world = new World();
         var identity = world.Spawn().Id();
-        Assert.True(identity.IsReal);
+        Assert.True(identity.IsEntity);
         Assert.False(identity.IsVirtual);
         Assert.False(identity.IsObject);
         return identity;

@@ -66,7 +66,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.True(table.Matches(typeExpression));
 
         var typeExpressionAny = TypeExpression.Create<string>(Entity.Any);
-        Assert.False(table.Matches(typeExpressionAny));
+        Assert.True(table.Matches(typeExpressionAny));
 
         var typeExpressionTarget = TypeExpression.Create<string>(new Entity(99999));
         Assert.False(table.Matches(typeExpressionTarget));

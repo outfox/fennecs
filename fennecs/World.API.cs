@@ -30,7 +30,7 @@ public partial class World
     /// </summary>
     /// <param name="entity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    public bool IsAlive(Entity entity) => entity.IsReal && entity == _meta[entity.Id].Entity;
+    public bool IsAlive(Entity entity) => entity.IsEntity && entity == _meta[entity.Id].Entity;
 
 
     #region Linked Components

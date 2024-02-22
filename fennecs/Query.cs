@@ -109,24 +109,20 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
     
-    internal static bool FullJoin(Span<int> counters, Span<int> goals)
+    internal static bool FullJoin(ref Span<int> counters, ref Span<int> goals)
     {
         // Loop through all counters, counting up to goal and wrapping until saturated
         // Example: 0-0-0 to 1-3-2:
         // 000 -> 010 -> 020 -> 001 -> 011 -> 021 -> 002 -> 012 -> 022 -> 032
-        
+
         for (var i = 0; i < counters.Length; i++)
         {
             // Increment the current counter
             counters[i]++;
 
-            // Check if the current counter has reached its goal
-            if (counters[i] < goals[i])
-            {
-                // Successful increment, not yet reached the goal
-                return true;
-            }
-
+            // Successful increment?
+            if (counters[i] < goals[i]) return true;
+            
             // Current counter reached its goal, reset it and move to the next
             counters[i] = 0;
 
