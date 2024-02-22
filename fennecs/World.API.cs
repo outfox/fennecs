@@ -5,8 +5,11 @@ namespace fennecs;
 
 public partial class World
 {
-    public bool IsAlive(Entity entity) => entity.IsReal && _meta[entity.Id].Entity == entity;
-
+    /// <summary>
+    /// Creates a new entity in this World.
+    /// Reuses previously despawned entities, who will differ in generation after respawn. 
+    /// </summary>
+    /// <returns>an EntityBuilder to operate on</returns>
     public EntityBuilder Spawn() => new(this, NewEntity());
 
     /// <summary>
@@ -22,8 +25,16 @@ public partial class World
     /// <returns>an EntityBuilder whose methods return itself, to provide a fluid syntax. </returns>
     public EntityBuilder On(Entity entity) => new(this, entity);
 
-    #region Linked Components
+    /// <summary>
+    /// Checks if the entity is alive (was not despawned).
+    /// </summary>
+    /// <param name="entity">an Entity</param>
+    /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
+    public bool IsAlive(Entity entity) => entity.IsReal && entity == _meta[entity.Id].Entity;
 
+
+    #region Linked Components
+    
     /* Idea for alternative API
     public struct Linked<T>(T link)
     {
