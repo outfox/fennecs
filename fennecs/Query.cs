@@ -85,7 +85,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         AssertNotDisposed();
         
         var meta = World.GetEntityMeta(entity);
-        var table = World.GetTable(meta.TableId);
+        var table = meta.Archetype;
         return Archetypes.Contains(table);
     }
     

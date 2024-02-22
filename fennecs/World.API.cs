@@ -194,7 +194,7 @@ public partial class World
         
         _meta = new EntityMeta[capacity];
 
-        //Create the "Identity" Archetype, which is also the root of the Archetype Graph.
+        //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
         _root = AddTable([TypeExpression.Create<Entity>(Entity.None)]);
     }
 
@@ -212,7 +212,7 @@ public partial class World
 
             ref var meta = ref _meta[entity.Id];
 
-            var table = _tables[meta.TableId];
+            var table = meta.Archetype;
             table.Remove(meta.Row);
             meta.Clear();
 
@@ -243,7 +243,7 @@ public partial class World
         AssertAlive(entity);
 
         ref var meta = ref _meta[entity.Id];
-        var oldTable = _tables[meta.TableId];
+        var oldTable = meta.Archetype;
 
         if (oldTable.Types.Contains(typeExpression))
         {
@@ -274,7 +274,7 @@ public partial class World
         newTable.Set(typeExpression, data, newRow);
 
         meta.Row = newRow;
-        meta.TableId = newTable.Id;
+        meta.Archetype = newTable;
     }
 
     public ref T GetComponent<T>(Entity entity, Entity target = default)
@@ -287,7 +287,7 @@ public partial class World
         }
 
         var meta = _meta[entity.Id];
-        var table = _tables[meta.TableId];
+        var table = meta.Archetype;
         var storage = table.GetStorage<T>(target);
         return ref storage[meta.Row];
     }

@@ -8,7 +8,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
 
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
 
         output.WriteLine(table.ToString());
         Assert.Contains(typeof(Entity).ToString(), table.ToString());
@@ -23,7 +23,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
 
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
 
         Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(-1));
         Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(0));
@@ -35,7 +35,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
 
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
 
         table.Resize(10);
         Assert.Equal(10, table.Capacity);
@@ -50,7 +50,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     {
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
         var storage = table.GetStorage(TypeExpression.Create<string>(Entity.None));
         Assert.IsAssignableFrom<Array>(storage);
     }
@@ -60,7 +60,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     {
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
 
         var typeExpression = TypeExpression.Create<string>(Entity.None);
         Assert.True(table.Matches(typeExpression));
