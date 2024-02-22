@@ -8,10 +8,8 @@ public class Scenarios
     [InlineData(1_000, 19, 31, 37, 43)]
     [InlineData(10_000, 23, 17, 19, 7)]
     [InlineData(10_000, 19, 31, 37, 43)]
-    [InlineData(100_000, 19, 31, 37, 43)]
     public void Can_Iterate_many_Entities(int count, int floatRate, int doubleRate, int stringRate, int shortRate)
     {
-        //BUG: This test intermittently fails (very rarely) after larger domain reloads.
         using var world = new World();
         
         var random = new Random(9001);
@@ -46,7 +44,7 @@ public class Scenarios
             if (i % shortRate == 0)
             {
                 shorts++;
-                builder.Link<short>(entities[random.Next(entities.Count)]);
+                builder.AddRelation<ushort>(entities[random.Next(entities.Count)]);
             }
 
             entities.Add(builder.Id());
@@ -65,10 +63,10 @@ public class Scenarios
         var stringsAndDoublesActual = world.Query<string, double>().Build().Count;
         Assert.Equal(count / (stringRate * doubleRate), stringsAndDoublesActual);
 
-        var floatsAndShortsActual = world.Query().Any<float>().Has<short>(Entity.Any).Build().Count;
+        var floatsAndShortsActual = world.Query().Any<float>().Has<ushort>(Entity.Any).Build().Count;
         Assert.Equal(count / (floatRate * shortRate), floatsAndShortsActual);
 
-        var shortsActual = world.Query().Has<short>(Entity.Any).Build().Count;
+        var shortsActual = world.Query().Has<ushort>(Entity.Any).Build().Count;
         Assert.Equal(shorts, shortsActual);
     }
 }

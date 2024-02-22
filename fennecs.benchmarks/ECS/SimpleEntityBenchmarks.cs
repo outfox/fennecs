@@ -84,7 +84,7 @@ public class SimpleEntityBenchmarks
     [Benchmark(Baseline = true)]
     public void CrossProduct_Single_Span_Delegate()
     {
-        _queryV3.Run(delegate(Span<Vector3> vectors)
+        _queryV3.ForSpan(delegate(Span<Vector3> vectors)
         {
             foreach(ref var v in vectors) v = Vector3.Cross(v, UniformConstantVector);
         });

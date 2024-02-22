@@ -4,13 +4,17 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> tables) : Query(world, mask, tables)
+public class Query<C1, C2, C3, C4, C5> : Query
 {
-     public void ForEach(RefAction_CCCCC<C1, C2, C3, C4, C5> action)
+    internal Query(World world, Mask mask, List<Archetype> archetypes) : base(world, mask, archetypes)
+    {
+    }
+
+    public void ForEach(RefAction<C1, C2, C3, C4, C5> action)
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
@@ -27,11 +31,11 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void ForEach<U>(RefAction_CCCCCU<C1, C2, C3, C4, C5, U> action, U uniform)
+    public void ForEach<U>(RefActionU<C1, C2, C3, C4, C5, U> action, U uniform)
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
@@ -48,11 +52,11 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void ForSpan<U>(SpanAction_CCCCCU<C1, C2, C3, C4, C5, U> action, U uniform)
+    public void ForSpan<U>(SpanActionU<C1, C2, C3, C4, C5, U> action, U uniform)
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.Memory<C1>(Entity.None);
@@ -66,11 +70,11 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void ForSpan(SpanAction_CCCCC<C1, C2, C3, C4, C5> action)
+    public void ForSpan(SpanAction<C1, C2, C3, C4, C5> action)
     {
         World.Lock();
         
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.Memory<C1>(Entity.None);
@@ -84,14 +88,14 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
 
-    public void Job(RefAction_CCCCC<C1, C2, C3, C4, C5> action, int chunkSize = int.MaxValue)
+    public void Job(RefAction<C1, C2, C3, C4, C5> action, int chunkSize = int.MaxValue)
     {
         World.Lock();
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C1, C2, C3, C4, C5>>.Rent();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.GetStorage<C1>(Entity.None);
@@ -133,14 +137,14 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void Job<U>(RefAction_CCCCCU<C1, C2, C3, C4, C5, U> action, in U uniform, int chunkSize = int.MaxValue)
+    public void Job<U>(RefActionU<C1, C2, C3, C4, C5, U> action, in U uniform, int chunkSize = int.MaxValue)
     {
         World.Lock();
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C1, C2, C3, C4, C5, U>>.Rent();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             var storage1 = table.GetStorage<C1>(Entity.None);
@@ -181,11 +185,11 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
     
-    public void Raw(MemoryAction_CCCCC<C1, C2, C3, C4, C5> action)
+    public void Raw(MemoryAction<C1, C2, C3, C4, C5> action)
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             action(
@@ -200,11 +204,11 @@ public class Query<C1, C2, C3, C4, C5>(World world, Mask mask, List<Table> table
         World.Unlock();
     }
 
-    public void Raw<U>(MemoryAction_CCCCCU<C1, C2, C3, C4, C5, U> action, U uniform)
+    public void Raw<U>(MemoryActionU<C1, C2, C3, C4, C5, U> action, U uniform)
     {
         World.Lock();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
             action(

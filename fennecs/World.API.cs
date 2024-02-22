@@ -5,8 +5,11 @@ namespace fennecs;
 
 public partial class World
 {
-    public bool IsAlive(Entity entity) => entity.IsReal && _meta[entity.Id].Entity == entity;
-
+    /// <summary>
+    /// Creates a new entity in this World.
+    /// Reuses previously despawned entities, who will differ in generation after respawn. 
+    /// </summary>
+    /// <returns>an EntityBuilder to operate on</returns>
     public EntityBuilder Spawn() => new(this, NewEntity());
 
     /// <summary>
@@ -22,8 +25,16 @@ public partial class World
     /// <returns>an EntityBuilder whose methods return itself, to provide a fluid syntax. </returns>
     public EntityBuilder On(Entity entity) => new(this, entity);
 
-    #region Linked Components
+    /// <summary>
+    /// Checks if the entity is alive (was not despawned).
+    /// </summary>
+    /// <param name="entity">an Entity</param>
+    /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
+    public bool IsAlive(Entity entity) => entity.IsEntity && entity == _meta[entity.Id].Entity;
 
+
+    #region Linked Components
+    
     /* Idea for alternative API
     public struct Linked<T>(T link)
     {
@@ -65,7 +76,7 @@ public partial class World
     /// <param name="entity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T"></typeparam>
-    public void Link<T>(Entity entity, [NotNull] T target) where T : class
+    public void AddLink<T>(Entity entity, [NotNull] T target) where T : class
     {
         var typeExpression = TypeExpression.Create<T>(Entity.Of(target));
         AddComponent(entity, typeExpression, target);
@@ -92,7 +103,7 @@ public partial class World
     /// <param name="entity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T"></typeparam>
-    public void Unlink<T>(Entity entity, [NotNull] T target) where T : class
+    public void RemoveLink<T>(Entity entity, [NotNull] T target) where T : class
     {
         var typeExpression = TypeExpression.Create<T>(Entity.Of(target));
         RemoveComponent(entity, typeExpression);
@@ -115,7 +126,7 @@ public partial class World
     /// <param name="target"></param>
     /// <param name="data"></param>
     /// <typeparam name="T">any component type</typeparam>
-    public void Link<T>(Entity entity, Entity target, T data)
+    public void AddRelation<T>(Entity entity, Entity target, T data)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         AddComponent(entity, typeExpression, data);
@@ -129,7 +140,7 @@ public partial class World
     /// <typeparam name="T">any component type</typeparam>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public bool HasLink<T>(Entity entity, Entity target)
+    public bool HasRelation<T>(Entity entity, Entity target)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         return HasComponent(entity, typeExpression);
@@ -141,7 +152,7 @@ public partial class World
     /// <param name="entity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T">any component type</typeparam>
-    public void Unlink<T>(Entity entity, Entity target)
+    public void RemoveRelation<T>(Entity entity, Entity target)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         RemoveComponent(entity, typeExpression);
@@ -182,18 +193,11 @@ public partial class World
     public void DespawnAllWith<T>(Entity target = default)
     {
         using var query = Query<Entity>().Has<T>(target).Build();
-        query.Run(delegate(Span<Entity> entities)
+        query.ForSpan(delegate(Span<Entity> entities)
         {
             foreach (var identity in entities) Despawn(identity);
         });
     }
-    
-    /*
-    public IEnumerable<(TypeExpression, object)> GetComponents(Identity identity)
-    {
-        return GetComponents(identity);
-    }
-*/
     
     public World(int capacity = 4096)
     {
@@ -201,7 +205,7 @@ public partial class World
         
         _meta = new EntityMeta[capacity];
 
-        //Create the "Identity" Archetype, which is also the root of the Archetype Graph.
+        //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
         _root = AddTable([TypeExpression.Create<Entity>(Entity.None)]);
     }
 
@@ -219,7 +223,7 @@ public partial class World
 
             ref var meta = ref _meta[entity.Id];
 
-            var table = _tables[meta.TableId];
+            var table = meta.Archetype;
             table.Remove(meta.Row);
             meta.Clear();
 
@@ -250,7 +254,7 @@ public partial class World
         AssertAlive(entity);
 
         ref var meta = ref _meta[entity.Id];
-        var oldTable = _tables[meta.TableId];
+        var oldTable = meta.Archetype;
 
         if (oldTable.Types.Contains(typeExpression))
         {
@@ -269,22 +273,19 @@ public partial class World
 
         if (newTable == null)
         {
-            var newTypes = oldTable.Types.ToList();
-            newTypes.Add(typeExpression);
-            newTable = AddTable(new SortedSet<TypeExpression>(newTypes));
+            var newTypes = oldTable.Types.Add(typeExpression);
+            newTable = AddTable(newTypes);
             oldEdge.Add = newTable;
 
             var newEdge = newTable.GetTableEdge(typeExpression);
             newEdge.Remove = oldTable;
         }
 
-        var newRow = Table.MoveEntry(entity, meta.Row, oldTable, newTable);
+        var newRow = Archetype.MoveEntry(entity, meta.Row, oldTable, newTable);
+        newTable.Set(typeExpression, data, newRow);
 
         meta.Row = newRow;
-        meta.TableId = newTable.Id;
-
-        var storage = newTable.GetStorage(typeExpression);
-        storage.SetValue(data, newRow);
+        meta.Archetype = newTable;
     }
 
     public ref T GetComponent<T>(Entity entity, Entity target = default)
@@ -297,7 +298,7 @@ public partial class World
         }
 
         var meta = _meta[entity.Id];
-        var table = _tables[meta.TableId];
+        var table = meta.Archetype;
         var storage = table.GetStorage<T>(target);
         return ref storage[meta.Row];
     }

@@ -72,13 +72,13 @@ public class QueryBuilder : IDisposable
 
 public sealed class QueryBuilder<C> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C>(world, mask, matchingTables);
 
 
-    internal QueryBuilder(World world) : base(world)
+    internal QueryBuilder(World world, Entity target = default) : base(world)
     {
-        Has<C>();
+        Has<C>(target);
     }
 
 
@@ -127,13 +127,13 @@ public sealed class QueryBuilder<C> : QueryBuilder
 
 public sealed class QueryBuilder<C1, C2> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2>(world, mask, matchingTables);
 
 
-    public QueryBuilder(World world) : base(world)
+    public QueryBuilder(World world, Entity target1 = default, Entity target2 = default) : base(world)
     {
-        Has<C1>().Has<C2>();
+        Has<C1>(target1).Has<C2>(target2);
     }
 
 
@@ -181,7 +181,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
 
 public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2, C3>(world, mask, matchingTables);
 
 
@@ -235,7 +235,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
 
 public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2, C3, C4>(world, mask, matchingTables);
 
 
@@ -289,7 +289,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
 
 public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Table>, Query> CreateQuery =
+    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(world, mask, matchingTables);
 
 

@@ -4,18 +4,23 @@ using System.Collections;
 
 namespace fennecs;
 
-public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Entity>, IDisposable
+public class Query : IEnumerable<Entity>, IDisposable
 {
-    protected readonly ParallelOptions Options = new() {MaxDegreeOfParallelism = 24};
-    
     /// <summary>
     /// Countdown event for parallel runners.
     /// </summary>
     protected readonly CountdownEvent Countdown = new(1);
 
-    protected readonly List<Table> Tables = tables;
-    protected readonly World World = world;
-    protected internal readonly Mask Mask = mask;
+    private protected readonly List<Archetype> Archetypes;
+    private protected readonly World World;
+    protected internal readonly Mask Mask;
+
+    internal Query(World world, Mask mask, List<Archetype> archetypes)
+    {
+        Archetypes = archetypes;
+        World = world;
+        Mask = mask;
+    }
 
     /// <summary>
     /// Gets a reference to the component of type <typeparamref name="C"/> for the entity.
@@ -47,7 +52,7 @@ public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Ent
     {
         AssertNotDisposed();
 
-        foreach (var table in Tables)
+        foreach (var table in Archetypes)
         {
             var snapshot = table.Version;
             for (var i = 0; i < table.Count; i++)
@@ -75,28 +80,56 @@ public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Ent
         AssertNotDisposed();
         
         var meta = World.GetEntityMeta(entity);
-        var table = World.GetTable(meta.TableId);
-        return Tables.Contains(table);
+        var table = meta.Archetype;
+        return Archetypes.Contains(table);
     }
     
-    internal void AddTable(Table table)
+    internal void AddTable(Archetype archetype)
     {
         AssertNotDisposed();
         
-        Tables.Add(table);
+        Archetypes.Add(archetype);
     }
 
-    public int Count => Tables.Sum(t => t.Count);
+    public int Count => Archetypes.Sum(t => t.Count);
 
     public void Dispose()
     {
         AssertNotDisposed();
         
-        Tables.Clear();
+        Archetypes.Clear();
         disposed = true;
         World.RemoveQuery(this);
         Mask.Dispose();
     }
+
+    
+    internal static bool CrossJoin(Span<int> counter, Span<int> limiter)
+    {
+        // Loop through all counters, counting up to goal and wrapping until saturated
+        // Example: 0-0-0 to 1-3-2:
+        // 000 -> 010 -> 020 -> 001 -> 011 -> 021 -> 002 -> 012 -> 022 -> 032
+
+        for (var i = 0; i < counter.Length; i++)
+        {
+            // Increment the current counter
+            counter[i]++;
+
+            // Successful increment?
+            if (counter[i] < limiter[i]) return true;
+            
+            // Current counter reached its goal, reset it and move to the next
+            counter[i] = 0;
+
+            //Continue until last counter fills up
+            if (i == counter.Length - 1) break;
+        }
+        
+        return false;
+    }
+
+
+    
 
     protected void AssertNotDisposed()
     {
@@ -109,57 +142,3 @@ public class Query(World world, Mask mask, List<Table> tables) : IEnumerable<Ent
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable IdentifierTypo
-
-public delegate void RefAction_C<C0>(ref C0 comp0);
-public delegate void RefAction_CC<C0, C1>(ref C0 comp0, ref C1 comp1);
-public delegate void RefAction_CCC<C0, C1, C2>(ref C0 comp0, ref C1 comp1, ref C2 comp2);
-public delegate void RefAction_CCCC<C0, C1, C2, C3>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3);
-public delegate void RefAction_CCCCC<C0, C1, C2, C3, C4>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4);
-
-
-public delegate void RefAction_CU<C0, in U>(ref C0 comp0, U uniform);
-public delegate void RefAction_CCU<C0, C1, in U>(ref C0 comp0, ref C1 comp1, U uniform);
-public delegate void RefAction_CCCU<C0, C1, C2, in U>(ref C0 comp0, ref C1 comp1, ref C2 comp2, U uniform);
-public delegate void RefAction_CCCCU<C0, C1, C2, C3, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, U uniform);
-public delegate void RefAction_CCCCCU<C0, C1, C2, C3, C4, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4, U uniform);
-
-
-public delegate void MemoryAction_C<C0>(Memory<C0> c0);
-
-public delegate void MemoryAction_CC<C0, C1>(Memory<C0> c0, Memory<C1> c1);
-
-public delegate void MemoryAction_CCC<C0, C1, C2>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2);
-
-public delegate void MemoryAction_CCCC<C0, C1, C2, C3>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3);
-
-public delegate void MemoryAction_CCCCC<C0, C1, C2, C3, C4>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, Memory<C4> c4);
-
-
-
-public delegate void MemoryAction_CU<C0, U>(Memory<C0> c0, in U uniform);
-
-public delegate void MemoryAction_CCU<C0, C1, in U>(Memory<C0> c0, Memory<C1> c1, U uniform);
-
-public delegate void MemoryAction_CCCU<C0, C1, C2, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, U uniform);
-
-public delegate void MemoryAction_CCCCU<C0, C1, C2, C3, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, U uniform);
-
-public delegate void MemoryAction_CCCCCU<C0, C1, C2, C3, C4, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, Memory<C4> c4, U uniform);
-
-
-public delegate void SpanAction_C<C0>(Span<C0> c0);
-
-public delegate void SpanAction_CC<C0, C1>(Span<C0> c0, Span<C1> c1);
-
-public delegate void SpanAction_CCC<C0, C1, C2>(Span<C0> c0, Span<C1> c1, Span<C2> c2);
-
-public delegate void SpanAction_CCCC<C0, C1, C2, C3>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3);
-
-public delegate void SpanAction_CCCCC<C0, C1, C2, C3, C4>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4);
-
-
-public delegate void SpanAction_CU<C0, in U>(Span<C0> c0, U uniform);
-public delegate void SpanAction_CCU<C0, C1, in U>(Span<C0> c0, Span<C1> c1, U uniform);
-public delegate void SpanAction_CCCU<C0, C1, C2, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, U uniform);
-public delegate void SpanAction_CCCCU<C0, C1, C2, C3, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, U uniform); 
-public delegate void SpanAction_CCCCCU<C0, C1, C2, C3, C4, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4, U uniform);

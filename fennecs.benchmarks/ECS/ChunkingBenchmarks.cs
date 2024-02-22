@@ -13,7 +13,7 @@ namespace Benchmark.ECS;
 public class ChunkingBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(10_000, 1_000_000)] public int entityCount { get; set; } = 1_000_000;
+    [Params(1_000_000)] public int entityCount { get; set; } = 1_000_000;
     [Params(4096, 16384, 32768)] public int chunkSize { get; set; } = 16384;
 
     private static readonly Random random = new(1337);

@@ -2,16 +2,27 @@
 
 namespace fennecs;
 
-public struct EntityMeta(Entity entity, int tableId, int row)
+internal struct EntityMeta(Entity entity, Archetype archetype, int row)
 {
-    public Entity Entity = entity;
-    public int TableId = tableId;
-    public int Row = row;
+    /// <summary>
+    /// Archetype the entity lives in.
+    /// </summary>
+    internal Archetype Archetype = archetype;
 
-    public void Clear()
+    /// <summary>
+    /// Position within the Archetype Table
+    /// </summary>
+    internal int Row = row;
+    
+    /// <summary>
+    /// Entity Identity
+    /// </summary>
+    internal Entity Entity = entity;
+
+    internal void Clear()
     {
         Entity = Entity.None;
-        TableId = 0;
+        Archetype = null!;
         Row = 0;
     }
 }

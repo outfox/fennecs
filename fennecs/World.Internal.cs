@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -18,6 +19,23 @@ public partial class World : IDisposable
 
     private EntityMeta[] _meta;
 
+    private readonly List<Archetype> _archetypes = [];
+    private readonly Dictionary<TypeID, List<Archetype>> _tableBuckets = new();
+    
+    private readonly Dictionary<int, Query> _queries = new();
+
+    // The "Identity" Archetype, which is the root of the Archetype Graph.
+    private readonly Archetype _root;
+
+    private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
+    
+    private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
+    private readonly Dictionary<Entity, HashSet<TypeExpression>> _typesByRelationTarget = new();
+
+    private readonly object _modeChangeLock = new();
+
+    private Mode _mode = Mode.Immediate;
+
     internal int Count
     {
         get
@@ -28,23 +46,7 @@ public partial class World : IDisposable
             }
         }
     }
-
-    private readonly List<Table> _tables = [];
-    private readonly Dictionary<int, Query> _queries = new();
-
-    // The "Identity" Archetype, which is the root of the Archetype Graph.
-    private readonly Table _root;
-
-
-    private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
     
-    private readonly Dictionary<TypeExpression, List<Table>> _tablesByType = new();
-    private readonly Dictionary<Entity, HashSet<TypeExpression>> _typesByRelationTarget = new();
-
-    private readonly object _modeChangeLock = new();
-
-    private Mode _mode = Mode.Immediate;
-
     public void CollectTargets<T>(List<Entity> entities)
     {
         var type = TypeExpression.Create<T>(Entity.Any);
@@ -69,7 +71,7 @@ public partial class World : IDisposable
 
             while (_meta.Length <= _identityPool.Living) Array.Resize(ref _meta, _meta.Length * 2);
 
-            _meta[identity.Id] = new EntityMeta(identity, _root.Id, row);
+            _meta[identity.Id] = new EntityMeta(identity, _root, row);
 
             var entityStorage = (Entity[]) _root.Storages.First();
             entityStorage[row] = identity;
@@ -83,7 +85,7 @@ public partial class World : IDisposable
         var meta = _meta[entity.Id];
         return meta.Entity != Entity.None
                && meta.Entity == entity
-               && typeExpression.Matches(_tables[meta.TableId].Types);
+               && typeExpression.Matches(meta.Archetype.Types);
     }
 
     private void RemoveComponent(Entity entity, TypeExpression typeExpression)
@@ -95,7 +97,7 @@ public partial class World : IDisposable
         }
 
         ref var meta = ref _meta[entity.Id];
-        var oldTable = _tables[meta.TableId];
+        var oldTable = meta.Archetype;
 
         if (!oldTable.Types.Contains(typeExpression))
         {
@@ -108,23 +110,23 @@ public partial class World : IDisposable
 
         if (newTable == null)
         {
-            var newTypes = oldTable.Types.ToList();
-            newTypes.Remove(typeExpression);
-            newTable = AddTable(new SortedSet<TypeExpression>(newTypes));
+            var newTypes = oldTable.Types.Remove(typeExpression);
+            newTable = AddTable(newTypes);
             oldEdge.Remove = newTable;
 
             var newEdge = newTable.GetTableEdge(typeExpression);
             newEdge.Add = oldTable;
         }
 
-        var newRow = Table.MoveEntry(entity, meta.Row, oldTable, newTable);
+        var newRow = Archetype.MoveEntry(entity, meta.Row, oldTable, newTable);
 
         meta.Row = newRow;
-        meta.TableId = newTable.Id;
+        //meta.ArchId = newTable.Id;
+        meta.Archetype = newTable;
     }
     #endregion
 
-    internal Query GetQuery(Mask mask, Func<World, Mask, List<Table>, Query> createQuery)
+    internal Query GetQuery(Mask mask, Func<World, Mask, List<Archetype>, Query> createQuery)
     {
         if (_queries.TryGetValue(mask, out var query))
         {
@@ -139,8 +141,8 @@ public partial class World : IDisposable
             _tablesByType[type] = typeTables;
         }
 
-        var matchingTables = PooledList<Table>.Rent();
-        foreach (var table in _tables)
+        var matchingTables = PooledList<Archetype>.Rent();
+        foreach (var table in _archetypes)
         {
             if (table.Matches(mask)) matchingTables.Add(table);
         }
@@ -162,36 +164,19 @@ public partial class World : IDisposable
         return ref _meta[entity.Id];
     }
 
-    internal Table GetTable(int tableId)
-    {
-        return _tables[tableId];
-    }
-
-    internal (TypeExpression, object)[] GetComponents(Entity entity)
+    internal IEnumerable<TypeExpression> GetComponents(Entity entity)
     {
         AssertAlive(entity);
-
-        using var list = PooledList<(TypeExpression, object)>.Rent();
-
         var meta = _meta[entity.Id];
-        var table = _tables[meta.TableId];
-
-
-        foreach (var type in table.Types)
-        {
-            var storage = table.GetStorage(type);
-            list.Add((type, storage.GetValue(meta.Row)!));
-        }
-
-        var array = list.ToArray();
+        var array = meta.Archetype.Types;
         return array;
     }
 
 
-    private Table AddTable(SortedSet<TypeExpression> types)
+    private Archetype AddTable(ImmutableSortedSet<TypeExpression> types)
     {
-        var table = new Table(_tables.Count, this, types);
-        _tables.Add(table);
+        var table = new Archetype(_archetypes.Count, this, types);
+        _archetypes.Add(table);
 
         foreach (var type in types)
         {

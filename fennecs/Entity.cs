@@ -24,12 +24,45 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
-    
+
+
+    /// <summary>
+    /// In Query Matching; matches ONLY target None, i.e. plain components.
+    /// </summary>
     public static readonly Entity None = default; // == 0-bit == new(0,0)
-    public static readonly Entity Any = new(-1, TypeID.MaxValue);
+
+    /// <summary>
+    /// In Query Matching; matches ANY target, including None:
+    /// <ul>
+    /// <li>(plain components)</li>
+    /// <li>(entity-entity relations)</li>
+    /// <li>(entity-object relations)</li>
+    /// </ul>
+    /// </summary>
+    public static readonly Entity Any = new(-1, 0);
+
+    /// <summary>
+    ///  In Query Matching; matches ALL relations with a TARGET:
+    /// <ul>
+    /// <li>(entity-entity relations)</li>
+    /// <li>(entity-object relations)</li>
+    /// </ul>
+    /// </summary>
+    public static readonly Entity Target = new(-2, 0);
+
+    /// <summary>
+    /// In Query Matching; matches ONLY Entity-Entity relations.
+    /// </summary>
+    public static readonly Entity Relation = new(-3, 0);
+
+    /// <summary>
+    /// In Query Matching; matches ONLY Entity-Object links.
+    /// </summary>
+    public static readonly Entity Object = new(-4, 0);
+
     
     // Entity Reference.
-    public bool IsReal => Id > 0 && Generation > 0;
+    public bool IsEntity => Id > 0 && Decoration > 0;
 
     // Tracked Object Reference.
     public bool IsObject => Decoration < 0;
@@ -91,7 +124,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
     {
         get
         {
-            if (!IsReal) throw new InvalidCastException("Cannot reuse virtual Identities");
+            if (!IsEntity) throw new InvalidCastException("Cannot reuse virtual Identities");
 
             var generationWrappedStartingAtOne = (TypeID) (Generation % (TypeID.MaxValue - 1) + 1);
             return new Entity(Id, generationWrappedStartingAtOne);
@@ -107,6 +140,15 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
 
         if (Equals(Any))
             return "\u25c6[Any]";
+        
+        if (Equals(Target))
+            return "\u25c6[Target]";
+        
+        if (Equals(Relation))
+            return "\u25c6[Relation]";
+        
+        if (Equals(Object))
+            return "\u25c6[Object]";
 
         if (IsObject)
             return $"\u27d0<{Type}>#{Id:X8}";

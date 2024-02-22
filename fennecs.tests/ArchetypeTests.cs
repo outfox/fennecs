@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests;
 
-public class TableTests(ITestOutputHelper output)
+public class ArchetypeTests(ITestOutputHelper output)
 {
     [Fact]
     public void Table_String_Contains_Types()
@@ -8,7 +8,7 @@ public class TableTests(ITestOutputHelper output)
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
 
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
 
         output.WriteLine(table.ToString());
         Assert.Contains(typeof(Entity).ToString(), table.ToString());
@@ -23,7 +23,7 @@ public class TableTests(ITestOutputHelper output)
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
 
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
 
         Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(-1));
         Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(0));
@@ -35,7 +35,7 @@ public class TableTests(ITestOutputHelper output)
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
 
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
 
         table.Resize(10);
         Assert.Equal(10, table.Capacity);
@@ -46,11 +46,11 @@ public class TableTests(ITestOutputHelper output)
     
     
     [Fact]
-    public void Table_GetStorage_Returns_Array()
+    public void Table_GetStorage_Returns_System_Array()
     {
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
         var storage = table.GetStorage(TypeExpression.Create<string>(Entity.None));
         Assert.IsAssignableFrom<Array>(storage);
     }
@@ -60,13 +60,13 @@ public class TableTests(ITestOutputHelper output)
     {
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
-        var table = world.GetTable(world.GetEntityMeta(identity).TableId);
+        var table = world.GetEntityMeta(identity).Archetype;
 
         var typeExpression = TypeExpression.Create<string>(Entity.None);
         Assert.True(table.Matches(typeExpression));
 
         var typeExpressionAny = TypeExpression.Create<string>(Entity.Any);
-        Assert.False(table.Matches(typeExpressionAny));
+        Assert.True(table.Matches(typeExpressionAny));
 
         var typeExpressionTarget = TypeExpression.Create<string>(new Entity(99999));
         Assert.False(table.Matches(typeExpressionTarget));

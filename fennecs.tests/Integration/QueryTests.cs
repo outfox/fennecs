@@ -6,6 +6,21 @@ namespace fennecs.tests.Integration;
 public class QueryTests
 {
     [Fact]
+    private void CrossJoin_Counts_All()
+    {
+        int[] counter = [0, 0, 0];
+        int[] limiter = [9, 5, 3];
+
+        var count = 0;
+        do
+        {
+            count++;
+        } while (Query.CrossJoin(counter, limiter));
+        
+        Assert.Equal(9*5*3, count);
+    }
+    
+    [Fact]
     private static void Can_Enumerate_PlainEnumerator()
     {
         using var world = new World();
@@ -116,8 +131,8 @@ public class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var bob = world.Spawn().Add(p2).Link(alice, 111).Id();
-        /*var charlie = */world.Spawn().Add(p3).Link(bob, 222).Id();
+        var bob = world.Spawn().Add(p2).AddRelation(alice, 111).Id();
+        /*var charlie = */world.Spawn().Add(p3).AddRelation(bob, 222).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Any<int>(Entity.None)
@@ -143,8 +158,8 @@ public class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var eve = world.Spawn().Add(p2).Link(alice, 111).Id();
-        var charlie = world.Spawn().Add(p3).Link(eve, 222).Id();
+        var eve = world.Spawn().Add(p2).AddRelation(alice, 111).Id();
+        var charlie = world.Spawn().Add(p3).AddRelation(eve, 222).Id();
 
         var query = world.Query<Entity, Vector3>().Any<int>(eve).Build();
 
@@ -170,8 +185,8 @@ public class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var eve = world.Spawn().Add(p2).Link(alice, 111).Id();
-        var charlie = world.Spawn().Add(p3).Link(eve, 222).Id();
+        var eve = world.Spawn().Add(p2).AddRelation(alice, 111).Id();
+        var charlie = world.Spawn().Add(p3).AddRelation(eve, 222).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Any<int>(eve)
@@ -214,13 +229,13 @@ public class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0).Id();
-        var bob = world.Spawn().Add(p2).Link(alice, 111).Id();
+        var bob = world.Spawn().Add(p2).AddRelation(alice, 111).Id();
         var eve = world.Spawn().Add(p1).Add(888).Id();
 
         /*var charlie = */
-        world.Spawn().Add(p3).Link(bob, 222).Id();
+        world.Spawn().Add(p3).AddRelation(bob, 222).Id();
         /*var charlie = */
-        world.Spawn().Add(p3).Link(eve, 222).Id();
+        world.Spawn().Add(p3).AddRelation(eve, 222).Id();
 
         var query = world.Query<Entity, Vector3>()
             .Not<int>(bob)
@@ -261,10 +276,10 @@ public class QueryTests
         var alice = world.Spawn().Add(p1).Add(0).Id();
         var eve = world.Spawn().Add(p1).Add(888).Id();
 
-        var bob = world.Spawn().Add(p2).Link(alice, 111).Id();
+        var bob = world.Spawn().Add(p2).AddRelation(alice, 111).Id();
 
-        world.Spawn().Add(p3).Link(bob, 555).Id();
-        world.Spawn().Add(p3).Link(eve, 666).Id();
+        world.Spawn().Add(p3).AddRelation(bob, 555).Id();
+        world.Spawn().Add(p3).AddRelation(eve, 666).Id();
 
         var query = world.Query<Entity, Vector3, int>()
             .Not<int>(bob)

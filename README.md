@@ -53,7 +53,7 @@ query.Job(static (ref Position position, float dt) => {
 }, uniform: Time.Delta, chunkSize: 2048);
 ```
 
-#### 💢... when we said minimal boilerplate, <em>we foxing meant it.</em>
+#### 💢... when we said minimal boilerplate, <em>we meant it.</em>
 Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "infrastructure".  
 
 The 💫*real magic*💫 is that none of this brevity compromises on performance.
@@ -61,12 +61,12 @@ The 💫*real magic*💫 is that none of this brevity compromises on performance
 ------------------------
 
 ## 🥊 Comparisons: Punching above our weight?
-So how does _fenn**ecs**_ compare to other ECSs? 
+So how does _**fenn**ecs_ compare to other ECSs? 
 
 This library is a tiny, tiny ECS with a focus on good performance and great simplicity. But it *cares enough* to provide a few things you might not expect.
 
 > [!IMPORTANT]
-> The idea of _fenn**ecs**_ was to fill the gaps that the author felt working with various established Entity Component Systems. This is why this matrix is clearly imbalanced, it's a shopping list of things that _fenn**ecs**_ does well and was made to do
+> The idea of _**fenn**ecs_ was to fill the gaps that the author felt working with various established Entity Component Systems. This is why this matrix is clearly imbalanced, it's a shopping list of things that _**fenn**ecs_ does well and was made to do
 well; and things it may aspire to do but compromised on in order to be able to achieve the others.
 >
 > <em>(TLDR; Foxes are soft, choices are hard - Unity dumb, .NET 8 really sharp.)</em>
@@ -76,9 +76,9 @@ well; and things it may aspire to do but compromised on in order to be able to a
 
 <summary>🥇🥈🥉 (click to expand) ECS Comparison Matrix<br/><b></b></summary>
 
-> Here are some of the key properties where _fenn**ecs**_ might be a better or worse choice than its peers. Our resident fennecs have worked with all of these ECSs, and we're happy to answer any questions you might have.
+> Here are some of the key properties where _**fenn**ecs_ might be a better or worse choice than its peers. Our resident fennecs have worked with all of these ECSs, and we're happy to answer any questions you might have.
 
-|                                                                             |           _fenn**ecs**_            | HypEcs | Entitas |           Unity DOTS            |            DefaultECS            |
+|                                                                             |           _**fenn**ecs_            | HypEcs | Entitas |           Unity DOTS            |            DefaultECS            |
 |:----------------------------------------------------------------------------|:----------------------------------:|:------:|:-------:|:-------------------------------:|:--------------------------------:|
 | Boilerplate-to-Feature Ratio                                                |               3-to-1               | 5-to-1 | 12-to-1 |           27-to-1 😱            |              7-to-1              |
 | Entity-Component Queries                                                    |                 ✅                  |   ✅    |    ✅    |                ✅                |                ✅                 |
@@ -117,12 +117,12 @@ well; and things it may aspire to do but compromised on in order to be able to a
 
 ------------------------
 
-## ⏩ Nimble: _fenn**ecs**_ benchmarks
+## ⏩ Nimble: _**fenn**ecs_ benchmarks
 
 Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU.
 We worked hard to minimize allocations, though convenience, especially parallelization, has a tiny GC cost. 
 
-_fenn**ecs**_ provides a variety of ways to iterate over and modify components, to offer a good balance of control and elegance without compromising too much. 
+_**fenn**ecs_ provides a variety of ways to iterate over and modify components, to offer a good balance of control and elegance without compromising too much. 
 
 Here are some raw results from our benchmark suite, from the Vector3 operations parts, better ones coming soon.
 (don't @ us)
@@ -177,13 +177,13 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 ## 📅 Future Roadmap
 
 - 🟦 Unity Support: Planned for when Unity is on .NET 8 or later, and C# 12 or later. Or when we can't wait any longer.
-- ✅ ~~_fenn**ecs**_ as a NuGet package~~ (done!)
-- 🟦 _fenn**ecs**_ as a Godot addon
+- ✅ ~~_**fenn**ecs_ as a NuGet package~~ (done!)
+- 🟦 _**fenn**ecs_ as a Godot addon
 
 ------------------------
 
 # 🧡 Acknowledgements
-Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating [HypEcs](https://github.com/Byteron/HypEcs) and [RelEcs](https://github.com/Byteron/RelEcs), the inspiring libraries that _fenn**ecs**_ evolved from.
+Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating [HypEcs](https://github.com/Byteron/HypEcs) and [RelEcs](https://github.com/Byteron/RelEcs), the inspiring libraries that _**fenn**ecs_ evolved from.
 
 
 ------------------------

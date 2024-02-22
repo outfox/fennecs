@@ -8,7 +8,7 @@ public class EntityBuilderTests
         using var world = new World();
         var entity = world.Spawn().Id();
         var builder = new EntityBuilder(world, entity);
-        Assert.Throws<InvalidOperationException>(() => { builder.Link<int>(Entity.Any); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Entity.Any); });
     }
 
     [Fact(Skip = "Need to clarify if needed, desired, or invalid.")]
@@ -17,6 +17,6 @@ public class EntityBuilderTests
         using var world = new World();
         var entity = world.Spawn().Id();
         var builder = new EntityBuilder(world, entity);
-        Assert.Throws<InvalidOperationException>(() => { builder.Link(Entity.Any, 123); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Entity.Any, 123); });
     }
 }
