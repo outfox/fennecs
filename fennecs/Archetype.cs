@@ -3,7 +3,6 @@
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.IO.Compression;
 using fennecs.pools;
 
 namespace fennecs;
@@ -44,7 +43,6 @@ internal sealed class Archetype
     /// </summary>
     private readonly Array[] _storages;
 
-    private readonly ImmutableDictionary<TypeExpression, Array> _storageDict;
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
 
     private readonly Dictionary<TypeExpression, Edge> _edges = new();
@@ -68,7 +66,6 @@ internal sealed class Archetype
         _identities = new Entity[StartCapacity];
 
         _storages = new Array[types.Count];
-        _storageDict = Zip(types, _storages);
 
         // Build the relation between storages and types, as well as type wildcards in buckets.
         var finishedTypes = PooledList<TypeID>.Rent();
@@ -191,38 +188,36 @@ internal sealed class Archetype
 
         return edge;
     }
-    
-    
+
+
     public T[] GetStorage<T>(Entity target)
     {
         var type = TypeExpression.Create<T>(target);
         return (T[]) GetStorage(type);
     }
 
-    
+
     public T[][] GetBucket<T>()
     {
         return (T[][]) _buckets[LanguageType<T>.Id];
     }
-    
-    
+
+
     public Memory<T> Memory<T>(Entity target)
     {
         var type = TypeExpression.Create<T>(target);
         var storage = (T[]) GetStorage(type);
         return storage.AsMemory(0, Count);
     }
-    
-    public Array GetStorage(TypeExpression typeExpression)
-    {
-        return _storages[_storageIndices[typeExpression]];
-    }
+
+    //[Obsolete("Need to refactor.")]
+    internal Array GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
 
 
     private void EnsureCapacity(int capacity)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));
-        
+
         if (capacity <= _identities.Length) return;
 
         Resize(Math.Max(capacity, StartCapacity) * 2);
@@ -245,14 +240,38 @@ internal sealed class Archetype
         }
     }
 
+
     
-    public static int MoveEntry(Entity entity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
+    internal void Set<T>(TypeExpression typeExpression, T data, int newRow)
+    {
+        // DeferredOperation sends data as objects
+        if (typeof(T).IsAssignableFrom(typeof(object)))
+        {
+            var sysArray = GetStorage(typeExpression);
+            sysArray.SetValue(data, newRow);
+            return;
+        }
+        
+        var storage = (T[]) GetStorage(typeExpression);
+        storage[newRow] = data;
+    }
+    
+    /*
+    internal void Set(TypeExpression typeExpression, object data, int newRow)
+    {
+        var storage = GetStorage(typeExpression);
+        storage.SetValue(data, newRow);
+    }
+    */
+
+
+    internal static int MoveEntry(Entity entity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
     {
         var newRow = newArchetype.Add(entity);
 
         foreach (var (type, oldIndex) in oldArchetype._storageIndices)
         {
-            if (!newArchetype._storageIndices.TryGetValue(type, out var newIndex) || newIndex < 0) continue;
+            if (!newArchetype._storageIndices.TryGetValue(type, out var newIndex)) continue;
 
             var oldStorage = oldArchetype._storages[oldIndex];
             var newStorage = newArchetype._storages[newIndex];
@@ -264,6 +283,7 @@ internal sealed class Archetype
 
         return newRow;
     }
+    
 
     public override string ToString()
     {

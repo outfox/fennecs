@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using fennecs.pools;
 
 namespace fennecs;
@@ -272,12 +271,10 @@ public partial class World
         }
 
         var newRow = Archetype.MoveEntry(entity, meta.Row, oldTable, newTable);
+        newTable.Set(typeExpression, data, newRow);
 
         meta.Row = newRow;
         meta.TableId = newTable.Id;
-
-        var storage = newTable.GetStorage(typeExpression);
-        storage.SetValue(data, newRow);
     }
 
     public ref T GetComponent<T>(Entity entity, Entity target = default)

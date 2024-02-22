@@ -167,23 +167,16 @@ public partial class World : IDisposable
         return _tables[tableId];
     }
 
-    internal (TypeExpression, object)[] GetComponents(Entity entity)
+    internal TypeExpression[] GetComponents(Entity entity)
     {
         AssertAlive(entity);
 
-        using var list = PooledList<(TypeExpression, object)>.Rent();
+        //using var list = PooledList<TypeExpression>.Rent();
 
         var meta = _meta[entity.Id];
         var table = _tables[meta.TableId];
 
-
-        foreach (var type in table.Types)
-        {
-            var storage = table.GetStorage(type);
-            list.Add((type, storage.GetValue(meta.Row)!));
-        }
-
-        var array = list.ToArray();
+        var array = table.Types.ToArray();
         return array;
     }
 

@@ -46,7 +46,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     
     
     [Fact]
-    public void Table_GetStorage_Returns_Array()
+    public void Table_GetStorage_Returns_System_Array()
     {
         var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id();
