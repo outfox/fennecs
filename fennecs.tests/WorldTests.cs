@@ -51,9 +51,9 @@ public class WorldTests
         var target1 = world.Spawn().Id();
         var target2 = world.Spawn().Add("hallo dieter").Id();
 
-        world.Spawn().Link(target1, 666).Id();
-        world.Spawn().Link(target2, 1.0f).Id();
-        world.Spawn().Link<string>("123").Id();
+        world.Spawn().AddRelation(target1, 666).Id();
+        world.Spawn().AddRelation(target2, 1.0f).Id();
+        world.Spawn().AddLink<string>("123").Id();
 
         var targets = new List<Entity>();
         world.CollectTargets<int>(targets);
@@ -76,8 +76,8 @@ public class WorldTests
 
         for (var i = 0; i < 1000; i++)
         {
-            world.Spawn().Link(target1, 666).Id();
-            world.Spawn().Link(target2, 444).Id();
+            world.Spawn().AddRelation(target1, 666).Id();
+            world.Spawn().AddRelation(target2, 444).Id();
         }
 
         var query1 = world.Query<Entity>().Has<int>(target1).Build();
@@ -215,10 +215,10 @@ public class WorldTests
         var identity = world.Spawn().Id();
         var target = world.Spawn().Id();
         world.Lock();
-        world.On(identity).Link(target, 666);
-        Assert.False(world.HasLink<int>(identity, target));
+        world.On(identity).AddRelation(target, 666);
+        Assert.False(world.HasRelation<int>(identity, target));
         world.Unlock();
-        Assert.True(world.HasLink<int>(identity, target));
+        Assert.True(world.HasRelation<int>(identity, target));
     }
 
     [Fact]
@@ -228,8 +228,8 @@ public class WorldTests
         var identity = world.Spawn().Id();
         var target = world.Spawn().Id();
         world.Lock();
-        world.On(identity).Link(target, 666);
-        world.On(identity).Remove<int>(target);
+        world.On(identity).AddRelation(target, 666);
+        world.On(identity).RemoveRelation<int>(target);
         Assert.False(world.HasComponent<int>(identity));
         Assert.False(world.HasComponent<int>(target));
         world.Unlock();
@@ -254,8 +254,8 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn().Id();
         var target = world.Spawn().Id();
-        world.On(identity).Link(target, 666);
-        Assert.True(world.HasLink<int>(identity, target));
+        world.On(identity).AddRelation(target, 666);
+        Assert.True(world.HasRelation<int>(identity, target));
     }
 
     [Fact]
@@ -264,7 +264,7 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn().Id();
         object target = new { };
-        world.On(identity).Link(target);
+        world.On(identity).AddLink(target);
         Assert.True(world.HasLink(identity, target));
     }
 
@@ -283,8 +283,8 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn().Id();
         object target = new { };
-        world.On(identity).Link(target);
-        world.Unlink(identity, target);
+        world.On(identity).AddLink(target);
+        world.RemoveLink(identity, target);
         Assert.False(world.HasLink(identity, target));
     }
 
@@ -295,8 +295,8 @@ public class WorldTests
         var identity = world.Spawn().Id();
         var other = world.Spawn().Id();
         var data = new Entity(123);
-        world.On(identity).Link(other, data);
-        Assert.True(world.HasLink<Entity>(identity, other));
+        world.On(identity).AddRelation(other, data);
+        Assert.True(world.HasRelation<Entity>(identity, other));
     }
 
     [Fact]

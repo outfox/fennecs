@@ -7,7 +7,7 @@ public class ObjectTrackingTests
     private void Query_serves_Tracked_Objects()
     {
         var world = new World();
-        world.Spawn().Link("foo").Id();
+        world.Spawn().AddLink("foo").Id();
 
         var query = world.Query<string>().Build();
         

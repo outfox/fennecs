@@ -44,7 +44,7 @@ public class Scenarios
             if (i % shortRate == 0)
             {
                 shorts++;
-                builder.Link<ushort>(entities[random.Next(entities.Count)]);
+                builder.AddRelation<ushort>(entities[random.Next(entities.Count)]);
             }
 
             entities.Add(builder.Id());

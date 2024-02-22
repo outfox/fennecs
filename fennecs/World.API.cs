@@ -76,7 +76,7 @@ public partial class World
     /// <param name="entity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T"></typeparam>
-    public void Link<T>(Entity entity, [NotNull] T target) where T : class
+    public void AddLink<T>(Entity entity, [NotNull] T target) where T : class
     {
         var typeExpression = TypeExpression.Create<T>(Entity.Of(target));
         AddComponent(entity, typeExpression, target);
@@ -103,7 +103,7 @@ public partial class World
     /// <param name="entity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T"></typeparam>
-    public void Unlink<T>(Entity entity, [NotNull] T target) where T : class
+    public void RemoveLink<T>(Entity entity, [NotNull] T target) where T : class
     {
         var typeExpression = TypeExpression.Create<T>(Entity.Of(target));
         RemoveComponent(entity, typeExpression);
@@ -126,7 +126,7 @@ public partial class World
     /// <param name="target"></param>
     /// <param name="data"></param>
     /// <typeparam name="T">any component type</typeparam>
-    public void Link<T>(Entity entity, Entity target, T data)
+    public void AddRelation<T>(Entity entity, Entity target, T data)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         AddComponent(entity, typeExpression, data);
@@ -140,7 +140,7 @@ public partial class World
     /// <typeparam name="T">any component type</typeparam>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public bool HasLink<T>(Entity entity, Entity target)
+    public bool HasRelation<T>(Entity entity, Entity target)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         return HasComponent(entity, typeExpression);
@@ -152,7 +152,7 @@ public partial class World
     /// <param name="entity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T">any component type</typeparam>
-    public void Unlink<T>(Entity entity, Entity target)
+    public void RemoveRelation<T>(Entity entity, Entity target)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         RemoveComponent(entity, typeExpression);

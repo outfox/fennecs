@@ -164,11 +164,6 @@ public partial class World : IDisposable
         return ref _meta[entity.Id];
     }
 
-    internal Archetype GetTable(int tableId)
-    {
-        return _archetypes[tableId];
-    }
-
     internal IEnumerable<TypeExpression> GetComponents(Entity entity)
     {
         AssertAlive(entity);

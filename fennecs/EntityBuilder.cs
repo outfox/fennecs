@@ -16,21 +16,21 @@ _operations.Add(
         Data = target,
     });
 */
-    public EntityBuilder Link<T>(Entity target) where T : notnull, new()
+    public EntityBuilder AddRelation<T>(Entity targetEntity) where T : notnull, new()
     {
-        world.Link(entity, target, new T());
+        world.AddRelation(entity, targetEntity, new T());
         return this;
     }
 
-    public EntityBuilder Link<T>(Entity target, T data)
+    public EntityBuilder AddRelation<T>(Entity targetEntity, T data)
     {
-        world.Link(entity, target, data);
+        world.AddRelation(entity, targetEntity, data);
         return this;
     }
 
-    public EntityBuilder Link<T>(T target) where T : class
+    public EntityBuilder AddLink<T>(T target) where T : class
     {
-        world.Link(entity, target);
+        world.AddLink(entity, target);
         return this;
     }
 
@@ -53,13 +53,25 @@ _operations.Add(
         world.RemoveComponent<T>(entity);
         return this;
     }
-    
-    public EntityBuilder Remove<T>(Entity target) 
+
+    public EntityBuilder RemoveRelation<T>(Entity targetEntity)
     {
-        world.Unlink<T>(entity, target);
+        world.RemoveRelation<T>(entity, targetEntity);
         return this;
     }
-    
+
+    /// <summary>
+    /// Removes the Object Link with target.
+    /// </summary>
+    /// <param name="targetObject"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public EntityBuilder RemoveLink<T>(T targetObject) where T : class
+    {
+        world.RemoveLink(entity, targetObject);
+        return this;
+    }
+
     public Entity Id()
     {
         Dispose();
