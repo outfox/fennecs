@@ -1,5 +1,7 @@
 ### ... the tiny, tiny, high-energy Entity Component System!
 
+![fennecs logo](https://raw.githubusercontent.com/thygrrr/fennecs/main/docs/logos/fennecs-logo-darkmode.svg)
+
 # What the fox!? Another ECS?
 
 We know... oh, *we know.* 😩️
@@ -13,7 +15,7 @@ We know... oh, *we know.* 😩️
  🐾 lithe and fast
 
  
-**fennecs** is a re-imagining of [RelEcs/HypEcs](https://github.com/Byteron/HypEcs), extended and compacted until it *feels just right* for high performance game development in any modern C# engine. Including, of course, the fantastic [Godot 4.x](https://godotengine.org)!
+**fennecs** is a re-imagining of [RelEcs/HypEcs](https://github.com/Byteron/HypEcs), extended and compacted until it *feels just right* for high performance game development in any modern C# engine.
 
 ## Quickstart: Let's go!
 📦`>` `dotnet add package fennecs`
@@ -25,7 +27,7 @@ At the basic level, all you need is a 🧩**component type**, a number of ~~smal
 using Position = System.Numerics.Vector3;
 
 // Create a world. (fyi, World implements IDisposable)
-var world = new ECS.World();
+var world = new fennecs.World();
 
 // Spawn an entity into the world with a choice of components. (or add/remove them later)
 var entity = world.Spawn().Add<Position>().Id();
@@ -34,7 +36,7 @@ var entity = world.Spawn().Add<Position>().Id();
 var query = world.Query<Position>().Build();
 
 // Run code on all entities in the query. (omit chunksize to parallelize only by archetype)
-query.RunParallel((ref Position position, in float dt) => {
+query.Job(static (ref Position position, float dt) => {
     position.Y -= 9.81f * dt;
 }, uniform: Time.Delta, chunkSize: 2048);
 ```
