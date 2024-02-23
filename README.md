@@ -19,13 +19,13 @@
             🐾 intuitively relational<br/>
             🐾 lithe and fast<br/>
          </p>
-         <p><span style="font-size: larger"><em><b>fenn</b>ecs</em></em></span> is a re-imagining of <a href="https://github.com/Byteron/HypEcs">RelEcs/HypEcs</a> 
+         <p><span style="font-size: larger"><em><b>fenn</b>ecs</em></span> is a re-imagining of <a href="https://github.com/Byteron/HypEcs">RelEcs/HypEcs</a> 
             which <em>feels just right<a href="#quickstart-lets-go">*</a></em> for high performance game development in any modern C# engine. Including, of course, the fantastic <a href="https://godotengine.org">Godot</a>.
          </p>
       </td>
    </tr>
    <tr>
-      <td colspan="3"><em>👍9 out of 10 fennecs<br/>recommend: <span style="font-size: larger"><em><b>fenn</b>ecs</em></span>!</em></td>
+      <td colspan="3"><h3>Code Samples</h3></td>
       <td colspan="7">
          <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
          <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennECS/xUnit.yml"/></a>
@@ -35,10 +35,10 @@
       </td>
    </tr>
    <tr>
-      <td colspan="1">Code Samples</td>
+      <td>Duality<br/><sup>(soon)</sup></td>
       <td>MonoGame<br/><sup>(soon)</sup></td>
       <td>Stride<br/><sup>(soon)</sup></td>
-      <td><a href="https://github.com/thygrrr/fennecs/tree/main/examples/example-godot">Godot<br/><sup>(WIP)</a></td>
+      <td><a href="https://github.com/thygrrr/fennecs/tree/main/examples/example-godot">Godot<br/><sup>(WIP)</sup></a></td>
       <td>Flax<br/><sup>(soon)</sup></td>
       <td>Unity<br/><sup>(waiting)</sup></td>
       <td>CRYENGINE<br/><sup>(waiting)</sup></td>

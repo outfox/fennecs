@@ -3,7 +3,6 @@
 public class Wildcard1Tests
 {
     private readonly World _world;
-    private readonly Entity _entity;
     
     // string may be interned or not
     const string OBJECT1 = "hello world";
@@ -16,7 +15,8 @@ public class Wildcard1Tests
         _world = new World();
         
         var bob = _world.Spawn().Id();
-        _entity = _world.Spawn()
+        
+        _world.Spawn()
             .AddLink(OBJECT1)
             .AddLink(OBJECT2)
             .Add(NONE1)
