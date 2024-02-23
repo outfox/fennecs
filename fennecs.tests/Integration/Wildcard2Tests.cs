@@ -49,7 +49,7 @@ public class Wildcard2Tests
         using var query = _world.Query<string, float>(Entity.None, Entity.None).Build();
 
         HashSet<string> seen = [];
-        query.ForEach((ref string str, ref float _) =>
+        query.Job((ref string str, ref float _) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -104,7 +104,7 @@ public class Wildcard2Tests
 
         HashSet<string> seen = [];
 
-        query.ForEach((ref string str, ref float _) =>
+        query.Job((ref string str, ref float _) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);

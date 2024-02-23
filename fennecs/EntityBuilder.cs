@@ -25,11 +25,7 @@ public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
     /// </remarks>
     /// <param name="targetEntity">The entity with which to establish the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public EntityBuilder AddRelation<T>(Entity targetEntity) where T : notnull, new()
-    {
-        world.AddRelation(entity, targetEntity, new T());
-        return this;
-    }
+    public EntityBuilder AddRelation<T>(Entity targetEntity) where T : notnull, new() => AddRelation(targetEntity, new T());
 
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
@@ -48,6 +44,7 @@ public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public EntityBuilder AddRelation<T>(Entity targetEntity, T data)
     {
+        if (!targetEntity.IsEntity) throw new InvalidOperationException("May only relate to a virtual entity.");
         world.AddRelation(entity, targetEntity, data);
         return this;
     }
@@ -90,12 +87,9 @@ public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
     /// </summary>
     /// <typeparam name="T">The type of the component to be added.</typeparam>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public EntityBuilder Add<T>() where T : new()
-    {
-        world.AddComponent(entity, new T());
-        return this;
-    }
+    public EntityBuilder Add<T>() where T : new() => Add(new T());
 
+    
     /// <summary>
     /// Removes a component of a specific type from the current entity.
     /// </summary>
