@@ -19,6 +19,7 @@
         <PackageTags>ecs, gamedev, entity, entity component system, game, gamedev, game development, godot, dots, defaultecs, hypecs, relecs, entt, flecs</PackageTags>
         <TargetFramework>net8.0</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

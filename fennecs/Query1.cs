@@ -51,8 +51,18 @@ public class Query<C0> : Query
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage = table.GetStorage<C0>(Entity.None).AsSpan(0, table.Count);
-            action(storage, uniform);
+            var count = table.Count;
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+
+            do
+            {
+                var span0 = storages0[_counter[0]].AsSpan(0, count);
+                action(span0, uniform);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -119,7 +129,6 @@ public class Query<C0> : Query
 
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
             if (table.IsEmpty) continue;
 
             using var storages0 = table.Match<C0>(Mask.HasTypes[0]);

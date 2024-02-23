@@ -103,7 +103,7 @@ public partial class World
     /// <param name="entity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T"></typeparam>
-    public void RemoveLink<T>(Entity entity, [NotNull] T target) where T : class
+    public void RemoveLink<T>(Entity entity, T target) where T : class
     {
         var typeExpression = TypeExpression.Create<T>(Entity.Of(target));
         RemoveComponent(entity, typeExpression);

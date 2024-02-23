@@ -4,191 +4,326 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public class Query<C1, C2, C3> : Query
+public class Query<C0, C1, C2> : Query<C0, C1>
 {
+    // The counters backing the Query's Cross Join.
+    // CAVEAT: stackalloc prevents inlining, thus we preallocate.
+    private readonly int[] _counter = new int[3];
+    private readonly int[] _limiter = new int[3];
+
     internal Query(World world, Mask mask, List<Archetype> archetypes) : base(world, mask, archetypes)
     {
     }
 
-    public void ForEach(RefAction<C1, C2, C3> action)
+    public void ForSpan(SpanAction<C0, C1, C2> action)
     {
+        AssertNotDisposed();
+
         World.Lock();
 
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
-            var storage2 = table.GetStorage<C2>(Entity.None).AsSpan(0, table.Count);
-            var storage3 = table.GetStorage<C3>(Entity.None).AsSpan(0, table.Count);
-            for (var i = 0; i < table.Count; i++)
+            var count = table.Count;
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            using var storages1 = table.Match<C1>(Mask.HasTypes[1]);
+            using var storages2 = table.Match<C2>(Mask.HasTypes[2]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+            _counter[1] = 0;
+            _limiter[1] = storages1.Count;
+            _counter[2] = 0;
+            _limiter[2] = storages2.Count;
+
+            do
             {
-                action(ref storage1[i], ref storage2[i], ref storage3[i]);
-            }
+                var span0 = storages0[_counter[0]].AsSpan(0, count);
+                var span1 = storages1[_counter[1]].AsSpan(0, count);
+                var span2 = storages2[_counter[2]].AsSpan(0, count);
+                action(span0, span1, span2);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
     }
-    
-    public void ForEach<U>(RefActionU<C1, C2, C3, U> action, U uniform)
+
+    public void ForSpan<U>(SpanActionU<C0, C1, C2, U> action, U uniform)
     {
+        AssertNotDisposed();
+
         World.Lock();
 
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.GetStorage<C1>(Entity.None).AsSpan(0, table.Count);
-            var storage2 = table.GetStorage<C2>(Entity.None).AsSpan(0, table.Count);
-            var storage3 = table.GetStorage<C3>(Entity.None).AsSpan(0, table.Count);
-            for (var i = 0; i < table.Count; i++)
+            var count = table.Count;
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            using var storages1 = table.Match<C1>(Mask.HasTypes[1]);
+            using var storages2 = table.Match<C2>(Mask.HasTypes[2]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+            _counter[1] = 0;
+            _limiter[1] = storages1.Count;
+            _counter[2] = 0;
+            _limiter[2] = storages2.Count;
+
+            do
             {
-                action(ref storage1[i], ref storage2[i], ref storage3[i], uniform);
-            }
+                var span0 = storages0[_counter[0]].AsSpan(0, count);
+                var span1 = storages1[_counter[1]].AsSpan(0, count);
+                var span2 = storages2[_counter[2]].AsSpan(0, count);
+                action(span0, span1, span2, uniform);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
     }
     
-    public void ForSpan<U>(SpanActionU<C1, C2, C3, U> action, U uniform)
+    public void ForEach(RefAction<C0, C1, C2> action)
     {
-        World.Lock();
+        AssertNotDisposed();
 
+        World.Lock();
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.Memory<C1>(Entity.None);
-            var storage2 = table.Memory<C2>(Entity.None);
-            var storage3 = table.Memory<C3>(Entity.None);
-            action(storage1.Span, storage2.Span, storage3.Span, uniform);
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            using var storages1 = table.Match<C1>(Mask.HasTypes[1]);
+            using var storages2 = table.Match<C2>(Mask.HasTypes[2]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+            _counter[1] = 0;
+            _limiter[1] = storages1.Count;
+            _counter[2] = 0;
+            _limiter[2] = storages2.Count;
+
+            do
+            {
+                var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
+                var span1 = storages1[_counter[1]].AsSpan(0, table.Count);
+                var span2 = storages2[_counter[2]].AsSpan(0, table.Count);
+                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i]);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
     }
-    
-    public void ForSpan(SpanAction<C1, C2, C3> action)
+
+
+    public void ForEach<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
+        AssertNotDisposed();
+
         World.Lock();
-        
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.Memory<C1>(Entity.None);
-            var storage2 = table.Memory<C2>(Entity.None);
-            var storage3 = table.Memory<C3>(Entity.None);
-            action(storage1.Span, storage2.Span, storage3.Span);
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            using var storages1 = table.Match<C1>(Mask.HasTypes[1]);
+            using var storages2 = table.Match<C2>(Mask.HasTypes[2]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+            _counter[1] = 0;
+            _limiter[1] = storages1.Count;
+            _counter[2] = 0;
+            _limiter[2] = storages2.Count;
+
+            do
+            {
+                var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
+                var span1 = storages1[_counter[1]].AsSpan(0, table.Count);
+                var span2 = storages2[_counter[2]].AsSpan(0, table.Count);
+                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], uniform);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
     }
 
-    public void Job(RefAction<C1, C2, C3> action, int chunkSize = int.MaxValue)
+
+    public void Job(RefAction<C0, C1, C2> action, int chunkSize = int.MaxValue)
     {
+        AssertNotDisposed();
+
         World.Lock();
         Countdown.Reset();
 
-        using var jobs = PooledList<Work<C1, C2, C3>>.Rent();
+        using var jobs = PooledList<Work<C0, C1, C2>>.Rent();
 
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.GetStorage<C1>(Entity.None);
-            var storage2 = table.GetStorage<C2>(Entity.None);
-            var storage3 = table.GetStorage<C3>(Entity.None);
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            using var storages1 = table.Match<C1>(Mask.HasTypes[1]);
+            using var storages2 = table.Match<C2>(Mask.HasTypes[2]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+            _counter[1] = 0;
+            _limiter[1] = storages1.Count;
+            _counter[2] = 0;
+            _limiter[2] = storages2.Count;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-
-            for (var chunk = 0; chunk < partitions; chunk++)
+            do
             {
-                Countdown.AddCount();
+                for (var chunk = 0; chunk < partitions; chunk++)
+                {
+                    Countdown.AddCount();
 
-                var start = chunk * chunkSize;
-                var length = Math.Min(chunkSize, count - start);
+                    var start = chunk * chunkSize;
+                    var length = Math.Min(chunkSize, count - start);
 
-                var job = JobPool<Work<C1, C2, C3>>.Rent();
-                job.Memory1 = storage1.AsMemory(start, length);
-                job.Memory2 = storage2.AsMemory(start, length);
-                job.Memory3 = storage3.AsMemory(start, length);
-                job.Action = action;
-                job.CountDown = Countdown;
-                jobs.Add(job);
+                    var job = JobPool<Work<C0, C1, C2>>.Rent();
+                    job.Memory1 = storages0[_counter[0]].AsMemory(start, length);
+                    job.Memory2 = storages1[_counter[1]].AsMemory(start, length);
+                    job.Memory3 = storages2[_counter[2]].AsMemory(start, length);
+                    job.Action = action;
+                    job.CountDown = Countdown;
+                    jobs.Add(job);
 
-                ThreadPool.UnsafeQueueUserWorkItem(job, true);
-            }
+                    ThreadPool.UnsafeQueueUserWorkItem(job, true);
+                }
+            } while (CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
         Countdown.Wait();
 
-        JobPool<Work<C1, C2, C3>>.Return(jobs);
+        JobPool<Work<C0, C1, C2>>.Return(jobs);
 
         World.Unlock();
     }
-    
-    public void Job<U>(RefActionU<C1, C2, C3, U> action, in U uniform, int chunkSize = int.MaxValue)
+
+
+    public void Job<U>(RefActionU<C0, C1, C2, U> action, U uniform, int chunkSize = int.MaxValue)
     {
+        AssertNotDisposed();
+
         World.Lock();
         Countdown.Reset();
 
-        using var jobs = PooledList<UniformWork<C1, C2, C3, U>>.Rent();
+        using var jobs = PooledList<UniformWork<C0, C1, C2, U>>.Rent();
 
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            var storage1 = table.GetStorage<C1>(Entity.None);
-            var storage2 = table.GetStorage<C2>(Entity.None);
-            var storage3 = table.GetStorage<C3>(Entity.None);
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            using var storages1 = table.Match<C1>(Mask.HasTypes[1]);
+            using var storages2 = table.Match<C2>(Mask.HasTypes[2]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+            _counter[1] = 0;
+            _limiter[1] = storages1.Count;
+            _counter[2] = 0;
+            _limiter[2] = storages2.Count;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-
-            for (var chunk = 0; chunk < partitions; chunk++)
+            do
             {
-                Countdown.AddCount();
+                for (var chunk = 0; chunk < partitions; chunk++)
+                {
+                    Countdown.AddCount();
 
-                var start = chunk * chunkSize;
-                var length = Math.Min(chunkSize, count - start);
+                    var start = chunk * chunkSize;
+                    var length = Math.Min(chunkSize, count - start);
 
-                var job = JobPool<UniformWork<C1, C2, C3, U>>.Rent();
-                job.Memory1 = storage1.AsMemory(start, length);
-                job.Memory2 = storage2.AsMemory(start, length);
-                job.Memory3 = storage3.AsMemory(start, length);
-                job.Action = action;
-                job.Uniform = uniform;
-                job.CountDown = Countdown;
-                jobs.Add(job);
-                ThreadPool.UnsafeQueueUserWorkItem(job, true);
-            }
+                    var job = JobPool<UniformWork<C0, C1, C2, U>>.Rent();
+                    job.Memory1 = storages0[_counter[0]].AsMemory(start, length);
+                    job.Memory2 = storages1[_counter[1]].AsMemory(start, length);
+                    job.Memory3 = storages2[_counter[2]].AsMemory(start, length);
+                    job.Action = action;
+                    job.Uniform = uniform;
+                    job.CountDown = Countdown;
+                    jobs.Add(job);
+
+                    ThreadPool.UnsafeQueueUserWorkItem(job, true);
+                }
+            } while (CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
         Countdown.Wait();
 
-        JobPool<UniformWork<C1, C2, C3, U>>.Return(jobs);
+        JobPool<UniformWork<C0, C1, C2, U>>.Return(jobs);
 
         World.Unlock();
     }
-    
-    public void Raw(MemoryAction<C1, C2, C3> action)
+
+    public void Raw(MemoryAction<C0, C1, C2> action)
     {
+        AssertNotDisposed();
+
         World.Lock();
 
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            action(table.Memory<C1>(Entity.None), table.Memory<C2>(Entity.None), table.Memory<C3>(Entity.None));
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            using var storages1 = table.Match<C1>(Mask.HasTypes[1]);
+            using var storages2 = table.Match<C2>(Mask.HasTypes[2]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+            _counter[1] = 0;
+            _limiter[1] = storages1.Count;
+            _counter[2] = 0;
+            _limiter[2] = storages2.Count;
+
+            do
+            {
+                var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
+                var mem1 = storages1[_counter[1]].AsMemory(0, table.Count);
+                var mem2 = storages2[_counter[2]].AsMemory(0, table.Count);
+                action(mem0, mem1, mem2);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
     }
 
-    public void Raw<U>(MemoryActionU<C1, C2, C3, U> action, U uniform)
+    public void Raw<U>(MemoryActionU<C0, C1, C2, U> action, U uniform)
     {
+        AssertNotDisposed();
+
         World.Lock();
 
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
-            action(table.Memory<C1>(Entity.None), table.Memory<C2>(Entity.None), table.Memory<C3>(Entity.None), uniform);
+
+            using var storages0 = table.Match<C0>(Mask.HasTypes[0]);
+            using var storages1 = table.Match<C1>(Mask.HasTypes[1]);
+            using var storages2 = table.Match<C2>(Mask.HasTypes[2]);
+
+            _counter[0] = 0;
+            _limiter[0] = storages0.Count;
+            _counter[1] = 0;
+            _limiter[1] = storages1.Count;
+            _counter[2] = 0;
+            _limiter[2] = storages2.Count;
+
+            do
+            {
+                var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
+                var mem1 = storages1[_counter[1]].AsMemory(0, table.Count);
+                var mem2 = storages2[_counter[2]].AsMemory(0, table.Count);
+                action(mem0, mem1, mem2, uniform);
+            } while (CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();

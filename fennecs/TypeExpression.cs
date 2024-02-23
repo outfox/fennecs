@@ -192,7 +192,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <inheritdoc cref="object.ToString"/>
     public override string ToString()
     {
-        return isRelation ? $"<{LanguageType.Resolve(TypeId)}\u2192{Target}>" : $"<{LanguageType.Resolve(TypeId)}>";
+        return $"<{LanguageType.Resolve(TypeId)}>\u2192{Target}>";
     }
 
     public static bool operator ==(TypeExpression left, TypeExpression right)

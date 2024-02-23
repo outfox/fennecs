@@ -19,9 +19,7 @@ internal sealed class Archetype
     }
 
     private const int StartCapacity = 4;
-
-    public readonly int Id;
-
+    
     public readonly ImmutableSortedSet<TypeExpression> Types;
 
     public Entity[] Identities => _identities;
@@ -48,7 +46,7 @@ internal sealed class Archetype
     private readonly Dictionary<TypeExpression, Edge> _edges = new();
 
     /// <summary>
-    /// Buckets for Wildcard Joins
+    /// TODO: Buckets for Wildcard Joins
     /// </summary>
     private readonly ImmutableDictionary<TypeID, Array[]> _buckets;
 
@@ -56,11 +54,10 @@ internal sealed class Archetype
     private int _version;
 
 
-    public Archetype(int id, World archetypes, ImmutableSortedSet<TypeExpression> types)
+    public Archetype(World archetypes, ImmutableSortedSet<TypeExpression> types)
     {
         _archetypes = archetypes;
 
-        Id = id;
         Types = types;
 
         _identities = new Entity[StartCapacity];
@@ -114,7 +111,7 @@ internal sealed class Archetype
         //TODO: Use TypeBuckets as optimization (much faster!).
         foreach (var (type, index) in _storageIndices)
         {
-            if (type.Matches(expression))
+            if (expression.Matches(type))
             {
                 result.Add((T[]) _storages[index]);
             }
@@ -271,14 +268,6 @@ internal sealed class Archetype
         storage[newRow] = data;
     }
     
-    /*
-    internal void Set(TypeExpression typeExpression, object data, int newRow)
-    {
-        var storage = GetStorage(typeExpression);
-        storage.SetValue(data, newRow);
-    }
-    */
-
 
     internal static int MoveEntry(Entity entity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
     {
@@ -302,8 +291,8 @@ internal sealed class Archetype
 
     public override string ToString()
     {
-        var sb = new StringBuilder($"Table {Id} ");
-        sb.AppendJoin(" ", Types);
+        var sb = new StringBuilder($"Archetype ");
+        sb.AppendJoin("\n", Types);
         return sb.ToString();
     }
 }

@@ -7,6 +7,11 @@ namespace fennecs;
 public class Query : IEnumerable<Entity>, IDisposable
 {
     /// <summary>
+    /// TypeExpression for the Output Stream of this Query.
+    /// </summary>
+    internal readonly List<TypeExpression> OutputTypes = new(8);
+
+    /// <summary>
     /// Countdown event for parallel runners.
     /// </summary>
     protected readonly CountdownEvent Countdown = new(1);

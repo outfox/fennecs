@@ -36,11 +36,17 @@ public class EntityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_ToString()
     {
+        _ = Entity.Relation.ToString();
+        _ = Entity.Target.ToString();
+        _ = Entity.Object.ToString();
         _ = Entity.None.ToString();
         _ = Entity.Any.ToString();
         _ = Entity.Of("hello world").ToString();
         _ = new Entity(123, 456).ToString();
 
+        output.WriteLine(Entity.Relation.ToString());
+        output.WriteLine(Entity.Target.ToString());
+        output.WriteLine(Entity.Object.ToString());
         output.WriteLine(Entity.None.ToString());
         output.WriteLine(Entity.Any.ToString());
         output.WriteLine(Entity.Of("hello world").ToString());

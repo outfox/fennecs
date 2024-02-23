@@ -76,9 +76,9 @@ public sealed class QueryBuilder<C> : QueryBuilder
         (world, mask, matchingTables) => new Query<C>(world, mask, matchingTables);
 
 
-    internal QueryBuilder(World world, Entity target = default) : base(world)
+    internal QueryBuilder(World world, Entity match = default) : base(world)
     {
-        Has<C>(target);
+        Has<C>(match);
     }
 
 
@@ -131,9 +131,9 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
         (world, mask, matchingTables) => new Query<C1, C2>(world, mask, matchingTables);
 
 
-    public QueryBuilder(World world, Entity target1 = default, Entity target2 = default) : base(world)
+    internal QueryBuilder(World world, Entity match1, Entity match2) : base(world)
     {
-        Has<C1>(target1).Has<C2>(target2);
+        Has<C1>(match1).Has<C2>(match2);
     }
 
 
@@ -185,9 +185,9 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
         (world, mask, matchingTables) => new Query<C1, C2, C3>(world, mask, matchingTables);
 
 
-    public QueryBuilder(World world) : base(world)
+    internal QueryBuilder(World world, Entity match1, Entity match2, Entity match3) : base(world)
     {
-        Has<C1>().Has<C2>().Has<C3>();
+        Has<C1>(match1).Has<C2>(match2).Has<C3>(match3);
     }
 
 
@@ -239,9 +239,9 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
         (world, mask, matchingTables) => new Query<C1, C2, C3, C4>(world, mask, matchingTables);
 
 
-    public QueryBuilder(World world) : base(world)
+    internal QueryBuilder(World world, Entity match1, Entity match2, Entity match3, Entity match4) : base(world)
     {
-        Has<C1>().Has<C2>().Has<C3>().Has<C4>();
+        Has<C1>(match1).Has<C2>(match2).Has<C3>(match3).Has<C4>(match4);
     }
 
 
@@ -291,11 +291,11 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
 {
     private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
         (world, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(world, mask, matchingTables);
-
-
-    public QueryBuilder(World world) : base(world)
+    
+    
+    internal QueryBuilder(World world, Entity match1, Entity match2, Entity match3, Entity match4, Entity match5) : base(world)
     {
-        Has<C1>().Has<C2>().Has<C3>().Has<C4>().Has<C5>();
+        Has<C1>(match1).Has<C2>(match2).Has<C3>(match3).Has<C4>(match4).Has<C5>(match5);
     }
 
 

@@ -139,16 +139,16 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
             return "\u25c7[None]";
 
         if (Equals(Any))
-            return "\u25c6[Any]";
+            return "\u2731[Any]";
         
         if (Equals(Target))
-            return "\u25c6[Target]";
+            return "\u2a01[Target]";
         
         if (Equals(Relation))
-            return "\u25c6[Relation]";
+            return "\u29f1[Relation]";
         
         if (Equals(Object))
-            return "\u25c6[Object]";
+            return "\u29f0[Object]";
 
         if (IsObject)
             return $"\u27d0<{Type}>#{Id:X8}";
