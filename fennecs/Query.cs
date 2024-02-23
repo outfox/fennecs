@@ -9,7 +9,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <summary>
     /// TypeExpression for the Output Stream of this Query.
     /// </summary>
-    internal readonly List<TypeExpression> OutputTypes = new(8);
+    internal readonly TypeExpression[] StreamTypes;
 
     /// <summary>
     /// Countdown event for parallel runners.
@@ -20,8 +20,9 @@ public class Query : IEnumerable<Entity>, IDisposable
     private protected readonly World World;
     protected internal readonly Mask Mask;
 
-    internal Query(World world, Mask mask, List<Archetype> archetypes)
+    internal Query(World world, List<TypeExpression> streamTypes,  Mask mask, List<Archetype> archetypes)
     {
+        StreamTypes = streamTypes.ToArray();
         Archetypes = archetypes;
         World = world;
         Mask = mask;

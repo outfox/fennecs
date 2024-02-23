@@ -11,6 +11,8 @@ public class QueryBuilder : IDisposable
     internal readonly World World;
     protected readonly Mask Mask = MaskPool.Rent();
 
+    protected readonly PooledList<TypeExpression> StreamTypes = PooledList<TypeExpression>.Rent();
+
     /* TODO: Implement deferred builder
     private List<ValueTuple<Type, Identity, object>> _has;
     private List<ValueTuple<Type, Identity, object>> _not;
@@ -20,6 +22,13 @@ public class QueryBuilder : IDisposable
     internal QueryBuilder(World world)
     {
         World = world;
+    }
+
+    protected void Outputs<T>(Entity target = default)
+    {
+        var typeExpression = TypeExpression.Create<T>(target);
+        StreamTypes.Add(typeExpression);
+        Mask.Has(typeExpression);
     }
 
     public virtual QueryBuilder Has<T>(Entity target = default)
@@ -66,76 +75,77 @@ public class QueryBuilder : IDisposable
     public void Dispose()
     {
         Mask.Dispose();
+        StreamTypes.Dispose();
     }
-
 }
 
-public sealed class QueryBuilder<C> : QueryBuilder
+public sealed class QueryBuilder<C1> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
-        (world, mask, matchingTables) => new Query<C>(world, mask, matchingTables);
-
+    private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
+        (world, streamTypes, mask, matchingTables) => new Query<C1>(world, streamTypes, mask, matchingTables);
 
     internal QueryBuilder(World world, Entity match = default) : base(world)
     {
-        Has<C>(match);
+        Outputs<C1>(match);
+    }
+
+    public Query<C1> Build()
+    {
+        return (Query<C1>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+    }
+
+    public override QueryBuilder<C1> Has<T>(Entity target = default)
+    {
+        return (QueryBuilder<C1>) base.Has<T>(target);
     }
 
 
-    public override QueryBuilder<C> Has<T>(Entity target = default)
+    public override QueryBuilder<C1> Has<T>(T target) where T : class
     {
-        return (QueryBuilder<C>) base.Has<T>(target);
-    }
-
-    
-    public override QueryBuilder<C> Has<T>(T target) where T : class
-    {
-        return (QueryBuilder<C>) base.Has(target);
+        return (QueryBuilder<C1>) base.Has(target);
     }
 
 
-    public override QueryBuilder<C> Not<T>(Entity target = default)
+    public override QueryBuilder<C1> Not<T>(Entity target = default)
     {
-        return (QueryBuilder<C>) base.Not<T>(target);
+        return (QueryBuilder<C1>) base.Not<T>(target);
     }
 
 
-    public override QueryBuilder<C> Not<T>(T target) where T : class
+    public override QueryBuilder<C1> Not<T>(T target) where T : class
     {
-        return (QueryBuilder<C>) base.Not(target);
+        return (QueryBuilder<C1>) base.Not(target);
     }
 
 
-    public override QueryBuilder<C> Any<T>(Entity target = default)
+    public override QueryBuilder<C1> Any<T>(Entity target = default)
     {
-        return (QueryBuilder<C>) base.Any<T>(target);
+        return (QueryBuilder<C1>) base.Any<T>(target);
     }
 
 
-    public override QueryBuilder<C> Any<T>(T target) where T : class
+    public override QueryBuilder<C1> Any<T>(T target) where T : class
     {
-        return (QueryBuilder<C>) base.Any(target);
-    }
-
-
-    public Query<C> Build()
-    {
-        return (Query<C>) World.GetQuery(Mask, CreateQuery);
+        return (QueryBuilder<C1>) base.Any(target);
     }
 }
 
-
 public sealed class QueryBuilder<C1, C2> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
-        (world, mask, matchingTables) => new Query<C1, C2>(world, mask, matchingTables);
+    private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
+        (world, streamTypes, mask, matchingTables) => new Query<C1, C2>(world, streamTypes, mask, matchingTables);
 
 
     internal QueryBuilder(World world, Entity match1, Entity match2) : base(world)
     {
-        Has<C1>(match1).Has<C2>(match2);
+        Outputs<C1>(match1);
+        Outputs<C2>(match2);
     }
 
+    public Query<C1, C2> Build()
+    {
+        return (Query<C1, C2>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+    }
 
     public override QueryBuilder<C1, C2> Has<T>(Entity target = default)
     {
@@ -171,25 +181,25 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
     {
         return (QueryBuilder<C1, C2>) base.Any(target);
     }
-
-
-    public Query<C1, C2> Build()
-    {
-        return (Query<C1, C2>) World.GetQuery(Mask, CreateQuery);
-    }
 }
 
 public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
-        (world, mask, matchingTables) => new Query<C1, C2, C3>(world, mask, matchingTables);
+    private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
+        (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3>(world, streamTypes, mask, matchingTables);
 
 
     internal QueryBuilder(World world, Entity match1, Entity match2, Entity match3) : base(world)
     {
-        Has<C1>(match1).Has<C2>(match2).Has<C3>(match3);
+        Outputs<C1>(match1);
+        Outputs<C2>(match2);
+        Outputs<C3>(match3);
     }
 
+    public Query<C1, C2, C3> Build()
+    {
+        return (Query<C1, C2, C3>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+    }
 
     public override QueryBuilder<C1, C2, C3> Has<T>(Entity target = default)
     {
@@ -225,25 +235,26 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
     {
         return (QueryBuilder<C1, C2, C3>) base.Any(target);
     }
-
-
-    public Query<C1, C2, C3> Build()
-    {
-        return (Query<C1, C2, C3>) World.GetQuery(Mask, CreateQuery);
-    }
 }
 
 public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
-        (world, mask, matchingTables) => new Query<C1, C2, C3, C4>(world, mask, matchingTables);
+    private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
+        (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3, C4>(world, streamTypes, mask, matchingTables);
 
 
     internal QueryBuilder(World world, Entity match1, Entity match2, Entity match3, Entity match4) : base(world)
     {
-        Has<C1>(match1).Has<C2>(match2).Has<C3>(match3).Has<C4>(match4);
+        Outputs<C1>(match1);
+        Outputs<C2>(match2);
+        Outputs<C3>(match3);
+        Outputs<C4>(match4);
     }
 
+    public Query<C1, C2, C3, C4> Build()
+    {
+        return (Query<C1, C2, C3, C4>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+    }
 
     public override QueryBuilder<C1, C2, C3, C4> Has<T>(Entity target = default)
     {
@@ -279,23 +290,26 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Any(target);
     }
-
-
-    public Query<C1, C2, C3, C4> Build()
-    {
-        return (Query<C1, C2, C3, C4>) World.GetQuery(Mask, CreateQuery);
-    }
 }
 
 public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
 {
-    private static readonly Func<World, Mask, List<Archetype>, Query> CreateQuery =
-        (world, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(world, mask, matchingTables);
-    
-    
+    private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
+        (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(world, streamTypes, mask, matchingTables);
+
+
     internal QueryBuilder(World world, Entity match1, Entity match2, Entity match3, Entity match4, Entity match5) : base(world)
     {
-        Has<C1>(match1).Has<C2>(match2).Has<C3>(match3).Has<C4>(match4).Has<C5>(match5);
+        Outputs<C1>(match1);
+        Outputs<C2>(match2);
+        Outputs<C3>(match3);
+        Outputs<C4>(match4);
+        Outputs<C5>(match5);
+    }
+
+    public Query<C1, C2, C3, C4, C5> Build()
+    {
+        return (Query<C1, C2, C3, C4, C5>) World.GetQuery(StreamTypes, Mask, CreateQuery);
     }
 
 
@@ -331,11 +345,5 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
     public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(T target) where T : class
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any(target);
-    }
-
-
-    public Query<C1, C2, C3, C4, C5> Build()
-    {
-        return (Query<C1, C2, C3, C4, C5>) World.GetQuery(Mask, CreateQuery);
     }
 }

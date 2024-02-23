@@ -20,7 +20,6 @@ public partial class World : IDisposable
     private EntityMeta[] _meta;
 
     private readonly List<Archetype> _archetypes = [];
-    private readonly Dictionary<TypeID, List<Archetype>> _tableBuckets = new();
     
     private readonly Dictionary<int, Query> _queries = new();
 
@@ -126,7 +125,7 @@ public partial class World : IDisposable
     }
     #endregion
 
-    internal Query GetQuery(Mask mask, Func<World, Mask, List<Archetype>, Query> createQuery)
+    internal Query GetQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
         if (_queries.TryGetValue(mask, out var query))
         {
@@ -147,7 +146,7 @@ public partial class World : IDisposable
             if (table.Matches(mask)) matchingTables.Add(table);
         }
 
-        query = createQuery(this, mask, matchingTables);
+        query = createQuery(this, streamTypes, mask, matchingTables);
 
         _queries.Add(mask, query);
         return query;
