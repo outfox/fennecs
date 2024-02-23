@@ -1,6 +1,6 @@
 ### ... the tiny, tiny, high-energy Entity Component System!
 
-![fennecs logo](https://raw.githubusercontent.com/thygrrr/fennecs/main/docs/logos/fennecs-logo-darkmode.svg)
+![fennecs logo](https://raw.githubusercontent.com/thygrrr/fennecs/main/docs/logos/fennecs-logo-nuget.svg)
 
 # What the fox!? Another ECS?
 
