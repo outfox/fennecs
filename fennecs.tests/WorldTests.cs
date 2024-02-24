@@ -306,54 +306,12 @@ public class WorldTests
         Assert.Throws<ArgumentNullException>(() => world.On(identity).Add<string>(null!));
     }
 
-    
-    
-/*
-    This API was retired, but might come back
-
     [Fact]
-    private void Can_Try_Get_Component()
+    private void GetEntity_and_On_return_same_Identity()
     {
         using var world = new World();
-        var identity = world.Spawn().Add(666).Id();
-        Assert.True(world.TryGetComponent<int>(identity, out var value));
-        Assert.Equal(666, value);
+        var entity = world.Spawn();
+        Assert.Equal(entity, world.GetEntity(entity.Id));
+        Assert.Equal(entity, world.On(entity.Id));
     }
-
-    [Fact]
-    private void Can_Fail_Try_Get_Component()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Add(666.0).Id();
-        Assert.Throws<NullReferenceException>(() =>
-        {
-            Assert.False(world.TryGetComponent<int>(identity, out var reference));
-            output.WriteLine(reference.Value.ToString());
-        });
-    }
-    [Fact]
-    private void Can_Try_Get_Component_With_Target_Entity()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Id();
-        var target = world.Spawn().Id();
-        world.On(identity).Link(target, 666);
-        Assert.True(world.TryGetComponent<int>(identity, target, out var value));
-        Assert.Equal(666, value);
-    }
-
-    [Fact]
-    private void Can_Fail_Try_Get_Component_With_Target_Entity()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Id();
-        var target = world.Spawn().Id();
-        world.On(identity).Link(target, 666.0);
-        Assert.Throws<NullReferenceException>(() =>
-        {
-            Assert.False(world.TryGetComponent<int>(identity, target, out var reference));
-            output.WriteLine(reference.Value.ToString());
-        });
-    }
-*/
 }
