@@ -155,7 +155,8 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 <details>
 
 <summary>📈 Click to Expand Benchmarks: </summary>
-<pre>executing a System.Numerics.Vector3 cross product and writing the result back with various calling methods</pre>
+<pre>Example: Allocation-free executing a System.Numerics.Vector3 cross product and writing the result back.
+With various processing methods; parallel jobs with different batch/chunk sizes or single threaded runs.</pre>
 
 | Method     | entities  | chunk | Mean       | StdDev    | Jobs | Contention | Alloc |
 |----------- |-----------|------:|-----------:|----------:|-----:|-----------:|------:|
