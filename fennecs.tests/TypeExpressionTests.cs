@@ -88,7 +88,7 @@ public class TypeExpressionTests
     public void Can_Create_For_Type()
     {
         var tx1 = TypeExpression.Create(typeof(TypeA));
-        var tx2 = TypeExpression.Create(typeof(TypeA), Entity.Any);
+        var tx2 = TypeExpression.Create(typeof(TypeA), Match.Any);
         var tx3 = TypeExpression.Create(typeof(TypeA), new Entity(123));
 
         Assert.False(tx1.isRelation);
@@ -99,10 +99,10 @@ public class TypeExpressionTests
     [Fact]
     public void None_Matches_only_None()
     {
-        var none = TypeExpression.Create<TypeA>(Entity.None);
-        var any = TypeExpression.Create<TypeA>(Entity.Any);
-        var obj = TypeExpression.Create<TypeA>(Entity.Object);
-        var rel = TypeExpression.Create<TypeA>(Entity.Relation);
+        var none = TypeExpression.Create<TypeA>(Match.Plain);
+        var any = TypeExpression.Create<TypeA>(Match.Any);
+        var obj = TypeExpression.Create<TypeA>(Match.Object);
+        var rel = TypeExpression.Create<TypeA>(Match.Entity);
 
         var ent = TypeExpression.Create<TypeA>(new Entity(123));
         var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
@@ -118,7 +118,7 @@ public class TypeExpressionTests
     [Fact]
     public void Any_Matches_only_All()
     {
-        var any = TypeExpression.Create<TypeA>(Entity.Any);
+        var any = TypeExpression.Create<TypeA>(Match.Any);
         
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Entity(123));
@@ -132,7 +132,7 @@ public class TypeExpressionTests
     [Fact]
     public void Object_Matches_only_Objects()
     {
-        var obj = TypeExpression.Create<TypeA>(Entity.Object);
+        var obj = TypeExpression.Create<TypeA>(Match.Object);
         
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Entity(123));
@@ -146,7 +146,7 @@ public class TypeExpressionTests
     [Fact]
     public void Relation_Matches_only_Relations()
     {
-        var rel = TypeExpression.Create<TypeA>(Entity.Relation);
+        var rel = TypeExpression.Create<TypeA>(Match.Entity);
         
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Entity(123));
@@ -160,7 +160,7 @@ public class TypeExpressionTests
     [Fact]
     public void Target_Matches_all_Entity_Target_Relations()
     {
-        var rel = TypeExpression.Create<TypeA>(Entity.Target);
+        var rel = TypeExpression.Create<TypeA>(Match.Relation);
         
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Entity(123));

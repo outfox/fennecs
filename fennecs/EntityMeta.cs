@@ -21,7 +21,7 @@ internal struct EntityMeta(Entity entity, Archetype archetype, int row)
 
     internal void Clear()
     {
-        Entity = Entity.None;
+        Entity = Match.Plain;
         Archetype = null!;
         Row = 0;
     }

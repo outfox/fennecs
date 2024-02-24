@@ -32,11 +32,11 @@ public class EntityBuilderTests
         using var world = new World();
         var entity = world.Spawn().Id();
         var builder = new EntityBuilder(world, entity);
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Entity.Any); });
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Entity.None); });
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Entity.Object); });
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Entity.Relation); });
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Entity.Target); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Match.Any); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Match.Plain); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Match.Object); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Match.Entity); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation<int>(Match.Relation); });
 
         var target = world.Spawn().Id();
         builder.AddRelation<int>(target);
@@ -50,11 +50,11 @@ public class EntityBuilderTests
         using var world = new World();
         var entity = world.Spawn().Id();
         var builder = new EntityBuilder(world, entity);
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Entity.Any, 123); });
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Entity.None, 123); });
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Entity.Object, 123); });
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Entity.Relation, 123); });
-        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Entity.Target, 123); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Match.Any, 123); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Match.Plain, 123); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Match.Object, 123); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Match.Entity, 123); });
+        Assert.Throws<InvalidOperationException>(() => { builder.AddRelation(Match.Relation, 123); });
 
         var target = world.Spawn().Id();
         builder.AddRelation(target, 123);

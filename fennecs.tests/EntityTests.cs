@@ -9,8 +9,8 @@ public class EntityTests(ITestOutputHelper output)
     [Fact]
     public void Virtual_Entities_have_no_Successors()
     {
-        Assert.Throws<InvalidCastException>(() => Entity.Any.Successor);
-        Assert.Throws<InvalidCastException>(() => Entity.None.Successor);
+        Assert.Throws<InvalidCastException>(() => Match.Any.Successor);
+        Assert.Throws<InvalidCastException>(() => Match.Plain.Successor);
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class EntityTests(ITestOutputHelper output)
     
     public void Identity_None_is_default()
     {
-        var none = Entity.None;
+        var none = Match.Plain;
         Assert.Equal(default, none.Generation);
         output.WriteLine(none.Generation.ToString());
         output.WriteLine(none.ToString());
@@ -36,19 +36,19 @@ public class EntityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_ToString()
     {
-        _ = Entity.Relation.ToString();
-        _ = Entity.Target.ToString();
-        _ = Entity.Object.ToString();
-        _ = Entity.None.ToString();
-        _ = Entity.Any.ToString();
+        _ = Match.Entity.ToString();
+        _ = Match.Relation.ToString();
+        _ = Match.Object.ToString();
+        _ = Match.Plain.ToString();
+        _ = Match.Any.ToString();
         _ = Entity.Of("hello world").ToString();
         _ = new Entity(123, 456).ToString();
 
-        output.WriteLine(Entity.Relation.ToString());
-        output.WriteLine(Entity.Target.ToString());
-        output.WriteLine(Entity.Object.ToString());
-        output.WriteLine(Entity.None.ToString());
-        output.WriteLine(Entity.Any.ToString());
+        output.WriteLine(Match.Entity.ToString());
+        output.WriteLine(Match.Relation.ToString());
+        output.WriteLine(Match.Object.ToString());
+        output.WriteLine(Match.Plain.ToString());
+        output.WriteLine(Match.Any.ToString());
         output.WriteLine(Entity.Of("hello world").ToString());
         output.WriteLine(new Entity(123, 456).ToString());
     }
@@ -57,10 +57,10 @@ public class EntityTests(ITestOutputHelper output)
     public void Identity_None_cannot_Match_One()
     {
         var zero = new Entity(0);
-        Assert.NotEqual(Entity.None, zero);
+        Assert.NotEqual(Match.Plain, zero);
 
         var one = new Entity(1);
-        Assert.NotEqual(Entity.None, one);
+        Assert.NotEqual(Match.Plain, one);
     }
 
     [Fact]
@@ -91,8 +91,8 @@ public class EntityTests(ITestOutputHelper output)
             {
                 var identity = new Entity(i, g);
 
-                Assert.NotEqual(identity, Entity.Any);
-                Assert.NotEqual(identity, Entity.None);
+                Assert.NotEqual(identity, Match.Any);
+                Assert.NotEqual(identity, Match.Plain);
 
                 if (ids.ContainsKey(identity.GetHashCode()))
                 {
@@ -117,8 +117,8 @@ public class EntityTests(ITestOutputHelper output)
     [Fact]
     public void Any_and_None_are_Distinct()
     {
-        Assert.NotEqual(Entity.Any, Entity.None);
-        Assert.NotEqual(Entity.Any.GetHashCode(), Entity.None.GetHashCode());
+        Assert.NotEqual(Match.Any, Match.Plain);
+        Assert.NotEqual(Match.Any.GetHashCode(), Match.Plain.GetHashCode());
     }
 
     [Fact]

@@ -27,7 +27,7 @@ public class Wildcard1Tests
     [Fact]
     public void Wildcard_Any_Enumerates_all_Components_Once()
     {
-        using var query = _world.Query<string>(Entity.Any).Build();
+        using var query = _world.Query<string>(Match.Any).Build();
         
         HashSet<string> seen = [];
         query.ForEach((ref string str) =>
@@ -46,7 +46,7 @@ public class Wildcard1Tests
     [Fact]
     public void Wildcard_None_Enumerates_Only_Plain_Components()
     {
-        using var query = _world.Query<string>(Entity.None).Build();
+        using var query = _world.Query<string>(Match.Plain).Build();
 
         HashSet<string> seen = [];
         query.ForEach((ref string str) =>
@@ -62,7 +62,7 @@ public class Wildcard1Tests
     [Fact]
     public void Wildcard_Target_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string>(Entity.Target).Build();
+        using var query = _world.Query<string>(Match.Relation).Build();
 
         HashSet<string> seen = [];
 
@@ -82,7 +82,7 @@ public class Wildcard1Tests
     [Fact]
     public void Wildcard_Relation_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string>(Entity.Relation).Build();
+        using var query = _world.Query<string>(Match.Entity).Build();
         
         HashSet<string> seen = [];
 
@@ -100,7 +100,7 @@ public class Wildcard1Tests
     [Fact]
     public void Wildcard_Object_Enumerates_all_Object_Links()
     {
-        using var query = _world.Query<string>(Entity.Object).Build();
+        using var query = _world.Query<string>(Match.Object).Build();
 
         HashSet<string> seen = [];
 

@@ -135,7 +135,7 @@ public class QueryTests
         /*var charlie = */world.Spawn().Add(p3).AddRelation(bob, 222).Id();
 
         var query = world.Query<Entity, Vector3>()
-            .Any<int>(Entity.None)
+            .Any<int>(Match.Plain)
             .Build();
 
         var count = 0;

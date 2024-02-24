@@ -27,7 +27,7 @@ public class Wildcard2Tests
     [Fact]
     public void Wildcard_Any_Enumerates_all_Components_Once()
     {
-        using var query = _world.Query<string, float>(Entity.Any, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Any, Match.Plain).Build();
         
         HashSet<string> seen = [];
         query.ForEach((ref string str, ref float _) =>
@@ -46,7 +46,7 @@ public class Wildcard2Tests
     [Fact]
     public void Wildcard_None_Enumerates_Only_Plain_Components()
     {
-        using var query = _world.Query<string, float>(Entity.None, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Plain, Match.Plain).Build();
 
         HashSet<string> seen = [];
         query.Job((ref string str, ref float _) =>
@@ -62,7 +62,7 @@ public class Wildcard2Tests
     [Fact]
     public void Wildcard_Target_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string, float>(Entity.Target, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Relation, Match.Plain).Build();
 
         HashSet<string> seen = [];
 
@@ -82,7 +82,7 @@ public class Wildcard2Tests
     [Fact]
     public void Wildcard_Relation_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string, float>(Entity.Relation, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Entity, Match.Plain).Build();
         
         HashSet<string> seen = [];
         
@@ -100,7 +100,7 @@ public class Wildcard2Tests
     [Fact]
     public void Wildcard_Object_Enumerates_all_Object_Links()
     {
-        using var query = _world.Query<string, float>(Entity.Object, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Object, Match.Plain).Build();
 
         HashSet<string> seen = [];
 

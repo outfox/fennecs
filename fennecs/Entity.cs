@@ -26,41 +26,6 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
     [FieldOffset(4)] internal readonly uint DWordHigh;
 
 
-    /// <summary>
-    /// In Query Matching; matches ONLY target None, i.e. plain components.
-    /// </summary>
-    public static readonly Entity None = default; // == 0-bit == new(0,0)
-
-    /// <summary>
-    /// In Query Matching; matches ANY target, including None:
-    /// <ul>
-    /// <li>(plain components)</li>
-    /// <li>(entity-entity relations)</li>
-    /// <li>(entity-object relations)</li>
-    /// </ul>
-    /// </summary>
-    public static readonly Entity Any = new(-1, 0);
-
-    /// <summary>
-    ///  In Query Matching; matches ALL relations with a TARGET:
-    /// <ul>
-    /// <li>(entity-entity relations)</li>
-    /// <li>(entity-object relations)</li>
-    /// </ul>
-    /// </summary>
-    public static readonly Entity Target = new(-2, 0);
-
-    /// <summary>
-    /// In Query Matching; matches ONLY Entity-Entity relations.
-    /// </summary>
-    public static readonly Entity Relation = new(-3, 0);
-
-    /// <summary>
-    /// In Query Matching; matches ONLY Entity-Object links.
-    /// </summary>
-    public static readonly Entity Object = new(-4, 0);
-
-    
     // Entity Reference.
     public bool IsEntity => Id > 0 && Decoration > 0;
 
@@ -135,19 +100,19 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
 
     public override string ToString()
     {
-        if (Equals(None))
+        if (Equals(Match.Plain))
             return "\u25c7[None]";
 
-        if (Equals(Any))
+        if (Equals(Match.Any))
             return "\u2731[Any]";
         
-        if (Equals(Target))
+        if (Equals(Match.Relation))
             return "\u2a01[Target]";
         
-        if (Equals(Relation))
+        if (Equals(Match.Entity))
             return "\u29f1[Relation]";
         
-        if (Equals(Object))
+        if (Equals(Match.Object))
             return "\u29f0[Object]";
 
         if (IsObject)

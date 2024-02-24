@@ -48,7 +48,7 @@ public partial class World : IDisposable
     
     public void CollectTargets<T>(List<Entity> entities)
     {
-        var type = TypeExpression.Create<T>(Entity.Any);
+        var type = TypeExpression.Create<T>(Match.Any);
 
         // Iterate through tables and get all concrete entities from their Archetype TypeExpressions
         foreach (var candidate in _tablesByType.Keys)
@@ -82,7 +82,7 @@ public partial class World : IDisposable
     private bool HasComponent(Entity entity, TypeExpression typeExpression)
     {
         var meta = _meta[entity.Id];
-        return meta.Entity != Entity.None
+        return meta.Entity != Match.Plain
                && meta.Entity == entity
                && typeExpression.Matches(meta.Archetype.Types);
     }

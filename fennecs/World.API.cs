@@ -162,7 +162,7 @@ public partial class World
     
     public void AddComponent<T>(Entity entity) where T : new()
     {
-        var type = TypeExpression.Create<T>(Entity.None);
+        var type = TypeExpression.Create<T>(Match.Plain);
         AddComponent(entity, type, new T());
     }
 
@@ -184,7 +184,7 @@ public partial class World
     
     public void RemoveComponent<T>(Entity entity)
     {
-        var type = TypeExpression.Create<T>(Entity.None);
+        var type = TypeExpression.Create<T>(Match.Plain);
         RemoveComponent(entity, type);
     }
     
@@ -206,7 +206,7 @@ public partial class World
         _meta = new EntityMeta[capacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = AddTable([TypeExpression.Create<Entity>(Entity.None)]);
+        _root = AddTable([TypeExpression.Create<Entity>(Match.Plain)]);
     }
 
     public void Despawn(Entity entity)
