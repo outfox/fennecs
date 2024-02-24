@@ -12,7 +12,7 @@ namespace fennecs;
 /// It has no output Stream Types, and thus cannot be iterated in ways other than enumerating its Entities.
 /// </para>
 /// <para>
-/// <see cref="Query{C0}"/> through <see cref="Query{C0,C1,C2,C3,C4}"/> for Queries with configurable
+/// See <see cref="Query{C0}"/> through <see cref="Query{C0,C1,C2,C3,C4}"/> for Queries with configurable
 /// output Stream Types for fast iteration.
 /// </para>
 /// </summary>
