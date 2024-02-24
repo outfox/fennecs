@@ -354,7 +354,7 @@ public class QueryTests
 
         var query = world.Query().Build();
         query.Dispose();
-        Assert.Throws<ObjectDisposedException>(() => query.Raw(memory => { }));
+        Assert.Throws<ObjectDisposedException>(() => query.Raw(_ => { }));
         Assert.Throws<ObjectDisposedException>(() =>
         {
             foreach (var _ in query)
