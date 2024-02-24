@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests;
+﻿using System.Collections;
+
+namespace fennecs.tests;
 
 public class ArchetypeTests(ITestOutputHelper output)
 {
@@ -70,5 +72,22 @@ public class ArchetypeTests(ITestOutputHelper output)
 
         var typeExpressionTarget = TypeExpression.Create<string>(new Identity(99999));
         Assert.False(table.Matches(typeExpressionTarget));
+    }
+
+    [Fact]
+    public void Table_Can_be_Generically_Enumerated()
+    {
+        var world = new World();
+        var other = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var table = world.GetEntityMeta(other).Archetype;
+
+        var count = 0;
+        foreach (var entity in (IEnumerable)table)
+        {
+            count++;
+            Assert.Equal(entity, entity);
+        }
+
+        Assert.Equal(1, count);
     }
 }

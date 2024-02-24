@@ -164,11 +164,9 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
 
     #region Cast Operators and IEquatable<Entity>
     
-    public static explicit operator Identity(Entity self) => self.Id;
-
     public bool Equals(Entity other)
     {
-        return Id.Equals(other.Id) && _world.Equals(other._world);
+        return Id.Equals(other.Id) && ReferenceEquals(_world, other._world);
     }
 
     public override bool Equals(object? obj)

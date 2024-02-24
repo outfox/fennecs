@@ -32,7 +32,6 @@ internal sealed class Archetype : IEnumerable<Entity>
     public int Count { get; private set; }
     public bool IsEmpty => Count == 0;
 
-    internal int Version => Volatile.Read(ref _version);
     public int Capacity => _identities.Length;
 
     private readonly World _archetypes;
@@ -218,14 +217,6 @@ internal sealed class Archetype : IEnumerable<Entity>
         return (T[]) GetStorage(type);
     }
     
-
-    public Memory<T> Memory<T>(Identity target)
-    {
-        var type = TypeExpression.Create<T>(target);
-        var storage = (T[]) GetStorage(type);
-        return storage.AsMemory(0, Count);
-    }
-
     
     internal Array GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
 

@@ -55,6 +55,8 @@ public class EntityTests
         var entity1 = world.Spawn();
         var entity2 = new Entity(world, entity1.Id);
         Assert.Equal(entity1, entity2);
+        Assert.True(entity1 == entity2);
+        Assert.True(entity2 == entity1);
     }
 
     [Fact]
@@ -64,6 +66,8 @@ public class EntityTests
         var entity1 = world.Spawn();
         var entity3 = new Entity(null!, entity1.Id);
         Assert.NotEqual(entity1, entity3);
+        Assert.True(entity1 != entity3);
+        Assert.True(entity3 != entity1);
     }
     
     [Fact]
@@ -73,6 +77,8 @@ public class EntityTests
         var entity1 = world.Spawn();
         var entity2 = world.Spawn();
         Assert.NotEqual(entity1, entity2);
+        Assert.True(entity1 != entity2);
+        Assert.True(entity2 != entity1);
     }
     
     [Fact]
@@ -83,6 +89,20 @@ public class EntityTests
         var entity1 = world2.Spawn();
         var entity2 = new Entity(null!, new Identity(2));
         Assert.NotEqual(entity1, entity2);
+        Assert.True(entity1 != entity2);
+        Assert.True(entity2 != entity1);
+    }
+
+    [Fact]
+    public void Entity_is_Equatable_to_Object()
+    {
+        using var world = new World();
+        var entity1 = world.Spawn();
+        var entity2 = new Entity(world, entity1.Id);
+        Assert.True(entity1.Equals(entity2));
+        Assert.True(entity1.Equals((object)entity2));
+        // ReSharper disable once SuspiciousTypeConversion.Global
+        Assert.False(entity1.Equals("can't touch this"));
     }
     
     [Fact]
