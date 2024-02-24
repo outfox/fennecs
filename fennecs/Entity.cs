@@ -10,8 +10,10 @@
 /// The Entity's Identity and World are managed internally.
 /// </para>
 /// </summary>
-public readonly struct Entity : IDisposable
+public readonly struct Entity : IEquatable<Entity>, IDisposable
 {
+    #region Internal State
+    
     private readonly World _world;
 
     /// <summary>
@@ -23,11 +25,9 @@ public readonly struct Entity : IDisposable
         _world = world;
         Id = identity;
     }
-    
-    //Implicit cast to Identity
-    //public static explicit operator Identity(Entity self) => self.Id;
-    
-    
+
+    #endregion
+
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
     /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
@@ -155,5 +155,32 @@ public readonly struct Entity : IDisposable
     /// </summary>
     public void Dispose()
     {
+    }
+    
+    public bool Equals(Entity other)
+    {
+        return Id.Equals(other.Id) && _world.Equals(other._world);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Entity other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_world, Id);
+    }
+
+    public static explicit operator Identity(Entity self) => self.Id;
+
+    public static bool operator ==(Entity left, Entity right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Entity left, Entity right)
+    {
+        return !(left == right);
     }
 }
