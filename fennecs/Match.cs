@@ -5,6 +5,9 @@ public static class Match
     /// <summary>
     /// In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
     /// </summary>
+    /// <remarks>
+    /// Formerly known as "None"
+    /// </remarks>
     public static readonly Entity Plain = default; // == 0-bit == new(0,0)
 
     /// <summary>

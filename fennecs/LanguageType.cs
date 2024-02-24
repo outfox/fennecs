@@ -37,17 +37,19 @@ internal class LanguageType
 
     static LanguageType()
     {
-        // Register the None and Any types, blocking off the first and last IDs.
+        // Block off the first (0th) ID and treat as a None type.
         Types[0] = typeof(None);
         Ids[typeof(None)] = 0;
 
+        // Register the last (MaxValue) ID as Any type, reserved used for future wildcards and as a
+        // simple stopgap for when all TypeIDs are exhausted, raising an Exception the type initializer
+        // of LanguageType<T> (the same way as any other type collision)
         Types[TypeID.MaxValue] = typeof(Any);
         Ids[typeof(Any)] = TypeID.MaxValue;
     }
 
-    protected internal struct Any;
-
-    protected internal struct None;
+    private struct Any;
+    private struct None;
 }
 
 
