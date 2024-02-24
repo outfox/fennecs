@@ -13,17 +13,17 @@ public static class Match
     /// <remarks>
     /// Formerly known as "None"
     /// </remarks>
-    public static readonly Entity Plain = default; // == 0-bit == new(0,0)
+    public static readonly Identity Plain = default; // == 0-bit == new(0,0)
 
     /// <summary>
     /// In Query Matching; matches ONLY Entity-Entity relations.
     /// </summary>
-    public static readonly Entity Entity = new(-3, 0);
+    public static readonly Identity Identity = new(-3, 0);
 
     /// <summary>
     /// In Query Matching; matches ONLY Entity-Object links.
     /// </summary>
-    public static readonly Entity Object = new(-4, 0);
+    public static readonly Identity Object = new(-4, 0);
 
     /// <summary>
     /// <para>
@@ -68,7 +68,7 @@ public static class Match
     /// <li>(not a real use case) Avoid enumerating the same Stream Type multiple times with Wildcards (it's redundant even with exact matches, and 4x or 9x per type depending on Wildcard).</li>
     /// </ul> 
     /// </remarks>
-    public static readonly Entity Any = new(-1, 0);
+    public static readonly Identity Any = new(-1, 0);
 
     /// <summary>
     /// <para>
@@ -89,5 +89,5 @@ public static class Match
     /// </ul>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static readonly Entity Relation = new(-2, 0);
+    public static readonly Identity Relation = new(-2, 0);
 }

@@ -2,7 +2,7 @@
 
 namespace fennecs;
 
-internal struct EntityMeta(Entity entity, Archetype archetype, int row)
+internal struct EntityMeta(Identity identity, Archetype archetype, int row)
 {
     /// <summary>
     /// Archetype the entity lives in.
@@ -17,11 +17,11 @@ internal struct EntityMeta(Entity entity, Archetype archetype, int row)
     /// <summary>
     /// Entity Identity
     /// </summary>
-    internal Entity Entity = entity;
+    internal Identity Identity = identity;
 
     internal void Clear()
     {
-        Entity = Match.Plain;
+        Identity = Match.Plain;
         Archetype = null!;
         Row = 0;
     }

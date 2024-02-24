@@ -63,7 +63,7 @@ using Position = System.Numerics.Vector3;
 var world = new fennecs.World();
 
 // Spawn an entity into the world with a choice of components. (or add/remove them later)
-var entity = world.Spawn().Add<Position>().Id();
+var entity = world.Spawn().Add<Position>();
 
 // Queries are cached, just build them right where you want to use them.
 var query = world.Query<Position>().Build();

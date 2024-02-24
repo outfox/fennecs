@@ -56,16 +56,16 @@ public class ChunkingBenchmarks
             switch (i % 4)
             {
                 case 0:
-                    _world.Spawn().Add(_vectorsRaw[i]).Id();
+                    _world.Spawn().Add(_vectorsRaw[i]);
                     break;
                 case 1:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add<int>().Id();
+                    _world.Spawn().Add(_vectorsRaw[i]).Add<int>();
                     break;
                 case 2:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add<double>().Id();
+                    _world.Spawn().Add(_vectorsRaw[i]).Add<double>();
                     break;
                 case 3:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add<float>().Id();
+                    _world.Spawn().Add(_vectorsRaw[i]).Add<float>();
                     break;
             }
         }

@@ -4,7 +4,7 @@ public static class QueryEnumeration
 {
     public static class QueryTests
     {
-        private static World SetupWorld(out List<Entity> intEntities, out List<Entity> notIntEntities, out List<Entity> floatEntities, out List<Entity> bothEntities, out List<Entity> anyEntities)
+        private static World SetupWorld(out List<Identity> intEntities, out List<Identity> notIntEntities, out List<Identity> floatEntities, out List<Identity> bothEntities, out List<Identity> anyEntities)
         {
             intEntities = [];
             notIntEntities = [];
@@ -16,21 +16,21 @@ public static class QueryEnumeration
 
             for (int i = 0; i < 234; i++)
             {
-                var intEntity = world.Spawn().Add<int>().Id();
-                intEntities.Add(intEntity);
+                var intEntity = world.Spawn().Add<int>();
+                intEntities.Add(intEntity.Id);
 
-                var floatEntity = world.Spawn().Add<float>().Id();
-                notIntEntities.Add(floatEntity);
-                floatEntities.Add(floatEntity);
+                var floatEntity = world.Spawn().Add<float>();
+                notIntEntities.Add(floatEntity.Id);
+                floatEntities.Add(floatEntity.Id);
 
-                var bothEntity = world.Spawn().Add<int>().Add<float>().Id();
-                intEntities.Add(bothEntity);
-                floatEntities.Add(bothEntity);
-                bothEntities.Add(bothEntity);
+                var bothEntity = world.Spawn().Add<int>().Add<float>();
+                intEntities.Add(bothEntity.Id);
+                floatEntities.Add(bothEntity.Id);
+                bothEntities.Add(bothEntity.Id);
 
-                anyEntities.Add(intEntity);
-                anyEntities.Add(floatEntity);
-                anyEntities.Add(bothEntity);
+                anyEntities.Add(intEntity.Id);
+                anyEntities.Add(floatEntity.Id);
+                anyEntities.Add(bothEntity.Id);
             }
 
             return world;
@@ -41,9 +41,9 @@ public static class QueryEnumeration
         {
             using var world = new World();
 
-            world.Spawn().Add(1).Id();
-            world.Spawn().Add(2).Id();
-            world.Spawn().Add(3).Id();
+            world.Spawn().Add(1);
+            world.Spawn().Add(2);
+            world.Spawn().Add(3);
 
             var query = world.Query().Has<int>().Build();
 
@@ -51,7 +51,7 @@ public static class QueryEnumeration
             {
                 foreach (var _ in query)
                 {
-                    world.Spawn().Add(4).Id();
+                    world.Spawn().Add(4);
                 }
             });
 
@@ -71,13 +71,13 @@ public static class QueryEnumeration
 
             var random = new Random(9001);
             
-            world.Spawn().Add(1).Id();
-            world.Spawn().Add(2).Id();
-            world.Spawn().Add(3).Id();
+            world.Spawn().Add(1);
+            world.Spawn().Add(2);
+            world.Spawn().Add(3);
 
             var query = world.Query().Has<int>().Build();
 
-            foreach (var _ in query) world.Spawn().Add(random.NextSingle()).Id();
+            foreach (var _ in query) world.Spawn().Add(random.NextSingle());
             foreach (var _ in query) world.DespawnAllWith<float>();
         }
 

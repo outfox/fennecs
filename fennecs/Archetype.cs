@@ -22,7 +22,7 @@ internal sealed class Archetype
     
     public readonly ImmutableSortedSet<TypeExpression> Types;
 
-    public Entity[] Identities => _identities;
+    public Identity[] Identities => _identities;
 
     internal Array[] Storages => _storages;
 
@@ -34,7 +34,7 @@ internal sealed class Archetype
 
     private readonly World _archetypes;
 
-    private Entity[] _identities;
+    private Identity[] _identities;
 
     /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
@@ -60,7 +60,7 @@ internal sealed class Archetype
 
         Types = types;
 
-        _identities = new Entity[StartCapacity];
+        _identities = new Identity[StartCapacity];
 
         _storages = new Array[types.Count];
 
@@ -160,12 +160,12 @@ internal sealed class Archetype
     }
 
 
-    public int Add(Entity entity)
+    public int Add(Identity identity)
     {
         Interlocked.Increment(ref _version);
 
         EnsureCapacity(Count + 1);
-        _identities[Count] = entity;
+        _identities[Count] = identity;
         return Count++;
     }
 
@@ -208,14 +208,14 @@ internal sealed class Archetype
     }
 
 
-    public T[] GetStorage<T>(Entity target)
+    public T[] GetStorage<T>(Identity target)
     {
         var type = TypeExpression.Create<T>(target);
         return (T[]) GetStorage(type);
     }
     
 
-    public Memory<T> Memory<T>(Entity target)
+    public Memory<T> Memory<T>(Identity target)
     {
         var type = TypeExpression.Create<T>(target);
         var storage = (T[]) GetStorage(type);
@@ -269,9 +269,9 @@ internal sealed class Archetype
     }
     
 
-    internal static int MoveEntry(Entity entity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
+    internal static int MoveEntry(Identity identity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
     {
-        var newRow = newArchetype.Add(entity);
+        var newRow = newArchetype.Add(identity);
 
         foreach (var (type, oldIndex) in oldArchetype._storageIndices)
         {

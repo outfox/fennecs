@@ -16,7 +16,7 @@ namespace fennecs;
 /// output Stream Types for fast iteration.
 /// </para>
 /// </summary>
-public class Query : IEnumerable<Entity>, IDisposable
+public class Query : IEnumerable<Identity>, IDisposable
 {
     /// <summary>
     /// TypeExpression for the Output Stream of this Query.
@@ -43,17 +43,17 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
-    /// <param name="entity"></param>
+    /// <param name="identity"></param>
     /// <param name="target"></param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, the Component.</returns>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for Entity entity.</exception>
-    public ref C Ref<C>(Entity entity, Entity target = default)
+    public ref C Ref<C>(Identity identity, Identity target = default)
     {
         AssertNotDisposed();
         //TODO: Returning this ref should lock the world for the ref's scope?
         //TODO: This is just a facade for World.GetComponent, should it be removed?
-        return ref World.GetComponent<C>(entity, target);
+        return ref World.GetComponent<C>(identity, target);
     }
 
 
@@ -66,7 +66,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>
     ///  An enumerator over all the Entities in the Query.
     /// </returns>
-    public IEnumerator<Entity> GetEnumerator()
+    public IEnumerator<Identity> GetEnumerator()
     {
         AssertNotDisposed();
 
@@ -93,11 +93,11 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
     #endregion
     
-    public bool Contains(Entity entity)
+    public bool Contains(Identity identity)
     {
         AssertNotDisposed();
         
-        var meta = World.GetEntityMeta(entity);
+        var meta = World.GetEntityMeta(identity);
         var table = meta.Archetype;
         return Archetypes.Contains(table);
     }

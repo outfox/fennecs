@@ -13,7 +13,7 @@ public class Scenarios
         using var world = new World();
         
         var random = new Random(9001);
-        var entities = new List<Entity>();
+        var entities = new List<Identity>();
         
         var floats = 0;
         var doubles = 0;
@@ -44,10 +44,10 @@ public class Scenarios
             if (i % shortRate == 0)
             {
                 shorts++;
-                builder.AddRelation<ushort>(entities[random.Next(entities.Count)]);
+                builder.AddRelation<ushort>(new Entity(world, entities[random.Next(entities.Count)]));
             }
 
-            entities.Add(builder.Id());
+            entities.Add(builder);
         }
 
         

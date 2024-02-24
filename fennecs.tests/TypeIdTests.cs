@@ -21,7 +21,7 @@ public class TypeIdTests
     [Fact]
     public void Identity_is_64_bits()
     {
-        Assert.Equal(64 / 8, Marshal.SizeOf<Entity>());
+        Assert.Equal(64 / 8, Marshal.SizeOf<Identity>());
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public class TypeIdTests
     public void TypeAssigner_None_does_not_match_Any()
     {
         var id1 = TypeExpression.Create<int>();
-        var id2 = TypeExpression.Create<int>(new Entity(123));
+        var id2 = TypeExpression.Create<int>(new Identity(123));
         var id3 = TypeExpression.Create<int>(Match.Any);
 
         Assert.False(id1.Matches(id2));

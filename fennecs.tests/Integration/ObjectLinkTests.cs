@@ -32,7 +32,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         // string may be interned or not
         const string TARGET = "hello world";
         
-        var entity = world.Spawn().Id();
+        var entity = world.Spawn();
         world.On(entity).AddLink(TARGET);
 
         var runs = 0;
@@ -76,7 +76,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         // string may be interned or not
         const string TARGET = "hello world";
 
-        var entity = world.Spawn().AddLink(TARGET).Id();
+        var entity = world.Spawn().AddLink(TARGET);
         world.RemoveLink(entity, "hello world");
 
         var runs = 0;

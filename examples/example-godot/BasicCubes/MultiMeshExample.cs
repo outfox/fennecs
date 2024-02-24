@@ -29,8 +29,7 @@ public partial class MultiMeshExample : Node
 		{
 			_world.Spawn()
 				.Add(i + MeshInstance.Multimesh.InstanceCount)
-				.Add<Matrix4X3>()
-				.Id();
+				.Add<Matrix4X3>();
 		}
 
 		MeshInstance.Multimesh.InstanceCount += spawnCount;

@@ -58,21 +58,21 @@ public class ReferenceStoreTests(ITestOutputHelper output)
     {
         var store = new ReferenceStore();
         var item = new object();
-        Entity entity = default;
+        Identity identity = default;
         
         for (var i = 0; i < count; i++)
         {
-            entity = store.Request(item);
+            identity = store.Request(item);
         }
         
-        Assert.Equal(item, store.Get<object>(entity));
+        Assert.Equal(item, store.Get<object>(identity));
         
         for (var i = 0; i < count; i++)
         {
-            store.Release(entity);
+            store.Release(identity);
         }
 
-        Assert.Throws<KeyNotFoundException>(() => store.Get<object>(entity));
+        Assert.Throws<KeyNotFoundException>(() => store.Get<object>(identity));
     }
 
     [Fact]

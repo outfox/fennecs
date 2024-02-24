@@ -16,7 +16,7 @@ public class Query4Tests
         //that matches our test Query (but is a larger Archetype)
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add<char>().Add<double>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add<char>().Add<double>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -28,8 +28,7 @@ public class Query4Tests
                 .Add(99.999)
                 .Add(index)
                 .Add("one")
-                .Add('Q')
-                .Id();
+                .Add('Q');
         }
 
         query.ForEach((ref double _, ref int _, ref string str, ref char _) =>

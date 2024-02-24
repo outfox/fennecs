@@ -14,14 +14,13 @@ public class Match2Tests
     {
         _world = new World();
         
-        var bob = _world.Spawn().Id();
+        var bob = _world.Spawn();
         _world.Spawn()
             .Add<float>()
             .AddLink(OBJECT1)
             .AddLink(OBJECT2)
             .Add(NONE1)
-            .AddRelation(bob, RELATION1)
-            .Id();
+            .AddRelation(bob, RELATION1);
     }
     
     [Fact]
@@ -82,7 +81,7 @@ public class Match2Tests
     [Fact]
     public void Relation_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string, float>(Match.Entity, Match.Plain).Build();
+        using var query = _world.Query<string, float>(Match.Identity, Match.Plain).Build();
         
         HashSet<string> seen = [];
         
