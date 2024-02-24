@@ -4,7 +4,7 @@ public static class QueryEnumeration
 {
     public static class QueryTests
     {
-        private static World SetupWorld(out List<Identity> intEntities, out List<Identity> notIntEntities, out List<Identity> floatEntities, out List<Identity> bothEntities, out List<Identity> anyEntities)
+        private static World SetupWorld(out List<Entity> intEntities, out List<Entity> notIntEntities, out List<Entity> floatEntities, out List<Entity> bothEntities, out List<Entity> anyEntities)
         {
             intEntities = [];
             notIntEntities = [];
@@ -17,20 +17,20 @@ public static class QueryEnumeration
             for (int i = 0; i < 234; i++)
             {
                 var intEntity = world.Spawn().Add<int>();
-                intEntities.Add(intEntity.Id);
+                intEntities.Add(intEntity);
 
                 var floatEntity = world.Spawn().Add<float>();
-                notIntEntities.Add(floatEntity.Id);
-                floatEntities.Add(floatEntity.Id);
+                notIntEntities.Add(floatEntity);
+                floatEntities.Add(floatEntity);
 
                 var bothEntity = world.Spawn().Add<int>().Add<float>();
-                intEntities.Add(bothEntity.Id);
-                floatEntities.Add(bothEntity.Id);
-                bothEntities.Add(bothEntity.Id);
+                intEntities.Add(bothEntity);
+                floatEntities.Add(bothEntity);
+                bothEntities.Add(bothEntity);
 
-                anyEntities.Add(intEntity.Id);
-                anyEntities.Add(floatEntity.Id);
-                anyEntities.Add(bothEntity.Id);
+                anyEntities.Add(intEntity);
+                anyEntities.Add(floatEntity);
+                anyEntities.Add(bothEntity);
             }
 
             return world;

@@ -16,7 +16,7 @@ namespace fennecs;
 /// output Stream Types for fast iteration.
 /// </para>
 /// </summary>
-public class Query : IEnumerable<Identity>, IDisposable
+public class Query : IEnumerable<Entity>, IDisposable
 {
     /// <summary>
     /// TypeExpression for the Output Stream of this Query.
@@ -66,29 +66,16 @@ public class Query : IEnumerable<Identity>, IDisposable
     /// <returns>
     ///  An enumerator over all the Entities in the Query.
     /// </returns>
-    public IEnumerator<Identity> GetEnumerator()
+    public IEnumerator<Entity> GetEnumerator()
     {
         AssertNotDisposed();
-
-        foreach (var table in Archetypes)
-        {
-            var snapshot = table.Version;
-            for (var i = 0; i < table.Count; i++)
-            {
-                if (snapshot != table.Version)
-                {
-                    throw new InvalidOperationException("Query was modified while enumerating.");
-                }
-
-                yield return table.Identities[i];
-            }
-        }
+        foreach (var table in Archetypes) 
+            foreach (var entity in table) yield return entity;
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         AssertNotDisposed();
-        
         return GetEnumerator();
     }
     #endregion

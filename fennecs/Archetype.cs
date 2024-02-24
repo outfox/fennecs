@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -7,7 +8,7 @@ using fennecs.pools;
 
 namespace fennecs;
 
-internal sealed class Archetype
+internal sealed class Archetype : IEnumerable<Entity>
 {
     /// <summary>
     /// An Edge in the Graph that this Archetype is a member of.
@@ -18,6 +19,8 @@ internal sealed class Archetype
         internal Archetype? Remove;
     }
 
+    private readonly World _world;
+    
     private const int StartCapacity = 4;
     
     public readonly ImmutableSortedSet<TypeExpression> Types;
@@ -54,11 +57,12 @@ internal sealed class Archetype
     private int _version;
 
 
-    public Archetype(World archetypes, ImmutableSortedSet<TypeExpression> types)
+    public Archetype(World archetypes, ImmutableSortedSet<TypeExpression> types, World world)
     {
         _archetypes = archetypes;
 
         Types = types;
+        _world = world;
 
         _identities = new Identity[StartCapacity];
 
@@ -287,12 +291,29 @@ internal sealed class Archetype
 
         return newRow;
     }
-    
+
+
 
     public override string ToString()
     {
         var sb = new StringBuilder($"Archetype ");
         sb.AppendJoin("\n", Types);
         return sb.ToString();
+    }
+    
+
+    public IEnumerator<Entity> GetEnumerator()
+    {
+        var snapshot = _version;
+        for (var i = 0; i < Count; i++)
+        {
+            if (snapshot != _version) throw new InvalidOperationException("Collection modified while enumerating.");
+            yield return new Entity(_world, _identities[i]);
+        }
+    }
+    
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

@@ -10,7 +10,7 @@
 /// The Entity's Identity and World are managed internally.
 /// </para>
 /// </summary>
-public readonly struct Entity : IEquatable<Entity>, IDisposable
+public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IComparable, IDisposable
 {
     #region Internal State
     
@@ -190,6 +190,16 @@ public readonly struct Entity : IEquatable<Entity>, IDisposable
     {
         return Id.ToString();
     }
-    
+
+    public int CompareTo(object? obj)
+    {
+        return obj is Entity other ? CompareTo(other) : 0;
+    }
+
+    public int CompareTo(Entity other)
+    {
+        return Id.CompareTo(other.Id);
+    }
+
     #endregion
 }

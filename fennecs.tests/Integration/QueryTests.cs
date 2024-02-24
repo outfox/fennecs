@@ -39,11 +39,11 @@ public class QueryTests
         using var disposable = enumerator as IDisposable;
         while (enumerator.MoveNext())
         {
-            Assert.IsType<Identity>(enumerator.Current);
+            Assert.IsType<Entity>(enumerator.Current);
             
-            var identity = (Identity) enumerator.Current;
-            Assert.Contains(identity, entities);
-            entities.Remove(identity);            
+            var entity = (Entity) enumerator.Current;
+            Assert.Contains(entity, entities);
+            entities.Remove(entity);            
         }
         Assert.Empty(entities);
     }

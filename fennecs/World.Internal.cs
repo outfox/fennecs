@@ -175,7 +175,7 @@ public partial class World : IDisposable
 
     private Archetype AddTable(ImmutableSortedSet<TypeExpression> types)
     {
-        var table = new Archetype(this, types);
+        var table = new Archetype(this, types, null!);
         _archetypes.Add(table);
 
         foreach (var type in types)
