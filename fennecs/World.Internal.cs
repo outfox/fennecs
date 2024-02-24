@@ -2,18 +2,14 @@
 
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
 namespace fennecs;
 
-public partial class World : IDisposable
+public partial class World
 {
-    public void Dispose()
-    {
-        //TODO: Despawn all entities with object links?
-    }
-
     #region Archetypes
 
     private readonly IdentityPool _identityPool;
@@ -21,14 +17,14 @@ public partial class World : IDisposable
     private Meta[] _meta;
 
     private readonly List<Archetype> _archetypes = [];
-    
+
     private readonly Dictionary<int, Query> _queries = new();
 
     // The "Identity" Archetype, which is the root of the Archetype Graph.
     private readonly Archetype _root;
 
     private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
-    
+
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
     private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
 
@@ -46,8 +42,8 @@ public partial class World : IDisposable
             }
         }
     }
-    
-    public void CollectTargets<T>(List<Identity> entities)
+
+    internal void CollectTargets<T>(List<Identity> entities)
     {
         var type = TypeExpression.Create<T>(Match.Any);
 
@@ -61,6 +57,7 @@ public partial class World : IDisposable
     private readonly object _spawnLock = new();
 
     #region CRUD
+
     private Identity NewEntity()
     {
         lock (_spawnLock)
@@ -127,7 +124,7 @@ public partial class World : IDisposable
             }
         }
     }
-    
+
     private void RemoveComponent(Identity identity, TypeExpression typeExpression)
     {
         if (_mode == Mode.Deferred)
@@ -164,6 +161,7 @@ public partial class World : IDisposable
         //meta.ArchId = newTable.Id;
         meta.Archetype = newTable;
     }
+
     #endregion
 
     internal Query GetQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
@@ -248,11 +246,9 @@ public partial class World : IDisposable
     }
 
     #endregion
-    
-    
-    
-    
-    public void Lock()
+
+
+    internal void Lock()
     {
         lock (_modeChangeLock)
         {
@@ -262,7 +258,7 @@ public partial class World : IDisposable
         }
     }
 
-    public void Unlock()
+    internal void Unlock()
     {
         lock (_modeChangeLock)
         {
@@ -296,15 +292,15 @@ public partial class World : IDisposable
     }
 
 
-    public struct DeferredOperation
+    internal struct DeferredOperation
     {
-        public required OpCode Code;
-        public TypeExpression TypeExpression;
-        public Identity Identity;
-        public object Data;
+        internal required OpCode Code;
+        internal TypeExpression TypeExpression;
+        internal Identity Identity;
+        internal object Data;
     }
 
-    public enum OpCode
+    internal enum OpCode
     {
         Add,
         Remove,
@@ -329,4 +325,189 @@ public partial class World : IDisposable
     }
 
     #endregion
+
+    #region Linked Components
+
+    /// <summary>
+    /// Creates an Archetype relation between this identity and an object (instance of a class).
+    /// The relation is backed by the object itself, which will be enumerated by queries if desired.
+    /// Whenever the identity is enumerated by a Query, it will be batched only with other Entities
+    /// that share the exact relation, in addition to conforming with the other clauses of the Query.
+    /// The object is internally reference-counted, and the reference will be discarded once no other
+    /// identity is linked to it.
+    /// </summary>
+    ///<remarks>
+    /// Beware of Archetype Fragmentation!
+    /// This feature is great to express relations between Entities, but it will lead to
+    /// fragmentation of the Archetype Graph, i.e. Archetypes with very few Entities that
+    /// are difficult to iterate over efficiently.
+    /// </remarks>
+    /// <param name="identity"></param>
+    /// <param name="target"></param>
+    /// <typeparam name="T"></typeparam>
+    internal void AddLink<T>(Identity identity, [NotNull] T target) where T : class
+    {
+        var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
+        AddComponent(identity, typeExpression, target);
+    }
+
+    /// <summary>
+    /// Checks if this identity has an object-backed relation (instance of a class).
+    /// </summary>
+    /// <param name="identity"></param>
+    /// <param name="target"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    internal bool HasLink<T>(Identity identity, [NotNull] T target) where T : class
+    {
+        var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
+        return HasComponent(identity, typeExpression);
+    }
+
+    /// <summary>
+    /// Removes the object-backed relation between this identity and the object (instance of a class).
+    /// The object is internally reference-counted, and the reference will be discarded once no other
+    /// identity is linked to it.
+    /// </summary>
+    /// <param name="identity"></param>
+    /// <param name="target"></param>
+    /// <typeparam name="T"></typeparam>
+    internal void RemoveLink<T>(Identity identity, T target) where T : class
+    {
+        var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
+        RemoveComponent(identity, typeExpression);
+    }
+
+    /// <summary>
+    /// Creates an Archetype relation between this identity and another identity.
+    /// The relation is backed by an arbitrary type to provide additional data.
+    /// Whenever the identity is enumerated by a Query, it will be batched only with other Entities
+    /// that share the exact relation, in addition to conforming with the other clauses of the Query.
+    /// </summary>
+    ///<remarks>
+    /// Beware of Archetype Fragmentation!
+    /// This feature is great to express relations between Entities, but it will lead to
+    /// fragmentation of the Archetype Graph, i.e. Archetypes with very few Entities that
+    /// are difficult to iterate over efficiently.
+    /// </remarks>
+    /// <param name="identity"></param>
+    /// <param name="target"></param>
+    /// <param name="data"></param>
+    /// <typeparam name="T">any Component type</typeparam>
+    internal void AddRelation<T>(Identity identity, Identity target, T data)
+    {
+        var typeExpression = TypeExpression.Create<T>(target);
+        AddComponent(identity, typeExpression, data);
+    }
+
+    /// <summary>
+    /// Checks if this identity has a relation Component with another identity.
+    /// </summary>
+    /// <param name="identity"></param>
+    /// <param name="target"></param>
+    /// <typeparam name="T">any Component type</typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    internal bool HasRelation<T>(Identity identity, Identity target)
+    {
+        var typeExpression = TypeExpression.Create<T>(target);
+        return HasComponent(identity, typeExpression);
+    }
+
+    /// <summary>
+    /// Removes the relation Component between this identity and another identity.
+    /// </summary>
+    /// <param name="identity"></param>
+    /// <param name="target"></param>
+    /// <typeparam name="T">any Component type</typeparam>
+    internal void RemoveRelation<T>(Identity identity, Identity target)
+    {
+        var typeExpression = TypeExpression.Create<T>(target);
+        RemoveComponent(identity, typeExpression);
+    }
+
+    #endregion
+
+    #region Plain Components
+
+    internal void AddComponent<T>(Identity identity) where T : new()
+    {
+        var type = TypeExpression.Create<T>(Match.Plain);
+        AddComponent(identity, type, new T());
+    }
+
+    internal void AddComponent<T>(Identity identity, T data)
+    {
+        if (data == null) throw new ArgumentNullException(nameof(data));
+        var type = TypeExpression.Create<T>();
+        AddComponent(identity, type, data);
+    }
+
+    internal bool HasComponent<T>(Identity identity, Identity target = default)
+    {
+        var type = TypeExpression.Create<T>(target);
+        return HasComponent(identity, type);
+    }
+
+    internal void RemoveComponent<T>(Identity identity)
+    {
+        var type = TypeExpression.Create<T>(Match.Plain);
+        RemoveComponent(identity, type);
+    }
+
+    #endregion
+
+    private void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
+    {
+        AssertAlive(identity);
+
+        ref var meta = ref _meta[identity.Index];
+        var oldTable = meta.Archetype;
+
+        if (oldTable.Types.Contains(typeExpression))
+        {
+            throw new ArgumentException($"Identity {identity} already has component of type {typeExpression}");
+        }
+
+        if (_mode == Mode.Deferred)
+        {
+            _deferredOperations.Enqueue(new DeferredOperation {Code = OpCode.Add, Identity = identity, TypeExpression = typeExpression, Data = data!});
+            return;
+        }
+
+        var oldEdge = oldTable.GetTableEdge(typeExpression);
+
+        var newTable = oldEdge.Add;
+
+        if (newTable == null)
+        {
+            var newTypes = oldTable.Types.Add(typeExpression);
+            newTable = AddTable(newTypes);
+            oldEdge.Add = newTable;
+
+            var newEdge = newTable.GetTableEdge(typeExpression);
+            newEdge.Remove = oldTable;
+        }
+
+        var newRow = Archetype.MoveEntry(identity, meta.Row, oldTable, newTable);
+        newTable.Set(typeExpression, data, newRow);
+
+        meta.Row = newRow;
+        meta.Archetype = newTable;
+    }
+
+    internal ref T GetComponent<T>(Identity identity, Identity target = default)
+    {
+        AssertAlive(identity);
+
+        if (typeof(T) == typeof(Identity))
+        {
+            throw new TypeAccessException("Not allowed get mutable reference in root table (TypeExpression<Identity>, system integrity).");
+        }
+
+        var meta = _meta[identity.Index];
+        var table = meta.Archetype;
+        var storage = table.GetStorage<T>(target);
+        return ref storage[meta.Row];
+    }
 }

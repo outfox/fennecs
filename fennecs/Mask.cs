@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Runtime.CompilerServices;
 using fennecs.pools;
 
 namespace fennecs;

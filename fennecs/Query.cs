@@ -132,10 +132,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         
         return false;
     }
-
-
     
-
     protected void AssertNotDisposed()
     {
         if (!disposed) return;
