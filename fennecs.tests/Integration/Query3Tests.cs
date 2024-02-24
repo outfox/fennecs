@@ -76,7 +76,6 @@ public class Query3Tests
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         }, 7);
-
         
         query.ForSpan((_, strings, _, uniform) =>
         {
@@ -95,7 +94,6 @@ public class Query3Tests
                 strings.Span[i] = uniform.ToString();
             }
         }, 9);
-        
         
         query.ForEach((ref int _, ref string str, ref char _) =>
         {
