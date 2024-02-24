@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests.Integration;
 
-public class Wildcard1Tests
+public class Match1Tests
 {
     private readonly World _world;
     
@@ -10,7 +10,7 @@ public class Wildcard1Tests
     const string NONE1 = "can't touch this";
     const string RELATION1 = "IOU";
     
-    public Wildcard1Tests()
+    public Match1Tests()
     {
         _world = new World();
         
@@ -25,7 +25,7 @@ public class Wildcard1Tests
     }
     
     [Fact]
-    public void Wildcard_Any_Enumerates_all_Components_Once()
+    public void Any_Enumerates_all_Components_Once()
     {
         using var query = _world.Query<string>(Match.Any).Build();
         
@@ -44,7 +44,7 @@ public class Wildcard1Tests
     
 
     [Fact]
-    public void Wildcard_None_Enumerates_Only_Plain_Components()
+    public void Plain_Enumerates_Only_Plain_Components()
     {
         using var query = _world.Query<string>(Match.Plain).Build();
 
@@ -60,7 +60,7 @@ public class Wildcard1Tests
 
 
     [Fact]
-    public void Wildcard_Target_Enumerates_all_Relations()
+    public void Target_Enumerates_all_Relations()
     {
         using var query = _world.Query<string>(Match.Relation).Build();
 
@@ -80,7 +80,7 @@ public class Wildcard1Tests
 
 
     [Fact]
-    public void Wildcard_Relation_Enumerates_all_Relations()
+    public void Relation_Enumerates_all_Relations()
     {
         using var query = _world.Query<string>(Match.Entity).Build();
         
@@ -98,7 +98,7 @@ public class Wildcard1Tests
 
 
     [Fact]
-    public void Wildcard_Object_Enumerates_all_Object_Links()
+    public void Object_Enumerates_all_Object_Links()
     {
         using var query = _world.Query<string>(Match.Object).Build();
 
