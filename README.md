@@ -145,7 +145,8 @@ well; and things it may aspire to do but compromised on in order to be able to a
 ## ⏩ Nimble: _**fenn**ecs_ benchmarks
 
 Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU.
-We worked hard to minimize allocations, though convenience, especially parallelization, has a tiny GC cost. 
+
+We worked hard to minimize allocations, and if using static anonymous methods or delegates, even with uniform parameters, the ECS iterates Entities allocation-free.
 
 _**fenn**ecs_ provides a variety of ways to iterate over and modify components, to offer a good balance of control and elegance without compromising too much. 
 
@@ -155,7 +156,6 @@ Here are some raw results from our WIP benchmark suite, from the Vector3 operati
 <pre>Example: Allocation-free executing a System.Numerics.Vector3 cross product and writing the result back.
 With various processing methods; parallel jobs with different batch/chunk sizes or single threaded runs.</pre>
 
-In **fenn**ecs, a million Vector3 components can be processed in under 0.5 milliseconds (500 microseconds)
 
 | Method     | entities  | chunk | Mean       | StdDev    | Jobs | Contention | Alloc |
 |----------- |-----------|------:|-----------:|----------:|-----:|-----------:|------:|
@@ -167,6 +167,7 @@ In **fenn**ecs, a million Vector3 components can be processed in under 0.5 milli
 | Cross_Job  | 1_000_000 | 16384 |   405.2 us |   4.56 us |    64|     0.0039 |     - |
 | Cross_RunU | 1_000_000 |     - | 1,268.4 us |  44.76 us |    - |          - |   1 B |
 | Cross_Run  | 1_000_000 |     - | 1,827.0 us |  16.76 us |    - |          - |   1 B |
+
 
 ------------------------
 
