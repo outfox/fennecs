@@ -156,7 +156,11 @@ public readonly struct Entity : IEquatable<Entity>, IDisposable
     public void Dispose()
     {
     }
+
+    #region Cast Operators and IEquatable<Entity>
     
+    public static explicit operator Identity(Entity self) => self.Id;
+
     public bool Equals(Entity other)
     {
         return Id.Equals(other.Id) && _world.Equals(other._world);
@@ -172,8 +176,6 @@ public readonly struct Entity : IEquatable<Entity>, IDisposable
         return HashCode.Combine(_world, Id);
     }
 
-    public static explicit operator Identity(Entity self) => self.Id;
-
     public static bool operator ==(Entity left, Entity right)
     {
         return left.Equals(right);
@@ -183,4 +185,11 @@ public readonly struct Entity : IEquatable<Entity>, IDisposable
     {
         return !(left == right);
     }
+
+    public override string ToString()
+    {
+        return Id.ToString();
+    }
+    
+    #endregion
 }

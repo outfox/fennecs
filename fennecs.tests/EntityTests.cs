@@ -26,6 +26,14 @@ public class EntityTests
         Assert.False(world.HasRelation<int>(entity, new Identity(9001)));
     }
 
+    [Fact]
+    public void To_String()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var builder = new Entity(world, entity.Id);
+        Assert.Equal(entity.ToString(), builder.ToString());
+    }
     /*
 
     [Fact(Skip = "Paradigm changed.")]
