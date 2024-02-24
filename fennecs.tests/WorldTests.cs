@@ -5,7 +5,7 @@ public class WorldTests
     [Fact]
     public World World_Creates()
     {
-        var world = new World();
+        using var world = new World();
         Assert.NotNull(world);
         return world;
     }
