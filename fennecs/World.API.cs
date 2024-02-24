@@ -203,7 +203,7 @@ public partial class World
     {
         _identityPool = new IdentityPool(capacity);
         
-        _meta = new EntityMeta[capacity];
+        _meta = new Meta[capacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
         _root = AddTable([TypeExpression.Create<Identity>(Match.Plain)]);

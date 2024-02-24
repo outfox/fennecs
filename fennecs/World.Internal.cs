@@ -11,13 +11,14 @@ public partial class World : IDisposable
 {
     public void Dispose()
     {
+        //TODO: Despawn all entities with object links?
     }
 
     #region Archetypes
 
     private readonly IdentityPool _identityPool;
 
-    private EntityMeta[] _meta;
+    private Meta[] _meta;
 
     private readonly List<Archetype> _archetypes = [];
     
@@ -70,7 +71,7 @@ public partial class World : IDisposable
 
             while (_meta.Length <= _identityPool.Living) Array.Resize(ref _meta, _meta.Length * 2);
 
-            _meta[identity.Index] = new EntityMeta(identity, _root, row);
+            _meta[identity.Index] = new Meta(identity, _root, row);
 
             var entityStorage = (Identity[]) _root.Storages.First();
             entityStorage[row] = identity;
@@ -158,7 +159,7 @@ public partial class World : IDisposable
     }
 
 
-    internal ref EntityMeta GetEntityMeta(Identity identity)
+    internal ref Meta GetEntityMeta(Identity identity)
     {
         return ref _meta[identity.Index];
     }

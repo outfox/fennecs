@@ -2,7 +2,11 @@
 
 namespace fennecs;
 
-internal struct EntityMeta(Identity identity, Archetype archetype, int row)
+/// <summary>
+/// Meta Table that holds the Archetype, Row, and Identity of an "Entity"
+/// (the semantic concept, not the <see cref="Entity"/> builder struct).
+/// </summary>
+internal struct Meta(Identity identity, Archetype archetype, int row)
 {
     /// <summary>
     /// Archetype the entity lives in.
@@ -21,8 +25,8 @@ internal struct EntityMeta(Identity identity, Archetype archetype, int row)
 
     internal void Clear()
     {
-        Identity = Match.Plain;
-        Archetype = null!;
+        Identity = default;
+        Archetype = default!;
         Row = 0;
     }
 }
