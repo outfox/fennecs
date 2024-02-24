@@ -16,14 +16,14 @@ public static class QueryEnumeration
 
             for (int i = 0; i < 234; i++)
             {
-                var intEntity = world.Spawn().Add<int>().Id();
+                var intEntity = world.Spawn().Add<int>();
                 intEntities.Add(intEntity);
 
-                var floatEntity = world.Spawn().Add<float>().Id();
+                var floatEntity = world.Spawn().Add<float>();
                 notIntEntities.Add(floatEntity);
                 floatEntities.Add(floatEntity);
 
-                var bothEntity = world.Spawn().Add<int>().Add<float>().Id();
+                var bothEntity = world.Spawn().Add<int>().Add<float>();
                 intEntities.Add(bothEntity);
                 floatEntities.Add(bothEntity);
                 bothEntities.Add(bothEntity);
@@ -41,9 +41,9 @@ public static class QueryEnumeration
         {
             using var world = new World();
 
-            world.Spawn().Add(1).Id();
-            world.Spawn().Add(2).Id();
-            world.Spawn().Add(3).Id();
+            world.Spawn().Add(1);
+            world.Spawn().Add(2);
+            world.Spawn().Add(3);
 
             var query = world.Query().Has<int>().Build();
 
@@ -51,7 +51,7 @@ public static class QueryEnumeration
             {
                 foreach (var _ in query)
                 {
-                    world.Spawn().Add(4).Id();
+                    world.Spawn().Add(4);
                 }
             });
 
@@ -71,13 +71,13 @@ public static class QueryEnumeration
 
             var random = new Random(9001);
             
-            world.Spawn().Add(1).Id();
-            world.Spawn().Add(2).Id();
-            world.Spawn().Add(3).Id();
+            world.Spawn().Add(1);
+            world.Spawn().Add(2);
+            world.Spawn().Add(3);
 
             var query = world.Query().Has<int>().Build();
 
-            foreach (var _ in query) world.Spawn().Add(random.NextSingle()).Id();
+            foreach (var _ in query) world.Spawn().Add(random.NextSingle());
             foreach (var _ in query) world.DespawnAllWith<float>();
         }
 

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -7,7 +8,7 @@ using fennecs.pools;
 
 namespace fennecs;
 
-internal sealed class Archetype
+internal sealed class Archetype : IEnumerable<Entity>
 {
     /// <summary>
     /// An Edge in the Graph that this Archetype is a member of.
@@ -18,26 +19,27 @@ internal sealed class Archetype
         internal Archetype? Remove;
     }
 
+    private readonly World _world;
+    
     private const int StartCapacity = 4;
     
     public readonly ImmutableSortedSet<TypeExpression> Types;
 
-    public Entity[] Identities => _identities;
+    public Identity[] Identities => _identities;
 
     internal Array[] Storages => _storages;
 
     public int Count { get; private set; }
     public bool IsEmpty => Count == 0;
 
-    internal int Version => Volatile.Read(ref _version);
     public int Capacity => _identities.Length;
 
     private readonly World _archetypes;
 
-    private Entity[] _identities;
+    private Identity[] _identities;
 
     /// <summary>
-    /// Actual component data storages. It' is a fixed size array because an Archetype doesn't change.
+    /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
     /// </summary>
     private readonly Array[] _storages;
 
@@ -54,23 +56,24 @@ internal sealed class Archetype
     private int _version;
 
 
-    public Archetype(World archetypes, ImmutableSortedSet<TypeExpression> types)
+    public Archetype(World archetypes, ImmutableSortedSet<TypeExpression> types, World world)
     {
         _archetypes = archetypes;
 
         Types = types;
+        _world = world;
 
-        _identities = new Entity[StartCapacity];
+        _identities = new Identity[StartCapacity];
 
         _storages = new Array[types.Count];
 
-        // Build the relation between storages and types, as well as type wildcards in buckets.
+        // Build the relation between storages and types, as well as type Wildcards in buckets.
         var finishedTypes = PooledList<TypeID>.Rent();
         var finishedBuckets = PooledList<Array[]>.Rent();
         var currentBucket = PooledList<Array>.Rent();
         TypeID currentTypeId = 0;
 
-        // Types are sorted by TypeID first, so we can iterate them in order to add them to wildcard buckets.
+        // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
         for (var index = 0; index < types.Count; index++)
         {
             var type = types[index];
@@ -160,12 +163,12 @@ internal sealed class Archetype
     }
 
 
-    public int Add(Entity entity)
+    public int Add(Identity identity)
     {
         Interlocked.Increment(ref _version);
 
         EnsureCapacity(Count + 1);
-        _identities[Count] = entity;
+        _identities[Count] = identity;
         return Count++;
     }
 
@@ -208,20 +211,12 @@ internal sealed class Archetype
     }
 
 
-    public T[] GetStorage<T>(Entity target)
+    public T[] GetStorage<T>(Identity target)
     {
         var type = TypeExpression.Create<T>(target);
         return (T[]) GetStorage(type);
     }
     
-
-    public Memory<T> Memory<T>(Entity target)
-    {
-        var type = TypeExpression.Create<T>(target);
-        var storage = (T[]) GetStorage(type);
-        return storage.AsMemory(0, Count);
-    }
-
     
     internal Array GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
 
@@ -269,9 +264,9 @@ internal sealed class Archetype
     }
     
 
-    internal static int MoveEntry(Entity entity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
+    internal static int MoveEntry(Identity identity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
     {
-        var newRow = newArchetype.Add(entity);
+        var newRow = newArchetype.Add(identity);
 
         foreach (var (type, oldIndex) in oldArchetype._storageIndices)
         {
@@ -287,12 +282,29 @@ internal sealed class Archetype
 
         return newRow;
     }
-    
+
+
 
     public override string ToString()
     {
         var sb = new StringBuilder($"Archetype ");
         sb.AppendJoin("\n", Types);
         return sb.ToString();
+    }
+    
+
+    public IEnumerator<Entity> GetEnumerator()
+    {
+        var snapshot = _version;
+        for (var i = 0; i < Count; i++)
+        {
+            if (snapshot != _version) throw new InvalidOperationException("Collection modified while enumerating.");
+            yield return new Entity(_world, _identities[i]);
+        }
+    }
+    
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

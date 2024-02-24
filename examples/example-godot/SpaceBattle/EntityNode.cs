@@ -4,6 +4,6 @@ namespace examples.godot.SpaceBattle;
 
 public interface IEntityNode
 {
-    public Entity entity { get; set; }
+    public Identity identity { get; set; }
 
 }

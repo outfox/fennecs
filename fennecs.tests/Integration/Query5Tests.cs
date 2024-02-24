@@ -15,10 +15,10 @@ public class Query5Tests
         var query = world.Query<TypeA, double, int, string, char>().Build();
 
         //Create an empty table by spawning and despawning a single entity
-        //that matches our test query (but is a larger archetype)
+        //that matches our test Query (but is a larger Archetype)
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add<TypeA>().Add<char>().Add<double>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add<TypeA>().Add<char>().Add<double>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -31,8 +31,7 @@ public class Query5Tests
                 .Add(99.999)
                 .Add(index)
                 .Add("one")
-                .Add('Q')
-                .Id();
+                .Add('Q');
         }
 
         query.ForEach(static (ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>

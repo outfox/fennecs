@@ -2,13 +2,13 @@
 
 public class ReferenceStore(int capacity = 4096)
 {
-    private readonly Dictionary<Entity, StoredReference<object>> _storage = new(capacity);
+    private readonly Dictionary<Identity, StoredReference<object>> _storage = new(capacity);
     
-    public Entity Request<T>(T item) where T : class
+    public Identity Request<T>(T item) where T : class
     {
         ArgumentNullException.ThrowIfNull(nameof(item));
         
-        var identity = Entity.Of(item);
+        var identity = Identity.Of(item);
 
         lock (_storage)
         {
@@ -37,11 +37,11 @@ public class ReferenceStore(int capacity = 4096)
         }
     }
     
-    public T Get<T>(Entity entity) where T : class
+    public T Get<T>(Identity identity) where T : class
     {
         lock (_storage)
         {
-            if (!_storage.TryGetValue(entity, out var reference))
+            if (!_storage.TryGetValue(identity, out var reference))
             {
                 throw new KeyNotFoundException($"Identity is not tracking an instance of {typeof(T)}.");
             }
@@ -51,25 +51,25 @@ public class ReferenceStore(int capacity = 4096)
     }
     
     
-    public void Release(Entity entity)
+    public void Release(Identity identity)
     {
         lock (_storage)
         {
-            if (_storage.TryGetValue(entity, out var reference))
+            if (_storage.TryGetValue(identity, out var reference))
             {
                 reference.Count--;
                 if (reference.Count == 0)
                 {
-                    _storage.Remove(entity);
+                    _storage.Remove(identity);
                 }
                 else
                 {
-                    _storage[entity] = reference;
+                    _storage[identity] = reference;
                 }
             }
             else
             {
-                throw new KeyNotFoundException($"Identity {entity} is not tracked.");
+                throw new KeyNotFoundException($"Identity {identity} is not tracked.");
             }
         }
     }

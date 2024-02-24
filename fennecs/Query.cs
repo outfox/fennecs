@@ -4,6 +4,18 @@ using System.Collections;
 
 namespace fennecs;
 
+/// <summary>
+/// <para>
+/// <b>Query Base Class.</b>
+/// </para>
+/// <para>
+/// It has no output Stream Types, and thus cannot be iterated in ways other than enumerating its Entities.
+/// </para>
+/// <para>
+/// See <see cref="Query{C0}"/> through <see cref="Query{C0,C1,C2,C3,C4}"/> for Queries with configurable
+/// output Stream Types for fast iteration.
+/// </para>
+/// </summary>
 public class Query : IEnumerable<Entity>, IDisposable
 {
     /// <summary>
@@ -29,63 +41,50 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
     /// <summary>
-    /// Gets a reference to the component of type <typeparamref name="C"/> for the entity.
+    /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
-    /// <param name="entity"></param>
+    /// <param name="identity"></param>
     /// <param name="target"></param>
-    /// <typeparam name="C">any component type</typeparam>
-    /// <returns>ref C, the component.</returns>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the query's tables for Entity entity.</exception>
-    public ref C Ref<C>(Entity entity, Entity target = default)
+    /// <typeparam name="C">any Component type</typeparam>
+    /// <returns>ref C, the Component.</returns>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for Entity entity.</exception>
+    public ref C Ref<C>(Identity identity, Identity target = default)
     {
         AssertNotDisposed();
         //TODO: Returning this ref should lock the world for the ref's scope?
         //TODO: This is just a facade for World.GetComponent, should it be removed?
-        return ref World.GetComponent<C>(entity, target);
+        return ref World.GetComponent<C>(identity, target);
     }
 
 
     #region IEnumerable<Entity>
 
     /// <summary>
-    /// Enumerator over all the entities in the query.
-    /// Do not make modifications to the world affecting the query while enumerating.
+    /// Enumerator over all the Entities in the Query.
+    /// Do not make modifications to the world affecting the Query while enumerating.
     /// </summary>
     /// <returns>
-    ///  An enumerator over all the entities in the query.
+    ///  An enumerator over all the Entities in the Query.
     /// </returns>
     public IEnumerator<Entity> GetEnumerator()
     {
         AssertNotDisposed();
-
-        foreach (var table in Archetypes)
-        {
-            var snapshot = table.Version;
-            for (var i = 0; i < table.Count; i++)
-            {
-                if (snapshot != table.Version)
-                {
-                    throw new InvalidOperationException("Query was modified while enumerating.");
-                }
-
-                yield return table.Identities[i];
-            }
-        }
+        foreach (var table in Archetypes) 
+            foreach (var entity in table) yield return entity;
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         AssertNotDisposed();
-        
         return GetEnumerator();
     }
     #endregion
     
-    public bool Contains(Entity entity)
+    public bool Contains(Identity identity)
     {
         AssertNotDisposed();
         
-        var meta = World.GetEntityMeta(entity);
+        var meta = World.GetEntityMeta(identity);
         var table = meta.Archetype;
         return Archetypes.Contains(table);
     }

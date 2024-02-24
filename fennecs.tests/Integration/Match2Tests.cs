@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests.Integration;
 
-public class Wildcard2Tests
+public class Match2Tests
 {
     private readonly World _world;
     
@@ -10,24 +10,23 @@ public class Wildcard2Tests
     const string NONE1 = "can't touch this";
     const string RELATION1 = "IOU";
     
-    public Wildcard2Tests()
+    public Match2Tests()
     {
         _world = new World();
         
-        var bob = _world.Spawn().Id();
+        var bob = _world.Spawn();
         _world.Spawn()
             .Add<float>()
             .AddLink(OBJECT1)
             .AddLink(OBJECT2)
             .Add(NONE1)
-            .AddRelation(bob, RELATION1)
-            .Id();
+            .AddRelation(bob, RELATION1);
     }
     
     [Fact]
-    public void Wildcard_Any_Enumerates_all_Components_Once()
+    public void Any_Enumerates_all_Components_Once()
     {
-        using var query = _world.Query<string, float>(Entity.Any, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Any, Match.Plain).Build();
         
         HashSet<string> seen = [];
         query.ForEach((ref string str, ref float _) =>
@@ -44,12 +43,12 @@ public class Wildcard2Tests
     
 
     [Fact]
-    public void Wildcard_None_Enumerates_Only_Plain_Components()
+    public void Plain_Enumerates_Only_Plain_Components()
     {
-        using var query = _world.Query<string, float>(Entity.None, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Plain, Match.Plain).Build();
 
         HashSet<string> seen = [];
-        query.ForEach((ref string str, ref float _) =>
+        query.Job((ref string str, ref float _) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -60,9 +59,9 @@ public class Wildcard2Tests
 
 
     [Fact]
-    public void Wildcard_Target_Enumerates_all_Relations()
+    public void Target_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string, float>(Entity.Target, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Relation, Match.Plain).Build();
 
         HashSet<string> seen = [];
 
@@ -80,9 +79,9 @@ public class Wildcard2Tests
 
 
     [Fact]
-    public void Wildcard_Relation_Enumerates_all_Relations()
+    public void Relation_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string, float>(Entity.Relation, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Identity, Match.Plain).Build();
         
         HashSet<string> seen = [];
         
@@ -98,13 +97,13 @@ public class Wildcard2Tests
 
 
     [Fact]
-    public void Wildcard_Object_Enumerates_all_Object_Links()
+    public void Object_Enumerates_all_Object_Links()
     {
-        using var query = _world.Query<string, float>(Entity.Object, Entity.None).Build();
+        using var query = _world.Query<string, float>(Match.Object, Match.Plain).Build();
 
         HashSet<string> seen = [];
 
-        query.ForEach((ref string str, ref float _) =>
+        query.Job((ref string str, ref float _) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);

@@ -31,20 +31,20 @@ public class SimpleEntityBenchmarks
         {
             _vectorsRaw[i] = new Vector3(random.NextSingle(), random.NextSingle(), random.NextSingle());
             
-            //Multiple unused components added to create fennecs archetype fragmentation, which is used as basis for many parallel processing partitions.
+            //Multiple unused Components added to create fennecs Archetype fragmentation, which is used as basis for many parallel processing partitions.
             switch (i % 4)
             {
                 case 0:
-                    _world.Spawn().Add(_vectorsRaw[i]).Id();
+                    _world.Spawn().Add(_vectorsRaw[i]);
                     break;
                 case 1:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add<int>().Id();
+                    _world.Spawn().Add(_vectorsRaw[i]).Add<int>();
                     break;
                 case 2:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add<double>().Id();
+                    _world.Spawn().Add(_vectorsRaw[i]).Add<double>();
                     break;
                 case 3:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add<float>().Id();
+                    _world.Spawn().Add(_vectorsRaw[i]).Add<float>();
                     break;
             }
         }

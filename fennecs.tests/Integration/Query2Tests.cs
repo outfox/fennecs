@@ -13,10 +13,10 @@ public class Query2Tests
         var query = world.Query<int, string>().Build();
 
         //Create an empty table by spawning and despawning a single entity
-        //that matches our test query (but is a larger archetype)
+        //that matches our test Query (but is a larger Archetype)
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -26,8 +26,7 @@ public class Query2Tests
 
             world.Spawn()
                 .Add(index)
-                .Add("one")
-                .Id();
+                .Add("one");
         }
 
         query.ForEach((ref int _, ref string str) =>
@@ -107,11 +106,11 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
-        List<Entity> entities = new(count);
+        List<Identity> entities = new(count);
 
         var query = world.Query<int, string>().Build();
         Assert.Equal(0, query.Count);
@@ -124,7 +123,6 @@ public class Query2Tests
                 world.Spawn()
                     .Add(index)
                     .Add("I'll stay")
-                    .Id()
             );
         }
 
@@ -153,11 +151,11 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
-        List<Entity> entities = new(count);
+        List<Identity> entities = new(count);
 
         var query = world.Query<int, string>().Build();
 
@@ -179,7 +177,6 @@ public class Query2Tests
             entities.Add(
                 world.Spawn()
                     .Add(index)
-                    .Id()
             );
         }
 
@@ -214,11 +211,11 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
-        List<Entity> entities = new(count);
+        List<Identity> entities = new(count);
 
         var query = world.Query<int, string>().Build();
 
@@ -233,7 +230,6 @@ public class Query2Tests
                 world.Spawn()
                     .Add(index)
                     .Add("I'll stay")
-                    .Id()
             );
         }
 
@@ -272,11 +268,11 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
-        List<Entity> entities = new(count);
+        List<Identity> entities = new(count);
 
         var query = world.Query<int, string>().Build();
 
@@ -299,7 +295,6 @@ public class Query2Tests
                 world.Spawn()
                     .Add(index)
                     .Add("I'll stay")
-                    .Id()
             );
         }
 
@@ -342,7 +337,7 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -350,8 +345,7 @@ public class Query2Tests
         {
             world.Spawn()
                 .Add(index)
-                .Add("I'll stay")
-                .Id();
+                .Add("I'll stay");
         }
 
         var query = world.Query<int, string>().Build();
@@ -383,7 +377,7 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -391,8 +385,7 @@ public class Query2Tests
         {
             world.Spawn()
                 .Add(index)
-                .Add("I'll stay")
-                .Id();
+                .Add("I'll stay");
         }
 
         var query = world.Query<int, string>().Build();
@@ -424,7 +417,7 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -432,8 +425,7 @@ public class Query2Tests
         {
             world.Spawn()
                 .Add(index)
-                .Add("I'll stay")
-                .Id();
+                .Add("I'll stay");
         }
 
         var query = world.Query<int, string>().Build();
@@ -465,7 +457,7 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -473,8 +465,7 @@ public class Query2Tests
         {
             world.Spawn()
                 .Add(index)
-                .Add("I'll stay")
-                .Id();
+                .Add("I'll stay");
         }
 
         var query = world.Query<int, string>().Build();
@@ -506,7 +497,7 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed").Id();
+            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -514,8 +505,7 @@ public class Query2Tests
         {
             world.Spawn()
                 .Add(c)
-                .Add(0.1f)
-                .Id();
+                .Add(0.1f);
         }
 
         var query = world.Query<int, float>().Build();

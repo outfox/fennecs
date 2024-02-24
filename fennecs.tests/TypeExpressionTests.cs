@@ -38,10 +38,10 @@ public class TypeExpressionTests
         {
             var id = random.Next();
             var deco = (TypeID) (random.Next() % TypeID.MaxValue);
-            var t1 = new TypeExpression(new Entity(id, deco), (TypeID) i);
-            var t2 = new TypeExpression(new Entity(id, deco), (TypeID) (i + 1));
+            var t1 = new TypeExpression(new Identity(id, deco), (TypeID) i);
+            var t2 = new TypeExpression(new Identity(id, deco), (TypeID) (i + 1));
 
-            //  If this test fails, Archetypes will not be able to build immutable buckets for wildcards.
+            //  If this test fails, Archetypes will not be able to build immutable buckets for Wildcards.
             Assert.True(t1.CompareTo(t2) < 0);
             Assert.True(t2.CompareTo(t1) > 0);
         }
@@ -88,8 +88,8 @@ public class TypeExpressionTests
     public void Can_Create_For_Type()
     {
         var tx1 = TypeExpression.Create(typeof(TypeA));
-        var tx2 = TypeExpression.Create(typeof(TypeA), Entity.Any);
-        var tx3 = TypeExpression.Create(typeof(TypeA), new Entity(123));
+        var tx2 = TypeExpression.Create(typeof(TypeA), Match.Any);
+        var tx3 = TypeExpression.Create(typeof(TypeA), new Identity(123));
 
         Assert.False(tx1.isRelation);
         Assert.True(tx2.isRelation);
@@ -99,13 +99,13 @@ public class TypeExpressionTests
     [Fact]
     public void None_Matches_only_None()
     {
-        var none = TypeExpression.Create<TypeA>(Entity.None);
-        var any = TypeExpression.Create<TypeA>(Entity.Any);
-        var obj = TypeExpression.Create<TypeA>(Entity.Object);
-        var rel = TypeExpression.Create<TypeA>(Entity.Relation);
+        var none = TypeExpression.Create<TypeA>(Match.Plain);
+        var any = TypeExpression.Create<TypeA>(Match.Any);
+        var obj = TypeExpression.Create<TypeA>(Match.Object);
+        var rel = TypeExpression.Create<TypeA>(Match.Identity);
 
-        var ent = TypeExpression.Create<TypeA>(new Entity(123));
-        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+        var ent = TypeExpression.Create<TypeA>(new Identity(123));
+        var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
 
         Assert.True(none.Matches(none));
         Assert.False(none.Matches(any));
@@ -118,11 +118,11 @@ public class TypeExpressionTests
     [Fact]
     public void Any_Matches_only_All()
     {
-        var any = TypeExpression.Create<TypeA>(Entity.Any);
+        var any = TypeExpression.Create<TypeA>(Match.Any);
         
         var typ = TypeExpression.Create<TypeA>();
-        var ent = TypeExpression.Create<TypeA>(new Entity(123));
-        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+        var ent = TypeExpression.Create<TypeA>(new Identity(123));
+        var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
 
         Assert.True(any.Matches(typ));
         Assert.True(any.Matches(ent));
@@ -132,11 +132,11 @@ public class TypeExpressionTests
     [Fact]
     public void Object_Matches_only_Objects()
     {
-        var obj = TypeExpression.Create<TypeA>(Entity.Object);
+        var obj = TypeExpression.Create<TypeA>(Match.Object);
         
         var typ = TypeExpression.Create<TypeA>();
-        var ent = TypeExpression.Create<TypeA>(new Entity(123));
-        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+        var ent = TypeExpression.Create<TypeA>(new Identity(123));
+        var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
 
         Assert.False(obj.Matches(typ));
         Assert.False(obj.Matches(ent));
@@ -146,11 +146,11 @@ public class TypeExpressionTests
     [Fact]
     public void Relation_Matches_only_Relations()
     {
-        var rel = TypeExpression.Create<TypeA>(Entity.Relation);
+        var rel = TypeExpression.Create<TypeA>(Match.Identity);
         
         var typ = TypeExpression.Create<TypeA>();
-        var ent = TypeExpression.Create<TypeA>(new Entity(123));
-        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+        var ent = TypeExpression.Create<TypeA>(new Identity(123));
+        var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
 
         Assert.False(rel.Matches(typ));
         Assert.True(rel.Matches(ent));
@@ -160,11 +160,11 @@ public class TypeExpressionTests
     [Fact]
     public void Target_Matches_all_Entity_Target_Relations()
     {
-        var rel = TypeExpression.Create<TypeA>(Entity.Target);
+        var rel = TypeExpression.Create<TypeA>(Match.Relation);
         
         var typ = TypeExpression.Create<TypeA>();
-        var ent = TypeExpression.Create<TypeA>(new Entity(123));
-        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+        var ent = TypeExpression.Create<TypeA>(new Identity(123));
+        var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
 
         Assert.False(rel.Matches(typ));
         Assert.True(rel.Matches(ent));
@@ -174,10 +174,10 @@ public class TypeExpressionTests
     [Fact]
     public void Entity_only_matches_Entity()
     {
-        var ent = TypeExpression.Create<TypeA>(new Entity(123));
+        var ent = TypeExpression.Create<TypeA>(new Identity(123));
         
         var typ = TypeExpression.Create<TypeA>();
-        var lnk = TypeExpression.Create<TypeA>(Entity.Of("hello world"));
+        var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
 
         Assert.False(ent.Matches(typ));
         Assert.True(ent.Matches(ent));

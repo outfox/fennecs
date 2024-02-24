@@ -7,8 +7,8 @@ public class DocumentationExampleTests
     public void QuickStart_Example_Works()
     {
         using var world = new World();
-        var entity1 = world.Spawn().Add<Position>().Id();
-        var entity2 = world.Spawn().Add(new Position(1, 2, 3)).Add<int>().Id();
+        var entity1 = world.Spawn().Add<Position>();
+        var entity2 = world.Spawn().Add(new Position(1, 2, 3)).Add<int>();
 
         var query = world.Query<Position>().Build();
 
@@ -43,14 +43,13 @@ public class DocumentationExampleTests
                 .Add<int>()
                 .Add<float>()
                 .Add("string string")
-                .Add<TypeA>()
-                .Id();
+                .Add<TypeA>();
         }
 
         var query1 = world.Query<Position>().Build();
         var query2 = world.Query<Position, int>().Build();
         var query3 = world.Query<float, Position, int>().Build();
-        var query4 = world.Query<Entity, string, Position, int>().Build();
+        var query4 = world.Query<Identity, string, Position, int>().Build();
         var query5 = world.Query<Position, int, float, string, TypeA>().Build();
 
         query1.Job((ref Position _) =>
@@ -68,7 +67,7 @@ public class DocumentationExampleTests
         }, chunkSize: chunkSize);
         Assert.Equal(count, query3.Count);
 
-        query4.Job((ref Entity _, ref string _, ref Position _, ref int _) =>
+        query4.Job((ref Identity _, ref string _, ref Position _, ref int _) =>
         {
         }, chunkSize: chunkSize);
         Assert.Equal(count, query4.Count);

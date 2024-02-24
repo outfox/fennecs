@@ -8,7 +8,7 @@ namespace examples.godot.SpaceBattle;
 public partial class Fighter : Node3D, IEntityNode
 {
 	private Color _color = new(1, 1, 1);
-	public Entity entity { get; set; }
+	public Identity identity { get; set; }
 	
 	public override void _Ready()
 	{
@@ -16,7 +16,7 @@ public partial class Fighter : Node3D, IEntityNode
 		GetNode<MeshInstance3D>("MeshInstance3D").SetInstanceShaderParameter("Albedo", _color);
 
 		// TODO: find out if can be set on Instantiate.
-		Console.WriteLine($"Fighter._Ready(): {entity}");
+		Console.WriteLine($"Fighter._Ready(): {identity}");
 	}
 
 }
