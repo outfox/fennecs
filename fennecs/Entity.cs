@@ -1,6 +1,4 @@
-﻿using fennecs.pools;
-
-namespace fennecs;
+﻿namespace fennecs;
 
 /// <summary>
 /// <para>
@@ -15,7 +13,6 @@ namespace fennecs;
 public readonly struct Entity : IDisposable
 {
     private readonly World _world;
-    private readonly Identity _identity;
 
     /// <summary>
     /// Provides a fluent interface for constructing and modifying Entities within a world.
@@ -24,7 +21,7 @@ public readonly struct Entity : IDisposable
     internal Entity(World world, Identity identity)
     {
         _world = world;
-        _identity = identity;
+        Id = identity;
     }
     
     //Implicit cast to Identity
@@ -67,7 +64,7 @@ public readonly struct Entity : IDisposable
     public Entity AddRelation<T>(Entity targetEntity, T data)
     {
         //if (!targetEntity.IsEntity) throw new InvalidOperationException("May only relate to a virtual entity.");
-        _world.AddRelation(_identity, targetEntity.Id, data);
+        _world.AddRelation(Id, targetEntity.Id, data);
         return this;
     }
 
@@ -88,7 +85,7 @@ public readonly struct Entity : IDisposable
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity AddLink<T>(T target) where T : class
     {
-        _world.AddLink(_identity, target);
+        _world.AddLink(Id, target);
         return this;
     }
 
@@ -100,7 +97,7 @@ public readonly struct Entity : IDisposable
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Add<T>(T data)
     {
-        _world.AddComponent(_identity, data);
+        _world.AddComponent(Id, data);
         return this;
     }
 
@@ -119,7 +116,7 @@ public readonly struct Entity : IDisposable
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Remove<T>() 
     {
-        _world.RemoveComponent<T>(_identity);
+        _world.RemoveComponent<T>(Id);
         return this;
     }
 
@@ -129,9 +126,9 @@ public readonly struct Entity : IDisposable
     /// <typeparam name="T">The type of the relation to be removed.</typeparam>
     /// <param name="targetEntity">The entity from which the relation will be removed.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity RemoveRelation<T>(Identity targetEntity)
+    public Entity RemoveRelation<T>(Entity targetEntity)
     {
-        _world.RemoveRelation<T>(_identity, targetEntity);
+        _world.RemoveRelation<T>(Id, targetEntity);
         return this;
     }
 
@@ -143,7 +140,7 @@ public readonly struct Entity : IDisposable
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity RemoveLink<T>(T targetObject) where T : class
     {
-        _world.RemoveLink(_identity, targetObject);
+        _world.RemoveLink(Id, targetObject);
         return this;
     }
 
@@ -151,7 +148,7 @@ public readonly struct Entity : IDisposable
     /// Completes the building process, returns the entity, and disposes of the builder.
     /// </summary>
     /// <value>The built or modified entity.</value>
-    public Identity Id => _identity;
+    public Identity Id { get; }
 
     /// <summary>
     /// Disposes of the Entity, releasing any pooled resources.
