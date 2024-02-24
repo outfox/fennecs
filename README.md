@@ -157,20 +157,20 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 <summary>📈 Click to Expand Benchmarks: </summary>
 <pre>executing a System.Numerics.Vector3 cross product and writing the result back with various calling methods</pre>
 
-| Method            | entityCount   | chunkSize | Mean       | StdDev    | Work Items | Contentions | Allocated |
-|------------------ |-------------- |---------- |-----------:|----------:|-----------:|------------:|----------:|
-| CrossProduct_JobU | 1_000_000     | 32768     |   349.9 us |   1.53 us |    32.0000 |      0.0029 |         - |
-| CrossProduct_JobU | 1_000_000     | 16384     |   350.5 us |   5.82 us |    64.0000 |      0.0005 |         - |
-| CrossProduct_JobU | 1_000_000     | 4096      |   356.1 us |   1.78 us |   248.0000 |      0.0083 |         - |
-| CrossProduct_Job  | 1_000_000     | 4096      |   371.7 us |  15.36 us |   248.0000 |      0.0103 |         - |
-| CrossProduct_Job  | 1_000_000     | 32768     |   381.6 us |   4.22 us |    32.0000 |           - |         - |
-| CrossProduct_Job  | 1_000_000     | 16384     |   405.2 us |   4.56 us |    64.0000 |      0.0039 |         - |
-| CrossProduct_RunU | 1_000_000     | 32768     | 1,268.4 us |  44.76 us |          - |           - |       1 B |
-| CrossProduct_RunU | 1_000_000     | 4096      | 1,366.4 us |  16.56 us |          - |           - |       1 B |
-| CrossProduct_RunU | 1_000_000     | 16384     | 1,432.9 us |  45.37 us |          - |           - |       1 B |
-| CrossProduct_Run  | 1_000_000     | 32768     | 1,827.0 us |  16.76 us |          - |           - |       1 B |
-| CrossProduct_Run  | 1_000_000     | 16384     | 1,977.1 us |  14.29 us |          - |           - |       3 B |
-| CrossProduct_Run  | 1_000_000     | 4096      | 2,062.4 us | 144.47 us |          - |           - |       3 B |
+| Method     | entities  | chunk | Mean       | StdDev    | Jobs | Contention | Alloc |
+|----------- |-----------|------:|-----------:|----------:|-----:|-----------:|------:|
+| Cross_JobU | 1_000_000 | 32768 |   349.9 us |   1.53 us |    32|     0.0029 |     - |
+| Cross_JobU | 1_000_000 | 16384 |   350.5 us |   5.82 us |    64|     0.0005 |     - |
+| Cross_JobU | 1_000_000 | 4096  |   356.1 us |   1.78 us |   248|     0.0083 |     - |
+| Cross_Job  | 1_000_000 | 4096  |   371.7 us |  15.36 us |   248|     0.0103 |     - |
+| Cross_Job  | 1_000_000 | 32768 |   381.6 us |   4.22 us |    32|          - |     - |
+| Cross_Job  | 1_000_000 | 16384 |   405.2 us |   4.56 us |    64|     0.0039 |     - |
+| Cross_RunU | 1_000_000 | 32768 | 1,268.4 us |  44.76 us |    - |          - |   1 B |
+| Cross_RunU | 1_000_000 | 4096  | 1,366.4 us |  16.56 us |    - |          - |   1 B |
+| Cross_RunU | 1_000_000 | 16384 | 1,432.9 us |  45.37 us |    - |          - |   1 B |
+| Cross_Run  | 1_000_000 | 32768 | 1,827.0 us |  16.76 us |    - |          - |   1 B |
+| Cross_Run  | 1_000_000 | 16384 | 1,977.1 us |  14.29 us |    - |          - |   3 B |
+| Cross_Run  | 1_000_000 | 4096  | 2,062.4 us | 144.47 us |    - |          - |   3 B |
 
 </details>
 
