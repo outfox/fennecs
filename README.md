@@ -149,15 +149,13 @@ We worked hard to minimize allocations, though convenience, especially paralleli
 
 _**fenn**ecs_ provides a variety of ways to iterate over and modify components, to offer a good balance of control and elegance without compromising too much. 
 
-Here are some raw results from our benchmark suite, from the Vector3 operations parts, better ones soon.
+Here are some raw results from our WIP benchmark suite, from the Vector3 operations parts, better ones soon.
 (don't @ us)
 
-<details>
-
-<summary>📈 Click to Expand Benchmarks: </summary>
 <pre>Example: Allocation-free executing a System.Numerics.Vector3 cross product and writing the result back.
-With various processing methods; parallel jobs with different batch/chunk sizes or single threaded runs.
-In **fenn**ecs, a million Vector3 components can be processed in under 0.5 milliseconds (500 microseconds)</pre>
+With various processing methods; parallel jobs with different batch/chunk sizes or single threaded runs.</pre>
+
+In **fenn**ecs, a million Vector3 components can be processed in under 0.5 milliseconds (500 microseconds)
 
 | Method     | entities  | chunk | Mean       | StdDev    | Jobs | Contention | Alloc |
 |----------- |-----------|------:|-----------:|----------:|-----:|-----------:|------:|
@@ -169,8 +167,6 @@ In **fenn**ecs, a million Vector3 components can be processed in under 0.5 milli
 | Cross_Job  | 1_000_000 | 16384 |   405.2 us |   4.56 us |    64|     0.0039 |     - |
 | Cross_RunU | 1_000_000 |     - | 1,268.4 us |  44.76 us |    - |          - |   1 B |
 | Cross_Run  | 1_000_000 |     - | 1,827.0 us |  16.76 us |    - |          - |   1 B |
-
-</details>
 
 ------------------------
 
