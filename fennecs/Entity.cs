@@ -5,7 +5,7 @@
 /// <b>Entity</b>
 /// </para>
 /// <para>
-/// Builder Pattern for Identities.
+/// Builder Pattern to operate on Identities.
 /// Provides a fluent interface for constructing and modifying Entities within a world.
 /// The Entity's Identity and World are managed internally.
 /// </para>

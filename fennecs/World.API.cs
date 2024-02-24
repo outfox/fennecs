@@ -13,18 +13,31 @@ public partial class World
     public Entity Spawn() => new(this, NewEntity());
 
     /// <summary>
-    /// Schedule operations on the given identity, via fluid API.
+    /// Interact with an Identity as an Entity.
+    /// Perform operations on the given identity in this world, via fluid API.
     /// </summary>
     /// <example>
     /// <code>world.On(identity).Add(123).Add("string").Remove&lt;int&gt;();</code>
     /// </example>
-    /// <remarks>
-    /// The operations will be executed when this object is disposed, or the EntityBuilder's Id() method is called.
-    /// </remarks>
-    /// <param name="identity"></param>
-    /// <returns>an EntityBuilder whose methods return itself, to provide a fluid syntax. </returns>
-    public Entity On(Identity identity) => new(this, identity);
+    /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
+    public Entity On(Identity identity)
+    {
+        AssertAlive(identity);
+        return new Entity(this, identity);
+    }
 
+
+    /// <summary>
+    /// Alias for <see cref="On(Identity)"/>, returning an Entity builder struct to operate on. Included to
+    /// provide a more intuitive verb to "get" an Entity to assign a variable.
+    /// </summary>
+    /// <example>
+    /// <code>var bob = world.GetEntity(bobsIdentity);</code>
+    /// </example>
+    /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
+    public Entity GetEntity(Identity identity) => On(identity);
+    
+    
     /// <summary>
     /// Checks if the entity is alive (was not despawned).
     /// </summary>
