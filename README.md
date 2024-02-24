@@ -165,12 +165,8 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 | Cross_Job  | 1_000_000 | 4096  |   371.7 us |  15.36 us |   248|     0.0103 |     - |
 | Cross_Job  | 1_000_000 | 32768 |   381.6 us |   4.22 us |    32|          - |     - |
 | Cross_Job  | 1_000_000 | 16384 |   405.2 us |   4.56 us |    64|     0.0039 |     - |
-| Cross_RunU | 1_000_000 | 32768 | 1,268.4 us |  44.76 us |    - |          - |   1 B |
-| Cross_RunU | 1_000_000 | 4096  | 1,366.4 us |  16.56 us |    - |          - |   1 B |
-| Cross_RunU | 1_000_000 | 16384 | 1,432.9 us |  45.37 us |    - |          - |   1 B |
-| Cross_Run  | 1_000_000 | 32768 | 1,827.0 us |  16.76 us |    - |          - |   1 B |
-| Cross_Run  | 1_000_000 | 16384 | 1,977.1 us |  14.29 us |    - |          - |   3 B |
-| Cross_Run  | 1_000_000 | 4096  | 2,062.4 us | 144.47 us |    - |          - |   3 B |
+| Cross_RunU | 1_000_000 |     - | 1,268.4 us |  44.76 us |    - |          - |   1 B |
+| Cross_Run  | 1_000_000 |     - | 1,827.0 us |  16.76 us |    - |          - |   1 B |
 
 </details>
 
