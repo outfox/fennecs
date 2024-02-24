@@ -153,10 +153,7 @@ _**fenn**ecs_ provides a variety of ways to iterate over and modify components, 
 Here are some raw results from our WIP benchmark suite, from the Vector3 operations parts, better ones soon.
 (don't @ us)
 
-<pre>Example: Allocation-free enumeration of a million entities with a System.Numerics.Vector3 component, 
-calculating a cross product against a uniform value, and writing the result back to memory. 
-
-Processing methods included parallel jobs with different batch/chunk sizes and single threaded runs.</pre>
+> Example: Allocation-free enumeration of a million entities with a System.Numerics.Vector3 component, calculating a cross product against a uniform value, and writing the result back to memory. Processing methods included parallel jobs with different batch/chunk sizes and single threaded runs.
 
 
 | Method     | entities  | chunk | Mean       | StdDev    | Jobs | Contention | Alloc |
