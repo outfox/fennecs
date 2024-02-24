@@ -10,12 +10,13 @@
 /// The Entity's Identity and World are managed internally.
 /// </para>
 /// </summary>
+/// <remarks>
+/// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
+/// </remarks>
 public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IComparable, IDisposable
 {
     #region Internal State
     
-    private readonly World _world;
-
     /// <summary>
     /// Provides a fluent interface for constructing and modifying Entities within a world.
     /// The Entity's Identity is managed internally.
@@ -25,6 +26,16 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
         _world = world;
         Id = identity;
     }
+    
+    /// <summary>
+    /// The World in which the Entity exists.
+    /// </summary>
+    private readonly World _world;
+    
+    /// <summary>
+    /// The Identity of the Entity.
+    /// </summary>
+    internal Identity Id { get; }
 
     #endregion
 
@@ -143,12 +154,6 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
         _world.RemoveLink(Id, targetObject);
         return this;
     }
-
-    /// <summary>
-    /// Completes the building process, returns the entity, and disposes of the builder.
-    /// </summary>
-    /// <value>The built or modified entity.</value>
-    public Identity Id { get; }
 
     /// <summary>
     /// Disposes of the Entity, releasing any pooled resources.
