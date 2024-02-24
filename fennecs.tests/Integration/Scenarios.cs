@@ -13,7 +13,7 @@ public class Scenarios
         using var world = new World();
         
         var random = new Random(9001);
-        var entities = new List<Identity>();
+        var entities = new List<Entity>();
         
         var floats = 0;
         var doubles = 0;

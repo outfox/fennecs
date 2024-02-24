@@ -88,6 +88,46 @@ public partial class World : IDisposable
                && typeExpression.Matches(meta.Archetype.Types);
     }
 
+    private void Despawn(Identity identity)
+    {
+        lock (_spawnLock)
+        {
+            AssertAlive(identity);
+
+            if (_mode == Mode.Deferred)
+            {
+                _deferredOperations.Enqueue(new DeferredOperation {Code = OpCode.Despawn, Identity = identity});
+                return;
+            }
+
+            ref var meta = ref _meta[identity.Index];
+
+            var table = meta.Archetype;
+            table.Remove(meta.Row);
+            meta.Clear();
+
+            _identityPool.Despawn(identity);
+
+            // Find identity-identity relation reverse lookup (if applicable)
+            if (!_typesByRelationTarget.TryGetValue(identity, out var list)) return;
+
+            //Remove Components from all Entities that had a relation
+            foreach (var type in list)
+            {
+                var tablesWithType = _tablesByType[type];
+
+                //TODO: There should be a bulk remove method instead.
+                foreach (var tableWithType in tablesWithType)
+                {
+                    for (var i = tableWithType.Count - 1; i >= 0; i--)
+                    {
+                        RemoveComponent(tableWithType.Identities[i], type);
+                    }
+                }
+            }
+        }
+    }
+    
     private void RemoveComponent(Identity identity, TypeExpression typeExpression)
     {
         if (_mode == Mode.Deferred)
@@ -175,7 +215,7 @@ public partial class World : IDisposable
 
     private Archetype AddTable(ImmutableSortedSet<TypeExpression> types)
     {
-        var table = new Archetype(this, types, null!);
+        var table = new Archetype(this, types);
         _archetypes.Add(table);
 
         foreach (var type in types)
@@ -208,7 +248,10 @@ public partial class World : IDisposable
     }
 
     #endregion
-
+    
+    
+    
+    
     public void Lock()
     {
         lock (_modeChangeLock)

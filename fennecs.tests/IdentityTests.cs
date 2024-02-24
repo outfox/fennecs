@@ -278,10 +278,10 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_cannot_Get_Component_from_Dead<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn().Add(t1).Id;
-        world.Despawn(identity);
+        var entity = world.Spawn().Add(t1);
+        world.Despawn(entity);
 
-        Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(identity));
+        Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity));
     }
 
     [Theory]
@@ -289,11 +289,11 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_cannot_Get_Component_from_Successor<T>(T t1) where T : struct
     {
         using var world = new World();
-        var entity1 = world.Spawn().Add(t1).Id;
+        var entity1 = world.Spawn().Add(t1);
         world.Despawn(entity1);
-        var entity2 = world.Spawn().Add(t1).Id;
+        var entity2 = world.Spawn().Add(t1);
 
-        Assert.Equal(entity1.Index, entity2.Index);
+        Assert.Equal(entity1.Id.Index, entity2.Id.Index);
         Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity1));
     }
 

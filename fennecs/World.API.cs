@@ -5,13 +5,22 @@ namespace fennecs;
 
 public partial class World
 {
+    #region Entities and Life Cycle
     /// <summary>
-    /// Creates a new entity in this World.
-    /// Reuses previously despawned Entities, who will differ in generation after respawn. 
+    /// Creates a new Identity in this World, and returns its Entity builder struct.
+    /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
     /// </summary>
     /// <returns>an EntityBuilder to operate on</returns>
     public Entity Spawn() => new(this, NewEntity());
 
+
+    /// <summary>
+    /// Despawns (removes) an Entity from this World. 
+    /// </summary>
+    /// <param name="entity">the entity to despawn.</param>
+    public void Despawn(Entity entity) => Despawn(entity.Id);
+
+    
     /// <summary>
     /// Interact with an Identity as an Entity.
     /// Perform operations on the given identity in this world, via fluid API.
@@ -25,11 +34,11 @@ public partial class World
         AssertAlive(identity);
         return new Entity(this, identity);
     }
-
+    
 
     /// <summary>
     /// Alias for <see cref="On(Identity)"/>, returning an Entity builder struct to operate on. Included to
-    /// provide a more intuitive verb to "get" an Entity to assign a variable.
+    /// provide a more intuitive verb to "get" an Entity to assign to a variable.
     /// </summary>
     /// <example>
     /// <code>var bob = world.GetEntity(bobsIdentity);</code>
@@ -45,33 +54,10 @@ public partial class World
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
     public bool IsAlive(Identity identity) => identity.IsEntity && identity == _meta[identity.Index].Identity;
 
+    #endregion
 
     #region Linked Components
     
-    /* Idea for alternative API
-    public struct Linked<T>(T link)
-    {
-        public readonly T Link = link;
-
-        public static Linked<O> With<O>(O link) where O : class
-        {
-            return new Linked<O>(link);
-        }
-
-        public static Linked<Identity> With(Identity link)
-        {
-            return new Linked<Identity>(link);
-        }
-    }
-
-    public void Add<T>(Identity identity, Linked<T> target) where T : class
-    {
-        var linkIdentity = _referenceStore.Request(target.Link);
-        var typeExpression = TypeExpression.Create<T>(linkIdentity);
-        AddComponent(identity, typeExpression, target);
-    }
-    */
-
     /// <summary>
     /// Creates an Archetype relation between this identity and an object (instance of a class).
     /// The relation is backed by the object itself, which will be enumerated by queries if desired.
@@ -89,7 +75,7 @@ public partial class World
     /// <param name="identity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T"></typeparam>
-    public void AddLink<T>(Identity identity, [NotNull] T target) where T : class
+    internal void AddLink<T>(Identity identity, [NotNull] T target) where T : class
     {
         var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
         AddComponent(identity, typeExpression, target);
@@ -102,7 +88,7 @@ public partial class World
     /// <param name="target"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public bool HasLink<T>(Identity identity, [NotNull] T target) where T : class
+    internal bool HasLink<T>(Identity identity, [NotNull] T target) where T : class
     {
         var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
         return HasComponent(identity, typeExpression);
@@ -116,7 +102,7 @@ public partial class World
     /// <param name="identity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T"></typeparam>
-    public void RemoveLink<T>(Identity identity, T target) where T : class
+    internal void RemoveLink<T>(Identity identity, T target) where T : class
     {
         var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
         RemoveComponent(identity, typeExpression);
@@ -139,7 +125,7 @@ public partial class World
     /// <param name="target"></param>
     /// <param name="data"></param>
     /// <typeparam name="T">any Component type</typeparam>
-    public void AddRelation<T>(Identity identity, Identity target, T data)
+    internal void AddRelation<T>(Identity identity, Identity target, T data)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         AddComponent(identity, typeExpression, data);
@@ -153,7 +139,7 @@ public partial class World
     /// <typeparam name="T">any Component type</typeparam>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public bool HasRelation<T>(Identity identity, Identity target)
+    internal bool HasRelation<T>(Identity identity, Identity target)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         return HasComponent(identity, typeExpression);
@@ -165,13 +151,15 @@ public partial class World
     /// <param name="identity"></param>
     /// <param name="target"></param>
     /// <typeparam name="T">any Component type</typeparam>
-    public void RemoveRelation<T>(Identity identity, Identity target)
+    internal void RemoveRelation<T>(Identity identity, Identity target)
     {
         var typeExpression = TypeExpression.Create<T>(target);
         RemoveComponent(identity, typeExpression);
     }
 
     #endregion
+
+    #region Plain Components
     
     public void AddComponent<T>(Identity identity) where T : new()
     {
@@ -201,6 +189,9 @@ public partial class World
         RemoveComponent(identity, type);
     }
     
+    #endregion
+    
+    #region Bulk Operations
 
     
     public void DespawnAllWith<T>(Identity target = default)
@@ -212,6 +203,8 @@ public partial class World
         });
     }
     
+    #endregion
+    
     public World(int capacity = 4096)
     {
         _identityPool = new IdentityPool(capacity);
@@ -222,45 +215,6 @@ public partial class World
         _root = AddTable([TypeExpression.Create<Identity>(Match.Plain)]);
     }
 
-    public void Despawn(Identity identity)
-    {
-        lock (_spawnLock)
-        {
-            AssertAlive(identity);
-
-            if (_mode == Mode.Deferred)
-            {
-                _deferredOperations.Enqueue(new DeferredOperation {Code = OpCode.Despawn, Identity = identity});
-                return;
-            }
-
-            ref var meta = ref _meta[identity.Index];
-
-            var table = meta.Archetype;
-            table.Remove(meta.Row);
-            meta.Clear();
-
-            _identityPool.Despawn(identity);
-
-            // Find identity-identity relation reverse lookup (if applicable)
-            if (!_typesByRelationTarget.TryGetValue(identity, out var list)) return;
-
-            //Remove Components from all Entities that had a relation
-            foreach (var type in list)
-            {
-                var tablesWithType = _tablesByType[type];
-
-                //TODO: There should be a bulk remove method instead.
-                foreach (var tableWithType in tablesWithType)
-                {
-                    for (var i = tableWithType.Count - 1; i >= 0; i--)
-                    {
-                        RemoveComponent(tableWithType.Identities[i], type);
-                    }
-                }
-            }
-        }
-    }
 
     private void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
     {

@@ -3,17 +3,17 @@ namespace fennecs.tests;
 public class WorldTests
 {
     [Fact]
-    public World World_Creates()
+    public void World_Creates()
     {
         using var world = new World();
         Assert.NotNull(world);
-        return world;
     }
 
     [Fact]
     public void World_Disposes()
     {
-        using var world = World_Creates();
+        var world = new World();
+        world.Dispose();
     }
 
     [Fact]
@@ -199,12 +199,12 @@ public class WorldTests
     public void Can_apply_deferred_Despawn()
     {
         using var world = new World();
-        var identity = world.Spawn().Add(666).Add("hallo").Id;
+        var entity = world.Spawn().Add(666).Add("hallo");
         world.Lock();
-        world.Despawn(identity);
-        Assert.True(world.IsAlive(identity));
+        world.Despawn(entity);
+        Assert.True(world.IsAlive(entity));
         world.Unlock();
-        Assert.False(world.IsAlive(identity));
+        Assert.False(world.IsAlive(entity));
     }
 
     [Fact]
@@ -261,30 +261,30 @@ public class WorldTests
     private void Can_Test_for_Type_Relation_Component_Presence()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
+        var entity = world.Spawn();
         object target = new { };
-        world.On(identity).AddLink(target);
-        Assert.True(world.HasLink(identity, target));
+        world.On(entity).AddLink(target);
+        Assert.True(world.HasLink(entity, target));
     }
 
     [Fact]
     private void Can_Add_Component_with_T_new()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
-        world.AddComponent<NewableStruct>(identity);
-        Assert.True(world.HasComponent<NewableStruct>(identity));
+        var entity = world.Spawn();
+        world.AddComponent<NewableStruct>(entity);
+        Assert.True(world.HasComponent<NewableStruct>(entity));
     }
 
     [Fact]
     private void Can_Remove_Component_with_Object_and_Entity_Target()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
+        var entity = world.Spawn();
         object target = new { };
-        world.On(identity).AddLink(target);
-        world.RemoveLink(identity, target);
-        Assert.False(world.HasLink(identity, target));
+        world.On(entity).AddLink(target);
+        world.RemoveLink(entity, target);
+        Assert.False(world.HasLink(entity, target));
     }
 
     [Fact]

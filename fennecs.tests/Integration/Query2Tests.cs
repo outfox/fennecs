@@ -110,7 +110,7 @@ public class Query2Tests
             world.Despawn(dead);
         }
 
-        List<Identity> entities = new(count);
+        List<Entity> entities = new(count);
 
         var query = world.Query<int, string>().Build();
         Assert.Equal(0, query.Count);
@@ -155,7 +155,7 @@ public class Query2Tests
             world.Despawn(dead);
         }
 
-        List<Identity> entities = new(count);
+        List<Entity> entities = new(count);
 
         var query = world.Query<int, string>().Build();
 
@@ -215,7 +215,7 @@ public class Query2Tests
             world.Despawn(dead);
         }
 
-        List<Identity> entities = new(count);
+        List<Entity> entities = new(count);
 
         var query = world.Query<int, string>().Build();
 
@@ -272,7 +272,7 @@ public class Query2Tests
             world.Despawn(dead);
         }
 
-        List<Identity> entities = new(count);
+        List<Entity> entities = new(count);
 
         var query = world.Query<int, string>().Build();
 
