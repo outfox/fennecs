@@ -35,7 +35,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     ///
     /// The Component data is instantiated / initialized via the default constructor of the relation type.
     /// </summary>
-    /// <typeparam name="T">Any value or reference type. The type of the relation to be added.</typeparam>
+    /// <typeparam name="B">Any value or reference type. The type of the relation to be added.</typeparam>
     /// <remarks>
     /// Beware of Archetype fragmentation! 
     /// You can end up with a large number of Archetypes with few Entities in them,
@@ -44,7 +44,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// </remarks>
     /// <param name="targetEntity">The entity with which to establish the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity AddRelation<T>(Entity targetEntity) where T : notnull, new() => AddRelation(targetEntity, new T());
+    public Entity AddRelation<B>(Entity targetEntity) where B : notnull, new() => AddRelation(targetEntity, new B());
 
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
