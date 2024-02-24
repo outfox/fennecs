@@ -156,7 +156,8 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 
 <summary>📈 Click to Expand Benchmarks: </summary>
 <pre>Example: Allocation-free executing a System.Numerics.Vector3 cross product and writing the result back.
-With various processing methods; parallel jobs with different batch/chunk sizes or single threaded runs.</pre>
+With various processing methods; parallel jobs with different batch/chunk sizes or single threaded runs.
+In **fenn**ecs, a million Vector3 components can be processed in under 0.5 milliseconds (500 microseconds)</pre>
 
 | Method     | entities  | chunk | Mean       | StdDev    | Jobs | Contention | Alloc |
 |----------- |-----------|------:|-----------:|----------:|-----:|-----------:|------:|
