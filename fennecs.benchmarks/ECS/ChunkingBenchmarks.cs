@@ -52,7 +52,7 @@ public class ChunkingBenchmarks
         {
             _vectorsRaw[i] = new Vector3(random.NextSingle(), random.NextSingle(), random.NextSingle());
 
-            //Multiple unused components added to create fennecs archetype fragmentation, which is used as basis for many parallel processing partitions.
+            //Multiple unused Components added to create fennecs Archetype fragmentation, which is used as basis for many parallel processing partitions.
             switch (i % 4)
             {
                 case 0:

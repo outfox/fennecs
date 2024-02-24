@@ -3,7 +3,7 @@
 namespace fennecs;
 
 /// <summary>
-/// Provides a fluent interface for constructing and modifying entities within a world.
+/// Provides a fluent interface for constructing and modifying Entities within a world.
 /// </summary>
 public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
 {
@@ -11,15 +11,15 @@ public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
 
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
-    /// The relation is backed by the component data of the relation. Entities with the same relations are placed
+    /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
     /// in the same Archetype for faster enumeration and processing as a group.
     ///
-    /// The component data is instantiated / initialized via the default constructor of the relation type.
+    /// The Component data is instantiated / initialized via the default constructor of the relation type.
     /// </summary>
     /// <typeparam name="T">Any value or reference type. The type of the relation to be added.</typeparam>
     /// <remarks>
     /// Beware of Archetype fragmentation! 
-    /// You can end up with a large number of Archetypes with few entities in them,
+    /// You can end up with a large number of Archetypes with few Entities in them,
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
@@ -29,13 +29,13 @@ public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
 
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
-    /// The relation is backed by the component data of the relation. Entities with the same relations are placed
+    /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
     /// in the same Archetype for faster enumeration and processing as a group.
     /// </summary>
     /// <typeparam name="T">Any value or reference type. The type of the relation to be added.</typeparam>
     /// <remarks>
     /// Beware of Archetype fragmentation! 
-    /// You can end up with a large number of Archetypes with few entities in them,
+    /// You can end up with a large number of Archetypes with few Entities in them,
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
@@ -51,13 +51,13 @@ public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
 
     /// <summary>
     /// Adds a object link to the current entity.
-    /// Object links, in addition to making the object available as a component,
-    /// place all entities with a link to the same object into a single Archetype,
+    /// Object links, in addition to making the object available as a Component,
+    /// place all Entities with a link to the same object into a single Archetype,
     /// which can optimize processing them in queries.
     /// </summary>
     /// <remarks>
     /// Beware of Archetype fragmentation! 
-    /// You can end up with a large number of Archetypes with few entities in them,
+    /// You can end up with a large number of Archetypes with few Entities in them,
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
@@ -71,10 +71,10 @@ public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
     }
 
     /// <summary>
-    /// Adds a component of a specific type, with specific data, to the current entity.
+    /// Adds a Component of a specific type, with specific data, to the current entity.
     /// </summary>
-    /// <typeparam name="T">The type of the component to be added.</typeparam>
-    /// <param name="data">The data associated with the component.</param>
+    /// <typeparam name="T">The type of the Component to be added.</typeparam>
+    /// <param name="data">The data associated with the Component.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public EntityBuilder Add<T>(T data)
     {
@@ -83,17 +83,17 @@ public readonly struct EntityBuilder(World world, Entity entity) : IDisposable
     }
 
     /// <summary>
-    /// Adds a component of a specific type to the current entity.
+    /// Adds a Component of a specific type to the current entity.
     /// </summary>
-    /// <typeparam name="T">The type of the component to be added.</typeparam>
+    /// <typeparam name="T">The type of the Component to be added.</typeparam>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public EntityBuilder Add<T>() where T : new() => Add(new T());
 
     
     /// <summary>
-    /// Removes a component of a specific type from the current entity.
+    /// Removes a Component of a specific type from the current entity.
     /// </summary>
-    /// <typeparam name="T">The type of the component to be removed.</typeparam>
+    /// <typeparam name="T">The type of the Component to be removed.</typeparam>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public EntityBuilder Remove<T>() 
     {

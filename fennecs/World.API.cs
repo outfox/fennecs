@@ -7,7 +7,7 @@ public partial class World
 {
     /// <summary>
     /// Creates a new entity in this World.
-    /// Reuses previously despawned entities, who will differ in generation after respawn. 
+    /// Reuses previously despawned Entities, who will differ in generation after respawn. 
     /// </summary>
     /// <returns>an EntityBuilder to operate on</returns>
     public EntityBuilder Spawn() => new(this, NewEntity());
@@ -62,15 +62,15 @@ public partial class World
     /// <summary>
     /// Creates an Archetype relation between this identity and an object (instance of a class).
     /// The relation is backed by the object itself, which will be enumerated by queries if desired.
-    /// Whenever the identity is enumerated by a query, it will be batched only with other entities
-    /// that share the exact relation, in addition to conforming with the other clauses of the query.
+    /// Whenever the identity is enumerated by a Query, it will be batched only with other Entities
+    /// that share the exact relation, in addition to conforming with the other clauses of the Query.
     /// The object is internally reference-counted, and the reference will be discarded once no other
     /// identity is linked to it.
     /// </summary>
     ///<remarks>
     /// Beware of Archetype Fragmentation!
-    /// This feature is great to express relations between entities, but it will lead to
-    /// fragmentation of the Archetype Graph, i.e. Archetypes with very few entities that
+    /// This feature is great to express relations between Entities, but it will lead to
+    /// fragmentation of the Archetype Graph, i.e. Archetypes with very few Entities that
     /// are difficult to iterate over efficiently.
     /// </remarks>
     /// <param name="entity"></param>
@@ -113,19 +113,19 @@ public partial class World
     /// <summary>
     /// Creates an Archetype relation between this identity and another identity.
     /// The relation is backed by an arbitrary type to provide additional data.
-    /// Whenever the identity is enumerated by a query, it will be batched only with other entities
-    /// that share the exact relation, in addition to conforming with the other clauses of the query.
+    /// Whenever the identity is enumerated by a Query, it will be batched only with other Entities
+    /// that share the exact relation, in addition to conforming with the other clauses of the Query.
     /// </summary>
     ///<remarks>
     /// Beware of Archetype Fragmentation!
-    /// This feature is great to express relations between entities, but it will lead to
-    /// fragmentation of the Archetype Graph, i.e. Archetypes with very few entities that
+    /// This feature is great to express relations between Entities, but it will lead to
+    /// fragmentation of the Archetype Graph, i.e. Archetypes with very few Entities that
     /// are difficult to iterate over efficiently.
     /// </remarks>
     /// <param name="entity"></param>
     /// <param name="target"></param>
     /// <param name="data"></param>
-    /// <typeparam name="T">any component type</typeparam>
+    /// <typeparam name="T">any Component type</typeparam>
     public void AddRelation<T>(Entity entity, Entity target, T data)
     {
         var typeExpression = TypeExpression.Create<T>(target);
@@ -133,11 +133,11 @@ public partial class World
     }
     
     /// <summary>
-    /// Checks if this identity has a relation component with another identity.
+    /// Checks if this identity has a relation Component with another identity.
     /// </summary>
     /// <param name="entity"></param>
     /// <param name="target"></param>
-    /// <typeparam name="T">any component type</typeparam>
+    /// <typeparam name="T">any Component type</typeparam>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
     public bool HasRelation<T>(Entity entity, Entity target)
@@ -147,11 +147,11 @@ public partial class World
     }
 
     /// <summary>
-    /// Removes the relation component between this identity and another identity.
+    /// Removes the relation Component between this identity and another identity.
     /// </summary>
     /// <param name="entity"></param>
     /// <param name="target"></param>
-    /// <typeparam name="T">any component type</typeparam>
+    /// <typeparam name="T">any Component type</typeparam>
     public void RemoveRelation<T>(Entity entity, Entity target)
     {
         var typeExpression = TypeExpression.Create<T>(target);
@@ -232,7 +232,7 @@ public partial class World
             // Find identity-identity relation reverse lookup (if applicable)
             if (!_typesByRelationTarget.TryGetValue(entity, out var list)) return;
 
-            //Remove components from all entities that had a relation
+            //Remove Components from all Entities that had a relation
             foreach (var type in list)
             {
                 var tablesWithType = _tablesByType[type];

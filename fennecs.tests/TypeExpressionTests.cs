@@ -41,7 +41,7 @@ public class TypeExpressionTests
             var t1 = new TypeExpression(new Entity(id, deco), (TypeID) i);
             var t2 = new TypeExpression(new Entity(id, deco), (TypeID) (i + 1));
 
-            //  If this test fails, Archetypes will not be able to build immutable buckets for wildcards.
+            //  If this test fails, Archetypes will not be able to build immutable buckets for Wildcards.
             Assert.True(t1.CompareTo(t2) < 0);
             Assert.True(t2.CompareTo(t1) > 0);
         }

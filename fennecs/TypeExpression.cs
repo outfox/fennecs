@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 namespace fennecs;
 
 /// <summary>
-/// Represents a union structure that encapsulates type expressions, including components,
-/// entity-entity relations, entity-object relations, and wildcard expressions matching multiple.
+/// Represents a union structure that encapsulates type expressions, including Components,
+/// entity-entity relations, entity-object relations, and Wildcard expressions matching multiple.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
 public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
@@ -42,19 +42,19 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     #endregion
 
     /// <summary>
-    /// The target of this <see cref="TypeExpression"/>, determining whether it is a plain component,
-    /// a relation, or a wildcard expression.
+    /// The target of this <see cref="TypeExpression"/>, determining whether it is a plain Component,
+    /// a relation, or a Wildcard expression.
     /// </summary>
     /// <remarks>
-    /// <para>If <see cref="Match.Plain"/>, the type expression matches a plain component of its <see cref="Type"/>.</para>
+    /// <para>If <see cref="Match.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
     /// <para>If a specific <see cref="Entity"/> (e.g. <see cref="Entity.IsEntity"/> or <see cref="Entity.IsObject"/> are true), the type expression represents a relation targeting that Entity.</para>
-    /// <para>If <see cref="Match.Any"/>, the type expression acts as a wildcard 
+    /// <para>If <see cref="Match.Any"/>, the type expression acts as a Wildcard 
     ///   expression that matches any target, INCLUDING <see cref="Match.Plain"/>.</para>
-    /// <para> If <see cref="Match.Relation"/>, the type expression acts as a wildcard 
+    /// <para> If <see cref="Match.Relation"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="Match.Plain"/>.</para>
-    /// <para> If <see cref="Match.Entity"/>, the type expression acts as a wildcard 
+    /// <para> If <see cref="Match.Entity"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-entity relations.</para>
-    /// <para> If <see cref="Match.Object"/>, the type expression acts as a wildcard 
+    /// <para> If <see cref="Match.Object"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>
     public Entity Target => new(Id, Decoration);
@@ -65,7 +65,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     public bool isRelation => TypeId != 0 && Target != Match.Plain;
 
     /// <summary>
-    /// Get the backing component type that this <see cref="TypeExpression"/> represents.
+    /// Get the backing Component type that this <see cref="TypeExpression"/> represents.
     /// </summary>
     public Type Type => LanguageType.Resolve(TypeId);
 
@@ -91,10 +91,10 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         // Reject if Types are incompatible. 
         if (TypeId != other.TypeId) return false;
 
-        // Entity.None matches only None. (plain components)
+        // Entity.None matches only None. (plain Components)
         if (Target == Match.Plain) return other.Target == Match.Plain;
 
-        // Entity.Any matches everything; relations and pure components (target == none).
+        // Entity.Any matches everything; relations and pure Components (target == none).
         if (Target == Match.Any) return true;
         
         // Entity.Target matches all Entity-Target Relations.
@@ -125,22 +125,22 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     public override bool Equals(object? obj) => throw new InvalidCastException("Boxing Disallowed; use TypeId.Equals(TypeId) instead.");
 
     /// <summary>
-    /// Creates a new <see cref="TypeExpression"/> for a given component type and target entity.
-    /// This may express a plain component if <paramref name="target"/> is <see cref="Match.Plain"/>, 
+    /// Creates a new <see cref="TypeExpression"/> for a given Component type and target entity.
+    /// This may express a plain Component if <paramref name="target"/> is <see cref="Match.Plain"/>, 
     /// or a relation if <paramref name="target"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
     /// Providing any of the special virtual Entities <see cref="Match.Any"/>, <see cref="Match.Relation"/>,
-    /// <see cref="Match.Entity"/>, or <see cref="Match.Object"/> will create a wildcard expression.
+    /// <see cref="Match.Entity"/>, or <see cref="Match.Object"/> will create a Wildcard expression.
     /// </summary>
     /// <remarks>
-    /// <para>If <paramref name="target"/> is <see cref="Match.Plain"/>, the type expression matches a plain component of its <see cref="Type"/>.</para>
-    /// <para>If <paramref name="target"/> is <see cref="Match.Any"/>, the type expression acts as a wildcard 
+    /// <para>If <paramref name="target"/> is <see cref="Match.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
+    /// <para>If <paramref name="target"/> is <see cref="Match.Any"/>, the type expression acts as a Wildcard 
     ///   expression that matches any target, INCLUDING <see cref="Match.Plain"/>.</para>
-    /// <para> If <paramref name="target"/> is <see cref="Match.Relation"/>, the type expression acts as a wildcard 
+    /// <para> If <paramref name="target"/> is <see cref="Match.Relation"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="Match.Plain"/>.</para>
-    /// <para> If <paramref name="target"/> is <see cref="Match.Entity"/>, the type expression acts as a wildcard 
+    /// <para> If <paramref name="target"/> is <see cref="Match.Entity"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-entity relations.</para>
-    /// <para> If <paramref name="target"/> is <see cref="Match.Object"/>, the type expression acts as a wildcard 
+    /// <para> If <paramref name="target"/> is <see cref="Match.Object"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>
     /// <typeparam name="T">The backing type for which to generate the expression.</typeparam>
@@ -152,25 +152,25 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     }
 
     /// <summary>
-    /// Creates a new <see cref="TypeExpression"/> for a given component type and target entity.
-    /// This may express a plain component if <paramref name="target"/> is <see cref="Match.Plain"/>, 
+    /// Creates a new <see cref="TypeExpression"/> for a given Component type and target entity.
+    /// This may express a plain Component if <paramref name="target"/> is <see cref="Match.Plain"/>, 
     /// or a relation if <paramref name="target"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
     /// Providing any of the special virtual Entities <see cref="Match.Any"/>, <see cref="Match.Relation"/>,
-    /// <see cref="Match.Entity"/>, or <see cref="Match.Object"/> will create a wildcard expression.
+    /// <see cref="Match.Entity"/>, or <see cref="Match.Object"/> will create a Wildcard expression.
     /// </summary>
     /// <remarks>
-    /// <para>If <paramref name="target"/> is <see cref="Match.Plain"/>, the type expression matches a plain component of its <see cref="Type"/>.</para>
-    /// <para>If <paramref name="target"/> is <see cref="Match.Any"/>, the type expression acts as a wildcard 
-    ///   expression that matches any component or relation, INCLUDING <see cref="Match.Plain"/>.</para>
-    /// <para> If <paramref name="target"/> is <see cref="Match.Relation"/>, the type expression acts as a wildcard 
+    /// <para>If <paramref name="target"/> is <see cref="Match.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
+    /// <para>If <paramref name="target"/> is <see cref="Match.Any"/>, the type expression acts as a Wildcard 
+    ///   expression that matches any Component or relation, INCLUDING <see cref="Match.Plain"/>.</para>
+    /// <para> If <paramref name="target"/> is <see cref="Match.Relation"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="Match.Plain"/>.</para>
-    /// <para> If <paramref name="target"/> is <see cref="Match.Entity"/>, the type expression acts as a wildcard 
+    /// <para> If <paramref name="target"/> is <see cref="Match.Entity"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-entity relations.</para>
-    /// <para> If <paramref name="target"/> is <see cref="Match.Object"/>, the type expression acts as a wildcard 
+    /// <para> If <paramref name="target"/> is <see cref="Match.Object"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>
-    /// <param name="type">The component type.</param>
+    /// <param name="type">The Component type.</param>
     /// <param name="target">The target entity, with a default of <see cref="Match.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
     public static TypeExpression Create(Type type, Entity target = default)

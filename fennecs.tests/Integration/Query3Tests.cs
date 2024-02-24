@@ -13,7 +13,7 @@ public class Query3Tests
         var query = world.Query<int, string, char>().Build();
 
         //Create an empty table by spawning and despawning a single entity
-        //that matches our test query (but is a larger archetype)
+        //that matches our test Query (but is a larger Archetype)
         if (createEmptyTable)
         {
             var dead = world.Spawn().Add<int>().Add<char>().Add(0.25f).Add("will be removed").Id();

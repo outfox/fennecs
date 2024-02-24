@@ -37,7 +37,7 @@ internal sealed class Archetype
     private Entity[] _identities;
 
     /// <summary>
-    /// Actual component data storages. It' is a fixed size array because an Archetype doesn't change.
+    /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
     /// </summary>
     private readonly Array[] _storages;
 
@@ -64,13 +64,13 @@ internal sealed class Archetype
 
         _storages = new Array[types.Count];
 
-        // Build the relation between storages and types, as well as type wildcards in buckets.
+        // Build the relation between storages and types, as well as type Wildcards in buckets.
         var finishedTypes = PooledList<TypeID>.Rent();
         var finishedBuckets = PooledList<Array[]>.Rent();
         var currentBucket = PooledList<Array>.Rent();
         TypeID currentTypeId = 0;
 
-        // Types are sorted by TypeID first, so we can iterate them in order to add them to wildcard buckets.
+        // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
         for (var index = 0; index < types.Count; index++)
         {
             var type = types[index];

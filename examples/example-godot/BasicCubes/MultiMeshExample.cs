@@ -70,7 +70,7 @@ public partial class MultiMeshExample : Node
 			floatSpan.CopyTo(uniform.submission);
 			RenderingServer.MultimeshSetBuffer(uniform.mesh, uniform.submission);
 
-			// Ideal way - raw query to pass Memory<T>, Godot Memory<TY overload not yet available.
+			// Ideal way - raw Query to pass Memory<T>, Godot Memory<TY overload not yet available.
 			//_query.Raw((_, transforms) => RenderingServer.MultimeshSetBuffer(MeshInstance.Multimesh.GetRid(), transforms));
 			
 			// This variant is also fast, but it doesn't work with the Godot API as that expects an array.

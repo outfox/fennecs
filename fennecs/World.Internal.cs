@@ -50,7 +50,7 @@ public partial class World : IDisposable
     {
         var type = TypeExpression.Create<T>(Match.Any);
 
-        // Iterate through tables and get all concrete entities from their Archetype TypeExpressions
+        // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
         foreach (var candidate in _tablesByType.Keys)
         {
             if (type.Matches(candidate)) entities.Add(candidate.Target);

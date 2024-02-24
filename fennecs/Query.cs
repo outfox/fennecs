@@ -4,6 +4,18 @@ using System.Collections;
 
 namespace fennecs;
 
+/// <summary>
+/// <para>
+/// <b>Query Base Class.</b>
+/// </para>
+/// <para>
+/// It has no output Stream Types, and thus cannot be iterated in ways other than enumerating its Entities.
+/// </para>
+/// <para>
+/// <see cref="Query{C0}"/> through <see cref="Query{C0,C1,C2,C3,C4}"/> for Queries with configurable
+/// output Stream Types for fast iteration.
+/// </para>
+/// </summary>
 public class Query : IEnumerable<Entity>, IDisposable
 {
     /// <summary>
@@ -29,13 +41,13 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
     /// <summary>
-    /// Gets a reference to the component of type <typeparamref name="C"/> for the entity.
+    /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
     /// <param name="entity"></param>
     /// <param name="target"></param>
-    /// <typeparam name="C">any component type</typeparam>
-    /// <returns>ref C, the component.</returns>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the query's tables for Entity entity.</exception>
+    /// <typeparam name="C">any Component type</typeparam>
+    /// <returns>ref C, the Component.</returns>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for Entity entity.</exception>
     public ref C Ref<C>(Entity entity, Entity target = default)
     {
         AssertNotDisposed();
@@ -48,11 +60,11 @@ public class Query : IEnumerable<Entity>, IDisposable
     #region IEnumerable<Entity>
 
     /// <summary>
-    /// Enumerator over all the entities in the query.
-    /// Do not make modifications to the world affecting the query while enumerating.
+    /// Enumerator over all the Entities in the Query.
+    /// Do not make modifications to the world affecting the Query while enumerating.
     /// </summary>
     /// <returns>
-    ///  An enumerator over all the entities in the query.
+    ///  An enumerator over all the Entities in the Query.
     /// </returns>
     public IEnumerator<Entity> GetEnumerator()
     {

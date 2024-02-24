@@ -41,7 +41,7 @@ internal class LanguageType
         Types[0] = typeof(None);
         Ids[typeof(None)] = 0;
 
-        // Register the last (MaxValue) ID as Any type, reserved used for future wildcards and as a
+        // Register the last (MaxValue) ID as Any type, reserved used for future Wildcards and as a
         // simple stopgap for when all TypeIDs are exhausted, raising an Exception the type initializer
         // of LanguageType<T> (the same way as any other type collision)
         Types[TypeID.MaxValue] = typeof(Any);

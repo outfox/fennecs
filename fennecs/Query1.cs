@@ -4,6 +4,9 @@ using fennecs.pools;
 
 namespace fennecs;
 
+/// <summary>
+/// Query with 1 output Stream Type, <c>C0</c>.
+/// </summary>
 public class Query<C0> : Query
 {
     // The counters backing the Query's Cross Join.
