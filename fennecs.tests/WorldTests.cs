@@ -162,7 +162,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void Can_apply_deferred_Spawn()
+    public void Apply_Deferred_Spawn()
     {
         using var world = new World();
         world.Lock();
@@ -172,7 +172,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void Can_apply_deferred_Add()
+    public void Apply_Deferred_Add()
     {
         using var world = new World();
         var identity = world.Spawn().Id;
@@ -185,7 +185,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void Can_apply_deferred_Remove()
+    public void Apply_Deferred_Remove()
     {
         using var world = new World();
         var identity = world.Spawn().Add(666).Id;
@@ -196,7 +196,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void Can_apply_deferred_Despawn()
+    public void Apply_Deferred_Despawn()
     {
         using var world = new World();
         var entity = world.Spawn().Add(666).Add("hallo");
@@ -208,7 +208,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void Can_apply_deferred_Relation()
+    public void Apply_Deferred_Relation()
     {
         using var world = new World();
         var identity = world.Spawn();
@@ -221,7 +221,7 @@ public class WorldTests
     }
 
     [Fact]
-    public void Can_apply_deferred_Relation_Remove()
+    public void Apply_Deferred_Relation_Remove()
     {
         using var world = new World();
         var identity = world.Spawn();
@@ -379,6 +379,4 @@ public class WorldTests
         Assert.False(world.IsAlive(entity3));
         Assert.True(world.IsAlive(entity4));
     }
-
-    
 }
