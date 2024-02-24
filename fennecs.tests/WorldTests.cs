@@ -314,4 +314,71 @@ public class WorldTests
         Assert.Equal(entity, world.GetEntity(entity.Id));
         Assert.Equal(entity, world.On(entity.Id));
     }
+
+    [Fact]
+    private void Can_Despawn_All_With_Plain()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add("hallo");
+        var entity2 = world.Spawn().AddLink("to the past");
+        var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
+        var entity4 = world.Spawn().Add(666);
+        world.DespawnAllWith<string>(Match.Plain);
+        Assert.False(world.IsAlive(entity1));
+        Assert.True(world.IsAlive(entity2));
+        Assert.True(world.IsAlive(entity3));
+        Assert.True(world.IsAlive(entity4));
+    }
+
+    [Fact]
+    private void Can_Despawn_All_With_Any()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add("hallo");
+        var entity2 = world.Spawn().AddLink("to the past");
+        var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
+        var entity4 = world.Spawn().Add(666);
+        world.DespawnAllWith<string>(Match.Any);
+        Assert.False(world.IsAlive(entity1));
+        Assert.False(world.IsAlive(entity2));
+        Assert.False(world.IsAlive(entity3));
+        Assert.True(world.IsAlive(entity4));
+    }
+
+    [Fact]
+    private void Can_Despawn_All_With_Object()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add("hallo");
+        var entity2 = world.Spawn().AddLink("to the past");
+        var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
+        var entity4 = world.Spawn().Add(666);
+        world.DespawnAllWith<string>(Match.Object);
+        Assert.True(world.IsAlive(entity1));
+        Assert.False(world.IsAlive(entity2));
+        Assert.True(world.IsAlive(entity3));
+        Assert.True(world.IsAlive(entity4));
+    }
+
+    
+    [Fact]
+    private void Can_Despawn_All_With_Relation()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add("hallo");
+        var entity2 = world.Spawn().AddLink("to the past");
+        var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
+        var entity4 = world.Spawn().Add(666);
+        world.DespawnAllWith<string>(Match.Relation);
+        Assert.True(world.IsAlive(entity1));
+        Assert.False(world.IsAlive(entity2));
+        Assert.False(world.IsAlive(entity3));
+        Assert.True(world.IsAlive(entity4));
+    }
+
+    
 }

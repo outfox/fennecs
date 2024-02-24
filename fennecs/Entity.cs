@@ -39,6 +39,8 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
 
     #endregion
 
+    #region CRUD
+    
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
     /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
@@ -156,6 +158,33 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     }
 
     /// <summary>
+    /// Checks if the Entity has a Plain Component.
+    /// Same as calling <see cref="Has{T}(Identity)"/> with <see cref="Match.Plain"/>
+    /// </summary>
+    public bool Has<T>() => _world.HasComponent<T>(Id);
+
+    /// <summary>
+    /// Checks if the Entity has a Component of a specific type.
+    /// Allows for a <see cref="Match"/> Expression to be specified.
+    /// </summary>
+    public bool Has<T>(Identity match) => _world.HasComponent<T>(Id, match);
+
+    /// <summary>
+    /// Checks if the Entity has an Object Link of a specific type.
+    /// </summary>
+    public bool HasLink<T>(T targetObject) where T : class => _world.HasLink(Id, targetObject);
+
+    /// <summary>
+    /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
+    /// </summary>
+    public bool HasRelation<T>(Entity targetEntity) => _world.HasRelation<T>(Id, targetEntity.Id);
+    
+    #endregion
+    
+    
+    
+    
+    /// <summary>
     /// Disposes of the Entity, releasing any pooled resources.
     /// </summary>
     public void Dispose()
@@ -166,7 +195,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     
     public bool Equals(Entity other)
     {
-        return Id.Equals(other.Id) && ReferenceEquals(_world, other._world);
+        return Id.Equals(other.Id) && Equals(_world, other._world);
     }
 
     public override bool Equals(object? obj)

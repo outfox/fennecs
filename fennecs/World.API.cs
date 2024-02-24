@@ -15,7 +15,7 @@ public partial class World : IDisposable
 
 
     /// <summary>
-    /// Despawn (remove) an Entity from this World.
+    /// Despawn (destroy) an Entity from this World.
     /// </summary>
     /// <param name="entity">the entity to despawn.</param>
     public void Despawn(Entity entity) => Despawn(entity.Id);
@@ -58,9 +58,16 @@ public partial class World : IDisposable
 
     #region Bulk Operations
 
-    public void DespawnAllWith<T>(Identity target = default)
+    /// <summary>
+    /// Despawn (destroy) all Entities matching a given Type and Match Expression.
+    /// </summary>
+    /// <typeparam name="T">any component type</typeparam>
+    /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
+    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/>, <see cref="Match.Relation"/>
+    /// </param>
+    public void DespawnAllWith<T>(Identity match = default)
     {
-        using var query = Query<Identity>().Has<T>(target).Build();
+        using var query = Query<Identity>().Has<T>(match).Build();
         query.ForSpan(delegate(Span<Identity> entities)
         {
             foreach (var identity in entities) Despawn(identity);
@@ -71,6 +78,10 @@ public partial class World : IDisposable
 
     #region Lifecycle
 
+    /// <summary>
+    /// Create a new World.
+    /// </summary>
+    /// <param name="capacity">initial Entity capacity to reserve. The world will grow automatically.</param>
     public World(int capacity = 4096)
     {
         _identityPool = new IdentityPool(capacity);
@@ -81,6 +92,9 @@ public partial class World : IDisposable
         _root = AddTable([TypeExpression.Create<Identity>(Match.Plain)]);
     }
 
+    /// <summary>
+    /// Disposes of the World. Currently a no-op.
+    /// </summary>
     public void Dispose()
     {
         //TODO: Release all Object Links?
