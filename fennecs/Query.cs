@@ -73,31 +73,45 @@ public class Query : IEnumerable<Entity>, IDisposable
             foreach (var entity in table) yield return entity;
     }
 
+    /// <inheritdoc cref="IEnumerable.GetEnumerator"/>
     IEnumerator IEnumerable.GetEnumerator()
     {
         AssertNotDisposed();
         return GetEnumerator();
     }
     #endregion
-    
-    public bool Contains(Identity identity)
+
+    /// <summary>
+    /// True this Query matches ("contains") the Entity, and would enumerate it.
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns>true if Entity is in the Query</returns>
+    public bool Contains(Entity entity)
     {
         AssertNotDisposed();
         
-        var meta = World.GetEntityMeta(identity);
+        var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
         return Archetypes.Contains(table);
     }
+
+    /// <summary>
+    /// The sum of all distinct Entities currently matched by this Query. 
+    /// </summary>
+    public int Count => Archetypes.Sum(t => t.Count);
+    
     
     internal void AddTable(Archetype archetype)
     {
         AssertNotDisposed();
-        
         Archetypes.Add(archetype);
     }
 
-    public int Count => Archetypes.Sum(t => t.Count);
+    #region IDisposable Implementation
 
+    /// <summary>
+    /// Dispose the Query.
+    /// </summary>
     public void Dispose()
     {
         AssertNotDisposed();
@@ -107,31 +121,6 @@ public class Query : IEnumerable<Entity>, IDisposable
         World.RemoveQuery(this);
         Mask.Dispose();
     }
-
-    
-    internal static bool CrossJoin(Span<int> counter, Span<int> limiter)
-    {
-        // Loop through all counters, counting up to goal and wrapping until saturated
-        // Example: 0-0-0 to 1-3-2:
-        // 000 -> 010 -> 020 -> 001 -> 011 -> 021 -> 002 -> 012 -> 022 -> 032
-
-        for (var i = 0; i < counter.Length; i++)
-        {
-            // Increment the current counter
-            counter[i]++;
-
-            // Successful increment?
-            if (counter[i] < limiter[i]) return true;
-            
-            // Current counter reached its goal, reset it and move to the next
-            counter[i] = 0;
-
-            //Continue until last counter fills up
-            if (i == counter.Length - 1) break;
-        }
-        
-        return false;
-    }
     
     protected void AssertNotDisposed()
     {
@@ -140,6 +129,8 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
     
     private bool disposed { get; set; }
+    
+    #endregion
 }
 
 // ReSharper disable InconsistentNaming

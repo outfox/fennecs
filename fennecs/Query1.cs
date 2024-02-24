@@ -52,7 +52,7 @@ public class Query<C0> : Query
             {
                 var span0 = storages0[_counter[0]].AsSpan(0, count);
                 action(span0);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -79,7 +79,7 @@ public class Query<C0> : Query
             {
                 var span0 = storages0[_counter[0]].AsSpan(0, count);
                 action(span0, uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -104,7 +104,7 @@ public class Query<C0> : Query
             {
                 var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
                 foreach (ref var c0 in span0) action(ref c0);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -129,7 +129,7 @@ public class Query<C0> : Query
             {
                 var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
                 foreach (ref var c0 in span0) action(ref c0, uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -172,7 +172,7 @@ public class Query<C0> : Query
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
@@ -220,7 +220,7 @@ public class Query<C0> : Query
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
@@ -250,7 +250,7 @@ public class Query<C0> : Query
             {
                 var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
                 action(mem0);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -275,7 +275,7 @@ public class Query<C0> : Query
             {
                 var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
                 action(mem0, uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();

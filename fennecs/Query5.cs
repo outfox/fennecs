@@ -55,7 +55,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span3 = storages3[_counter[3]].AsSpan(0, count);
                 var span4 = storages4[_counter[4]].AsSpan(0, count);
                 action(span0, span1, span2, span3, span4);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -97,7 +97,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span3 = storages3[_counter[3]].AsSpan(0, count);
                 var span4 = storages4[_counter[4]].AsSpan(0, count);
                 action(span0, span1, span2, span3, span4, uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -137,7 +137,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span3 = storages3[_counter[3]].AsSpan(0, table.Count);
                 var span4 = storages4[_counter[4]].AsSpan(0, table.Count);
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -178,7 +178,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span3 = storages3[_counter[3]].AsSpan(0, table.Count);
                 var span4 = storages4[_counter[4]].AsSpan(0, table.Count);
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -238,7 +238,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
@@ -303,7 +303,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
@@ -349,7 +349,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var mem3 = storages3[_counter[3]].AsMemory(0, table.Count);
                 var mem4 = storages4[_counter[4]].AsMemory(0, table.Count);
                 action(mem0, mem1, mem2, mem3, mem4);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();
@@ -390,7 +390,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var mem3 = storages3[_counter[3]].AsMemory(0, table.Count);
                 var mem4 = storages4[_counter[4]].AsMemory(0, table.Count);
                 action(mem0, mem1, mem2, mem3, mem4, uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         World.Unlock();

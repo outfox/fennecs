@@ -15,7 +15,7 @@ public class QueryTests
         do
         {
             count++;
-        } while (Query.CrossJoin(counter, limiter));
+        } while (Match.CrossJoin(counter, limiter));
         
         Assert.Equal(9*5*3, count);
     }
