@@ -149,7 +149,7 @@ public static class Match
 
         /// <summary>
         /// Returns the Storage in the current internal Cross Join counter configuration.
-        /// Call <see cref="Permutate"/> to select the next permutation.
+        /// Call <see cref="Iterate"/> to select the next permutation.
         /// </summary>
         internal C0[] Select => _storages0[_counter[0]];
 
@@ -159,7 +159,7 @@ public static class Match
         /// <returns>
         /// <c>true</c> if permutation exists<br/><c>false</c> if the Cross Join has exhausted all permutations.
         /// </returns>
-        internal bool Permutate => CrossJoin(_counter, _limiter);
+        internal bool Iterate => CrossJoin(_counter, _limiter);
 
 
         public void Dispose()
