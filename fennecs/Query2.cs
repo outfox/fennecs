@@ -9,16 +9,16 @@ namespace fennecs;
 /// </summary>
 public class Query<C0, C1> : Query<C0>
 {
-    // The counters backing the Query's Cross Join.
-    // CAVEAT: stackalloc prevents inlining, thus we preallocate.
-    private readonly int[] _counter = new int[2];
-    private readonly int[] _limiter = new int[2];
-
+    #region Internals
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
 
+    #endregion
+
+
+    #region Runners
 
     public void ForSpan(SpanAction<C0, C1> action)
     {
@@ -34,17 +34,17 @@ public class Query<C0, C1> : Query<C0>
             using var storages0 = table.Match<C0>(StreamTypes[0]);
             using var storages1 = table.Match<C1>(StreamTypes[1]);
 
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-            _counter[1] = 0;
-            _limiter[1] = storages1.Count;
+            Counter[0] = 0;
+            Limiter[0] = storages0.Count;
+            Counter[1] = 0;
+            Limiter[1] = storages1.Count;
 
             do
             {
-                var span0 = storages0[_counter[0]].AsSpan(0, count);
-                var span1 = storages1[_counter[1]].AsSpan(0, count);
+                var span0 = storages0[Counter[0]].AsSpan(0, count);
+                var span1 = storages1[Counter[1]].AsSpan(0, count);
                 action(span0, span1);
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(Counter, Limiter));
         }
     }
 
@@ -63,17 +63,17 @@ public class Query<C0, C1> : Query<C0>
             using var storages0 = table.Match<C0>(StreamTypes[0]);
             using var storages1 = table.Match<C1>(StreamTypes[1]);
 
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-            _counter[1] = 0;
-            _limiter[1] = storages1.Count;
+            Counter[0] = 0;
+            Limiter[0] = storages0.Count;
+            Counter[1] = 0;
+            Limiter[1] = storages1.Count;
 
             do
             {
-                var span0 = storages0[_counter[0]].AsSpan(0, count);
-                var span1 = storages1[_counter[1]].AsSpan(0, count);
+                var span0 = storages0[Counter[0]].AsSpan(0, count);
+                var span1 = storages1[Counter[1]].AsSpan(0, count);
                 action(span0, span1, uniform);
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(Counter, Limiter));
         }
     }
 
@@ -90,17 +90,17 @@ public class Query<C0, C1> : Query<C0>
             using var storages0 = table.Match<C0>(StreamTypes[0]);
             using var storages1 = table.Match<C1>(StreamTypes[1]);
 
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-            _counter[1] = 0;
-            _limiter[1] = storages1.Count;
+            Counter[0] = 0;
+            Limiter[0] = storages0.Count;
+            Counter[1] = 0;
+            Limiter[1] = storages1.Count;
 
             do
             {
-                var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
-                var span1 = storages1[_counter[1]].AsSpan(0, table.Count);
+                var span0 = storages0[Counter[0]].AsSpan(0, table.Count);
+                var span1 = storages1[Counter[1]].AsSpan(0, table.Count);
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i]);
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(Counter, Limiter));
         }
     }
 
@@ -118,17 +118,17 @@ public class Query<C0, C1> : Query<C0>
             using var storages0 = table.Match<C0>(StreamTypes[0]);
             using var storages1 = table.Match<C1>(StreamTypes[1]);
 
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-            _counter[1] = 0;
-            _limiter[1] = storages1.Count;
+            Counter[0] = 0;
+            Limiter[0] = storages0.Count;
+            Counter[1] = 0;
+            Limiter[1] = storages1.Count;
 
             do
             {
-                var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
-                var span1 = storages1[_counter[1]].AsSpan(0, table.Count);
+                var span0 = storages0[Counter[0]].AsSpan(0, table.Count);
+                var span1 = storages1[Counter[1]].AsSpan(0, table.Count);
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], uniform);
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(Counter, Limiter));
         }
     }
 
@@ -149,10 +149,10 @@ public class Query<C0, C1> : Query<C0>
             using var storages0 = table.Match<C0>(StreamTypes[0]);
             using var storages1 = table.Match<C1>(StreamTypes[1]);
 
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-            _counter[1] = 0;
-            _limiter[1] = storages1.Count;
+            Counter[0] = 0;
+            Limiter[0] = storages0.Count;
+            Counter[1] = 0;
+            Limiter[1] = storages1.Count;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
@@ -166,15 +166,15 @@ public class Query<C0, C1> : Query<C0>
                     var length = Math.Min(chunkSize, count - start);
 
                     var job = JobPool<Work<C0, C1>>.Rent();
-                    job.Memory1 = storages0[_counter[0]].AsMemory(start, length);
-                    job.Memory2 = storages1[_counter[1]].AsMemory(start, length);
+                    job.Memory1 = storages0[Counter[0]].AsMemory(start, length);
+                    job.Memory2 = storages1[Counter[1]].AsMemory(start, length);
                     job.Action = action;
                     job.CountDown = Countdown;
                     jobs.Add(job);
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(Counter, Limiter));
         }
 
         Countdown.Signal();
@@ -200,10 +200,10 @@ public class Query<C0, C1> : Query<C0>
             using var storages0 = table.Match<C0>(StreamTypes[0]);
             using var storages1 = table.Match<C1>(StreamTypes[1]);
 
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-            _counter[1] = 0;
-            _limiter[1] = storages1.Count;
+            Counter[0] = 0;
+            Limiter[0] = storages0.Count;
+            Counter[1] = 0;
+            Limiter[1] = storages1.Count;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
@@ -217,8 +217,8 @@ public class Query<C0, C1> : Query<C0>
                     var length = Math.Min(chunkSize, count - start);
 
                     var job = JobPool<UniformWork<C0, C1, U>>.Rent();
-                    job.Memory1 = storages0[_counter[0]].AsMemory(start, length);
-                    job.Memory2 = storages1[_counter[1]].AsMemory(start, length);
+                    job.Memory1 = storages0[Counter[0]].AsMemory(start, length);
+                    job.Memory2 = storages1[Counter[1]].AsMemory(start, length);
                     job.Action = action;
                     job.Uniform = uniform;
                     job.CountDown = Countdown;
@@ -226,7 +226,7 @@ public class Query<C0, C1> : Query<C0>
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(Counter, Limiter));
         }
 
         Countdown.Signal();
@@ -249,17 +249,17 @@ public class Query<C0, C1> : Query<C0>
             using var storages0 = table.Match<C0>(StreamTypes[0]);
             using var storages1 = table.Match<C1>(StreamTypes[1]);
 
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-            _counter[1] = 0;
-            _limiter[1] = storages1.Count;
+            Counter[0] = 0;
+            Limiter[0] = storages0.Count;
+            Counter[1] = 0;
+            Limiter[1] = storages1.Count;
 
             do
             {
-                var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
-                var mem1 = storages1[_counter[1]].AsMemory(0, table.Count);
+                var mem0 = storages0[Counter[0]].AsMemory(0, table.Count);
+                var mem1 = storages1[Counter[1]].AsMemory(0, table.Count);
                 action(mem0, mem1);
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(Counter, Limiter));
         }
     }
 
@@ -277,17 +277,19 @@ public class Query<C0, C1> : Query<C0>
             using var storages0 = table.Match<C0>(StreamTypes[0]);
             using var storages1 = table.Match<C1>(StreamTypes[1]);
 
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-            _counter[1] = 0;
-            _limiter[1] = storages1.Count;
+            Counter[0] = 0;
+            Limiter[0] = storages0.Count;
+            Counter[1] = 0;
+            Limiter[1] = storages1.Count;
 
             do
             {
-                var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
-                var mem1 = storages1[_counter[1]].AsMemory(0, table.Count);
+                var mem0 = storages0[Counter[0]].AsMemory(0, table.Count);
+                var mem1 = storages1[Counter[1]].AsMemory(0, table.Count);
                 action(mem0, mem1, uniform);
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(Counter, Limiter));
         }
     }
+
+    #endregion
 }

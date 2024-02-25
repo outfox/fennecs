@@ -23,6 +23,8 @@ namespace fennecs;
 /// </remarks>
 public class Query<C0> : Query
 {
+    #region Internals
+
     // The counters backing the Query's Cross Join.
     // CAVEAT: stackalloc prevents inlining, thus we preallocate.
     private readonly int[] _counter = new int[1];
@@ -33,6 +35,10 @@ public class Query<C0> : Query
     {
     }
 
+    #endregion
+
+
+    #region Runners
 
     public void ForSpan(SpanAction<C0> action)
     {
@@ -274,4 +280,6 @@ public class Query<C0> : Query
             } while (Match.CrossJoin(_counter, _limiter));
         }
     }
+
+    #endregion
 }

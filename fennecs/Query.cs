@@ -19,6 +19,8 @@ namespace fennecs;
 /// </summary>
 public class Query : IEnumerable<Entity>, IDisposable
 {
+    #region Internals
+
     /// <summary>
     /// TypeExpression for the Output Stream of this Query.
     /// </summary>
@@ -33,6 +35,11 @@ public class Query : IEnumerable<Entity>, IDisposable
     private protected readonly World World;
     protected internal readonly Mask Mask;
 
+    // The counters backing the Query's Cross Join.
+    // CAVEAT: stackalloc prevents inlining, thus we preallocate.
+    protected readonly int[] Counter;
+    protected readonly int[] Limiter;
+
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes)
     {
@@ -40,8 +47,15 @@ public class Query : IEnumerable<Entity>, IDisposable
         Archetypes = archetypes;
         World = world;
         Mask = mask;
+
+        Counter = new int[StreamTypes.Length];
+        Limiter = new int[StreamTypes.Length];
     }
 
+    #endregion
+
+
+    #region Accessors
 
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
@@ -58,6 +72,8 @@ public class Query : IEnumerable<Entity>, IDisposable
         //TODO: This is just a facade for World.GetComponent, should it be removed?
         return ref World.GetComponent<C>(identity, target);
     }
+
+    #endregion
 
 
     #region IEnumerable<Entity>
