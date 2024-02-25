@@ -9,17 +9,17 @@ public sealed class Mask : IDisposable
     internal readonly List<TypeExpression> HasTypes = new(8);
     internal readonly List<TypeExpression> NotTypes = new(8);
     internal readonly List<TypeExpression> AnyTypes = new(8);
-
+    
     public void Has(TypeExpression type)
     {
         HasTypes.Add(type);
     }
-
+    
     public void Not(TypeExpression type)
     {
         NotTypes.Add(type);
     }
-
+    
     public void Any(TypeExpression type)
     {
         AnyTypes.Add(type);
@@ -71,6 +71,6 @@ public sealed class Mask : IDisposable
         return ReferenceEquals(this, obj) || obj is Mask other && Equals(other);
     }
     */
-
+    
     public void Dispose() => MaskPool.Return(this);
 }

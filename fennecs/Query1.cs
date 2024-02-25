@@ -122,7 +122,10 @@ public class Query<C0> : Query
             do
             {
                 var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
-                foreach (ref var c0 in span0) action(ref c0, uniform);
+                foreach (ref var c0 in span0)
+                {
+                    action(ref c0, uniform);
+                }
             } while (Match.CrossJoin(_counter, _limiter));
         }
     }

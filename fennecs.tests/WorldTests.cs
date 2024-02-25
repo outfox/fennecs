@@ -28,7 +28,94 @@ public class WorldTests
         Assert.False(entity.Id.IsObject);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1_000)]
+    [InlineData(10_000)]
+    [InlineData(1_000_000)]
+    void Can_Spawn_Many_Bare_Entities(int count)
+    {
+        using var world = new World();
+        for (var i = 0; i < count; i++)
+        {
+            var entity = world.Spawn();
+            Assert.True(entity.Id.IsEntity);
+            Assert.False(entity.Id.IsVirtual);
+            Assert.False(entity.Id.IsObject);
+        }
+    }
 
+    [Theory]
+    [InlineData(1)]
+    [InlineData(1_000)]
+    [InlineData(10_000)]
+    public void Cannot_Spawn_while_Iterating_IdentityRoot(int count)
+    {
+        var world = new World();
+        for (var i = 0; i < count; i++) world.Spawn();
+
+        var query = world.Query<Identity>().Build();
+        
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            foreach (var _ in query)
+            {
+                world.Spawn();
+            }
+        });
+        
+        world.Dispose();
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1_000)]
+    [InlineData(10_000)]
+    public void Cannot_Safely_Spawn_in_ForSpan(int count)
+    {
+        var world = new World();
+        for (var i = 0; i < count; i++) world.Spawn();
+        
+        var query = world.Query<Identity>().Build();
+        query.ForSpan((_, uniform) =>
+        {
+            for (var i = 0; i < count; i++)
+            {
+                var entity = uniform.Spawn();
+                Assert.True(entity.Id.IsEntity);
+                Assert.False(entity.Id.IsVirtual);
+                Assert.False(entity.Id.IsObject);
+            }
+        }, world);
+
+        world.Dispose();
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(10)]
+    [InlineData(1_000)]
+    [InlineData(10_000)]
+    public void Can_Safely_Spawn_in_ForEach(int count)
+    {
+        var world = new World(1);
+        for (var i = 0; i < count; i++) world.Spawn();
+
+        var query = world.Query<Identity>().Build();
+        query.ForEach((ref Identity _, World uniform) =>
+        {
+            var entity = uniform.Spawn();
+            Assert.True(entity.Id.IsEntity);
+            Assert.False(entity.Id.IsVirtual);
+            Assert.False(entity.Id.IsObject);
+            Thread.Yield();
+        }, world);
+
+        world.Dispose();
+    }
+
+    
     [Fact]
     public void World_Count_Accurate()
     {

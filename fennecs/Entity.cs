@@ -16,7 +16,7 @@
 public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IComparable, IDisposable
 {
     #region Internal State
-
+    
     /// <summary>
     /// Provides a fluent interface for constructing and modifying Entities within a world.
     /// The Entity's Identity is managed internally.
@@ -26,12 +26,12 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
         _world = world;
         Id = identity;
     }
-
+    
     /// <summary>
     /// The World in which the Entity exists.
     /// </summary>
     private readonly World _world;
-
+    
     /// <summary>
     /// The Identity of the Entity.
     /// </summary>
@@ -40,7 +40,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     #endregion
 
     #region CRUD
-
+    
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
     /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
@@ -59,7 +59,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity AddRelation<B>(Entity targetEntity) where B : notnull, new() => AddRelation(targetEntity, new B());
 
-
+    
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
     /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
@@ -81,7 +81,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
         return this;
     }
 
-
+    
     /// <summary>
     /// Adds a object link to the current entity.
     /// Object links, in addition to making the object available as a Component,
@@ -103,7 +103,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
         return this;
     }
 
-
+    
     /// <summary>
     /// Adds a Component of a specific type, with specific data, to the current entity.
     /// </summary>
@@ -116,7 +116,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
         return this;
     }
 
-
+    
     /// <summary>
     /// Adds a Component of a specific type to the current entity.
     /// </summary>
@@ -124,19 +124,19 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Add<T>() where T : new() => Add(new T());
 
-
+    
     /// <summary>
     /// Removes a Component of a specific type from the current entity.
     /// </summary>
     /// <typeparam name="T">The type of the Component to be removed.</typeparam>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Remove<T>()
+    public Entity Remove<T>() 
     {
         _world.RemoveComponent<T>(Id);
         return this;
     }
 
-
+    
     /// <summary>
     /// Removes a relation of a specific type between the current entity and the target entity.
     /// </summary>
@@ -149,7 +149,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
         return this;
     }
 
-
+    
     /// <summary>
     /// Removes the link of a specific type with the target object.
     /// </summary>
@@ -162,21 +162,21 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
         return this;
     }
 
-
+    
     /// <summary>
     /// Checks if the Entity has a Plain Component.
     /// Same as calling <see cref="Has{T}(Identity)"/> with <see cref="Match.Plain"/>
     /// </summary>
     public bool Has<T>() => _world.HasComponent<T>(Id);
 
-
+    
     /// <summary>
     /// Checks if the Entity has a Component of a specific type.
     /// Allows for a <see cref="Match"/> Expression to be specified.
     /// </summary>
     public bool Has<T>(Identity match) => _world.HasComponent<T>(Id, match);
 
-
+    
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type.
     /// </summary>
@@ -187,10 +187,10 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
     /// </summary>
     public bool HasRelation<T>(Entity targetEntity) => _world.HasRelation<T>(Id, targetEntity.Id);
-
+    
     #endregion
-
-
+    
+    
     /// <summary>
     /// Disposes of the Entity, releasing any pooled resources.
     /// </summary>
@@ -199,7 +199,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     }
 
     #region Cast Operators and IEquatable<Entity>
-
+    
     public bool Equals(Entity other)
     {
         return Id.Equals(other.Id) && Equals(_world, other._world);

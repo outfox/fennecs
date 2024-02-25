@@ -35,23 +35,23 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     // Special Entities, such as None, Any.
     public bool IsVirtual => Decoration >= 0 && Index <= 0;
 
-    #region IComparable/IEquatable Implementation
-
+    #region  IComparable/IEquatable Implementation
+    
     public static bool operator ==(Identity left, Identity right) => left.Equals(right);
     public static bool operator !=(Identity left, Identity right) => !left.Equals(right);
 
     public bool Equals(Identity other) => Value == other.Value;
 
     public int CompareTo(Identity other) => Value.CompareTo(other.Value);
-
+    
     public static implicit operator Identity(Entity entity) => entity.Id;
-
+    
     public override bool Equals(object? obj)
     {
-        throw new InvalidCastException("Entity: Boxing equality comparisons disallowed. Use IEquatable<Entity>.Equals(Entity other) instead.");
-        //return obj is Entity other && Equals(other); //<-- second best option   
+      throw new InvalidCastException("Entity: Boxing equality comparisons disallowed. Use IEquatable<Entity>.Equals(Entity other) instead.");
+      //return obj is Entity other && Equals(other); //<-- second best option   
     }
-
+    
     public override int GetHashCode()
     {
         unchecked
@@ -59,7 +59,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
             return (int) (0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
         }
     }
-
+    
     #endregion
 
 
@@ -70,9 +70,9 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
         // Decoration is Generation
         _ => typeof(Identity),
     };
-
+    
     #region Constructors / Creators
-
+    
     public static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
 
 
@@ -96,7 +96,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
             return new Identity(Index, generationWrappedStartingAtOne);
         }
     }
-
+    
     #endregion
 
     public override string ToString()
@@ -106,13 +106,13 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
         if (Equals(Match.Any))
             return "\u2731[Any]";
-
+        
         if (Equals(Match.Relation))
             return "\u2a01[Target]";
-
+        
         if (Equals(Match.Identity))
             return "\u29f1[Relation]";
-
+        
         if (Equals(Match.Object))
             return "\u29f0[Object]";
 

@@ -523,6 +523,6 @@ public partial class World
         var storage = table.GetStorage<T>(target);
         return ref storage[meta.Row];
     }
-
+    
     #endregion
 }

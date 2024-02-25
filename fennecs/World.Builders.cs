@@ -11,7 +11,7 @@ public partial class World
     {
         return new QueryBuilder<C>(this, match);
     }
-
+    
     public QueryBuilder<C1, C2> Query<C1, C2>()
     {
         return new QueryBuilder<C1, C2>(this, default, default);
@@ -36,17 +36,17 @@ public partial class World
     {
         return new QueryBuilder<C1, C2, C3, C4>(this, default, default, default, default);
     }
-
+    
     public QueryBuilder<C1, C2, C3, C4> Query<C1, C2, C3, C4>(Identity match1, Identity match2, Identity match3, Identity match4)
     {
         return new QueryBuilder<C1, C2, C3, C4>(this, match1, match2, match3, match4);
     }
-
+    
     public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>()
     {
         return new QueryBuilder<C1, C2, C3, C4, C5>(this, default, default, default, default, default);
     }
-
+    
     public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>(Identity match1, Identity match2, Identity match3, Identity match4, Identity match5)
     {
         return new QueryBuilder<C1, C2, C3, C4, C5>(this, match1, match2, match3, match4, match5);
