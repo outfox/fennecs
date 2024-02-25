@@ -20,6 +20,7 @@ public class QueryBuilderTests
         Assert.NotNull(q6);
     }
 
+
     [Fact]
     private void All_QueryBuilders_Available_with_MatchExpressions()
     {
@@ -38,6 +39,7 @@ public class QueryBuilderTests
         Assert.NotNull(q6);
     }
 
+
     [Fact]
     private void Can_Create_Query()
     {
@@ -52,6 +54,7 @@ public class QueryBuilderTests
             .Any<long>()
             .Any(new List<float>());
     }
+
 
     [Fact]
     private void Can_Create_C1_Query()
@@ -68,6 +71,7 @@ public class QueryBuilderTests
             .Any(new List<float>());
     }
 
+
     [Fact]
     private void Can_Create_C1_C2_Query()
     {
@@ -82,6 +86,7 @@ public class QueryBuilderTests
             .Any<long>()
             .Any(new List<float>());
     }
+
 
     [Fact]
     private void Can_Create_C1_C2_C3_Query()
@@ -98,6 +103,7 @@ public class QueryBuilderTests
             .Any(new List<float>());
     }
 
+
     [Fact]
     private void Can_Create_C1_C2_C3_C4_Query()
     {
@@ -112,6 +118,7 @@ public class QueryBuilderTests
             .Any<long>()
             .Any(new List<float>());
     }
+
 
     [Fact]
     private void Can_Create_C1_C2_C3_C4_C5_Query()

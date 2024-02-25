@@ -14,6 +14,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         Assert.Equal(item, stored);
     }
 
+
     [Fact]
     public void Request_Returns_Same_Identity()
     {
@@ -30,6 +31,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         public override int GetHashCode() => 69;
     }
 
+
     [Fact]
     public void Request_Throws_On_Hash_Collision()
     {
@@ -40,6 +42,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         Assert.Throws<InvalidOperationException>(() => store.Request(item2));
     }
 
+
     [Fact]
     public void Release_RemovesItem()
     {
@@ -49,6 +52,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         store.Release(identity);
         Assert.Throws<KeyNotFoundException>(() => store.Get<object>(identity));
     }
+
 
     [Theory]
     [InlineData(1)]
@@ -75,6 +79,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         Assert.Throws<KeyNotFoundException>(() => store.Get<object>(identity));
     }
 
+
     [Fact]
     public void Release_Fails_If_RefCount_Zero()
     {
@@ -84,6 +89,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         store.Release(identity);
         Assert.Throws<KeyNotFoundException>(() => store.Release(identity));
     }
+
 
     [Fact]
     public void Get_Fails_If_Released()
@@ -95,6 +101,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         Assert.Throws<KeyNotFoundException>(() => store.Get<object>(identity));
     }
 
+
     [Fact]
     public void StoredReference_Different_For_Different_Instances()
     {
@@ -105,6 +112,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         var identity2 = store.Request(item2);
         Assert.NotEqual(identity1, identity2);
     }
+
 
     [Fact]
     public void StoredReference_ToString()

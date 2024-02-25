@@ -28,9 +28,11 @@ public class Query<C0> : Query
     private readonly int[] _counter = new int[1];
     private readonly int[] _limiter = new int[1];
 
+
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
+
 
     public void ForSpan(SpanAction<C0> action)
     {
@@ -104,6 +106,7 @@ public class Query<C0> : Query
         }
     }
 
+
     public void ForEach<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -129,6 +132,7 @@ public class Query<C0> : Query
             } while (Match.CrossJoin(_counter, _limiter));
         }
     }
+
 
     public void Job(RefAction<C0> action, int chunkSize = int.MaxValue)
     {
@@ -176,6 +180,7 @@ public class Query<C0> : Query
         JobPool<Work<C0>>.Return(jobs);
     }
 
+
     public void Job<U>(RefActionU<C0, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
@@ -222,6 +227,7 @@ public class Query<C0> : Query
         JobPool<UniformWork<C0, U>>.Return(jobs);
     }
 
+
     public void Raw(MemoryAction<C0> action)
     {
         AssertNotDisposed();
@@ -244,6 +250,7 @@ public class Query<C0> : Query
             } while (Match.CrossJoin(_counter, _limiter));
         }
     }
+
 
     public void Raw<U>(MemoryActionU<C0, U> action, U uniform)
     {

@@ -91,6 +91,7 @@ public static class Match
     /// <inheritdoc cref="Any"/>
     public static readonly Identity Relation = new(-2, 0);
 
+
     internal static bool CrossJoin(Span<int> counter, Span<int> limiter)
     {
         // Loop through all counters, counting up to goal and wrapping until saturated
@@ -104,14 +105,14 @@ public static class Match
 
             // Successful increment?
             if (counter[i] < limiter[i]) return true;
-            
+
             // Current counter reached its goal, reset it and move to the next
             counter[i] = 0;
 
             //Continue until last counter fills up
             if (i == counter.Length - 1) break;
         }
-        
+
         return false;
     }
 }

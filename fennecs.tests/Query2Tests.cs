@@ -365,6 +365,7 @@ public class Query2Tests
         }, chunkSize: chunk);
     }
 
+
     [Theory]
     [ClassData(typeof(QueryChunkGenerator))]
     private void Job_Uniform_Visits_All_Entities_Chunked(int count, int chunk, bool createEmptyTable)
@@ -404,6 +405,7 @@ public class Query2Tests
             Assert.Equal("fools", str);
         }, 0, chunkSize: chunk);
     }
+
 
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
@@ -445,6 +447,7 @@ public class Query2Tests
         });
     }
 
+
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void Job_Visits_All_Entities(int count, bool createEmptyTable)
@@ -484,6 +487,7 @@ public class Query2Tests
             Assert.Equal("fools", str);
         });
     }
+
 
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]

@@ -6,6 +6,7 @@ public class Query5Tests
 {
     private struct TypeA;
 
+
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)

@@ -36,6 +36,7 @@ public static class QueryEnumeration
             return world;
         }
 
+
         [Fact]
         public static void Changing_Tables_Interrupts()
         {
@@ -64,6 +65,7 @@ public static class QueryEnumeration
             });
         }
 
+
         [Fact]
         public static void Changing_Irrelevant_Tables_does_not_Interrupt()
         {
@@ -81,6 +83,7 @@ public static class QueryEnumeration
             foreach (var _ in query) world.DespawnAllWith<float>();
         }
 
+
         [Fact]
         public static void Can_Enumerate_IntEntities()
         {
@@ -92,6 +95,7 @@ public static class QueryEnumeration
             intEntities.Sort();
             Assert.Equal(intEntities, intArray);
         }
+
 
         [Fact]
         public static void Can_Enumerate_FloatEntities()
@@ -105,6 +109,7 @@ public static class QueryEnumeration
             Assert.Equal(floatEntities, floatArray);
         }
 
+
         [Fact]
         public static void Can_Enumerate_BothEntities()
         {
@@ -117,6 +122,7 @@ public static class QueryEnumeration
             Assert.Equal(bothEntities, bothArray);
         }
 
+
         [Fact]
         public static void Can_Enumerate_AnyEntities()
         {
@@ -128,6 +134,7 @@ public static class QueryEnumeration
             anyEntities.Sort();
             Assert.Equal(anyEntities, anyArray);
         }
+
 
         [Fact]
         public static void Can_Enumerate_NotIntEntities()

@@ -28,6 +28,7 @@ public class WorldTests
         Assert.False(entity.Id.IsObject);
     }
 
+
     [Theory]
     [InlineData(0)]
     [InlineData(1_000)]
@@ -45,6 +46,7 @@ public class WorldTests
         }
     }
 
+
     [Theory]
     [InlineData(1)]
     [InlineData(1_000)]
@@ -55,7 +57,7 @@ public class WorldTests
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>().Build();
-        
+
         Assert.Throws<InvalidOperationException>(() =>
         {
             foreach (var _ in query)
@@ -63,9 +65,10 @@ public class WorldTests
                 world.Spawn();
             }
         });
-        
+
         world.Dispose();
     }
+
 
     [Theory]
     [InlineData(0)]
@@ -75,7 +78,7 @@ public class WorldTests
     {
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
-        
+
         var query = world.Query<Identity>().Build();
         query.ForSpan((_, uniform) =>
         {
@@ -90,6 +93,7 @@ public class WorldTests
 
         world.Dispose();
     }
+
 
     [Theory]
     [InlineData(0)]
@@ -115,7 +119,7 @@ public class WorldTests
         world.Dispose();
     }
 
-    
+
     [Fact]
     public void World_Count_Accurate()
     {
@@ -185,6 +189,7 @@ public class WorldTests
 
     private struct NewableStruct;
 
+
     [Fact]
     public void Added_Newable_Class_is_not_Null()
     {
@@ -194,6 +199,7 @@ public class WorldTests
         Assert.NotNull(world.GetComponent<NewableClass>(identity));
     }
 
+
     [Fact]
     public void Added_Newable_Struct_is_default()
     {
@@ -202,6 +208,7 @@ public class WorldTests
         Assert.True(world.HasComponent<NewableStruct>(identity));
         Assert.Equal(default, world.GetComponent<NewableStruct>(identity));
     }
+
 
     [Fact]
     public void Can_add_Non_Newable()

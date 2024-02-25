@@ -314,6 +314,7 @@ public class Query1Tests
         }, chunkSize: chunk);
     }
 
+
     [Theory]
     [ClassData(typeof(QueryChunkGenerator))]
     private void Job_Uniform_Visits_All_Entities_Chunked(int count, int chunk, bool createEmptyTable)
@@ -349,6 +350,7 @@ public class Query1Tests
             Assert.Equal(123, index);
         }, 0, chunkSize: chunk);
     }
+
 
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
@@ -386,6 +388,7 @@ public class Query1Tests
         });
     }
 
+
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void Job_Visits_All_Entities(int count, bool createEmptyTable)
@@ -421,6 +424,7 @@ public class Query1Tests
             Assert.Equal(123, index);
         });
     }
+
 
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]

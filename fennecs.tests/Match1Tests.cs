@@ -10,6 +10,7 @@ public class Match1Tests
     private const string NONE1 = "can't touch this";
     private const string RELATION1 = "IOU";
 
+
     public Match1Tests()
     {
         _world = new World();
@@ -22,6 +23,7 @@ public class Match1Tests
             .Add(NONE1)
             .AddRelation(bob, RELATION1);
     }
+
 
     [Fact]
     public void Any_Enumerates_all_Components_Once()

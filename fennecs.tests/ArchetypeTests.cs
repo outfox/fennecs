@@ -19,6 +19,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Contains(typeof(float).ToString(), table.ToString());
     }
 
+
     [Fact]
     public void Table_Resizing_Fails_On_Wrong_Size()
     {
@@ -30,6 +31,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(-1));
         Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(0));
     }
+
 
     [Fact]
     public void Table_Resizing_Matches_Length()
@@ -57,6 +59,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.IsAssignableFrom<Array>(storage);
     }
 
+
     [Fact]
     public void Table_Matches_TypeExpression()
     {
@@ -73,6 +76,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         var typeExpressionTarget = TypeExpression.Create<string>(new Identity(99999));
         Assert.False(table.Matches(typeExpressionTarget));
     }
+
 
     [Fact]
     public void Table_Can_be_Generically_Enumerated()

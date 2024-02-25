@@ -467,6 +467,7 @@ public class QueryTests
         Assert.Throws<IndexOutOfRangeException>(() => query[1]);
     }
 
+
     [Fact]
     private void Random_Access_Is_Possible()
     {

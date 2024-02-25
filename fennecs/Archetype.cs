@@ -19,8 +19,9 @@ internal sealed class Archetype : IEnumerable<Entity>
         internal Archetype? Remove;
     }
 
+
     private const int StartCapacity = 4;
-    
+
     public readonly ImmutableSortedSet<TypeExpression> Types;
 
     public Identity[] Identities => _identities;
@@ -118,7 +119,7 @@ internal sealed class Archetype : IEnumerable<Entity>
         }
     }
 
-    
+
     internal PooledList<T[]> Match<T>(TypeExpression expression)
     {
         var result = PooledList<T[]>.Rent();
@@ -126,7 +127,7 @@ internal sealed class Archetype : IEnumerable<Entity>
         return result;
     }
 
-    
+
     private static ImmutableDictionary<T, U> Zip<T, U>(IReadOnlyList<T> finishedTypes, IReadOnlyList<U> finishedBuckets) where T : notnull
     {
         var result = finishedTypes
@@ -213,11 +214,11 @@ internal sealed class Archetype : IEnumerable<Entity>
         var type = TypeExpression.Create<T>(target);
         return (T[]) GetStorage(type);
     }
-    
-    
+
+
     internal Array GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
 
-    
+
     private void EnsureCapacity(int capacity)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));
@@ -245,7 +246,6 @@ internal sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    
     internal void Set<T>(TypeExpression typeExpression, T data, int newRow)
     {
         // DeferredOperation sends data as objects
@@ -255,11 +255,11 @@ internal sealed class Archetype : IEnumerable<Entity>
             sysArray.SetValue(data, newRow);
             return;
         }
-        
+
         var storage = (T[]) GetStorage(typeExpression);
         storage[newRow] = data;
     }
-    
+
 
     internal static int MoveEntry(Identity identity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
     {
@@ -281,14 +281,13 @@ internal sealed class Archetype : IEnumerable<Entity>
     }
 
 
-
     public override string ToString()
     {
         var sb = new StringBuilder($"Archetype ");
         sb.AppendJoin("\n", Types);
         return sb.ToString();
     }
-    
+
 
     public IEnumerator<Entity> GetEnumerator()
     {
@@ -299,11 +298,13 @@ internal sealed class Archetype : IEnumerable<Entity>
             yield return new Entity(_world, _identities[i]);
         }
     }
-    
+
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
+
 
     public Entity this[int index] => new(_world, _identities[index]);
 }

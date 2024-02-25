@@ -16,8 +16,10 @@ public class QueryCountGenerator : IEnumerable<object[]>
         yield return [6_197, false]; // prime number
     }
 
+
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
+
 
 public class QueryChunkGenerator : IEnumerable<object[]>
 {
@@ -46,6 +48,7 @@ public class QueryChunkGenerator : IEnumerable<object[]>
         yield return [149, 433, true]; // prime numbers
         //yield return [151_189, 13_441, true]; // prime numbers
     }
+
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

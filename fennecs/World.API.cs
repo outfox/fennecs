@@ -4,7 +4,7 @@ namespace fennecs;
 
 public partial class World : IDisposable
 {
-    #region Entities and Life Cycle
+    #region Entity Spawn, Liveness, and Desapwn
 
     /// <summary>
     /// Creates a new Identity in this World, and returns its Entity builder struct.
@@ -54,11 +54,14 @@ public partial class World : IDisposable
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
     public bool IsAlive(Identity identity) => identity.IsEntity && identity == _meta[identity.Index].Identity;
 
+
     /// <summary>
     /// The number of living entities in the World.
     /// </summary>
     public int Count => _identityPool.Count;
+
     #endregion
+
 
     #region Bulk Operations
 
@@ -80,6 +83,7 @@ public partial class World : IDisposable
 
     #endregion
 
+
     #region Lifecycle & Locking
 
     /// <summary>
@@ -96,6 +100,7 @@ public partial class World : IDisposable
         _root = AddTable([TypeExpression.Create<Identity>(Match.Plain)]);
     }
 
+
     /// <summary>
     /// Disposes of the World. Currently a no-op.
     /// </summary>
@@ -104,6 +109,7 @@ public partial class World : IDisposable
         //TODO: Release all Object Links?
     }
 
+
     /// <summary>
     /// Locks the World (setting into a Deferred mode) for the scope of the returned WorldLock.
     /// Multiple Locks can be taken out, and all structural Operations on Entities will be queued,
@@ -111,7 +117,6 @@ public partial class World : IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public WorldLock Lock => new(this);
-    
 
     #endregion
 }

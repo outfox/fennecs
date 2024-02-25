@@ -19,10 +19,12 @@ public class QueryBuilder : IDisposable
     private List<ValueTuple<Type, Identity, object>> _any;
     */
 
+
     internal QueryBuilder(World world)
     {
         World = world;
     }
+
 
     /// <summary>
     /// 
@@ -35,6 +37,7 @@ public class QueryBuilder : IDisposable
         StreamTypes.Add(typeExpression);
         Mask.Has(typeExpression);
     }
+
 
     public virtual QueryBuilder Has<T>(Identity target = default)
     {
@@ -57,6 +60,7 @@ public class QueryBuilder : IDisposable
         return this;
     }
 
+
     public virtual QueryBuilder Not<T>(T target) where T : class
     {
         Mask.Not(TypeExpression.Create<T>(Identity.Of(target)));
@@ -77,6 +81,7 @@ public class QueryBuilder : IDisposable
         return this;
     }
 
+
     public void Dispose()
     {
         Mask.Dispose();
@@ -84,20 +89,24 @@ public class QueryBuilder : IDisposable
     }
 }
 
+
 public sealed class QueryBuilder<C1> : QueryBuilder
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1>(world, streamTypes, mask, matchingTables);
+
 
     internal QueryBuilder(World world, Identity match = default) : base(world)
     {
         Outputs<C1>(match);
     }
 
+
     public Query<C1> Build()
     {
         return (Query<C1>) World.GetQuery(StreamTypes, Mask, CreateQuery);
     }
+
 
     public override QueryBuilder<C1> Has<T>(Identity target = default)
     {
@@ -135,6 +144,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder
     }
 }
 
+
 public sealed class QueryBuilder<C1, C2> : QueryBuilder
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
@@ -147,10 +157,12 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
         Outputs<C2>(match2);
     }
 
+
     public Query<C1, C2> Build()
     {
         return (Query<C1, C2>) World.GetQuery(StreamTypes, Mask, CreateQuery);
     }
+
 
     public override QueryBuilder<C1, C2> Has<T>(Identity target = default)
     {
@@ -188,6 +200,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
     }
 }
 
+
 public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
@@ -201,10 +214,12 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
         Outputs<C3>(match3);
     }
 
+
     public Query<C1, C2, C3> Build()
     {
         return (Query<C1, C2, C3>) World.GetQuery(StreamTypes, Mask, CreateQuery);
     }
+
 
     public override QueryBuilder<C1, C2, C3> Has<T>(Identity target = default)
     {
@@ -242,6 +257,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
     }
 }
 
+
 public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
@@ -256,10 +272,12 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
         Outputs<C4>(match4);
     }
 
+
     public Query<C1, C2, C3, C4> Build()
     {
         return (Query<C1, C2, C3, C4>) World.GetQuery(StreamTypes, Mask, CreateQuery);
     }
+
 
     public override QueryBuilder<C1, C2, C3, C4> Has<T>(Identity target = default)
     {
@@ -297,6 +315,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
     }
 }
 
+
 public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
@@ -311,6 +330,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
         Outputs<C4>(match4);
         Outputs<C5>(match5);
     }
+
 
     public Query<C1, C2, C3, C4, C5> Build()
     {
@@ -328,6 +348,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has(target);
     }
+
 
     public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Identity target = default)
     {

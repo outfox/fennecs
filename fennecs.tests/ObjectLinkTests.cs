@@ -23,6 +23,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         Assert.Equal(1, runs);
     }
 
+
     [Fact]
     public void Can_Link_Objects_via_World()
     {
@@ -63,6 +64,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         query.ForEach((ref string _) => { runs++; });
         Assert.Equal(0, runs);
     }
+
 
     [Fact]
     public void Can_Unlink_Objects_via_World()

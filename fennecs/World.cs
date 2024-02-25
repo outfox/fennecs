@@ -11,6 +11,7 @@ namespace fennecs;
 public partial class World
 {
     #region State & Storage
+
     private readonly IdentityPool _identityPool;
 
     private Meta[] _meta;
@@ -23,9 +24,9 @@ public partial class World
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
     private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
-    
+
     #endregion
-    
+
 
     #region Locking & Deferred Operations
 
@@ -40,6 +41,7 @@ public partial class World
     {
         private World _world;
 
+
         public WorldLock(World world)
         {
             lock (world._modeChangeLock)
@@ -50,12 +52,14 @@ public partial class World
             }
         }
 
+
         public void Dispose()
         {
             _world.Unlock();
             _world = null!;
         }
     }
+
 
     private void Unlock()
     {
@@ -101,12 +105,14 @@ public partial class World
         internal object Data;
     }
 
+
     internal enum Opcode
     {
         Add,
         Remove,
         Despawn,
     }
+
 
     private enum Mode
     {
@@ -117,8 +123,6 @@ public partial class World
     }
 
     #endregion
-
-
 
 
     #region CRUD
@@ -142,6 +146,7 @@ public partial class World
         }
     }
 
+
     private bool HasComponent(Identity identity, TypeExpression typeExpression)
     {
         var meta = _meta[identity.Index];
@@ -149,6 +154,7 @@ public partial class World
                && meta.Identity == identity
                && typeExpression.Matches(meta.Archetype.Types);
     }
+
 
     private void Despawn(Identity identity)
     {
@@ -190,6 +196,7 @@ public partial class World
         }
     }
 
+
     private void RemoveComponent(Identity identity, TypeExpression typeExpression)
     {
         if (_mode == Mode.Deferred)
@@ -228,7 +235,9 @@ public partial class World
 
     #endregion
 
+
     #region Queries
+
     internal Query GetQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
         if (_queries.TryGetValue(mask, out var query))
@@ -256,6 +265,7 @@ public partial class World
         return query;
     }
 
+
     internal void RemoveQuery(Query query)
     {
         _queries.Remove(query.Mask);
@@ -266,6 +276,7 @@ public partial class World
     {
         return ref _meta[identity.Index];
     }
+
 
     internal IEnumerable<TypeExpression> GetComponents(Identity identity)
     {
@@ -311,7 +322,6 @@ public partial class World
     }
 
 
-
     internal void CollectTargets<T>(List<Identity> entities)
     {
         var type = TypeExpression.Create<T>(Match.Any);
@@ -322,7 +332,7 @@ public partial class World
             if (type.Matches(candidate)) entities.Add(candidate.Target);
         }
     }
-    
+
     #endregion
 
 
@@ -337,6 +347,7 @@ public partial class World
     }
 
     #endregion
+
 
     #region Component Interaction
 
@@ -363,6 +374,7 @@ public partial class World
         AddComponent(identity, typeExpression, target);
     }
 
+
     /// <summary>
     /// Checks if this identity has an object-backed relation (instance of a class).
     /// </summary>
@@ -375,6 +387,7 @@ public partial class World
         var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
         return HasComponent(identity, typeExpression);
     }
+
 
     /// <summary>
     /// Removes the object-backed relation between this identity and the object (instance of a class).
@@ -389,6 +402,7 @@ public partial class World
         var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
         RemoveComponent(identity, typeExpression);
     }
+
 
     /// <summary>
     /// Creates an Archetype relation between this identity and another identity.
@@ -412,6 +426,7 @@ public partial class World
         AddComponent(identity, typeExpression, data);
     }
 
+
     /// <summary>
     /// Checks if this identity has a relation Component with another identity.
     /// </summary>
@@ -426,6 +441,7 @@ public partial class World
         return HasComponent(identity, typeExpression);
     }
 
+
     /// <summary>
     /// Removes the relation Component between this identity and another identity.
     /// </summary>
@@ -438,11 +454,13 @@ public partial class World
         RemoveComponent(identity, typeExpression);
     }
 
+
     internal void AddComponent<T>(Identity identity) where T : new()
     {
         var type = TypeExpression.Create<T>(Match.Plain);
         AddComponent(identity, type, new T());
     }
+
 
     internal void AddComponent<T>(Identity identity, T data)
     {
@@ -451,17 +469,20 @@ public partial class World
         AddComponent(identity, type, data);
     }
 
+
     internal bool HasComponent<T>(Identity identity, Identity target = default)
     {
         var type = TypeExpression.Create<T>(target);
         return HasComponent(identity, type);
     }
 
+
     internal void RemoveComponent<T>(Identity identity)
     {
         var type = TypeExpression.Create<T>(Match.Plain);
         RemoveComponent(identity, type);
     }
+
 
     private void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
     {
@@ -502,6 +523,7 @@ public partial class World
         meta.Archetype = newTable;
     }
 
+
     internal ref T GetComponent<T>(Identity identity, Identity target = default)
     {
         AssertAlive(identity);
@@ -516,6 +538,6 @@ public partial class World
         var storage = table.GetStorage<T>(target);
         return ref storage[meta.Row];
     }
-    
+
     #endregion
 }

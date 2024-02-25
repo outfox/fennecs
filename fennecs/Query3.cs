@@ -14,9 +14,11 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     private readonly int[] _counter = new int[3];
     private readonly int[] _limiter = new int[3];
 
+
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
+
 
     public void ForSpan(SpanAction<C0, C1, C2> action)
     {
@@ -48,9 +50,8 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 action(span0, span1, span2);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        
     }
+
 
     public void ForSpan<U>(SpanActionU<C0, C1, C2, U> action, U uniform)
     {
@@ -82,10 +83,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 action(span0, span1, span2, uniform);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        
     }
-    
+
+
     public void ForEach(RefAction<C0, C1, C2> action)
     {
         AssertNotDisposed();
@@ -114,8 +114,6 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i]);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        
     }
 
 
@@ -147,8 +145,6 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], uniform);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        
     }
 
 
@@ -204,8 +200,6 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         Countdown.Wait();
 
         JobPool<Work<C0, C1, C2>>.Return(jobs);
-
-        
     }
 
 
@@ -262,9 +256,8 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         Countdown.Wait();
 
         JobPool<UniformWork<C0, C1, C2, U>>.Return(jobs);
-
-        
     }
+
 
     public void Raw(MemoryAction<C0, C1, C2> action)
     {
@@ -295,9 +288,8 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 action(mem0, mem1, mem2);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        
     }
+
 
     public void Raw<U>(MemoryActionU<C0, C1, C2, U> action, U uniform)
     {
@@ -328,7 +320,5 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 action(mem0, mem1, mem2, uniform);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        
     }
 }

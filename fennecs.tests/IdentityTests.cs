@@ -13,6 +13,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Throws<InvalidCastException>(() => Match.Plain.Successor);
     }
 
+
     [Fact]
     public void Entity_Resolves_as_Type()
     {
@@ -23,6 +24,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Equal(typeof(string), objEntity.Type);
     }
 
+
     [Fact]
     public void Identity_None_is_default()
     {
@@ -32,6 +34,7 @@ public class IdentityTests(ITestOutputHelper output)
         output.WriteLine(none.ToString());
         Assert.Equal(default, none);
     }
+
 
     [Fact]
     public void Identity_ToString()
@@ -53,6 +56,7 @@ public class IdentityTests(ITestOutputHelper output)
         output.WriteLine(new Identity(123, 456).ToString());
     }
 
+
     [Fact]
     public void Identity_None_cannot_Match_One()
     {
@@ -62,6 +66,7 @@ public class IdentityTests(ITestOutputHelper output)
         var one = new Identity(1);
         Assert.NotEqual(Match.Plain, one);
     }
+
 
     [Fact]
     public void Identity_Matches_Only_Self()
@@ -75,6 +80,7 @@ public class IdentityTests(ITestOutputHelper output)
         var other = new Identity(9000, 3);
         Assert.NotEqual(self, other);
     }
+
 
     [Theory]
     [InlineData(1500, 1500)]
@@ -105,6 +111,7 @@ public class IdentityTests(ITestOutputHelper output)
         }
     }
 
+
     [Fact]
     public void Equals_Prevents_Boxing_as_InvalidCastException()
     {
@@ -113,12 +120,14 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Throws<InvalidCastException>(() => id.Equals(o));
     }
 
+
     [Fact]
     public void Any_and_None_are_Distinct()
     {
         Assert.NotEqual(Match.Any, Match.Plain);
         Assert.NotEqual(Match.Any.GetHashCode(), Match.Plain.GetHashCode());
     }
+
 
     [Fact]
     public void Identity_Matches_Self_if_Same()
@@ -136,6 +145,7 @@ public class IdentityTests(ITestOutputHelper output)
         }
     }
 
+
     #region Input Data
 
     private struct CompoundComponent
@@ -146,6 +156,7 @@ public class IdentityTests(ITestOutputHelper output)
         // ReSharper disable once NotAccessedField.Local
         public required int I1;
     }
+
 
     private class ComponentDataSource : List<object[]>
     {
@@ -166,6 +177,7 @@ public class IdentityTests(ITestOutputHelper output)
 
     #endregion
 
+
     /*
     [Fact]
     private void Entity_ToString_Facades_Identity_ToString()
@@ -176,6 +188,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Equal(identity.ToString(), identity.ToString());
     }
     */
+
 
     [Fact]
     public void Entity_HashCode_is_Stable()
@@ -190,6 +203,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Equal(hash2, entity2.GetHashCode());
     }
 
+
     [Fact]
     private void Identity_is_Equal_to_Itself()
     {
@@ -197,6 +211,7 @@ public class IdentityTests(ITestOutputHelper output)
         var identity = world.Spawn().Id;
         Assert.Equal(identity, identity);
     }
+
 
     [Fact]
     private void Same_Entity_is_Equal()
@@ -240,6 +255,7 @@ public class IdentityTests(ITestOutputHelper output)
         return identity;
     }
 
+
     [Fact]
     private void Entity_is_Not_Alive_after_Despawn()
     {
@@ -248,6 +264,7 @@ public class IdentityTests(ITestOutputHelper output)
         world.Despawn(identity);
         Assert.False(world.IsAlive(identity));
     }
+
 
     [Fact]
     private void Entity_has_no_Components_after_Spawn()
@@ -258,6 +275,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.False(world.HasComponent<int>(identity));
         Assert.True(components.Count() == 1);
     }
+
 
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
@@ -271,6 +289,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.True(components.Count() == 2);
     }
 
+
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
     private void Entity_cannot_Get_Component_from_Dead<T>(T t1) where T : struct
@@ -281,6 +300,7 @@ public class IdentityTests(ITestOutputHelper output)
 
         Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity));
     }
+
 
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
@@ -295,6 +315,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity1));
     }
 
+
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
     private void Entity_can_Get_Component<T>(T t1) where T : struct
@@ -304,6 +325,7 @@ public class IdentityTests(ITestOutputHelper output)
         var x = world.GetComponent<T>(identity);
         Assert.Equal(t1, x);
     }
+
 
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
@@ -315,6 +337,7 @@ public class IdentityTests(ITestOutputHelper output)
         world.On(identity).Remove<T>();
         Assert.False(world.HasComponent<T>(identity));
     }
+
 
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
@@ -328,6 +351,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.True(world.HasComponent<T>(identity));
     }
 
+
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
     private void Entity_cannot_Add_Component_twice<T>(T t1) where T : struct
@@ -337,6 +361,7 @@ public class IdentityTests(ITestOutputHelper output)
         world.On(identity).Add(t1);
         Assert.Throws<ArgumentException>(() => world.On(identity).Add(t1));
     }
+
 
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
@@ -348,6 +373,7 @@ public class IdentityTests(ITestOutputHelper output)
         world.On(identity).Remove<T>();
         Assert.Throws<ArgumentException>(() => world.On(identity).Remove<T>());
     }
+
 
     [Theory]
     [ClassData(typeof(ComponentDataSource))]

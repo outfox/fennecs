@@ -6,6 +6,7 @@ public class TypeExpressionTests
 {
     private struct TypeA;
 
+
     [Fact]
     public void Id_is_Comparable()
     {
@@ -13,6 +14,7 @@ public class TypeExpressionTests
         var t2 = TypeExpression.Create<TypeA>();
         Assert.Equal(t1, t2);
     }
+
 
     [Fact]
     public void Id_is_Comparable_for_BaseTypes()
@@ -22,6 +24,7 @@ public class TypeExpressionTests
         Assert.Equal(t1, t2);
     }
 
+
     [Fact]
     public void Is_Distinct()
     {
@@ -29,6 +32,7 @@ public class TypeExpressionTests
         var t2 = TypeExpression.Create<ushort>();
         Assert.NotEqual(t1, t2);
     }
+
 
     [Fact]
     public void Is_Sorted_By_TypeId_First()
@@ -47,6 +51,7 @@ public class TypeExpressionTests
         }
     }
 
+
     [Fact]
     public void Implicitly_decays_to_Type()
     {
@@ -55,6 +60,7 @@ public class TypeExpressionTests
         Assert.Equal(t2, t1);
         Assert.Equal(t1, t2);
     }
+
 
     [Fact]
     public void Has_Equality_Operator()
@@ -66,6 +72,7 @@ public class TypeExpressionTests
         Assert.False(t1 == t3);
     }
 
+
     [Fact]
     public void Has_Inequality_Operator()
     {
@@ -76,6 +83,7 @@ public class TypeExpressionTests
         Assert.False(t3 != t2);
     }
 
+
     [Fact]
     public void Prevents_Boxing_Equality()
     {
@@ -83,6 +91,7 @@ public class TypeExpressionTests
         var id = TypeExpression.Create<TypeA>();
         Assert.Throws<InvalidCastException>(() => id.Equals(o));
     }
+
 
     [Fact]
     public void Can_Create_For_Type()
@@ -95,6 +104,7 @@ public class TypeExpressionTests
         Assert.True(tx2.isRelation);
         Assert.True(tx3.isRelation);
     }
+
 
     [Fact]
     public void None_Matches_only_None()
@@ -115,6 +125,7 @@ public class TypeExpressionTests
         Assert.False(none.Matches(lnk));
     }
 
+
     [Fact]
     public void Any_Matches_only_All()
     {
@@ -128,6 +139,7 @@ public class TypeExpressionTests
         Assert.True(any.Matches(ent));
         Assert.True(any.Matches(lnk));
     }
+
 
     [Fact]
     public void Object_Matches_only_Objects()
@@ -143,6 +155,7 @@ public class TypeExpressionTests
         Assert.True(obj.Matches(lnk));
     }
 
+
     [Fact]
     public void Relation_Matches_only_Relations()
     {
@@ -157,6 +170,7 @@ public class TypeExpressionTests
         Assert.False(rel.Matches(lnk));
     }
 
+
     [Fact]
     public void Target_Matches_all_Entity_Target_Relations()
     {
@@ -170,6 +184,7 @@ public class TypeExpressionTests
         Assert.True(rel.Matches(ent));
         Assert.True(rel.Matches(lnk));
     }
+
 
     [Fact]
     public void Entity_only_matches_Entity()
