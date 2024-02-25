@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.0.7-pre</Version>
+        <Version>0.1.0-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -18,7 +18,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ecs, gamedev, entity, entity component system, game, gamedev, game development, godot, dots, defaultecs, hypecs, relecs, entt, flecs</PackageTags>
         <TargetFramework>net8.0</TargetFramework>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
         <LangVersion>12</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
