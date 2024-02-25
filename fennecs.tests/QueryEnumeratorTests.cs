@@ -1,4 +1,4 @@
-﻿namespace fennecs.tests.Integration;
+﻿namespace fennecs.tests;
 
 public static class QueryEnumeration
 {
@@ -36,6 +36,7 @@ public static class QueryEnumeration
             return world;
         }
 
+
         [Fact]
         public static void Changing_Tables_Interrupts()
         {
@@ -64,13 +65,14 @@ public static class QueryEnumeration
             });
         }
 
+
         [Fact]
         public static void Changing_Irrelevant_Tables_does_not_Interrupt()
         {
             using var world = new World();
 
             var random = new Random(9001);
-            
+
             world.Spawn().Add(1);
             world.Spawn().Add(2);
             world.Spawn().Add(3);
@@ -80,6 +82,7 @@ public static class QueryEnumeration
             foreach (var _ in query) world.Spawn().Add(random.NextSingle());
             foreach (var _ in query) world.DespawnAllWith<float>();
         }
+
 
         [Fact]
         public static void Can_Enumerate_IntEntities()
@@ -93,6 +96,7 @@ public static class QueryEnumeration
             Assert.Equal(intEntities, intArray);
         }
 
+
         [Fact]
         public static void Can_Enumerate_FloatEntities()
         {
@@ -104,6 +108,7 @@ public static class QueryEnumeration
             floatEntities.Sort();
             Assert.Equal(floatEntities, floatArray);
         }
+
 
         [Fact]
         public static void Can_Enumerate_BothEntities()
@@ -117,6 +122,7 @@ public static class QueryEnumeration
             Assert.Equal(bothEntities, bothArray);
         }
 
+
         [Fact]
         public static void Can_Enumerate_AnyEntities()
         {
@@ -128,6 +134,7 @@ public static class QueryEnumeration
             anyEntities.Sort();
             Assert.Equal(anyEntities, anyArray);
         }
+
 
         [Fact]
         public static void Can_Enumerate_NotIntEntities()

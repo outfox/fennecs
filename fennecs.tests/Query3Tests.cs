@@ -1,4 +1,4 @@
-﻿namespace fennecs.tests.Integration;
+﻿namespace fennecs.tests;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -45,7 +45,7 @@ public class Query3Tests
                 strings[i] = "three";
             }
         });
-        
+
         query.Raw((integers, strings, _) =>
         {
             for (var i = 0; i < count; i++)
@@ -55,7 +55,7 @@ public class Query3Tests
                 strings.Span[i] = "four";
             }
         });
-                
+
         query.Job((ref int index, ref string str, ref char _) =>
         {
             Assert.Equal(index, index);
@@ -76,7 +76,7 @@ public class Query3Tests
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         }, 7);
-        
+
         query.ForSpan((_, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -85,7 +85,7 @@ public class Query3Tests
                 strings[i] = uniform.ToString();
             }
         }, 8);
-        
+
         query.Raw((_, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -94,10 +94,7 @@ public class Query3Tests
                 strings.Span[i] = uniform.ToString();
             }
         }, 9);
-        
-        query.ForEach((ref int _, ref string str, ref char _) =>
-        {
-            Assert.Equal(9.ToString(), str);
-        });
+
+        query.ForEach((ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
     }
 }

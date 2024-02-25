@@ -18,11 +18,13 @@ public class TypeIdTests
         Assert.Equal(64 / 8, Marshal.SizeOf<TypeExpression>());
     }
 
+
     [Fact]
     public void Identity_is_64_bits()
     {
         Assert.Equal(64 / 8, Marshal.SizeOf<Identity>());
     }
+
 
     [Fact]
     public void TypeAssigner_Id_Unique()
@@ -39,6 +41,7 @@ public class TypeIdTests
             LanguageType<Type1>.Id,
             LanguageType<Type2>.Id);
     }
+
 
     [Fact]
     public void TypeAssigner_Id_Same_For_Same_Type()
@@ -60,6 +63,7 @@ public class TypeIdTests
             LanguageType<Dictionary<string, string>>.Id);
     }
 
+
     [Fact]
     public void TypeAssigner_None_Matches_Identical()
     {
@@ -68,6 +72,7 @@ public class TypeIdTests
 
         Assert.True(id1.Matches(id2));
     }
+
 
     [Fact]
     public void TypeAssigner_None_Matches_Default()
@@ -84,6 +89,7 @@ public class TypeIdTests
         Assert.True(id3.Matches(id2));
     }
 
+
     [Fact]
     public void TypeAssigner_does_not_Match_Identical()
     {
@@ -92,6 +98,7 @@ public class TypeIdTests
 
         Assert.False(id1.Matches(id2));
     }
+
 
     [Fact]
     public void TypeAssigner_None_does_not_match_Any()
@@ -104,6 +111,7 @@ public class TypeIdTests
         Assert.False(id1.Matches(id3));
     }
 
+
     [Fact]
     public void TypeId_from_Generic_is_same_as_Identify()
     {
@@ -112,12 +120,12 @@ public class TypeIdTests
         Assert.Equal(id1, id2);
 
         _ = TypeExpression.Create<string>();
-        
+
         var id3 = LanguageType.Identify(typeof(bool));
         var id4 = TypeExpression.Create<bool>().TypeId;
         Assert.Equal(id3, id4);
-        
-        Assert.NotEqual( id1, id3);
-        Assert.NotEqual( id2, id4);
+
+        Assert.NotEqual(id1, id3);
+        Assert.NotEqual(id2, id4);
     }
 }

@@ -19,6 +19,7 @@ public class MaskTests
         Assert.False(mask1.Equals(mask3));
     }
 
+
     [Fact]
     public void Reference_Equality_Object()
     {
@@ -27,6 +28,7 @@ public class MaskTests
         Assert.True(mask1.Equals(mask2));
     }
 
+
     [Fact]
     public void Masks_are_distinct_from_default()
     {
@@ -34,6 +36,7 @@ public class MaskTests
         Assert.NotEqual(default, mask1);
         Assert.False(mask1.Equals(null));
     }
+
 
     [Fact]
     public void Can_Be_Disposed()

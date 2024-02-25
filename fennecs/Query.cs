@@ -19,8 +19,10 @@ namespace fennecs;
 /// </summary>
 public class Query : IEnumerable<Entity>, IDisposable
 {
+    #region Internals
+
     /// <summary>
-    /// TypeExpression for the Output Stream of this Query.
+    /// Array of TypeExpressions for the Output Stream of this Query.
     /// </summary>
     internal readonly TypeExpression[] StreamTypes;
 
@@ -33,7 +35,8 @@ public class Query : IEnumerable<Entity>, IDisposable
     private protected readonly World World;
     protected internal readonly Mask Mask;
 
-    internal Query(World world, List<TypeExpression> streamTypes,  Mask mask, List<Archetype> archetypes)
+
+    internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes)
     {
         StreamTypes = streamTypes.ToArray();
         Archetypes = archetypes;
@@ -41,21 +44,32 @@ public class Query : IEnumerable<Entity>, IDisposable
         Mask = mask;
     }
 
+    #endregion
+
+
+    #region Accessors
+
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
-    /// <param name="identity"></param>
-    /// <param name="target"></param>
+    /// <param name="entity">the entity to get the component from</param>
+    /// <param name="match">Match Expression for the component type <see cref="Match"/></param>
     /// <typeparam name="C">any Component type</typeparam>
-    /// <returns>ref C, the Component.</returns>
+    /// <returns>ref C, reference to the Component</returns>
+    /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for Entity entity.</exception>
-    public ref C Ref<C>(Identity identity, Identity target = default)
+    public ref C Ref<C>(Entity entity, Identity match = default)
     {
         AssertNotDisposed();
-        //TODO: Returning this ref should lock the world for the ref's scope?
-        //TODO: This is just a facade for World.GetComponent, should it be removed?
-        return ref World.GetComponent<C>(identity, target);
+        World.AssertAlive(entity);
+        
+        if (!Contains<C>(match)) throw new TypeAccessException("Query does not match this Component type.");
+        if (!Contains(entity)) throw new KeyNotFoundException("Entity not in Query.");
+        //TODO: Maybe it's possible to lock the World for the lifetime of the ref?
+        return ref World.GetComponent<C>(entity, match);
     }
+
+    #endregion
 
 
     #region IEnumerable<Entity>
@@ -70,9 +84,11 @@ public class Query : IEnumerable<Entity>, IDisposable
     public IEnumerator<Entity> GetEnumerator()
     {
         AssertNotDisposed();
-        foreach (var table in Archetypes) 
-            foreach (var entity in table) yield return entity;
+        foreach (var table in Archetypes)
+        foreach (var entity in table)
+            yield return entity;
     }
+
 
     /// <inheritdoc cref="IEnumerable.GetEnumerator"/>
     IEnumerator IEnumerable.GetEnumerator()
@@ -80,40 +96,61 @@ public class Query : IEnumerable<Entity>, IDisposable
         AssertNotDisposed();
         return GetEnumerator();
     }
+
     #endregion
 
+
     /// <summary>
-    /// True this Query matches ("contains") the Entity, and would enumerate it.
+    /// Does this Query match ("contain") the Entity, and would enumerate it?
     /// </summary>
     /// <param name="entity"></param>
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
         AssertNotDisposed();
-        
+
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
         return Archetypes.Contains(table);
     }
 
+
+    /// <summary>
+    /// Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?
+    /// </summary>
+    /// <param name="match">Match Expression for the component type <see cref="Match"/>.
+    /// The default is <see cref="Match.Plain"/></param>
+    /// <returns>true if the Query contains the Type with the given Match Expression</returns>
+    public bool Contains<T>(Identity match = default)
+    {
+        AssertNotDisposed();
+        var typeExpression = TypeExpression.Create<T>(match);
+        return typeExpression.Matches(StreamTypes);
+    }
+
+
+
     /// <summary>
     /// The sum of all distinct Entities currently matched by this Query. 
     /// </summary>
     public int Count => Archetypes.Sum(t => t.Count);
-    
-    
+
+
     internal void AddTable(Archetype archetype)
     {
         AssertNotDisposed();
         Archetypes.Add(archetype);
     }
 
+
     #region Random Access
+
     /// <summary>
     /// Does this query match any entities?
     /// </summary>
     public bool IsEmpty => Count == 0;
-    
+
+
     /// <summary>
     /// Returns an Entity matched by this Query, selected at random.
     /// </summary>
@@ -124,6 +161,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         if (Count == 0) throw new IndexOutOfRangeException("Query is empty.");
         return this[System.Random.Shared.Next(Count)];
     }
+
 
     /// <summary>
     /// Returns the <see cref="Entity"/> at the given <em>momentary position</em> in the Query.
@@ -151,7 +189,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         get
         {
             AssertNotDisposed();
-            
+
             if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
             using var lck = World.Lock;
@@ -160,18 +198,21 @@ public class Query : IEnumerable<Entity>, IDisposable
                 if (index < table.Count)
                 {
                     var result = table[index];
-                    
+
                     return result;
                 }
+
                 index -= table.Count;
             }
-            
+
             Debug.Fail("Query not empty, but no entity found.");
-            
+
             return default;
         }
     }
+
     #endregion
+
 
     #region IDisposable Implementation
 
@@ -180,22 +221,27 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     public void Dispose()
     {
+        // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
+        GC.SuppressFinalize(this);
+
         AssertNotDisposed();
-        
+
         Archetypes.Clear();
         disposed = true;
         World.RemoveQuery(this);
         Mask.Dispose();
     }
-    
+
+
     protected void AssertNotDisposed()
     {
         if (!disposed) return;
         throw new ObjectDisposedException(nameof(Query));
     }
-    
+
+
     private bool disposed { get; set; }
-    
+
     #endregion
 }
 

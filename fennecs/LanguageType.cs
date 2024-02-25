@@ -5,14 +5,15 @@ namespace fennecs;
 internal class LanguageType
 {
     protected internal static Type Resolve(TypeID typeId) => Types[typeId];
-    
+
     // Shared ID counter
     protected static TypeID Counter;
-    
+
     protected static readonly Dictionary<TypeID, Type> Types = new();
     protected static readonly Dictionary<Type, TypeID> Ids = new();
-    
+
     protected static readonly object RegistryLock = new();
+
 
     protected internal static TypeID Identify(Type type)
     {
@@ -20,11 +21,11 @@ internal class LanguageType
         {
             // Query the registry directly for a fast response.
             if (Ids.TryGetValue(type, out var id)) return id;
-        
+
             // ^^^ Optional Pattern: double-checked locking (DCL); move lock down here.
             // Query the registry again, this time synchronized.
             //if (Ids.TryGetValue(type, out id)) return id;
-            
+
             // Construct LanguageType<T>, invoking its static constructor.
             Type[] typeArgs = [type];
             var constructed = typeof(LanguageType<>).MakeGenericType(typeArgs);
@@ -34,6 +35,7 @@ internal class LanguageType
             return Ids[type];
         }
     }
+
 
     static LanguageType()
     {
@@ -48,7 +50,9 @@ internal class LanguageType
         Ids[typeof(Any)] = TypeID.MaxValue;
     }
 
+
     private struct Any;
+
     private struct None;
 }
 
@@ -57,6 +61,7 @@ internal class LanguageType<T> : LanguageType
 {
     // ReSharper disable once StaticMemberInGenericType (we indeed want this unique for each T)
     public static readonly TypeID Id;
+
 
     static LanguageType()
     {
@@ -67,6 +72,7 @@ internal class LanguageType<T> : LanguageType
             Ids.Add(typeof(T), Id);
         }
     }
+
 
     //FIXME: This collides with certain entity types and generations.
     public static TypeID TargetId => (TypeID) (-Id);

@@ -12,6 +12,7 @@ namespace fennecs;
 public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
     #region Struct Data Layout
+
     //             This is a 64 bit union struct.
     //                 Layout: (little endian)
     //   | LSB                                   MSB |
@@ -24,7 +25,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //   |-------------------------------------------|
     //   | Entity (Identity)            | TypeNumber |
     //   | 48 bits                      |  16 bits   |
-    
+
     //Union Backing Store
     [FieldOffset(0)] internal readonly ulong Value;
 
@@ -32,14 +33,16 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     [FieldOffset(0)] internal readonly int Id;
     [FieldOffset(4)] internal readonly ushort Generation;
     [FieldOffset(4)] internal readonly TypeID Decoration;
-    
+
     // Type Header
     [FieldOffset(6)] internal readonly TypeID TypeId;
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
+
     #endregion
+
 
     /// <summary>
     /// The target of this <see cref="TypeExpression"/>, determining whether it is a plain Component,
@@ -58,7 +61,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>
     public Identity Target => new(Id, Decoration);
-    
+
     /// <summary>
     /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
     /// </summary>
@@ -68,6 +71,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// Get the backing Component type that this <see cref="TypeExpression"/> represents.
     /// </summary>
     public Type Type => LanguageType.Resolve(TypeId);
+
 
     /// <summary>
     /// Does this <see cref="TypeExpression"/> match any of the given type expressions?
@@ -79,7 +83,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         var self = this;
         return other.Any(type => self.Matches(type));
     }
-    
+
+
     /// <summary>
     /// Match against another TypeExpression; used for Query Matching, and is Non-Commutative.
     /// Examines the Target field and decides whether the other TypeExpression is a match.
@@ -96,13 +101,13 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
         // Entity.Any matches everything; relations and pure Components (target == none).
         if (Target == Match.Any) return true;
-        
+
         // Entity.Target matches all Entity-Target Relations.
         if (Target == Match.Relation) return other.Target != Match.Plain;
-        
+
         // Entity.Relation matches only Entity-Entity relations.
         if (Target == Match.Identity) return other.Target.IsEntity;
-        
+
         // Entity.Object matches only Entity-Object relations.
         if (Target == Match.Object) return other.Target.IsObject;
 
@@ -110,11 +115,14 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         return Target == other.Target;
     }
 
+
     /// <inheritdoc cref="IEquatable{T}.Equals(T?)"/>
     public bool Equals(TypeExpression other) => Value == other.Value;
 
+
     /// <inheritdoc cref="IComparable{T}.CompareTo"/>
     public int CompareTo(TypeExpression other) => Value.CompareTo(other.Value);
+
 
     ///<summary>
     /// Implements <see cref="IEquatable{T}.Equals(object?)"/>
@@ -123,6 +131,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// ⚠️This method ALWAYS throws InvalidCastException, as boxing of this type is disallowed.
     /// </remarks>
     public override bool Equals(object? obj) => throw new InvalidCastException("Boxing Disallowed; use TypeId.Equals(TypeId) instead.");
+
 
     /// <summary>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and target entity.
@@ -151,6 +160,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         return new TypeExpression(target, LanguageType<T>.Id);
     }
 
+
     /// <summary>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and target entity.
     /// This may express a plain Component if <paramref name="target"/> is <see cref="Match.Plain"/>, 
@@ -177,7 +187,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         return new TypeExpression(target, LanguageType.Identify(type));
     }
-    
+
+
     /// <summary>
     /// Implements a hash function that aims for a low collision rate.
     /// </summary>
@@ -189,21 +200,25 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         }
     }
 
+
     /// <inheritdoc cref="object.ToString"/>
     public override string ToString()
     {
         return $"<{LanguageType.Resolve(TypeId)}>\u2192{Target}>";
     }
 
+
     public static bool operator ==(TypeExpression left, TypeExpression right)
     {
         return left.Equals(right);
     }
 
+
     public static bool operator !=(TypeExpression left, TypeExpression right)
     {
         return !(left == right);
     }
+
 
     /// <summary>
     /// Internal constructor, used by <see cref="Create{T}"/> and by unit tests.

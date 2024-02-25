@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.0.6-pre</Version>
+        <Version>0.0.7-pre</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -21,6 +21,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>12</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

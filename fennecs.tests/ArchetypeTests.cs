@@ -19,6 +19,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Contains(typeof(float).ToString(), table.ToString());
     }
 
+
     [Fact]
     public void Table_Resizing_Fails_On_Wrong_Size()
     {
@@ -30,6 +31,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(-1));
         Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(0));
     }
+
 
     [Fact]
     public void Table_Resizing_Matches_Length()
@@ -45,8 +47,8 @@ public class ArchetypeTests(ITestOutputHelper output)
         table.Resize(5);
         Assert.Equal(5, table.Capacity);
     }
-    
-    
+
+
     [Fact]
     public void Table_GetStorage_Returns_System_Array()
     {
@@ -56,7 +58,8 @@ public class ArchetypeTests(ITestOutputHelper output)
         var storage = table.GetStorage(TypeExpression.Create<string>(Match.Plain));
         Assert.IsAssignableFrom<Array>(storage);
     }
-    
+
+
     [Fact]
     public void Table_Matches_TypeExpression()
     {
@@ -74,6 +77,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.False(table.Matches(typeExpressionTarget));
     }
 
+
     [Fact]
     public void Table_Can_be_Generically_Enumerated()
     {
@@ -82,7 +86,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         var table = world.GetEntityMeta(other).Archetype;
 
         var count = 0;
-        foreach (var entity in (IEnumerable)table)
+        foreach (var entity in (IEnumerable) table)
         {
             count++;
             Assert.Equal(entity, entity);

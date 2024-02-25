@@ -14,6 +14,7 @@ public class EntityTests
         Assert.False(world.HasRelation<int>(entity, new Identity(9001)));
     }
 
+
     [Fact]
     public void Can_Relate_to_Entity_with_Data()
     {
@@ -26,6 +27,7 @@ public class EntityTests
         Assert.False(world.HasRelation<int>(entity, new Identity(9001)));
     }
 
+
     [Fact]
     public void To_String()
     {
@@ -34,6 +36,7 @@ public class EntityTests
         var builder = new Entity(world, entity.Id);
         Assert.Equal(entity.ToString(), builder.ToString());
     }
+
 
     [Fact]
     public void Entity_Is_Comparable()
@@ -48,6 +51,7 @@ public class EntityTests
         Assert.True(entity1.CompareTo(entity3) < 0);
     }
 
+
     [Fact]
     public void Entity_Is_Equal_Same_Id_Same_World()
     {
@@ -59,6 +63,7 @@ public class EntityTests
         Assert.True(entity2 == entity1);
     }
 
+
     [Fact]
     public void Entity_Is_Distinct_Same_Id_Different_World()
     {
@@ -69,7 +74,8 @@ public class EntityTests
         Assert.True(entity1 != entity3);
         Assert.True(entity3 != entity1);
     }
-    
+
+
     [Fact]
     public void Entity_Is_Distinct_Different_Id_Same_World()
     {
@@ -80,7 +86,8 @@ public class EntityTests
         Assert.True(entity1 != entity2);
         Assert.True(entity2 != entity1);
     }
-    
+
+
     [Fact]
     public void Entity_Is_Distinct_Different_Id_Different_World()
     {
@@ -93,6 +100,7 @@ public class EntityTests
         Assert.True(entity2 != entity1);
     }
 
+
     [Fact]
     public void Entity_is_Equatable_to_Object()
     {
@@ -100,11 +108,12 @@ public class EntityTests
         var entity1 = world.Spawn();
         var entity2 = new Entity(world, entity1.Id);
         Assert.True(entity1.Equals(entity2));
-        Assert.True(entity1.Equals((object)entity2));
+        Assert.True(entity1.Equals((object) entity2));
         // ReSharper disable once SuspiciousTypeConversion.Global
         Assert.False(entity1.Equals("can't touch this"));
     }
-    
+
+
     [Fact]
     public void Entity_Is_Hashable()
     {
@@ -113,10 +122,11 @@ public class EntityTests
         var entity2 = world.Spawn();
         var entity3 = new Entity(world, entity1.Id);
         var entity4 = new Entity(world, entity2.Id);
-        var set = new HashSet<Entity> { entity1, entity2, entity3, entity4 };
+        var set = new HashSet<Entity> {entity1, entity2, entity3, entity4};
         Assert.Equal(2, set.Count);
     }
-    
+
+
     [Fact]
     public void Entity_Decays_to_Identity()
     {
@@ -125,8 +135,8 @@ public class EntityTests
         Identity identity = entity;
         Assert.Equal(entity.Id, identity);
     }
-    
-    
+
+
     [Fact]
     public void Entity_is_Disposable()
     {

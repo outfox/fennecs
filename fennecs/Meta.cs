@@ -17,11 +17,12 @@ internal struct Meta(Identity identity, Archetype archetype, int row)
     /// Position within the Archetype Table
     /// </summary>
     internal int Row = row;
-    
+
     /// <summary>
     /// Entity Identity
     /// </summary>
     internal Identity Identity = identity;
+
 
     internal void Clear()
     {
