@@ -116,7 +116,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
         if (Equals(Match.Relation))
             return "\u2a01[Target]";
 
-        if (Equals(Match.Identity))
+        if (Equals(Match.Entity))
             return "\u29f1[Relation]";
 
         if (Equals(Match.Object))

@@ -21,7 +21,7 @@ public static class Match
     /// <summary>
     /// In Query Matching; matches ONLY Entity-Entity relations.
     /// </summary>
-    public static readonly Identity Identity = new(-3, 0);
+    public static readonly Identity Entity = new(-3, 0);
 
     /// <summary>
     /// In Query Matching; matches ONLY Entity-Object links.

@@ -112,7 +112,7 @@ public class TypeExpressionTests
         var none = TypeExpression.Create<TypeA>(Match.Plain);
         var any = TypeExpression.Create<TypeA>(Match.Any);
         var obj = TypeExpression.Create<TypeA>(Match.Object);
-        var rel = TypeExpression.Create<TypeA>(Match.Identity);
+        var rel = TypeExpression.Create<TypeA>(Match.Entity);
 
         var ent = TypeExpression.Create<TypeA>(new Identity(123));
         var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
@@ -159,7 +159,7 @@ public class TypeExpressionTests
     [Fact]
     public void Relation_Matches_only_Relations()
     {
-        var rel = TypeExpression.Create<TypeA>(Match.Identity);
+        var rel = TypeExpression.Create<TypeA>(Match.Entity);
 
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Identity(123));

@@ -145,4 +145,56 @@ public class EntityTests
         Assert.IsAssignableFrom<IDisposable>(builder);
         builder.Dispose();
     }
+
+
+    [Fact]
+    public void Entity_provides_Has()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+        
+        Assert.True(entity.Has<int>());
+        Assert.True(entity.Has<int>(Match.Plain));
+        Assert.True(entity.Has<int>(Match.Any));
+
+        Assert.False(entity.Has<int>(Match.Entity));
+        Assert.False(entity.Has<int>(Match.Object));
+        Assert.False(entity.Has<int>(Match.Relation));
+        
+        Assert.False(entity.Has<float>(Match.Any));
+    }
+    
+    [Fact]
+    public void Entity_provides_HasLink()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        world.Spawn();
+        entity.AddLink("hello world");
+        
+        Assert.True(entity.HasLink<string>("hello world"));
+        Assert.True(entity.Has<string>(Match.Any));
+        Assert.True(entity.Has<string>(Match.Object));
+        Assert.True(entity.Has<string>(Match.Relation));
+
+        Assert.False(entity.HasLink<string>("goodbye world"));
+        Assert.False(entity.Has<int>(Match.Entity));
+    }
+    
+    [Fact]
+    public void Entity_provides_HasRelation()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var target = world.Spawn();
+        entity.AddRelation<int>(target);
+        
+        Assert.True(entity.HasRelation<int>(target));
+        Assert.True(entity.Has<int>(Match.Relation));
+        Assert.True(entity.Has<int>(Match.Any));
+
+        Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
+        Assert.False(entity.Has<int>(Match.Object));
+    }
 }

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
-using System.Diagnostics;
 
 namespace fennecs;
 
@@ -196,24 +195,23 @@ public class Query : IEnumerable<Entity>, IDisposable
             if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
             using var lck = World.Lock;
+            Entity result = default;
+            
             foreach (var table in Archetypes)
             {
                 if (index < table.Count)
                 {
-                    var result = table[index];
-
-                    return result;
+                    result = table[index];
+                    break;
                 }
 
                 index -= table.Count;
             }
-
-            Debug.Fail("Query not empty, but no entity found.");
-
-            return default;
+            
+            return result;
         }
     }
-
+    
     #endregion
 
 

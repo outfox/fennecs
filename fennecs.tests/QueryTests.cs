@@ -437,6 +437,19 @@ public class QueryTests
 
 
     [Fact]
+    private void Indexer_Multi_Table_Join()
+    {
+        using var world = new World();
+        var entity23 = world.Spawn().Add(23);
+        var entity42 = world.Spawn().Add(42).Add<string>("I'm in another table");
+
+        var query = world.Query<int>().Build();
+        Assert.Equal(entity23, query[0]);
+        Assert.Equal(entity42, query[1]);
+    }
+
+
+    [Fact]
     private void Indexer_Throws_When_Out_Of_Range()
     {
         using var world = new World();
@@ -497,7 +510,7 @@ public class QueryTests
     private void Query_Contains_Type_Subset()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Identity).Build();
+        var query = world.Query<int>(Match.Entity).Build();
         Assert.True(query.Contains<int>(Match.Any));
         Assert.False(query.Contains<float>(Match.Any));
     }
@@ -520,16 +533,24 @@ public class QueryTests
         var query = world.Query<int>().Build();
         Assert.True(query.Contains(entity));
     }
-    
+
+
     [Fact]
-    private void Query_throws_Trying_to_Ref_non_contained_Entity()
+    private void Ref_throws_for_non_contained_Entity()
     {
         using var world = new World();
-        using var anotherWorld = new World();
         var entity = world.Spawn().Add(23);
         var query = world.Query<int>().Build();
         world.Despawn(entity);
         Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
-        Assert.Throws<InvalidOperationException>(() => query.Ref<int>(anotherWorld.Spawn()));
+
+        var foreignQueryEntity = world.Spawn().Add("not in query");
+        Assert.Throws<KeyNotFoundException>(() => query.Ref<int>(foreignQueryEntity));
+        
+        using var anotherWorld = new World();
+        var foreignWorldEntity = anotherWorld.Spawn().Add(23);
+        Assert.Throws<InvalidOperationException>(() => query.Ref<int>(foreignWorldEntity));
+
     }
+    
 }

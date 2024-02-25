@@ -26,7 +26,7 @@ public class QueryBuilderTests
     {
         using var world = new World();
         var q1 = world.Query();
-        var q2 = world.Query<int>(Match.Identity);
+        var q2 = world.Query<int>(Match.Entity);
         var q3 = world.Query<int, string>(Match.Any, Match.Plain);
         var q4 = world.Query<int, string, double>(Match.Object, Match.Relation, Match.Plain);
         var q5 = world.Query<int, string, double, float>(Match.Object, Match.Relation, Match.Plain, Match.Any);
