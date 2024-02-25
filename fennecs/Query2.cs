@@ -39,7 +39,7 @@ public class Query<C0, C1> : Query<C0>
                 var span0 = s0.AsSpan(0, count);
                 var span1 = s1.AsSpan(0, count);
                 action(span0, span1);
-            } while (join.Permutate);
+            } while (join.Iterate());
         }
     }
 
@@ -63,7 +63,7 @@ public class Query<C0, C1> : Query<C0>
                 var span0 = s0.AsSpan(0, count);
                 var span1 = s1.AsSpan(0, count);
                 action(span0, span1, uniform);
-            } while (join.Permutate);
+            } while (join.Iterate());
         }
     }
 
@@ -84,7 +84,7 @@ public class Query<C0, C1> : Query<C0>
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i]);
-            } while (join.Permutate);
+            } while (join.Iterate());
         }
     }
 
@@ -106,7 +106,7 @@ public class Query<C0, C1> : Query<C0>
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], uniform);
-            } while (join.Permutate);
+            } while (join.Iterate());
         }
     }
 
@@ -148,7 +148,7 @@ public class Query<C0, C1> : Query<C0>
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (join.Permutate);
+            } while (join.Iterate());
         }
 
         Countdown.Signal();
@@ -196,7 +196,7 @@ public class Query<C0, C1> : Query<C0>
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (join.Permutate);
+            } while (join.Iterate());
         }
 
         Countdown.Signal();
@@ -223,7 +223,7 @@ public class Query<C0, C1> : Query<C0>
                 var mem0 = s0.AsMemory(0, table.Count);
                 var mem1 = s1.AsMemory(0, table.Count);
                 action(mem0, mem1);
-            } while (join.Permutate);
+            } while (join.Iterate());
         }
     }
 
@@ -245,7 +245,7 @@ public class Query<C0, C1> : Query<C0>
                 var mem0 = s0.AsMemory(0, table.Count);
                 var mem1 = s1.AsMemory(0, table.Count);
                 action(mem0, mem1, uniform);
-            } while (join.Permutate);
+            } while (join.Iterate());
         }
     }
 

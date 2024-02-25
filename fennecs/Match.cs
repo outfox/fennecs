@@ -29,45 +29,22 @@ public static class Match
     public static readonly Identity Object = new(-4, 0);
 
     /// <summary>
-    /// <para>
-    /// <b>Wildcard!</b>
-    /// <br/>In Query Matching; matches ALL Components: Plain, Entity, and Object.
+    /// Represents a wildcard match expression for query filtering. This matches all types of components: Plain, Entity, and Object.
+    /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
-    /// <para>
-    /// This Match Expression is free when applied to a Filter expression, see <see cref="QueryBuilder"/>.
-    /// </para>
-    /// <para>
-    /// When applied to a Query's Stream Types (see <see cref="QueryBuilder{C0}"/> to <see cref="QueryBuilder{C0,C1,C2,C3,C4}"/>),
-    /// the Match Expression may cause multiple iteration of Entities if the Archetype <em>has multiple</em> matching Components.
-    /// </para>
-    /// <ul>
-    /// <li>(plain Components)</li>
-    /// <li>(entity-entity relations)</li>
-    /// <li>(entity-object relations)</li>
-    /// </ul>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// ️ ⚠️ Wildcards cause CROSS JOIN type Query iteration.
-    /// </para>
-    /// <para>
-    /// This doesn't have a negative performance impact in and of itself (querying is fast), but it multiplies the number
-    /// of times an entity is enumerated, which for large Archetypes may multiply an already substantial workload by a factor
-    /// of up to m<sup>n</sup> (with n being the number of Wildcards and m the number of matched components per Entity).
-    /// </para>
-    /// <para>
-    /// For small Archetypes with simple workloads, repeat iterations are negligible compared to the overhead of starting the
-    /// operation, especially when working with Jobs, see <see cref="Query{C0}.Job"/> to <see cref="Query{C0,C1,C2,C3,C4}.Job(fennecs.RefAction{C0,C1,C2,C3,C4},int)"/> 
-    /// </para>
+    /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for each matching component. While querying is efficient, this increases the number of operations per entity.</para>
+    /// <para>This effect is more pronounced in large archetypes with many matching components, potentially multiplying the workload significantly. However, for smaller archetypes or simpler tasks, the impact is minimal.</para>
+    /// <para>Risks and considerations include:</para>
     /// <ul>
-    /// <li>Confusion Risk: Query Delegates (<see cref="RefAction{C0}"/>, <see cref="SpanAction{C0}"/>, etc.) interacting with Entities matching a Wildcard multiple times will see the Entity repeatedly, once for each variant.</li>
-    /// <li>Higher Workloads: In Archetypes where multiple matches exist, Entities will get enumerated once for each matched Component in an Archetype that fits the Stream Type this match
-    /// applies to.</li>
-    /// <li>Cartesian Product: Queries with multiple Wildcard Stream Type Match Expressions create a cartesian product when iterating an Archetype
-    /// that has multiple matching Components, complexity can be o(w^n), with w being the cardinality of n the number of Wildcard matches (not Entities!).
-    /// This number can still get very high if you have entities with many relations backed by the same type and the Stream Type Mask Expression is a matching Wildcard.</li>
-    /// <li>(not a real use case) Avoid enumerating the same Stream Type multiple times with Wildcards (it's redundant even with exact matches, and 4x or 9x per type depending on Wildcard).</li>
-    /// </ul> 
+    /// <li>Repeated enumeration: Entities matching a wildcard are processed multiple times, for each matching component type combination.</li>
+    /// <li>Increased workload: Especially in cases where entities match multiple components, leading to higher processing times.</li>
+    /// <li>Complex queries: Multiple wildcards can create a cartesian product effect, significantly increasing complexity and workload.</li>
+    /// <li>Avoid redundant enumeration with wildcards, as it's unnecessary and can inflate processing times.</li>
+    /// </ul>
     /// </remarks>
     public static readonly Identity Any = new(-1, 0);
 
@@ -194,7 +171,7 @@ public static class Match
 
         internal (C0[], C1[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]]);
 
-        internal bool Permutate => CrossJoin(_counter, _limiter);
+        internal bool Iterate() => CrossJoin(_counter, _limiter);
 
 
         public void Dispose()
@@ -237,7 +214,7 @@ public static class Match
 
         internal (C0[], C1[], C2[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]]);
 
-        internal bool Permutate => CrossJoin(_counter, _limiter);
+        internal bool Iterate() => CrossJoin(_counter, _limiter);
 
 
         public void Dispose()
@@ -284,7 +261,7 @@ public static class Match
 
         internal (C0[], C1[], C2[], C3[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]], _storages3[_counter[3]]);
 
-        internal bool Permutate => CrossJoin(_counter, _limiter);
+        internal bool Iterate() => CrossJoin(_counter, _limiter);
 
 
         public void Dispose()
@@ -335,7 +312,7 @@ public static class Match
 
         internal (C0[], C1[], C2[], C3[], C4[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]], _storages3[_counter[3]], _storages4[_counter[4]]);
 
-        internal bool Permutate => CrossJoin(_counter, _limiter);
+        internal bool Iterate() => CrossJoin(_counter, _limiter);
 
 
         public void Dispose()
