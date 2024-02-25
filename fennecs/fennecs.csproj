@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.0.5-pre</Version>
+        <Version>0.0.6-pre</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -20,6 +20,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>12</LangVersion>
+        <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -41,5 +42,10 @@
 
     <ItemGroup>
         <None Include="../docs/overview.md" Pack="true" PackagePath="\" />
+        <None Include="../docs/logos/fennecs-icon-nuget.png">
+            <PackagePath>.</PackagePath>
+            <Pack>True</Pack>
+            <Link>fennecs-icon-nuget.png</Link>
+        </None>
     </ItemGroup>
 </Project>
