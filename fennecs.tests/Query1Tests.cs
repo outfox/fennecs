@@ -1,8 +1,8 @@
-﻿namespace fennecs.tests.Integration;
+﻿namespace fennecs.tests;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
-public class Query2Tests
+public class Query1Tests
 {
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
@@ -10,13 +10,13 @@ public class Query2Tests
     {
         using var world = new World();
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<string>().Build();
 
         //Create an empty table by spawning and despawning a single entity
         //that matches our test Query (but is a larger Archetype)
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
+            var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -25,54 +25,50 @@ public class Query2Tests
             Assert.Equal(index, query.Count);
 
             world.Spawn()
-                .Add(index)
                 .Add("one");
         }
 
-        query.ForEach((ref int _, ref string str) =>
+        query.ForEach((ref string str) =>
         {
             Assert.Equal("one", str);
             str = "two";
         });
 
-        query.ForSpan((integers, strings) =>
+        query.ForSpan(strings =>
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(i, integers[i]);
                 Assert.Equal("two", strings[i]);
                 strings[i] = "three";
             }
         });
         
-        query.Job((ref int _, ref string str) =>
+        query.Job((ref string str) =>
         {
             Assert.Equal("three", str);
             str = "four";
         });
         
-        query.Job((ref int index, ref string str) =>
+        query.Job((ref string str) =>
         {
-            Assert.Equal(index, index);
             Assert.Equal("four", str);
             str = "five";
         }, 4096);
 
-        query.Job((ref int index, ref string str, int uniform) =>
+        query.Job((ref string str, int uniform) =>
         {
-            Assert.Equal(index, index);
             Assert.Equal("five", str);
             str = uniform.ToString();
         }, 6, 4096);
 
 
-        query.ForEach((ref int _, ref string str, int uniform) =>
+        query.ForEach((ref string str, int uniform) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         }, 7);
         
-        query.ForSpan((_, strings, uniform) =>
+        query.ForSpan((strings, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -81,7 +77,7 @@ public class Query2Tests
             }
         }, 8);
         
-        query.Raw((_, c1, uniform) =>
+        query.Raw((c1, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -90,12 +86,11 @@ public class Query2Tests
             }
         }, 9);
         
-        query.ForEach((ref int _, ref string str) =>
+        query.ForEach((ref string str) =>
         {
             Assert.Equal(9.ToString(), str);
         });
     }
-    
     
     
     [Theory]
@@ -106,13 +101,13 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
+            var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
 
         List<Entity> entities = new(count);
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int>().Build();
         Assert.Equal(0, query.Count);
 
         for (var index = 0; index < count; index++)
@@ -122,7 +117,6 @@ public class Query2Tests
             entities.Add(
                 world.Spawn()
                     .Add(index)
-                    .Add("I'll stay")
             );
         }
 
@@ -151,28 +145,20 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
+            var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
 
         List<Entity> entities = new(count);
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int>().Build();
 
-        query.Raw((integers, strings) =>
-        {
-            Assert.Equal(0, integers.Length);
-            Assert.Equal(0, strings.Length);
-        });
+        query.Raw(integers => { Assert.Equal(0, integers.Length); });
 
         for (var index = 0; index < count; index++)
         {
             var captured = index;
-            query.Raw((integers, strings) =>
-            {
-                Assert.Equal(captured, integers.Length);
-                Assert.Equal(captured, strings.Length);
-            });
+            query.Raw(integers => { Assert.Equal(captured, integers.Length); });
 
             entities.Add(
                 world.Spawn()
@@ -180,18 +166,14 @@ public class Query2Tests
             );
         }
 
-        query.Raw((integers, strings) =>
-        {
-            Assert.Equal(count, integers.Length);
-            Assert.Equal(count, strings.Length);
-        });
+        query.Raw(integers => { Assert.Equal(count, integers.Length); });
 
         var random = new Random(69 + count);
 
         for (var i = count; i > 0; i--)
         {
             var captured = i;
-            query.Raw((integers, _) => { Assert.Equal(captured, integers.Length); });
+            query.Raw(integers => { Assert.Equal(captured, integers.Length); });
 
             var removalIndex = random.Next(entities.Count);
             var removalEntity = entities[removalIndex];
@@ -199,7 +181,7 @@ public class Query2Tests
             world.Despawn(removalEntity);
         }
 
-        query.Raw((integers, _) => { Assert.Equal(0, integers.Length); });
+        query.Raw(integers => { Assert.Equal(0, integers.Length); });
     }
 
 
@@ -211,40 +193,35 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
+            var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
 
         List<Entity> entities = new(count);
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int>().Build();
 
-        query.Raw((integers, _) => { Assert.Equal(0, integers.Length); });
+        query.ForSpan(integers => { Assert.Equal(0, integers.Length); });
 
         for (var index = 0; index < count; index++)
         {
             var captured = index;
-            query.Raw((integers, _) => { Assert.Equal(captured, integers.Length); });
+            query.Raw(integers => { Assert.Equal(captured, integers.Length); });
 
             entities.Add(
                 world.Spawn()
                     .Add(index)
-                    .Add("I'll stay")
             );
         }
 
-        query.Raw((integers, _) => { Assert.Equal(count, integers.Length); });
+        query.ForSpan(integers => { Assert.Equal(count, integers.Length); });
 
         var random = new Random(69 + count);
 
         for (var i = count; i > 0; i--)
         {
             var captured = i;
-            query.Raw((integers, strings) =>
-            {
-                Assert.Equal(captured, integers.Length);
-                Assert.Equal(captured, strings.Length);
-            });
+            query.ForSpan(integers => { Assert.Equal(captured, integers.Length); });
 
             var removalIndex = random.Next(entities.Count);
             var removalEntity = entities[removalIndex];
@@ -252,11 +229,7 @@ public class Query2Tests
             world.Despawn(removalEntity);
         }
 
-        query.Raw((integers, strings) =>
-        {
-            Assert.Equal(0, integers.Length);
-            Assert.Equal(0, strings.Length);
-        });
+        query.ForSpan(integers => { Assert.Equal(0, integers.Length); });
     }
 
 
@@ -268,52 +241,35 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
+            var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
 
         List<Entity> entities = new(count);
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int>().Build();
 
-        query.Raw((integers, strings) =>
-        {
-            Assert.Equal(0, integers.Length);
-            Assert.Equal(0, strings.Length);
-        });
+        query.ForSpan(integers => { Assert.Equal(0, integers.Length); });
 
         for (var index = 0; index < count; index++)
         {
             var captured = index;
-            query.Raw((integers, strings) =>
-            {
-                Assert.Equal(captured, integers.Length);
-                Assert.Equal(captured, strings.Length);
-            });
+            query.Raw(integers => { Assert.Equal(captured, integers.Length); });
 
             entities.Add(
                 world.Spawn()
                     .Add(index)
-                    .Add("I'll stay")
             );
         }
 
-        query.Raw((integers, strings) =>
-        {
-            Assert.Equal(count, integers.Length);
-            Assert.Equal(count, strings.Length);
-        });
+        query.ForSpan(integers => { Assert.Equal(count, integers.Length); });
 
         var random = new Random(69 + count);
 
         for (var i = count; i > 0; i--)
         {
             var captured = i;
-            query.Raw((integers, strings) =>
-            {
-                Assert.Equal(captured, integers.Length);
-                Assert.Equal(captured, strings.Length);
-            });
+            query.ForSpan(integers => { Assert.Equal(captured, integers.Length); });
 
             var removalIndex = random.Next(entities.Count);
             var removalEntity = entities[removalIndex];
@@ -321,97 +277,13 @@ public class Query2Tests
             world.Despawn(removalEntity);
         }
 
-        query.Raw((integers, strings) =>
-        {
-            Assert.Equal(0, integers.Length);
-            Assert.Equal(0, strings.Length);
-        });
+        query.ForSpan(integers => { Assert.Equal(0, integers.Length); });
     }
 
 
     [Theory]
     [ClassData(typeof(QueryChunkGenerator))]
     private void Job_Visits_All_Entities_Chunked(int count, int chunk, bool createEmptyTable)
-    {
-        using var world = new World();
-
-        if (createEmptyTable)
-        {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
-            world.Despawn(dead);
-        }
-
-        for (var index = 0; index < count; index++)
-        {
-            world.Spawn()
-                .Add(index)
-                .Add("I'll stay");
-        }
-
-        var query = world.Query<int, string>().Build();
-
-        var processed = 0;
-        query.Job((ref int index, ref string str) =>
-        {
-            Interlocked.Increment(ref processed);
-            index = 123;
-            Assert.Equal("I'll stay", str);
-            str = "fools";
-        }, chunkSize: chunk);
-
-        Assert.Equal(count, processed);
-
-        query.Job((ref int index, ref string str) =>
-        {
-            ArgumentOutOfRangeException.ThrowIfNegative(index);
-            Assert.Equal(123, index);
-            Assert.Equal("fools", str);
-        }, chunkSize: chunk);
-    }
-
-    [Theory]
-    [ClassData(typeof(QueryChunkGenerator))]
-    private void Job_Uniform_Visits_All_Entities_Chunked(int count, int chunk, bool createEmptyTable)
-    {
-        using var world = new World();
-
-        if (createEmptyTable)
-        {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
-            world.Despawn(dead);
-        }
-
-        for (var index = 0; index < count; index++)
-        {
-            world.Spawn()
-                .Add(index)
-                .Add("I'll stay");
-        }
-
-        var query = world.Query<int, string>().Build();
-
-        var processed = 0;
-        query.Job((ref int index, ref string str, float _) =>
-        {
-            Interlocked.Increment(ref processed);
-            index = 123;
-            Assert.Equal("I'll stay", str);
-            str = "fools";
-        }, 0, chunkSize: chunk);
-
-        Assert.Equal(count, processed);
-
-        query.Job((ref int index, ref string str, float _) =>
-        {
-            ArgumentOutOfRangeException.ThrowIfNegative(index);
-            Assert.Equal(123, index);
-            Assert.Equal("fools", str);
-        }, 0, chunkSize: chunk);
-    }
-
-    [Theory]
-    [ClassData(typeof(QueryCountGenerator))]
-    private void Parallel_Visits_All_Entities(int count, bool createEmptyTable)
     {
         using var world = new World();
 
@@ -424,28 +296,96 @@ public class Query2Tests
         for (var index = 0; index < count; index++)
         {
             world.Spawn()
-                .Add(index)
-                .Add("I'll stay");
+                .Add(index);
         }
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int>().Build();
 
         var processed = 0;
-        query.Job((ref int index, ref string str) =>
+        query.Job((ref int index) =>
         {
             Interlocked.Increment(ref processed);
             index = 123;
-            Assert.Equal("I'll stay", str);
-            str = "fools";
+        }, chunkSize: chunk);
+
+        Assert.Equal(count, processed);
+
+        query.Job((ref int index) =>
+        {
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            Assert.Equal(123, index);
+        }, chunkSize: chunk);
+    }
+
+    [Theory]
+    [ClassData(typeof(QueryChunkGenerator))]
+    private void Job_Uniform_Visits_All_Entities_Chunked(int count, int chunk, bool createEmptyTable)
+    {
+        using var world = new World();
+
+        if (createEmptyTable)
+        {
+            var dead = world.Spawn().Add<int>().Add("will be removed");
+            world.Despawn(dead);
+        }
+
+        for (var index = 0; index < count; index++)
+        {
+            world.Spawn()
+                .Add(index);
+        }
+
+        var query = world.Query<int>().Build();
+
+        var processed = 0;
+        query.Job((ref int index, float _) =>
+        {
+            Interlocked.Increment(ref processed);
+            index = 123;
+        }, 0, chunkSize: chunk);
+
+        Assert.Equal(count, processed);
+
+        query.Job((ref int index, float _) =>
+        {
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            Assert.Equal(123, index);
+        }, 0, chunkSize: chunk);
+    }
+
+    [Theory]
+    [ClassData(typeof(QueryCountGenerator))]
+    private void Parallel_Visits_All_Entities(int count, bool createEmptyTable) 
+    {
+        using var world = new World();
+
+        if (createEmptyTable)
+        {
+            var dead = world.Spawn().Add<int>().Add("will be removed");
+            world.Despawn(dead);
+        }
+
+        for (var index = 0; index < count; index++)
+        {
+            world.Spawn()
+                .Add(index);
+        }
+
+        var query = world.Query<int>().Build();
+
+        var processed = 0;
+        query.Job((ref int index) =>
+        {
+            Interlocked.Increment(ref processed);
+            index = 123;
         });
 
         Assert.Equal(count, processed);
 
-        query.Job((ref int index, ref string str) =>
+        query.Job((ref int index) =>
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
-            Assert.Equal("fools", str);
         });
     }
 
@@ -457,35 +397,31 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
+            var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
-
+        
         for (var index = 0; index < count; index++)
         {
             world.Spawn()
-                .Add(index)
-                .Add("I'll stay");
+                .Add(index);
         }
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int>().Build();
 
         var processed = 0;
-        query.Job((ref int index, ref string str) =>
+        query.Job((ref int index) =>
         {
             Interlocked.Increment(ref processed);
             index = 123;
-            Assert.Equal("I'll stay", str);
-            str = "fools";
         });
 
         Assert.Equal(count, processed);
 
-        query.Job((ref int index, ref string str) =>
+        query.Job((ref int index) =>
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
-            Assert.Equal("fools", str);
         });
     }
 
@@ -497,15 +433,15 @@ public class Query2Tests
 
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add(0.25f).Add("will be removed");
+            var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
-
+        
         for (var c = 0; c < count; c++)
         {
             world.Spawn()
                 .Add(c)
-                .Add(0.1f);
+                .Add(0.0f);
         }
 
         var query = world.Query<int, float>().Build();
@@ -515,7 +451,7 @@ public class Query2Tests
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(i, integers.Span[i]);
-                Assert.Equal(0.1f, floats.Span[i]);
+                Assert.Equal(0, floats.Span[i]);
                 floats.Span[i] = integers.Span[i];
             }
         });
@@ -528,5 +464,52 @@ public class Query2Tests
                 Assert.Equal(i, floats.Span[i]);
             }
         });
+    }
+
+
+    [Theory]
+    [ClassData(typeof(QueryCountGenerator))]
+    private void Run_Visits_All_Entities_in_Order(int count, bool createEmptyTable)
+    {
+        using var world = new World();
+
+        if (createEmptyTable)
+        {
+            var dead = world.Spawn().Add<long>().Add("will be removed");
+            world.Despawn(dead);
+        }
+
+        for (var c = 0; c < count; c++)
+        {
+            world.Spawn()
+                .Add<long>();
+        }
+
+        var query = world.Query<long>().Build();
+
+        var processed = 0;
+
+        query.ForSpan(longs =>
+        {
+            foreach (ref var i in longs) i = processed++;
+        });
+
+        Assert.Equal(count, processed);
+
+        query.ForSpan(longs =>
+        {
+            Assert.Equal(count, longs.Length);
+            for (var i = 0; i < count; i++)
+            {
+                Assert.Equal(i, longs[i]);
+            }
+        });
+
+        var index = 0;
+        query.ForEach((ref long value) => { Assert.Equal(index++, value); });
+
+        var index2 = 0;
+        query.ForEach((ref long value, int _) => { Assert.Equal(index2++, value); },
+            1337);
     }
 }

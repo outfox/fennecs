@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 
-
-namespace fennecs.tests.Integration;
+namespace fennecs.tests;
 
 public class QueryCountGenerator : IEnumerable<object[]>
 {

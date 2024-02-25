@@ -1,22 +1,24 @@
-﻿namespace fennecs.tests.Integration;
+﻿namespace fennecs.tests;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
-public class Query4Tests
+public class Query5Tests
 {
+    private struct TypeA;
+    
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)
     {
         using var world = new World();
 
-        var query = world.Query<double, int, string, char>().Build();
+        var query = world.Query<TypeA, double, int, string, char>().Build();
 
         //Create an empty table by spawning and despawning a single entity
         //that matches our test Query (but is a larger Archetype)
         if (createEmptyTable)
         {
-            var dead = world.Spawn().Add<int>().Add<char>().Add<double>().Add(0.25f).Add("will be removed");
+            var dead = world.Spawn().Add<int>().Add<TypeA>().Add<char>().Add<double>().Add(0.25f).Add("will be removed");
             world.Despawn(dead);
         }
 
@@ -25,19 +27,20 @@ public class Query4Tests
             Assert.Equal(index, query.Count);
 
             world.Spawn()
+                .Add<TypeA>()
                 .Add(99.999)
                 .Add(index)
                 .Add("one")
                 .Add('Q');
         }
 
-        query.ForEach((ref double _, ref int _, ref string str, ref char _) =>
+        query.ForEach(static (ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal("one", str);
             str = "two";
         });
 
-        query.ForSpan((_, integers, strings, _) =>
+        query.ForSpan((_, _, integers, strings, _) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -47,7 +50,7 @@ public class Query4Tests
             }
         });
         
-        query.Raw((_, integers, strings, _) =>
+        query.Raw((_, _, integers, strings, _) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -57,14 +60,14 @@ public class Query4Tests
             }
         });
                 
-        query.Job((ref double _, ref int index, ref string str, ref char _) =>
+        query.Job((ref TypeA _, ref double _, ref int index, ref string str, ref char _) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("four", str);
             str = "five";
         }, 4096);
 
-        query.Job((ref double _, ref int index, ref string str, ref char _, int uniform) =>
+        query.Job(delegate (ref TypeA _, ref double _, ref int index, ref string str, ref char _, int uniform)
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
@@ -72,14 +75,14 @@ public class Query4Tests
         }, 6, 4096);
 
 
-        query.ForEach((ref double _, ref int _, ref string str, ref char _, int uniform) =>
+        query.ForEach(static (ref TypeA _, ref double _, ref int _, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         }, 7);
 
         
-        query.ForSpan((_, _, strings, _, uniform) =>
+        query.ForSpan( (_, _, _, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -88,7 +91,7 @@ public class Query4Tests
             }
         }, 8);
         
-        query.Raw((_, _, strings, _, uniform) =>
+        query.Raw((_, _, _, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -98,7 +101,7 @@ public class Query4Tests
         }, 9);
         
         
-        query.ForEach((ref double _, ref int _, ref string str, ref char _) =>
+        query.ForEach((ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(9.ToString(), str);
         });

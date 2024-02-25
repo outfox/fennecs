@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Numerics;
 
-namespace fennecs.tests.Integration;
+namespace fennecs.tests;
 
 public class QueryTests
 {
