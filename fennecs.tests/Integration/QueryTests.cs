@@ -451,4 +451,33 @@ public class QueryTests
         Assert.Throws<IndexOutOfRangeException>(() => query[-1]);
         Assert.Throws<IndexOutOfRangeException>(() => query[1]);
     }
+
+    [Fact]
+    private void Random_Access_Is_Possible()
+    {
+        using var world = new World();
+        var query = world.Query<int>().Build();
+        var entity23 = world.Spawn().Add(23);
+        var entity42 = world.Spawn().Add(42);
+        Assert.Contains(query.Random(), [entity23, entity42]);
+    }
+
+
+    [Fact]
+    private void Random_Access_with_One_Entity()
+    {
+        using var world = new World();
+        var query = world.Query<int>().Build();
+        var entity = world.Spawn().Add(23);
+        Assert.Equal(entity, query.Random());
+    }
+
+    [Fact]
+    private void Random_Access_Throws_with_Empty_Query()
+    {
+        using var world = new World();
+        var query = world.Query<int>().Build();
+        Assert.True(query.IsEmpty);
+        Assert.Throws<IndexOutOfRangeException>(() => query.Random());
+    }
 }

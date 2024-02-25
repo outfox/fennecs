@@ -115,14 +115,14 @@ public class Query : IEnumerable<Entity>, IDisposable
     public bool IsEmpty => Count == 0;
     
     /// <summary>
-    /// Returns a Random Entity matched by this Query.
+    /// Returns an Entity matched by this Query, selected at random.
     /// </summary>
     /// <exception cref="IndexOutOfRangeException">if the Query <see cref="IsEmpty"/></exception>
-    public Entity Pick()
+    public Entity Random()
     {
         AssertNotDisposed();
         if (Count == 0) throw new IndexOutOfRangeException("Query is empty.");
-        return this[Random.Shared.Next(Count)];
+        return this[System.Random.Shared.Next(Count)];
     }
 
     /// <summary>
