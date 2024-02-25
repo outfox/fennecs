@@ -37,7 +37,7 @@ public sealed class Mask : IDisposable
     }
 
 
-    public int Key()
+    private int Key()
     {
         var hash = HashCode.Combine(HasTypes.Count);
 

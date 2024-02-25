@@ -6,7 +6,7 @@ namespace fennecs;
 
 /// <summary>
 /// Represents a union structure that encapsulates type expressions, including Components,
-/// entity-entity relations, entity-object relations, and Wildcard expressions matching multiple.
+/// Entity-Entity relations, Entity-object relations, and Wildcard expressions matching multiple.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
 public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
@@ -56,7 +56,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <para> If <see cref="Match.Relation"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="Match.Plain"/>.</para>
     /// <para> If <see cref="Match.Entity"/>, the type expression acts as a Wildcard 
-    ///   expression that matches ONLY entity-entity relations.</para>
+    ///   expression that matches ONLY Entity-entity relations.</para>
     /// <para> If <see cref="Match.Object"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>

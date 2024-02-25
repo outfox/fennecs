@@ -9,7 +9,7 @@ namespace fennecs;
 internal struct Meta(Identity identity, Archetype archetype, int row)
 {
     /// <summary>
-    /// Archetype the entity lives in.
+    /// Archetype the Entity lives in.
     /// </summary>
     internal Archetype Archetype = archetype;
 

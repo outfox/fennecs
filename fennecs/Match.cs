@@ -40,9 +40,6 @@ public static class Match
     /// When applied to a Query's Stream Types (see <see cref="QueryBuilder{C0}"/> to <see cref="QueryBuilder{C0,C1,C2,C3,C4}"/>),
     /// the Match Expression may cause multiple iteration of Entities if the Archetype <em>has multiple</em> matching Components.
     /// </para>
-    /// <para>
-    /// <b>Cardinality 3:</b> up to three iterations per Wildcard per Archetype matching all three Component Stream Types
-    /// </para>
     /// <ul>
     /// <li>(plain Components)</li>
     /// <li>(entity-entity relations)</li>
@@ -51,23 +48,24 @@ public static class Match
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Wildcards cause CROSS JOIN type Query iteration.
+    /// ️ ⚠️ Wildcards cause CROSS JOIN type Query iteration.
     /// </para>
     /// <para>
     /// This doesn't have a negative performance impact in and of itself (querying is fast), but it multiplies the number
-    /// of times an entity is enumerated, which for large archetypes may multiply an already substantial workload by a factor
-    /// between 2^n and 3^n (with n being the number of Wildcards and 2-4 being the cardinality).
+    /// of times an entity is enumerated, which for large Archetypes may multiply an already substantial workload by a factor
+    /// of up to m<sup>n</sup> (with n being the number of Wildcards and m the number of matched components per Entity).
     /// </para>
     /// <para>
-    /// For small archetypes with simple workloads, repeat iterations are negligible compared to the overhead of starting the
+    /// For small Archetypes with simple workloads, repeat iterations are negligible compared to the overhead of starting the
     /// operation, especially when working with Jobs, see <see cref="Query{C0}.Job"/> to <see cref="Query{C0,C1,C2,C3,C4}.Job(fennecs.RefAction{C0,C1,C2,C3,C4},int)"/> 
     /// </para>
     /// <ul>
     /// <li>Confusion Risk: Query Delegates (<see cref="RefAction{C0}"/>, <see cref="SpanAction{C0}"/>, etc.) interacting with Entities matching a Wildcard multiple times will see the Entity repeatedly, once for each variant.</li>
     /// <li>Higher Workloads: In Archetypes where multiple matches exist, Entities will get enumerated once for each matched Component in an Archetype that fits the Stream Type this match
     /// applies to.</li>
-    /// <li>Cartesian Product: queries with multiple Wildcard Stream Type Match Expressions create a cartesian product when iterating an Archetype
-    /// that has multiple matching Components, complexity can be o(w^n), with w being the cardinality of n the number Wildcards (not Entities!).</li>
+    /// <li>Cartesian Product: Queries with multiple Wildcard Stream Type Match Expressions create a cartesian product when iterating an Archetype
+    /// that has multiple matching Components, complexity can be o(w^n), with w being the cardinality of n the number of Wildcard matches (not Entities!).
+    /// This number can still get very high if you have entities with many relations backed by the same type and the Stream Type Mask Expression is a matching Wildcard.</li>
     /// <li>(not a real use case) Avoid enumerating the same Stream Type multiple times with Wildcards (it's redundant even with exact matches, and 4x or 9x per type depending on Wildcard).</li>
     /// </ul> 
     /// </remarks>
@@ -82,9 +80,6 @@ public static class Match
     /// </para>
     /// <para>
     /// When this Match Expression is applied to a Query's Stream Types <see cref="Query{C0}"/> to <see cref="Query{C0,C1,C2,C3,C4}"/>, this will cause multiple iteration of Entities.
-    /// </para>
-    /// <para>
-    /// <b>Cardinality 2:</b> up to two iterations per Wildcard per Archetype matching Component  Stream Types of Components
     /// </para>
     /// <ul>
     /// <li>(entity-entity relations)</li>

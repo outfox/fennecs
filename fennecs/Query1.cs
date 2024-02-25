@@ -12,8 +12,8 @@ namespace fennecs;
 /// Queries expose methods to rapidly iterate all Entities that match their Mask and Stream Types.
 /// </para>
 /// <ul>
-/// <li><c>ForEach(...)</c> - call a delegate <see cref="RefAction{C0}"/> for each entity.</li>
-/// <li><c>Job(...)</c> - parallel process, calling a delegate <see cref="RefAction{C0}"/> for each entity.</li>
+/// <li><c>ForEach(...)</c> - call a delegate <see cref="RefAction{C0}"/> for each Entity.</li>
+/// <li><c>Job(...)</c> - parallel process, calling a delegate <see cref="RefAction{C0}"/> for each Entity.</li>
 /// <li><c>ForSpan(...)</c> - call a delegate <see cref="SpanAction{C0}"/> per matched Archetype (× matched Wildcards) of entities.</li>
 /// <li><c>Raw(...)</c> - pass Memory objects too a delegate <see cref="MemoryAction{C0}"/> per matched Archetype (× matched Wildcards) of entities.</li>
 /// </ul>

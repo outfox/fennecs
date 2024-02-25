@@ -6,7 +6,7 @@ namespace fennecs;
 
 /// <summary>
 /// Refers to an identity:
-/// real entity, tracked object, or virtual concept (e.g. any/none Wildcard).
+/// real Entity, tracked object, or virtual concept (e.g. any/none Wildcard).
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
 public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>

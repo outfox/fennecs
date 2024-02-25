@@ -74,6 +74,6 @@ internal class LanguageType<T> : LanguageType
     }
 
 
-    //FIXME: This collides with certain entity types and generations.
+    //FIXME: This collides with certain Entity types and generations.
     public static TypeID TargetId => (TypeID) (-Id);
 }

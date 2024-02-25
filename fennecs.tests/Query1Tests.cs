@@ -12,7 +12,7 @@ public class Query1Tests
 
         var query = world.Query<string>().Build();
 
-        //Create an empty table by spawning and despawning a single entity
+        //Create an empty table by spawning and despawning a single Entity
         //that matches our test Query (but is a larger Archetype)
         if (createEmptyTable)
         {
