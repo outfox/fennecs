@@ -51,7 +51,7 @@ public class Query<C0> : Query
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
                 action(span0);
-            } while (join.Iterate);
+            } while (join.Iterate());
         }
     }
 
@@ -73,7 +73,7 @@ public class Query<C0> : Query
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
                 action(span0, uniform);
-            } while (join.Iterate);
+            } while (join.Iterate());
         }
     }
 
@@ -94,7 +94,7 @@ public class Query<C0> : Query
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
                 foreach (ref var c0 in span0) action(ref c0);
-            } while (join.Iterate);
+            } while (join.Iterate());
         }
     }
 
@@ -120,7 +120,7 @@ public class Query<C0> : Query
                 {
                     action(ref c0, uniform);
                 }
-            } while (join.Iterate);
+            } while (join.Iterate());
         }
     }
 
@@ -161,7 +161,7 @@ public class Query<C0> : Query
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (join.Iterate);
+            } while (join.Iterate());
         }
 
         Countdown.Signal();
@@ -209,7 +209,7 @@ public class Query<C0> : Query
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (join.Iterate);
+            } while (join.Iterate());
         }
 
         Countdown.Signal();
@@ -235,7 +235,7 @@ public class Query<C0> : Query
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
                 action(mem0);
-            } while (join.Iterate);
+            } while (join.Iterate());
         }
     }
 
@@ -256,7 +256,7 @@ public class Query<C0> : Query
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
                 action(mem0, uniform);
-            } while (join.Iterate);
+            } while (join.Iterate());
         }
     }
 

@@ -153,13 +153,14 @@ public static class Match
         /// </summary>
         internal C0[] Select => _storages0[_counter[0]];
 
+
         /// <summary>
         /// Ticks the internal counter of the Join operation, readying the next permutation to use in <see cref="Select"/>.
         /// </summary>
         /// <returns>
         /// <c>true</c> if permutation exists<br/><c>false</c> if the Cross Join has exhausted all permutations.
         /// </returns>
-        internal bool Iterate => CrossJoin(_counter, _limiter);
+        internal bool Iterate() => CrossJoin(_counter, _limiter);
 
 
         public void Dispose()
