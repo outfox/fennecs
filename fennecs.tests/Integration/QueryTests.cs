@@ -410,4 +410,45 @@ public class QueryTests
         gotten = 42;
         Assert.Equal(42, query.Ref<int>(identity));
     }
+
+    [Fact]
+    private void Contains_Like_Enumerable()
+    {
+        using var world = new World();
+        var entity23 = world.Spawn().Add(23);
+        var entity42 = world.Spawn().Add(42);
+
+        var query = world.Query<int>().Build();
+        Assert.Contains(entity23, query);
+        Assert.Contains(entity42, query);
+    }
+    
+    
+    [Fact]
+    private void Indexer()
+    {
+        using var world = new World();
+        var entity23 = world.Spawn().Add(23);
+        var entity42 = world.Spawn().Add(42);
+
+        var query = world.Query<int>().Build();
+        Assert.Equal(entity23, query[0]);
+        Assert.Equal(entity42, query[1]);
+    }
+    
+    
+    [Fact]
+    private void Indexer_Throws_When_Out_Of_Range()
+    {
+        using var world = new World();
+        var query = world.Query<int>().Build();
+        Assert.Throws<IndexOutOfRangeException>(() => query[0]);
+        Assert.Throws<IndexOutOfRangeException>(() => query[-1]);
+        Assert.Throws<IndexOutOfRangeException>(() => query[1]);
+
+        var entity = world.Spawn().Add(23);
+        Assert.Equal(entity, query[0]);
+        Assert.Throws<IndexOutOfRangeException>(() => query[-1]);
+        Assert.Throws<IndexOutOfRangeException>(() => query[1]);
+    }
 }

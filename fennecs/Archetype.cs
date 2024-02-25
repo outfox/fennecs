@@ -304,4 +304,6 @@ internal sealed class Archetype : IEnumerable<Entity>
     {
         return GetEnumerator();
     }
+
+    public Entity this[int index] => new(_world, _identities[index]);
 }

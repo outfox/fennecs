@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.Diagnostics;
 
 namespace fennecs;
 
@@ -106,6 +107,71 @@ public class Query : IEnumerable<Entity>, IDisposable
         AssertNotDisposed();
         Archetypes.Add(archetype);
     }
+
+    #region Random Access
+    /// <summary>
+    /// Does this query match any entities?
+    /// </summary>
+    public bool IsEmpty => Count == 0;
+    
+    /// <summary>
+    /// Returns a Random Entity matched by this Query.
+    /// </summary>
+    /// <exception cref="IndexOutOfRangeException">if the Query <see cref="IsEmpty"/></exception>
+    public Entity Pick()
+    {
+        AssertNotDisposed();
+        if (Count == 0) throw new IndexOutOfRangeException("Query is empty.");
+        return this[Random.Shared.Next(Count)];
+    }
+
+    /// <summary>
+    /// Returns the <see cref="Entity"/> at the given <em>momentary position</em> in the Query.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// DO NOT use indexes to identify Entities across frames or World modifications.
+    /// </para>
+    /// <para>
+    /// Instead, use the Entities themselves.
+    /// </para>
+    /// <para>
+    /// The reason is that a Query can gain and lose both <b>Entities</b> and <b>Archetypes</b> over time.
+    /// This affects the <see cref="Count"/> of the Query, similar to how changing an <see cref="ICollection{T}"/>
+    /// would change its <see cref="ICollection{T}.Count"/> and positions. Treat the Entity returned as a <em>momentary result</em>
+    /// for that index, which <em>should not be kept or tracked</em> across World modifications or even scopes.
+    /// </para>
+    /// <para>
+    /// The Entity returned is, of course, usable as expected.
+    /// </para>
+    /// </remarks>
+    /// <param name="index">a value between 0 and <see cref="Count"/></param>
+    public Entity this[int index]
+    {
+        get
+        {
+            AssertNotDisposed();
+            
+            if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
+
+            World.Lock();
+            foreach (var table in Archetypes)
+            {
+                if (index < table.Count)
+                {
+                    var result = table[index];
+                    World.Unlock();
+                    return result;
+                }
+                index -= table.Count;
+            }
+            
+            Debug.Fail("Query not empty, but no entity found.");
+            World.Unlock();
+            return default;
+        }
+    }
+    #endregion
 
     #region IDisposable Implementation
 

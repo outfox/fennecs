@@ -247,7 +247,7 @@ public partial class World
 
     #endregion
 
-
+    //TODO: Make this an IDisposable somehow.
     internal void Lock()
     {
         lock (_modeChangeLock)

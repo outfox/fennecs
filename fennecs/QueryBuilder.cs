@@ -24,6 +24,11 @@ public class QueryBuilder : IDisposable
         World = world;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="target"></param>
+    /// <typeparam name="T"></typeparam>
     protected void Outputs<T>(Identity target = default)
     {
         var typeExpression = TypeExpression.Create<T>(target);
