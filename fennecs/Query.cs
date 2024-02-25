@@ -35,11 +35,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     private protected readonly World World;
     protected internal readonly Mask Mask;
 
-    // The counters backing the Query's Cross Join.
-    // CAVEAT: stackalloc prevents inlining, thus we preallocate.
-    protected readonly int[] Counter;
-    protected readonly int[] Limiter;
-
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes)
     {
@@ -47,9 +42,6 @@ public class Query : IEnumerable<Entity>, IDisposable
         Archetypes = archetypes;
         World = world;
         Mask = mask;
-
-        Counter = new int[StreamTypes.Length];
-        Limiter = new int[StreamTypes.Length];
     }
 
     #endregion
@@ -212,7 +204,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
         GC.SuppressFinalize(this);
-        
+
         AssertNotDisposed();
 
         Archetypes.Clear();

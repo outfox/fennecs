@@ -3,11 +3,12 @@
 public class ReferenceStore(int capacity = 4096)
 {
     private readonly Dictionary<Identity, StoredReference<object>> _storage = new(capacity);
-    
+
+
     public Identity Request<T>(T item) where T : class
     {
         ArgumentNullException.ThrowIfNull(nameof(item));
-        
+
         var identity = Identity.Of(item);
 
         lock (_storage)
@@ -36,7 +37,8 @@ public class ReferenceStore(int capacity = 4096)
             return identity;
         }
     }
-    
+
+
     public T Get<T>(Identity identity) where T : class
     {
         lock (_storage)
@@ -45,12 +47,12 @@ public class ReferenceStore(int capacity = 4096)
             {
                 throw new KeyNotFoundException($"Identity is not tracking an instance of {typeof(T)}.");
             }
-            
+
             return (T) reference.Item;
         }
     }
-    
-    
+
+
     public void Release(Identity identity)
     {
         lock (_storage)
@@ -73,6 +75,7 @@ public class ReferenceStore(int capacity = 4096)
             }
         }
     }
+
 
     internal struct StoredReference<T>
     {

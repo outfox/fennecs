@@ -25,12 +25,6 @@ public class Query<C0> : Query
 {
     #region Internals
 
-    // The counters backing the Query's Cross Join.
-    // CAVEAT: stackalloc prevents inlining, thus we preallocate.
-    private readonly int[] _counter = new int[1];
-    private readonly int[] _limiter = new int[1];
-
-
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
@@ -51,16 +45,13 @@ public class Query<C0> : Query
             if (table.IsEmpty) continue;
             var count = table.Count;
 
-            using var storages0 = table.Match<C0>(StreamTypes[0]);
-
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-
+            using var join = table.CrossJoin<C0>(StreamTypes);
             do
             {
-                var span0 = storages0[_counter[0]].AsSpan(0, count);
+                var s0 = join.Select;
+                var span0 = s0.AsSpan(0, count);
                 action(span0);
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (join.Permutate);
         }
     }
 
@@ -76,16 +67,13 @@ public class Query<C0> : Query
             if (table.IsEmpty) continue;
             var count = table.Count;
 
-            using var storages0 = table.Match<C0>(StreamTypes[0]);
-
-            _counter[0] = 0;
-            _limiter[0] = storages0.Count;
-
+            using var join = table.CrossJoin<C0>(StreamTypes);
             do
             {
-                var span0 = storages0[_counter[0]].AsSpan(0, count);
+                var s0 = join.Select;
+                var span0 = s0.AsSpan(0, count);
                 action(span0, uniform);
-            } while (Match.CrossJoin(_counter, _limiter));
+            } while (join.Permutate);
         }
     }
 
@@ -98,13 +86,13 @@ public class Query<C0> : Query
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
+            var count = table.Count;
 
             using var join = table.CrossJoin<C0>(StreamTypes);
-
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, table.Count);
+                var span0 = s0.AsSpan(0, count);
                 foreach (ref var c0 in span0) action(ref c0);
             } while (join.Permutate);
         }
@@ -121,12 +109,13 @@ public class Query<C0> : Query
         {
             if (table.IsEmpty) continue;
 
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            var count = table.Count;
 
+            using var join = table.CrossJoin<C0>(StreamTypes);
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, table.Count);
+                var span0 = s0.AsSpan(0, count);
                 foreach (ref var c0 in span0)
                 {
                     action(ref c0, uniform);
@@ -150,7 +139,6 @@ public class Query<C0> : Query
             if (table.IsEmpty) continue;
 
             using var join = table.CrossJoin<C0>(StreamTypes);
-
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
@@ -211,7 +199,7 @@ public class Query<C0> : Query
                     var length = Math.Min(chunkSize, count - start);
 
                     var s0 = join.Select;
-                    
+
                     var job = JobPool<UniformWork<C0, U>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Action = action;

@@ -7,12 +7,14 @@ public class IdentityPool(int capacity = 4096)
 
     private readonly Queue<Identity> _recycled = new(capacity);
 
+
     public Identity Spawn()
     {
         if (_recycled.TryDequeue(out var recycledIdentity)) return recycledIdentity;
-        
+
         return new Identity(++Living);
     }
+
 
     public void Despawn(Identity identity)
     {

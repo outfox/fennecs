@@ -20,8 +20,6 @@ public class Query<C0, C1> : Query<C0>
 
     #region Runners
 
-    
-    
     public void ForSpan(SpanAction<C0, C1> action)
     {
         AssertNotDisposed();
@@ -37,7 +35,7 @@ public class Query<C0, C1> : Query<C0>
             do
             {
                 var (s0, s1) = join.Select;
-                
+
                 var span0 = s0.AsSpan(0, count);
                 var span1 = s1.AsSpan(0, count);
                 action(span0, span1);
@@ -127,7 +125,7 @@ public class Query<C0, C1> : Query<C0>
             if (table.IsEmpty) continue;
 
             using var join = table.CrossJoin<C0, C1>(StreamTypes);
-            
+
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
             do
@@ -140,6 +138,7 @@ public class Query<C0, C1> : Query<C0>
                     var length = Math.Min(chunkSize, count - start);
 
                     var (s0, s1) = join.Select;
+
                     var job = JobPool<Work<C0, C1>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
@@ -173,7 +172,7 @@ public class Query<C0, C1> : Query<C0>
             if (table.IsEmpty) continue;
 
             using var join = table.CrossJoin<C0, C1>(StreamTypes);
-            
+
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
             do
@@ -186,7 +185,7 @@ public class Query<C0, C1> : Query<C0>
                     var length = Math.Min(chunkSize, count - start);
 
                     var (s0, s1) = join.Select;
-                    
+
                     var job = JobPool<UniformWork<C0, C1, U>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
@@ -243,7 +242,7 @@ public class Query<C0, C1> : Query<C0>
             do
             {
                 var (s0, s1) = join.Select;
-                var mem0 = s0.AsMemory(0, table.Count); 
+                var mem0 = s0.AsMemory(0, table.Count);
                 var mem1 = s1.AsMemory(0, table.Count);
                 action(mem0, mem1, uniform);
             } while (join.Permutate);

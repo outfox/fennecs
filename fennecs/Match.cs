@@ -171,7 +171,6 @@ public static class Match
     }
 
 
-
     /// <summary>
     /// Cross-Joins the Archetype with a list of StreamTypes.
     /// </summary>
@@ -210,7 +209,6 @@ public static class Match
             ArrayPool<int>.Shared.Return(_limiter);
         }
     }
-
 
 
     /// <summary>
@@ -269,7 +267,8 @@ public static class Match
         private readonly PooledList<C1[]> _storages1;
         private readonly PooledList<C2[]> _storages2;
         private readonly PooledList<C3[]> _storages3;
-        
+
+
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
@@ -285,11 +284,13 @@ public static class Match
             _limiter[2] = _storages2.Count;
             _limiter[3] = _storages3.Count;
         }
-        
+
+
         internal (C0[], C1[], C2[], C3[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]], _storages3[_counter[3]]);
-        
+
         internal bool Permutate => CrossJoin(_counter, _limiter);
-        
+
+
         public void Dispose()
         {
             _storages0.Dispose();
@@ -315,8 +316,8 @@ public static class Match
         private readonly PooledList<C2[]> _storages2;
         private readonly PooledList<C3[]> _storages3;
         private readonly PooledList<C4[]> _storages4;
-        
-        
+
+
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
@@ -334,11 +335,13 @@ public static class Match
             _limiter[3] = _storages3.Count;
             _limiter[4] = _storages4.Count;
         }
-        
+
+
         internal (C0[], C1[], C2[], C3[], C4[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]], _storages3[_counter[3]], _storages4[_counter[4]]);
-        
+
         internal bool Permutate => CrossJoin(_counter, _limiter);
-        
+
+
         public void Dispose()
         {
             _storages0.Dispose();
@@ -352,5 +355,4 @@ public static class Match
     }
 
     #endregion
-
 }
