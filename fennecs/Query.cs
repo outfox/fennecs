@@ -61,10 +61,13 @@ public class Query : IEnumerable<Entity>, IDisposable
     public ref C Ref<C>(Entity entity, Identity match = default)
     {
         AssertNotDisposed();
+        
+        if (entity._world != World) throw new InvalidOperationException("Entity is not from this World.");
         World.AssertAlive(entity);
         
         if (!Contains<C>(match)) throw new TypeAccessException("Query does not match this Component type.");
         if (!Contains(entity)) throw new KeyNotFoundException("Entity not in Query.");
+
         //TODO: Maybe it's possible to lock the World for the lifetime of the ref?
         return ref World.GetComponent<C>(entity, match);
     }
