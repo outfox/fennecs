@@ -52,17 +52,21 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
-    /// <param name="identity"></param>
-    /// <param name="target"></param>
+    /// <param name="entity">the entity to get the component from</param>
+    /// <param name="match">Match Expression for the component type <see cref="Match"/></param>
     /// <typeparam name="C">any Component type</typeparam>
-    /// <returns>ref C, the Component.</returns>
+    /// <returns>ref C, reference to the Component</returns>
+    /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for Entity entity.</exception>
-    public ref C Ref<C>(Identity identity, Identity target = default)
+    public ref C Ref<C>(Entity entity, Identity match = default)
     {
         AssertNotDisposed();
-        //TODO: Returning this ref should lock the world for the ref's scope?
-        //TODO: This is just a facade for World.GetComponent, should it be removed?
-        return ref World.GetComponent<C>(identity, target);
+        World.AssertAlive(entity);
+        
+        if (!Contains<C>(match)) throw new KeyNotFoundException("Query does not covert the Component type.");
+        if (!Contains(entity)) throw new KeyNotFoundException("Entity not in Query.");
+        //TODO: Maybe it's possible to lock the World for the lifetime of the ref?
+        return ref World.GetComponent<C>(entity, match);
     }
 
     #endregion
@@ -97,7 +101,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     /// <summary>
-    /// True this Query matches ("contains") the Entity, and would enumerate it.
+    /// Does this Query match ("contain") the Entity, and would enumerate it?
     /// </summary>
     /// <param name="entity"></param>
     /// <returns>true if Entity is in the Query</returns>
@@ -109,6 +113,21 @@ public class Query : IEnumerable<Entity>, IDisposable
         var table = meta.Archetype;
         return Archetypes.Contains(table);
     }
+
+
+    /// <summary>
+    /// Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?
+    /// </summary>
+    /// <param name="match">Match Expression for the component type <see cref="Match"/>.
+    /// The default is <see cref="Match.Plain"/></param>
+    /// <returns>true if the Query contains the Type with the given Match Expression</returns>
+    public bool Contains<T>(Identity match = default)
+    {
+        AssertNotDisposed();
+        var typeExpression = TypeExpression.Create<T>(match);
+        return typeExpression.Matches(StreamTypes);
+    }
+
 
 
     /// <summary>

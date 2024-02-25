@@ -339,7 +339,7 @@ public partial class World
     #region Assert Helpers
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void AssertAlive(Identity identity)
+    internal void AssertAlive(Identity identity)
     {
         if (IsAlive(identity)) return;
 

@@ -377,7 +377,7 @@ public class QueryTests
         var entity = world.Spawn().Add<int>();
         world.Despawn(entity);
         Assert.False(world.IsAlive(entity));
-
+        
         var query = world.Query<int>().Build();
         Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
     }
@@ -480,5 +480,35 @@ public class QueryTests
         var query = world.Query<int>().Build();
         Assert.True(query.IsEmpty);
         Assert.Throws<IndexOutOfRangeException>(() => query.Random());
+    }
+
+
+    [Fact]
+    private void Query_Contains_Type()
+    {
+        using var world = new World();
+        var query = world.Query<int>().Build();
+        Assert.True(query.Contains<int>());
+        Assert.False(query.Contains<float>());
+    }
+
+
+    [Fact]
+    private void Query_Contains_Type_Subset()
+    {
+        using var world = new World();
+        var query = world.Query<int>(Match.Identity).Build();
+        Assert.True(query.Contains<int>(Match.Any));
+        Assert.False(query.Contains<float>(Match.Any));
+    }
+
+
+    [Fact]
+    private void Query_does_not_Contain_Type_Superset()
+    {
+        using var world = new World();
+        var query = world.Query<int>(Match.Any).Build();
+        Assert.False(query.Contains<int>(Match.Plain));
+        Assert.False(query.Contains<float>(Match.Object));
     }
 }
