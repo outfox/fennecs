@@ -10,28 +10,30 @@ namespace fennecs;
 
 public partial class World
 {
-    #region Archetypes
-
+    #region State & Storage
     private readonly IdentityPool _identityPool;
 
     private Meta[] _meta;
-
     private readonly List<Archetype> _archetypes = [];
+    private readonly Archetype _root; // "Identity" Archetype; all living Entities.
 
     private readonly Dictionary<int, Query> _queries = new();
-
-    // The "Identity" Archetype, which is the root of the Archetype Graph.
-    private readonly Archetype _root;
 
     private readonly ConcurrentQueue<DeferredOperation> _deferredOperations = new();
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
     private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
+    
+    #endregion
+    
+
+    #region Locking & Deferred Operations
+
+    private readonly object _spawnLock = new();
 
     private readonly object _modeChangeLock = new();
-    private int _locks;
-
     private Mode _mode = Mode.Immediate;
+    private int _locks;
 
 
     public struct WorldLock : IDisposable
@@ -55,32 +57,68 @@ public partial class World
         }
     }
 
-
-    internal int Count
+    private void Unlock()
     {
-        get
+        lock (_modeChangeLock)
         {
-            lock (_spawnLock)
+            if (--_locks == 0)
             {
-                return _identityPool.Count;
+                _mode = Mode.CatchUp;
+                Apply(_deferredOperations);
+                _mode = Mode.Immediate;
             }
         }
     }
 
 
-    internal void CollectTargets<T>(List<Identity> entities)
+    private void Apply(ConcurrentQueue<DeferredOperation> operations)
     {
-        var type = TypeExpression.Create<T>(Match.Any);
-
-        // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
-        foreach (var candidate in _tablesByType.Keys)
+        while (operations.TryDequeue(out var op))
         {
-            if (type.Matches(candidate)) entities.Add(candidate.Target);
+            AssertAlive(op.Identity);
+
+            switch (op.Opcode)
+            {
+                case Opcode.Add:
+                    AddComponent(op.Identity, op.TypeExpression, op.Data);
+                    break;
+                case Opcode.Remove:
+                    RemoveComponent(op.Identity, op.TypeExpression);
+                    break;
+                case Opcode.Despawn:
+                    Despawn(op.Identity);
+                    break;
+            }
         }
     }
 
 
-    private readonly object _spawnLock = new();
+    internal struct DeferredOperation
+    {
+        internal required Opcode Opcode;
+        internal TypeExpression TypeExpression;
+        internal Identity Identity;
+        internal object Data;
+    }
+
+    internal enum Opcode
+    {
+        Add,
+        Remove,
+        Despawn,
+    }
+
+    private enum Mode
+    {
+        Immediate = default,
+        CatchUp,
+        Deferred,
+        //Bulk
+    }
+
+    #endregion
+
+
 
 
     #region CRUD
@@ -190,6 +228,7 @@ public partial class World
 
     #endregion
 
+    #region Queries
     internal Query GetQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
         if (_queries.TryGetValue(mask, out var query))
@@ -271,67 +310,21 @@ public partial class World
         return table;
     }
 
+
+
+    internal void CollectTargets<T>(List<Identity> entities)
+    {
+        var type = TypeExpression.Create<T>(Match.Any);
+
+        // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
+        foreach (var candidate in _tablesByType.Keys)
+        {
+            if (type.Matches(candidate)) entities.Add(candidate.Target);
+        }
+    }
+    
     #endregion
 
-
-    private void Unlock()
-    {
-        lock (_modeChangeLock)
-        {
-            if (--_locks == 0)
-            {
-                _mode = Mode.CatchUp;
-                Apply(_deferredOperations);
-                _mode = Mode.Immediate;
-            }
-        }
-    }
-
-
-    private void Apply(ConcurrentQueue<DeferredOperation> operations)
-    {
-        while (operations.TryDequeue(out var op))
-        {
-            AssertAlive(op.Identity);
-
-            switch (op.Opcode)
-            {
-                case Opcode.Add:
-                    AddComponent(op.Identity, op.TypeExpression, op.Data);
-                    break;
-                case Opcode.Remove:
-                    RemoveComponent(op.Identity, op.TypeExpression);
-                    break;
-                case Opcode.Despawn:
-                    Despawn(op.Identity);
-                    break;
-            }
-        }
-    }
-
-
-    internal struct DeferredOperation
-    {
-        internal required Opcode Opcode;
-        internal TypeExpression TypeExpression;
-        internal Identity Identity;
-        internal object Data;
-    }
-
-    internal enum Opcode
-    {
-        Add,
-        Remove,
-        Despawn,
-    }
-
-    private enum Mode
-    {
-        Immediate = default,
-        CatchUp,
-        Deferred,
-        //Bulk
-    }
 
     #region Assert Helpers
 

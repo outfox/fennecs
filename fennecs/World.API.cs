@@ -54,6 +54,10 @@ public partial class World : IDisposable
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
     public bool IsAlive(Identity identity) => identity.IsEntity && identity == _meta[identity.Index].Identity;
 
+    /// <summary>
+    /// The number of living entities in the World.
+    /// </summary>
+    public int Count => _identityPool.Count;
     #endregion
 
     #region Bulk Operations
