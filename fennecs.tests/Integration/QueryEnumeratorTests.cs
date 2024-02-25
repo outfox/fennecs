@@ -12,7 +12,7 @@ public static class QueryEnumeration
             bothEntities = [];
             anyEntities = [];
 
-            var world = new World();
+            using var world = new World();
 
             for (int i = 0; i < 234; i++)
             {

@@ -7,7 +7,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     [Fact]
     public void Table_String_Contains_Types()
     {
-        var world = new World();
+        using var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
 
         var table = world.GetEntityMeta(identity).Archetype;
@@ -22,7 +22,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     [Fact]
     public void Table_Resizing_Fails_On_Wrong_Size()
     {
-        var world = new World();
+        using var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
 
         var table = world.GetEntityMeta(identity).Archetype;
@@ -34,7 +34,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     [Fact]
     public void Table_Resizing_Matches_Length()
     {
-        var world = new World();
+        using var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
 
         var table = world.GetEntityMeta(identity).Archetype;
@@ -50,7 +50,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     [Fact]
     public void Table_GetStorage_Returns_System_Array()
     {
-        var world = new World();
+        using var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(identity).Archetype;
         var storage = table.GetStorage(TypeExpression.Create<string>(Match.Plain));
@@ -60,7 +60,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     [Fact]
     public void Table_Matches_TypeExpression()
     {
-        var world = new World();
+        using var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
         var table = world.GetEntityMeta(identity).Archetype;
 
@@ -77,7 +77,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     [Fact]
     public void Table_Can_be_Generically_Enumerated()
     {
-        var world = new World();
+        using var world = new World();
         var other = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
         var table = world.GetEntityMeta(other).Archetype;
 

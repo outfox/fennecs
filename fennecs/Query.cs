@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.Diagnostics;
 
 namespace fennecs;
 
@@ -73,31 +74,110 @@ public class Query : IEnumerable<Entity>, IDisposable
             foreach (var entity in table) yield return entity;
     }
 
+    /// <inheritdoc cref="IEnumerable.GetEnumerator"/>
     IEnumerator IEnumerable.GetEnumerator()
     {
         AssertNotDisposed();
         return GetEnumerator();
     }
     #endregion
-    
-    public bool Contains(Identity identity)
+
+    /// <summary>
+    /// True this Query matches ("contains") the Entity, and would enumerate it.
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns>true if Entity is in the Query</returns>
+    public bool Contains(Entity entity)
     {
         AssertNotDisposed();
         
-        var meta = World.GetEntityMeta(identity);
+        var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
         return Archetypes.Contains(table);
     }
+
+    /// <summary>
+    /// The sum of all distinct Entities currently matched by this Query. 
+    /// </summary>
+    public int Count => Archetypes.Sum(t => t.Count);
+    
     
     internal void AddTable(Archetype archetype)
     {
         AssertNotDisposed();
-        
         Archetypes.Add(archetype);
     }
 
-    public int Count => Archetypes.Sum(t => t.Count);
+    #region Random Access
+    /// <summary>
+    /// Does this query match any entities?
+    /// </summary>
+    public bool IsEmpty => Count == 0;
+    
+    /// <summary>
+    /// Returns an Entity matched by this Query, selected at random.
+    /// </summary>
+    /// <exception cref="IndexOutOfRangeException">if the Query <see cref="IsEmpty"/></exception>
+    public Entity Random()
+    {
+        AssertNotDisposed();
+        if (Count == 0) throw new IndexOutOfRangeException("Query is empty.");
+        return this[System.Random.Shared.Next(Count)];
+    }
 
+    /// <summary>
+    /// Returns the <see cref="Entity"/> at the given <em>momentary position</em> in the Query.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// DO NOT use indexes to identify Entities across frames or World modifications.
+    /// </para>
+    /// <para>
+    /// Instead, use the Entities themselves.
+    /// </para>
+    /// <para>
+    /// The reason is that a Query can gain and lose both <b>Entities</b> and <b>Archetypes</b> over time.
+    /// This affects the <see cref="Count"/> of the Query, similar to how changing an <see cref="ICollection{T}"/>
+    /// would change its <see cref="ICollection{T}.Count"/> and positions. Treat the Entity returned as a <em>momentary result</em>
+    /// for that index, which <em>should not be kept or tracked</em> across World modifications or even scopes.
+    /// </para>
+    /// <para>
+    /// The Entity returned is, of course, usable as expected.
+    /// </para>
+    /// </remarks>
+    /// <param name="index">a value between 0 and <see cref="Count"/></param>
+    public Entity this[int index]
+    {
+        get
+        {
+            AssertNotDisposed();
+            
+            if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
+
+            using var lck = World.Lock;
+            foreach (var table in Archetypes)
+            {
+                if (index < table.Count)
+                {
+                    var result = table[index];
+                    
+                    return result;
+                }
+                index -= table.Count;
+            }
+            
+            Debug.Fail("Query not empty, but no entity found.");
+            
+            return default;
+        }
+    }
+    #endregion
+
+    #region IDisposable Implementation
+
+    /// <summary>
+    /// Dispose the Query.
+    /// </summary>
     public void Dispose()
     {
         AssertNotDisposed();
@@ -107,35 +187,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         World.RemoveQuery(this);
         Mask.Dispose();
     }
-
     
-    internal static bool CrossJoin(Span<int> counter, Span<int> limiter)
-    {
-        // Loop through all counters, counting up to goal and wrapping until saturated
-        // Example: 0-0-0 to 1-3-2:
-        // 000 -> 010 -> 020 -> 001 -> 011 -> 021 -> 002 -> 012 -> 022 -> 032
-
-        for (var i = 0; i < counter.Length; i++)
-        {
-            // Increment the current counter
-            counter[i]++;
-
-            // Successful increment?
-            if (counter[i] < limiter[i]) return true;
-            
-            // Current counter reached its goal, reset it and move to the next
-            counter[i] = 0;
-
-            //Continue until last counter fills up
-            if (i == counter.Length - 1) break;
-        }
-        
-        return false;
-    }
-
-
-    
-
     protected void AssertNotDisposed()
     {
         if (!disposed) return;
@@ -143,6 +195,8 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
     
     private bool disposed { get; set; }
+    
+    #endregion
 }
 
 // ReSharper disable InconsistentNaming

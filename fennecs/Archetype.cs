@@ -19,8 +19,6 @@ internal sealed class Archetype : IEnumerable<Entity>
         internal Archetype? Remove;
     }
 
-    private readonly World _world;
-    
     private const int StartCapacity = 4;
     
     public readonly ImmutableSortedSet<TypeExpression> Types;
@@ -34,7 +32,7 @@ internal sealed class Archetype : IEnumerable<Entity>
 
     public int Capacity => _identities.Length;
 
-    private readonly World _archetypes;
+    private readonly World _world;
 
     private Identity[] _identities;
 
@@ -56,12 +54,11 @@ internal sealed class Archetype : IEnumerable<Entity>
     private int _version;
 
 
-    public Archetype(World archetypes, ImmutableSortedSet<TypeExpression> types, World world)
+    public Archetype(World world, ImmutableSortedSet<TypeExpression> types)
     {
-        _archetypes = archetypes;
+        _world = world;
 
         Types = types;
-        _world = world;
 
         _identities = new Identity[StartCapacity];
 
@@ -190,7 +187,7 @@ internal sealed class Archetype : IEnumerable<Entity>
                 Array.Copy(storage, Count, storage, row, 1);
             }
 
-            _archetypes.GetEntityMeta(_identities[row]).Row = row;
+            _world.GetEntityMeta(_identities[row]).Row = row;
         }
 
         // Free the last row
@@ -307,4 +304,6 @@ internal sealed class Archetype : IEnumerable<Entity>
     {
         return GetEnumerator();
     }
+
+    public Entity this[int index] => new(_world, _identities[index]);
 }

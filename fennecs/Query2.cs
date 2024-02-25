@@ -22,7 +22,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -42,10 +42,10 @@ public class Query<C0, C1> : Query<C0>
                 var span0 = storages0[_counter[0]].AsSpan(0, count);
                 var span1 = storages1[_counter[1]].AsSpan(0, count);
                 action(span0, span1);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
     
@@ -53,7 +53,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -73,10 +73,10 @@ public class Query<C0, C1> : Query<C0>
                 var span0 = storages0[_counter[0]].AsSpan(0, count);
                 var span1 = storages1[_counter[1]].AsSpan(0, count);
                 action(span0, span1, uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
 
@@ -84,7 +84,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
@@ -102,17 +102,17 @@ public class Query<C0, C1> : Query<C0>
                 var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
                 var span1 = storages1[_counter[1]].AsSpan(0, table.Count);
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i]);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
     public void ForEach<U>(RefActionU<C0, C1, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -131,17 +131,17 @@ public class Query<C0, C1> : Query<C0>
                 var span0 = storages0[_counter[0]].AsSpan(0, table.Count);
                 var span1 = storages1[_counter[1]].AsSpan(0, table.Count);
                 for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
     public void Job(RefAction<C0, C1> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
         
-        World.Lock();
+        using var lck = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0, C1>>.Rent();
@@ -178,7 +178,7 @@ public class Query<C0, C1> : Query<C0>
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
@@ -186,14 +186,14 @@ public class Query<C0, C1> : Query<C0>
 
         JobPool<Work<C0, C1>>.Return(jobs);
 
-        World.Unlock();
+        
     }
 
     public void Job<U>(RefActionU<C0, C1, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C0, C1, U>>.Rent();
@@ -231,7 +231,7 @@ public class Query<C0, C1> : Query<C0>
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
         Countdown.Signal();
@@ -239,14 +239,14 @@ public class Query<C0, C1> : Query<C0>
 
         JobPool<UniformWork<C0, C1, U>>.Return(jobs);
 
-        World.Unlock();
+        
     }
 
     public void Raw(MemoryAction<C0, C1> action)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -265,17 +265,17 @@ public class Query<C0, C1> : Query<C0>
                 var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
                 var mem1 = storages1[_counter[1]].AsMemory(0, table.Count);
                 action(mem0, mem1);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
     public void Raw<U>(MemoryActionU<C0, C1, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -294,9 +294,9 @@ public class Query<C0, C1> : Query<C0>
                 var mem0 = storages0[_counter[0]].AsMemory(0, table.Count);
                 var mem1 = storages1[_counter[1]].AsMemory(0, table.Count);
                 action(mem0, mem1, uniform);
-            } while (CrossJoin(_counter, _limiter));
+            } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 }

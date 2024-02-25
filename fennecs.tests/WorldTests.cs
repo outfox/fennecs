@@ -3,18 +3,20 @@ namespace fennecs.tests;
 public class WorldTests
 {
     [Fact]
-    public World World_Creates()
+    public void World_Creates()
     {
-        var world = new World();
+        using var world = new World();
         Assert.NotNull(world);
-        return world;
     }
+
 
     [Fact]
     public void World_Disposes()
     {
-        using var world = World_Creates();
+        var world = new World();
+        world.Dispose();
     }
+
 
     [Fact]
     public void World_Spawns_valid_Entities()
@@ -25,6 +27,7 @@ public class WorldTests
         Assert.False(entity.Id.IsVirtual);
         Assert.False(entity.Id.IsObject);
     }
+
 
     [Fact]
     public void World_Count_Accurate()
@@ -42,6 +45,7 @@ public class WorldTests
         world.On(e2.Id).Add(new { });
         Assert.Equal(2, world.Count);
     }
+
 
     [Fact]
     public void Can_Find_Targets_of_Relation()
@@ -122,17 +126,17 @@ public class WorldTests
     }
 
 
-
     [Fact]
     public void Adding_Component_in_Deferred_Mode_Is_Deferred()
     {
         using var world = new World();
         var identity = world.Spawn().Id;
-        world.Lock();
+        var lck = world.Lock;
+
         world.On(identity).Add(666);
         Assert.False(world.HasComponent<int>(identity));
         Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(identity));
-        world.Unlock();
+        lck.Dispose();
         Assert.True(world.HasComponent<int>(identity));
         Assert.Equal(666, world.GetComponent<int>(identity));
     }
@@ -142,99 +146,102 @@ public class WorldTests
     public void Can_Lock_and_Unlock_World()
     {
         using var world = new World();
-        world.Lock();
-        world.Unlock();
+        using var lck = world.Lock;
     }
 
+
     [Fact]
-    public void Cannot_Lock_Locked_World()
+    public void Can_Lock_Locked_World()
     {
         using var world = new World();
-        world.Lock();
-        Assert.Throws<InvalidOperationException>(() => world.Lock());
+        using var lck = world.Lock;
     }
 
+
     [Fact]
-    public void Cannot_Unlock_Unlocked_World()
+    public void Apply_Can_Spawn_while_Locked()
     {
         using var world = new World();
-        Assert.Throws<InvalidOperationException>(() => world.Unlock());
+        using var lck = world.Lock;
+        var entity = world.Spawn();
+        Assert.True(world.IsAlive(entity));
     }
 
-    [Fact]
-    public void Can_apply_deferred_Spawn()
-    {
-        using var world = new World();
-        world.Lock();
-        var identity = world.Spawn().Id;
-        world.Unlock();
-        Assert.True(world.IsAlive(identity));
-    }
 
     [Fact]
-    public void Can_apply_deferred_Add()
+    public void Apply_Deferred_Add()
     {
         using var world = new World();
         var identity = world.Spawn().Id;
-        world.Lock();
+        
+        var lck = world.Lock;
         world.On(identity).Add(666);
+        
         Assert.False(world.HasComponent<int>(identity));
-        world.Unlock();
+        lck.Dispose();
+        
         Assert.True(world.HasComponent<int>(identity));
         Assert.Equal(666, world.GetComponent<int>(identity));
     }
 
+
     [Fact]
-    public void Can_apply_deferred_Remove()
+    public void Apply_Deferred_Remove()
     {
         using var world = new World();
         var identity = world.Spawn().Add(666).Id;
-        world.Lock();
+        var lck = world.Lock;
         world.On(identity).Remove<int>();
-        world.Unlock();
+
+        lck.Dispose();
         Assert.False(world.HasComponent<int>(identity));
     }
 
-    [Fact]
-    public void Can_apply_deferred_Despawn()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Add(666).Add("hallo").Id;
-        world.Lock();
-        world.Despawn(identity);
-        Assert.True(world.IsAlive(identity));
-        world.Unlock();
-        Assert.False(world.IsAlive(identity));
-    }
 
     [Fact]
-    public void Can_apply_deferred_Relation()
+    public void Apply_Deferred_Despawn()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(666).Add("hallo");
+        var lck = world.Lock;
+        world.Despawn(entity);
+        Assert.True(world.IsAlive(entity));
+        lck.Dispose();
+        Assert.False(world.IsAlive(entity));
+    }
+
+
+    [Fact]
+    public void Apply_Deferred_Relation()
     {
         using var world = new World();
         var identity = world.Spawn();
         var target = world.Spawn();
-        world.Lock();
+        
+        var lck = world.Lock;
         world.On(identity).AddRelation(target, 666);
         Assert.False(world.HasRelation<int>(identity, target));
-        world.Unlock();
+        lck.Dispose();
         Assert.True(world.HasRelation<int>(identity, target));
     }
 
+
     [Fact]
-    public void Can_apply_deferred_Relation_Remove()
+    public void Apply_Deferred_Relation_Remove()
     {
         using var world = new World();
         var identity = world.Spawn();
         var target = world.Spawn();
-        world.Lock();
+        using var lck = world.Lock;
         world.On(identity).AddRelation(target, 666);
         world.On(identity).RemoveRelation<int>(target);
         Assert.False(world.HasComponent<int>(identity));
         Assert.False(world.HasComponent<int>(target));
-        world.Unlock();
+
         Assert.False(world.HasComponent<int>(identity));
         Assert.False(world.HasComponent<int>(target));
     }
+
 
     [Fact]
     private void Can_Remove_Components_in_Reverse_Order()
@@ -247,6 +254,7 @@ public class WorldTests
         Assert.False(world.HasComponent<string>(identity));
     }
 
+
     [Fact]
     private void Can_Test_for_Entity_Relation_Component_Presence()
     {
@@ -257,35 +265,39 @@ public class WorldTests
         Assert.True(world.HasRelation<int>(identity, target));
     }
 
+
     [Fact]
     private void Can_Test_for_Type_Relation_Component_Presence()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
+        var entity = world.Spawn();
         object target = new { };
-        world.On(identity).AddLink(target);
-        Assert.True(world.HasLink(identity, target));
+        world.On(entity).AddLink(target);
+        Assert.True(world.HasLink(entity, target));
     }
+
 
     [Fact]
     private void Can_Add_Component_with_T_new()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
-        world.AddComponent<NewableStruct>(identity);
-        Assert.True(world.HasComponent<NewableStruct>(identity));
+        var entity = world.Spawn();
+        world.AddComponent<NewableStruct>(entity);
+        Assert.True(world.HasComponent<NewableStruct>(entity));
     }
+
 
     [Fact]
     private void Can_Remove_Component_with_Object_and_Entity_Target()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
+        var entity = world.Spawn();
         object target = new { };
-        world.On(identity).AddLink(target);
-        world.RemoveLink(identity, target);
-        Assert.False(world.HasLink(identity, target));
+        world.On(entity).AddLink(target);
+        world.RemoveLink(entity, target);
+        Assert.False(world.HasLink(entity, target));
     }
+
 
     [Fact]
     private void Can_Relate_Over_Entity()
@@ -298,6 +310,7 @@ public class WorldTests
         Assert.True(world.HasRelation<Identity>(identity, other));
     }
 
+
     [Fact]
     private void Cannot_Add_null_Component_Data()
     {
@@ -306,6 +319,7 @@ public class WorldTests
         Assert.Throws<ArgumentNullException>(() => world.On(identity).Add<string>(null!));
     }
 
+
     [Fact]
     private void GetEntity_and_On_return_same_Identity()
     {
@@ -313,5 +327,73 @@ public class WorldTests
         var entity = world.Spawn();
         Assert.Equal(entity, world.GetEntity(entity.Id));
         Assert.Equal(entity, world.On(entity.Id));
+    }
+
+
+    [Fact]
+    private void Can_Despawn_All_With_Plain()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add("hallo");
+        var entity2 = world.Spawn().AddLink("to the past");
+        var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
+        var entity4 = world.Spawn().Add(666);
+        world.DespawnAllWith<string>(Match.Plain);
+        Assert.False(world.IsAlive(entity1));
+        Assert.True(world.IsAlive(entity2));
+        Assert.True(world.IsAlive(entity3));
+        Assert.True(world.IsAlive(entity4));
+    }
+
+
+    [Fact]
+    private void Can_Despawn_All_With_Any()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add("hallo");
+        var entity2 = world.Spawn().AddLink("to the past");
+        var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
+        var entity4 = world.Spawn().Add(666);
+        world.DespawnAllWith<string>(Match.Any);
+        Assert.False(world.IsAlive(entity1));
+        Assert.False(world.IsAlive(entity2));
+        Assert.False(world.IsAlive(entity3));
+        Assert.True(world.IsAlive(entity4));
+    }
+
+
+    [Fact]
+    private void Can_Despawn_All_With_Object()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add("hallo");
+        var entity2 = world.Spawn().AddLink("to the past");
+        var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
+        var entity4 = world.Spawn().Add(666);
+        world.DespawnAllWith<string>(Match.Object);
+        Assert.True(world.IsAlive(entity1));
+        Assert.False(world.IsAlive(entity2));
+        Assert.True(world.IsAlive(entity3));
+        Assert.True(world.IsAlive(entity4));
+    }
+
+
+    [Fact]
+    private void Can_Despawn_All_With_Relation()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add("hallo");
+        var entity2 = world.Spawn().AddLink("to the past");
+        var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
+        var entity4 = world.Spawn().Add(666);
+        world.DespawnAllWith<string>(Match.Relation);
+        Assert.True(world.IsAlive(entity1));
+        Assert.False(world.IsAlive(entity2));
+        Assert.False(world.IsAlive(entity3));
+        Assert.True(world.IsAlive(entity4));
     }
 }

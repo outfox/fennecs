@@ -5,10 +5,10 @@ public class Match2Tests
     private readonly World _world;
     
     // string may be interned or not
-    const string OBJECT1 = "hello world";
-    const string OBJECT2 = "fly, you fools";
-    const string NONE1 = "can't touch this";
-    const string RELATION1 = "IOU";
+    private const string OBJECT1 = "hello world";
+    private const string OBJECT2 = "fly, you fools";
+    private const string NONE1 = "can't touch this";
+    private const string RELATION1 = "IOU";
     
     public Match2Tests()
     {
