@@ -29,8 +29,32 @@ public partial class World
     private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
 
     private readonly object _modeChangeLock = new();
+    private int _locks;
 
     private Mode _mode = Mode.Immediate;
+
+
+    public struct WorldLock : IDisposable
+    {
+        private World _world;
+
+        public WorldLock(World world)
+        {
+            lock (world._modeChangeLock)
+            {
+                _world = world;
+                _world._mode = Mode.Deferred;
+                _world._locks++;
+            }
+        }
+
+        public void Dispose()
+        {
+            _world.Unlock();
+            _world = null!;
+        }
+    }
+
 
     internal int Count
     {
@@ -43,6 +67,7 @@ public partial class World
         }
     }
 
+
     internal void CollectTargets<T>(List<Identity> entities)
     {
         var type = TypeExpression.Create<T>(Match.Any);
@@ -54,7 +79,9 @@ public partial class World
         }
     }
 
+
     private readonly object _spawnLock = new();
+
 
     #region CRUD
 
@@ -93,7 +120,7 @@ public partial class World
 
             if (_mode == Mode.Deferred)
             {
-                _deferredOperations.Enqueue(new DeferredOperation {Code = OpCode.Despawn, Identity = identity});
+                _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Despawn, Identity = identity});
                 return;
             }
 
@@ -129,7 +156,7 @@ public partial class World
     {
         if (_mode == Mode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Code = OpCode.Remove, Identity = identity, TypeExpression = typeExpression});
+            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Identity = identity, TypeExpression = typeExpression});
             return;
         }
 
@@ -158,7 +185,6 @@ public partial class World
         var newRow = Archetype.MoveEntry(identity, meta.Row, oldTable, newTable);
 
         meta.Row = newRow;
-        //meta.ArchId = newTable.Id;
         meta.Archetype = newTable;
     }
 
@@ -247,25 +273,17 @@ public partial class World
 
     #endregion
 
-    //TODO: Make this an IDisposable somehow.
-    internal void Lock()
+
+    private void Unlock()
     {
         lock (_modeChangeLock)
         {
-            if (_mode != Mode.Immediate) throw new InvalidOperationException("this: Lock called while not in immediate (default) mode");
-
-            _mode = Mode.Deferred;
-        }
-    }
-
-    internal void Unlock()
-    {
-        lock (_modeChangeLock)
-        {
-            if (_mode != Mode.Deferred) throw new InvalidOperationException("this: Unlock called while not in deferred mode");
-
-            _mode = Mode.Immediate;
-            Apply(_deferredOperations);
+            if (--_locks == 0)
+            {
+                _mode = Mode.CatchUp;
+                Apply(_deferredOperations);
+                _mode = Mode.Immediate;
+            }
         }
     }
 
@@ -276,15 +294,15 @@ public partial class World
         {
             AssertAlive(op.Identity);
 
-            switch (op.Code)
+            switch (op.Opcode)
             {
-                case OpCode.Add:
+                case Opcode.Add:
                     AddComponent(op.Identity, op.TypeExpression, op.Data);
                     break;
-                case OpCode.Remove:
+                case Opcode.Remove:
                     RemoveComponent(op.Identity, op.TypeExpression);
                     break;
-                case OpCode.Despawn:
+                case Opcode.Despawn:
                     Despawn(op.Identity);
                     break;
             }
@@ -294,13 +312,13 @@ public partial class World
 
     internal struct DeferredOperation
     {
-        internal required OpCode Code;
+        internal required Opcode Opcode;
         internal TypeExpression TypeExpression;
         internal Identity Identity;
         internal object Data;
     }
 
-    internal enum OpCode
+    internal enum Opcode
     {
         Add,
         Remove,
@@ -310,6 +328,7 @@ public partial class World
     private enum Mode
     {
         Immediate = default,
+        CatchUp,
         Deferred,
         //Bulk
     }
@@ -326,7 +345,7 @@ public partial class World
 
     #endregion
 
-    #region Linked Components
+    #region Component Interaction
 
     /// <summary>
     /// Creates an Archetype relation between this identity and an object (instance of a class).
@@ -426,10 +445,6 @@ public partial class World
         RemoveComponent(identity, typeExpression);
     }
 
-    #endregion
-
-    #region Plain Components
-
     internal void AddComponent<T>(Identity identity) where T : new()
     {
         var type = TypeExpression.Create<T>(Match.Plain);
@@ -455,8 +470,6 @@ public partial class World
         RemoveComponent(identity, type);
     }
 
-    #endregion
-
     private void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
     {
         AssertAlive(identity);
@@ -471,7 +484,7 @@ public partial class World
 
         if (_mode == Mode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Code = OpCode.Add, Identity = identity, TypeExpression = typeExpression, Data = data!});
+            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Identity = identity, TypeExpression = typeExpression, Data = data!});
             return;
         }
 
@@ -510,4 +523,6 @@ public partial class World
         var storage = table.GetStorage<T>(target);
         return ref storage[meta.Row];
     }
+
+    #endregion
 }

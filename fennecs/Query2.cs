@@ -22,7 +22,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -45,7 +45,7 @@ public class Query<C0, C1> : Query<C0>
             } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
     
@@ -53,7 +53,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -76,7 +76,7 @@ public class Query<C0, C1> : Query<C0>
             } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
 
@@ -84,7 +84,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
@@ -105,14 +105,14 @@ public class Query<C0, C1> : Query<C0>
             } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
     public void ForEach<U>(RefActionU<C0, C1, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -134,14 +134,14 @@ public class Query<C0, C1> : Query<C0>
             } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
     public void Job(RefAction<C0, C1> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
         
-        World.Lock();
+        using var lck = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0, C1>>.Rent();
@@ -186,14 +186,14 @@ public class Query<C0, C1> : Query<C0>
 
         JobPool<Work<C0, C1>>.Return(jobs);
 
-        World.Unlock();
+        
     }
 
     public void Job<U>(RefActionU<C0, C1, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C0, C1, U>>.Rent();
@@ -239,14 +239,14 @@ public class Query<C0, C1> : Query<C0>
 
         JobPool<UniformWork<C0, C1, U>>.Return(jobs);
 
-        World.Unlock();
+        
     }
 
     public void Raw(MemoryAction<C0, C1> action)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -268,14 +268,14 @@ public class Query<C0, C1> : Query<C0>
             } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 
     public void Raw<U>(MemoryActionU<C0, C1, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -297,6 +297,6 @@ public class Query<C0, C1> : Query<C0>
             } while (Match.CrossJoin(_counter, _limiter));
         }
 
-        World.Unlock();
+        
     }
 }

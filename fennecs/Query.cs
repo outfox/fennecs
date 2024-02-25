@@ -154,20 +154,20 @@ public class Query : IEnumerable<Entity>, IDisposable
             
             if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
-            World.Lock();
+            using var lck = World.Lock;
             foreach (var table in Archetypes)
             {
                 if (index < table.Count)
                 {
                     var result = table[index];
-                    World.Unlock();
+                    
                     return result;
                 }
                 index -= table.Count;
             }
             
             Debug.Fail("Query not empty, but no entity found.");
-            World.Unlock();
+            
             return default;
         }
     }

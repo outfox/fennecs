@@ -27,7 +27,7 @@ public class Query<C0> : Query
     // CAVEAT: stackalloc prevents inlining, thus we preallocate.
     private readonly int[] _counter = new int[1];
     private readonly int[] _limiter = new int[1];
-    
+
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
@@ -36,7 +36,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -54,16 +54,14 @@ public class Query<C0> : Query
                 action(span0);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        World.Unlock();
     }
 
-    
+
     public void ForSpan<U>(SpanActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -81,8 +79,6 @@ public class Query<C0> : Query
                 action(span0, uniform);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        World.Unlock();
     }
 
 
@@ -90,7 +86,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
@@ -106,15 +102,13 @@ public class Query<C0> : Query
                 foreach (ref var c0 in span0) action(ref c0);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        World.Unlock();
     }
 
     public void ForEach<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -131,15 +125,13 @@ public class Query<C0> : Query
                 foreach (ref var c0 in span0) action(ref c0, uniform);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        World.Unlock();
     }
 
     public void Job(RefAction<C0> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
-        
-        World.Lock();
+
+        using var lck = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0>>.Rent();
@@ -179,15 +171,13 @@ public class Query<C0> : Query
         Countdown.Wait();
 
         JobPool<Work<C0>>.Return(jobs);
-
-        World.Unlock();
     }
 
     public void Job<U>(RefActionU<C0, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
-        
-        World.Lock();
+
+        using var lck = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C0, U>>.Rent();
@@ -227,15 +217,13 @@ public class Query<C0> : Query
         Countdown.Wait();
 
         JobPool<UniformWork<C0, U>>.Return(jobs);
-
-        World.Unlock();
     }
 
     public void Raw(MemoryAction<C0> action)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -252,15 +240,13 @@ public class Query<C0> : Query
                 action(mem0);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        World.Unlock();
     }
 
     public void Raw<U>(MemoryActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        World.Lock();
+        using var lck = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -277,7 +263,5 @@ public class Query<C0> : Query
                 action(mem0, uniform);
             } while (Match.CrossJoin(_counter, _limiter));
         }
-
-        World.Unlock();
     }
 }

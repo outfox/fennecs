@@ -11,7 +11,7 @@ public partial class World : IDisposable
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
     /// </summary>
     /// <returns>an EntityBuilder to operate on</returns>
-    public Entity Spawn() => new(this, NewEntity());
+    public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
 
 
     /// <summary>
@@ -76,7 +76,7 @@ public partial class World : IDisposable
 
     #endregion
 
-    #region Lifecycle
+    #region Lifecycle & Locking
 
     /// <summary>
     /// Create a new World.
@@ -99,6 +99,15 @@ public partial class World : IDisposable
     {
         //TODO: Release all Object Links?
     }
+
+    /// <summary>
+    /// Locks the World (setting into a Deferred mode) for the scope of the returned WorldLock.
+    /// Multiple Locks can be taken out, and all structural Operations on Entities will be queued,
+    /// and executed once the last Lock is released. 
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    public WorldLock Lock => new(this);
+    
 
     #endregion
 }
