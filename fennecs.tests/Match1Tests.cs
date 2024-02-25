@@ -3,17 +3,17 @@
 public class Match1Tests
 {
     private readonly World _world;
-    
+
     // string may be interned or not
     private const string OBJECT1 = "hello world";
     private const string OBJECT2 = "fly, you fools";
     private const string NONE1 = "can't touch this";
     private const string RELATION1 = "IOU";
-    
+
     public Match1Tests()
     {
         _world = new World();
-        
+
         var bob = _world.Spawn();
 
         _world.Spawn()
@@ -22,12 +22,12 @@ public class Match1Tests
             .Add(NONE1)
             .AddRelation(bob, RELATION1);
     }
-    
+
     [Fact]
     public void Any_Enumerates_all_Components_Once()
     {
         using var query = _world.Query<string>(Match.Any).Build();
-        
+
         HashSet<string> seen = [];
         query.ForEach((ref string str) =>
         {
@@ -40,7 +40,7 @@ public class Match1Tests
         Assert.Contains(RELATION1, seen);
         Assert.Equal(4, seen.Count);
     }
-    
+
 
     [Fact]
     public void Plain_Enumerates_Only_Plain_Components()
@@ -77,12 +77,11 @@ public class Match1Tests
     }
 
 
-
     [Fact]
     public void Relation_Enumerates_all_Relations()
     {
         using var query = _world.Query<string>(Match.Identity).Build();
-        
+
         HashSet<string> seen = [];
 
         query.ForEach((ref string str) =>
@@ -93,7 +92,6 @@ public class Match1Tests
         Assert.Contains(RELATION1, seen);
         Assert.Single(seen);
     }
-
 
 
     [Fact]
@@ -108,7 +106,7 @@ public class Match1Tests
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
         });
-        
+
         Assert.Contains(OBJECT1, seen);
         Assert.Contains(OBJECT2, seen);
         Assert.Equal(2, seen.Count);

@@ -13,7 +13,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         var stored = store.Get<object>(identity);
         Assert.Equal(item, stored);
     }
-    
+
     [Fact]
     public void Request_Returns_Same_Identity()
     {
@@ -24,12 +24,12 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         Assert.Equal(identity1, identity2);
     }
 
-    
+
     private class BadlyHashingClass
     {
         public override int GetHashCode() => 69;
     }
-    
+
     [Fact]
     public void Request_Throws_On_Hash_Collision()
     {
@@ -37,9 +37,9 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         var item1 = new BadlyHashingClass();
         var item2 = new BadlyHashingClass();
         store.Request(item1);
-        Assert.Throws<InvalidOperationException>(() =>store.Request(item2));
+        Assert.Throws<InvalidOperationException>(() => store.Request(item2));
     }
-    
+
     [Fact]
     public void Release_RemovesItem()
     {
@@ -59,14 +59,14 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         var store = new ReferenceStore();
         var item = new object();
         Identity identity = default;
-        
+
         for (var i = 0; i < count; i++)
         {
             identity = store.Request(item);
         }
-        
+
         Assert.Equal(item, store.Get<object>(identity));
-        
+
         for (var i = 0; i < count; i++)
         {
             store.Release(identity);
@@ -117,5 +117,4 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         output.WriteLine(reference.ToString());
         Assert.Equal($"{typeof(List<int>)} x7", reference.ToString());
     }
-    
 }

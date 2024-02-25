@@ -33,7 +33,7 @@ public class QueryChunkGenerator : IEnumerable<object[]>
                 yield return [i, j, i % 2 == 0];
             }
         }
-        
+
         yield return [100, 10, true]; //fits
         yield return [100, 1_000, false]; //undersized
         yield return [1_000, 1_000, true]; //exact

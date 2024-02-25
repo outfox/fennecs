@@ -44,13 +44,13 @@ public class Query2Tests
                 strings[i] = "three";
             }
         });
-        
+
         query.Job((ref int _, ref string str) =>
         {
             Assert.Equal("three", str);
             str = "four";
         });
-        
+
         query.Job((ref int index, ref string str) =>
         {
             Assert.Equal(index, index);
@@ -71,7 +71,7 @@ public class Query2Tests
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         }, 7);
-        
+
         query.ForSpan((_, strings, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -80,7 +80,7 @@ public class Query2Tests
                 strings[i] = uniform.ToString();
             }
         }, 8);
-        
+
         query.Raw((_, c1, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -89,15 +89,11 @@ public class Query2Tests
                 c1.Span[i] = uniform.ToString();
             }
         }, 9);
-        
-        query.ForEach((ref int _, ref string str) =>
-        {
-            Assert.Equal(9.ToString(), str);
-        });
+
+        query.ForEach((ref int _, ref string str) => { Assert.Equal(9.ToString(), str); });
     }
-    
-    
-    
+
+
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void Query_Count_Accurate(int count, bool createEmptyTable)

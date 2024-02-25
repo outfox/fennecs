@@ -5,7 +5,7 @@
 public class Query5Tests
 {
     private struct TypeA;
-    
+
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)
@@ -49,7 +49,7 @@ public class Query5Tests
                 strings[i] = "three";
             }
         });
-        
+
         query.Raw((_, _, integers, strings, _) =>
         {
             for (var i = 0; i < count; i++)
@@ -59,7 +59,7 @@ public class Query5Tests
                 strings.Span[i] = "four";
             }
         });
-                
+
         query.Job((ref TypeA _, ref double _, ref int index, ref string str, ref char _) =>
         {
             Assert.Equal(index, index);
@@ -67,7 +67,7 @@ public class Query5Tests
             str = "five";
         }, 4096);
 
-        query.Job(delegate (ref TypeA _, ref double _, ref int index, ref string str, ref char _, int uniform)
+        query.Job(delegate(ref TypeA _, ref double _, ref int index, ref string str, ref char _, int uniform)
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
@@ -81,8 +81,8 @@ public class Query5Tests
             str = uniform.ToString();
         }, 7);
 
-        
-        query.ForSpan( (_, _, _, strings, _, uniform) =>
+
+        query.ForSpan((_, _, _, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -90,7 +90,7 @@ public class Query5Tests
                 strings[i] = uniform.ToString();
             }
         }, 8);
-        
+
         query.Raw((_, _, _, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -99,11 +99,8 @@ public class Query5Tests
                 strings.Span[i] = uniform.ToString();
             }
         }, 9);
-        
-        
-        query.ForEach((ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
-        {
-            Assert.Equal(9.ToString(), str);
-        });
+
+
+        query.ForEach((ref TypeA _, ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
     }
 }

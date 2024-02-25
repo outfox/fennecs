@@ -70,7 +70,7 @@ public static class QueryEnumeration
             using var world = new World();
 
             var random = new Random(9001);
-            
+
             world.Spawn().Add(1);
             world.Spawn().Add(2);
             world.Spawn().Add(3);

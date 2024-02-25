@@ -42,13 +42,13 @@ public class Query1Tests
                 strings[i] = "three";
             }
         });
-        
+
         query.Job((ref string str) =>
         {
             Assert.Equal("three", str);
             str = "four";
         });
-        
+
         query.Job((ref string str) =>
         {
             Assert.Equal("four", str);
@@ -67,7 +67,7 @@ public class Query1Tests
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         }, 7);
-        
+
         query.ForSpan((strings, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -76,7 +76,7 @@ public class Query1Tests
                 strings[i] = uniform.ToString();
             }
         }, 8);
-        
+
         query.Raw((c1, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -85,14 +85,11 @@ public class Query1Tests
                 c1.Span[i] = uniform.ToString();
             }
         }, 9);
-        
-        query.ForEach((ref string str) =>
-        {
-            Assert.Equal(9.ToString(), str);
-        });
+
+        query.ForEach((ref string str) => { Assert.Equal(9.ToString(), str); });
     }
-    
-    
+
+
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void Query_Count_Accurate(int count, bool createEmptyTable)
@@ -355,7 +352,7 @@ public class Query1Tests
 
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
-    private void Parallel_Visits_All_Entities(int count, bool createEmptyTable) 
+    private void Parallel_Visits_All_Entities(int count, bool createEmptyTable)
     {
         using var world = new World();
 
@@ -400,7 +397,7 @@ public class Query1Tests
             var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
-        
+
         for (var index = 0; index < count; index++)
         {
             world.Spawn()
@@ -436,7 +433,7 @@ public class Query1Tests
             var dead = world.Spawn().Add<int>().Add("will be removed");
             world.Despawn(dead);
         }
-        
+
         for (var c = 0; c < count; c++)
         {
             world.Spawn()

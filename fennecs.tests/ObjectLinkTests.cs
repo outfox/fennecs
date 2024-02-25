@@ -31,7 +31,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
 
         // string may be interned or not
         const string TARGET = "hello world";
-        
+
         var entity = world.Spawn();
         world.On(entity).AddLink(TARGET);
 
@@ -60,10 +60,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         entity.RemoveLink<string>(TARGET);
 
         var runs = 0;
-        query.ForEach((ref string _) =>
-        {
-            runs++;
-        });
+        query.ForEach((ref string _) => { runs++; });
         Assert.Equal(0, runs);
     }
 
@@ -83,4 +80,4 @@ public class ObjectLinkTests(ITestOutputHelper output)
         query.ForEach((ref string _) => { runs++; });
         Assert.Equal(0, runs);
     }
-}    
+}

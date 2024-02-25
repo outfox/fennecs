@@ -22,8 +22,8 @@ public class IdentityTests(ITestOutputHelper output)
         var objEntity = Identity.Of("hello world");
         Assert.Equal(typeof(string), objEntity.Type);
     }
+
     [Fact]
-    
     public void Identity_None_is_default()
     {
         var none = Match.Plain;
@@ -74,7 +74,6 @@ public class IdentityTests(ITestOutputHelper output)
 
         var other = new Identity(9000, 3);
         Assert.NotEqual(self, other);
-
     }
 
     [Theory]
@@ -84,7 +83,7 @@ public class IdentityTests(ITestOutputHelper output)
         var ids = new Dictionary<int, Identity>((int) (idCount * genCount * 4f));
 
         //Identities
-        for (var i = 0; i < idCount ; i++)
+        for (var i = 0; i < idCount; i++)
         {
             //Generations
             for (TypeID g = 1; g < genCount; g++)
@@ -129,14 +128,14 @@ public class IdentityTests(ITestOutputHelper output)
         {
             var id = random.Next();
             var gen = (TypeID) random.Next();
-            
+
             var self = new Identity(id, gen);
             var other = new Identity(id, gen);
 
             Assert.Equal(self, other);
         }
     }
-    
+
     #region Input Data
 
     private struct CompoundComponent
@@ -177,7 +176,7 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Equal(identity.ToString(), identity.ToString());
     }
     */
-    
+
     [Fact]
     public void Entity_HashCode_is_Stable()
     {
@@ -191,14 +190,14 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Equal(hash2, entity2.GetHashCode());
     }
 
-    [Fact] 
+    [Fact]
     private void Identity_is_Equal_to_Itself()
     {
         using var world = new World();
         var identity = world.Spawn().Id;
         Assert.Equal(identity, identity);
     }
-    
+
     [Fact]
     private void Same_Entity_is_Equal()
     {
@@ -209,7 +208,6 @@ public class IdentityTests(ITestOutputHelper output)
     }
 
 
-
     [Fact]
     private void Different_Entity_is_Not_Equal()
     {
@@ -218,16 +216,16 @@ public class IdentityTests(ITestOutputHelper output)
 
         var entity3 = new Identity(69, 69);
         var entity4 = new Identity(420, 420);
-        
+
         Assert.NotEqual(entity1, entity2);
         Assert.True(entity1 != entity2);
-        
+
         Assert.NotEqual(entity3, entity4);
         Assert.True(entity3 != entity4);
-        
+
         Assert.NotEqual(entity1, entity3);
         Assert.True(entity1 != entity3);
-        
+
         Assert.NotEqual(entity2, entity4);
         Assert.True(entity2 != entity4);
     }
@@ -332,7 +330,7 @@ public class IdentityTests(ITestOutputHelper output)
 
     [Theory]
     [ClassData(typeof(ComponentDataSource))]
-    private void Entity_cannot_Add_Component_twice<T>(T t1) where T : struct 
+    private void Entity_cannot_Add_Component_twice<T>(T t1) where T : struct
     {
         using var world = new World();
         var identity = world.Spawn().Id;
@@ -360,5 +358,5 @@ public class IdentityTests(ITestOutputHelper output)
         var identity = world.Spawn().Id;
         Assert.Throws<ArgumentException>(() => world.On(identity).Remove<T>());
     }
-#pragma warning restore xUnit1026    
+#pragma warning restore xUnit1026
 }

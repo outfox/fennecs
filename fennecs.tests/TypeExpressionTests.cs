@@ -119,7 +119,7 @@ public class TypeExpressionTests
     public void Any_Matches_only_All()
     {
         var any = TypeExpression.Create<TypeA>(Match.Any);
-        
+
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Identity(123));
         var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
@@ -133,7 +133,7 @@ public class TypeExpressionTests
     public void Object_Matches_only_Objects()
     {
         var obj = TypeExpression.Create<TypeA>(Match.Object);
-        
+
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Identity(123));
         var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
@@ -147,7 +147,7 @@ public class TypeExpressionTests
     public void Relation_Matches_only_Relations()
     {
         var rel = TypeExpression.Create<TypeA>(Match.Identity);
-        
+
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Identity(123));
         var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
@@ -156,12 +156,12 @@ public class TypeExpressionTests
         Assert.True(rel.Matches(ent));
         Assert.False(rel.Matches(lnk));
     }
-    
+
     [Fact]
     public void Target_Matches_all_Entity_Target_Relations()
     {
         var rel = TypeExpression.Create<TypeA>(Match.Relation);
-        
+
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Identity(123));
         var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
@@ -175,7 +175,7 @@ public class TypeExpressionTests
     public void Entity_only_matches_Entity()
     {
         var ent = TypeExpression.Create<TypeA>(new Identity(123));
-        
+
         var typ = TypeExpression.Create<TypeA>();
         var lnk = TypeExpression.Create<TypeA>(Identity.Of("hello world"));
 

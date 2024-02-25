@@ -46,7 +46,7 @@ public class Query4Tests
                 strings[i] = "three";
             }
         });
-        
+
         query.Raw((_, integers, strings, _) =>
         {
             for (var i = 0; i < count; i++)
@@ -56,7 +56,7 @@ public class Query4Tests
                 strings.Span[i] = "four";
             }
         });
-                
+
         query.Job((ref double _, ref int index, ref string str, ref char _) =>
         {
             Assert.Equal(index, index);
@@ -78,7 +78,7 @@ public class Query4Tests
             str = uniform.ToString();
         }, 7);
 
-        
+
         query.ForSpan((_, _, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -87,7 +87,7 @@ public class Query4Tests
                 strings[i] = uniform.ToString();
             }
         }, 8);
-        
+
         query.Raw((_, _, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -96,11 +96,8 @@ public class Query4Tests
                 strings.Span[i] = uniform.ToString();
             }
         }, 9);
-        
-        
-        query.ForEach((ref double _, ref int _, ref string str, ref char _) =>
-        {
-            Assert.Equal(9.ToString(), str);
-        });
+
+
+        query.ForEach((ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
     }
 }

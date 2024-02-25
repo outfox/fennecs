@@ -112,12 +112,12 @@ public class TypeIdTests
         Assert.Equal(id1, id2);
 
         _ = TypeExpression.Create<string>();
-        
+
         var id3 = LanguageType.Identify(typeof(bool));
         var id4 = TypeExpression.Create<bool>().TypeId;
         Assert.Equal(id3, id4);
-        
-        Assert.NotEqual( id1, id3);
-        Assert.NotEqual( id2, id4);
+
+        Assert.NotEqual(id1, id3);
+        Assert.NotEqual(id2, id4);
     }
 }

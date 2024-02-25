@@ -16,11 +16,11 @@ public class QueryTests
         {
             count++;
         } while (Match.CrossJoin(counter, limiter));
-        
-        Assert.Equal(9*5*3, count);
+
+        Assert.Equal(9 * 5 * 3, count);
     }
-    
-    
+
+
     [Fact]
     private void Can_Enumerate_PlainEnumerator()
     {
@@ -32,21 +32,22 @@ public class QueryTests
             var entity = world.Spawn().Add(new object());
             entities.Add(entity);
         }
-        
+
         var query = world.Query<object>().Build();
         var plain = query as IEnumerable;
-        
+
         foreach (var current in plain)
         {
             Assert.IsType<Entity>(current);
-            
+
             var entity = (Entity) current;
             Assert.Contains(entity, entities);
-            entities.Remove(entity);            
+            entities.Remove(entity);
         }
+
         Assert.Empty(entities);
     }
-    
+
 
     [Fact]
     private void Contains_Finds_Entity()
@@ -65,7 +66,7 @@ public class QueryTests
 
         Assert.True(entities.All(e => query.Contains(e)));
 
-        var former = entities.ToArray(); 
+        var former = entities.ToArray();
         while (entities.Count > 0)
         {
             var index = random.Next(entities.Count);
@@ -74,11 +75,11 @@ public class QueryTests
             Assert.False(query.Contains(identity));
             entities.RemoveAt(index);
         }
-        
-        Assert.True(!former.Any(e => query.Contains(e))); 
+
+        Assert.True(!former.Any(e => query.Contains(e)));
     }
-    
-    
+
+
     [Fact]
     private void Has_Matches()
     {
@@ -100,7 +101,7 @@ public class QueryTests
             foreach (var pos in memory.Span) Assert.Equal(p2, pos);
         });
     }
-    
+
 
     [Fact]
     private void Not_prevents_Match()
@@ -123,7 +124,7 @@ public class QueryTests
             foreach (var pos in memory.Span) Assert.Equal(p1, pos);
         });
     }
-    
+
 
     [Fact]
     private void Any_Target_None_Matches_Only_None()
@@ -135,7 +136,8 @@ public class QueryTests
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0);
         var bob = world.Spawn().Add(p2).AddRelation(alice, 111);
-        /*var charlie = */world.Spawn().Add(p3).AddRelation(bob, 222);
+        /*var charlie = */
+        world.Spawn().Add(p3).AddRelation(bob, 222);
 
         var query = world.Query<Identity, Vector3>()
             .Any<int>(Match.Plain)
@@ -151,7 +153,7 @@ public class QueryTests
         });
         Assert.Equal(1, count);
     }
-    
+
 
     [Fact]
     private void Any_Target_Single_Matches()
@@ -179,7 +181,7 @@ public class QueryTests
         });
         Assert.Equal(1, count);
     }
-    
+
 
     [Fact]
     private void Any_Target_Multiple_Matches()
@@ -224,7 +226,7 @@ public class QueryTests
         });
         Assert.Equal(2, count);
     }
-    
+
 
     [Fact]
     private void Any_Not_does_not_Match_Specific()
@@ -269,7 +271,7 @@ public class QueryTests
         });
         Assert.Equal(1, count);
     }
-    
+
 
     [Fact]
     private void Query_provided_Has_works_with_Target()
@@ -300,7 +302,7 @@ public class QueryTests
             {
                 var identity = me.Span[index];
                 count++;
-                
+
                 if (identity == alice)
                 {
                     var pos = mp.Span[0];
@@ -323,7 +325,7 @@ public class QueryTests
         });
         Assert.Equal(2, count);
     }
-    
+
 
     [Fact]
     private void Queries_are_Cached()
@@ -354,7 +356,7 @@ public class QueryTests
         Assert.True(ReferenceEquals(query5A, query5B));
     }
 
-    
+
     [Fact]
     private void Queries_are_Disposable()
     {
@@ -383,7 +385,7 @@ public class QueryTests
         Assert.Throws<TypeAccessException>(() => query.Ref<Identity>(identity));
     }
 
-    
+
     [Fact]
     private void Ref_disallows_Dead_Entity()
     {
@@ -395,7 +397,7 @@ public class QueryTests
         var query = world.Query<int>().Build();
         Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
     }
-    
+
 
     [Fact]
     private void Ref_disallows_Nonexistent_Component()
@@ -406,7 +408,7 @@ public class QueryTests
         var query = world.Query<int>().Build();
         Assert.Throws<KeyNotFoundException>(() => query.Ref<float>(identity));
     }
-    
+
 
     [Fact]
     private void Ref_gets_Mutable_Component()
@@ -422,7 +424,7 @@ public class QueryTests
         gotten = 42;
         Assert.Equal(42, query.Ref<int>(identity));
     }
-    
+
 
     [Fact]
     private void Contains_Like_Enumerable()
@@ -435,8 +437,8 @@ public class QueryTests
         Assert.Contains(entity23, query);
         Assert.Contains(entity42, query);
     }
-    
-    
+
+
     [Fact]
     private void Indexer()
     {
@@ -448,8 +450,8 @@ public class QueryTests
         Assert.Equal(entity23, query[0]);
         Assert.Equal(entity42, query[1]);
     }
-    
-    
+
+
     [Fact]
     private void Indexer_Throws_When_Out_Of_Range()
     {
@@ -485,7 +487,7 @@ public class QueryTests
         Assert.Equal(entity, query.Random());
     }
 
-    
+
     [Fact]
     private void Random_Access_Throws_with_Empty_Query()
     {

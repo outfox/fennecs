@@ -173,13 +173,13 @@ public class WorldTests
     {
         using var world = new World();
         var identity = world.Spawn().Id;
-        
+
         var lck = world.Lock;
         world.On(identity).Add(666);
-        
+
         Assert.False(world.HasComponent<int>(identity));
         lck.Dispose();
-        
+
         Assert.True(world.HasComponent<int>(identity));
         Assert.Equal(666, world.GetComponent<int>(identity));
     }
@@ -217,7 +217,7 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn();
         var target = world.Spawn();
-        
+
         var lck = world.Lock;
         world.On(identity).AddRelation(target, 666);
         Assert.False(world.HasRelation<int>(identity, target));
