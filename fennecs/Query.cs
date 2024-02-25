@@ -33,7 +33,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     private protected readonly World World;
     protected internal readonly Mask Mask;
 
-    internal Query(World world, List<TypeExpression> streamTypes,  Mask mask, List<Archetype> archetypes)
+    internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes)
     {
         StreamTypes = streamTypes.ToArray();
         Archetypes = archetypes;
@@ -70,8 +70,9 @@ public class Query : IEnumerable<Entity>, IDisposable
     public IEnumerator<Entity> GetEnumerator()
     {
         AssertNotDisposed();
-        foreach (var table in Archetypes) 
-            foreach (var entity in table) yield return entity;
+        foreach (var table in Archetypes)
+        foreach (var entity in table)
+            yield return entity;
     }
 
     /// <inheritdoc cref="IEnumerable.GetEnumerator"/>
@@ -80,6 +81,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         AssertNotDisposed();
         return GetEnumerator();
     }
+
     #endregion
 
     /// <summary>
@@ -90,7 +92,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     public bool Contains(Entity entity)
     {
         AssertNotDisposed();
-        
+
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
         return Archetypes.Contains(table);
@@ -100,8 +102,8 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// The sum of all distinct Entities currently matched by this Query. 
     /// </summary>
     public int Count => Archetypes.Sum(t => t.Count);
-    
-    
+
+
     internal void AddTable(Archetype archetype)
     {
         AssertNotDisposed();
@@ -109,11 +111,12 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
     #region Random Access
+
     /// <summary>
     /// Does this query match any entities?
     /// </summary>
     public bool IsEmpty => Count == 0;
-    
+
     /// <summary>
     /// Returns an Entity matched by this Query, selected at random.
     /// </summary>
@@ -151,7 +154,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         get
         {
             AssertNotDisposed();
-            
+
             if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
             using var lck = World.Lock;
@@ -160,17 +163,19 @@ public class Query : IEnumerable<Entity>, IDisposable
                 if (index < table.Count)
                 {
                     var result = table[index];
-                    
+
                     return result;
                 }
+
                 index -= table.Count;
             }
-            
+
             Debug.Fail("Query not empty, but no entity found.");
-            
+
             return default;
         }
     }
+
     #endregion
 
     #region IDisposable Implementation
@@ -181,21 +186,21 @@ public class Query : IEnumerable<Entity>, IDisposable
     public void Dispose()
     {
         AssertNotDisposed();
-        
+
         Archetypes.Clear();
         disposed = true;
         World.RemoveQuery(this);
         Mask.Dispose();
     }
-    
+
     protected void AssertNotDisposed()
     {
         if (!disposed) return;
         throw new ObjectDisposedException(nameof(Query));
     }
-    
+
     private bool disposed { get; set; }
-    
+
     #endregion
 }
 

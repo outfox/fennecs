@@ -12,6 +12,7 @@ namespace fennecs;
 public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
     #region Struct Data Layout
+
     //             This is a 64 bit union struct.
     //                 Layout: (little endian)
     //   | LSB                                   MSB |
@@ -24,7 +25,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //   |-------------------------------------------|
     //   | Entity (Identity)            | TypeNumber |
     //   | 48 bits                      |  16 bits   |
-    
+
     //Union Backing Store
     [FieldOffset(0)] internal readonly ulong Value;
 
@@ -32,13 +33,14 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     [FieldOffset(0)] internal readonly int Id;
     [FieldOffset(4)] internal readonly ushort Generation;
     [FieldOffset(4)] internal readonly TypeID Decoration;
-    
+
     // Type Header
     [FieldOffset(6)] internal readonly TypeID TypeId;
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
+
     #endregion
 
     /// <summary>
@@ -58,7 +60,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>
     public Identity Target => new(Id, Decoration);
-    
+
     /// <summary>
     /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
     /// </summary>
@@ -79,7 +81,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         var self = this;
         return other.Any(type => self.Matches(type));
     }
-    
+
     /// <summary>
     /// Match against another TypeExpression; used for Query Matching, and is Non-Commutative.
     /// Examines the Target field and decides whether the other TypeExpression is a match.
@@ -96,13 +98,13 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
         // Entity.Any matches everything; relations and pure Components (target == none).
         if (Target == Match.Any) return true;
-        
+
         // Entity.Target matches all Entity-Target Relations.
         if (Target == Match.Relation) return other.Target != Match.Plain;
-        
+
         // Entity.Relation matches only Entity-Entity relations.
         if (Target == Match.Identity) return other.Target.IsEntity;
-        
+
         // Entity.Object matches only Entity-Object relations.
         if (Target == Match.Object) return other.Target.IsObject;
 
@@ -177,7 +179,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         return new TypeExpression(target, LanguageType.Identify(type));
     }
-    
+
     /// <summary>
     /// Implements a hash function that aims for a low collision rate.
     /// </summary>

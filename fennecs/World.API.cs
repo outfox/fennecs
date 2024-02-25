@@ -107,7 +107,6 @@ public partial class World : IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public WorldLock Lock => new(this);
-    
 
     #endregion
 }
