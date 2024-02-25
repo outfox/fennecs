@@ -377,7 +377,7 @@ public class QueryTests
         var entity = world.Spawn().Add<int>();
         world.Despawn(entity);
         Assert.False(world.IsAlive(entity));
-        
+
         var query = world.Query<int>().Build();
         Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
     }
@@ -389,7 +389,7 @@ public class QueryTests
         using var world = new World();
         var identity = world.Spawn().Add<int>();
         var query = world.Query<int>().Build();
-        
+
         Assert.Throws<TypeAccessException>(() => query.Ref<float>(identity));
     }
 
@@ -524,7 +524,8 @@ public class QueryTests
         Assert.False(query.Contains<int>(Match.Plain));
         Assert.False(query.Contains<float>(Match.Object));
     }
-    
+
+
     [Fact]
     private void Query_Contains_Entity()
     {
@@ -546,11 +547,9 @@ public class QueryTests
 
         var foreignQueryEntity = world.Spawn().Add("not in query");
         Assert.Throws<KeyNotFoundException>(() => query.Ref<int>(foreignQueryEntity));
-        
+
         using var anotherWorld = new World();
         var foreignWorldEntity = anotherWorld.Spawn().Add(23);
         Assert.Throws<InvalidOperationException>(() => query.Ref<int>(foreignWorldEntity));
-
     }
-    
 }

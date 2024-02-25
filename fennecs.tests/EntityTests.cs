@@ -153,7 +153,7 @@ public class EntityTests
         using var world = new World();
         var entity = world.Spawn();
         entity.Add(123);
-        
+
         Assert.True(entity.Has<int>());
         Assert.True(entity.Has<int>(Match.Plain));
         Assert.True(entity.Has<int>(Match.Any));
@@ -161,10 +161,11 @@ public class EntityTests
         Assert.False(entity.Has<int>(Match.Entity));
         Assert.False(entity.Has<int>(Match.Object));
         Assert.False(entity.Has<int>(Match.Relation));
-        
+
         Assert.False(entity.Has<float>(Match.Any));
     }
-    
+
+
     [Fact]
     public void Entity_provides_HasLink()
     {
@@ -172,7 +173,7 @@ public class EntityTests
         var entity = world.Spawn();
         world.Spawn();
         entity.AddLink("hello world");
-        
+
         Assert.True(entity.HasLink<string>("hello world"));
         Assert.True(entity.Has<string>(Match.Any));
         Assert.True(entity.Has<string>(Match.Object));
@@ -181,7 +182,8 @@ public class EntityTests
         Assert.False(entity.HasLink<string>("goodbye world"));
         Assert.False(entity.Has<int>(Match.Entity));
     }
-    
+
+
     [Fact]
     public void Entity_provides_HasRelation()
     {
@@ -189,7 +191,7 @@ public class EntityTests
         var entity = world.Spawn();
         var target = world.Spawn();
         entity.AddRelation<int>(target);
-        
+
         Assert.True(entity.HasRelation<int>(target));
         Assert.True(entity.Has<int>(Match.Relation));
         Assert.True(entity.Has<int>(Match.Any));
