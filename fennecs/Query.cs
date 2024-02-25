@@ -63,7 +63,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         AssertNotDisposed();
         World.AssertAlive(entity);
         
-        if (!Contains<C>(match)) throw new KeyNotFoundException("Query does not covert the Component type.");
+        if (!Contains<C>(match)) throw new TypeAccessException("Query does not match this Component type.");
         if (!Contains(entity)) throw new KeyNotFoundException("Entity not in Query.");
         //TODO: Maybe it's possible to lock the World for the lifetime of the ref?
         return ref World.GetComponent<C>(entity, match);
