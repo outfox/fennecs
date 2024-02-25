@@ -22,7 +22,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     #region Internals
 
     /// <summary>
-    /// TypeExpression for the Output Stream of this Query.
+    /// Array of TypeExpressions for the Output Stream of this Query.
     /// </summary>
     internal readonly TypeExpression[] StreamTypes;
 
@@ -210,6 +210,9 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     public void Dispose()
     {
+        // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
+        GC.SuppressFinalize(this);
+        
         AssertNotDisposed();
 
         Archetypes.Clear();

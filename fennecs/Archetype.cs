@@ -4,6 +4,7 @@ using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using fennecs.pools;
 
 namespace fennecs;
@@ -307,4 +308,38 @@ internal sealed class Archetype : IEnumerable<Entity>
 
 
     public Entity this[int index] => new(_world, _identities[index]);
+
+
+    #region Cross Joins
+
+    internal Match.Join<C0> CrossJoin<C0>(TypeExpression[] streamTypes)
+    {
+        return new Match.Join<C0>(this, streamTypes);
+    }
+
+
+    internal Match.Join<C0, C1> CrossJoin<C0, C1>(TypeExpression[] streamTypes)
+    {
+        return new Match.Join<C0, C1>(this, streamTypes);
+    }
+
+
+    internal Match.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(TypeExpression[] streamTypes)
+    {
+        return new Match.Join<C0, C1, C2>(this, streamTypes);
+    }
+
+
+    internal Match.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(TypeExpression[] streamTypes)
+    {
+        return new Match.Join<C0, C1, C2, C3>(this, streamTypes);
+    }
+
+
+    internal Match.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(TypeExpression[] streamTypes)
+    {
+        return new Match.Join<C0, C1, C2, C3, C4>(this, streamTypes);
+    }
+
+    #endregion
 }
