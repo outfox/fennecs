@@ -14,8 +14,7 @@ namespace fennecs;
 /// <ul>
 /// <li><c>ForEach(...)</c> - call a delegate <see cref="RefAction{C0}"/> for each Entity.</li>
 /// <li><c>Job(...)</c> - parallel process, calling a delegate <see cref="RefAction{C0}"/> for each Entity.</li>
-/// <li><c>ForSpan(...)</c> - call a delegate <see cref="SpanAction{C0}"/> per matched Archetype (× matched Wildcards) of entities.</li>
-/// <li><c>Raw(...)</c> - pass Memory objects too a delegate <see cref="MemoryAction{C0}"/> per matched Archetype (× matched Wildcards) of entities.</li>
+/// <li><c>Raw(...)</c> - pass Memory regions / Spans too a delegate <see cref="MemoryAction{C0}"/> per matched Archetype (× matched Wildcards) of entities.</li>
 /// </ul>
 /// </summary>
 /// <remarks>
@@ -25,6 +24,13 @@ public class Query<C0> : Query
 {
     #region Internals
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Query{C0}"/> class.
+    /// </summary>
+    /// <param name="world">The world context for the query.</param>
+    /// <param name="streamTypes">The stream types for the query.</param>
+    /// <param name="mask">The mask for the query.</param>
+    /// <param name="archetypes">The archetypes for the query.</param>
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
@@ -34,6 +40,11 @@ public class Query<C0> : Query
 
     #region Runners
 
+    /// <summary>
+    /// Executes an action for each span of entities that match the query.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    [Obsolete("use Raw instead")]
     public void ForSpan(SpanAction<C0> action)
     {
         AssertNotDisposed();
@@ -57,6 +68,12 @@ public class Query<C0> : Query
     }
 
 
+    /// <summary>
+    /// Executes an action for each span of entities that match the query, passing an additional uniform parameter to the action.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <param name="uniform">The uniform parameter to pass to the action.</param>
+    [Obsolete("use Raw instead")]
     public void ForSpan<U>(SpanActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -80,6 +97,10 @@ public class Query<C0> : Query
     }
 
 
+    /// <summary>
+    /// Executes an action for each entity that match the query.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
     public void ForEach(RefAction<C0> action)
     {
         AssertNotDisposed();
@@ -102,6 +123,11 @@ public class Query<C0> : Query
     }
 
 
+    /// <summary>
+    /// Executes an action for each entity that match the query, passing an additional uniform parameter to the action.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <param name="uniform">The uniform parameter to pass to the action.</param>
     public void ForEach<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -128,6 +154,11 @@ public class Query<C0> : Query
     }
 
 
+    /// <summary>
+    /// Executes an action for each entity that match the query in parallel.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
     public void Job(RefAction<C0> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
@@ -173,6 +204,12 @@ public class Query<C0> : Query
     }
 
 
+    /// <summary>
+    /// Executes an action for each entity that match the query in parallel, passing an additional uniform parameter to the action.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <param name="uniform">The uniform parameter to pass to the action.</param>
+    /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
     public void Job<U>(RefActionU<C0, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
@@ -219,6 +256,10 @@ public class Query<C0> : Query
     }
 
 
+    /// <summary>
+    /// Executes an action for each memory object that match the query.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
     public void Raw(MemoryAction<C0> action)
     {
         AssertNotDisposed();
@@ -240,6 +281,11 @@ public class Query<C0> : Query
     }
 
 
+    /// <summary>
+    /// Executes an action for each memory object that match the query, passing an additional uniform parameter to the action.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <param name="uniform">The uniform parameter to pass to the action.</param>
     public void Raw<U>(MemoryActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();

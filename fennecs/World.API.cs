@@ -75,9 +75,9 @@ public partial class World : IDisposable
     public void DespawnAllWith<T>(Identity match = default)
     {
         using var query = Query<Identity>().Has<T>(match).Build();
-        query.ForSpan(delegate(Span<Identity> entities)
+        query.Raw(delegate(Memory<Identity> entities)
         {
-            foreach (var identity in entities) Despawn(identity);
+            foreach (var identity in entities.Span) Despawn(identity);
         });
     }
 
