@@ -76,7 +76,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     public void AddFilter<T>(Identity match, int onStreamTypeIndex = -1)
     {
         var valid = false;
-        var filterExpression = TypeExpression.Create<T>(match);
+        var filterExpression = TypeExpression.Of<T>(match);
 
         var startIndex = 0;
         var endIndex = StreamTypes.Length;
@@ -166,6 +166,28 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
 
+    /// <summary>
+    /// Enumerator over all the Entities in the Query.
+    /// Do not make modifications to the world affecting the Query while enumerating.
+    /// </summary>
+    /// <returns>
+    ///  An enumerator over all the Entities in the Query.
+    /// </returns>
+    public IEnumerable<Entity> Filtered(params TypeExpression[] filterExpressions)
+    {
+        AssertNotDisposed();
+
+        foreach (var table in Archetypes)
+        {
+            if (table.IsMatchSuperSet(filterExpressions))
+            {
+                foreach (var entity in table)
+                    yield return entity;
+            }
+        }
+    }
+    
+
     /// <inheritdoc cref="IEnumerable.GetEnumerator"/>
     IEnumerator IEnumerable.GetEnumerator()
     {
@@ -200,7 +222,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     public bool Contains<T>(Identity match = default)
     {
         AssertNotDisposed();
-        var typeExpression = TypeExpression.Create<T>(match);
+        var typeExpression = TypeExpression.Of<T>(match);
         return typeExpression.Matches(StreamTypes);
     }
 

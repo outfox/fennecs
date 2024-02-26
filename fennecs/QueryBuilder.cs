@@ -33,7 +33,7 @@ public class QueryBuilder : IDisposable
     /// <typeparam name="T"></typeparam>
     protected void Outputs<T>(Identity target = default)
     {
-        var typeExpression = TypeExpression.Create<T>(target);
+        var typeExpression = TypeExpression.Of<T>(target);
         StreamTypes.Add(typeExpression);
         Mask.Has(typeExpression);
     }
@@ -41,7 +41,7 @@ public class QueryBuilder : IDisposable
 
     public virtual QueryBuilder Has<T>(Identity target = default)
     {
-        var typeExpression = TypeExpression.Create<T>(target);
+        var typeExpression = TypeExpression.Of<T>(target);
         Mask.Has(typeExpression);
         return this;
     }
@@ -49,35 +49,35 @@ public class QueryBuilder : IDisposable
 
     public virtual QueryBuilder Has<T>(T target) where T : class
     {
-        Mask.Has(TypeExpression.Create<T>(Identity.Of(target)));
+        Mask.Has(TypeExpression.Of<T>(Identity.Of(target)));
         return this;
     }
 
 
     public virtual QueryBuilder Not<T>(Identity target = default)
     {
-        Mask.Not(TypeExpression.Create<T>(target));
+        Mask.Not(TypeExpression.Of<T>(target));
         return this;
     }
 
 
     public virtual QueryBuilder Not<T>(T target) where T : class
     {
-        Mask.Not(TypeExpression.Create<T>(Identity.Of(target)));
+        Mask.Not(TypeExpression.Of<T>(Identity.Of(target)));
         return this;
     }
 
 
     public virtual QueryBuilder Any<T>(Identity target = default)
     {
-        Mask.Any(TypeExpression.Create<T>(target));
+        Mask.Any(TypeExpression.Of<T>(target));
         return this;
     }
 
 
     public virtual QueryBuilder Any<T>(T target) where T : class
     {
-        Mask.Any(TypeExpression.Create<T>(Identity.Of(target)));
+        Mask.Any(TypeExpression.Of<T>(Identity.Of(target)));
         return this;
     }
 

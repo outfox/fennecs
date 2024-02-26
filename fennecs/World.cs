@@ -324,7 +324,7 @@ public partial class World
 
     internal void CollectTargets<T>(List<Identity> entities)
     {
-        var type = TypeExpression.Create<T>(Match.Any);
+        var type = TypeExpression.Of<T>(Match.Any);
 
         // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
         foreach (var candidate in _tablesByType.Keys)
@@ -370,7 +370,7 @@ public partial class World
     /// <typeparam name="T"></typeparam>
     internal void AddLink<T>(Identity identity, [NotNull] T target) where T : class
     {
-        var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
+        var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
         AddComponent(identity, typeExpression, target);
     }
 
@@ -384,7 +384,7 @@ public partial class World
     /// <returns></returns>
     internal bool HasLink<T>(Identity identity, [NotNull] T target) where T : class
     {
-        var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
+        var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
         return HasComponent(identity, typeExpression);
     }
 
@@ -399,7 +399,7 @@ public partial class World
     /// <typeparam name="T"></typeparam>
     internal void RemoveLink<T>(Identity identity, T target) where T : class
     {
-        var typeExpression = TypeExpression.Create<T>(Identity.Of(target));
+        var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
         RemoveComponent(identity, typeExpression);
     }
 
@@ -422,7 +422,7 @@ public partial class World
     /// <typeparam name="T">any Component type</typeparam>
     internal void AddRelation<T>(Identity identity, Identity target, T data)
     {
-        var typeExpression = TypeExpression.Create<T>(target);
+        var typeExpression = TypeExpression.Of<T>(target);
         AddComponent(identity, typeExpression, data);
     }
 
@@ -437,7 +437,7 @@ public partial class World
     /// <exception cref="ArgumentException"></exception>
     internal bool HasRelation<T>(Identity identity, Identity target)
     {
-        var typeExpression = TypeExpression.Create<T>(target);
+        var typeExpression = TypeExpression.Of<T>(target);
         return HasComponent(identity, typeExpression);
     }
 
@@ -450,14 +450,14 @@ public partial class World
     /// <typeparam name="T">any Component type</typeparam>
     internal void RemoveRelation<T>(Identity identity, Identity target)
     {
-        var typeExpression = TypeExpression.Create<T>(target);
+        var typeExpression = TypeExpression.Of<T>(target);
         RemoveComponent(identity, typeExpression);
     }
 
 
     internal void AddComponent<T>(Identity identity) where T : new()
     {
-        var type = TypeExpression.Create<T>(Match.Plain);
+        var type = TypeExpression.Of<T>(Match.Plain);
         AddComponent(identity, type, new T());
     }
 
@@ -465,21 +465,21 @@ public partial class World
     internal void AddComponent<T>(Identity identity, T data)
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
-        var type = TypeExpression.Create<T>();
+        var type = TypeExpression.Of<T>();
         AddComponent(identity, type, data);
     }
 
 
     internal bool HasComponent<T>(Identity identity, Identity target = default)
     {
-        var type = TypeExpression.Create<T>(target);
+        var type = TypeExpression.Of<T>(target);
         return HasComponent(identity, type);
     }
 
 
     internal void RemoveComponent<T>(Identity identity)
     {
-        var type = TypeExpression.Create<T>(Match.Plain);
+        var type = TypeExpression.Of<T>(Match.Plain);
         RemoveComponent(identity, type);
     }
 

@@ -248,7 +248,7 @@ internal sealed class Archetype : IEnumerable<Entity>
 
     public T[] GetStorage<T>(Identity target)
     {
-        var type = TypeExpression.Create<T>(target);
+        var type = TypeExpression.Of<T>(target);
         return (T[]) GetStorage(type);
     }
 

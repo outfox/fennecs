@@ -55,7 +55,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         using var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(identity).Archetype;
-        var storage = table.GetStorage(TypeExpression.Create<string>(Match.Plain));
+        var storage = table.GetStorage(TypeExpression.Of<string>(Match.Plain));
         Assert.IsAssignableFrom<Array>(storage);
     }
 
@@ -67,13 +67,13 @@ public class ArchetypeTests(ITestOutputHelper output)
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
         var table = world.GetEntityMeta(identity).Archetype;
 
-        var typeExpression = TypeExpression.Create<string>(Match.Plain);
+        var typeExpression = TypeExpression.Of<string>(Match.Plain);
         Assert.True(table.Matches(typeExpression));
 
-        var typeExpressionAny = TypeExpression.Create<string>(Match.Any);
+        var typeExpressionAny = TypeExpression.Of<string>(Match.Any);
         Assert.True(table.Matches(typeExpressionAny));
 
-        var typeExpressionTarget = TypeExpression.Create<string>(new Identity(99999));
+        var typeExpressionTarget = TypeExpression.Of<string>(new Identity(99999));
         Assert.False(table.Matches(typeExpressionTarget));
     }
 
