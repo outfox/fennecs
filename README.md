@@ -2,12 +2,12 @@
 
 <table style="width: 90%">
    <tr>  
-   <th colspan="5">
+   <th colspan="15">
       <h2><em>... the tiny, tiny, high-energy Entity Component System!</em></h2>
    </th>
    </tr>
    <tr>  
-   <th colspan="5">
+   <th colspan="15">
         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
         <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
         <a href="https://github.com/thygrrr/fennECS/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green"/></a>
@@ -16,7 +16,10 @@
    </th>
    </tr>
    <tr>
-      <td colspan="2">
+      <td colspan="10" style="width: 400px">
+         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
+      </td>
+      <td colspan="5">
          <h1>What the fox, another ECS?!</h1>
          <p>We know... oh, <em>we know.</em> 😩</p>
          <p>But in a nutshell, <a href="https://fennecs.tech"><span style="font-size: larger"><em><b>fenn</b>ecs</em></span></a> is...</p>
@@ -31,9 +34,6 @@
             which <em>feels just right<a href="#quickstart-lets-go">*</a></em> for high performance game development in any modern C# engine. Including, of course, the fantastic <a href="https://godotengine.org">Godot</a>.
          </p>
         <p></p>
-      </td>
-      <td colspan="3" style="width: fit-content">
-         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
       </td>
    </tr>
 </table>
