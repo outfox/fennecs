@@ -1,9 +1,10 @@
 ![fennecs logo](./docs/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./docs/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
 
+# _... the tiny, tiny, high-energy Entity Component System!_
+
 <table style="width: 100%">
    <tr>
       <th colspan="2">
-         <h1><em>... the tiny, tiny, high-energy Entity Component System!</em></h1>
       </th>
    </tr>
    <tr>
