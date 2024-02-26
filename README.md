@@ -25,30 +25,26 @@
         <p></p>
       </td>
    </tr>
-<th colspan="9">
+<th colspan="8">
      <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
      <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
      <a href="https://github.com/thygrrr/fennECS/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green"/></a>
      <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/thygrrr/fennecs"/>
      <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennecs?color=blue"/></a>
 </th>
-   <tr>
-      <td colspan="3"><h3>Code Samples</h3></td>
-      <td colspan="7">
-      </td>
-   </tr>
-   <tr>
-      <td>MonoGame<br/><sup>(soon)</sup></td>
-      <td>Stride<br/><sup>(soon)</sup></td>
-      <td><a href="https://github.com/thygrrr/fennecs/tree/main/examples/example-godot">Godot<br/><sup>(WIP)</sup></a></td>
-      <td>Flax<br/><sup>(soon)</sup></td>
-      <td>Unity<br/><sup>(waiting)</sup></td>
-      <td>Duality<br/><sup>(soon)</sup></td>
-      <td>Evergine<br/><sup>(soon)</sup></td>
-      <td>UNIGINE<br/><sup>(soon)</sup></td>
-      <td>NeoAxis<br/><sup>(soon)</sup></td>
-   </tr>
+<tr>
+   <th colspan="8">
+      <h2></h2>
+   </th>
+</tr>
+
 </table>
+
+## Code Samples
+| MonoGame               | Godot               | Flax      | Unigine               | Stride                | Raylib-cs |  NeoAxis |
+|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
+|![MonoGame](docs/logos/logo-monogame-80.png) |![Godot](docs/logos/logo-godot-80.png) | ![Flax Engine](docs/logos/logo-flax-80.png) | ![UNIGINE](docs/logos/logo-unigine-80-darkmode.png#gh-dark-mode-only)![UNIGINE](docs/logos/logo-unigine-80-lightmode.png#gh-light-mode-only) | ![STRIDE](docs/logos/logo-stride-80.png) |  ![Raylib-cs](docs/logos/logo-raylib-80.png) | ![NeoAxis Engine](docs/logos/logo-neoaxis-80-darkmode.png#gh-dark-mode-only)![NeoAxis Engine](docs/logos/logo-neoaxis-80-lightmode.png#gh-light-mode-only) | 
+
 
 ## Quickstart: Let's go!
 📦`>` `dotnet add package fennecs`
