@@ -20,7 +20,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
     #region Runners
 
-    public void ForEach(RefAction<C0, C1, C2, C3, C4> action)
+    public void For(RefAction<C0, C1, C2, C3, C4> action)
     {
         AssertNotDisposed();
 
@@ -46,7 +46,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     }
 
 
-    public void ForEach<U>(RefActionU<C0, C1, C2, C3, C4, U> action, U uniform)
+    public void For<U>(RefActionU<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         AssertNotDisposed();
 

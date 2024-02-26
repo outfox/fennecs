@@ -14,7 +14,7 @@ public class DocumentationExampleTests
 
         const float MULTIPLIER = 10f;
 
-        query.Parallel((ref Position pos, float uniform) => { pos *= uniform; }, MULTIPLIER, chunkSize: 2048);
+        query.Job((ref Position pos, float uniform) => { pos *= uniform; }, MULTIPLIER, chunkSize: 2048);
 
         var pos1 = world.GetComponent<Position>(entity1);
         var expected = new Position() * MULTIPLIER;
@@ -52,7 +52,7 @@ public class DocumentationExampleTests
         var query4 = world.Query<Identity, string, Position, int>().Build();
         var query5 = world.Query<Position, int, float, string, TypeA>().Build();
 
-        query1.Parallel((ref Position _) =>
+        query1.Job((ref Position _) =>
         {
         }, chunkSize: chunkSize);
         Assert.Equal(count, query1.Count);

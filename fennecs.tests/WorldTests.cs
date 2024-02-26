@@ -107,7 +107,7 @@ public class WorldTests
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>().Build();
-        query.ForEach((ref Identity _, World uniform) =>
+        query.For((ref Identity _, World uniform) =>
         {
             var entity = uniform.Spawn();
             Assert.True(entity.Id.IsEntity);

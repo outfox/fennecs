@@ -44,7 +44,7 @@ public class Query<C0> : Query
     /// Executes an action for each entity that match the query.
     /// </summary>
     /// <param name="action">The action to execute.</param>
-    public void ForEach(RefAction<C0> action)
+    public void For(RefAction<C0> action)
     {
         AssertNotDisposed();
 
@@ -71,7 +71,7 @@ public class Query<C0> : Query
     /// </summary>
     /// <param name="action">The action to execute.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
-    public void ForEach<U>(RefActionU<C0, U> action, U uniform)
+    public void For<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
 
@@ -102,7 +102,7 @@ public class Query<C0> : Query
     /// </summary>
     /// <param name="action">The action to execute.</param>
     /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
-    public void Parallel(RefAction<C0> action, int chunkSize = int.MaxValue)
+    public void Job(RefAction<C0> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
 
@@ -153,7 +153,7 @@ public class Query<C0> : Query
     /// <param name="action">The action to execute.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
     /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
-    public void Parallel<U>(RefActionU<C0, U> action, U uniform, int chunkSize = int.MaxValue)
+    public void Job<U>(RefActionU<C0, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
 

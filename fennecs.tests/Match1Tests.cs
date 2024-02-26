@@ -31,7 +31,7 @@ public class Match1Tests
         using var query = _world.Query<string>(Match.Any).Build();
 
         HashSet<string> seen = [];
-        query.ForEach((ref string str) =>
+        query.For((ref string str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -51,7 +51,7 @@ public class Match1Tests
         using var query = _world.Query<string>(Match.Plain).Build();
 
         HashSet<string> seen = [];
-        query.ForEach((ref string str) =>
+        query.For((ref string str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -68,7 +68,7 @@ public class Match1Tests
 
         HashSet<string> seen = [];
 
-        query.ForEach((ref string str) =>
+        query.For((ref string str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -87,7 +87,7 @@ public class Match1Tests
 
         HashSet<string> seen = [];
 
-        query.ForEach((ref string str) =>
+        query.For((ref string str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -104,7 +104,7 @@ public class Match1Tests
 
         HashSet<string> seen = [];
 
-        query.ForEach((ref string str) =>
+        query.For((ref string str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);

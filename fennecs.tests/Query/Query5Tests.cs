@@ -35,7 +35,7 @@ public class Query5Tests
                 .Add('Q');
         }
 
-        query.ForEach(static (ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
+        query.For(static (ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal("one", str);
             str = "two";
@@ -76,7 +76,7 @@ public class Query5Tests
         }, 6, 4096);
 
 
-        query.ForEach(static (ref TypeA _, ref double _, ref int _, ref string str, ref char _, int uniform) =>
+        query.For(static (ref TypeA _, ref double _, ref int _, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
@@ -102,6 +102,6 @@ public class Query5Tests
         }, 9);
 
 
-        query.ForEach((ref TypeA _, ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
+        query.For((ref TypeA _, ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
     }
 }

@@ -31,7 +31,7 @@ public class Query4Tests
                 .Add('Q');
         }
 
-        query.ForEach((ref double _, ref int _, ref string str, ref char _) =>
+        query.For((ref double _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal("one", str);
             str = "two";
@@ -72,7 +72,7 @@ public class Query4Tests
         }, 6, 4096);
 
 
-        query.ForEach((ref double _, ref int _, ref string str, ref char _, int uniform) =>
+        query.For((ref double _, ref int _, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
@@ -98,6 +98,6 @@ public class Query4Tests
         }, 9);
 
 
-        query.ForEach((ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
+        query.For((ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
     }
 }

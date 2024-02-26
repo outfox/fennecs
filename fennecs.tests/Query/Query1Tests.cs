@@ -28,7 +28,7 @@ public class Query1Tests
                 .Add("one");
         }
 
-        query.ForEach((ref string str) =>
+        query.For((ref string str) =>
         {
             Assert.Equal("one", str);
             str = "two";
@@ -43,26 +43,26 @@ public class Query1Tests
             }
         });
 
-        query.Parallel((ref string str) =>
+        query.Job((ref string str) =>
         {
             Assert.Equal("three", str);
             str = "four";
         });
 
-        query.Parallel((ref string str) =>
+        query.Job((ref string str) =>
         {
             Assert.Equal("four", str);
             str = "five";
         }, 4096);
 
-        query.Parallel((ref string str, int uniform) =>
+        query.Job((ref string str, int uniform) =>
         {
             Assert.Equal("five", str);
             str = uniform.ToString();
         }, 6, 4096);
 
 
-        query.ForEach((ref string str, int uniform) =>
+        query.For((ref string str, int uniform) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
@@ -86,7 +86,7 @@ public class Query1Tests
             }
         }, 9);
 
-        query.ForEach((ref string str) => { Assert.Equal(9.ToString(), str); });
+        query.For((ref string str) => { Assert.Equal(9.ToString(), str); });
     }
 
 
@@ -299,7 +299,7 @@ public class Query1Tests
         var query = world.Query<int>().Build();
 
         var processed = 0;
-        query.Parallel((ref int index) =>
+        query.Job((ref int index) =>
         {
             Interlocked.Increment(ref processed);
             index = 123;
@@ -307,7 +307,7 @@ public class Query1Tests
 
         Assert.Equal(count, processed);
 
-        query.Parallel((ref int index) =>
+        query.Job((ref int index) =>
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
@@ -336,7 +336,7 @@ public class Query1Tests
         var query = world.Query<int>().Build();
 
         var processed = 0;
-        query.Parallel((ref int index, float _) =>
+        query.Job((ref int index, float _) =>
         {
             Interlocked.Increment(ref processed);
             index = 123;
@@ -344,7 +344,7 @@ public class Query1Tests
 
         Assert.Equal(count, processed);
 
-        query.Parallel((ref int index, float _) =>
+        query.Job((ref int index, float _) =>
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
@@ -373,7 +373,7 @@ public class Query1Tests
         var query = world.Query<int>().Build();
 
         var processed = 0;
-        query.Parallel((ref int index) =>
+        query.Job((ref int index) =>
         {
             Interlocked.Increment(ref processed);
             index = 123;
@@ -381,7 +381,7 @@ public class Query1Tests
 
         Assert.Equal(count, processed);
 
-        query.Parallel((ref int index) =>
+        query.Job((ref int index) =>
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
@@ -410,7 +410,7 @@ public class Query1Tests
         var query = world.Query<int>().Build();
 
         var processed = 0;
-        query.Parallel((ref int index) =>
+        query.Job((ref int index) =>
         {
             Interlocked.Increment(ref processed);
             index = 123;
@@ -418,7 +418,7 @@ public class Query1Tests
 
         Assert.Equal(count, processed);
 
-        query.Parallel((ref int index) =>
+        query.Job((ref int index) =>
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
@@ -507,10 +507,10 @@ public class Query1Tests
         });
 
         var index = 0;
-        query.ForEach((ref long value) => { Assert.Equal(index++, value); });
+        query.For((ref long value) => { Assert.Equal(index++, value); });
 
         var index2 = 0;
-        query.ForEach((ref long value, int _) => { Assert.Equal(index2++, value); },
+        query.For((ref long value, int _) => { Assert.Equal(index2++, value); },
             1337);
     }
 }

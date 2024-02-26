@@ -55,31 +55,31 @@ public class SimpleEntityBenchmarks
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Delegate_Chunk1k()
     {
-        _queryV3.Parallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 1024);
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 1024);
     }
 
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Delegate_Chunk4k()
     {
-        _queryV3.Parallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 4096);
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 4096);
     }
 
     [Benchmark]
     public void CrossProduct_Single_ECS_Lambda()
     {
-        _queryV3.ForEach((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.For((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Lambda()
     {
-        _queryV3.Parallel((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.Job((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     public void CrossProduct_Single_ECS_Delegate()
     {
-        _queryV3.ForEach(delegate (ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.For(delegate (ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
 
@@ -110,6 +110,6 @@ public class SimpleEntityBenchmarks
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Delegate_Archetype()
     {
-        _queryV3.Parallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 }
