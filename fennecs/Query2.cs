@@ -20,6 +20,7 @@ public class Query<C0, C1> : Query<C0>
 
     #region Runners
 
+    /// <inheritdoc cref="Query{C0}.For(RefAction{C0})"/>
     public void For(RefAction<C0, C1> action)
     {
         AssertNotDisposed();
@@ -41,6 +42,7 @@ public class Query<C0, C1> : Query<C0>
     }
 
 
+    /// <inheritdoc cref="Query{C0}.For{U}"/>
     public void For<U>(RefActionU<C0, C1, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -63,6 +65,7 @@ public class Query<C0, C1> : Query<C0>
     }
 
 
+    /// <inheritdoc cref="Query{C0}.Job"/>
     public void Job(RefAction<C0, C1> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
@@ -109,6 +112,7 @@ public class Query<C0, C1> : Query<C0>
     }
 
 
+    /// <inheritdoc cref="Query{C0}.Job{U}"/>
     public void Job<U>(RefActionU<C0, C1, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
@@ -156,6 +160,7 @@ public class Query<C0, C1> : Query<C0>
     }
 
 
+    /// <inheritdoc cref="Query{C0}.Raw"/>
     public void Raw(MemoryAction<C0, C1> action)
     {
         AssertNotDisposed();
@@ -178,6 +183,7 @@ public class Query<C0, C1> : Query<C0>
     }
 
 
+    /// <inheritdoc cref="Query{C0}.Raw{U}"/>
     public void Raw<U>(MemoryActionU<C0, C1, U> action, U uniform)
     {
         AssertNotDisposed();

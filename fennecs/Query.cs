@@ -189,7 +189,7 @@ public class Query : IEnumerable<Entity>, IDisposable
             }
         }
     }
-    
+
 
     /// <inheritdoc cref="IEnumerable.GetEnumerator"/>
     IEnumerator IEnumerable.GetEnumerator()
