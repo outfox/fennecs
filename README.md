@@ -16,7 +16,7 @@
    </th>
    </tr>
    <tr>
-      <td colspan="4">
+      <td colspan="3" style="width: max-content">
          <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
       </td>
       <td colspan="2">
