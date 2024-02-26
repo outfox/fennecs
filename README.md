@@ -17,7 +17,7 @@
    </tr>
    <tr>
       <td colspan="10" style="width: 400px">
-         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
+         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px; max-width: 320px"/>
       </td>
       <td colspan="5">
          <h1>What the fox, another ECS?!</h1>
