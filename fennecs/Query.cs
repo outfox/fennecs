@@ -99,7 +99,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         if (valid) return;
         
         _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
-        throw new InvalidOperationException("Can't set filter because the filter is no subset of the initial Stream Types.");
+        throw new InvalidOperationException("Can't set filter because the TypeExpression is no subset of the initial Stream Types.");
     }
 
 
@@ -261,7 +261,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
             if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
-            using var lck = World.Lock;
+            using var worldLock = World.Lock;
             Entity result = default;
             
             foreach (var table in Archetypes)

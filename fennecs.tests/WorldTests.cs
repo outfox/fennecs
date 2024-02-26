@@ -225,12 +225,12 @@ public class WorldTests
     {
         using var world = new World();
         var identity = world.Spawn().Id;
-        var lck = world.Lock;
+        var worldLock = world.Lock;
 
         world.On(identity).Add(666);
         Assert.False(world.HasComponent<int>(identity));
         Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(identity));
-        lck.Dispose();
+        worldLock.Dispose();
         Assert.True(world.HasComponent<int>(identity));
         Assert.Equal(666, world.GetComponent<int>(identity));
     }
@@ -240,7 +240,7 @@ public class WorldTests
     public void Can_Lock_and_Unlock_World()
     {
         using var world = new World();
-        using var lck = world.Lock;
+        using var worldLock = world.Lock;
     }
 
 
@@ -248,7 +248,7 @@ public class WorldTests
     public void Can_Lock_Locked_World()
     {
         using var world = new World();
-        using var lck = world.Lock;
+        using var worldLock = world.Lock;
     }
 
 
@@ -256,7 +256,7 @@ public class WorldTests
     public void Apply_Can_Spawn_while_Locked()
     {
         using var world = new World();
-        using var lck = world.Lock;
+        using var worldLock = world.Lock;
         var entity = world.Spawn();
         Assert.True(world.IsAlive(entity));
     }
@@ -268,11 +268,11 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn().Id;
 
-        var lck = world.Lock;
+        var worldLock = world.Lock;
         world.On(identity).Add(666);
 
         Assert.False(world.HasComponent<int>(identity));
-        lck.Dispose();
+        worldLock.Dispose();
 
         Assert.True(world.HasComponent<int>(identity));
         Assert.Equal(666, world.GetComponent<int>(identity));
@@ -284,10 +284,10 @@ public class WorldTests
     {
         using var world = new World();
         var identity = world.Spawn().Add(666).Id;
-        var lck = world.Lock;
+        var worldLock = world.Lock;
         world.On(identity).Remove<int>();
 
-        lck.Dispose();
+        worldLock.Dispose();
         Assert.False(world.HasComponent<int>(identity));
     }
 
@@ -297,10 +297,10 @@ public class WorldTests
     {
         using var world = new World();
         var entity = world.Spawn().Add(666).Add("hallo");
-        var lck = world.Lock;
+        var worldLock = world.Lock;
         world.Despawn(entity);
         Assert.True(world.IsAlive(entity));
-        lck.Dispose();
+        worldLock.Dispose();
         Assert.False(world.IsAlive(entity));
     }
 
@@ -312,10 +312,10 @@ public class WorldTests
         var identity = world.Spawn();
         var target = world.Spawn();
 
-        var lck = world.Lock;
+        var worldLock = world.Lock;
         world.On(identity).AddRelation(target, 666);
         Assert.False(world.HasRelation<int>(identity, target));
-        lck.Dispose();
+        worldLock.Dispose();
         Assert.True(world.HasRelation<int>(identity, target));
     }
 
@@ -326,7 +326,7 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn();
         var target = world.Spawn();
-        using var lck = world.Lock;
+        using var worldLock = world.Lock;
         world.On(identity).AddRelation(target, 666);
         world.On(identity).RemoveRelation<int>(target);
         Assert.False(world.HasComponent<int>(identity));

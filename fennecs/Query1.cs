@@ -38,7 +38,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var lck = World.Lock;
+        using var worldLock = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -60,7 +60,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var lck = World.Lock;
+        using var worldLock = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -82,7 +82,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var lck = World.Lock;
+        using var worldLock = World.Lock;
         foreach (var table in Archetypes)
         {
             if (table.IsEmpty) continue;
@@ -103,7 +103,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var lck = World.Lock;
+        using var worldLock = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -129,7 +129,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var lck = World.Lock;
+        using var worldLock = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0>>.Rent();
@@ -175,7 +175,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var lck = World.Lock;
+        using var worldLock = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C0, U>>.Rent();
@@ -223,7 +223,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var lck = World.Lock;
+        using var worldLock = World.Lock;
 
         foreach (var table in Archetypes)
         {
@@ -244,7 +244,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var lck = World.Lock;
+        using var worldLock = World.Lock;
 
         foreach (var table in Archetypes)
         {
