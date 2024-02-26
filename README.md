@@ -1,7 +1,7 @@
 ![fennecs logo](./docs/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./docs/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
 
 <table style="width: 90%">
-   <th colspan="2">
+   <th colspan="3">
       <h2><em>... the tiny, tiny, high-energy Entity Component System!</em></h2>
         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
         <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
@@ -10,7 +10,7 @@
         <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennecs?color=blue"/></a>
    </th>
    <tr>
-      <td colspan="1" style="width: fit-content">
+      <td colspan="2" style="width: fit-content">
          <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
       </td>
       <td colspan="1">
