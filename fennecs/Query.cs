@@ -30,7 +30,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// Mutated by Filter Expressions.
     /// </summary>
     internal readonly TypeExpression[] StreamTypes;
-    
+
     /// <summary>
     /// Countdown event for parallel runners.
     /// </summary>
@@ -52,6 +52,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     #endregion
 
+
     #region Filtering
 
     /// <summary>
@@ -72,7 +73,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <param name="onStreamTypeIndex">optional parameter to try setting a specific type index; is only relevant
     /// if the Query needs to enumerate the same backing Component Type twice in two separate Stream Types</param>
     /// <exception cref="InvalidOperationException">if the requested filter doesn't match any of the Query's Archetypes</exception>
-    public void SetFilter<T>(Identity match, int onStreamTypeIndex = -1)
+    public void AddFilter<T>(Identity match, int onStreamTypeIndex = -1)
     {
         var valid = false;
         var filterExpression = TypeExpression.Create<T>(match);
@@ -86,33 +87,34 @@ public class Query : IEnumerable<Entity>, IDisposable
             startIndex = onStreamTypeIndex;
             endIndex = onStreamTypeIndex + 1;
         }
-        
+
         for (var i = startIndex; i < endIndex; i++)
         {
             var ownExpression = _initialStreamTypes[i];
             if (!ownExpression.Matches(filterExpression)) continue;
-            
+
             StreamTypes[i] = filterExpression;
             valid = true;
             break;
         }
 
         if (valid) return;
-        
+
         throw new InvalidOperationException("Can't set filter because the TypeExpression is no subset of the initial Stream Types.");
     }
 
 
     /// <summary>
-    /// Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="SetFilter{T}"/>.
+    /// Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="AddFilter{T}"/>.
     /// </summary>
     public void ClearFilters()
     {
         _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
     }
-    
+
     #endregion
-    
+
+
     #region Accessors
 
     /// <summary>
@@ -127,10 +129,10 @@ public class Query : IEnumerable<Entity>, IDisposable
     public ref C Ref<C>(Entity entity, Identity match = default)
     {
         AssertNotDisposed();
-        
+
         if (entity._world != World) throw new InvalidOperationException("Entity is not from this World.");
         World.AssertAlive(entity);
-        
+
         if (!Contains<C>(match)) throw new TypeAccessException("Query does not match this Component type.");
         if (!Contains(entity)) throw new KeyNotFoundException("Entity not in Query.");
 
@@ -153,11 +155,11 @@ public class Query : IEnumerable<Entity>, IDisposable
     public IEnumerator<Entity> GetEnumerator()
     {
         AssertNotDisposed();
-        
+
         foreach (var table in Archetypes)
         {
             if (!table.IsMatchSuperSet(StreamTypes)) continue;
-            
+
             foreach (var entity in table)
                 yield return entity;
         }
@@ -201,7 +203,6 @@ public class Query : IEnumerable<Entity>, IDisposable
         var typeExpression = TypeExpression.Create<T>(match);
         return typeExpression.Matches(StreamTypes);
     }
-
 
 
     /// <summary>
@@ -268,7 +269,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
             using var worldLock = World.Lock;
             Entity result = default;
-            
+
             foreach (var table in Archetypes)
             {
                 if (index < table.Count)
@@ -279,11 +280,11 @@ public class Query : IEnumerable<Entity>, IDisposable
 
                 index -= table.Count;
             }
-            
+
             return result;
         }
     }
-    
+
     #endregion
 
 

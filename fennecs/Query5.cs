@@ -28,10 +28,11 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
             var count = table.Count;
 
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
+
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
@@ -54,10 +55,11 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
             var count = table.Count;
 
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
+
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
@@ -79,10 +81,11 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
         using var worldLock = World.Lock;
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
             var count = table.Count;
 
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
+
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
@@ -104,11 +107,11 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
         using var worldLock = World.Lock;
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
-
             var count = table.Count;
 
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
+
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
@@ -134,9 +137,8 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
-
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
@@ -184,9 +186,8 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
-
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
@@ -233,9 +234,9 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
-
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
+
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
@@ -259,9 +260,9 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
         foreach (var table in Archetypes)
         {
-            if (table.IsEmpty) continue;
-
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
+
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;

@@ -22,21 +22,44 @@ internal sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    private const int StartCapacity = 4;
-
+    /// <summary>
+    /// The TypeExpressions that define this Archetype.
+    /// </summary>
     public readonly ImmutableSortedSet<TypeExpression> Types;
 
-    public Identity[] Identities => _identities;
+    /// <summary>
+    /// Get a Span of all Identities contained in this Archetype.
+    /// </summary>
+    public ReadOnlySpan<Identity> Identities => _identities.AsSpan(0, Count);
 
     internal Array[] Storages => _storages;
 
+    /// <summary>
+    /// Number of Entities contained in this Archetype.
+    /// </summary>
     public int Count { get; private set; }
+
+    /// <summary>
+    /// Does this Archetype currently contain no Entities?
+    /// </summary>
     public bool IsEmpty => Count == 0;
 
+    /// <summary>
+    /// Current Capacity of this Archetype. This will grow as Entities are added and the Archetype resizes.
+    /// </summary>
     public int Capacity => _identities.Length;
 
+    private const int StartCapacity = 4;
+
+
+    /// <summary>
+    /// The World this Archetype is a part of.
+    /// </summary>
     private readonly World _world;
 
+    /// <summary>
+    /// The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
+    /// </summary>
     private Identity[] _identities;
 
     /// <summary>
@@ -327,31 +350,31 @@ internal sealed class Archetype : IEnumerable<Entity>
 
     internal Match.Join<C0> CrossJoin<C0>(TypeExpression[] streamTypes)
     {
-        return new Match.Join<C0>(this, streamTypes);
+        return IsEmpty ? default : new Match.Join<C0>(this, streamTypes);
     }
 
 
     internal Match.Join<C0, C1> CrossJoin<C0, C1>(TypeExpression[] streamTypes)
     {
-        return new Match.Join<C0, C1>(this, streamTypes);
+        return IsEmpty ? default : new Match.Join<C0, C1>(this, streamTypes);
     }
 
 
     internal Match.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(TypeExpression[] streamTypes)
     {
-        return new Match.Join<C0, C1, C2>(this, streamTypes);
+        return IsEmpty ? default : new Match.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
     internal Match.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(TypeExpression[] streamTypes)
     {
-        return new Match.Join<C0, C1, C2, C3>(this, streamTypes);
+        return IsEmpty ? default : new Match.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
     internal Match.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(TypeExpression[] streamTypes)
     {
-        return new Match.Join<C0, C1, C2, C3, C4>(this, streamTypes);
+        return IsEmpty ? default : new Match.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
 
     #endregion

@@ -14,7 +14,7 @@ public class QueryFilterTests
         Assert.Contains(entity1, query);
         Assert.Contains(entity2, query);
 
-        query.SetFilter<int>(Match.Plain);
+        query.AddFilter<int>(Match.Plain);
 
         Assert.Contains(entity1, query);
         Assert.DoesNotContain(entity2, query);
@@ -30,12 +30,42 @@ public class QueryFilterTests
         var entity1 = world.Spawn().Add(444);
         var entity2 = world.Spawn().AddRelation(entity1, 555);
 
-        query.SetFilter<int>(Match.Plain);
+        query.AddFilter<int>(Match.Plain);
         Assert.Contains(entity1, query);
         Assert.DoesNotContain(entity2, query);
 
         query.ClearFilters();
         Assert.Contains(entity1, query);
         Assert.Contains(entity2, query);
+    }
+
+
+    [Fact]
+    public void Cannot_Filter_foreign_Component()
+    {
+        using var world = new World();
+        var query = world.Query<float>().Build();
+        Assert.Throws<InvalidOperationException>(() => query.AddFilter<int>(Match.Plain));
+    }
+
+
+    [Fact]
+    public void Cannot_Widen_Filter()
+    {
+        using var world = new World();
+        var query = world.Query<int>(Match.Plain).Build();
+        Assert.Throws<InvalidOperationException>(() => query.AddFilter<int>(Match.Any));
+        Assert.Throws<InvalidOperationException>(() => query.AddFilter<int>(Match.Target));
+    }
+
+
+    [Fact]
+    public void Cannot_Mismatch_Filter()
+    {
+        using var world = new World();
+        var query = world.Query<int>(Match.Plain).Build();
+        Assert.Throws<InvalidOperationException>(() => query.AddFilter<int>(Match.Target));
+        Assert.Throws<InvalidOperationException>(() => query.AddFilter<int>(Match.Entity));
+        Assert.Throws<InvalidOperationException>(() => query.AddFilter<int>(Match.Object));
     }
 }

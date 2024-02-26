@@ -117,18 +117,25 @@ public static class Match
 
         private readonly PooledList<C0[]> _storages0;
 
+        private readonly bool _allocated;
+        private readonly bool _populated;
+
 
         /// <summary>
         /// Cross-Joins the Archetype with a list of StreamTypes.
         /// </summary>
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
+            _allocated = true;
+            
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
 
             Array.Fill(_counter, 0);
             _limiter[0] = _storages0.Count;
+
+            _populated = _storages0.Count > 0;
         }
 
 
@@ -148,8 +155,16 @@ public static class Match
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
 
+        /// <summary>
+        /// Returns <c>true</c> if the Join is empty, i.e. no permutations are available.
+        /// </summary>
+        internal bool Empty => !_populated;
+
+
         public void Dispose()
         {
+            if (!_allocated) return;
+            
             _storages0.Dispose();
             ArrayPool<int>.Shared.Return(_counter);
             ArrayPool<int>.Shared.Return(_limiter);
@@ -168,9 +183,14 @@ public static class Match
         private readonly PooledList<C0[]> _storages0;
         private readonly PooledList<C1[]> _storages1;
 
+        private readonly bool _allocated;
+        private readonly bool _populated;
+
 
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
+            _allocated = true;
+            
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -179,6 +199,8 @@ public static class Match
             Array.Fill(_counter, 0);
             _limiter[0] = _storages0.Count;
             _limiter[1] = _storages1.Count;
+
+            _populated = _storages0.Count > 0 && _storages1.Count > 0;
         }
 
 
@@ -186,9 +208,13 @@ public static class Match
 
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
+        internal bool Empty => !_populated;
+
 
         public void Dispose()
         {
+            if (!_allocated) return;
+
             _storages0.Dispose();
             _storages1.Dispose();
             ArrayPool<int>.Shared.Return(_counter);
@@ -209,9 +235,14 @@ public static class Match
         private readonly PooledList<C1[]> _storages1;
         private readonly PooledList<C2[]> _storages2;
 
+        private readonly bool _allocated;
+        private readonly bool _populated;
+
 
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
+            _allocated = true;
+            
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -222,6 +253,8 @@ public static class Match
             _limiter[0] = _storages0.Count;
             _limiter[1] = _storages1.Count;
             _limiter[2] = _storages2.Count;
+
+            _populated = _storages0.Count > 0 && _storages1.Count > 0 && _storages2.Count > 0;
         }
 
 
@@ -229,9 +262,13 @@ public static class Match
 
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
+        internal bool Empty => !_populated;
+
 
         public void Dispose()
         {
+            if (!_allocated) return;
+
             _storages0.Dispose();
             _storages1.Dispose();
             _storages2.Dispose();
@@ -254,9 +291,14 @@ public static class Match
         private readonly PooledList<C2[]> _storages2;
         private readonly PooledList<C3[]> _storages3;
 
+        private readonly bool _allocated;
+        private readonly bool _populated;
+
 
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
+            _allocated = true;
+            
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -269,6 +311,8 @@ public static class Match
             _limiter[1] = _storages1.Count;
             _limiter[2] = _storages2.Count;
             _limiter[3] = _storages3.Count;
+
+            _populated = _storages0.Count > 0 && _storages1.Count > 0 && _storages2.Count > 0 && _storages3.Count > 0;
         }
 
 
@@ -276,9 +320,13 @@ public static class Match
 
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
+        internal bool Empty => !_populated;
+
 
         public void Dispose()
         {
+            if (!_allocated) return;
+
             _storages0.Dispose();
             _storages1.Dispose();
             _storages2.Dispose();
@@ -303,9 +351,14 @@ public static class Match
         private readonly PooledList<C3[]> _storages3;
         private readonly PooledList<C4[]> _storages4;
 
+        private readonly bool _allocated;
+        private readonly bool _populated;
+
 
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
+            _allocated = true;
+            
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -320,6 +373,8 @@ public static class Match
             _limiter[2] = _storages2.Count;
             _limiter[3] = _storages3.Count;
             _limiter[4] = _storages4.Count;
+
+            _populated = _storages0.Count > 0 && _storages1.Count > 0 && _storages2.Count > 0 && _storages3.Count > 0 && _storages4.Count > 0;
         }
 
 
@@ -327,9 +382,13 @@ public static class Match
 
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
+        internal bool Empty => !_populated;
+
 
         public void Dispose()
         {
+            if (!_allocated) return;
+
             _storages0.Dispose();
             _storages1.Dispose();
             _storages2.Dispose();
