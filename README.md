@@ -16,9 +16,6 @@
    </th>
    </tr>
    <tr>
-      <td colspan="3" style="width: fit-content">
-         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
-      </td>
       <td colspan="2">
          <h1>What the fox, another ECS?!</h1>
          <p>We know... oh, <em>we know.</em> 😩</p>
@@ -34,6 +31,9 @@
             which <em>feels just right<a href="#quickstart-lets-go">*</a></em> for high performance game development in any modern C# engine. Including, of course, the fantastic <a href="https://godotengine.org">Godot</a>.
          </p>
         <p></p>
+      </td>
+      <td colspan="3" style="width: fit-content">
+         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
       </td>
    </tr>
 </table>
