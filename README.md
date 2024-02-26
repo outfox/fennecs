@@ -3,7 +3,7 @@
 <table style="width: 100%">
    <tr>
       <th colspan="2">
-         <h2><em>... the tiny, tiny, high-energy Entity Component System!</em></h2>
+         <h1><em>... the tiny, tiny, high-energy Entity Component System!</em></h1>
       </th>
    </tr>
    <tr>
