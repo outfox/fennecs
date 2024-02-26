@@ -6,6 +6,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using fennecs.pools;
 
+// ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+
 namespace fennecs;
 
 internal sealed class Archetype : IEnumerable<Entity>
@@ -158,6 +160,18 @@ internal sealed class Archetype : IEnumerable<Entity>
         matchesAny |= mask.AnyTypes.Any(t => t.Matches(Types));
 
         return matchesHas && matchesNot && matchesAny;
+    }
+
+
+    internal bool IsMatchSuperSet(TypeExpression[] matchTypes)
+    {
+        var match = true;
+        for (var i = 0; i < matchTypes.Length; i++)
+        {
+            match &= matchTypes[i].Matches(Types);
+        }
+
+        return match;
     }
 
 

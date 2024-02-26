@@ -89,7 +89,8 @@ public class Query : IEnumerable<Entity>, IDisposable
         
         for (var i = startIndex; i < endIndex; i++)
         {
-            if (!_initialStreamTypes[i].Matches(filterExpression)) continue;
+            var ownExpression = _initialStreamTypes[i];
+            if (!ownExpression.Matches(filterExpression)) continue;
             
             StreamTypes[i] = filterExpression;
             valid = true;
@@ -152,9 +153,14 @@ public class Query : IEnumerable<Entity>, IDisposable
     public IEnumerator<Entity> GetEnumerator()
     {
         AssertNotDisposed();
+        
         foreach (var table in Archetypes)
-        foreach (var entity in table)
-            yield return entity;
+        {
+            if (!table.IsMatchSuperSet(StreamTypes)) continue;
+            
+            foreach (var entity in table)
+                yield return entity;
+        }
     }
 
 
