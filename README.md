@@ -1,7 +1,7 @@
 ![fennecs logo](./docs/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./docs/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
 
 <table style="width: 90%">
-   <th colspan="9">
+   <th colspan="2">
       <h2><em>... the tiny, tiny, high-energy Entity Component System!</em></h2>
         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
         <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
@@ -10,10 +10,10 @@
         <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennecs?color=blue"/></a>
    </th>
    <tr>
-      <td colspan="5" style="width: fit-content">
+      <td colspan="1" style="width: fit-content">
          <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
       </td>
-      <td colspan="5">
+      <td colspan="1">
          <h1>What the fox, another ECS?!</h1>
          <p>We know... oh, <em>we know.</em> 😩</p>
          <p>But in a nutshell, <a href="https://fennecs.tech"><span style="font-size: larger"><em><b>fenn</b>ecs</em></span></a> is...</p>
@@ -30,13 +30,6 @@
         <p></p>
       </td>
    </tr>
-<th colspan="8">
-     <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
-     <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
-     <a href="https://github.com/thygrrr/fennECS/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green"/></a>
-     <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/thygrrr/fennecs"/>
-     <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennecs?color=blue"/></a>
-</th>
 </table>
 
 ## Code Samples
