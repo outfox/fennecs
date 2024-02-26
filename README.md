@@ -127,8 +127,7 @@ well; and things it may aspire to do but compromised on in order to be able to a
 - [x] Workloads can be easily parallelized across *and within* Archetypes
 
 - [x] Expressive, queryable relations between Entities and Objects
-- [x] Entity Structural Changes with O(1) time complexity (per individual change).
-- [x] Entity-Component Queries with O(1) runtime lookup time complexity.
+- [x] Powerfully intuitive ways to use these relations to crunch data... fast!
 
 - [x] No code generation and no reflection required.
 
