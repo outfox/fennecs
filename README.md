@@ -16,7 +16,7 @@
    </th>
    </tr>
    <tr>
-      <td style="width: fit-content">
+      <td>
          <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
       </td>
       <td >
