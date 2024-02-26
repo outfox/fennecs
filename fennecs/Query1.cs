@@ -102,7 +102,7 @@ public class Query<C0> : Query
     /// </summary>
     /// <param name="action">The action to execute.</param>
     /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
-    public void Job(RefAction<C0> action, int chunkSize = int.MaxValue)
+    public void Parallel(RefAction<C0> action, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
 
@@ -153,7 +153,7 @@ public class Query<C0> : Query
     /// <param name="action">The action to execute.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
     /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
-    public void Job<U>(RefActionU<C0, U> action, U uniform, int chunkSize = int.MaxValue)
+    public void Parallel<U>(RefActionU<C0, U> action, U uniform, int chunkSize = int.MaxValue)
     {
         AssertNotDisposed();
 

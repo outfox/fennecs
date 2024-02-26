@@ -97,12 +97,12 @@ public class ChunkingBenchmarks
     [Benchmark]
     public void CrossProduct_Job()
     {
-        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, chunkSize);
+        _queryV3.Parallel(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, chunkSize);
     }
 
     [Benchmark]
     public void CrossProduct_JobU()
     {
-        _queryV3.Job(delegate(ref Vector3 v, Vector3 uniform) { v = Vector3.Cross(v, uniform); }, UniformConstantVector, chunkSize);
+        _queryV3.Parallel(delegate(ref Vector3 v, Vector3 uniform) { v = Vector3.Cross(v, uniform); }, UniformConstantVector, chunkSize);
     }
 }

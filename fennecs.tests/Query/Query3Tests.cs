@@ -36,13 +36,13 @@ public class Query3Tests
             str = "two";
         });
 
-        query.ForSpan((integers, strings, _) =>
+        query.Raw((integers, strings, _) =>
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(i, integers[i]);
-                Assert.Equal("two", strings[i]);
-                strings[i] = "three";
+                Assert.Equal(i, integers.Span[i]);
+                Assert.Equal("two", strings.Span[i]);
+                strings.Span[i] = "three";
             }
         });
 
@@ -77,12 +77,12 @@ public class Query3Tests
             str = uniform.ToString();
         }, 7);
 
-        query.ForSpan((_, strings, _, uniform) =>
+        query.Raw((_, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(7.ToString(), strings[i]);
-                strings[i] = uniform.ToString();
+                Assert.Equal(7.ToString(), strings.Span[i]);
+                strings.Span[i] = uniform.ToString();
             }
         }, 8);
 

@@ -20,55 +20,6 @@ public class Query<C0, C1> : Query<C0>
 
     #region Runners
 
-    public void ForSpan(SpanAction<C0, C1> action)
-    {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
-
-        foreach (var table in Archetypes)
-        {
-            var count = table.Count;
-
-            using var join = table.CrossJoin<C0, C1>(StreamTypes);
-            if (join.Empty) continue;
-
-            do
-            {
-                var (s0, s1) = join.Select;
-
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                action(span0, span1);
-            } while (join.Iterate());
-        }
-    }
-
-
-    public void ForSpan<U>(SpanActionU<C0, C1, U> action, U uniform)
-    {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
-
-        foreach (var table in Archetypes)
-        {
-            var count = table.Count;
-
-            using var join = table.CrossJoin<C0, C1>(StreamTypes);
-            if (join.Empty) continue;
-
-            do
-            {
-                var (s0, s1) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                action(span0, span1, uniform);
-            } while (join.Iterate());
-        }
-    }
-
-
     public void ForEach(RefAction<C0, C1> action)
     {
         AssertNotDisposed();
