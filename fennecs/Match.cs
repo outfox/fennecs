@@ -4,9 +4,11 @@ using fennecs.pools;
 namespace fennecs;
 
 /// <summary>
-/// Match Expressions for Query Matching.
-/// Differentiates, in Query Matching, between Plain Components, Entity-Entity Relations, and Entity-Object Relations.
-/// Offers a set of Wildcards for matching combinations of the above; as opposed to filtering for only a specific target.
+/// <para>Match Expressions for Query Matching.</para>
+/// <para>
+/// Match's static readonly constants differentiate between Plain Components, Entity-Entity Relations, and Entity-Object Relations.
+/// The class offers a set of Wildcards for matching combinations of the above in <see cref="Query">Queries</see>; as opposed to filtering for only a specific target.
+/// </para>
 /// </summary>
 public static class Match
 {

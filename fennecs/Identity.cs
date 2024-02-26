@@ -32,8 +32,8 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     // Tracked Object Reference.
     public bool IsObject => Decoration < 0;
 
-    // Special Entities, such as None, Any.
-    public bool IsVirtual => Decoration >= 0 && Index <= 0;
+    // Wildcard Entities, such as Any, Object, Entity, or Relation.
+    public bool IsWildcard => Decoration == 0 && Index < 0;
 
 
     #region IComparable/IEquatable Implementation

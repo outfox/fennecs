@@ -63,7 +63,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// Call this method repeatedly to set multiple filters.
     /// </para>
     /// <para>
-    /// Clear the filter with <see cref="ResetFilter"/>.
+    /// Clear the filter with <see cref="ClearFilters"/>.
     /// </para>
     /// </remarks>
     /// <typeparam name="T">any component type that is present in the Query's Stream Types</typeparam>
@@ -98,15 +98,14 @@ public class Query : IEnumerable<Entity>, IDisposable
 
         if (valid) return;
         
-        _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
         throw new InvalidOperationException("Can't set filter because the TypeExpression is no subset of the initial Stream Types.");
     }
 
 
     /// <summary>
-    /// Clears all narrowing filters on this Query, returning it to its initial state.
+    /// Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="SetFilter{T}"/>.
     /// </summary>
-    public void ResetFilter()
+    public void ClearFilters()
     {
         _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
     }

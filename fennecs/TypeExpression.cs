@@ -65,7 +65,13 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <summary>
     /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
     /// </summary>
-    public bool isRelation => TypeId != 0 && Target != Match.Plain;
+    public bool isRelation => TypeId != 0 && Target != Match.Plain && !Target.IsWildcard;
+    
+    /// <summary>
+    ///  Is this TypeExpression a Wildcard expression? See <see cref="Match"/>.
+    /// </summary>
+    public bool isWildcard => Target.IsWildcard;
+
 
     /// <summary>
     /// Get the backing Component type that this <see cref="TypeExpression"/> represents.

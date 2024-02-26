@@ -24,7 +24,7 @@ public class WorldTests
         using var world = new World();
         var entity = world.Spawn();
         Assert.True(entity.Id.IsEntity);
-        Assert.False(entity.Id.IsVirtual);
+        Assert.False(entity.Id.IsWildcard);
         Assert.False(entity.Id.IsObject);
     }
 
@@ -41,7 +41,7 @@ public class WorldTests
         {
             var entity = world.Spawn();
             Assert.True(entity.Id.IsEntity);
-            Assert.False(entity.Id.IsVirtual);
+            Assert.False(entity.Id.IsWildcard);
             Assert.False(entity.Id.IsObject);
         }
     }
@@ -86,7 +86,7 @@ public class WorldTests
             {
                 var entity = uniform.Spawn();
                 Assert.True(entity.Id.IsEntity);
-                Assert.False(entity.Id.IsVirtual);
+                Assert.False(entity.Id.IsWildcard);
                 Assert.False(entity.Id.IsObject);
             }
         }, world);
@@ -111,7 +111,7 @@ public class WorldTests
         {
             var entity = uniform.Spawn();
             Assert.True(entity.Id.IsEntity);
-            Assert.False(entity.Id.IsVirtual);
+            Assert.False(entity.Id.IsWildcard);
             Assert.False(entity.Id.IsObject);
             Thread.Yield();
         }, world);
