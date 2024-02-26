@@ -2,11 +2,22 @@
 
 namespace fennecs.tests;
 
-public class TypeExpressionTests
+public class TypeExpressionTests(ITestOutputHelper output)
 {
     private struct TypeA;
 
 
+    [Fact]
+    public void To_String()
+    {
+        output.WriteLine(TypeExpression.Of<TypeA>().ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(Match.Any).ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(Match.Object).ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(Match.Entity).ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(new Identity(123)).ToString());
+    }
+    
+    
     [Fact]
     public void Id_is_Comparable()
     {

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace fennecs;
 
@@ -64,7 +65,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// Call this method repeatedly to set multiple filters.
     /// </para>
     /// <para>
-    /// Clear the filter with <see cref="ClearFilters"/>.
+    /// Clear the filter with <see cref="ClearStreamFilter"/>.
     /// </para>
     /// </remarks>
     /// <typeparam name="T">any component type that is present in the Query's Stream Types</typeparam>
@@ -73,7 +74,8 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <param name="onStreamTypeIndex">optional parameter to try setting a specific type index; is only relevant
     /// if the Query needs to enumerate the same backing Component Type twice in two separate Stream Types</param>
     /// <exception cref="InvalidOperationException">if the requested filter doesn't match any of the Query's Archetypes</exception>
-    public void AddFilter<T>(Identity match, int onStreamTypeIndex = -1)
+    [Experimental("StatefulFiltering")]
+    public void AddStreamFilter<T>(Identity match, int onStreamTypeIndex = -1)
     {
         var valid = false;
         var filterExpression = TypeExpression.Of<T>(match);
@@ -105,9 +107,10 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     /// <summary>
-    /// Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="AddFilter{T}"/>.
+    /// Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="AddStreamFilter{T}"/>.
     /// </summary>
-    public void ClearFilters()
+    [Experimental("StatefulFiltering")]
+    public void ClearStreamFilter()
     {
         _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
     }
@@ -167,11 +170,11 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     /// <summary>
-    /// Enumerator over all the Entities in the Query.
+    /// Enumerator over a subset of the Entities in the Query, which must also match the filters.
     /// Do not make modifications to the world affecting the Query while enumerating.
     /// </summary>
     /// <returns>
-    ///  An enumerator over all the Entities in the Query.
+    ///  An enumerator over the Entities in the Query that match all provided <see cref="TypeExpression">TypeExpressions</see>.
     /// </returns>
     public IEnumerable<Entity> Filtered(params TypeExpression[] filterExpressions)
     {

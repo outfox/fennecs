@@ -552,4 +552,30 @@ public class QueryTests
         var foreignWorldEntity = anotherWorld.Spawn().Add(23);
         Assert.Throws<InvalidOperationException>(() => query.Ref<int>(foreignWorldEntity));
     }
+
+
+    [Fact]
+    public void Filtered_Enumerator_Filters()
+    {
+        using var world = new World();
+        var query = world.Query<Identity, int>(Match.Plain, Match.Any).Build();
+
+        var entity1 = world.Spawn().Add(444);
+        var entity2 = world.Spawn().AddRelation(entity1, 555);
+
+        //Partial miss
+        var tx = TypeExpression.Of<int>(Match.Plain);
+        Assert.Contains(entity1, query.Filtered(tx));
+        Assert.DoesNotContain(entity2, query.Filtered(tx));
+
+        //Complete miss
+        tx = TypeExpression.Of<string>(Match.Any);
+        Assert.DoesNotContain(entity1, query.Filtered(tx));
+        Assert.DoesNotContain(entity2, query.Filtered(tx));
+
+        //No-op filter
+        tx = TypeExpression.Of<int>(Match.Any);
+        Assert.Contains(entity1, query.Filtered(tx));
+        Assert.Contains(entity2, query.Filtered(tx));
+    }
 }

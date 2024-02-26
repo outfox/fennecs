@@ -36,6 +36,7 @@ public class Match1Tests
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
         });
+        
         Assert.Contains(OBJECT1, seen);
         Assert.Contains(OBJECT2, seen);
         Assert.Contains(NONE1, seen);
