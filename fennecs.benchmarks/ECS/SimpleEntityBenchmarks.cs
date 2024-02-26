@@ -51,54 +51,39 @@ public class SimpleEntityBenchmarks
     }
 
     private static readonly Vector3 UniformConstantVector = new(3, 4, 5);
-    private static readonly ParallelOptions options = new() {MaxDegreeOfParallelism = 12};
 
     [Benchmark]
-    //Work parallelized by Archetype, passed into delegate as ref Vector3.
     public void CrossProduct_Parallel_ECS_Delegate_Chunk1k()
     {
         _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 1024);
     }
 
     [Benchmark]
-    //Work parallelized by Archetype, passed into delegate as ref Vector3.
     public void CrossProduct_Parallel_ECS_Delegate_Chunk4k()
     {
         _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 4096);
     }
 
     [Benchmark]
-    //A lambda is passed each Vector3 by ref.
     public void CrossProduct_Single_ECS_Lambda()
     {
         _queryV3.ForEach((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
-    //Parallel.Foreach passes each Vector3 by ref to a lambda.
     public void CrossProduct_Parallel_ECS_Lambda()
     {
         _queryV3.Job((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
-    [Benchmark(Baseline = true)]
-    public void CrossProduct_Single_Span_Delegate()
-    {
-        _queryV3.ForSpan(delegate(Span<Vector3> vectors)
-        {
-            foreach(ref var v in vectors) v = Vector3.Cross(v, UniformConstantVector);
-        });
-    }
-
     [Benchmark]
-    //Work passed into delegate as ref Vector3.
     public void CrossProduct_Single_ECS_Delegate()
     {
         _queryV3.ForEach(delegate (ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
-    [Benchmark]
-    //Work parallelized by Archetype, passed into delegate as ref Vector3.
+
+    [Benchmark(Baseline = true)]
     public void CrossProduct_Single_ECS_Raw()
     {
         _queryV3.Raw(delegate(Memory<Vector3> vectors)
@@ -123,7 +108,6 @@ public class SimpleEntityBenchmarks
     }
 
     [Benchmark]
-    //Work parallelized by Archetype, passed into delegate as ref Vector3.
     public void CrossProduct_Parallel_ECS_Delegate_Archetype()
     {
         _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });

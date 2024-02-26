@@ -34,12 +34,12 @@ public class Query1Tests
             str = "two";
         });
 
-        query.ForSpan(strings =>
+        query.Raw(strings =>
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal("two", strings[i]);
-                strings[i] = "three";
+                Assert.Equal("two", strings.Span[i]);
+                strings.Span[i] = "three";
             }
         });
 
@@ -68,12 +68,12 @@ public class Query1Tests
             str = uniform.ToString();
         }, 7);
 
-        query.ForSpan((strings, uniform) =>
+        query.Raw((strings, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(7.ToString(), strings[i]);
-                strings[i] = uniform.ToString();
+                Assert.Equal(7.ToString(), strings.Span[i]);
+                strings.Span[i] = uniform.ToString();
             }
         }, 8);
 
@@ -198,7 +198,7 @@ public class Query1Tests
 
         var query = world.Query<int>().Build();
 
-        query.ForSpan(integers => { Assert.Equal(0, integers.Length); });
+        query.Raw(integers => { Assert.Equal(0, integers.Length); });
 
         for (var index = 0; index < count; index++)
         {
@@ -211,14 +211,14 @@ public class Query1Tests
             );
         }
 
-        query.ForSpan(integers => { Assert.Equal(count, integers.Length); });
+        query.Raw(integers => { Assert.Equal(count, integers.Length); });
 
         var random = new Random(69 + count);
 
         for (var i = count; i > 0; i--)
         {
             var captured = i;
-            query.ForSpan(integers => { Assert.Equal(captured, integers.Length); });
+            query.Raw(integers => { Assert.Equal(captured, integers.Length); });
 
             var removalIndex = random.Next(entities.Count);
             var removalEntity = entities[removalIndex];
@@ -226,7 +226,7 @@ public class Query1Tests
             world.Despawn(removalEntity);
         }
 
-        query.ForSpan(integers => { Assert.Equal(0, integers.Length); });
+        query.Raw(integers => { Assert.Equal(0, integers.Length); });
     }
 
 
@@ -246,7 +246,7 @@ public class Query1Tests
 
         var query = world.Query<int>().Build();
 
-        query.ForSpan(integers => { Assert.Equal(0, integers.Length); });
+        query.Raw(integers => { Assert.Equal(0, integers.Length); });
 
         for (var index = 0; index < count; index++)
         {
@@ -259,14 +259,14 @@ public class Query1Tests
             );
         }
 
-        query.ForSpan(integers => { Assert.Equal(count, integers.Length); });
+        query.Raw(integers => { Assert.Equal(count, integers.Length); });
 
         var random = new Random(69 + count);
 
         for (var i = count; i > 0; i--)
         {
             var captured = i;
-            query.ForSpan(integers => { Assert.Equal(captured, integers.Length); });
+            query.Raw(integers => { Assert.Equal(captured, integers.Length); });
 
             var removalIndex = random.Next(entities.Count);
             var removalEntity = entities[removalIndex];
@@ -274,7 +274,7 @@ public class Query1Tests
             world.Despawn(removalEntity);
         }
 
-        query.ForSpan(integers => { Assert.Equal(0, integers.Length); });
+        query.Raw(integers => { Assert.Equal(0, integers.Length); });
     }
 
 
@@ -490,19 +490,19 @@ public class Query1Tests
 
         var processed = 0;
 
-        query.ForSpan(longs =>
+        query.Raw(longs =>
         {
-            foreach (ref var i in longs) i = processed++;
+            foreach (ref var i in longs.Span) i = processed++;
         });
 
         Assert.Equal(count, processed);
 
-        query.ForSpan(longs =>
+        query.Raw(longs =>
         {
             Assert.Equal(count, longs.Length);
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(i, longs[i]);
+                Assert.Equal(i, longs.Span[i]);
             }
         });
 

@@ -74,13 +74,13 @@ public class WorldTests
     [InlineData(0)]
     [InlineData(1_000)]
     [InlineData(10_000)]
-    public void Cannot_Safely_Spawn_in_ForSpan(int count)
+    public void Cannot_Safely_Spawn_in_Raw(int count)
     {
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>().Build();
-        query.ForSpan((_, uniform) =>
+        query.Raw((_, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {

@@ -41,63 +41,6 @@ public class Query<C0> : Query
     #region Runners
 
     /// <summary>
-    /// Executes an action for each span of entities that match the query.
-    /// </summary>
-    /// <param name="action">The action to execute.</param>
-    [Obsolete("use Raw instead")]
-    public void ForSpan(SpanAction<C0> action)
-    {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
-
-        foreach (var table in Archetypes)
-        {
-            var count = table.Count;
-
-            using var join = table.CrossJoin<C0>(StreamTypes);
-            if (join.Empty) continue;
-            
-            do
-            {
-                var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                action(span0);
-            } while (join.Iterate());
-        }
-    }
-
-
-    /// <summary>
-    /// Executes an action for each span of entities that match the query, passing an additional uniform parameter to the action.
-    /// </summary>
-    /// <param name="action">The action to execute.</param>
-    /// <param name="uniform">The uniform parameter to pass to the action.</param>
-    [Obsolete("use Raw instead")]
-    public void ForSpan<U>(SpanActionU<C0, U> action, U uniform)
-    {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
-
-        foreach (var table in Archetypes)
-        {
-            var count = table.Count;
-
-            using var join = table.CrossJoin<C0>(StreamTypes);
-            if (join.Empty) continue;
-
-            do
-            {
-                var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                action(span0, uniform);
-            } while (join.Iterate());
-        }
-    }
-
-
-    /// <summary>
     /// Executes an action for each entity that match the query.
     /// </summary>
     /// <param name="action">The action to execute.</param>
