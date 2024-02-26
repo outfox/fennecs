@@ -32,6 +32,12 @@
          </p>
       </td>
    </tr>
+<tr><td colspan="2">
+<p><span style="font-size: larger"><em><b>fenn</b>ecs</em></span> is a re-imagining of <a href="https://github.com/Byteron/HypEcs">RelEcs/HypEcs</a> 
+            which <em>feels just right<a href="#quickstart-lets-go">*</a></em> for high performance game development in any modern C# engine. Including, of course, the fantastic <a href="https://godotengine.org">Godot</a>.
+         </p>
+</td> 
+</tr>
 </table>
 
 ## Code Samples
