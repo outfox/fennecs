@@ -1,19 +1,19 @@
 ![fennecs logo](./docs/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./docs/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
 
 <table style="width: 100%">
-   <tr>  
-   <th colspan="2">
-      <h2><em>... the tiny, tiny, high-energy Entity Component System!</em></h2>
-   </th>
+   <tr>
+      <th colspan="2">
+         <h2><em>... the tiny, tiny, high-energy Entity Component System!</em></h2>
+      </th>
    </tr>
-   <tr>  
-   <th colspan="2">
-        <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
-        <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
-        <a href="https://github.com/thygrrr/fennECS/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green"/></a>
-        <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/thygrrr/fennecs"/>
-        <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennecs?color=blue"/></a>
-   </th>
+   <tr>
+      <th colspan="2">
+         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
+         <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
+         <a href="https://github.com/thygrrr/fennECS/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green"/></a>
+         <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/thygrrr/fennecs"/>
+         <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennecs?color=blue"/></a>
+      </th>
    </tr>
    <tr>
       <td>
@@ -32,12 +32,13 @@
          </p>
       </td>
    </tr>
-<tr><td colspan="2">
-<p><span style="font-size: larger"><em><b>fenn</b>ecs</em></span> is a re-imagining of <a href="https://github.com/Byteron/HypEcs">RelEcs/HypEcs</a> 
+   <tr>
+      <td colspan="2">
+         <p><span style="font-size: larger"><em><b>fenn</b>ecs</em></span> is a re-imagining of <a href="https://github.com/Byteron/HypEcs">RelEcs/HypEcs</a> 
             which <em>feels just right<a href="#quickstart-lets-go">*</a></em> for high performance game development in any modern C# engine. Including, of course, the fantastic <a href="https://godotengine.org">Godot</a>.
          </p>
-</td> 
-</tr>
+      </td>
+   </tr>
 </table>
 
 ## Code Samples
