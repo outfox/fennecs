@@ -3,15 +3,15 @@
 <table style="width: 90%">
    <th colspan="9">
       <h2><em>... the tiny, tiny, high-energy Entity Component System!</em></h2>
-   </th>
-   <tr>
-      <td colspan="4" style="width: fit-content">
-         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
         <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
         <a href="https://github.com/thygrrr/fennECS/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green"/></a>
         <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/thygrrr/fennecs"/>
         <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennecs?color=blue"/></a>
+   </th>
+   <tr>
+      <td colspan="4" style="width: fit-content">
+         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
       </td>
       <td colspan="5">
          <h1>What the fox, another ECS?!</h1>
