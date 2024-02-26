@@ -3,3 +3,6 @@
 [resource]
 metallic = 0.5
 roughness = 0.5
+emission = Color(0.0235294, 0.152941, 0.203922, 1)
+disable_receive_shadows = true
+grow_amount = 0.22
