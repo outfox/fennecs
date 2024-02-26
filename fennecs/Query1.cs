@@ -41,7 +41,7 @@ public class Query<C0> : Query
     #region Runners
 
     /// <summary>
-    /// Executes an action for each entity that match the query.
+    /// Executes an action for each entity that matches the query.
     /// </summary>
     /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     public void For(RefAction<C0> action)
@@ -67,7 +67,7 @@ public class Query<C0> : Query
 
 
     /// <summary>
-    /// Executes an action for each entity that match the query, passing an additional uniform parameter to the action.
+    /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
     /// </summary>
     /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
@@ -98,7 +98,7 @@ public class Query<C0> : Query
 
 
     /// <summary>
-    /// Executes an action for each entity that match the query in parallel.
+    /// Executes an action <em>in parallel chunks</em> for each entity that matches the query.
     /// </summary>
     /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
@@ -148,7 +148,7 @@ public class Query<C0> : Query
 
 
     /// <summary>
-    /// Executes an action for each entity that match the query in parallel, passing an additional uniform parameter to the action.
+    /// Executes an action <em>in parallel chunks</em> for each entity that matches the query, passing an additional uniform parameter to the action.
     /// </summary>
     /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
@@ -203,7 +203,12 @@ public class Query<C0> : Query
     /// Executes an action passing in a bulk <see cref="Memory{T}"/> that match the query.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Suggested uses include search algorithms with early-out, and passing bulk data into a game engine's native structures.
+    /// </para>
+    /// <para>
+    /// <see cref="Memory{T}"/> contains a <c>Span</c> that can be used to access the data in a contiguous block of memory.
+    /// </para>
     /// </remarks>
     /// <param name="action">The action to execute.</param>
     public void Raw(MemoryAction<C0> action)
@@ -231,7 +236,12 @@ public class Query<C0> : Query
     /// Executes an action passing in a bulk <see cref="Memory{T}"/> that match the query, and providing an additional uniform parameter.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Suggested uses include search algorithms with early-out, and passing bulk data into a game engine's native structures.
+    /// </para>
+    /// <para>
+    /// <see cref="Memory{T}"/> contains a <c>Span</c> that can be used to access the data in a contiguous block of memory.
+    /// </para>
     /// </remarks>
     /// <param name="action">The action to execute.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
