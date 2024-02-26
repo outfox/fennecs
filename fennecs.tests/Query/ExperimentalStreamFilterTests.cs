@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace fennecs.tests;
+namespace fennecs.tests.Query;
 
 [Experimental("StatefulFiltering")]
 public class ExperimentalStreamFilterTests
@@ -63,7 +63,8 @@ public class ExperimentalStreamFilterTests
         Assert.Contains(entity1, query);
         Assert.DoesNotContain(entity2, query);
     }
-    
+
+
     [Fact]
     public void Cannot_Set_on_Invalid_StreamType_index()
     {
@@ -73,7 +74,7 @@ public class ExperimentalStreamFilterTests
         Assert.Throws<IndexOutOfRangeException>(() => query.AddStreamFilter<int>(Match.Plain, 3));
     }
 
-    
+
     [Fact]
     public void Cannot_Filter_foreign_Component()
     {

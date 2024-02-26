@@ -1,4 +1,4 @@
-﻿namespace fennecs.tests;
+﻿namespace fennecs.tests.Query;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
