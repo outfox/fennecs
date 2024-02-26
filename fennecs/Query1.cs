@@ -43,7 +43,7 @@ public class Query<C0> : Query
     /// <summary>
     /// Executes an action for each entity that match the query.
     /// </summary>
-    /// <param name="action">The action to execute.</param>
+    /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     public void For(RefAction<C0> action)
     {
         AssertNotDisposed();
@@ -69,7 +69,7 @@ public class Query<C0> : Query
     /// <summary>
     /// Executes an action for each entity that match the query, passing an additional uniform parameter to the action.
     /// </summary>
-    /// <param name="action">The action to execute.</param>
+    /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
     public void For<U>(RefActionU<C0, U> action, U uniform)
     {
@@ -100,7 +100,7 @@ public class Query<C0> : Query
     /// <summary>
     /// Executes an action for each entity that match the query in parallel.
     /// </summary>
-    /// <param name="action">The action to execute.</param>
+    /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
     public void Job(RefAction<C0> action, int chunkSize = int.MaxValue)
     {
@@ -150,7 +150,7 @@ public class Query<C0> : Query
     /// <summary>
     /// Executes an action for each entity that match the query in parallel, passing an additional uniform parameter to the action.
     /// </summary>
-    /// <param name="action">The action to execute.</param>
+    /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
     /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
     public void Job<U>(RefActionU<C0, U> action, U uniform, int chunkSize = int.MaxValue)
@@ -200,8 +200,11 @@ public class Query<C0> : Query
 
 
     /// <summary>
-    /// Executes an action for each memory object that match the query.
+    /// Executes an action passing in a bulk <see cref="Memory{T}"/> that match the query.
     /// </summary>
+    /// <remarks>
+    /// Suggested uses include search algorithms with early-out, and passing bulk data into a game engine's native structures.
+    /// </remarks>
     /// <param name="action">The action to execute.</param>
     public void Raw(MemoryAction<C0> action)
     {
@@ -225,8 +228,11 @@ public class Query<C0> : Query
 
 
     /// <summary>
-    /// Executes an action for each memory object that match the query, passing an additional uniform parameter to the action.
+    /// Executes an action passing in a bulk <see cref="Memory{T}"/> that match the query, and providing an additional uniform parameter.
     /// </summary>
+    /// <remarks>
+    /// Suggested uses include search algorithms with early-out, and passing bulk data into a game engine's native structures.
+    /// </remarks>
     /// <param name="action">The action to execute.</param>
     /// <param name="uniform">The uniform parameter to pass to the action.</param>
     public void Raw<U>(MemoryActionU<C0, U> action, U uniform)
