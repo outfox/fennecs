@@ -43,7 +43,7 @@
 ## Code Samples
 | MonoGame               | Godot               | Flax      | Unigine               | Stride                | Raylib-cs |  NeoAxis |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
-|![MonoGame](docs/logos/logo-monogame-80.png) |![Godot](docs/logos/logo-godot-80.png) | ![Flax Engine](docs/logos/logo-flax-80.png) | ![UNIGINE](docs/logos/logo-unigine-80-darkmode.png#gh-dark-mode-only)![UNIGINE](docs/logos/logo-unigine-80-lightmode.png#gh-light-mode-only) | ![STRIDE](docs/logos/logo-stride-80.png) |  ![Raylib-cs](docs/logos/logo-raylib-80.png) | ![NeoAxis Engine](docs/logos/logo-neoaxis-80-darkmode.png#gh-dark-mode-only)![NeoAxis Engine](docs/logos/logo-neoaxis-80-lightmode.png#gh-light-mode-only) | 
+|![MonoGame](docs/logos/logo-monogame-80.png) |[![Godot](docs/logos/logo-godot-80.png)](https://github.com/thygrrr/fennecs/tree/main/examples/example-godot) | ![Flax Engine](docs/logos/logo-flax-80.png) | ![UNIGINE](docs/logos/logo-unigine-80-darkmode.png#gh-dark-mode-only)![UNIGINE](docs/logos/logo-unigine-80-lightmode.png#gh-light-mode-only) | ![STRIDE](docs/logos/logo-stride-80.png) |  ![Raylib-cs](docs/logos/logo-raylib-80.png) | ![NeoAxis Engine](docs/logos/logo-neoaxis-80-darkmode.png#gh-dark-mode-only)![NeoAxis Engine](docs/logos/logo-neoaxis-80-lightmode.png#gh-light-mode-only) | 
 
 
 ## Quickstart: Let's go!
