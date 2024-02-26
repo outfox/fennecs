@@ -11,18 +11,22 @@ namespace fennecs;
 public static class Match
 {
     /// <summary>
+    /// <para>
     /// <c>default</c><br/>In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
+    /// </para>
+    /// <para>
+    /// Since it's specific, this Match Expression is always free and has no enumeration cost.
+    /// </para>
     /// </summary>
     /// <remarks>
     /// Not a wildcard. Formerly known as "None", as plain components without a target
     /// can only exist once per Entity (same as components with a particular target).
-    /// Because it is specific, this Match Expression is always free and has no enumeration cost.
     /// </remarks>
     public static readonly Identity Plain = default; // == 0-bit == new(0,0)
 
     /// <summary>
-    /// <b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
-    /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
+    /// </para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
@@ -31,7 +35,8 @@ public static class Match
     public static readonly Identity Entity = new(-3, 0);
 
     /// <summary>
-    /// Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
+    /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
+    /// </para>
     /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
@@ -41,20 +46,23 @@ public static class Match
     public static readonly Identity Object = new(-4, 0);
 
     /// <summary>
-    /// <b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
-    /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
+    /// </para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <remarks>
-    /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for each matching component. While querying is efficient, this increases the number of operations per entity.</para>
-    /// <para>This effect is more pronounced in large archetypes with many matching components, potentially multiplying the workload significantly. However, for smaller archetypes or simpler tasks, the impact is minimal.</para>
+    /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for
+    /// each matching component. While querying is efficient, this increases the number of operations per entity.</para>
+    /// <para>This effect is more pronounced in large archetypes with many matching components, potentially
+    /// multiplying the workload significantly. However, for smaller archetypes or simpler tasks, impacts are minimal.</para>
     /// <para>Risks and considerations include:</para>
     /// <ul>
-    /// <li>Repeated enumeration: Entities matching a wildcard are processed multiple times, for each matching component type combination.</li>
-    /// <li>Increased workload: Especially in cases where entities match multiple components, leading to higher processing times.</li>
-    /// <li>Complex queries: Multiple wildcards can create a cartesian product effect, significantly increasing complexity and workload.</li>
+    /// <li>Repeated enumeration: Entities matching a wildcard are processed multiple times, for each matching
+    /// component type combination.</li>
+    /// <li>Complex queries: Especially in Archetypes where Entities match multiple components, multiple wildcards
+    /// can create a cartesian product effect, significantly increasing complexity and workload.</li>
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
@@ -62,7 +70,6 @@ public static class Match
 
     /// <summary>
     /// <b>Wildcard match expression for Entity iteration.</b><br/>This matches both <b>Entity-Entity</b> Relations and <b>Entity-Object</b> Links of the given Stream Type.
-    /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
