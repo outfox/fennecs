@@ -32,7 +32,6 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
             var count = table.Count;
 
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
-
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;

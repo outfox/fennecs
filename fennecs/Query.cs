@@ -21,10 +21,16 @@ public class Query : IEnumerable<Entity>, IDisposable
     #region Internals
 
     /// <summary>
+    /// Immutable Array of TypeExpressions that are the Stream Types of the Query set at construction.   
+    /// </summary>
+    private readonly TypeExpression[] _initialStreamTypes;
+
+    /// <summary>
     /// Array of TypeExpressions for the Output Stream of this Query.
+    /// Mutated by Filter Expressions.
     /// </summary>
     internal readonly TypeExpression[] StreamTypes;
-
+    
     /// <summary>
     /// Countdown event for parallel runners.
     /// </summary>
@@ -37,6 +43,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes)
     {
+        _initialStreamTypes = streamTypes.ToArray();
         StreamTypes = streamTypes.ToArray();
         Archetypes = archetypes;
         World = world;
@@ -45,7 +52,67 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     #endregion
 
+    #region Filtering
 
+    /// <summary>
+    /// Adds a subset filter to this Query, reducing the Stream Types to a subset of the initial Stream Types.
+    /// </summary>
+    /// <remarks>
+    /// <para>This can be used to narrow a query with Wildcard Match Expressions in its Stream Types, e.g. to match only
+    /// a specific Object Link in a Query that matches all Object Links of a given type.
+    /// Call this method repeatedly to set multiple filters.
+    /// </para>
+    /// <para>
+    /// Clear the filter with <see cref="ResetFilter"/>.
+    /// </para>
+    /// </remarks>
+    /// <typeparam name="T">any component type that is present in the Query's Stream Types</typeparam>
+    /// <param name="match">a Match Expression that is narrower than the respective Stream Type's initial
+    /// Match Expression.</param>
+    /// <param name="onStreamTypeIndex">optional parameter to try setting a specific type index; is only relevant
+    /// if the Query needs to enumerate the same backing Component Type twice in two separate Stream Types</param>
+    /// <exception cref="InvalidOperationException">if the requested filter doesn't match any of the Query's Archetypes</exception>
+    public void SetFilter<T>(Identity match, int onStreamTypeIndex = -1)
+    {
+        var valid = false;
+        var filterExpression = TypeExpression.Create<T>(match);
+
+        var startIndex = 0;
+        var endIndex = StreamTypes.Length;
+
+        if (onStreamTypeIndex >= 0)
+        {
+            if (onStreamTypeIndex >= StreamTypes.Length) throw new IndexOutOfRangeException($"onStreamTypeIndex is out of range, the Query only has {StreamTypes.Length} Stream Types.");
+            startIndex = onStreamTypeIndex;
+            endIndex = onStreamTypeIndex + 1;
+        }
+        
+        for (var i = startIndex; i < endIndex; i++)
+        {
+            if (!_initialStreamTypes[i].Matches(filterExpression)) continue;
+            
+            StreamTypes[i] = filterExpression;
+            valid = true;
+            break;
+        }
+
+        if (valid) return;
+        
+        _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
+        throw new InvalidOperationException("Can't set filter because the filter is no subset of the initial Stream Types.");
+    }
+
+
+    /// <summary>
+    /// Clears all narrowing filters on this Query, returning it to its initial state.
+    /// </summary>
+    public void ResetFilter()
+    {
+        _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
+    }
+    
+    #endregion
+    
     #region Accessors
 
     /// <summary>
