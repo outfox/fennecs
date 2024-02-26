@@ -484,7 +484,7 @@ public class WorldTests
         var entity2 = world.Spawn().AddLink("to the past");
         var entity3 = world.Spawn().AddRelation<string>(target, "to the future");
         var entity4 = world.Spawn().Add(666);
-        world.DespawnAllWith<string>(Match.Relation);
+        world.DespawnAllWith<string>(Match.Target);
         Assert.True(world.IsAlive(entity1));
         Assert.False(world.IsAlive(entity2));
         Assert.False(world.IsAlive(entity3));

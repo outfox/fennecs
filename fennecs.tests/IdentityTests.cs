@@ -39,21 +39,23 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_ToString()
     {
+        _ = Match.Any.ToString();
         _ = Match.Entity.ToString();
-        _ = Match.Relation.ToString();
+        _ = Match.Target.ToString();
         _ = Match.Object.ToString();
         _ = Match.Plain.ToString();
-        _ = Match.Any.ToString();
         _ = Identity.Of("hello world").ToString();
         _ = new Identity(123, 456).ToString();
+        _ = new Identity(-1, 2).ToString();
 
+        output.WriteLine(Match.Any.ToString());
         output.WriteLine(Match.Entity.ToString());
-        output.WriteLine(Match.Relation.ToString());
+        output.WriteLine(Match.Target.ToString());
         output.WriteLine(Match.Object.ToString());
         output.WriteLine(Match.Plain.ToString());
-        output.WriteLine(Match.Any.ToString());
         output.WriteLine(Identity.Of("hello world").ToString());
         output.WriteLine(new Identity(123, 456).ToString());
+        output.WriteLine(new Identity(-1, 2).ToString());
     }
 
 

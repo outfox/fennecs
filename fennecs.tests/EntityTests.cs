@@ -160,7 +160,7 @@ public class EntityTests
 
         Assert.False(entity.Has<int>(Match.Entity));
         Assert.False(entity.Has<int>(Match.Object));
-        Assert.False(entity.Has<int>(Match.Relation));
+        Assert.False(entity.Has<int>(Match.Target));
 
         Assert.False(entity.Has<float>(Match.Any));
     }
@@ -177,7 +177,7 @@ public class EntityTests
         Assert.True(entity.HasLink<string>("hello world"));
         Assert.True(entity.Has<string>(Match.Any));
         Assert.True(entity.Has<string>(Match.Object));
-        Assert.True(entity.Has<string>(Match.Relation));
+        Assert.True(entity.Has<string>(Match.Target));
 
         Assert.False(entity.HasLink<string>("goodbye world"));
         Assert.False(entity.Has<int>(Match.Entity));
@@ -193,7 +193,7 @@ public class EntityTests
         entity.AddRelation<int>(target);
 
         Assert.True(entity.HasRelation<int>(target));
-        Assert.True(entity.Has<int>(Match.Relation));
+        Assert.True(entity.Has<int>(Match.Target));
         Assert.True(entity.Has<int>(Match.Any));
 
         Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));

@@ -63,7 +63,7 @@ public class Match2Tests
     [Fact]
     public void Target_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string, float>(Match.Relation, Match.Plain).Build();
+        using var query = _world.Query<string, float>(Match.Target, Match.Plain).Build();
 
         HashSet<string> seen = [];
 

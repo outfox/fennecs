@@ -77,7 +77,7 @@ public static class Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static readonly Identity Relation = new(-2, 0);
+    public static readonly Identity Target = new(-2, 0);
 
 
     #region Cross Join

@@ -70,7 +70,7 @@ public partial class World : IDisposable
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
     /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
-    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/>, <see cref="Match.Relation"/>
+    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/>, <see cref="Match.Target"/>
     /// </param>
     public void DespawnAllWith<T>(Identity match = default)
     {

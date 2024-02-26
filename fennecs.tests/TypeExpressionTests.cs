@@ -101,7 +101,7 @@ public class TypeExpressionTests
         var tx3 = TypeExpression.Create(typeof(TypeA), new Identity(123));
 
         Assert.False(tx1.isRelation);
-        Assert.True(tx2.isRelation);
+        Assert.True(tx2.isWildcard);
         Assert.True(tx3.isRelation);
     }
 
@@ -174,7 +174,7 @@ public class TypeExpressionTests
     [Fact]
     public void Target_Matches_all_Entity_Target_Relations()
     {
-        var rel = TypeExpression.Create<TypeA>(Match.Relation);
+        var rel = TypeExpression.Create<TypeA>(Match.Target);
 
         var typ = TypeExpression.Create<TypeA>();
         var ent = TypeExpression.Create<TypeA>(new Identity(123));
