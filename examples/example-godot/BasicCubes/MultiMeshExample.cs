@@ -13,7 +13,7 @@ public partial class MultiMeshExample : Node
 
 	private int InstanceCount => MeshInstance.Multimesh.InstanceCount;
 
-	private readonly Vector3 _amplitude = new(120f, 90f, 120f);
+	private readonly Vector3 _amplitude = new(200, 200, 200);
 	private const float TimeScale = 0.001f;
 
 	private readonly World _world = new();
@@ -45,7 +45,7 @@ public partial class MultiMeshExample : Node
 
 		MeshInstance.Multimesh.VisibleInstanceCount = -1;
 
-		SpawnWave(200_000);
+		SpawnWave(25_000);
 		
 		_query = _world.Query<int, Matrix4X3>().Build();
 		

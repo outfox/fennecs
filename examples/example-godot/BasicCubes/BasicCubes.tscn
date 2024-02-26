@@ -1,17 +1,37 @@
-[gd_scene load_steps=5 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene load_steps=11 format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" path="res://BasicCubes/Rotate.gd" id="1_tqr0u"]
 [ext_resource type="Script" path="res://BasicCubes/MultiMeshExample.cs" id="1_yanug"]
 [ext_resource type="Script" path="res://FPSLabel.gd" id="2_pay0t"]
 [ext_resource type="Script" path="res://BasicCubes/PivotSway.gd" id="3_c10c7"]
+[ext_resource type="Texture2D" uid="uid://bmw4r15o3hat4" path="res://fennecs-logo.png" id="4_58011"]
+[ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://BasicCubes/orange_light.tres" id="6_2hcul"]
+[ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://BasicCubes/blue_light.tres" id="6_o8tf2"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_1qaly"]
+material = ExtResource("6_2hcul")
+radius = 7.0
+height = 14.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_s2td0"]
+material = ExtResource("6_o8tf2")
+radius = 7.0
+height = 14.0
+
+[sub_resource type="Environment" id="Environment_q01bs"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.25098, 0.25098, 0.25098, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 2.0
+glow_bloom = 0.5
+glow_blend_mode = 1
+fog_enabled = true
+fog_light_color = Color(0.0235294, 0.0313726, 0.0392157, 1)
+fog_density = 0.003
 
 [node name="Entity Positioning Demo" type="Node3D"]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-shadow_enabled = true
-directional_shadow_mode = 0
-sky_mode = 1
-script = ExtResource("1_tqr0u")
 
 [node name="ECS" type="Node" parent="." node_paths=PackedStringArray("MeshInstance")]
 unique_name_in_owner = true
@@ -25,22 +45,99 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -177.0
+offset_top = -621.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="RenderedSlider" type="VSlider" parent="Control/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(54.858, 500)
+layout_mode = 2
+max_value = 500000.0
+value = 25000.0
+rounded = true
+tick_count = 20
+ticks_on_borders = true
+
+[node name="SimulatedSlider" type="VSlider" parent="Control/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(54.858, 500)
+layout_mode = 2
+max_value = 500000.0
+value = 25000.0
+rounded = true
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Panel" type="Panel" parent="Control/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="Control/VBoxContainer/Panel"]
+layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -177.0
-offset_right = -8.0
-offset_bottom = 148.0
-grow_horizontal = 0
-alignment = 2
+offset_left = -28.0
+offset_top = -84.0
+offset_right = 50.0
+offset_bottom = -34.0
+rotation = 1.5708
+metadata/_edit_use_anchors_ = true
 
-[node name="FPS Label" type="Label" parent="Control/VBoxContainer"]
+[node name="RenderedLabel" type="Label" parent="Control/VBoxContainer/Panel/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Rendered"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SimulatedLabel" type="Label" parent="Control/VBoxContainer/Panel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Simulated
+"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -230.0
+offset_right = 256.0
+offset_bottom = 26.0
+grow_vertical = 0
+texture = ExtResource("4_58011")
+
+[node name="FPS Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -177.0
+offset_bottom = 113.0
+grow_horizontal = 0
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 40
 text = "0 fps
@@ -49,14 +146,34 @@ text = "0 fps
 horizontal_alignment = 2
 script = ExtResource("2_pay0t")
 
-[node name="Button" type="Button" parent="Control/VBoxContainer"]
-layout_mode = 2
-text = "add 1000  entities"
-
 [node name="Camera Pivot" type="Node3D" parent="."]
 script = ExtResource("3_c10c7")
 
 [node name="Camera3D" type="Camera3D" parent="Camera Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200)
 
-[connection signal="pressed" from="Control/VBoxContainer/Button" to="ECS" method="_on_button_pressed"]
+[node name="LightPivot" type="Node3D" parent="."]
+script = ExtResource("1_tqr0u")
+
+[node name="Orange Light" type="OmniLight3D" parent="LightPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 200)
+light_color = Color(0.933333, 0.501961, 0, 1)
+light_energy = 10.0
+omni_range = 250.0
+omni_attenuation = 0.233258
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LightPivot/Orange Light"]
+mesh = SubResource("SphereMesh_1qaly")
+
+[node name="Blue Light" type="OmniLight3D" parent="LightPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 50, -100)
+light_color = Color(0.243137, 0.462745, 0.996078, 1)
+light_energy = 10.0
+omni_range = 250.0
+omni_attenuation = 0.233258
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LightPivot/Blue Light"]
+mesh = SubResource("SphereMesh_s2td0")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_q01bs")
