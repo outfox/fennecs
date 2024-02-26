@@ -3,6 +3,8 @@
 <table style="width: 90%">
    <th colspan="3">
       <h2><em>... the tiny, tiny, high-energy Entity Component System!</em></h2>
+   </th>
+   <th colspan="3">
         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
         <a href="https://github.com/thygrrr/fennECS/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml"/></a>
         <a href="https://github.com/thygrrr/fennECS/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green"/></a>
