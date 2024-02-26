@@ -10,7 +10,7 @@
         <a href="https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/thygrrr/fennecs?color=blue"/></a>
    </th>
    <tr>
-      <td colspan="4" style="width: fit-content">
+      <td colspan="5" style="width: fit-content">
          <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px"/>
       </td>
       <td colspan="5">
