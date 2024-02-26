@@ -45,8 +45,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
 
     /// <summary>
-    /// The target of this <see cref="TypeExpression"/>, determining whether it is a plain Component,
-    /// a relation, or a Wildcard expression.
+    /// The Target of this <see cref="TypeExpression"/>, determining whether it acts as a plain Component,
+    /// an Object Link, an Entity Relation, or a Wildcard Match Expression.
     /// </summary>
     /// <remarks>
     /// <para>If <see cref="Match.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>

@@ -71,7 +71,7 @@ public static class Match
     public static readonly Identity Any = new(-1, 0);
 
     /// <summary>
-    /// <b>Wildcard match expression for Entity iteration.</b><br/>This matches both <b>Entity-Entity</b> Relations and <b>Entity-Object</b> Links of the given Stream Type.
+    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Target"/>.
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
