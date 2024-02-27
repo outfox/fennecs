@@ -10,7 +10,7 @@ using fennecs.pools;
 
 namespace fennecs;
 
-internal sealed class Archetype : IEnumerable<Entity>
+public sealed class Archetype : IEnumerable<Entity>
 {
     /// <summary>
     /// An Edge in the Graph that this Archetype is a member of.
@@ -72,7 +72,7 @@ internal sealed class Archetype : IEnumerable<Entity>
     private readonly Dictionary<TypeExpression, Edge> _edges = new();
 
     /// <summary>
-    /// TODO: Buckets for Wildcard Joins
+    /// TODO: Buckets for Wildcard Joins (optional optimization for CrossJoin when complex archetypes get hit repeatedly in tight loops).
     /// </summary>
     private readonly ImmutableDictionary<TypeID, Array[]> _buckets;
 
@@ -235,7 +235,26 @@ internal sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    public Edge GetTableEdge(TypeExpression typeExpression)
+    /// <summary>
+    ///  Remove Entities from the Archetype that exceed a given count.
+    /// </summary>
+    /// <param name="maxEntityCount"></param>
+    public void Truncate(int maxEntityCount)
+    {
+        var excess = Count - maxEntityCount;
+        if (excess <= 0 || excess >= Count) return;
+
+
+        // TODO: Build bulk deletion?
+        var toDelete = Identities.Slice(Count - excess, excess);
+        for (var i = toDelete.Length - 1; i >= 0; i--)
+        {
+            _world.Despawn(new Entity(_world, toDelete[i]));
+        }
+    }
+
+
+    internal Edge GetTableEdge(TypeExpression typeExpression)
     {
         if (_edges.TryGetValue(typeExpression, out var edge)) return edge;
 
@@ -378,10 +397,5 @@ internal sealed class Archetype : IEnumerable<Entity>
     }
 
     #endregion
-
-
-    public void Pop()
-    {
-        _world.Despawn(new Entity(_world, _identities[Count - 1]));
-    }
+    
 }

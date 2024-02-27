@@ -220,27 +220,27 @@ script = ExtResource("3_c10c7")
 [node name="Camera3D" type="Camera3D" parent="Camera Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200)
 
-[node name="LightPivot" type="Node3D" parent="."]
+[node name="Light Pivot" type="Node3D" parent="."]
 script = ExtResource("1_tqr0u")
 
-[node name="Orange Light" type="OmniLight3D" parent="LightPivot"]
+[node name="Orange Light" type="OmniLight3D" parent="Light Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 200)
 light_color = Color(0.933333, 0.501961, 0, 1)
 light_energy = 10.0
 omni_range = 250.0
 omni_attenuation = 0.233258
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LightPivot/Orange Light"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Light Pivot/Orange Light"]
 mesh = SubResource("SphereMesh_1qaly")
 
-[node name="Blue Light" type="OmniLight3D" parent="LightPivot"]
+[node name="Blue Light" type="OmniLight3D" parent="Light Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 50, -100)
 light_color = Color(0.243137, 0.462745, 0.996078, 1)
 light_energy = 10.0
-omni_range = 250.0
+omni_range = 300.0
 omni_attenuation = 0.233258
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LightPivot/Blue Light"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Light Pivot/Blue Light"]
 mesh = SubResource("SphereMesh_s2td0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

@@ -41,6 +41,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     private protected readonly World World;
     protected internal readonly Mask Mask;
 
+    public IReadOnlyList<Archetype> ArchetypesReadOnly => Archetypes;
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes)
     {
@@ -312,6 +313,14 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     #endregion
 
+    #region Bulk Operations
+    
+    public void Truncate(int maxEntityCount)
+    {
+        foreach (var archetype in Archetypes) archetype.Truncate(maxEntityCount);
+    }
+    
+    #endregion
 
     #region IDisposable Implementation
 

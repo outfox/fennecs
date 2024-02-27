@@ -17,7 +17,7 @@ func coroutine():
 		tween.set_trans(Tween.TRANS_BACK)
 		tween.parallel().tween_property($Camera3D, "position",
 		Vector3(
-			randf_range(-50, 50), randf_range(-30, 30), randf_range(250, 600))
+			randf_range(-50, 50), randf_range(-30, 30), randf_range(300, 600))
 		, 7)
 		await tween.finished
 

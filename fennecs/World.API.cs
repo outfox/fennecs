@@ -80,7 +80,18 @@ public partial class World : IDisposable
             foreach (var identity in entities.Span) Despawn(identity);
         });
     }
-
+    
+    /// <summary>
+    /// Bulk Despawn Entities from a World.
+    /// </summary>
+    /// <param name="toDelete">the entities to despawn (remove)</param>
+    public void Despawn(ReadOnlySpan<Identity> toDelete)
+    {
+        foreach (var identity in toDelete)
+        {
+            Despawn(identity);
+        }
+    }
     #endregion
 
 

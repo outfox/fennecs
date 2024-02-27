@@ -33,8 +33,9 @@ public partial class World
     private readonly object _spawnLock = new();
 
     private readonly object _modeChangeLock = new();
-    private Mode _mode = Mode.Immediate;
     private int _locks;
+
+    internal WorldMode Mode { get; private set; } = WorldMode.Immediate;
 
 
     public struct WorldLock : IDisposable
@@ -47,7 +48,7 @@ public partial class World
             lock (world._modeChangeLock)
             {
                 _world = world;
-                _world._mode = Mode.Deferred;
+                _world.Mode = WorldMode.Deferred;
                 _world._locks++;
             }
         }
@@ -67,9 +68,9 @@ public partial class World
         {
             if (--_locks == 0)
             {
-                _mode = Mode.CatchUp;
+                Mode = WorldMode.CatchUp;
                 Apply(_deferredOperations);
-                _mode = Mode.Immediate;
+                Mode = WorldMode.Immediate;
             }
         }
     }
@@ -114,7 +115,7 @@ public partial class World
     }
 
 
-    private enum Mode
+    internal enum WorldMode
     {
         Immediate = default,
         CatchUp,
@@ -135,7 +136,7 @@ public partial class World
 
             var row = _root.Add(identity);
 
-            while (_meta.Length <= _identityPool.Living) Array.Resize(ref _meta, _meta.Length * 2);
+            while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
 
             _meta[identity.Index] = new Meta(identity, _root, row);
 
@@ -162,7 +163,7 @@ public partial class World
         {
             AssertAlive(identity);
 
-            if (_mode == Mode.Deferred)
+            if (Mode == WorldMode.Deferred)
             {
                 _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Despawn, Identity = identity});
                 return;
@@ -174,7 +175,7 @@ public partial class World
             table.Remove(meta.Row);
             meta.Clear();
 
-            _identityPool.Despawn(identity);
+            _identityPool.Recycle(identity);
 
             // Find identity-identity relation reverse lookup (if applicable)
             if (!_typesByRelationTarget.TryGetValue(identity, out var list)) return;
@@ -199,7 +200,7 @@ public partial class World
 
     private void RemoveComponent(Identity identity, TypeExpression typeExpression)
     {
-        if (_mode == Mode.Deferred)
+        if (Mode == WorldMode.Deferred)
         {
             _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Identity = identity, TypeExpression = typeExpression});
             return;
@@ -496,7 +497,7 @@ public partial class World
             throw new ArgumentException($"Identity {identity} already has component of type {typeExpression}");
         }
 
-        if (_mode == Mode.Deferred)
+        if (Mode == WorldMode.Deferred)
         {
             _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Identity = identity, TypeExpression = typeExpression, Data = data!});
             return;

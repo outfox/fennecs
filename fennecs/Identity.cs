@@ -109,7 +109,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     public override string ToString()
     {
         if (Equals(Match.Plain))
-            return "\u2732[Plain]";
+            return "\u2732[None]";
 
         if (Equals(Match.Any))
             return "\u2731[Any]";

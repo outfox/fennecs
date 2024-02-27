@@ -54,10 +54,7 @@ public partial class MultiMeshExample : Node3D
 				.Add<Vector3>();
 		}
 
-		while (spawnCount < _query.Count)
-		{
-			_query.Pop();
-		}
+		_query.Truncate(spawnCount);
 	}
 
 	public override void _Ready()
@@ -138,7 +135,7 @@ public partial class MultiMeshExample : Node3D
 		};
 
 		// Write back some state and write the Transform that our MultiMesh is going to be receiving
-		position = FIR(position, vector, 0.95f, uniform.dt);
+		position = Fir(position, vector, 0.95f, uniform.dt);
 		transform = new Matrix4X3(position * uniform.Amplitude);
 	}
 
@@ -170,7 +167,7 @@ public partial class MultiMeshExample : Node3D
 	/// <summary>
 	/// A basic finite impulse response filter.
 	/// </summary>
-	private static float FIR(float from, float to, float k, float dt)
+	private static float Fir(float from, float to, float k, float dt)
 	{
 		var exponent = dt * 60f; // "reference" time
 
@@ -183,7 +180,7 @@ public partial class MultiMeshExample : Node3D
 	/// <summary>
 	/// A basic finite impulse response filter... for Vectors!
 	/// </summary>
-	private static Vector3 FIR(Vector3 from, Vector3 to, float k, float dt)
+	private static Vector3 Fir(Vector3 from, Vector3 to, float k, float dt)
 	{
 		var exponent = dt * 120f; // "reference" time
 

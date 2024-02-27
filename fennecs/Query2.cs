@@ -206,10 +206,4 @@ public class Query<C0, C1> : Query<C0>
     }
 
     #endregion
-
-
-    public void Pop()
-    {
-        Archetypes[^1].Pop();
-    }
 }

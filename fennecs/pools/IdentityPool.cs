@@ -1,22 +1,20 @@
 ﻿namespace fennecs.pools;
 
-public class IdentityPool(int capacity = 4096)
+internal class IdentityPool(int capacity = 4096)
 {
-    public int Living { get; private set; }
-    public int Count => Living - _recycled.Count;
+    internal int Created { get; private set; }
+    internal int Count => Created - _recycled.Count;
 
     private readonly Queue<Identity> _recycled = new(capacity);
 
 
-    public Identity Spawn()
+    internal Identity Spawn()
     {
-        if (_recycled.TryDequeue(out var recycledIdentity)) return recycledIdentity;
-
-        return new Identity(++Living);
+        return _recycled.TryDequeue(out var recycledIdentity) ? recycledIdentity : new Identity(++Created);
     }
 
 
-    public void Despawn(Identity identity)
+    internal void Recycle(Identity identity)
     {
         _recycled.Enqueue(identity.Successor);
     }
