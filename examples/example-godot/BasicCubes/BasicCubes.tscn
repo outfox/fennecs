@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene load_steps=17 format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" path="res://BasicCubes/Rotate.gd" id="1_tqr0u"]
 [ext_resource type="Script" path="res://BasicCubes/MultiMeshExample.cs" id="1_yanug"]
@@ -17,6 +17,10 @@ font = ExtResource("3_ih8bu")
 [sub_resource type="LabelSettings" id="LabelSettings_557ru"]
 font = ExtResource("3_ih8bu")
 font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_e5jui"]
+font = ExtResource("3_ih8bu")
+font_size = 24
 
 [sub_resource type="SphereMesh" id="SphereMesh_1qaly"]
 material = ExtResource("6_2hcul")
@@ -190,6 +194,23 @@ script = ExtResource("3_c10c7")
 
 [node name="Camera3D" type="Camera3D" parent="Camera Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200)
+
+[node name="Hyperlink" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+show_behind_parent = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -24.0
+offset_right = 159.0
+offset_bottom = -4.0
+grow_vertical = 0
+size_flags_horizontal = 8
+text = "https://fennecs.tech"
+label_settings = SubResource("LabelSettings_e5jui")
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="LightPivot" type="Node3D" parent="."]
 script = ExtResource("1_tqr0u")

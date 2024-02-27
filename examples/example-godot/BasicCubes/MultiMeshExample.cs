@@ -26,7 +26,7 @@ public partial class MultiMeshExample : Node3D
 	private int InstanceCount => MeshInstance.Multimesh.InstanceCount;
 
 	private const float MinAmplitude = 100;
-	private const float MaxAmplitude = 300;
+	private const float MaxAmplitude = 150;
 
 	private Vector3 _goalAmplitude;
 	private Vector3 _currentAmplitude;
@@ -86,7 +86,7 @@ public partial class MultiMeshExample : Node3D
 		MeshInstance.Multimesh.InstanceCount = Mathf.FloorToInt(_currentRenderedFraction * _query.Count);
 
 		// Soft count for the cubes so they move even smoother.
-		_smoothCount = _smoothCount * 0.9f + 0.1f * MeshInstance.Multimesh.InstanceCount;
+		_smoothCount = _smoothCount * 0.8f + 0.2f * MeshInstance.Multimesh.InstanceCount;
 
 		//Update positions <-- THIS IS WHERE THE HARD WORK IS DONE
 		var chunkSize = Math.Max(_query.Count / 20, 128);
@@ -96,7 +96,7 @@ public partial class MultiMeshExample : Node3D
 		Array.Resize(ref _submissionArray, MeshInstance.Multimesh.InstanceCount * 12);
 
 		// Make the cloud of cubes denser if there are more cubes
-		var amplitudePortion = Mathf.Clamp((1.0f -_query.Count * _currentRenderedFraction / MaxEntities), 0.1f, 1f);
+		var amplitudePortion = Mathf.Clamp((1.0f -_query.Count / (float) MaxEntities), 0f, 1f);
 		_goalAmplitude = Mathf.Lerp(MinAmplitude, MaxAmplitude, amplitudePortion) * Vector3.One;
 		_currentAmplitude = _currentAmplitude * 0.9f + 0.1f * _goalAmplitude;
 
@@ -125,9 +125,9 @@ public partial class MultiMeshExample : Node3D
 	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, ref Vector3 position, (float time, Vector3 amplitude, float SmoothCount) uniform)
 	{
 		//var offset = Mathf.Tau(uniform.time / 100f)
-		var phase1 = index * Mathf.Sin(index % 7 + uniform.time) * 17f * Mathf.Tau / uniform.SmoothCount;
-		var phase2 = index * Mathf.Sin(index % 3 + uniform.time * 2f) * 13f * Mathf.Tau / uniform.SmoothCount;
-		var phase3 = index * Mathf.Sin(index % 2 + uniform.time * 3f) * 11f * Mathf.Tau / uniform.SmoothCount;
+		var phase1 = index * Mathf.Sin(index % 5000f + uniform.time) * 17f * Mathf.Tau / uniform.SmoothCount;
+		var phase2 = index * Mathf.Sin(index / 7000f + uniform.time * 2f) * 13f * Mathf.Tau / uniform.SmoothCount;
+		var phase3 = index * Mathf.Sin(index / 6000f + uniform.time * 3f) * 11f * Mathf.Tau / uniform.SmoothCount;
 
 		//group1 = group2 = group3 = 0;
 
