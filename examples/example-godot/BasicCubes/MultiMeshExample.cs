@@ -14,6 +14,7 @@ public partial class MultiMeshExample : Node3D
 
 	[Export] public MultiMeshInstance3D MeshInstance;
 
+	[Export] public Camera3D Camera;
 	[Export] public Slider SimulatedSlider;
 	[Export] public Slider RenderedSlider;
 
@@ -32,7 +33,7 @@ public partial class MultiMeshExample : Node3D
 	private Vector3 _currentAmplitude;
 
 	private const float BaseTimeScale = 0.0005f;
-	private float _currentTimeScale;
+	private float _currentTimeScale = BaseTimeScale;
 
 	private float _smoothCount = 1;
 
@@ -120,12 +121,13 @@ public partial class MultiMeshExample : Node3D
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, ref Vector3 position, (float Time, Vector3 Amplitude, float SmoothCount, float dt) uniform)
 	{
-		// Apply a chaotic Lissajous-like motion for the cubes
-		var motionIndex = (index + uniform.Time * Mathf.Tau * 69f) % uniform.SmoothCount;
 
-		var phase1 = motionIndex * Mathf.Sin(motionIndex / 500f) * 17f * Mathf.Tau / uniform.SmoothCount;
-		var phase2 = motionIndex * Mathf.Sin(motionIndex / 500f) * 13f * Mathf.Tau / uniform.SmoothCount;
-		var phase3 = motionIndex * Mathf.Sin(motionIndex / 500f) * 11f * Mathf.Tau / uniform.SmoothCount;
+		// Apply a chaotic Lissajous-like motion for the cubes
+		var motionIndex = (index + uniform.Time * Mathf.Tau * 69f) % uniform.SmoothCount - uniform.SmoothCount/2f;
+
+		var phase1 = motionIndex * Mathf.Sin(motionIndex / 2500f * Mathf.Tau) * 7f * Mathf.Tau / uniform.SmoothCount;
+		var phase2 = motionIndex * Mathf.Sin(motionIndex / 3700f * Mathf.Tau) * 13f * Mathf.Tau / uniform.SmoothCount;
+		var phase3 = motionIndex * Mathf.Sin(motionIndex / 3000f * Mathf.Tau) * 11f * Mathf.Tau / uniform.SmoothCount;
 
 		var vector = new Vector3
 		{
@@ -134,10 +136,32 @@ public partial class MultiMeshExample : Node3D
 			Z = Mathf.Sin(phase3 + uniform.Time * 5f + motionIndex / 2000f),
 		};
 
+		var cubic = Mathf.RoundToInt(uniform.Time * 100f % 1.0f) == 1 ? 1.0f : 0f;
+
+		if (vector.Length() > 1.0f) vector = (1.0f-cubic) * vector / vector.Length() + cubic * vector;
+
 		// Write back some state and write the Transform that our MultiMesh is going to be receiving
 		position = Fir(position, vector, 0.95f, uniform.dt);
-		transform = new Matrix4X3(position * uniform.Amplitude);
+
+		var scale = 1.5f - uniform.SmoothCount / MaxEntities;
+		transform = new Matrix4X3(position * uniform.Amplitude, scale);
 	}
+
+
+	public override void _Input(InputEvent inputEvent)
+	{
+		if (inputEvent is InputEventMouseMotion)
+		{
+			var screenPos = inputEvent.Get("position").AsVector2();
+
+			rayOrigin = Camera.ProjectRayOrigin(screenPos);
+			rayDirection = Camera.ProjectRayNormal(screenPos);
+		}
+	}
+
+
+	public Godot.Vector3 rayOrigin { get; set; }
+	public Godot.Vector3 rayDirection { get; set; }
 
 
 	private void _on_rendered_slider_value_changed(double value)
@@ -146,7 +170,7 @@ public partial class MultiMeshExample : Node3D
 		_currentRenderedFraction = (float) value;
 
 		// Move cubes faster if there are fewer visible
-		_currentTimeScale = BaseTimeScale / Mathf.Max((float) value, 0.1f);
+		_currentTimeScale = BaseTimeScale / Mathf.Max((float) value, 0.3f);
 	}
 
 
@@ -169,7 +193,7 @@ public partial class MultiMeshExample : Node3D
 	/// </summary>
 	private static float Fir(float from, float to, float k, float dt)
 	{
-		var exponent = dt * 60f; // "reference" time
+		var exponent = dt * 120f; // reference frame rate, it's 2024, for fox sake!
 
 		var alpha = Mathf.Pow(k, exponent);
 
@@ -182,7 +206,7 @@ public partial class MultiMeshExample : Node3D
 	/// </summary>
 	private static Vector3 Fir(Vector3 from, Vector3 to, float k, float dt)
 	{
-		var exponent = dt * 120f; // "reference" time
+		var exponent = dt * 120f; // reference frame rate, it's 2024, for fox sake!
 
 		var alpha = Mathf.Pow(k, exponent);
 

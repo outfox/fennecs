@@ -43,22 +43,23 @@ height = 14.0
 [sub_resource type="Environment" id="Environment_q01bs"]
 background_mode = 1
 ambient_light_source = 2
-ambient_light_color = Color(0.25098, 0.25098, 0.25098, 1)
+ambient_light_color = Color(0.137255, 0.172549, 0.25098, 1)
 tonemap_mode = 2
 glow_enabled = true
 glow_intensity = 2.0
 glow_bloom = 0.5
 glow_blend_mode = 1
 fog_enabled = true
-fog_light_color = Color(0.0235294, 0.0313726, 0.0392157, 1)
+fog_light_color = Color(0, 0, 0.0156863, 1)
 fog_density = 0.003
 
 [node name="Entity Positioning Demo" type="Node3D"]
 
-[node name="MultiMeshExample" type="Node3D" parent="." node_paths=PackedStringArray("MeshInstance", "SimulatedSlider", "RenderedSlider")]
+[node name="MultiMeshExample" type="Node3D" parent="." node_paths=PackedStringArray("MeshInstance", "Camera", "SimulatedSlider", "RenderedSlider")]
 unique_name_in_owner = true
 script = ExtResource("1_yanug")
 MeshInstance = NodePath("MultiMeshInstance3D")
+Camera = NodePath("../Camera Pivot/Camera3D")
 SimulatedSlider = NodePath("../User Interface/VBoxContainer/SpawnController/SimulatedSlider")
 RenderedSlider = NodePath("../User Interface/VBoxContainer/SpawnController/VisibleSlider")
 
