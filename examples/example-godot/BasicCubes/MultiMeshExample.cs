@@ -1,15 +1,25 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using fennecs;
 using Godot;
 using Vector3 = System.Numerics.Vector3;
 
 namespace examples.godot.BasicCubes;
+
 [GlobalClass]
-public partial class MultiMeshExample : Node
+public partial class MultiMeshExample : Node3D
 {
-	[Export] public int SpawnCount = 10_000;
+	[Export] public int MaxEntities = 250_000;
 	[Export] public MultiMeshInstance3D MeshInstance;
+
+	[Export] public Slider SimulatedSlider;
+	[Export] public Slider RenderedSlider;
+
+
+	[Signal]
+	public delegate void MySignalEventHandler(string willSendsAString);
+
 
 	private int InstanceCount => MeshInstance.Multimesh.InstanceCount;
 
@@ -23,18 +33,31 @@ public partial class MultiMeshExample : Node
 	private float[] _submissionArray = Array.Empty<float>();
 
 
-	private void SpawnWave(int spawnCount)
+	private void SetEntityCount(int spawnCount)
 	{
-		for (var i = 0; i < spawnCount; i++)
+		var delta = spawnCount - MeshInstance.Multimesh.InstanceCount;
+
+		for (var i = 0; i < delta; i++)
 		{
 			_world.Spawn()
 				.Add(i + MeshInstance.Multimesh.InstanceCount)
 				.Add<Matrix4X3>();
 		}
 
-		MeshInstance.Multimesh.InstanceCount += spawnCount;
+		using var worldLock = _world.Lock;
+
+		if (delta < 0)
+		{
+			foreach (var entity in _query)
+			{
+				if (delta++ < 0) _world.Despawn(entity);
+			}
+		}
+
+		MeshInstance.Multimesh.InstanceCount = spawnCount;
 		Array.Resize(ref _submissionArray, InstanceCount * 12);
 	}
+
 
 	public override void _Ready()
 	{
@@ -45,12 +68,15 @@ public partial class MultiMeshExample : Node
 
 		MeshInstance.Multimesh.VisibleInstanceCount = -1;
 
-		SpawnWave(25_000);
-		
+
+		_on_simulated_slider_value_changed(SimulatedSlider.Value);
+		_on_rendered_slider_value_changed(RenderedSlider.Value);
+
 		_query = _world.Query<int, Matrix4X3>().Build();
-		
+
 		_Process(0);
 	}
+
 
 	public override void _Process(double delta)
 	{
@@ -58,7 +84,7 @@ public partial class MultiMeshExample : Node
 
 		//Update positions
 		_query.Job(UpdatePositionForCube, ((float) _time, _amplitude), chunkSize: 4096);
-		
+
 		// Write transforms into Multimesh
 		_query.Raw(static (Memory<int> _, Memory<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform) =>
 		{
@@ -71,7 +97,7 @@ public partial class MultiMeshExample : Node
 
 			// Ideal way - raw Query to pass Memory<T>, Godot Memory<TY overload not yet available.
 			//_query.Raw((_, transforms) => RenderingServer.MultimeshSetBuffer(MeshInstance.Multimesh.GetRid(), transforms));
-			
+
 			// This variant is also fast, but it doesn't work with the Godot API as that expects an array.
 			// We're waiting on a change to the Godot API to expose the Span<float> overloads, which actually
 			// match the internal API 1:1 (the System.Array parameter is the odd one out).
@@ -79,6 +105,7 @@ public partial class MultiMeshExample : Node
 			//RenderingServer.MultimeshSetBuffer(uniform.mesh, floatSpan);
 		}, (MeshInstance.Multimesh.GetRid(), _submissionArray));
 	}
+
 
 	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, (float time, Vector3 amplitude) uniform)
 	{
@@ -104,10 +131,23 @@ public partial class MultiMeshExample : Node
 		transform = new Matrix4X3(vector * uniform.amplitude);
 	}
 
+
 	private void _on_button_pressed()
 	{
-		SpawnWave(SpawnCount);
+		SetEntityCount(MaxEntities);
 	}
+
+
+	private void _on_rendered_slider_value_changed(double value)
+	{
+	}
+
+
+	private void _on_simulated_slider_value_changed(double value)
+	{
+		SetEntityCount((int) Math.Ceiling(Math.Pow(value, 3) * MaxEntities));
+	}
+
 }
 
 
@@ -130,6 +170,7 @@ public struct Matrix4X3
 	public float M22;
 	public float M23;
 
+
 	public Matrix4X3()
 	{
 		M00 = 1;
@@ -145,6 +186,7 @@ public struct Matrix4X3
 		M22 = 1;
 		M23 = 0;
 	}
+
 
 	public Matrix4X3(Vector3 origin)
 	{
@@ -162,6 +204,7 @@ public struct Matrix4X3
 		M23 = origin.Z;
 	}
 
+
 	public Matrix4X3(Vector3 bX, Vector3 bY, Vector3 bZ, Vector3 origin)
 	{
 		M00 = bX.X;
@@ -178,8 +221,10 @@ public struct Matrix4X3
 		M23 = origin.Z;
 	}
 
+
 	public override string ToString()
 	{
 		return $"Matrix4X3({M00}, {M01}, {M02}, {M03}, {M10}, {M11}, {M12}, {M13}, {M20}, {M21}, {M22}, {M23})";
 	}
+
 }

@@ -1,12 +1,21 @@
-[gd_scene load_steps=11 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene load_steps=15 format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" path="res://BasicCubes/Rotate.gd" id="1_tqr0u"]
 [ext_resource type="Script" path="res://BasicCubes/MultiMeshExample.cs" id="1_yanug"]
 [ext_resource type="Script" path="res://FPSLabel.gd" id="2_pay0t"]
 [ext_resource type="Script" path="res://BasicCubes/PivotSway.gd" id="3_c10c7"]
+[ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://Fonts/BaiJamjuree-Regular.ttf" id="3_ih8bu"]
 [ext_resource type="Texture2D" uid="uid://bmw4r15o3hat4" path="res://fennecs-logo.png" id="4_58011"]
 [ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://BasicCubes/orange_light.tres" id="6_2hcul"]
 [ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://BasicCubes/blue_light.tres" id="6_o8tf2"]
+[ext_resource type="Script" path="res://BasicCubes/TestNode.gd" id="9_ksn6a"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_d0l4f"]
+font = ExtResource("3_ih8bu")
+
+[sub_resource type="LabelSettings" id="LabelSettings_557ru"]
+font = ExtResource("3_ih8bu")
+font_size = 48
 
 [sub_resource type="SphereMesh" id="SphereMesh_1qaly"]
 material = ExtResource("6_2hcul")
@@ -33,12 +42,17 @@ fog_density = 0.003
 
 [node name="Entity Positioning Demo" type="Node3D"]
 
-[node name="ECS" type="Node" parent="." node_paths=PackedStringArray("MeshInstance")]
+[node name="ECS" type="Node3D" parent="." node_paths=PackedStringArray("MeshInstance", "SimulatedSlider", "RenderedSlider")]
 unique_name_in_owner = true
 script = ExtResource("1_yanug")
 MeshInstance = NodePath("MultiMeshInstance3D")
+SimulatedSlider = NodePath("../Control/VBoxContainer/SpawnController/SimulatedSlider")
+RenderedSlider = NodePath("../Control/VBoxContainer/SpawnController/RenderedSlider")
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="ECS"]
+
+[node name="Node3D" type="Node3D" parent="."]
+script = ExtResource("9_ksn6a")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -51,6 +65,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -63,29 +78,30 @@ grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
+[node name="SpawnController" type="HBoxContainer" parent="Control/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="RenderedSlider" type="VSlider" parent="Control/VBoxContainer/HBoxContainer"]
+[node name="SimulatedSlider" type="VSlider" parent="Control/VBoxContainer/SpawnController"]
 custom_minimum_size = Vector2(54.858, 500)
 layout_mode = 2
-max_value = 500000.0
-value = 25000.0
-rounded = true
+max_value = 1.0
+step = 0.001
+value = 0.3
 tick_count = 20
 ticks_on_borders = true
 
-[node name="SimulatedSlider" type="VSlider" parent="Control/VBoxContainer/HBoxContainer"]
+[node name="RenderedSlider" type="VSlider" parent="Control/VBoxContainer/SpawnController"]
 custom_minimum_size = Vector2(54.858, 500)
 layout_mode = 2
-max_value = 500000.0
-value = 25000.0
-rounded = true
+max_value = 1.0
+step = 0.001
+value = 0.3
 tick_count = 20
 ticks_on_borders = true
 
 [node name="Panel" type="Panel" parent="Control/VBoxContainer"]
+show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
@@ -95,57 +111,69 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -28.0
-offset_top = -84.0
-offset_right = 50.0
-offset_bottom = -34.0
+offset_left = -31.0
+offset_top = -88.0
+offset_right = 47.0
+offset_bottom = -38.0
 rotation = 1.5708
-metadata/_edit_use_anchors_ = true
+mouse_filter = 2
 
 [node name="RenderedLabel" type="Label" parent="Control/VBoxContainer/Panel/HBoxContainer2"]
+show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Rendered"
+label_settings = SubResource("LabelSettings_d0l4f")
 horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="SimulatedLabel" type="Label" parent="Control/VBoxContainer/Panel/HBoxContainer2"]
+show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Simulated
 "
+label_settings = SubResource("LabelSettings_d0l4f")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Control"]
+[node name="Fennecs Logo" type="TextureRect" parent="Control"]
+modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -128.0
-offset_top = -256.0
-offset_right = 128.0
+anchor_bottom = 0.5
+offset_left = -269.0
+offset_top = -243.0
+offset_right = 755.0
+offset_bottom = 781.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_58011")
+stretch_mode = 3
 
 [node name="FPS Label" type="Label" parent="Control"]
+modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -177.0
-offset_bottom = 113.0
+offset_left = -218.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = 132.0
 grow_horizontal = 0
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 40
 text = "0 fps
 0 entities
 "
+label_settings = SubResource("LabelSettings_557ru")
 horizontal_alignment = 2
 script = ExtResource("2_pay0t")
 
@@ -180,3 +208,6 @@ mesh = SubResource("SphereMesh_s2td0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_q01bs")
+
+[connection signal="value_changed" from="Control/VBoxContainer/SpawnController/SimulatedSlider" to="ECS" method="_on_simulated_slider_value_changed"]
+[connection signal="value_changed" from="Control/VBoxContainer/SpawnController/RenderedSlider" to="ECS" method="_on_rendered_slider_value_changed"]
