@@ -86,7 +86,7 @@ public partial class MultiMeshExample : Node3D
 		MeshInstance.Multimesh.InstanceCount = Mathf.FloorToInt(_currentRenderedFraction * _query.Count);
 
 		// Soft count for the cubes so they move even smoother.
-		_smoothCount = _smoothCount * 0.99f + 0.01f * MeshInstance.Multimesh.InstanceCount;
+		_smoothCount = _smoothCount * 0.9f + 0.1f * MeshInstance.Multimesh.InstanceCount;
 
 		//Update positions <-- THIS IS WHERE THE HARD WORK IS DONE
 		var chunkSize = Math.Max(_query.Count / 20, 128);
@@ -95,8 +95,10 @@ public partial class MultiMeshExample : Node3D
 		//Workaround for Godot not accepting oversize arrays or Spans.
 		Array.Resize(ref _submissionArray, MeshInstance.Multimesh.InstanceCount * 12);
 
-		//Just a simple inv exp
-		_currentAmplitude = _currentAmplitude * 0.99f + 0.01f * _goalAmplitude;
+		// Make the cloud of cubes denser if there are more cubes
+		var amplitudePortion = Mathf.Clamp((1.0f -_query.Count * _currentRenderedFraction / MaxEntities), 0.1f, 1f);
+		_goalAmplitude = Mathf.Lerp(MinAmplitude, MaxAmplitude, amplitudePortion) * Vector3.One;
+		_currentAmplitude = _currentAmplitude * 0.9f + 0.1f * _goalAmplitude;
 
 		// Copy transforms into Multimesh <-- THIS IS WHERE THE DATA IS COPIED TO GODOT
 		_query.Raw(static (Memory<int> _, Memory<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform) =>
@@ -123,9 +125,9 @@ public partial class MultiMeshExample : Node3D
 	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, ref Vector3 position, (float time, Vector3 amplitude, float SmoothCount) uniform)
 	{
 		//var offset = Mathf.Tau(uniform.time / 100f)
-		var phase1 = index * Mathf.Sin(index % 7 + uniform.time * 3f) * 17f * Mathf.Tau / uniform.SmoothCount;
+		var phase1 = index * Mathf.Sin(index % 7 + uniform.time) * 17f * Mathf.Tau / uniform.SmoothCount;
 		var phase2 = index * Mathf.Sin(index % 3 + uniform.time * 2f) * 13f * Mathf.Tau / uniform.SmoothCount;
-		var phase3 = index * 23f * Mathf.Tau / uniform.SmoothCount;
+		var phase3 = index * Mathf.Sin(index % 2 + uniform.time * 3f) * 11f * Mathf.Tau / uniform.SmoothCount;
 
 		//group1 = group2 = group3 = 0;
 
@@ -144,7 +146,7 @@ public partial class MultiMeshExample : Node3D
 			Z = Mathf.Sin(value3 + uniform.time * scale3 + index / 2000f),
 		};
 
-		position = position * 0.95f + 0.05f * vector;
+		position = position * 0.99f + 0.01f * vector;
 		transform = new Matrix4X3(position * uniform.amplitude);
 	}
 
@@ -159,10 +161,6 @@ public partial class MultiMeshExample : Node3D
 	{
 		// Set the number of entities to render
 		_currentRenderedFraction = (float) value;
-
-		// Make the cloud of cubes denser if there are more cubes
-		var amplitudePortion = 1f - (float) Math.Sqrt(value + 0.2);
-		_goalAmplitude =  Mathf.Lerp(MinAmplitude, MaxAmplitude, amplitudePortion) * Vector3.One;
 
 		// Move cubes faster if there are fewer visible
 		_currentTimeScale = BaseTimeScale / Mathf.Max((float) value, 0.1f);
