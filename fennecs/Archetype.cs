@@ -378,4 +378,10 @@ internal sealed class Archetype : IEnumerable<Entity>
     }
 
     #endregion
+
+
+    public void Pop()
+    {
+        _world.Despawn(new Entity(_world, _identities[Count - 1]));
+    }
 }

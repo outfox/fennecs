@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using fennecs;
 using Godot;
@@ -9,7 +10,8 @@ namespace examples.godot.BasicCubes;
 [GlobalClass]
 public partial class MultiMeshExample : Node3D
 {
-	[Export] public int MaxEntities = 1_000_000;
+	private const int MaxEntities = 420_069;
+
 	[Export] public MultiMeshInstance3D MeshInstance;
 
 	[Export] public Slider SimulatedSlider;
@@ -23,16 +25,21 @@ public partial class MultiMeshExample : Node3D
 	private int QueryCount => _query?.Count ?? 0;
 	private int InstanceCount => MeshInstance.Multimesh.InstanceCount;
 
-	private readonly Vector3 _maxAmplitude = new(300, 300, 300);
+	private const float MinAmplitude = 100;
+	private const float MaxAmplitude = 300;
+
+	private Vector3 _goalAmplitude;
 	private Vector3 _currentAmplitude;
 
 	private const float BaseTimeScale = 0.0005f;
 	private float _currentTimeScale;
 
-	private double _currentVisibleInstanceFraction;
+	private float _smoothCount = 1;
+
+	private float _currentRenderedFraction;
 
 	private readonly World _world = new();
-	private Query<int, Matrix4X3> _query;
+	private Query<int, Matrix4X3, Vector3> _query;
 
 	private double _time;
 	private float[] _submissionArray = Array.Empty<float>();
@@ -40,36 +47,18 @@ public partial class MultiMeshExample : Node3D
 
 	private void SetEntityCount(int spawnCount)
 	{
-		var delta = spawnCount - MeshInstance.Multimesh.InstanceCount;
-
-		for (var i = 0; i < delta; i++)
+		for (var i = _query.Count; i < spawnCount; i++)
 		{
-			_world.Spawn()
-				.Add(i + MeshInstance.Multimesh.InstanceCount)
-				.Add<Matrix4X3>();
+			_world.Spawn().Add(i)
+				.Add<Matrix4X3>()
+				.Add<Vector3>();
 		}
 
-
-		if (delta < 0)
+		while (spawnCount < _query.Count)
 		{
-			var worldLock = _world.Lock;
-			foreach (var entity in _query)
-			{
-				if (++delta < 0) _world.Despawn(entity);
-			}
-			worldLock.Dispose();
+			_query.Pop();
 		}
-
-		MeshInstance.Multimesh.InstanceCount = Mathf.FloorToInt(_currentVisibleInstanceFraction * _query.Count);
-		Array.Resize(ref _submissionArray, InstanceCount * 12);
 	}
-
-
-	private void UpdateEntityCounts()
-	{
-		
-	}
-
 
 	public override void _Ready()
 	{
@@ -80,7 +69,7 @@ public partial class MultiMeshExample : Node3D
 
 		MeshInstance.Multimesh.VisibleInstanceCount = -1;
 
-		_query = _world.Query<int, Matrix4X3>().Build();
+		_query = _world.Query<int, Matrix4X3, Vector3>().Build();
 
 		_on_simulated_slider_value_changed(SimulatedSlider.Value);
 		_on_rendered_slider_value_changed(RenderedSlider.Value);
@@ -93,13 +82,23 @@ public partial class MultiMeshExample : Node3D
 	{
 		_time += delta * _currentTimeScale;
 
-		//Update Entity Counts
-		UpdateEntityCounts();
-		
-		//Update positions
-		_query.Job(UpdatePositionForCube, ((float) _time, _currentAmplitude), chunkSize: 32768);
+		//Size of entities rendered
+		MeshInstance.Multimesh.InstanceCount = Mathf.FloorToInt(_currentRenderedFraction * _query.Count);
 
-		// Write transforms into Multimesh
+		// Soft count for the cubes so they move even smoother.
+		_smoothCount = _smoothCount * 0.99f + 0.01f * MeshInstance.Multimesh.InstanceCount;
+
+		//Update positions <-- THIS IS WHERE THE HARD WORK IS DONE
+		var chunkSize = Math.Max(_query.Count / 20, 128);
+		_query.Job(UpdatePositionForCube, ((float) _time, _currentAmplitude, _smoothCount), chunkSize: chunkSize);
+
+		//Workaround for Godot not accepting oversize arrays or Spans.
+		Array.Resize(ref _submissionArray, MeshInstance.Multimesh.InstanceCount * 12);
+
+		//Just a simple inv exp
+		_currentAmplitude = _currentAmplitude * 0.99f + 0.01f * _goalAmplitude;
+
+		// Copy transforms into Multimesh <-- THIS IS WHERE THE DATA IS COPIED TO GODOT
 		_query.Raw(static (Memory<int> _, Memory<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform) =>
 		{
 			var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
@@ -120,29 +119,33 @@ public partial class MultiMeshExample : Node3D
 		}, (MeshInstance.Multimesh.GetRid(), _submissionArray));
 	}
 
-
-	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, (float time, Vector3 amplitude) uniform)
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, ref Vector3 position, (float time, Vector3 amplitude, float SmoothCount) uniform)
 	{
-		var phase1 = index / 5000f * 2f;
-		var group1 = 1 + (index / 1000) % 5;
+		//var offset = Mathf.Tau(uniform.time / 100f)
+		var phase1 = index * Mathf.Sin(index % 7 + uniform.time * 3f) * 17f * Mathf.Tau / uniform.SmoothCount;
+		var phase2 = index * Mathf.Sin(index % 3 + uniform.time * 2f) * 13f * Mathf.Tau / uniform.SmoothCount;
+		var phase3 = index * 23f * Mathf.Tau / uniform.SmoothCount;
 
-		var phase2 = index / 3000f * 2f;
-		var group2 = 1 + (index / 1000) % 3;
+		//group1 = group2 = group3 = 0;
 
-		var phase3 = index / 1000f * 2f;
-		var group3 = 1 + (index / 1000) % 10;
+		var value1 = phase1; //* Mathf.Pi * (group1 + Mathf.Sin(uniform.time) * 1f);
+		var value2 = phase2; //* Mathf.Pi * (group2 + Mathf.Sin(uniform.time * 1f) * 3f);
+		var value3 = phase3; //* Mathf.Pi * group3;
 
-		var value1 = phase1 * Mathf.Pi * (group1 + Mathf.Sin(uniform.time) * 1f);
-		var value2 = phase2 * Mathf.Pi * (group2 + Mathf.Sin(uniform.time * 1f) * 3f);
-		var value3 = phase3 * Mathf.Pi * group3;
+		var scale1 = 1f;
+		var scale2 = 2f;
+		var scale3 = 3f;
 
-		var scale1 = 3f;
-		var scale2 = 5f - group2;
-		var scale3 = 4f;
+		var vector = new Vector3
+		{
+			X = Mathf.Sin(value1 + uniform.time * scale1 + index / 1500f),
+			Y = Mathf.Sin(value2 + uniform.time * scale2 + index / 1000f),
+			Z = Mathf.Sin(value3 + uniform.time * scale3 + index / 2000f),
+		};
 
-		var vector = new Vector3 {X = (float) Math.Sin(value1 + uniform.time * scale1), Y = (float) Math.Sin(value2 + uniform.time * scale2), Z = (float) Math.Sin(value3 + uniform.time * scale3),};
-
-		transform = new Matrix4X3(vector * uniform.amplitude);
+		position = position * 0.95f + 0.05f * vector;
+		transform = new Matrix4X3(position * uniform.amplitude);
 	}
 
 
@@ -154,99 +157,28 @@ public partial class MultiMeshExample : Node3D
 
 	private void _on_rendered_slider_value_changed(double value)
 	{
-		_currentAmplitude = (float) Math.Sqrt(value + 0.2) * _maxAmplitude;
-		_currentTimeScale = BaseTimeScale / (float) Math.Sqrt(value + 0.2);
+		// Set the number of entities to render
+		_currentRenderedFraction = (float) value;
 
-		_currentVisibleInstanceFraction = value;
-		SetEntityCount(InstanceCount);
+		// Make the cloud of cubes denser if there are more cubes
+		var amplitudePortion = 1f - (float) Math.Sqrt(value + 0.2);
+		_goalAmplitude =  Mathf.Lerp(MinAmplitude, MaxAmplitude, amplitudePortion) * Vector3.One;
+
+		// Move cubes faster if there are fewer visible
+		_currentTimeScale = BaseTimeScale / Mathf.Max((float) value, 0.1f);
 	}
 
 
 	private void _on_simulated_slider_value_changed(double value)
 	{
-		var count = (int) Math.Ceiling(Math.Pow(value, 2) * MaxEntities);
-		count = Math.Clamp((count / 100) * 100, 0, MaxEntities);
-
+		// Set the number of entities to simulate
+		var count = (int) Math.Ceiling(Math.Pow(value, Mathf.Sqrt2) * MaxEntities);
+		count = Math.Clamp((count / 100 + 1) * 100, 0, MaxEntities);
 		SetEntityCount(count);
 	}
 
-}
-
-
-
-[StructLayout(LayoutKind.Sequential, Pack = 4)]
-public struct Matrix4X3
-{
-	public float M00;
-	public float M01;
-	public float M02;
-	public float M03;
-
-	public float M10;
-	public float M11;
-	public float M12;
-	public float M13;
-
-	public float M20;
-	public float M21;
-	public float M22;
-	public float M23;
-
-
-	public Matrix4X3()
+	private void _on_simulated_slider_drag_ended(bool valueChanged)
 	{
-		M00 = 1;
-		M01 = 0;
-		M02 = 0;
-		M03 = 0;
-		M10 = 0;
-		M11 = 1;
-		M12 = 0;
-		M13 = 0;
-		M20 = 0;
-		M21 = 0;
-		M22 = 1;
-		M23 = 0;
+		if (valueChanged) _on_simulated_slider_value_changed(SimulatedSlider.Value);
 	}
-
-
-	public Matrix4X3(Vector3 origin)
-	{
-		M00 = 1;
-		M01 = 0;
-		M02 = 0;
-		M03 = origin.X;
-		M10 = 0;
-		M11 = 1;
-		M12 = 0;
-		M13 = origin.Y;
-		M20 = 0;
-		M21 = 0;
-		M22 = 1;
-		M23 = origin.Z;
-	}
-
-
-	public Matrix4X3(Vector3 bX, Vector3 bY, Vector3 bZ, Vector3 origin)
-	{
-		M00 = bX.X;
-		M01 = bX.Y;
-		M02 = bX.Z;
-		M03 = origin.X;
-		M10 = bY.X;
-		M11 = bY.Y;
-		M12 = bY.Z;
-		M13 = origin.Y;
-		M20 = bZ.X;
-		M21 = bZ.Y;
-		M22 = bZ.Z;
-		M23 = origin.Z;
-	}
-
-
-	public override string ToString()
-	{
-		return $"Matrix4X3({M00}, {M01}, {M02}, {M03}, {M10}, {M11}, {M12}, {M13}, {M20}, {M21}, {M22}, {M23})";
-	}
-
 }
