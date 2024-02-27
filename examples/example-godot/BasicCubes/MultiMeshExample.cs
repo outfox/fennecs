@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using fennecs;
 using Godot;
@@ -145,7 +144,9 @@ public partial class MultiMeshExample : Node3D
 
 	private void _on_simulated_slider_value_changed(double value)
 	{
-		SetEntityCount((int) Math.Ceiling(Math.Pow(value, 3) * MaxEntities));
+		var count = (int) Math.Ceiling(Math.Pow(value, 2) * MaxEntities);
+		count = Math.Clamp((count / 1000 + 1) * 1000, 0, MaxEntities);
+		SetEntityCount(count);
 	}
 
 }
