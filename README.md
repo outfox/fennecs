@@ -177,7 +177,6 @@ Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating
 
 ------------------------
 
-# 🕸️ Legacy Documentation
+# Social Feeds
 
-The old HypEcs [documentation can be found here](docs/legacy.md) while our fennecs are frantically writing up new docs for the new APIs.
-
+<a rel="me" href="https://mastodon.gamedev.place/@jupiter">Mastodon</a>

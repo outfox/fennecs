@@ -9,7 +9,7 @@ namespace examples.godot.BasicCubes;
 [GlobalClass]
 public partial class MultiMeshExample : Node3D
 {
-	[Export] public int MaxEntities = 250_000;
+	[Export] public int MaxEntities = 1_000_000;
 	[Export] public MultiMeshInstance3D MeshInstance;
 
 	[Export] public Slider SimulatedSlider;
@@ -20,10 +20,16 @@ public partial class MultiMeshExample : Node3D
 	public delegate void MySignalEventHandler(string willSendsAString);
 
 
+	private int QueryCount => _query?.Count ?? 0;
 	private int InstanceCount => MeshInstance.Multimesh.InstanceCount;
 
-	private readonly Vector3 _amplitude = new(200, 200, 200);
-	private const float TimeScale = 0.001f;
+	private readonly Vector3 _maxAmplitude = new(300, 300, 300);
+	private Vector3 _currentAmplitude;
+
+	private const float BaseTimeScale = 0.0005f;
+	private float _currentTimeScale;
+
+	private double _currentVisibleInstanceFraction;
 
 	private readonly World _world = new();
 	private Query<int, Matrix4X3> _query;
@@ -43,18 +49,25 @@ public partial class MultiMeshExample : Node3D
 				.Add<Matrix4X3>();
 		}
 
-		using var worldLock = _world.Lock;
 
 		if (delta < 0)
 		{
+			var worldLock = _world.Lock;
 			foreach (var entity in _query)
 			{
-				if (delta++ < 0) _world.Despawn(entity);
+				if (++delta < 0) _world.Despawn(entity);
 			}
+			worldLock.Dispose();
 		}
 
-		MeshInstance.Multimesh.InstanceCount = spawnCount;
+		MeshInstance.Multimesh.InstanceCount = Mathf.FloorToInt(_currentVisibleInstanceFraction * _query.Count);
 		Array.Resize(ref _submissionArray, InstanceCount * 12);
+	}
+
+
+	private void UpdateEntityCounts()
+	{
+		
 	}
 
 
@@ -67,11 +80,10 @@ public partial class MultiMeshExample : Node3D
 
 		MeshInstance.Multimesh.VisibleInstanceCount = -1;
 
+		_query = _world.Query<int, Matrix4X3>().Build();
 
 		_on_simulated_slider_value_changed(SimulatedSlider.Value);
 		_on_rendered_slider_value_changed(RenderedSlider.Value);
-
-		_query = _world.Query<int, Matrix4X3>().Build();
 
 		_Process(0);
 	}
@@ -79,10 +91,13 @@ public partial class MultiMeshExample : Node3D
 
 	public override void _Process(double delta)
 	{
-		_time += delta * TimeScale;
+		_time += delta * _currentTimeScale;
 
+		//Update Entity Counts
+		UpdateEntityCounts();
+		
 		//Update positions
-		_query.Job(UpdatePositionForCube, ((float) _time, _amplitude), chunkSize: 4096);
+		_query.Job(UpdatePositionForCube, ((float) _time, _currentAmplitude), chunkSize: 32768);
 
 		// Write transforms into Multimesh
 		_query.Raw(static (Memory<int> _, Memory<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform) =>
@@ -91,7 +106,7 @@ public partial class MultiMeshExample : Node3D
 
 			//We must copy the data manually once, into a pre-created array.
 			//ISSUE: (Godot) It cannot come from an ArrayPool because it needs to have the exact size.
-			floatSpan.CopyTo(uniform.submission);
+			floatSpan.Slice(0, uniform.submission.Length).CopyTo(uniform.submission);
 			RenderingServer.MultimeshSetBuffer(uniform.mesh, uniform.submission);
 
 			// Ideal way - raw Query to pass Memory<T>, Godot Memory<TY overload not yet available.
@@ -139,13 +154,19 @@ public partial class MultiMeshExample : Node3D
 
 	private void _on_rendered_slider_value_changed(double value)
 	{
+		_currentAmplitude = (float) Math.Sqrt(value + 0.2) * _maxAmplitude;
+		_currentTimeScale = BaseTimeScale / (float) Math.Sqrt(value + 0.2);
+
+		_currentVisibleInstanceFraction = value;
+		SetEntityCount(InstanceCount);
 	}
 
 
 	private void _on_simulated_slider_value_changed(double value)
 	{
 		var count = (int) Math.Ceiling(Math.Pow(value, 2) * MaxEntities);
-		count = Math.Clamp((count / 1000 + 1) * 1000, 0, MaxEntities);
+		count = Math.Clamp((count / 100) * 100, 0, MaxEntities);
+
 		SetEntityCount(count);
 	}
 
