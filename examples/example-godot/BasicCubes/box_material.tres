@@ -2,10 +2,12 @@
 
 [resource]
 transparency = 1
-diffuse_mode = 3
+blend_mode = 1
 albedo_color = Color(1, 1, 1, 0.25098)
 metallic = 0.5
 roughness = 0.5
 emission = Color(0.0235294, 0.152941, 0.203922, 1)
+subsurf_scatter_enabled = true
+subsurf_scatter_strength = 0.43
 disable_receive_shadows = true
 grow_amount = 0.22

@@ -315,11 +315,17 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     #region Bulk Operations
     
-    public void Truncate(int maxEntityCount)
+    public void Truncate(int maxEntityCount, TruncateMode mode = TruncateMode.PerArchetype)
     {
         foreach (var archetype in Archetypes) archetype.Truncate(maxEntityCount);
     }
     
+    public enum TruncateMode
+    {
+        PerArchetype = default,
+        //FirstComeFirstServe,
+        //EvenDistribution,
+    }
     #endregion
 
     #region IDisposable Implementation

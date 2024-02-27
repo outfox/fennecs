@@ -124,10 +124,12 @@ public partial class MultiMeshExample : Node3D
 
 		// Apply a chaotic Lissajous-like motion for the cubes
 		var motionIndex = (index + uniform.Time * Mathf.Tau * 69f) % uniform.SmoothCount - uniform.SmoothCount/2f;
-
-		var phase1 = motionIndex * Mathf.Sin(motionIndex / 2500f * Mathf.Tau) * 7f * Mathf.Tau / uniform.SmoothCount;
-		var phase2 = motionIndex * Mathf.Sin(motionIndex / 3700f * Mathf.Tau) * 13f * Mathf.Tau / uniform.SmoothCount;
-		var phase3 = motionIndex * Mathf.Sin(motionIndex / 3000f * Mathf.Tau) * 11f * Mathf.Tau / uniform.SmoothCount;
+		
+		var entityRatio = uniform.SmoothCount / MaxEntities;
+		
+		var phase1 = motionIndex * Mathf.Sin(motionIndex / 1500f * Mathf.Tau) * 7f * Mathf.Tau / uniform.SmoothCount;
+		var phase2 = motionIndex * Mathf.Sin(motionIndex / 1700f * Mathf.Tau) * 5f * Mathf.Tau / uniform.SmoothCount;
+		var phase3 = motionIndex * Mathf.Sin(motionIndex / 1000f * Mathf.Tau) * 11f * entityRatio * Mathf.Tau / uniform.SmoothCount;
 
 		var vector = new Vector3
 		{
@@ -136,12 +138,12 @@ public partial class MultiMeshExample : Node3D
 			Z = Mathf.Sin(phase3 + uniform.Time * 5f + motionIndex / 2000f),
 		};
 
-		var cubic = Mathf.RoundToInt(uniform.Time * 100f % 1.0f) == 1 ? 1.0f : 0f;
-
-		if (vector.Length() > 1.0f) vector = (1.0f-cubic) * vector / vector.Length() + cubic * vector;
+		var cubic = Mathf.Sin(uniform.Time * 100f * Mathf.Tau) * 0.5f + 0.5f;
+		var shell = Mathf.Clamp(vector.Length(), 0, 1);
+		vector = (1.0f-cubic) * shell * vector / vector.Length() + cubic * vector;
 
 		// Write back some state and write the Transform that our MultiMesh is going to be receiving
-		position = Fir(position, vector, 0.95f, uniform.dt);
+		position = Fir(position, vector, 0.99f, uniform.dt);
 
 		var scale = 1.5f - uniform.SmoothCount / MaxEntities;
 		transform = new Matrix4X3(position * uniform.Amplitude, scale);
