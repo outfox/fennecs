@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene load_steps=19 format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" path="res://BasicCubes/Rotate.gd" id="1_tqr0u"]
 [ext_resource type="Script" path="res://BasicCubes/MultiMeshExample.cs" id="1_yanug"]
@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://bmw4r15o3hat4" path="res://fennecs-logo.png" id="4_58011"]
 [ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://BasicCubes/orange_light.tres" id="6_2hcul"]
 [ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://BasicCubes/blue_light.tres" id="6_o8tf2"]
-[ext_resource type="Script" path="res://BasicCubes/TestNode.gd" id="9_ksn6a"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_so3e6"]
 material = ExtResource("2_ai16h")
@@ -56,20 +55,17 @@ fog_density = 0.003
 
 [node name="Entity Positioning Demo" type="Node3D"]
 
-[node name="ECS" type="Node3D" parent="." node_paths=PackedStringArray("MeshInstance", "SimulatedSlider", "RenderedSlider")]
+[node name="MultiMeshExample" type="Node3D" parent="." node_paths=PackedStringArray("MeshInstance", "SimulatedSlider", "RenderedSlider")]
 unique_name_in_owner = true
 script = ExtResource("1_yanug")
 MeshInstance = NodePath("MultiMeshInstance3D")
-SimulatedSlider = NodePath("../Control/VBoxContainer/SpawnController/SimulatedSlider")
-RenderedSlider = NodePath("../Control/VBoxContainer/SpawnController/VisibleSlider")
+SimulatedSlider = NodePath("../User Interface/VBoxContainer/SpawnController/SimulatedSlider")
+RenderedSlider = NodePath("../User Interface/VBoxContainer/SpawnController/VisibleSlider")
 
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="ECS"]
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="MultiMeshExample"]
 multimesh = SubResource("MultiMesh_fdhkq")
 
-[node name="Node3D" type="Node3D" parent="."]
-script = ExtResource("9_ksn6a")
-
-[node name="Control" type="Control" parent="."]
+[node name="User Interface" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,7 +76,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_ym7v2")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="User Interface"]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 3
@@ -96,11 +92,11 @@ grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
 
-[node name="SpawnController" type="HBoxContainer" parent="Control/VBoxContainer"]
+[node name="SpawnController" type="HBoxContainer" parent="User Interface/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="VisibleSlider" type="VSlider" parent="Control/VBoxContainer/SpawnController"]
+[node name="VisibleSlider" type="VSlider" parent="User Interface/VBoxContainer/SpawnController"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 500)
 layout_mode = 2
@@ -112,7 +108,7 @@ value = 0.3
 tick_count = 20
 ticks_on_borders = true
 
-[node name="SimulatedSlider" type="VSlider" parent="Control/VBoxContainer/SpawnController"]
+[node name="SimulatedSlider" type="VSlider" parent="User Interface/VBoxContainer/SpawnController"]
 custom_minimum_size = Vector2(60, 500)
 layout_mode = 2
 theme = ExtResource("3_ym7v2")
@@ -123,13 +119,13 @@ value = 0.4
 tick_count = 20
 ticks_on_borders = true
 
-[node name="Panel" type="Panel" parent="Control/VBoxContainer"]
+[node name="Panel" type="Panel" parent="User Interface/VBoxContainer"]
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
-[node name="HBoxContainer2" type="VBoxContainer" parent="Control/VBoxContainer/Panel"]
+[node name="HBoxContainer2" type="VBoxContainer" parent="User Interface/VBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -143,7 +139,7 @@ grow_vertical = 2
 rotation = 1.5708
 mouse_filter = 2
 
-[node name="SimulatedLabel" type="Label" parent="Control/VBoxContainer/Panel/HBoxContainer2"]
+[node name="SimulatedLabel" type="Label" parent="User Interface/VBoxContainer/Panel/HBoxContainer2"]
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -152,7 +148,7 @@ label_settings = SubResource("LabelSettings_d0l4f")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="RenderedLabel" type="Label" parent="Control/VBoxContainer/Panel/HBoxContainer2"]
+[node name="RenderedLabel" type="Label" parent="User Interface/VBoxContainer/Panel/HBoxContainer2"]
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -162,7 +158,7 @@ label_settings = SubResource("LabelSettings_d0l4f")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Fennecs Logo" type="TextureRect" parent="Control"]
+[node name="Fennecs Logo" type="TextureRect" parent="User Interface"]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 8
@@ -180,7 +176,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_58011")
 stretch_mode = 3
 
-[node name="FPS Label" type="Label" parent="Control"]
+[node name="FPS Label" type="Label" parent="User Interface"]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 1
@@ -200,21 +196,16 @@ label_settings = SubResource("LabelSettings_557ru")
 horizontal_alignment = 2
 script = ExtResource("2_pay0t")
 
-[node name="Camera Pivot" type="Node3D" parent="."]
-script = ExtResource("3_c10c7")
-
-[node name="Camera3D" type="Camera3D" parent="Camera Pivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200)
-
-[node name="Hyperlink" type="Label" parent="."]
+[node name="Hyperlink" type="Label" parent="User Interface"]
 modulate = Color(1, 1, 1, 0.501961)
 show_behind_parent = true
+layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -24.0
-offset_right = 159.0
+offset_left = 5.0
+offset_top = -34.0
+offset_right = 234.0
 offset_bottom = -4.0
 grow_vertical = 0
 size_flags_horizontal = 8
@@ -222,6 +213,12 @@ text = "https://fennecs.tech"
 label_settings = SubResource("LabelSettings_e5jui")
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="Camera Pivot" type="Node3D" parent="."]
+script = ExtResource("3_c10c7")
+
+[node name="Camera3D" type="Camera3D" parent="Camera Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200)
 
 [node name="LightPivot" type="Node3D" parent="."]
 script = ExtResource("1_tqr0u")
@@ -249,6 +246,6 @@ mesh = SubResource("SphereMesh_s2td0")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_q01bs")
 
-[connection signal="value_changed" from="Control/VBoxContainer/SpawnController/VisibleSlider" to="ECS" method="_on_rendered_slider_value_changed"]
-[connection signal="drag_ended" from="Control/VBoxContainer/SpawnController/SimulatedSlider" to="ECS" method="_on_simulated_slider_drag_ended"]
-[connection signal="value_changed" from="Control/VBoxContainer/SpawnController/SimulatedSlider" to="ECS" method="_on_simulated_slider_value_changed"]
+[connection signal="value_changed" from="User Interface/VBoxContainer/SpawnController/VisibleSlider" to="MultiMeshExample" method="_on_rendered_slider_value_changed"]
+[connection signal="drag_ended" from="User Interface/VBoxContainer/SpawnController/SimulatedSlider" to="MultiMeshExample" method="_on_simulated_slider_drag_ended"]
+[connection signal="value_changed" from="User Interface/VBoxContainer/SpawnController/SimulatedSlider" to="MultiMeshExample" method="_on_simulated_slider_value_changed"]
