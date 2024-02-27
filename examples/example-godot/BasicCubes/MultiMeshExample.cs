@@ -62,11 +62,6 @@ public partial class MultiMeshExample : Node3D
 
 	public override void _Ready()
 	{
-		MeshInstance.Multimesh = new MultiMesh();
-		MeshInstance.Multimesh.TransformFormat = MultiMesh.TransformFormatEnum.Transform3D;
-		MeshInstance.Multimesh.Mesh = new BoxMesh();
-		MeshInstance.Multimesh.Mesh.SurfaceSetMaterial(0, ResourceLoader.Load<Material>("res://BasicCubes/box_material.tres"));
-
 		MeshInstance.Multimesh.VisibleInstanceCount = -1;
 
 		_query = _world.Query<int, Matrix4X3, Vector3>().Build();
@@ -128,6 +123,7 @@ public partial class MultiMeshExample : Node3D
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, ref Vector3 position, (float Time, Vector3 Amplitude, float SmoothCount, float dt) uniform)
 	{
+		// Apply a chaotic Lissajous-like motion for the cubes
 		var motionIndex = (index + uniform.Time * Mathf.Tau * 69f) % uniform.SmoothCount;
 
 		var phase1 = motionIndex * Mathf.Sin(motionIndex / 500f) * 17f * Mathf.Tau / uniform.SmoothCount;
@@ -141,14 +137,9 @@ public partial class MultiMeshExample : Node3D
 			Z = Mathf.Sin(phase3 + uniform.Time * 5f + motionIndex / 2000f),
 		};
 
+		// Write back some state and write the Transform that our MultiMesh is going to be receiving
 		position = FIR(position, vector, 0.95f, uniform.dt);
 		transform = new Matrix4X3(position * uniform.Amplitude);
-	}
-
-
-	private void _on_button_pressed()
-	{
-		SetEntityCount(MaxEntities);
 	}
 
 

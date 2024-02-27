@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene load_steps=20 format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" path="res://BasicCubes/Rotate.gd" id="1_tqr0u"]
 [ext_resource type="Script" path="res://BasicCubes/MultiMeshExample.cs" id="1_yanug"]
+[ext_resource type="Material" uid="uid://bnswggdiq40dw" path="res://BasicCubes/box_material.tres" id="2_ai16h"]
 [ext_resource type="Script" path="res://FPSLabel.gd" id="2_pay0t"]
 [ext_resource type="Script" path="res://BasicCubes/PivotSway.gd" id="3_c10c7"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://Fonts/BaiJamjuree-Regular.ttf" id="3_ih8bu"]
@@ -10,6 +11,14 @@
 [ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://BasicCubes/orange_light.tres" id="6_2hcul"]
 [ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://BasicCubes/blue_light.tres" id="6_o8tf2"]
 [ext_resource type="Script" path="res://BasicCubes/TestNode.gd" id="9_ksn6a"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_so3e6"]
+material = ExtResource("2_ai16h")
+size = Vector3(3, 3, 3)
+
+[sub_resource type="MultiMesh" id="MultiMesh_fdhkq"]
+transform_format = 1
+mesh = SubResource("BoxMesh_so3e6")
 
 [sub_resource type="LabelSettings" id="LabelSettings_d0l4f"]
 font = ExtResource("3_ih8bu")
@@ -55,6 +64,7 @@ SimulatedSlider = NodePath("../Control/VBoxContainer/SpawnController/SimulatedSl
 RenderedSlider = NodePath("../Control/VBoxContainer/SpawnController/VisibleSlider")
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="ECS"]
+multimesh = SubResource("MultiMesh_fdhkq")
 
 [node name="Node3D" type="Node3D" parent="."]
 script = ExtResource("9_ksn6a")
