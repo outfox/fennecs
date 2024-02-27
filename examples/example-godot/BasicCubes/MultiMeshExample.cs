@@ -25,8 +25,8 @@ public partial class MultiMeshExample : Node3D
 	private int QueryCount => _query?.Count ?? 0;
 	private int InstanceCount => MeshInstance.Multimesh.InstanceCount;
 
-	private const float MinAmplitude = 100;
-	private const float MaxAmplitude = 150;
+	private const float MinAmplitude = 200;
+	private const float MaxAmplitude = 300;
 
 	private Vector3 _goalAmplitude;
 	private Vector3 _currentAmplitude;
@@ -71,6 +71,8 @@ public partial class MultiMeshExample : Node3D
 
 		_query = _world.Query<int, Matrix4X3, Vector3>().Build();
 
+		SetEntityCount(MaxEntities);
+
 		_on_simulated_slider_value_changed(SimulatedSlider.Value);
 		_on_rendered_slider_value_changed(RenderedSlider.Value);
 
@@ -80,17 +82,19 @@ public partial class MultiMeshExample : Node3D
 
 	public override void _Process(double delta)
 	{
+		var dt = (float) delta;
+
 		_time += delta * _currentTimeScale;
 
 		//Size of entities rendered
 		MeshInstance.Multimesh.InstanceCount = Mathf.FloorToInt(_currentRenderedFraction * _query.Count);
 
 		// Soft count for the cubes so they move even smoother.
-		_smoothCount = _smoothCount * 0.8f + 0.2f * MeshInstance.Multimesh.InstanceCount;
+		_smoothCount = MeshInstance.Multimesh.InstanceCount;
 
 		//Update positions <-- THIS IS WHERE THE HARD WORK IS DONE
 		var chunkSize = Math.Max(_query.Count / 20, 128);
-		_query.Job(UpdatePositionForCube, ((float) _time, _currentAmplitude, _smoothCount), chunkSize: chunkSize);
+		_query.Job(UpdatePositionForCube, ((float) _time, _currentAmplitude, _smoothCount, dt), chunkSize: chunkSize);
 
 		//Workaround for Godot not accepting oversize arrays or Spans.
 		Array.Resize(ref _submissionArray, MeshInstance.Multimesh.InstanceCount * 12);
@@ -122,32 +126,23 @@ public partial class MultiMeshExample : Node3D
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, ref Vector3 position, (float time, Vector3 amplitude, float SmoothCount) uniform)
+	private static void UpdatePositionForCube(ref int index, ref Matrix4X3 transform, ref Vector3 position, (float Time, Vector3 Amplitude, float SmoothCount, float dt) uniform)
 	{
-		//var offset = Mathf.Tau(uniform.time / 100f)
-		var phase1 = index * Mathf.Sin(index % 5000f + uniform.time) * 17f * Mathf.Tau / uniform.SmoothCount;
-		var phase2 = index * Mathf.Sin(index / 7000f + uniform.time * 2f) * 13f * Mathf.Tau / uniform.SmoothCount;
-		var phase3 = index * Mathf.Sin(index / 6000f + uniform.time * 3f) * 11f * Mathf.Tau / uniform.SmoothCount;
+		var motionIndex = (index + uniform.Time * Mathf.Tau * 69f) % uniform.SmoothCount;
 
-		//group1 = group2 = group3 = 0;
-
-		var value1 = phase1; //* Mathf.Pi * (group1 + Mathf.Sin(uniform.time) * 1f);
-		var value2 = phase2; //* Mathf.Pi * (group2 + Mathf.Sin(uniform.time * 1f) * 3f);
-		var value3 = phase3; //* Mathf.Pi * group3;
-
-		var scale1 = 1f;
-		var scale2 = 2f;
-		var scale3 = 3f;
+		var phase1 = motionIndex * Mathf.Sin(motionIndex / 500f) * 17f * Mathf.Tau / uniform.SmoothCount;
+		var phase2 = motionIndex * Mathf.Sin(motionIndex / 500f) * 13f * Mathf.Tau / uniform.SmoothCount;
+		var phase3 = motionIndex * Mathf.Sin(motionIndex / 500f) * 11f * Mathf.Tau / uniform.SmoothCount;
 
 		var vector = new Vector3
 		{
-			X = Mathf.Sin(value1 + uniform.time * scale1 + index / 1500f),
-			Y = Mathf.Sin(value2 + uniform.time * scale2 + index / 1000f),
-			Z = Mathf.Sin(value3 + uniform.time * scale3 + index / 2000f),
+			X = Mathf.Sin(phase1 + uniform.Time * 2f + motionIndex / 1500f),
+			Y = Mathf.Sin(phase2 + uniform.Time * 3f + motionIndex / 1000f),
+			Z = Mathf.Sin(phase3 + uniform.Time * 5f + motionIndex / 2000f),
 		};
 
-		position = position * 0.99f + 0.01f * vector;
-		transform = new Matrix4X3(position * uniform.amplitude);
+		position = FIR(position, vector, 0.95f, uniform.dt);
+		transform = new Matrix4X3(position * uniform.Amplitude);
 	}
 
 
@@ -178,5 +173,31 @@ public partial class MultiMeshExample : Node3D
 	private void _on_simulated_slider_drag_ended(bool valueChanged)
 	{
 		if (valueChanged) _on_simulated_slider_value_changed(SimulatedSlider.Value);
+	}
+
+
+	/// <summary>
+	/// A basic finite impulse response filter.
+	/// </summary>
+	private static float FIR(float from, float to, float k, float dt)
+	{
+		var exponent = dt * 60f; // "reference" time
+
+		var alpha = Mathf.Pow(k, exponent);
+
+		return alpha * from + to * (1.0f - alpha);
+	}
+
+
+	/// <summary>
+	/// A basic finite impulse response filter... for Vectors!
+	/// </summary>
+	private static Vector3 FIR(Vector3 from, Vector3 to, float k, float dt)
+	{
+		var exponent = dt * 120f; // "reference" time
+
+		var alpha = Mathf.Pow(k, exponent);
+
+		return alpha * from + to * (1.0f - alpha);
 	}
 }
