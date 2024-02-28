@@ -5,11 +5,13 @@ Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Typ
 
 For each Entity in the Query, calls the appropriate `RefAction`, with or without passing an uniform data parameter depending on the overload.
 
-Takes a [`RefAction`](RefAction.md) or [`RefActionU<>`](RefAction.md) as delegate parameter.
+Each `For`-Runner takes a [`RefAction`](RefAction.md) or [`RefActionU<>`](RefAction.md) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Query.1-5.md#prefix-subsets).
 
 The Runner is executed directly on the calling thread. Until the runner returns, the World is in `WorldMode.Deferred`, meaning structural changes are applied once the Runner has finished.
 
-## Basic Operation
+### Basic Operation
+
+Call a Runner on a Query to have it execute the delegate you're passing in. You may optionally have the Runner pass in a Uniform data item that you can provide.
 
 ::: code-group
 ```cs [For(...) plain]
@@ -28,15 +30,11 @@ myQuery.For((ref Vector3 position, ref Vector3 velocity, float dtUniform) =>
 ```
 :::
 
-
 ::: tip
-The function passed as `RefAction` can be `static`, even if they are written anonymous delegates or lambda expressions! This reduces the allocation of memory for a closure or context to zero in most cases.
-
-Consider adding the keyword `static` where you can.
+The function passed as `RefAction` can be `static`, even if they are written anonymous delegates or lambda expressions! This reduces the allocation of memory for a closure or context to zero in most cases. Consider adding the keyword `static` where you can.
 :::
 
-
-## Performance Considerations in Calling Conventions
+### Performance Considerations in Calling Conventions
 
 RefActions can be passed to runners in several ways. Choose based on your preferred code style and desired conciseness. Here's a lineup to compare options.
 
@@ -94,8 +92,13 @@ myQuery.For(static delegate (ref Vector3 position, ref Vector3 velocity)
 :::
 
 
-::: tip
-Don't skimp on static functions just because you need data from your current context! 
+### Uniforms, Shmuniforms
+
+Shader programmers are going to love these, classical programmer might be scratching their heads and ask: "But why?"
+
+::: warning
+Don't skimp on static functions just because you need data from your current context! 🦊 Memory allocations can fragment your heap and slow down your game or simulation.
+:::
 
 A **Uniform** can be anything: a primitive type like `int`, a `struct`, a `class`, and also the new `System.ValueTuple`. The latter makes it possible to capture arbitrary data, and provide it in a named way and allocation-free into `static` anonymous or named functions, without having to declare a struct somewhere else.
 
@@ -107,5 +110,4 @@ myQuery.For(static (ref Vector3 position, ref Vector3 velocity,
 }, (Vector3.DOWN, Time.deltaTime)); // actual ValueTuple being passed in
 ```
 
-:::
 
