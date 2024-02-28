@@ -36,9 +36,9 @@ Consider adding the keyword `static` where you can.
 :::
 
 
-## Differences in Calling Conventions
+## Performance Considerations in Calling Conventions
 
-RefActions can be passed to runners in several ways. Choose based on your preferred style and conciseness - but here's a lineup to compare options.
+RefActions can be passed to runners in several ways. Choose based on your preferred code style and desired conciseness. Here's a lineup to compare options.
 
 ::: code-group
 ```cs [lambda]
