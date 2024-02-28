@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 extends Label
 
 var smoothed : float = 0.016

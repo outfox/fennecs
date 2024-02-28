@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 extends Node3D
 
 @onready var tween : Tween

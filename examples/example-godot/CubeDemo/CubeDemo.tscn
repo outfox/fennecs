@@ -5,9 +5,9 @@
 [ext_resource type="Theme" uid="uid://xobxg8yxjsmu" path="res://zzzShared/fennecs_theme.tres" id="3_h31e3"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="4_plwtk"]
 [ext_resource type="PackedScene" uid="uid://bdfvsd3p00icf" path="res://zzzShared/user_interface.tscn" id="5_gh02a"]
-[ext_resource type="Script" path="res://zzzShared/FPSLabel.gd" id="6_wvaw7"]
-[ext_resource type="Script" path="res://CubeDemo/PivotSway.gd" id="7_1fct3"]
-[ext_resource type="Script" path="res://CubeDemo/Rotate.gd" id="8_cipfs"]
+[ext_resource type="Script" path="res://CubeDemo/UI/FPSLabel.gd" id="6_wvaw7"]
+[ext_resource type="Script" path="res://CubeDemo/UI/PivotSway.gd" id="7_1fct3"]
+[ext_resource type="Script" path="res://CubeDemo/UI/Rotate.gd" id="8_cipfs"]
 [ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://CubeDemo/Materials/orange_light.tres" id="9_t1ajc"]
 [ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://CubeDemo/Materials/blue_light.tres" id="10_vph3x"]
 
@@ -51,13 +51,13 @@ fog_density = 0.003
 
 [node name="fennecs Cube Demo" type="Node3D"]
 
-[node name="CubeDemo" type="Node" parent="." node_paths=PackedStringArray("MeshInstance", "Camera", "SimulatedSlider", "RenderedSlider")]
+[node name="CubeDemo" type="Node" parent="." node_paths=PackedStringArray("Camera", "RenderedSlider", "SimulatedSlider", "MeshInstance")]
 unique_name_in_owner = true
 script = ExtResource("1_1jicl")
-MeshInstance = NodePath("MultiMeshInstance3D")
 Camera = NodePath("../Camera Pivot/Camera3D")
-SimulatedSlider = NodePath("../User Interface/Spawn Controls/Sliders/SimulatedSlider")
 RenderedSlider = NodePath("../User Interface/Spawn Controls/Sliders/VisibleSlider")
+SimulatedSlider = NodePath("../User Interface/Spawn Controls/Sliders/SimulatedSlider")
+MeshInstance = NodePath("MultiMeshInstance3D")
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="CubeDemo"]
 multimesh = SubResource("MultiMesh_fdhkq")
@@ -72,13 +72,13 @@ show_behind_parent = true
 layout_mode = 1
 offset_left = 10.0
 offset_top = 10.0
-offset_right = 363.0
-offset_bottom = 383.0
+offset_right = 362.0
+offset_bottom = 429.0
 size_flags_horizontal = 8
 bbcode_enabled = true
 text = "DemoCubes (Godot version)
 
-This demo is 100% CPU simulation (no GPU). Here, we demonstrate a simple case how to update the positions of a large number of Entities.
+All motion  is 100% CPU simulation (no GPU). Here, we demonstrate a simple case how to update the positions of a large number of Entities.
 
 State is stored in Components on the Entities:
 [ul]
@@ -87,7 +87,9 @@ State is stored in Components on the Entities:
 1x integer (as a simple identifier)
 [/ul]
 
-The state is transferred into the Godot Engine in bulk each frame using Query.Raw and submitting just the Matrix4x3 structs directly to a MultiMeshInstance3D."
+The state is transferred into the Godot Engine in bulk each frame using Query.Raw in order to submit just the Matrix4x3 structs directly to a MultiMesh as a PackedFloat32Array.
+
+This static buffer is then used by Godot's Forward+ Renderer and a MultiMeshInstance3D to display the Cubes."
 
 [node name="Spawn Controls" type="VBoxContainer" parent="User Interface"]
 modulate = Color(1, 1, 1, 0.501961)
