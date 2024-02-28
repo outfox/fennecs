@@ -1,6 +1,5 @@
 ---
 layout: doc
-outline: deep
 ---
 
 # Entity
@@ -16,3 +15,8 @@ The `fennecs.Entity` struct exposes operations to add, remove, and read [Compone
 This is how the **fenn**ecs Entity Component Systems provides composable, structured data semantics. 
 
 The component data is accessed and processed in bulk through [Queries](Query.md), a typical way that ECS provide composable functionality.
+
+<video controls autoplay muted>
+<source src="https://fennecs.tech/video/fennecs-godot-democubes.mp4" type="video/mp4"/>
+Your browser does not support the video tag.
+</video>
