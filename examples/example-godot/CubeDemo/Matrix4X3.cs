@@ -1,7 +1,7 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
 
-namespace examples.godot.BasicCubes;
+namespace examples.godot.CubeDemo;
 
 [StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct Matrix4X3

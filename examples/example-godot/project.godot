@@ -13,9 +13,9 @@ config_version=5
 config/name="example-godot"
 config/description="A set of examples using the fennecs Entity Component System
 "
-run/main_scene="res://BasicCubes/BasicCubes.tscn"
+run/main_scene="res://CubeDemo/CubeDemo.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://zzzShared/icon.svg"
 
 [display]
 

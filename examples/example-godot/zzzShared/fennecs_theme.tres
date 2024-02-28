@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://xobxg8yxjsmu"]
+
+[ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="1_3etec"]
+[ext_resource type="Texture2D" uid="uid://dpg27e8horb6c" path="res://zzzShared/pets.png" id="2_h55xb"]
+
+[resource]
+default_font = ExtResource("1_3etec")
+VSlider/icons/grabber = ExtResource("2_h55xb")
+VSlider/icons/grabber_highlight = ExtResource("2_h55xb")

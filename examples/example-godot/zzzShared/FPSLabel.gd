@@ -1,7 +1,7 @@
 extends Label
 
 var smoothed : float = 0.016
-@onready var ECS : MultiMeshExample = %MultiMeshExample
+@onready var ECS : CubeDemo = %CubeDemo
 @onready var VisibleSlider : VSlider = %VisibleSlider
 
 

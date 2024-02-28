@@ -5,10 +5,11 @@ using fennecs;
 using Godot;
 using Vector3 = System.Numerics.Vector3;
 
-namespace examples.godot.BasicCubes;
+namespace examples.godot.CubeDemo;
 
 [GlobalClass]
-public partial class MultiMeshExample : Node3D
+[Icon("res://icon.svg")]
+public partial class CubeDemo : Node
 {
 	private const int MaxEntities = 420_069;
 
@@ -124,9 +125,9 @@ public partial class MultiMeshExample : Node3D
 
 		// Apply a chaotic Lissajous-like motion for the cubes
 		var motionIndex = (index + uniform.Time * Mathf.Tau * 69f) % uniform.SmoothCount - uniform.SmoothCount/2f;
-		
+
 		var entityRatio = uniform.SmoothCount / MaxEntities;
-		
+
 		var phase1 = motionIndex * Mathf.Sin(motionIndex / 1500f * Mathf.Tau) * 7f * Mathf.Tau / uniform.SmoothCount;
 		var phase2 = motionIndex * Mathf.Sin(motionIndex / 1700f * Mathf.Tau) * 5f * Mathf.Tau / uniform.SmoothCount;
 		var phase3 = motionIndex * Mathf.Sin(motionIndex / 1000f * Mathf.Tau) * 11f * entityRatio * Mathf.Tau / uniform.SmoothCount;

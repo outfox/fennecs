@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://cvmp81n8dc3uk"
-path="res://.godot/imported/BaiJamjuree-Regular.ttf-f285360004cf9334f79e338880d7ef7a.fontdata"
+path="res://.godot/imported/BaiJamjuree-Regular.ttf-821d6028eb4139dec9f01a296fd9e673.fontdata"
 
 [deps]
 
-source_file="res://Fonts/BaiJamjuree-Regular.ttf"
-dest_files=["res://.godot/imported/BaiJamjuree-Regular.ttf-f285360004cf9334f79e338880d7ef7a.fontdata"]
+source_file="res://zzzShared/BaiJamjuree-Regular.ttf"
+dest_files=["res://.godot/imported/BaiJamjuree-Regular.ttf-821d6028eb4139dec9f01a296fd9e673.fontdata"]
 
 [params]
 

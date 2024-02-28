@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmw4r15o3hat4"
-path="res://.godot/imported/fennecs-logo.png-fd6868cf217aac50bad4433c405c1c20.ctex"
+uid="uid://d3wx2h7f7a01r"
+path="res://.godot/imported/icon.svg-cc2637a62b21756e9b4be5716315b9b5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://fennecs-logo.png"
-dest_files=["res://.godot/imported/fennecs-logo.png-fd6868cf217aac50bad4433c405c1c20.ctex"]
+source_file="res://zzzShared/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-cc2637a62b21756e9b4be5716315b9b5.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

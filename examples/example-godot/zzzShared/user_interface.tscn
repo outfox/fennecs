@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdfvsd3p00icf"]
+
+[ext_resource type="Theme" uid="uid://xobxg8yxjsmu" path="res://zzzShared/fennecs_theme.tres" id="1_v1386"]
+[ext_resource type="Texture2D" uid="uid://bmw4r15o3hat4" path="res://zzzShared/fennecs-logo.png" id="2_cxve1"]
+[ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="3_8haj3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_e5jui"]
+font = ExtResource("3_8haj3")
+font_size = 24
+
+[node name="User Interface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_v1386")
+
+[node name="Fennecs Logo" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -269.0
+offset_top = -243.0
+offset_right = 755.0
+offset_bottom = 781.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_cxve1")
+stretch_mode = 3
+
+[node name="Hyperlink" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -40.0
+offset_right = 239.0
+offset_bottom = -10.0
+grow_vertical = 0
+size_flags_horizontal = 8
+text = "https://fennecs.tech"
+label_settings = SubResource("LabelSettings_e5jui")
+vertical_alignment = 1

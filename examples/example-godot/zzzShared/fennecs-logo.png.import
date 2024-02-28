@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpg27e8horb6c"
-path="res://.godot/imported/pets.png-efa61b2ff068d1cd3b2d690580006d52.ctex"
+uid="uid://bmw4r15o3hat4"
+path="res://.godot/imported/fennecs-logo.png-c78240d87963ebf5847d8b1c83a4d9b3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://pets.png"
-dest_files=["res://.godot/imported/pets.png-efa61b2ff068d1cd3b2d690580006d52.ctex"]
+source_file="res://zzzShared/fennecs-logo.png"
+dest_files=["res://.godot/imported/fennecs-logo.png-c78240d87963ebf5847d8b1c83a4d9b3.ctex"]
 
 [params]
 
