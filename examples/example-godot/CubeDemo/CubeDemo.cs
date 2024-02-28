@@ -164,7 +164,7 @@ public partial class CubeDemo : Node
 		// 💡 We're saving a few keystrokes by using a method on the Query with only the first Stream Type (Matrix4X3).
 		// 🦊 But fennecs doesn't limit us. We can use any Instance or Static method, lambda, or delegate here.
 		// -------------------------------------------------------------------------------------------
-		_query.Raw(static (Memory<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform) =>
+		_query.Raw(static delegate (Memory<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform)
 		{
 			var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
 
