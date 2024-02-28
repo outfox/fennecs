@@ -9,3 +9,4 @@ Library
 Temp
 *.DotSettings.user
 *.Artifacts
+s3/
