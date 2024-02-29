@@ -1,4 +1,4 @@
-![fennecs logo](./docs/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./docs/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
+[![fennecs logo](./docs/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./docs/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech)
 
 # _... the tiny, tiny, high-energy Entity Component System!_
 
@@ -38,9 +38,9 @@
    </tr>
 </table>
 
-## Documentation
-The library documentation site is UP!  
-[https://www.fennecs.tech/docs/](https://www.fennecs.tech/docs/)
+## Documentation, Cookbook, and more!
+The new website is UP!  
+[https://www.fennecs.tech](https://fennecs.tech)
 
 ## Demos
 
