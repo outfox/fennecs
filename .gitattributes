@@ -1,6 +1,12 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
+/fennecs.tech linguist-detectable=false
+/fennecs.benchmarks linguist-detectable=false
+/examples linguist-detectable=false
+/demos linguist-detectable=false
+/docs linguist-detectable=false
+
 *.html linguist-detectable=false
 *.mts linguist-detectable=false
 *.js linguist-detectable=false
