@@ -4,11 +4,11 @@
 "**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  
 
 ## Description
-Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](Stream%20Types.md).
+Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](StreamTypes.md).
 
 For each Entity in the Query, calls the appropriate `RefAction`, with or without passing an uniform data parameter depending on the overload.
 
-Each `For`-Runner takes a [`RefAction`](RefAction.md) or [`RefActionU<>`](RefAction.md) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Query.1-5.md#prefix-subsets).
+Each `For`-Runner takes a [`RefAction`](Delegates.md#refaction-and-refactionu) or [`RefActionU<>`](Delegates.md#refaction-and-refactionu) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Query.1-5.md#prefix-subsets).
 
 The Runner is executed directly on the calling thread. Until the runner returns, the World is in `WorldMode.Deferred`, meaning structural changes are applied once the Runner has finished.
 
@@ -102,7 +102,7 @@ Shader programmers are going to love these, but the classical programmer might b
 ::: warning :neofox_bongo_down: ALL CONVENTIONS ARE BEAUTIFUL
 And yet... don't skimp on static functions just because you need data from your current context! 🦊 Memory allocations can fragment your heap and will slow down your game or simulation. 
 :::
-
+$
 
 But amazingly, a **Uniform** can be anything: a primitive type like `int`, a `struct`, a `class`, and also the new `System.ValueTuple`. The latter makes it possible to capture arbitrary data, and provide it in a readable, named, *and allocation-free* way into your `static` anonymous or named functions, without having to declare a struct somewhere else.
 

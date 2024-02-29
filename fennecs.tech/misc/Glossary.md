@@ -18,4 +18,18 @@ Changes to the layout of Entities - which Components, Links, or Relations it has
 
 - Spawning instantly returns a fully usable Entity builder struct... however, its Identity will only be written to the World later, so it is invisible to Queries and even to `World.GetEntity` and `World.IsAlive`.
 
-Structural changes to the world are deferred while a [World Lock](World%Lock.md) is taken out, until _ALL_ locks are disposed. Once that happens, they are all applied in order of submission.
+Structural changes to the world are deferred while a ==World Lock== is taken out, until _ALL_ locks are disposed. Once that happens, they are all applied in order of submission.
+
+
+
+
+## World Lock
+
+IDisposable that can be aquired from a World to set it to Deferred Mode, meaning all structural changes are queued and executed only after the last lock has been returned.
+
+```cs
+var myWorld = new World();
+// using statement will ensure the lock is disposed when it goes out of scope.
+using var worldLock = myWorld.Lock;
+```
+

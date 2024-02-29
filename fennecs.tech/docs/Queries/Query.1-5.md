@@ -8,7 +8,7 @@ title: Query&lt;C0, ...&gt;
 # `Query<C0,C1,C2,C3>`
 # `Query<C0,C1,C2,C3,C4>`
 
-Queries with Type Parameters (called [Stream Types](Stream%20Types.md)) provide access to Component data of their matched entities.
+Queries with Type Parameters (called [Stream Types](StreamTypes.md)) provide access to Component data of their matched entities.
 
 ## Component Type Parameters
 
@@ -16,7 +16,7 @@ The Type parameters, `C0, C1, C2, C3, C4` are also known as the Query's **Stream
 
 ## Prefix Subsets
 
-Queries with more than one [Stream Type](Stream%20Types.md) inherit access to all Runners of lesser parametrized Queries, albeit only in the same order, and always starting from `C0`. 
+Queries with more than one [Stream Type](StreamTypes.md) inherit access to all Runners of lesser parametrized Queries, albeit only in the same order, and always starting from `C0`. 
 
 ::: info Example
 `Query<int, float, Vector3>` has its parent class's methods `Query<int, float>.For(...)`

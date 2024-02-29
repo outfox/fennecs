@@ -20,7 +20,7 @@ Copying memory regions is hard, and **Multiprocessing is HARDER.** Currently, **
 
 All the `Memory<T>` structs are the same length, because each Entity in the Archetype has exactly one of the Archetype's components.
 
-[Match Expressions](Match%20Expressions.md) work the same as for other Runners, meaning Entities will get enumerated for each matching Stream Type in the Archetype when applicable.
+[Match Expressions](MatchExpressions.md) work the same as for other Runners, meaning Entities will get enumerated for each matching Stream Type in the Archetype when applicable.
 
 
 
@@ -51,16 +51,14 @@ You can either access this memory as a `Span`, cast it to the desired type, etc.
 :::
 
 
-**fenn**ecs internals guarantee that the memory order and size remains the same for as long as no [structural changes](Structural%20Changes.md) are made to the Entities in the Query.
+**fenn**ecs internals guarantee that the memory order and size remains the same for as long as no ==structural changes== are made to the Entities in the Query.
 
 
 ::: info :neofox_sign_yes: We have MEMORY, yes. What about ~~second memory~~ THREADS?
  Good news! You are free to parallelize all work yourself in your `MemoryAction<>` to your heart's content! 
 Go and make network transfers, disk access, or pass calculations to a GPU and write the results back. Simply use any suitable threading methods for as long as the Runner is active.
 
-==structural Changes==
-
-But should you need to defer [structural changes](../Glossary.md#Structural%20Changes) for longer (i.e. your parallel processes need to go on after the Runner returns), be sure to take out an additional [World Lock](World%20Lock.md) (as the Runners will dispose theirs when done)
+But should you need to defer ==structural changes== for longer (i.e. your parallel processes need to go on after the Runner returns), be sure to take out an additional ==World Lock== (as the Runners will dispose theirs when done)
 
 ::: tip :neofox_think_anime: PAWS for THOUGHT
 __You are the architect__. Perhaps you could structure your implementation ensuring that the Archetypes matched by the Query aren't changed elsewhere while your code performs async work on them?  
@@ -72,6 +70,6 @@ Then you might avoid having to lock your World altogether!
 :::
 
 ### async/await
-In case you want to use the TPL (async/await), note that the Runner itself isn't async, but you could, _if you really wanted_, pass in a uniform with a list of tasks to populate, complete them using [`Task.WaitAll`](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.waitall) or polling for completion, and finally dispose the [World Lock](World%20Lock.md).
+In case you want to use the TPL (async/await), note that the Runner itself isn't async, but you could, _if you really wanted_, pass in a uniform with a list of tasks to populate, complete them using [`Task.WaitAll`](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.waitall) or polling for completion, and finally dispose the ==World Lock==.
 
 

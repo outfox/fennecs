@@ -17,20 +17,20 @@ Whenever a new Archetype materializes, the World will notify _all matching Queri
 
 ## Processing Data in Queries
 
-Each Query with one or more [Stream Type](Stream%20Types.md) offer a set of ==Runners== to execute code in batches or parallelized on all Entities in the Query.
+Each Query with one or more [Stream Type](StreamTypes.md) offer a set of ==Runners== to execute code in batches or parallelized on all Entities in the Query.
 
 #### Here's a mnemonic cheat sheet, follow the links in the paragraph headlines for details.
 
 ### [`For`](Query.For.md) / [`For<U>`](Query.For.md) 
-> One work item at a time. Call a [`RefAction`](RefAction.md) delegate for each Entity in the query, providing the Components that match the Stream Types as `ref` to the code.  
+> One work item at a time. Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each Entity in the query, providing the Components that match the ==Stream Types== as `ref` to the code.  
 :neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_nom_waffle:
 
 ### [`Job`](Query.Job.md) / [`Job<U>`](Query.Job.md) 
-> Many items, multi-threaded. Takes a [`RefAction`](RefAction.md) delegate and instantly schedules and executes the workload split into chunks, calling many times in parallel across CPU cores.  
+> Many items, multi-threaded. Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instantly schedules and executes the workload split into chunks, calling many times in parallel across CPU cores.  
 :neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle:
 
 ###  [`Raw`](Query.Raw.md) / [`Raw<U>`](Query.Raw.md) 
-> Work items as contiguous memory. Using a distinct signature, [`MemoryAction`](MemoryAction.md), delivers the entire workload of the Query in a single call (per Archetype) diriectly into your ~~fox~~ delegate.   
+> Work items as contiguous memory. Using a distinct signature, [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the entire workload of the Query in a single call (per Archetype) diriectly into your ~~fox~~ delegate.   
 :neofox_waffle_long_blurry::neofox_scream_stare:
 
 

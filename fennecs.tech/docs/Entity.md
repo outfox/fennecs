@@ -15,4 +15,4 @@ The `fennecs.Entity` struct exposes operations to add, remove, and read [Compone
 
 This is how the **fenn**ecs Entity Component Systems provides composable, structured data semantics. 
 
-The component data is accessed and processed in bulk through [Queries](Query.md), a typical way that ECS provide composable functionality.
+The component data is accessed and processed in bulk through [Queries](Queries/index.md), a typical way that ECS provide composable functionality.
