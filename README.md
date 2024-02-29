@@ -40,12 +40,12 @@
 
 ## Documentation, Cookbook, and more!
 The new website is UP!  
-[https://www.fennecs.tech](https://fennecs.tech)
+**[fennecs.tech](https://fennecs.tech)**
 
 ## Demos
 
 Check out some elaborate, in-engine demos here:  
-[https://www.fennecs.tech/demos/](https://www.fennecs.tech/demos/)
+**[fennecs.tech/demos/](https://www.fennecs.tech/demos/)**
 
 ## Quickstart: Let's go!
 📦`>` `dotnet add package fennecs`
