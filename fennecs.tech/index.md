@@ -27,16 +27,15 @@ features:
 
 ---
 
-| [![Nuget](https://img.shields.io/nuget/v/fennecs?color=blue)](https://www.nuget.org/packages/fennecs/) | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml)](https://github.com/thygrrr/fennECS/actions) | [![Open issues](https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green)](https://github.com/thygrrr/fennECS/issues) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-blue) | [![License: MIT](https://img.shields.io/github/license/thygrrr/fennecs?color=blue)](https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme) |
-|-----|-----|-----|-----|-----|
+| [![Nuget](https://img.shields.io/nuget/v/fennecs?color=blue)](https://www.nuget.org/packages/fennecs/) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-blue) | [![License: MIT](https://img.shields.io/github/license/thygrrr/fennecs?color=blue)](https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme) |
+|-----|-----|-----|
 
 <br/>
+<br/>
 
-# Ok, what the fox? Another ECS?!
-
-We know... oh, _we know._ 😩
-
-But in a nutshell, [**fenn**ecs](https://fennecs.tech) is...
+# Ok, what the fox? Another ECS?! 
+### :neofox_pensive: We know... oh, _we know._    
+ But in a nutshell, **fenn**ecs is...
 
 🐾 zero codegen
 🐾 minimal boilerplate
@@ -44,8 +43,4 @@ But in a nutshell, [**fenn**ecs](https://fennecs.tech) is...
 🐾 intuitively relational
 🐾 lithe and fast 🐾
 
-
-## Code Samples
-| MonoGame🔜 |[Godot](https://github.com/thygrrr/fennecs/tree/main/examples/example-godot) | Flax🔜 | Unigine🔜 | Stride🔜| Raylib-cs🔜 |  NeoAxis🔜 |
-|:--------------:|:-------------------------------------------------------------------------------------------------------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
-|![MonoGame](https://fennecs.tech/img/logo-monogame-80.png) | [![Godot](https://fennecs.tech/img/logo-godot-80.png)](https://github.com/thygrrr/fennecs/tree/main/examples/example-godot) | ![Flax Engine](https://fennecs.tech/img/logo-flax-80.png) | ![UNIGINE](https://fennecs.tech/img/logo-unigine-80-darkmode.png#gh-dark-mode-only)![UNIGINE](https://fennecs.tech/img/logo-unigine-80-lightmode.png#gh-light-mode-only) | ![STRIDE](https://fennecs.tech/img/logo-stride-80.png) |  ![Raylib-cs](https://fennecs.tech/img/logo-raylib-80.png) | ![NeoAxis Engine](https://fennecs.tech/img/logo-neoaxis-80-darkmode.png#gh-dark-mode-only)![NeoAxis Engine](https://fennecs.tech/img/logo-neoaxis-80-lightmode.png#gh-light-mode-only) | 
+And that's all there is to say before you go and see for yourself, getting all wide-eyed and bushy-tailed!

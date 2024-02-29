@@ -11,7 +11,7 @@ Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating
 
 
 ## n00t
-Thanks to n00t on the [Godot Discord](https://discord.com/invite/4JBkykG) for suggesting to make the cubes in the [DemoCubes](../examples/DemoCubes.md) example occasionally arrangeinto a sphere. That, and for the much, much less impactful deed of suggesting [VitePress](https://vitepress.dev/), the amazing SSG this site was made with.
+Thanks to n00t on the [Godot Discord](https://discord.com/invite/4JBkykG) for suggesting to make the cubes in the [DemoCubes](../demos/DemoCubes.md) example occasionally arrangeinto a sphere. That, and for the much, much less impactful deed of suggesting [VitePress](https://vitepress.dev/), the amazing SSG this site was made with.
 
 
 ## Volpeon

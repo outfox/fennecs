@@ -30,9 +30,13 @@ export function hyperlinkPlugin(md: MarkdownIt, options?: Partial<HyperlinkPlugi
     const text = state.src.substring(start + marker.length, end);
 
     if (!silent) {
+      // Normalize the text for the URL
+      const normalizedText = text.trim().toLowerCase()
+      .replace(/[\s\W-]+/g, '-') // Replace spaces, punctuation (non-word characters except '-') with a dash
+   
       // Create the opening link token
       const openToken = state.push('link_open', 'a', 1);
-      openToken.attrs = [['href', `${opts.baseUrl}${encodeURIComponent(text.trim().replace(/\s+/g, ' '))}`]];
+      openToken.attrs = [['href', `${opts.baseUrl}${normalizedText}`]];
 
       // Create the text token
       const textToken = state.push('text', '', 0);

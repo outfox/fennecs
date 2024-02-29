@@ -18,7 +18,7 @@ Ready to try **fenn**ecs for yourself? Flip through the [Cookbook](/cookbook/ind
 :::
 
 ::: info :neofox_vr: THE DEMOS
-The [Examples](/examples/index) category has some concrete examples for a growing list of renderers and game engines! Something useful and something pretty to look at at the same time? Oh my!
+The [Demos](/demos/index) category has some concrete examples for a growing list of renderers and game engines! Something useful and something pretty to look at at the same time? Oh my!
 :::
 
 ::: info :neofox_pat_floof: MISCELLANY
