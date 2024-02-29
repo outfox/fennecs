@@ -148,8 +148,8 @@ public partial class CubeDemo : Node
 		_query.Job(UpdatePositionForCube, (_time, _currentAmplitude, _cubeCount, dt), chunkSize);
 
 		// 😿 Workaround for Godot not accepting oversize Arrays or Spans.
-		Array.Resize(ref _submissionArray, (int) (_cubeCount * 12));
-
+		Array.Resize(ref _submissionArray, (int) (_cubeCount * Matrix4X3.SizeInFloats));
+		
 		// 🧮 Make the cloud of cubes denser if there are more cubes.
 		var amplitudePortion = Mathf.Clamp(1.0f - _query.Count / (float) MaxEntities, 0f, 1f);
 		_goalAmplitude = Mathf.Lerp(MinAmplitude, MaxAmplitude, amplitudePortion) * Vector3.One;

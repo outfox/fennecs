@@ -1,5 +1,7 @@
-# `Query.Job` and `Query.Job<U>`
+# `Query.Job`
+# `Query.Job<U>`
 
+For when many, many similar things need doing - fast!
 
 ## Chunk Size
 Choosing the right way to spread your workload across CPU cores can yield significant performance gains.

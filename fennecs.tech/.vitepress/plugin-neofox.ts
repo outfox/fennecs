@@ -37,6 +37,6 @@ export function neofoxPlugin(md: MarkdownIt, options?: Partial<EmojiPluginOption
   });
 
   md.renderer.rules.emoji = (tokens, idx) => {
-    return `<img src="${tokens[idx].content}" alt="Custom emoji" style="display: inline-block; width: 64px; height: auto; margin: 0; padding: 0; vertical-align: middle;" />`;
+    return `<img src="${tokens[idx].content}" alt="Neofox, CC-BY-NC-SA 4.0" style="display: inline-block; width: auto; height: 64px; margin: 0; padding: 0; vertical-align: middle;" />`;
   };
 }

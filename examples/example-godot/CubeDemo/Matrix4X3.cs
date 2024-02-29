@@ -10,9 +10,25 @@ namespace examples.godot.CubeDemo;
 /// It uses an orthogonal, non-unit basis, and a translation vector.
 /// Works with MultiMesh in <see cref="Godot.MultiMesh.TransformFormat"/> 3D.
 /// </summary>
-[StructLayout(LayoutKind.Sequential, Pack = 4)]
+/// 
+
+[StructLayout(LayoutKind.Sequential, Pack = 4, Size = 48)]
 public struct Matrix4X3
 {
+    /// <summary>
+    /// <para>
+    /// Alternatively, use:
+    /// </para>
+    /// <c>
+    /// int size
+    /// </c><br/>
+    /// <c>
+    /// unsafe { size = sizeof(Matrix4X3) / sizeof(float); }
+    /// </c>
+    /// </summary>
+    public const int SizeInFloats = 12;
+
+
     /// <summary>
     /// Construct an identity matrix at the origin.
     /// </summary>

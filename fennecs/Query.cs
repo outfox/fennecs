@@ -314,6 +314,8 @@ public class Query : IEnumerable<Entity>, IDisposable
     #endregion
 
     #region Bulk Operations
+
+    public void Clear() => Truncate(0);
     
     public void Truncate(int maxEntityCount, TruncateMode mode = TruncateMode.PerArchetype)
     {

@@ -1,7 +1,8 @@
 import { defineConfig } from 'vitepress'
 import { generateSidebar } from 'vitepress-sidebar';
 
-import { neofoxPlugin } from './neofox-plugin';
+import { neofoxPlugin } from './plugin-neofox';
+import { hyperlinkPlugin } from './plugin-hyperlink';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -11,6 +12,7 @@ export default defineConfig({
   markdown: {
     config: (md) => {
       md.use(neofoxPlugin, {});
+      md.use(hyperlinkPlugin, {});
     }
   },
 
@@ -30,7 +32,7 @@ export default defineConfig({
         documentRootPath: '/',
         scanStartPath: '/',
         resolvePath: '/',
-        includeRootIndexFile: true,
+        includeRootIndexFile: false,
         collapseDepth: 2,
         excludeFolders: [".", "node_modules", "dist", "public", "src", "vitepress", "vitepress-sidebar"],
       }

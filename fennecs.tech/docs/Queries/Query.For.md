@@ -1,6 +1,9 @@
 # `Query<>.For(RefAction)`
 # `Query<>.For<U>(RefAction)`
 
+"**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  
+
+## Description
 Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](Stream%20Types.md).
 
 For each Entity in the Query, calls the appropriate `RefAction`, with or without passing an uniform data parameter depending on the overload.
@@ -94,20 +97,22 @@ myQuery.For(static delegate (ref Vector3 position, ref Vector3 velocity)
 
 ### Uniforms, Shmuniforms
 
-Shader programmers are going to love these, classical programmer might be scratching their heads and ask: "But why?"
+Shader programmers are going to love these, but the classical programmer might be scratching their head in wonder and ask: "But why? A lambda is so flexible! The whole universe is my ~~oyster~~ closure."
 
-::: warning
-Don't skimp on static functions just because you need data from your current context! 🦊 Memory allocations can fragment your heap and slow down your game or simulation.
+::: warning :neofox_bongo_down: ALL CONVENTIONS ARE BEAUTIFUL
+And yet... don't skimp on static functions just because you need data from your current context! 🦊 Memory allocations can fragment your heap and will slow down your game or simulation. 
 :::
 
-A **Uniform** can be anything: a primitive type like `int`, a `struct`, a `class`, and also the new `System.ValueTuple`. The latter makes it possible to capture arbitrary data, and provide it in a named way and allocation-free into `static` anonymous or named functions, without having to declare a struct somewhere else.
+
+But amazingly, a **Uniform** can be anything: a primitive type like `int`, a `struct`, a `class`, and also the new `System.ValueTuple`. The latter makes it possible to capture arbitrary data, and provide it in a readable, named, *and allocation-free* way into your `static` anonymous or named functions, without having to declare a struct somewhere else.
 
 ```cs
+// Using System.ValueTuple for the win!
 myQuery.For(static (ref Vector3 position, ref Vector3 velocity, 
 /* ValueTuple! */ (Vector3 gravity, float deltaTime) uniform) =>          
 {
     velocity += uniform.gravity * uniform.deltaTime;
-}, (Vector3.DOWN, Time.deltaTime)); // actual ValueTuple being passed in
+}, (Vector3.DOWN, Time.deltaTime)); //...and the actual ValueTuple being passed in
 ```
 
 

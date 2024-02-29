@@ -1,7 +1,7 @@
 ---
-title: WIP Component
+title: WIP Filter Expressions
+layout: doc
 ---
 
-# Component
-
+# Filter Expressions
 :neofox_what: Sorry! Come back later, work in progress.

@@ -1,11 +1,14 @@
-# `Query.Raw` and `Query.Raw<U>`
+# `Query.Raw`
+# `Query.Raw<U>`
 
-## Process Component data as whole memory blocks.
+For those times when a hammer isn't enough. Or a bus. Or a train.
+
+## Process entire Memory blocks
 
 Your code controls how and where. Maximum power, maximum responsibility.  
 _(in reality, `Memory<T>` is quite easy to use in C#, but can be more difficult to debug!)_
 
-Especially for [blittable Component types](https://learn.microsoft.com/en-us/dotnet/framework/interop/default-marshalling-behavior#default-marshalling-for-value-types), working all of them in a single memory region can be a powerful tool when interacting with drivers, networks, or game engines.
+Especially for [blittable Component types](https://learn.microsoft.com/en-us/dotnet/framework/interop/default-marshalling-behavior#default-marshalling-for-value-types), being able to refer to all of them an a single memory region can be a powerful utility when interacting with drivers, networks, or game engines.
 
 ::: danger :neofox_solder_googly: DANGER! Memory marshaling and multithreading are POWER TOOLS!
 
@@ -48,18 +51,22 @@ You can either access this memory as a `Span`, cast it to the desired type, etc.
 :::
 
 
+**fenn**ecs internals guarantee that the memory order and size remains the same for as long as no [structural changes](Structural%20Changes.md) are made to the Entities in the Query.
 
-::: info :neofox_sign_yes: We have Memory, yes. What about ~~second memory~~ Threads?
+
+::: info :neofox_sign_yes: We have MEMORY, yes. What about ~~second memory~~ THREADS?
  Good news! You are free to parallelize all work yourself in your `MemoryAction<>` to your heart's content! 
 Go and make network transfers, disk access, or pass calculations to a GPU and write the results back. Simply use any suitable threading methods for as long as the Runner is active.
 
-But should you need to defer [structural changes](Structural%20Changes.md) for longer (i.e. your parallel processes need to go on after the Runner returns), be sure to take out an additional [World Lock](World%20Lock.md) (as the Runners will dispose theirs when done)
+==structural Changes==
 
-::: tip :neofox_think_anime: PROTIP
-__You're the architect__. Perhaps you could somehow guarantee that the Archetypes matched by the Query aren't changed elsewhere while you do async work on them?  
-_(no [structural changes](Structural%20Changes.md) to any of the Entities contained)_
+But should you need to defer [structural changes](../Glossary.md#Structural%20Changes) for longer (i.e. your parallel processes need to go on after the Runner returns), be sure to take out an additional [World Lock](World%20Lock.md) (as the Runners will dispose theirs when done)
 
-An intriguing concept... so maybe you could avoid locking your World altogether!
+::: tip :neofox_think_anime: PAWS for THOUGHT
+__You are the architect__. Perhaps you could structure your implementation ensuring that the Archetypes matched by the Query aren't changed elsewhere while your code performs async work on them?  
+_(i.e. no ??structural changes?? to any of the Entities contained)_
+
+Then you might avoid having to lock your World altogether!
 
 **fenn**ecs internals guarantee that the memory order and size remains the same for as long as no structural changes are made.
 :::

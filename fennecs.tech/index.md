@@ -9,6 +9,13 @@ hero:
     alt: fennecs Entity Component System
   text: It's small foxes,<br/>all the way down!
   tagline: <em>... a tiny, tiny, high-energy ECS!</em>
+  actions:
+    - theme: brand
+      text: Get Started
+      link: /docs/index
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/thygrrr/fennecs
 
 features:
   - title: Intuitively Relational.
@@ -17,6 +24,7 @@ features:
     details: "Immediate, deliberate interactions. Make choices, not compromises. <span style='font-weight: 700'>fenn</span><span>ecs</span> will let nothing get in the way between you and your game features!<br/>...<em>and we foxing mean it</em> 💢"
   - title: Zero Dependencies. Zero Codegen.
     details: <p>Works right out of the box.</p><p>Plays nice with many game engines.</p><p>Light enough to add as final touch, strong enough to build upon from the start.</p>
+
 ---
 
 | [![Nuget](https://img.shields.io/nuget/v/fennecs?color=blue)](https://www.nuget.org/packages/fennecs/) | [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/thygrrr/fennecs/xUnit.yml)](https://github.com/thygrrr/fennECS/actions) | [![Open issues](https://img.shields.io/github/issues-raw/thygrrr/fennecs?color=green)](https://github.com/thygrrr/fennECS/issues) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-blue) | [![License: MIT](https://img.shields.io/github/license/thygrrr/fennecs?color=blue)](https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme) |

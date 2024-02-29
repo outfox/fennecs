@@ -39,23 +39,3 @@ public delegate void MemoryActionU<C0, C1, C2, in U>(Memory<C0> c0, Memory<C1> c
 public delegate void MemoryActionU<C0, C1, C2, C3, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, U uniform);
 
 public delegate void MemoryActionU<C0, C1, C2, C3, C4, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, Memory<C4> c4, U uniform);
-
-public delegate void SpanAction<C0>(Span<C0> c0);
-
-public delegate void SpanAction<C0, C1>(Span<C0> c0, Span<C1> c1);
-
-public delegate void SpanAction<C0, C1, C2>(Span<C0> c0, Span<C1> c1, Span<C2> c2);
-
-public delegate void SpanAction<C0, C1, C2, C3>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3);
-
-public delegate void SpanAction<C0, C1, C2, C3, C4>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4);
-
-public delegate void SpanActionU<C0, in U>(Span<C0> c0, U uniform);
-
-public delegate void SpanActionU<C0, C1, in U>(Span<C0> c0, Span<C1> c1, U uniform);
-
-public delegate void SpanActionU<C0, C1, C2, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, U uniform);
-
-public delegate void SpanActionU<C0, C1, C2, C3, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, U uniform);
-
-public delegate void SpanActionU<C0, C1, C2, C3, C4, in U>(Span<C0> c0, Span<C1> c1, Span<C2> c2, Span<C3> c3, Span<C4> c4, U uniform);
