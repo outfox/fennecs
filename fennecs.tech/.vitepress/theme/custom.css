@@ -16,6 +16,14 @@
   
   }
 
+  :root:not(.dark) .dark-only {
+    display: none;
+  }
+  
+  :root:is(.dark) .light-only {
+    display: none;
+  }
+
   .dark {
     --vp-c-brand-1: #EE8000;
     --vp-c-brand-2: #284AAF;

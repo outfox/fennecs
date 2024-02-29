@@ -43,4 +43,6 @@ features:
 🐾 intuitively relational
 🐾 lithe and fast 🐾
 
-And that's all there is to say before you go and see for yourself, getting all wide-eyed and bushy-tailed!
+And that's all there is to say before you go and see for yourself.
+
+### All wide-eyed and bushy-tailed!

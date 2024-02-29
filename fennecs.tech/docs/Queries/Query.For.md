@@ -102,7 +102,6 @@ Shader programmers are going to love these, but the classical programmer might b
 ::: warning :neofox_bongo_down: ALL CONVENTIONS ARE BEAUTIFUL
 And yet... don't skimp on static functions just because you need data from your current context! 🦊 Memory allocations can fragment your heap and will slow down your game or simulation. 
 :::
-$
 
 But amazingly, a **Uniform** can be anything: a primitive type like `int`, a `struct`, a `class`, and also the new `System.ValueTuple`. The latter makes it possible to capture arbitrary data, and provide it in a readable, named, *and allocation-free* way into your `static` anonymous or named functions, without having to declare a struct somewhere else.
 
