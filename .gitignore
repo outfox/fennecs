@@ -10,3 +10,4 @@ Temp
 *.DotSettings.user
 *.Artifacts
 s3/
+.dist
