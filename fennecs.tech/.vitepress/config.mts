@@ -1,10 +1,19 @@
 import { defineConfig } from 'vitepress'
 import { generateSidebar } from 'vitepress-sidebar';
 
+import { neofoxPlugin } from './neofox-plugin';
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "fennecs — tiny ECS for C#",
   description: "fennecs ...the tiny, tiny, high-energy Entity Component System!",
+
+  markdown: {
+    config: (md) => {
+      md.use(neofoxPlugin, {});
+    }
+  },
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
