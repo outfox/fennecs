@@ -13,8 +13,8 @@
 
     --vp-c-white: #f8f8f8;
     --vp-c-black: #111111;
-  
   }
+
 
   :root:not(.dark) .dark-only {
     display: none;
@@ -34,3 +34,7 @@
     --vp-c-brand-2: #284AAF;
     --vp-c-bg: #222222;
   }
+
+  @media (min-width: 980px) {
+  }
+  

@@ -38,10 +38,14 @@
    </tr>
 </table>
 
-## Code Samples
-| MonoGame🔜 |[Godot](https://github.com/thygrrr/fennecs/tree/main/examples/example-godot) | Flax🔜 | Unigine🔜 | Stride🔜| Raylib-cs🔜 |  NeoAxis🔜 |
-|:--------------:|:-------------------------------------------------------------------------------------------------------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
-|![MonoGame](docs/logos/logo-monogame-80.png) | [![Godot](docs/logos/logo-godot-80.png)](https://github.com/thygrrr/fennecs/tree/main/examples/example-godot) | ![Flax Engine](docs/logos/logo-flax-80.png) | ![UNIGINE](docs/logos/logo-unigine-80-darkmode.png#gh-dark-mode-only)![UNIGINE](docs/logos/logo-unigine-80-lightmode.png#gh-light-mode-only) | ![STRIDE](docs/logos/logo-stride-80.png) |  ![Raylib-cs](docs/logos/logo-raylib-80.png) | ![NeoAxis Engine](docs/logos/logo-neoaxis-80-darkmode.png#gh-dark-mode-only)![NeoAxis Engine](docs/logos/logo-neoaxis-80-lightmode.png#gh-light-mode-only) | 
+## Documentation
+The library documentation site is UP!  
+[https://www.fennecs.tech/docs/](https://www.fennecs.tech/docs/)
+
+## Demos
+
+Check out some elaborate, in-engine demos here:  
+[https://www.fennecs.tech/demos/](https://www.fennecs.tech/demos/)
 
 ## Quickstart: Let's go!
 📦`>` `dotnet add package fennecs`
@@ -50,20 +54,20 @@ At the basic level, all you need is a 🧩**component type**, a number of ~~smal
 
 ```csharp
 // Declare your own component types. (you can also use most existing value or reference types)
-using Position = System.Numerics.Vector3;
+using Velocity = System.Numerics.Vector3;
 
 // Create a world. (fyi, World implements IDisposable)
 var world = new fennecs.World();
 
 // Spawn an entity into the world with a choice of components. (or add/remove them later)
-var entity = world.Spawn().Add<Position>();
+var entity = world.Spawn().Add<Velocity>();
 
 // Queries are cached, just build them right where you want to use them.
-var query = world.Query<Position>().Build();
+var query = world.Query<Velocity>().Build();
 
 // Run code on all entities in the query. (omit chunksize to parallelize only by archetype)
-query.Job(static (ref Position position, float dt) => {
-    position.Y -= 9.81f * dt;
+query.Job(static (ref Velocity velocity, float dt) => {
+    velocity.Y -= 9.81f * dt;
 }, uniform: Time.Delta, chunkSize: 2048);
 ```
 
@@ -172,10 +176,3 @@ Here are some raw results from our WIP benchmark suite, from the Vector3 operati
 
 # 🧡 Acknowledgements
 Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating [HypEcs](https://github.com/Byteron/HypEcs) and [RelEcs](https://github.com/Byteron/RelEcs), the inspiring libraries that _**fenn**ecs_ evolved from.
-
-
-------------------------
-
-# Social Feeds
-
-<a rel="me" href="https://mastodon.gamedev.place/@jupiter">Mastodon</a>
