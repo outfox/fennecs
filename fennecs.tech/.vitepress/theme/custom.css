@@ -24,6 +24,11 @@
     display: none;
   }
 
+  :root .tile64 {
+    width: 64px;
+    height: 64px;
+  }
+  
   .dark {
     --vp-c-brand-1: #EE8000;
     --vp-c-brand-2: #284AAF;
