@@ -41,8 +41,8 @@ var query = world.Query<Identity, Position>()
                 .Build();
 
 // This would get them all in one fell swoop. 
-// But nah... that's not enough for a movie!
 // query.Clear();
+// But nah... that's not enough for a movie!
 
 // Remember where we came from.
 ref var myPosition = myself.Ref<Position>();
