@@ -1,6 +1,5 @@
 ﻿// Tsubasa.cs (type declarations at bottom of file)
 
-using System.Threading;
 using fennecs;
 
 // 🏟️ Practice day! Let's play some soccer.
@@ -35,7 +34,7 @@ foreach (var name in names)
 soccerField.Spawn()
     .Add<Player>()
     .Add<Name>("Tsubasa")
-    .Add<Talent>(true)
+    .Add<Talent>(true) // 🤩 Our special boi!
     .Add<Position>(new Vector2(0, 200));
 
 // 🏐 Strangely, Mila's team was missing their volleyball...
@@ -121,6 +120,7 @@ struct Player;
 struct Ball;
 
 
+// 📄 A component that represents a truthy value for a player's talent.
 readonly struct Talent(bool value)
 {
     private bool value { get; } = value;
