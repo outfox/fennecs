@@ -30,7 +30,9 @@ soccerField.Spawn()
     .Add<Position>(new Vector2(0, 200));
 
 // 🏐 Strangely, Mila's team was missing their volleyball...
-var ball = soccerField.Spawn().Add<Ball>().Add<Position>(new Vector2(0, 0));
+var ball = soccerField.Spawn()
+    .Add<Ball>()
+    .Add<Position>(new Vector2(0, 0));
 
 // 📋 Let's get the team ready for the game. 
 var players = soccerField
@@ -55,9 +57,14 @@ do
     Console.Clear();
 
     // Make everyone run after the ball!
-    players.For((ref Name playerName, ref Position playerPosition, ref Talent playerTalent) =>
+    players.For((
+            ref Name playerName,
+            ref Position playerPosition,
+            ref Talent playerTalent
+        )
+        =>
     {
-        // We get a true ref instead ot he value because we want to be kicking the ball.
+        // We get a true ref instead of a value because we want kick it!
         ref var ballPosition = ref ball.Ref<Position>();
 
         // ⁉️ Where's the ball?
@@ -66,7 +73,7 @@ do
         // 🏃‍♂️ If the ball is too far enough, run towards it!
         if (direction.LengthSquared() > 1f)
         {
-            playerPosition += direction * (0.2f + Random.Shared.NextSingle() * 0.5f);
+            playerPosition += direction * Random.Shared.NextSingle() * .7f;
             Console.WriteLine($"{playerName,15} runs towards the ball!" +
                               $" ... d = {direction.Length():f2}m");
             return;
@@ -82,7 +89,7 @@ do
         // ⁉️ Was it a good kick?
         if (!playerTalent) return;
 
-        // 🌟 Tsubasa's golden goal! (Could've been ANY talented player's goal)
+        // 🌟 Tsubasa's golden goal! (or ANY talented player's goal)
         Console.WriteLine($"***** {playerName} scores!!!".ToUpper());
         goldenGoal = true;
     });
@@ -108,11 +115,11 @@ Vector2 RandomRadius(float radius, bool onCircle = false)
 }
 
 
-// 🏃 A "tag" (zero-size type) identifying an Entity as a Player
+// 🏃 "tag" (zero-size type) identifying an Entity as a Player
 struct Player;
 
 
-// 🏐 Strangely, Mila's team was missing their volleyball...
+// ⚽ "tag" (zero-size type) identifying an Entity as a Ball
 struct Ball;
 
 
@@ -129,7 +136,7 @@ readonly struct Talent(bool value)
 readonly struct Position(Vector2 value)
 {
     public Vector2 value { get; } = value;
-    public static implicit operator Vector2(Position position) => position.value;
+    public static implicit operator Vector2(Position other) => other.value;
     public static implicit operator Position(Vector2 value) => new(value);
     public override string ToString() => value.ToString();
 }
