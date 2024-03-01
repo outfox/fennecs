@@ -38,6 +38,8 @@ query.For((ref Location location) => {
 
 // 🙎‍♀️ And what about us?
 Console.WriteLine($"We are still {us.Ref<Location>()}.");
+
+// 🔫 Has<>(Match.Entity) is the same as saying HasRelation<>()
 Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
 
 // ⬇️ This would get them all in one fell swoop. 

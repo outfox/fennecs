@@ -202,6 +202,12 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// </summary>
     public bool HasRelation<T>(Entity targetEntity) => _world.HasRelation<T>(Id, targetEntity.Id);
 
+
+    /// <summary>
+    /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
+    /// </summary>
+    public bool HasRelation<T>() => _world.HasRelation<T>(Id, Match.Entity);
+
     #endregion
 
 

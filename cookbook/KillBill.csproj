@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\fennecs\fennecs.csproj"/>
+        <ProjectReference Include="..\fennecs\fennecs.csproj"/>
     </ItemGroup>
 
 </Project>

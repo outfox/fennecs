@@ -22,7 +22,7 @@ We create the Entities and define the [Relation](../docs/Relation.md) (`struct B
 Next, we query for the Relation, say hello, and ~~unalive~~ interact with the Entities in a [Query.For](../docs/Queries/Query.For.md).
 
 ### Implementation
-<<< ../../examples/cookbook/KillBill.cs
+<<< ../../cookbook/KillBill.cs
 
 ### Outcome
 The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble mumble TODO mumble)*
