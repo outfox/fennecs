@@ -29,17 +29,7 @@ The above code is the actual code, yet this output is copy-pasta and may not be 
 ```shell
 dotnet run --project Tsubasa.csproj
 ```
-```txt 
-          Kojiro runs towards the ball! ..... d = 1,79m
-           Genzo runs towards the ball! ..... d = 2,73m
-            Taro runs towards the ball! ..... d = 3,66m
-          Hikaru runs towards the ball! ..... d = 1,62m
-             Jun runs towards the ball! ..... d = 3,22m
-          Shingo runs towards the ball! ..... d = 4,87m
-             Ryo runs towards the ball! ..... d = 2,49m
-         Takeshi runs towards the ball! ..... d = 1,77m
-           Masao runs towards the ball! ..... d = 1,79m
-           Kazuo runs towards the ball! ..... d = 2,33m
->>>>> Tsubasa kicks the ball!
-***** TSUBASA SCORES!!!
-```
+<video controls autoplay muted loop>
+<source src="https://fennecs.tech/video/fennecs-tsubasa-demo.mp4" type="video/mp4"/>
+Your browser does not support the video tag.
+</video>
