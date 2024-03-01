@@ -8,16 +8,8 @@ var soccerField = new World();
 // 📄 The team roster (without our Star!)
 string[] names =
 [
-    "Kojiro",
-    "Genzo",
-    "Taro",
-    "Hikaru",
-    "Jun",
-    "Shingo",
-    "Ryo",
-    "Takeshi",
-    "Masao",
-    "Kazuo",
+    "Kojiro", "Genzo", "Taro", "Hikaru", "Jun",
+    "Shingo", "Ryo", "Takeshi", "Masao", "Kazuo",
 ];
 
 // 🥉 Meet the players
@@ -44,7 +36,7 @@ var ball = soccerField.Spawn().Add<Ball>().Add<Position>(new Vector2(0, 0));
 var players = soccerField
     .Query<Name, Position, Talent>()
     .Has<Player>()
-    .Build();  // Ha, talk about Team...Building! 😅
+    .Build(); // Ha, talk about Team...Building! 😅
 
 // ⚽ Game on! This is our Game Loop.
 var kicked = false;
@@ -57,7 +49,7 @@ do
         Thread.Sleep(500);
         kicked = false;
     }
-    
+
     // 🎨 "Redraw" the field
     Thread.Sleep(100);
     Console.Clear();
@@ -71,7 +63,7 @@ do
         // 🥅 If the ball is too far enough, run towards it!
         if (direction.LengthSquared() > 1f)
         {
-            Console.WriteLine($"      {playerName, 10} runs towards the ball! ..... d = {direction.Length():f2}m");
+            Console.WriteLine($"      {playerName,10} runs towards the ball! ..... d = {direction.Length():f2}m");
             playerPosition += direction * (0.2f + Random.Shared.NextSingle() * 0.5f);
             return;
         }
@@ -79,7 +71,7 @@ do
         // 🎯 YES! the ball is close enough, kick it!
         Console.WriteLine($">>>>> {playerName} kicks the ball!");
         kicked = true;
-        
+
         // 🎲 With those kids, the ball goes all over the place!
         ballPosition += RandomRadius(10, true);
 
@@ -100,7 +92,7 @@ return;
 Vector2 RandomRadius(float radius, bool onCircle = false)
 {
     var result = new Vector2(
-        Random.Shared.NextSingle() * radius, 
+        Random.Shared.NextSingle() * radius,
         Random.Shared.NextSingle() * radius);
 
     if (onCircle)
