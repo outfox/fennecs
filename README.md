@@ -45,7 +45,7 @@ The new website is UP!
 ## Demos
 
 Check out some elaborate, in-engine demos here:  
-**[fennecs.tech/demos/](https://www.fennecs.tech/demos/)**
+**[fennecs.tech/demos/](https://www.fennecs.tech/examples/)**
 
 ## Quickstart: Let's go!
 📦`>` `dotnet add package fennecs`
