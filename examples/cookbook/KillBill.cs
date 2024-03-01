@@ -12,32 +12,31 @@ for (var i = 0; i < 5; i++)
 {
     var them = world.Spawn()
         .Add<Location>("wedding chapel")
-        .AddRelation<Crossed>(us);
+        .AddRelation<Betrayed>(us);
 
     // And just in case, we will never forget.
     us.AddRelation<Grudge>(them);
 }
 
-// 🏥 Ok, maybe not spend 4 years in a coma!
+// 🏥 Ok, let's maybe not spend 4 years in a coma!
 // Thread.Sleep(TimeSpan.FromDays(365 * 4));
 
-// 🥷 Well rested, we query for their Locations. To pay that visit.
-// 🧩 We make sure to know who they are. So we can prepare better.
+// 🥷 Well rested for once, we query for their Locations; to pay that visit.
+// 🧩 Also get their Entity Id. It's a surprise tool that will help us later!
 var query = world.Query<Location, Identity>()
-    .Has<Crossed>(us)
+    .Has<Betrayed>(us)
     .Build();
 
-// 5️⃣ Indeed.
+// 5️⃣ Making a list and checking it twice.
 Console.WriteLine($"As we said, there were {query.Count} of them.");
 
-// 🧭 They scattered across the world.
+// 🧭 They went into hiding around the world.
 query.For((ref Location location) => {
     location = $"hiding place 0x{Random.Shared.Next():x8}";    
     Console.WriteLine($"One hides in {location}.");
 });
 
-// But we are still here, right?
-ref var location = ref us.Ref<Location>();
+// 🙎‍♀️ And what about us?
 Console.WriteLine($"We are still {us.Ref<Location>()}.");
 Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
 
@@ -52,25 +51,25 @@ query.For((ref Location theirLocation, ref Identity theirIdentity) => {
     ref var ourLocation = ref us.Ref<Location>();
     ourLocation = theirLocation;
 
-    // 🏠 Politely knock on the door.
+    // 🏠 Why don't we knock on the door and say hello?
     Console.WriteLine($"Oh, hello {theirIdentity}! Remember {us}?");
     
     //☠️ And then, they were no more.
     world.Despawn(theirIdentity);
-}); // 🎬 It's a wrap! Roll credits.
+}); 
 
-// 🪦 The deed is done.
+// 🪦 The aftermath.
 Console.WriteLine($"Now, there are {query.Count} of them.");
 Console.WriteLine($"Let's get out of {us.Ref<Location>()}.");
 us.Ref<Location>() = "traveling";
 
-// 📜 The end
+// 🎬 It's a wrap! Roll credits.
 Console.WriteLine($"Now we are {us.Ref<Location>()}.");
 Console.WriteLine($"Any more grudges? {us.Has<Grudge>(Match.Entity)}.");
 
 // 🪚 Simple components, for a simple plot.
 struct Grudge;
-struct Crossed;
+struct Betrayed;
 struct Location(string there)
 {
     // 🔤 The data.

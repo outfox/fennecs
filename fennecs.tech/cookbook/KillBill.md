@@ -1,32 +1,41 @@
 ---
 title: 2. Kill Bill (Relations)
+outline: [2, 3]
 ---
 
-# Paying a visit to everyone who crossed you
-Assume we wanted to get even with every ~~old friend~~ Entity that once crossed us...
+# Paying a Visit to Old Friends
 
 ::: info :neofox_floof_mug: MMMH, REAL CODE
-Yes, it **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs features.
+This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs features.
 
-All `.csproj` and `.cs` files are [over there on Github!](https://github.com/thygrrr/fennecs/blob/main/examples/cookbook) 
+Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code!
 
- Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and check out the cookbook projects.
-
-And then get your paws dirty playing around in the code yourself!
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/thygrrr/fennecs/blob/main/examples/cookbook) 
 
 :::
 
+### Premise
+To settle an old score, we need to get even with five ~~former friends~~ Entities...
+
+We create the Entities and define the [Relation](../docs/Relation.md) (`struct Betrayed`) they have with us, and also ours (`struct Grudge`) with them. We include a plain [Component](../docs/Component.md) (`struct Location`) as useful data to everyone involved.
+
+Next, we query for the Relation, say hello, and ~~unalive~~ interact with the Entities in a [Query.For](../docs/Queries/Query.For.md).
+
+### Implementation
 <<< ../../examples/cookbook/KillBill.cs
 
-### Expected Output (more or less)
+### Outcome
+The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble mumble TODO mumble)*
+```shell
+dotnet run KillBill
+```
 ```txt 
-> dotnet run KillBill
 As we said, there were 5 of them.
-One hides in hiding place 0x0ad8e6e8.
-One hides in hiding place 0x482a93f2.
-One hides in hiding place 0x544c7935.
-One hides in hiding place 0x5e494276.
-One hides in hiding place 0x0030a8c1.
+One hides in hiding place 0x69ac29a0.
+One hides in hiding place 0x772c9554.
+One hides in hiding place 0x534770fe.
+One hides in hiding place 0x31ecd8bc.
+One hides in hiding place 0x4f38b04b.
 We are still here.
 Do we hold grudges? True.
 Oh, hello E-00000002:00001! Remember E-00000001:00001?
@@ -35,7 +44,7 @@ Oh, hello E-00000004:00001! Remember E-00000001:00001?
 Oh, hello E-00000005:00001! Remember E-00000001:00001?
 Oh, hello E-00000006:00001! Remember E-00000001:00001?
 Now, there are 0 of them.
-Let's get out of hiding place 0x0030a8c1.
+Let's get out of hiding place 0x4f38b04b.
 Now we are traveling.
 Any more grudges? False.
 ```

@@ -38,7 +38,7 @@ export default defineConfig({
         scanStartPath: '/',
         resolvePath: '/',
         includeRootIndexFile: false,
-        collapseDepth: 2,
+        collapseDepth: 1,
         excludeFolders: [".", "node_modules", "dist", "public", "src", "vitepress", "vitepress-sidebar"],
       }
     ]),
