@@ -185,6 +185,19 @@ public class EntityTests
 
 
     [Fact]
+    public void Entity_provides_HasLink_overload_With_Implied_MatchExpression()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        world.Spawn();
+        entity.AddLink("hello world");
+
+        Assert.True(entity.HasLink<string>());
+        Assert.False(entity.HasLink<EntityTests>());
+    }
+
+
+    [Fact]
     public void Entity_provides_HasRelation()
     {
         using var world = new World();
@@ -210,6 +223,7 @@ public class EntityTests
         entity.AddRelation<int>(target);
 
         Assert.True(entity.HasRelation<int>());
+        Assert.False(entity.HasRelation<float>());
     }
 
 

@@ -191,9 +191,15 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
 
 
     /// <summary>
-    /// Checks if the Entity has an Object Link of a specific type.
+    /// Checks if the Entity has an Object Link of a specific type and specific target.
     /// </summary>
     public bool HasLink<T>(T targetObject) where T : class => _world.HasLink(Id, targetObject);
+
+
+    /// <summary>
+    /// Checks if the Entity has an Object Link of a specific type.
+    /// </summary>
+    public bool HasLink<T>() where T : class => _world.HasComponent<T>(Id, Match.Object);
 
 
     /// <summary>
