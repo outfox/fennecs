@@ -17,9 +17,21 @@ using fennecs;
 :neofox_surprised_pika:
 
 
-## Need the whole shebang?
-Nothing more than the good old...
-```shell
+## Need need the whole shebang?
+Good old git. Nothing beats that!
+::: code-group
+
+```shell [ssh...]
 git clone git@github.com:thygrrr/fennecs.git
 ```
-#### (even includes this cookbook, ready to run!)
+
+```shell [no tears now, only https!]
+git clone https://github.com/thygrrr/fennecs.git
+```
+
+```shell [you... you... Github CLI unironically?]
+gh repo clone thygrrr/fennecs
+```
+
+:::
+### (even includes this cookbook, ready to run!)

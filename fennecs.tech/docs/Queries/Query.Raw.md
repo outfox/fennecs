@@ -1,8 +1,9 @@
 # `Query.Raw`
 # `Query.Raw<U>`
 
-::: danger THE FOOTGUN
-For those times when a hammer isn't enough. Or a bus. Or a train.
+::: danger THE FREIGHT TRAIN
+Work items as contiguous memory. Using a distinct signature, [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire workload* of each Archetype diriectly into your ~~fox~~ delegate via a single call.
+:neofox_waffle_long_blurry::neofox_scream_stare:
 :::
 
 ## Process entire Memory blocks

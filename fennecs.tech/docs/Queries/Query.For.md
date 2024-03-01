@@ -2,8 +2,11 @@
 # `Query<>.For<U>(RefAction)`
 
 ::: info THE CLASSIC
-"**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  
+One work item at a time. Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each Entity in the query, providing the Components that match the ==Stream Types== as `ref` to the code.  
+:neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_nom_waffle:
 :::
+
+"**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  Chances are you can ship your entire game with just this one. Let us know how it went!
 
 ## Description
 Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](StreamTypes.md).

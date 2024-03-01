@@ -33,7 +33,7 @@ Many items, multi-threaded. Takes a [`RefAction`](Delegates.md#refaction-and-ref
 :neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle:
 :::
 
-::: danger THE FOOTGUN
+::: danger THE FREIGHT TRAIN
 #  [`Raw`](Query.Raw.md) / [`Raw<U>`](Query.Raw.md) 
 Work items as contiguous memory. Using a distinct signature, [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire workload* of each Archetype diriectly into your ~~fox~~ delegate via a single call.
 :neofox_waffle_long_blurry::neofox_scream_stare:
