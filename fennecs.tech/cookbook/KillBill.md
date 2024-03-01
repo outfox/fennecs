@@ -1,5 +1,5 @@
 ---
-title: 2. Kill Bill (Relations)
+title: 3. Kill Bill (Relations)
 outline: [2, 3]
 ---
 
