@@ -3,7 +3,7 @@ title: 1. Star Trek (Generations)
 outline: [2, 3]
 ---
 
-# Famous Captains, but one is gone!
+# Famous Captains, gone - one by one!
 
 ::: info :neofox_floof_mug: MMMH, REAL CODE
 This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs principles.
