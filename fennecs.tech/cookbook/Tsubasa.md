@@ -30,16 +30,16 @@ The above code is the actual code, yet this output is copy-pasta and may not be 
 dotnet run --project Tsubasa.csproj
 ```
 ```txt 
-Kojiro runs towards the ball! <13,888162. 29,777138> -> <14,477499. 30,98985>
-Genzo runs towards the ball! <13,095423. 28,202503> -> <14,08113. 30,202532>
-Taro runs towards the ball! <13,2696. 28,601097> -> <14,168219. 30,401829>
-Hikaru runs towards the ball! <11,8074665. 25,506947> -> <13,437152. 28,854753>
-Jun runs towards the ball! <13,2663355. 28,452217> -> <14,166586. 30,327389>
-Shingo runs towards the ball! <13,918681. 29,014359> -> <14,49276. 30,60846>
-Ryo runs towards the ball! <14,421239. 30,882528> -> <14,744038. 31,542545>
-Takeshi runs towards the ball! <14,542307. 31,07476> -> <14,804572. 31,63866>
-Masao runs towards the ball! <13,980301. 29,96994> -> <14,523569. 31,08625>
-Kazuo runs towards the ball! <13,885527. 29,74327> -> <14,476182. 30,972916>
->>> Tsubasa kicks the ball!
->>> TSUBASA SCORES!!!
+          Kojiro runs towards the ball! ..... d = 1,79m
+           Genzo runs towards the ball! ..... d = 2,73m
+            Taro runs towards the ball! ..... d = 3,66m
+          Hikaru runs towards the ball! ..... d = 1,62m
+             Jun runs towards the ball! ..... d = 3,22m
+          Shingo runs towards the ball! ..... d = 4,87m
+             Ryo runs towards the ball! ..... d = 2,49m
+         Takeshi runs towards the ball! ..... d = 1,77m
+           Masao runs towards the ball! ..... d = 1,79m
+           Kazuo runs towards the ball! ..... d = 2,33m
+>>>>> Tsubasa kicks the ball!
+***** TSUBASA SCORES!!!
 ```
