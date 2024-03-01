@@ -20,13 +20,22 @@ And then get your paws dirty playing around in the code yourself!
 
 ### Expected Output (more or less)
 ```txt 
+> dotnet run KillBill
 As we said, there were 5 of them.
-One hides in hiding place #1379798713.
-One hides in hiding place #280304290.
-One hides in hiding place #132257363.
-One hides in hiding place #1761869485.
-One hides in hiding place #1543048556.
+One hides in hiding place 0x0ad8e6e8.
+One hides in hiding place 0x482a93f2.
+One hides in hiding place 0x544c7935.
+One hides in hiding place 0x5e494276.
+One hides in hiding place 0x0030a8c1.
 We are still here.
+Do we hold grudges? True.
+Oh, hello E-00000002:00001! Remember E-00000001:00001?
+Oh, hello E-00000003:00001! Remember E-00000001:00001?
+Oh, hello E-00000004:00001! Remember E-00000001:00001?
+Oh, hello E-00000005:00001! Remember E-00000001:00001?
+Oh, hello E-00000006:00001! Remember E-00000001:00001?
 Now, there are 0 of them.
-Let's get out of hiding place #1543048556.
+Let's get out of hiding place 0x0030a8c1.
+Now we are traveling.
+Any more grudges? False.
 ```
