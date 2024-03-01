@@ -1,7 +1,9 @@
 # `Query<>.For(RefAction)`
 # `Query<>.For<U>(RefAction)`
 
+::: info THE CLASSIC
 "**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  
+:::
 
 ## Description
 Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](StreamTypes.md).

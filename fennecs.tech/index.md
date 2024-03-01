@@ -33,9 +33,9 @@ features:
 <br/>
 <br/>
 
-# Ok, what the fox? Another ECS?! 
-### :neofox_pensive: We know... oh, _we know._    
- But in a nutshell, **fenn**ecs is...
+# Ok, what the fox? *Another ECS?!*
+### :neofox_facepalm: We know... oh, _we know._    
+### But in a nutshell, **fenn**ecs is...
 
 🐾 zero codegen
 🐾 minimal boilerplate
@@ -45,4 +45,4 @@ features:
 
 And that's all there is to say before you go and see for yourself.
 
-### All wide-eyed and bushy-tailed!
+### All bright-eyed and bushy-tailed!

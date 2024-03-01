@@ -1,12 +1,14 @@
 # `Query.Job`
 # `Query.Job<U>`
 
+::: info THE WORKHORSE
 For when many, many similar things need doing - fast!
+:::
 
 ## Chunk Size
 Choosing the right way to spread your workload across CPU cores can yield significant performance gains.
 
-By Default, fennecs parallelizes workloads only per whole Archetype. The `chunkSize` optional parameter passed into `Query.Job` affords fine-grained control over how the work is split up within each Archetype being processed.
+By Default, **fenn**ecs parallelizes workloads only per whole Archetype. The `chunkSize` optional parameter passed into `Query.Job` affords fine-grained control over how the work is split up within each Archetype being processed.
 
 Scheduling Jobs has a certain overhead, so just splitting work across as many CPUs as possible sometimes slows down processing speeds.
 

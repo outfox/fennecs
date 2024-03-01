@@ -1,7 +1,9 @@
 # `Query.Raw`
 # `Query.Raw<U>`
 
+::: danger THE FOOTGUN
 For those times when a hammer isn't enough. Or a bus. Or a train.
+:::
 
 ## Process entire Memory blocks
 

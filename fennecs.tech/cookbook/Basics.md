@@ -1,9 +1,9 @@
 ---
-title: Basics
+title: 1. Basics
 ---
 
 # Basic Example
-Assume we wanted to apply earth's gravity to any object with a weight and a velocity.
+Assume we wanted to apply earth's gravity to any Entity with a Weight and a Velocity.
 
 ```cs
 // Declare your own component types, or use any existing type.
