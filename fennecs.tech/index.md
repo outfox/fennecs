@@ -14,8 +14,8 @@ hero:
       text: Read Docs!
       link: /docs/index
     - theme: brand
-      text: Get Fox!
-      link: /cookbook/Installing
+      text: Get Cooking!
+      link: /cookbook/
     - theme: alt
       text: Github
       link: https://github.com/thygrrr/fennecs

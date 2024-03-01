@@ -31,7 +31,8 @@ var query = world.Query<Location, Identity>()
 Console.WriteLine($"As we said, there were {query.Count} of them.");
 
 // 🧭 They went into hiding around the world.
-query.For((ref Location location) => {
+query.For((ref Location location) => 
+{
     location = $"hideout 0x{Random.Shared.Next():x8}";    
     Console.WriteLine($"One hides in {location}.");
 });
@@ -47,8 +48,8 @@ Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
 // 🎥 But nah... that's not enough for a movie!
 
 // ⚔️ Done plotting our revenge! Time to visit each one!
-query.For((ref Location theirLocation, ref Identity theirIdentity) => {
-
+query.For((ref Location theirLocation, ref Identity theirIdentity) => 
+{
     // 🚕 Drive the TaxiWagon
     ref var ourLocation = ref us.Ref<Location>();
     ourLocation = theirLocation;
