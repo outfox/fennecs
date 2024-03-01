@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Let's get foxy!
+title: Get foxy!
 
 hero:
   image: 
@@ -11,10 +11,13 @@ hero:
   tagline: <em>... a tiny, tiny, high-energy ECS!</em>
   actions:
     - theme: brand
-      text: Get Started
+      text: Read Docs!
       link: /docs/index
+    - theme: brand
+      text: Get Fox!
+      link: /cookbook/Installing
     - theme: alt
-      text: View Source Code
+      text: Github
       link: https://github.com/thygrrr/fennecs
 
 features:

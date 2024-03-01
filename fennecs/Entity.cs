@@ -53,7 +53,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity entity.</exception>
-    public ref C Ref<C>(Entity entity, Identity match = default) => ref _world.GetComponent<C>(entity, match);
+    public ref C Ref<C>(Identity match = default) => ref _world.GetComponent<C>(this, match);
 
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.

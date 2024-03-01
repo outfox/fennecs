@@ -18,7 +18,14 @@ public partial class World : IDisposable
     /// Despawn (destroy) an Entity from this World.
     /// </summary>
     /// <param name="entity">the entity to despawn.</param>
-    public void Despawn(Entity entity) => Despawn(entity.Id);
+    public void Despawn(Entity entity) => DespawnImpl(entity.Id);
+
+
+    /// <summary>
+    /// Despawn (destroy) an Entity from this World by its Identity.
+    /// </summary>
+    /// <param name="identity">the entity to despawn.</param>
+    public void Despawn(Identity identity) => DespawnImpl(identity);
 
 
     /// <summary>
@@ -77,10 +84,11 @@ public partial class World : IDisposable
         using var query = Query<Identity>().Has<T>(match).Build();
         query.Raw(delegate(Memory<Identity> entities)
         {
-            foreach (var identity in entities.Span) Despawn(identity);
+            foreach (var identity in entities.Span) DespawnImpl(identity);
         });
     }
     
+
     /// <summary>
     /// Bulk Despawn Entities from a World.
     /// </summary>
@@ -89,9 +97,10 @@ public partial class World : IDisposable
     {
         foreach (var identity in toDelete)
         {
-            Despawn(identity);
+            DespawnImpl(identity);
         }
     }
+
     #endregion
 
 

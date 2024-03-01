@@ -91,7 +91,7 @@ public partial class World
                     RemoveComponent(op.Identity, op.TypeExpression);
                     break;
                 case Opcode.Despawn:
-                    Despawn(op.Identity);
+                    DespawnImpl(op.Identity);
                     break;
             }
         }
@@ -157,7 +157,7 @@ public partial class World
     }
 
 
-    private void Despawn(Identity identity)
+    private void DespawnImpl(Identity identity)
     {
         lock (_spawnLock)
         {

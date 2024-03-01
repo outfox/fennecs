@@ -109,26 +109,26 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     public override string ToString()
     {
         if (Equals(Match.Plain))
-            return "\u2732[None]";
+            return "[None]";
 
         if (Equals(Match.Any))
-            return "\u2731[Any]";
+            return "wildcard[Any]";
 
         if (Equals(Match.Target))
-            return "\u2731[Target]";
+            return "wildcard[Target]";
 
         if (Equals(Match.Entity))
-            return "\u2731[Entity]";
+            return "wildcard[Entity]";
 
         if (Equals(Match.Object))
-            return "\u2731[Object]";
+            return "wildcard[Object]";
 
         if (IsObject)
-            return $"\u27d0<{Type}>#{Index:X8}";
+            return $"O-<{Type}>#{Index:X8}";
 
         if (IsEntity)
-            return $"\u2756{Index:x8}:{Generation:D5}";
+            return $"E-{Index:x8}:{Generation:D5}";
 
-        return $"\u2047{Value:x16}";
+        return $"?-{Value:x16}";
     }
 }

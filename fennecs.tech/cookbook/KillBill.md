@@ -5,55 +5,28 @@ title: 2. Kill Bill (Relations)
 # Paying a visit to everyone who crossed you
 Assume we wanted to get even with every ~~old friend~~ Entity that once crossed us...
 
-```cs
-//  We make simple components, for a simple plot.
-struct Grudge;
-struct Crossed;
-struct Position
-{
-    Vector3 where;
-}
+::: info :neofox_floof_mug: MMMH, REAL CODE
+Yes, it **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs features.
 
-// Set the stage.
-var world = new fennecs.World();
+All `.csproj` and `.cs` files are [over there on Github!](https://github.com/thygrrr/fennecs/blob/main/examples/cookbook) 
 
-// This is us. Here. Now.
-var myself = world.Spawn().Add<Position>();
+ Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and check out the cookbook projects.
 
-// Five cross us. This is how it went:
-for (var i = 0; i < 5; i++)
-{
-    var entity = world.Spawn()
-        .Add<Position>();
-        .AddRelation<Crossed>(myself);
+And then get your paws dirty playing around in the code yourself!
 
-    // And we will never forget.
-    myself.AddRelation<Grudge>(entity);
-}
+:::
 
-// 4 years in a coma?!
-Thread.Sleep(TimeSpan.FromDays(365 * 4));
+<<< ../../examples/cookbook/KillBill.cs
 
-// Well rested, we query for their positions. To pay that visit.
-// And maybe know who they are. So we can prepare better.
-var query = world.Query<Identity, Position>()
-                .Has<Crossed>(myself)
-                .Build();
-
-// This would get them all in one fell swoop. 
-// query.Clear();
-// But nah... that's not enough for a movie!
-
-// Remember where we came from.
-ref var myPosition = myself.Ref<Position>();
-var home = myposition;
-
-// Visit each one. Then leave alone, unseen.
-query.For((ref Identity identity, ref Position position,) => {
-    myPosition = position;
-    world.Despawn(identity);
-});
-
-// Roll credits.
-myPosition = home;
+### Expected Output (more or less)
+```txt 
+As we said, there were 5 of them.
+One hides in hiding place #1379798713.
+One hides in hiding place #280304290.
+One hides in hiding place #132257363.
+One hides in hiding place #1761869485.
+One hides in hiding place #1543048556.
+We are still here.
+Now, there are 0 of them.
+Let's get out of hiding place #1543048556.
 ```
