@@ -34,4 +34,4 @@ var georgiou = world.Spawn();
 Console.WriteLine($"{"Georgiou",10} is {georgiou}, now THAT's a Captain!");
 
 // ⁉️ Needed to be said.
-Console.WriteLine($"{"Shatner",10} ain't Stewart, even in death! {kirk != picard}");
+Console.WriteLine($"{"Shatner",10} ain't ever Stewart! {kirk != picard}");
