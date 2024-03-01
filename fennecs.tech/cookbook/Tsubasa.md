@@ -1,5 +1,5 @@
 ---
-title: 2. Tsubasa (Basics)
+title: 2. Tsubasa (Updating)
 outline: [2, 3]
 ---
 

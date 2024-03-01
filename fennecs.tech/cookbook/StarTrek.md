@@ -19,7 +19,7 @@ Let's shed some light on a couple of the more famous Captains in the Star Trek U
 
 We create a unique [Entity](../docs/Entity.md) for each; but `kirk` gets despawned and replaced by The Next Generation (`picard`).
 
-Then we create a bunch more and output to visualize how recycled Entities compare to each other.
+Then we create a bunch more and output to visualize how recycled Entities compare to each other and to give a feeling over how a world counts generations up when entities are destroyed.
 
 ### Implementation
 <<< ../../cookbook/StarTrek.cs {cs:line-numbers}
@@ -32,8 +32,9 @@ dotnet run --project StarTrek.csproj
 ```txt 
       Kirk is E-00000001:00001 ... boldly going!
     Picard is E-00000001:00002 - the next Generation!
-     Sisko is E-00000002:00001 - a whole new person!
-   Janeway is E-00000003:00001 - the best Captain ever!
-      Kirk is E-00000001:00001 but is he alive? False
-   Shatner was never a Stewart! True
+   Janeway is E-00000002:00001 - the best Captain ever!
+      Kirk is E-00000001:00001 - and alive? False
+   Shatner is not a Stewart! True
+    Archer is E-00000001:00003, ugh, don't we hate reboots...
+  Georgiou is E-00000002:00002, now THAT's a Captain!
 ```
