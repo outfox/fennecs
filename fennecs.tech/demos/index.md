@@ -31,7 +31,7 @@ Work in progress, more examples will get added over time! Want to contribute or 
             </ul>
         </td>
         <td style>
-            <a href="DemoCubes.html">
+            <a href="Cubes.html">
             <video muted autoplay loop width=320px>
             <source src="https://fennecs.tech/video/fennecs-godot-democubes-thumb.mp4" type="video/mp4"/>
             Your browser does not support the video tag.

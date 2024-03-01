@@ -2,8 +2,8 @@
 
 using fennecs;
 
-// 🏟️ Practice day! Let's play some soccer.
-var soccerField = new World();
+// 🏟️ Practice day!
+var world = new World();
 
 // 📄 The team roster (without our Star!)
 string[] names =
@@ -15,7 +15,7 @@ string[] names =
 // 🥉 Meet the players
 foreach (var name in names)
 {
-    soccerField.Spawn()
+    world.Spawn()
         .Add<Player>()
         .Add<Name>(name)
         .Add<Talent>(false)
@@ -23,19 +23,19 @@ foreach (var name in names)
 }
 
 // 🏅 One day, a new player joined after watching from the sidelines.
-soccerField.Spawn()
+world.Spawn()
     .Add<Player>()
     .Add<Name>("Tsubasa")
     .Add<Talent>(true) // 🤩 Our special boi!
     .Add<Position>(new Vector2(0, 200));
 
 // 🏐 Strangely, Mila's team was missing their volleyball...
-var ball = soccerField.Spawn()
+var ball = world.Spawn()
     .Add<Ball>()
     .Add<Position>(new Vector2(0, 0));
 
 // 📋 Let's get the team ready for the game. 
-var players = soccerField
+var team = world
     .Query<Name, Position, Talent>()
     .Has<Player>()
     .Build(); // Ha, talk about Team...Building! 😅
@@ -56,21 +56,21 @@ do
     Thread.Sleep(100);
     Console.Clear();
 
-    // Make everyone run after the ball!
-    players.For((
+    // 🏃 Control each players on the field.
+    team.For((
             ref Name playerName,
             ref Position playerPosition,
             ref Talent playerTalent
         )
         =>
     {
-        // We get a true ref instead of a value because we want kick it!
+        // ⭐ We get a true ref instead of a value because we want kick it!
         ref var ballPosition = ref ball.Ref<Position>();
 
         // ⁉️ Where's the ball?
         var direction = ballPosition.value - playerPosition.value;
 
-        // 🏃‍♂️ If the ball is too far enough, run towards it!
+        // 🏃‍♂️ If the ball is too far, run towards it!
         if (direction.LengthSquared() > 1f)
         {
             playerPosition += direction * Random.Shared.NextSingle() * .7f;

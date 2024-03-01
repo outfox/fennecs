@@ -199,4 +199,56 @@ public class EntityTests
         Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
         Assert.False(entity.Has<int>(Match.Object));
     }
+
+
+    [Fact]
+    public void Entity_provides_HasRelation_overload_With_Implied_MatchExpression()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var target = world.Spawn();
+        entity.AddRelation<int>(target);
+
+        Assert.True(entity.HasRelation<int>());
+    }
+
+
+    [Fact]
+    public void Can_Get_Component_as_Ref()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+        ref var component = ref entity.Ref<int>();
+        Assert.Equal(123, component);
+        component = 456;
+        Assert.Equal(456, entity.Ref<int>());
+    }
+
+
+    [Fact]
+    public void Can_Get_Link_Object_as_Ref()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        const string HELLO_WORLD = "hello world";
+        entity.AddLink(HELLO_WORLD);
+        ref var component = ref entity.Ref<string>(Identity.Of(HELLO_WORLD));
+        Assert.Equal("hello world", component);
+    }
+
+
+    [Fact]
+    public void Can_Get_Relation_Backing_as_Ref()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var target = world.Spawn();
+        entity.AddRelation<int>(target);
+        ref var component = ref entity.Ref<int>(target);
+        Assert.Equal(0, component);
+        component = 123;
+        Assert.Equal(123, entity.Ref<int>(target));
+    }
+    
 }

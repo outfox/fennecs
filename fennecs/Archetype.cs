@@ -241,10 +241,9 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <param name="maxEntityCount"></param>
     public void Truncate(int maxEntityCount)
     {
-        var excess = Count - maxEntityCount;
-        if (excess <= 0 || excess >= Count) return;
-
-
+        var excess = Math.Clamp(Count - maxEntityCount, 0, Count);
+        if (excess <= 0) return;
+        
         // TODO: Build bulk deletion?
         var toDelete = Identities.Slice(Count - excess, excess);
         for (var i = toDelete.Length - 1; i >= 0; i--)

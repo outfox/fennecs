@@ -46,14 +46,13 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
-    /// <param name="entity">the entity to get the component from</param>
-    /// <param name="match">Match Expression for the component type <see cref="Match"/></param>
+    /// <param name="target">specific (targeted) Match Expression for the component type. No wildcards!</param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity entity.</exception>
-    public ref C Ref<C>(Identity match = default) => ref _world.GetComponent<C>(this, match);
+    public ref C Ref<C>(Identity target = default) => ref _world.GetComponent<C>(this, target);
 
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.

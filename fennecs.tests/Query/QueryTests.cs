@@ -578,4 +578,62 @@ public class QueryTests
         Assert.Contains(entity1, query.Filtered(tx));
         Assert.Contains(entity2, query.Filtered(tx));
     }
+
+
+    [Fact]
+    public void Can_Iterate_ArchetypesReadonly()
+    {
+        using var world = new World();
+
+        var query = world.Query<int>(Match.Any).Build();
+        var entity1 = world.Spawn().Add(444);
+        world.Spawn().AddRelation(entity1, 555);
+
+        Assert.Equal(2, query.ArchetypesReadOnly.Count);
+    }
+
+
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(0, 1)]
+    [InlineData(0, 2)]
+    [InlineData(0, 10_000)]
+    [InlineData(1, 0)]
+    [InlineData(1, 1)]
+    [InlineData(1, 2)]
+    [InlineData(1, 10_000)]
+    [InlineData(10_000, 0)]
+    [InlineData(10_000, 1)]
+    [InlineData(10_000, 2)]
+    [InlineData(10_000, 10_000)]
+    [InlineData(10_000, 10_001)]
+    public void Can_Truncate(int entityCount, int targetSize)
+    {
+        using var world = new World();
+        var query = world.Query<int>(Match.Any).Build();
+
+        for (var i = 0; i < entityCount; i++)
+        {
+            world.Spawn().Add(i);
+        }
+
+        query.Truncate(targetSize);
+        Assert.True(query.Count <= targetSize);
+    }
+
+
+    [Fact]
+    public void Can_Clear()
+    {
+        using var world = new World();
+        var query = world.Query<int>(Match.Any).Build();
+
+        for (var i = 0; i < 420; i++)
+        {
+            world.Spawn().Add(i);
+        }
+
+        query.Clear();
+        Assert.Equal(0, query.Count);
+    }
 }

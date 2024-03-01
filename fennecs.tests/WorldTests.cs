@@ -425,6 +425,31 @@ public class WorldTests
 
 
     [Fact]
+    private void Can_Despawn_With_Identity()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        world.Despawn(entity.Id);
+        Assert.False(world.IsAlive(entity));
+    }
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(69)]
+    [InlineData(420)]
+    private void Can_Despawn_With_Identity_Span(int entityCount)
+    {
+        using var world = new World();
+        var entities = new Identity[entityCount];
+        for (var i = 0; i < entityCount; i++) entities[i] = world.Spawn().Id;
+        world.Despawn(entities.AsSpan());
+        for (var i = 0; i < entityCount; i++) Assert.False(world.IsAlive(entities[i]));
+    }
+
+
+    [Fact]
     private void Can_Despawn_All_With_Plain()
     {
         using var world = new World();
