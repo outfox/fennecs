@@ -2,13 +2,13 @@
 title: 0. Installing
 ---
 
-## Tippity-tap ...
+# Tippity-tap ...
 ```shell
 dotnet add package fennecs
 ```
 :neofox_laptop:
 
-## ... and go!
+# ... and go!
 
 ```cs
 using fennecs;
@@ -29,7 +29,7 @@ git clone git@github.com:thygrrr/fennecs.git
 git clone https://github.com/thygrrr/fennecs.git
 ```
 
-```shell [you... you... Github CLI unironically?]
+```shell [wait... you... you... GitHub CLI unironically?]
 gh repo clone thygrrr/fennecs
 ```
 

@@ -6,10 +6,23 @@ using fennecs;
 // 🏟️ Practice day! Let's play some soccer.
 var soccerField = new World();
 
-var goldenGoal = false;
+// 📄 The team roster (without our Star!)
+string[] names =
+[
+    "Kojiro",
+    "Genzo",
+    "Taro",
+    "Hikaru",
+    "Jun",
+    "Shingo",
+    "Ryo",
+    "Takeshi",
+    "Masao",
+    "Kazuo",
+];
 
 // 🥉 Meet the players
-foreach (var name in (string[]) ["Kojiro", "Genzo", "Taro", "Hikaru", "Jun", "Shingo", "Ryo", "Takeshi", "Masao", "Kazuo"])
+foreach (var name in names)
 {
     soccerField.Spawn()
         .Add<Player>()
@@ -28,13 +41,28 @@ soccerField.Spawn()
 // 🏐 Strangely, Mila's team was missing their volleyball...
 var ball = soccerField.Spawn().Add<Ball>().Add<Position>(new Vector2(0, 0));
 
-var players = soccerField.Query<Name, Position, Talent>().Has<Player>().Build();
+// 📋 Let's get the team ready for the game. 
+var players = soccerField
+    .Query<Name, Position, Talent>()
+    .Has<Player>()
+    .Build();  // Ha, talk about Team...Building! 😅
 
-// ⚽ Game on! This is our Game Loop. 
-while (!goldenGoal)
+// ⚽ Game on! This is our Game Loop.
+var kicked = false;
+var goldenGoal = false;
+do
 {
-    Console.Clear();
+    // 🕐 Let them have their moment of glory.
+    if (kicked)
+    {
+        Thread.Sleep(500);
+        kicked = false;
+    }
     
+    // 🎨 "Redraw" the field
+    Thread.Sleep(100);
+    Console.Clear();
+
     // Make everyone run after the ball!
     players.For((ref Name playerName, ref Position playerPosition, ref Talent playerTalent) =>
     {
@@ -42,36 +70,47 @@ while (!goldenGoal)
 
         var direction = ballPosition.value - playerPosition.value;
         // 🥅 If the ball is too far enough, run towards it!
-        if (direction.LengthSquared() > 1f) 
+        if (direction.LengthSquared() > 1f)
         {
-            Console.WriteLine($"{playerName} runs towards the ball! {playerPosition} -> {playerPosition + direction * 0.5f}");
+            Console.WriteLine($"      {playerName, 10} runs towards the ball! ..... d = {direction.Length():f2}m");
             playerPosition += direction * (0.2f + Random.Shared.NextSingle() * 0.5f);
             return;
         }
 
         // 🎯 YES! the ball is close enough, kick it!
-        Console.WriteLine($">>> {playerName} kicks the ball!");
+        Console.WriteLine($">>>>> {playerName} kicks the ball!");
+        kicked = true;
         
         // 🎲 With those kids, the ball goes all over the place!
-        ballPosition += RandomRadius(15) + Vector2.Normalize(RandomRadius(1)) * 10f;
+        ballPosition += RandomRadius(10, true);
 
         // ⁉️ Was it a good kick?
         if (!playerTalent) return;
 
-        // 🌟 Tsubasa's golden goal! (Could've been ANY talented player's goal, really)
-        Console.WriteLine($">>> {playerName} scores!!!".ToUpper());
+        // 🌟 Tsubasa's golden goal! (Could've been ANY talented player's goal)
+        Console.WriteLine($"***** {playerName} scores!!!".ToUpper());
         goldenGoal = true;
     });
-    
-    Thread.Sleep(250);
-}
+} while (!goldenGoal);
 
 // 🚿 Hit the Showers, boys! You've earned it.
 return;
 
 
 // 🧮 Math Helpers
-Vector2 RandomRadius(float radius) => new(Random.Shared.NextSingle() * radius, Random.Shared.NextSingle() * radius);
+Vector2 RandomRadius(float radius, bool onCircle = false)
+{
+    var result = new Vector2(
+        Random.Shared.NextSingle() * radius, 
+        Random.Shared.NextSingle() * radius);
+
+    if (onCircle)
+    {
+        return Vector2.Normalize(result) * radius;
+    }
+
+    return result;
+}
 
 
 // 🏃 A "tag" (zero-size type) identifying an Entity as a Player
@@ -105,7 +144,8 @@ readonly struct Name(string who)
 {
     // 😉 So we don't always need to invoke the Constructor.
     public static implicit operator Name(string who) => new(who);
-    
+
+
     // ✒️ To sign those Inter Milan contracts!
     public override string ToString() => who;
 };

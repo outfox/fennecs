@@ -22,12 +22,12 @@ We create the Entities and define the [Relation](../docs/Relation.md) (`struct B
 Next, we query for the Relation, say hello, and ~~unalive~~ interact with the Entities in a [Query.For](../docs/Queries/Query.For.md).
 
 ### Implementation
-<<< ../../cookbook/KillBill.cs
+<<< ../../cookbook/KillBill.cs {cs:line-numbers}
 
 ### Outcome
-The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble mumble TODO mumble)*
+The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble CI-CD mumble TODO mumble)*
 ```shell
-dotnet run KillBill
+dotnet run --project KillBill.csproj
 ```
 ```txt 
 As we said, there were 5 of them.
