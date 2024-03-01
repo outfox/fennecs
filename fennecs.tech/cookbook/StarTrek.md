@@ -17,9 +17,9 @@ All `.csproj` and `.cs` files are [over here on Github!](https://github.com/thyg
 ### Premise
 Let's shed some light on a couple of the more famous Captains in the Star Trek Universe.
 
-We create a unique [Entity](../docs/Entity.md) for each; but `kirk` gets despawned and replaced by The Next Generation (`picard`).
+This example will teach a little about what happens to Entities when they Despawn!
 
-Then we create a bunch more and output to visualize how recycled Entities compare to each other and to give a feeling over how a world counts generations up when entities are destroyed.
+We create a unique [Entity](../docs/Entity.md) for each; but `kirk` gets despawned and replaced by The Next Generation (`picard`). Then we create a bunch more and output to visualize how recycled Entities compare to each other and to give a feeling over how a [World](../docs/World.md) counts Generations up when Entities are destroyed.
 
 ### Implementation
 <<< ../../cookbook/StarTrek.cs {cs:line-numbers}
