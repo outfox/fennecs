@@ -57,20 +57,24 @@ do
     // Make everyone run after the ball!
     players.For((ref Name playerName, ref Position playerPosition, ref Talent playerTalent) =>
     {
+        // We get a true ref instead ot he value because we want to be kicking the ball.
         ref var ballPosition = ref ball.Ref<Position>();
 
+        // ⁉️ Where's the ball?
         var direction = ballPosition.value - playerPosition.value;
-        // 🥅 If the ball is too far enough, run towards it!
+
+        // 🏃‍♂️ If the ball is too far enough, run towards it!
         if (direction.LengthSquared() > 1f)
         {
-            Console.WriteLine($"      {playerName,10} runs towards the ball! ..... d = {direction.Length():f2}m");
             playerPosition += direction * (0.2f + Random.Shared.NextSingle() * 0.5f);
+            Console.WriteLine($"{playerName,15} runs towards the ball!" +
+                              $" ... d = {direction.Length():f2}m");
             return;
         }
 
         // 🎯 YES! the ball is close enough, kick it!
-        Console.WriteLine($">>>>> {playerName} kicks the ball!");
         kicked = true;
+        Console.WriteLine($">>>>> {playerName} kicks the ball!");
 
         // 🎲 With those kids, the ball goes all over the place!
         ballPosition += RandomRadius(10, true);
