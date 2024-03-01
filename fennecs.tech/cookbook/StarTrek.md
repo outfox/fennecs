@@ -34,7 +34,7 @@ dotnet run --project StarTrek.csproj
     Picard is E-00000001:00002 - the next Generation!
    Janeway is E-00000002:00001 - the best Captain ever!
       Kirk is E-00000001:00001 - and alive? False
-   Shatner is not a Stewart! True
     Archer is E-00000001:00003, ugh, don't we hate reboots...
   Georgiou is E-00000002:00002, now THAT's a Captain!
+   Shatner ain't Stewart, even in death! True
 ```

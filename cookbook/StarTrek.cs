@@ -22,7 +22,6 @@ Console.WriteLine($"{"Janeway",10} is {janeway} - the best Captain ever!");
 
 // 🌠 And in the 32nd century
 Console.WriteLine($"{"Kirk",10} is {kirk} - and alive? {world.IsAlive(kirk)}");
-Console.WriteLine($"{"Shatner",10} is not a Stewart! {kirk != picard}");
 
 // 🌌 Goodbye, Gene
 world.Despawn(picard);
@@ -33,3 +32,6 @@ Console.WriteLine($"{"Archer",10} is {archer}, ugh, don't we hate reboots...");
 
 var georgiou = world.Spawn();
 Console.WriteLine($"{"Georgiou",10} is {georgiou}, now THAT's a Captain!");
+
+// ⁉️ Needed to be said.
+Console.WriteLine($"{"Shatner",10} ain't Stewart, even in death! {kirk != picard}");
