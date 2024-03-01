@@ -4,6 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <UseCommonOutputDirectory>false</UseCommonOutputDirectory>
+        <IntermediateOutputPath>obj\tsubasa</IntermediateOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
