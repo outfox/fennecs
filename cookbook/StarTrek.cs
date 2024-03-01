@@ -22,8 +22,8 @@ Console.WriteLine($"{"Sisko",10} is {sisko} - a whole new person!");
 
 // 🌌 Meanwhile in the Delta Quadrant
 var janeway = world.Spawn();
-Console.WriteLine($"{"Janeway",10} is {janeway} - timeless!");
+Console.WriteLine($"{"Janeway",10} is {janeway} - the best Captain ever!");
 
 // 🌠 And in the 32nd century
-Console.WriteLine($"{"Kirk",10} is {kirk} ... but is he alive? {world.IsAlive(kirk)}");
-Console.WriteLine($"{"Shatner",10}, after all, was not Stewart! {kirk != picard}");
+Console.WriteLine($"{"Kirk",10} is {kirk} - and alive? {world.IsAlive(kirk)}");
+Console.WriteLine($"{"Shatner",10} was never a Stewart! {kirk != picard}");
