@@ -17,7 +17,7 @@ using fennecs;
 :neofox_surprised_pika:
 
 
-## Need need the whole shebang?
+## Need everything but the kitchen sink?
 Good old git. Nothing beats that!
 ::: code-group
 
