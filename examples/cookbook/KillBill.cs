@@ -32,7 +32,7 @@ Console.WriteLine($"As we said, there were {query.Count} of them.");
 
 // 🧭 They went into hiding around the world.
 query.For((ref Location location) => {
-    location = $"hiding place 0x{Random.Shared.Next():x8}";    
+    location = $"hideout 0x{Random.Shared.Next():x8}";    
     Console.WriteLine($"One hides in {location}.");
 });
 
@@ -64,7 +64,7 @@ Console.WriteLine($"Let's get out of {us.Ref<Location>()}.");
 us.Ref<Location>() = "traveling";
 
 // 🎬 It's a wrap! Roll credits.
-Console.WriteLine($"Now we are {us.Ref<Location>()}.");
+Console.WriteLine($"We've been {us.Ref<Location>()} for a while.");
 Console.WriteLine($"Any more grudges? {us.Has<Grudge>(Match.Entity)}.");
 
 // 🪚 Simple components, for a simple plot.
@@ -78,7 +78,7 @@ struct Location(string there)
     // 😉 So we don't always need to invoke the Constructor.
     public static implicit operator Location(string location) => new(location);
 
-    // 🗺️ So we can easily see where "where" is.
+    // 🗺️ So we can more readily see where "where" is.
     public override string ToString() => where;
     
 };

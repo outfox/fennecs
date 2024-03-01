@@ -8,7 +8,7 @@ outline: [2, 3]
 ::: info :neofox_floof_mug: MMMH, REAL CODE
 This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs features.
 
-Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code!
+Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
 
 All `.csproj` and `.cs` files are [over here on Github!](https://github.com/thygrrr/fennecs/blob/main/examples/cookbook) 
 
@@ -31,11 +31,11 @@ dotnet run KillBill
 ```
 ```txt 
 As we said, there were 5 of them.
-One hides in hiding place 0x69ac29a0.
-One hides in hiding place 0x772c9554.
-One hides in hiding place 0x534770fe.
-One hides in hiding place 0x31ecd8bc.
-One hides in hiding place 0x4f38b04b.
+One hides in hideout 0x140d9825.
+One hides in hideout 0x2328bb6c.
+One hides in hideout 0x3573a7b3.
+One hides in hideout 0x1414c263.
+One hides in hideout 0x4acbcdcf.
 We are still here.
 Do we hold grudges? True.
 Oh, hello E-00000002:00001! Remember E-00000001:00001?
@@ -44,7 +44,7 @@ Oh, hello E-00000004:00001! Remember E-00000001:00001?
 Oh, hello E-00000005:00001! Remember E-00000001:00001?
 Oh, hello E-00000006:00001! Remember E-00000001:00001?
 Now, there are 0 of them.
-Let's get out of hiding place 0x4f38b04b.
-Now we are traveling.
+Let's get out of hideout 0x4acbcdcf.
+We've been traveling for a while.
 Any more grudges? False.
 ```
