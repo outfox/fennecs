@@ -5,6 +5,7 @@ outline: [2, 3]
 
 #  One Ring to Find Them
 
-:neofox_what: Sorry, work in progress! come back soon.
-
+::: warning :neofox_what: WHAT THE...
+Sorry, work in progress! come back soon.
+:::
 

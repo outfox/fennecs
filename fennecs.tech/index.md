@@ -11,13 +11,13 @@ hero:
   tagline: <em>... a tiny, tiny, high-energy ECS!</em>
   actions:
     - theme: brand
-      text: Read Docs!
+      text: Start Here!
       link: /docs/index
-    - theme: brand
-      text: Get Cooking!
+    - theme: alt
+      text: Cookbook
       link: /cookbook/
     - theme: alt
-      text: Github
+      text: GitHub
       link: https://github.com/thygrrr/fennecs
 
 features:

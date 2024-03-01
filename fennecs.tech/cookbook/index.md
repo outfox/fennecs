@@ -22,7 +22,9 @@ Got an idea? Contributions are welcome! They need to run, they need to provide l
 These examples are not best practices, nor good practices. _**They're practice.**_
 
 
-Use them as you gradually build an understanding and mental model of **fenn**ecs, and good habits will fall into place all on their own. Then, return to that overscoped game project of yours and get cooking!
+Use them as you gradually build an understanding and mental model of **fenn**ecs, and good habits will fall into place all on their own.
+
+Later, when you return to that overscoped game project of yours, you can get cooking *for real!*
 :::
 
 
