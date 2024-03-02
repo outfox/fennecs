@@ -1,9 +1,9 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 
 using System.Numerics;
 using System.Runtime.InteropServices;
 
-namespace examples.godot.CubeDemo;
+namespace Cubes;
 
 /// <summary>
 ///     A 4x3 matrix / 3x4 matrix comprised of 12 floats.

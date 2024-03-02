@@ -92,24 +92,18 @@ public class IdentityTests(ITestOutputHelper output)
 
         //Identities
         for (var i = 0; i < idCount; i++)
-        {
             //Generations
-            for (TypeID g = 1; g < genCount; g++)
-            {
-                var identity = new Identity(i, g);
+        for (TypeID g = 1; g < genCount; g++)
+        {
+            var identity = new Identity(i, g);
 
-                Assert.NotEqual(identity, Match.Any);
-                Assert.NotEqual(identity, Match.Plain);
+            Assert.NotEqual(identity, Match.Any);
+            Assert.NotEqual(identity, Match.Plain);
 
-                if (ids.ContainsKey(identity.GetHashCode()))
-                {
-                    Assert.Fail($"Collision of {identity} with {ids[identity.GetHashCode()]}, {identity.GetHashCode()}#==#{ids[identity.GetHashCode()].GetHashCode()}");
-                }
-                else
-                {
-                    ids.Add(identity.GetHashCode(), identity);
-                }
-            }
+            if (ids.ContainsKey(identity.GetHashCode()))
+                Assert.Fail($"Collision of {identity} with {ids[identity.GetHashCode()]}, {identity.GetHashCode()}#==#{ids[identity.GetHashCode()].GetHashCode()}");
+            else
+                ids.Add(identity.GetHashCode(), identity);
         }
     }
 
@@ -146,38 +140,6 @@ public class IdentityTests(ITestOutputHelper output)
             Assert.Equal(self, other);
         }
     }
-
-
-    #region Input Data
-
-    private struct CompoundComponent
-    {
-        // ReSharper disable once NotAccessedField.Local
-        public required bool B1;
-
-        // ReSharper disable once NotAccessedField.Local
-        public required int I1;
-    }
-
-
-    private class ComponentDataSource : List<object[]>
-    {
-        public ComponentDataSource()
-        {
-            Add([123]);
-            Add([1.23f]);
-            Add([float.NegativeInfinity]);
-            Add([float.NaN]);
-            Add([new Vector2(1, 2)]);
-            Add([new Vector3(1, 2, 3)]);
-            Add([new Vector4(1, 2, 3, 4)]);
-            Add([new Matrix4x4()]);
-            Add([new CompoundComponent {B1 = true, I1 = 5}]);
-            Add([new CompoundComponent {B1 = default, I1 = default}]);
-        }
-    }
-
-    #endregion
 
 
     /*
@@ -387,4 +349,36 @@ public class IdentityTests(ITestOutputHelper output)
         Assert.Throws<ArgumentException>(() => world.On(identity).Remove<T>());
     }
 #pragma warning restore xUnit1026
+
+
+    #region Input Data
+
+    private struct CompoundComponent
+    {
+        // ReSharper disable once NotAccessedField.Local
+        public required bool B1;
+
+        // ReSharper disable once NotAccessedField.Local
+        public required int I1;
+    }
+
+
+    private class ComponentDataSource : List<object[]>
+    {
+        public ComponentDataSource()
+        {
+            Add([123]);
+            Add([1.23f]);
+            Add([float.NegativeInfinity]);
+            Add([float.NaN]);
+            Add([new Vector2(1, 2)]);
+            Add([new Vector3(1, 2, 3)]);
+            Add([new Vector4(1, 2, 3, 4)]);
+            Add([new Matrix4x4()]);
+            Add([new CompoundComponent {B1 = true, I1 = 5}]);
+            Add([new CompoundComponent {B1 = default, I1 = default}]);
+        }
+    }
+
+    #endregion
 }

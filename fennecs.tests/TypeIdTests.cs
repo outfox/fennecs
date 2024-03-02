@@ -1,17 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace fennecs.tests;
 
 public class TypeIdTests
 {
-    private struct Type1;
-
-    private struct Type2;
-
-
     [Fact]
     public void TypeId_is_64_bits()
     {
@@ -128,4 +122,9 @@ public class TypeIdTests
         Assert.NotEqual(id1, id3);
         Assert.NotEqual(id2, id4);
     }
+
+
+    private struct Type1;
+
+    private struct Type2;
 }

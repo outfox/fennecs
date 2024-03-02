@@ -4,9 +4,6 @@
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Query5Tests
 {
-    private struct TypeA;
-
-
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)
@@ -104,4 +101,7 @@ public class Query5Tests
 
         query.For((ref TypeA _, ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
     }
+
+
+    private struct TypeA;
 }

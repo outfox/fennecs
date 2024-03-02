@@ -14,7 +14,7 @@ public static class QueryEnumeration
 
             using var world = new World();
 
-            for (int i = 0; i < 234; i++)
+            for (var i = 0; i < 234; i++)
             {
                 var intEntity = world.Spawn().Add<int>();
                 intEntities.Add(intEntity);
@@ -50,18 +50,12 @@ public static class QueryEnumeration
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                foreach (var _ in query)
-                {
-                    world.Spawn().Add(4);
-                }
+                foreach (var _ in query) world.Spawn().Add(4);
             });
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                foreach (var identity in query)
-                {
-                    world.On(identity).Add("structural change");
-                }
+                foreach (var identity in query) world.On(identity).Add("structural change");
             });
         }
 

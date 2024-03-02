@@ -264,5 +264,4 @@ public class EntityTests
         component = 123;
         Assert.Equal(123, entity.Ref<int>(target));
     }
-    
 }

@@ -8,7 +8,7 @@ This demo demonstrates a simple case how to update the state of a large number o
 
 #### Source Code
 
-| MonoGame |[Godot](https://github.com/thygrrr/fennecs/tree/main/demos/example-godot) | Flax | Unigine | Stride | Raylib | NeoAxis |
+| MonoGame |[Godot](https://github.com/thygrrr/fennecs/tree/main/examples/example-godot) | Flax | Unigine | Stride | Raylib | NeoAxis |
 |:--------------:|:------------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
 |![MonoGame](https://fennecs.tech/img/logo-monogame-80.png){.tile64} | ![Godot](https://fennecs.tech/img/logo-godot-80.png){.tile64} | ![Flax Engine](https://fennecs.tech/img/logo-flax-80.png){.tile64} | ![UNIGINE](https://fennecs.tech/img/logo-unigine-80-darkmode.png){.dark-only .tile64} ![UNIGINE](https://fennecs.tech/img/logo-unigine-80-lightmode.png){.light-only .tile64} | ![STRIDE](https://fennecs.tech/img/logo-stride-80.png){.tile64} |  ![Raylib-cs](https://fennecs.tech/img/logo-raylib-80.png){.tile64} | ![NeoAxis Engine](https://fennecs.tech/img/logo-neoaxis-80-darkmode.png){.dark-only .tile64} ![NeoAxis Engine](https://fennecs.tech/img/logo-neoaxis-80-lightmode.png){.light-only .tile64} | 
 

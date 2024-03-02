@@ -4,9 +4,6 @@ namespace fennecs.tests;
 
 public class TypeExpressionTests(ITestOutputHelper output)
 {
-    private struct TypeA;
-
-
     [Fact]
     public void To_String()
     {
@@ -16,8 +13,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         output.WriteLine(TypeExpression.Of<TypeA>(Match.Entity).ToString());
         output.WriteLine(TypeExpression.Of<TypeA>(new Identity(123)).ToString());
     }
-    
-    
+
+
     [Fact]
     public void Id_is_Comparable()
     {
@@ -209,4 +206,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         Assert.True(ent.Matches(ent));
         Assert.False(ent.Matches(lnk));
     }
+
+
+    private struct TypeA;
 }

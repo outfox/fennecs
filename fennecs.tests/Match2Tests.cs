@@ -2,13 +2,12 @@
 
 public class Match2Tests
 {
-    private readonly World _world;
-
     // string may be interned or not
     private const string OBJECT1 = "hello world";
     private const string OBJECT2 = "fly, you fools";
     private const string NONE1 = "can't touch this";
     private const string RELATION1 = "IOU";
+    private readonly World _world;
 
 
     public Match2Tests()

@@ -338,11 +338,9 @@ public class Query2Tests
         }
 
         for (var index = 0; index < count; index++)
-        {
             world.Spawn()
                 .Add(index)
                 .Add("I'll stay");
-        }
 
         var query = world.Query<int, string>().Build();
 
@@ -353,7 +351,7 @@ public class Query2Tests
             index = 123;
             Assert.Equal("I'll stay", str);
             str = "fools";
-        }, chunkSize: chunk);
+        }, chunk);
 
         Assert.Equal(count, processed);
 
@@ -362,7 +360,7 @@ public class Query2Tests
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
             Assert.Equal("fools", str);
-        }, chunkSize: chunk);
+        }, chunk);
     }
 
 
@@ -379,11 +377,9 @@ public class Query2Tests
         }
 
         for (var index = 0; index < count; index++)
-        {
             world.Spawn()
                 .Add(index)
                 .Add("I'll stay");
-        }
 
         var query = world.Query<int, string>().Build();
 
@@ -394,7 +390,7 @@ public class Query2Tests
             index = 123;
             Assert.Equal("I'll stay", str);
             str = "fools";
-        }, 0, chunkSize: chunk);
+        }, 0, chunk);
 
         Assert.Equal(count, processed);
 
@@ -403,7 +399,7 @@ public class Query2Tests
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
             Assert.Equal("fools", str);
-        }, 0, chunkSize: chunk);
+        }, 0, chunk);
     }
 
 
@@ -420,11 +416,9 @@ public class Query2Tests
         }
 
         for (var index = 0; index < count; index++)
-        {
             world.Spawn()
                 .Add(index)
                 .Add("I'll stay");
-        }
 
         var query = world.Query<int, string>().Build();
 
@@ -461,11 +455,9 @@ public class Query2Tests
         }
 
         for (var index = 0; index < count; index++)
-        {
             world.Spawn()
                 .Add(index)
                 .Add("I'll stay");
-        }
 
         var query = world.Query<int, string>().Build();
 
@@ -502,11 +494,9 @@ public class Query2Tests
         }
 
         for (var c = 0; c < count; c++)
-        {
             world.Spawn()
                 .Add(c)
                 .Add(0.1f);
-        }
 
         var query = world.Query<int, float>().Build();
 

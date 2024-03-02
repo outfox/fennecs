@@ -17,7 +17,10 @@ public class QueryCountGenerator : IEnumerable<object[]>
     }
 
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }
 
 
@@ -29,12 +32,8 @@ public class QueryChunkGenerator : IEnumerable<object[]>
     {
         // base induction / interleaving / degenerate cases
         for (var i = 0; i <= 10; i++)
-        {
-            for (var j = 1; j <= 10; j++)
-            {
-                yield return [i, j, i % 2 == 0];
-            }
-        }
+        for (var j = 1; j <= 10; j++)
+            yield return [i, j, i % 2 == 0];
 
         yield return [100, 10, true]; //fits
         yield return [100, 1_000, false]; //undersized
@@ -50,5 +49,8 @@ public class QueryChunkGenerator : IEnumerable<object[]>
     }
 
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }

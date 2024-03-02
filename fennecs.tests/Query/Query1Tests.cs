@@ -291,10 +291,8 @@ public class Query1Tests
         }
 
         for (var index = 0; index < count; index++)
-        {
             world.Spawn()
                 .Add(index);
-        }
 
         var query = world.Query<int>().Build();
 
@@ -303,7 +301,7 @@ public class Query1Tests
         {
             Interlocked.Increment(ref processed);
             index = 123;
-        }, chunkSize: chunk);
+        }, chunk);
 
         Assert.Equal(count, processed);
 
@@ -311,7 +309,7 @@ public class Query1Tests
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
-        }, chunkSize: chunk);
+        }, chunk);
     }
 
 
@@ -328,10 +326,8 @@ public class Query1Tests
         }
 
         for (var index = 0; index < count; index++)
-        {
             world.Spawn()
                 .Add(index);
-        }
 
         var query = world.Query<int>().Build();
 
@@ -340,7 +336,7 @@ public class Query1Tests
         {
             Interlocked.Increment(ref processed);
             index = 123;
-        }, 0, chunkSize: chunk);
+        }, 0, chunk);
 
         Assert.Equal(count, processed);
 
@@ -348,7 +344,7 @@ public class Query1Tests
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
-        }, 0, chunkSize: chunk);
+        }, 0, chunk);
     }
 
 
@@ -365,10 +361,8 @@ public class Query1Tests
         }
 
         for (var index = 0; index < count; index++)
-        {
             world.Spawn()
                 .Add(index);
-        }
 
         var query = world.Query<int>().Build();
 
@@ -402,10 +396,8 @@ public class Query1Tests
         }
 
         for (var index = 0; index < count; index++)
-        {
             world.Spawn()
                 .Add(index);
-        }
 
         var query = world.Query<int>().Build();
 
@@ -439,11 +431,9 @@ public class Query1Tests
         }
 
         for (var c = 0; c < count; c++)
-        {
             world.Spawn()
                 .Add(c)
                 .Add(0.0f);
-        }
 
         var query = world.Query<int, float>().Build();
 
@@ -481,10 +471,8 @@ public class Query1Tests
         }
 
         for (var c = 0; c < count; c++)
-        {
             world.Spawn()
                 .Add<long>();
-        }
 
         var query = world.Query<long>().Build();
 
@@ -500,10 +488,7 @@ public class Query1Tests
         query.Raw(longs =>
         {
             Assert.Equal(count, longs.Length);
-            for (var i = 0; i < count; i++)
-            {
-                Assert.Equal(i, longs.Span[i]);
-            }
+            for (var i = 0; i < count; i++) Assert.Equal(i, longs.Span[i]);
         });
 
         var index = 0;

@@ -26,12 +26,6 @@ public class ReferenceStoreTests(ITestOutputHelper output)
     }
 
 
-    private class BadlyHashingClass
-    {
-        public override int GetHashCode() => 69;
-    }
-
-
     [Fact]
     public void Request_Throws_On_Hash_Collision()
     {
@@ -64,17 +58,11 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         var item = new object();
         Identity identity = default;
 
-        for (var i = 0; i < count; i++)
-        {
-            identity = store.Request(item);
-        }
+        for (var i = 0; i < count; i++) identity = store.Request(item);
 
         Assert.Equal(item, store.Get<object>(identity));
 
-        for (var i = 0; i < count; i++)
-        {
-            store.Release(identity);
-        }
+        for (var i = 0; i < count; i++) store.Release(identity);
 
         Assert.Throws<KeyNotFoundException>(() => store.Get<object>(identity));
     }
@@ -124,5 +112,14 @@ public class ReferenceStoreTests(ITestOutputHelper output)
         };
         output.WriteLine(reference.ToString());
         Assert.Equal($"{typeof(List<int>)} x7", reference.ToString());
+    }
+
+
+    private class BadlyHashingClass
+    {
+        public override int GetHashCode()
+        {
+            return 69;
+        }
     }
 }

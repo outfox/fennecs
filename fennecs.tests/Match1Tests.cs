@@ -2,13 +2,12 @@
 
 public class Match1Tests
 {
-    private readonly World _world;
-
     // string may be interned or not
     private const string OBJECT1 = "hello world";
     private const string OBJECT2 = "fly, you fools";
     private const string NONE1 = "can't touch this";
     private const string RELATION1 = "IOU";
+    private readonly World _world;
 
 
     public Match1Tests()
@@ -36,7 +35,7 @@ public class Match1Tests
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
         });
-        
+
         Assert.Contains(OBJECT1, seen);
         Assert.Contains(OBJECT2, seen);
         Assert.Contains(NONE1, seen);

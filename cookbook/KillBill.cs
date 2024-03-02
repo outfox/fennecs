@@ -2,13 +2,16 @@
 
 using fennecs;
 
-// 💒 Set the stage.
+// Directed by Trentin Quarantino
 var world = new World();
 
-// 🛌 This is us. Here. Now. 
+// This is us. Here. Now. 
 var us = world.Spawn().Add<Location>("here");
 
-// 👰 They were five. This is how it went:
+// Ok, let's maybe not spend 4 years in a coma!
+// Thread.Sleep(TimeSpan.FromDays(365 * 4));
+
+// They were five. This is how it went:
 for (var i = 0; i < 5; i++)
 {
     var them = world.Spawn()
@@ -19,71 +22,77 @@ for (var i = 0; i < 5; i++)
     us.AddRelation<Grudge>(them);
 }
 
-// 🏥 Ok, let's maybe not spend 4 years in a coma!
-// Thread.Sleep(TimeSpan.FromDays(365 * 4));
-
-// 🥷 Well rested for once, we query for their Locations; to pay that visit.
-// 🧩 Also get their Entity Id. It's a surprise tool that will help us later!
+// We query for their Locations; to pay them a visit;
+// and their Entity Id. It's a surprise tool that will help us later!
 var query = world.Query<Location, Identity>()
     .Has<Betrayed>(us)
     .Build();
 
-// 5️⃣ Making a list and checking it twice.
 Console.WriteLine($"As we said, there were {query.Count} of them.");
 
-// 🧭 They went into hiding around the world.
+// They went into hiding around the world.
 query.For((ref Location location) =>
 {
     location = $"hideout 0x{Random.Shared.Next():x8}";
     Console.WriteLine($"One hides in {location}.");
 });
 
-// 🙎‍♀️ And what about us?
-Console.WriteLine($"We are still {us.Ref<Location>()}.");
+Console.WriteLine($"We are still {us.Ref<Location>()}, though.");
 
-// 🔫 Has<>(Match.Entity) is the same as saying HasRelation<>()
+// Has<>(Match.Entity) is the same as saying HasRelation<>()
 Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
 
-// ⬇️ This would get them all in one fell swoop. 
-// query.Clear();
-// 🎥 But nah... that's not enough for a movie!
+// Choose your weapon:
+// query.Clear(); ... or
+// query.Truncate(0);
+// But nah... we want to see the white in their eyes!
 
-// ⚔️ Done plotting our revenge! Time to visit each one!
+// Time to visit each one personally!
 query.For((ref Location theirLocation, ref Identity theirIdentity) =>
 {
-    // 🚕 Drive the TaxiWagon
     ref var ourLocation = ref us.Ref<Location>();
     ourLocation = theirLocation;
 
-    // 🏠 Why don't we knock on the door and say hello?
+    // Knock knock.
     Console.WriteLine($"Oh, hello {theirIdentity}! Remember {us}?");
 
-    //☠️ And then, they were no more.
+    // Get our revenge.
     world.Despawn(theirIdentity);
 });
 
-// 🪦 The aftermath.
+// Survey the aftermath.
 Console.WriteLine($"Now, there are {query.Count} of them.");
 Console.WriteLine($"Let's get out of {us.Ref<Location>()}.");
 us.Ref<Location>() = "traveling";
 
-// 🎬 It's a wrap! Roll credits.
-Console.WriteLine($"We've been {us.Ref<Location>()} for a while.");
+// We satisfied our grudges.
 Console.WriteLine($"Any more grudges? {us.Has<Grudge>(Match.Entity)}.");
+Console.WriteLine($"We've been {us.Ref<Location>()} for a while.");
 
 
-// 🪚 Simple components, for a simple plot.
-struct Grudge;
+# region Components
 
-struct Betrayed;
+// "tag" (size-less) component, used here to back a Relation
+internal struct Grudge;
 
 
-struct Location(string there)
+// "tag" (size-less) component, used here to back a Relation
+internal struct Betrayed;
+
+
+// A Location Component wrapping a string.
+internal readonly struct Location(string there)
 {
-    // 😉 So we don't always need to invoke the Constructor.
-    public static implicit operator Location(string location) => new(location);
+    public static implicit operator Location(string location)
+    {
+        return new Location(location);
+    }
 
 
-    // 🗺️ So we can more readily see where "where" is.
-    public override string ToString() => there;
-};
+    public override string ToString()
+    {
+        return there;
+    }
+}
+
+# endregion

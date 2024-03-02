@@ -351,10 +351,7 @@ public class QueryTests
         Assert.Throws<ObjectDisposedException>(() => query.Raw(_ => { }));
         Assert.Throws<ObjectDisposedException>(() =>
         {
-            foreach (var _ in query)
-            {
-                Assert.Fail("Should not enumerate disposed Query.");
-            }
+            foreach (var _ in query) Assert.Fail("Should not enumerate disposed Query.");
         });
     }
 
@@ -612,10 +609,7 @@ public class QueryTests
         using var world = new World();
         var query = world.Query<int>(Match.Any).Build();
 
-        for (var i = 0; i < entityCount; i++)
-        {
-            world.Spawn().Add(i);
-        }
+        for (var i = 0; i < entityCount; i++) world.Spawn().Add(i);
 
         query.Truncate(targetSize);
         Assert.True(query.Count <= targetSize);
@@ -628,10 +622,7 @@ public class QueryTests
         using var world = new World();
         var query = world.Query<int>(Match.Any).Build();
 
-        for (var i = 0; i < 420; i++)
-        {
-            world.Spawn().Add(i);
-        }
+        for (var i = 0; i < 420; i++) world.Spawn().Add(i);
 
         query.Clear();
         Assert.Equal(0, query.Count);

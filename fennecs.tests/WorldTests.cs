@@ -34,7 +34,7 @@ public class WorldTests
     [InlineData(1_000)]
     [InlineData(10_000)]
     [InlineData(1_000_000)]
-    void Can_Spawn_Many_Bare_Entities(int count)
+    private void Can_Spawn_Many_Bare_Entities(int count)
     {
         using var world = new World();
         for (var i = 0; i < count; i++)
@@ -60,10 +60,7 @@ public class WorldTests
 
         Assert.Throws<InvalidOperationException>(() =>
         {
-            foreach (var _ in query)
-            {
-                world.Spawn();
-            }
+            foreach (var _ in query) world.Spawn();
         });
 
         world.Dispose();
@@ -183,11 +180,6 @@ public class WorldTests
         Assert.Equal(0, query1.Count);
         Assert.Equal(1000, query2.Count);
     }
-
-
-    private class NewableClass;
-
-    private struct NewableStruct;
 
 
     [Fact]
@@ -515,4 +507,9 @@ public class WorldTests
         Assert.False(world.IsAlive(entity3));
         Assert.True(world.IsAlive(entity4));
     }
+
+
+    private class NewableClass;
+
+    private struct NewableStruct;
 }
