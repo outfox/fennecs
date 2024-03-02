@@ -20,7 +20,7 @@ Let's build a sleeper drift racing championship car out of nothing but Entities 
 An easy intro to **fenn**ecs where you won't spill your tofu yet!
 
 ### Implementation
-<<< ../../cookbook/StarTrek.cs {cs:line-numbers}
+<<< ../../cookbook/InitialD.cs {cs:line-numbers}
 
 ### Outcome
 The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble CI-CD mumble TODO mumble)*

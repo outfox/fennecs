@@ -1,5 +1,5 @@
 ---
-title: 1. Star Trek (Generations)
+title: 1. Star Trek (Entities)
 outline: [2, 3]
 ---
 

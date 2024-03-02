@@ -1,5 +1,5 @@
 ---
-title: 3. Tsubasa (Updating)
+title: 3. Tsubasa (Runners)
 outline: [2, 3]
 ---
 
