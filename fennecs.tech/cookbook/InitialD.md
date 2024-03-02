@@ -15,9 +15,7 @@ All `.csproj` and `.cs` files are [over here on Github!](https://github.com/thyg
 :::
 
 ### Premise
-Let's build a sleeper drift racing championship car out of nothing but Entities and Components!
-
-An easy intro to **fenn**ecs where you won't spill your tofu yet!
+Let's build a sleeper drift racing championship car out of nothing but Entities and Components! A smooth ride into to **fenn**ecs where you won't spill your tofu yet!
 
 ### Implementation
 <<< ../../cookbook/InitialD.cs {cs:line-numbers}
