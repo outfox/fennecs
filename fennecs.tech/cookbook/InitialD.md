@@ -25,7 +25,7 @@ An easy intro to **fenn**ecs where you won't spill your tofu yet!
 ### Outcome
 The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble CI-CD mumble TODO mumble)*
 ```shell
-dotnet run --project StarTrek.csproj
+dotnet run --project InitialD.csproj
 ```
 ```txt
 Takumi Fujiwara is ready!
