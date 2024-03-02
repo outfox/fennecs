@@ -315,6 +315,35 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     #region Bulk Operations
 
+    /// <summary>
+    /// Adds a Component (using default constructor) to all Entities matched by this query.
+    /// </summary>
+    /// <inheritdoc cref="Add{T}(T)"/>
+    public void Add<T>() where T : new()
+    {
+        Add<T>(new T());
+    }
+
+
+    /// <summary>
+    /// Adds the given Component (using specified data) to all Entities matched by this query.
+    /// </summary>
+    /// <typeparam name="T">any type</typeparam>
+    /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
+    public void Add<T>(T data)
+    {
+        if (!Mask.NotTypes.Contains(TypeExpression.Of<T>()))
+        {
+            throw new InvalidOperationException("Query does not rule out this Component type in a Filter Expression.");
+        }
+                
+        using var worldLock = World.Lock;
+        //TODO: This is an inefficient allocation, but raw operations on Archetypes aren't exposed yet.
+        var entities = new List<Entity>(this);
+        foreach (var entity in entities) World.AddComponent(entity, data);
+    }
+
+
     public void Clear() => Truncate(0);
     
     public void Truncate(int maxEntityCount, TruncateMode mode = TruncateMode.PerArchetype)

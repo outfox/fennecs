@@ -2,7 +2,7 @@
 
 using fennecs;
 
-// 主催：藤原豆腐店
+// shusai: fuji hara tōfu ten
 var world = new World();
 
 // The Driver
@@ -12,17 +12,19 @@ var takumi = new Driver("Takumi Fujiwara");
 var ae86 = world.Spawn()
     .Add<Car>()
     .Add<Name>("Toyota Sprinter Trueno AE86")
-    .Add(takumi)        // Add<Driver>
-    .Add(new Engine     // Add<Engine>
+    .Add(takumi) // Add<Driver>
+    .Add(new Engine // Add<Engine>
     {
         Horsepower = 130, Torque = 149,
-    }); 
+    });
+ 
 
 
 // All cars - driver check!
 var query = 
-    world.Query<Driver, Name>() // data we want to process
-    .Has<Car>()                 // additional Filter Expressions
+    world.Query<Driver, Name>()  // "Stream Types", the data we want to process
+    .Has<Car>()                  // additional Filter Expression(s) to match 
+    .Not<Ready>()                // in the Query in addition to all Stream Types
     .Build();
 
 query.For((ref Driver driver, ref Name name) =>
@@ -30,6 +32,9 @@ query.For((ref Driver driver, ref Name name) =>
     driver.ReportForRace();
     Console.WriteLine($"Car {name} is ready to go!");
 });
+
+// Bulk operation on the Query.
+query.Add<Ready>();
 
 // Adding component conditionally at runtime
 if (ae86.Has<Ready>()) ae86.Add<Racing>();
