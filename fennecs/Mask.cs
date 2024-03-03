@@ -11,21 +11,51 @@ public sealed class Mask : IDisposable
     internal readonly List<TypeExpression> AnyTypes = new(8);
 
 
-    public void Has(TypeExpression type)
+    public void Has(TypeExpression typeExpression)
     {
-        HasTypes.Add(type);
+        if (typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes))
+        {
+            throw new InvalidOperationException($"Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
+        }
+
+        if (typeExpression.Matches(NotTypes))
+        {
+            throw new InvalidOperationException($"Type {typeExpression} is already filtered out by this Query/Mask.");
+        }
+
+        HasTypes.Add(typeExpression);
     }
 
 
-    public void Not(TypeExpression type)
+    public void Not(TypeExpression typeExpression)
     {
-        NotTypes.Add(type);
+        if (typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes))
+        {
+            throw new InvalidOperationException($"Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
+        }
+
+        if (typeExpression.Matches(NotTypes))
+        {
+            throw new InvalidOperationException($"Type {typeExpression} is already filtered out by this Query/Mask.");
+        }
+
+        NotTypes.Add(typeExpression);
     }
 
 
-    public void Any(TypeExpression type)
+    public void Any(TypeExpression typeExpression)
     {
-        AnyTypes.Add(type);
+        if (typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes))
+        {
+            throw new InvalidOperationException($"Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
+        }
+
+        if (typeExpression.Matches(NotTypes))
+        {
+            throw new InvalidOperationException($"Type {typeExpression} is already filtered out by this Query/Mask.");
+        }
+
+        AnyTypes.Add(typeExpression);
     }
 
 
@@ -65,18 +95,6 @@ public sealed class Mask : IDisposable
 
 
     public static implicit operator int(Mask self) => self.Key();
-
-    /*
-    public bool Equals(Mask? other)
-    {
-        return ReferenceEquals(this, other);
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return ReferenceEquals(this, obj) || obj is Mask other && Equals(other);
-    }
-    */
 
     public void Dispose() => MaskPool.Return(this);
 }

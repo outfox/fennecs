@@ -94,13 +94,9 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string, double>();
         Assert.NotNull(builder);
-        builder
-            .Has<float>()
-            .Has<string>("123")
-            .Not<double>()
-            .Not(new List<int>())
-            .Any<long>()
-            .Any(new List<float>());
+        builder.Has<string>("123");
+        builder.Has<int>(world.Spawn());
+        builder.Build();
     }
 
 
@@ -110,13 +106,9 @@ public class QueryBuilderTests
         using var world = new World();
         var builder = world.Query<int, string, double, float>();
         Assert.NotNull(builder);
-        builder
-            .Has<float>()
-            .Has<string>("123")
-            .Not<double>()
-            .Not(new List<int>())
-            .Any<long>()
-            .Any(new List<float>());
+        builder.Has<string>("123");
+        builder.Has<int>(world.Spawn());
+        builder.Build();
     }
 
 
@@ -126,6 +118,18 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string, double, float, long>();
         Assert.NotNull(builder);
+        builder.Has<string>("123");
+        builder.Has<int>(world.Spawn());
+        builder.Build();
+    }
+
+
+    [Fact]
+    private void Disallows_Repeat_Type()
+    {
+        using var world = new World();
+        using var builder = world.Query();
+        Assert.NotNull(builder);
         builder
             .Has<float>()
             .Has<string>("123")
@@ -133,5 +137,52 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<long>()
             .Any(new List<float>());
+        
+        Assert.Throws<InvalidOperationException>(() => builder.Has<float>());
+        Assert.Throws<InvalidOperationException>(() => builder.Not<float>());
+        Assert.Throws<InvalidOperationException>(() => builder.Any<float>());
+    }
+    
+    [Fact]
+    private void Disallows_Repeat_Type_With_Match()
+    {
+        using var world = new World();
+        using var builder = world.Query();
+        var entity = world.Spawn();
+        Assert.NotNull(builder);
+        builder
+            .Has<float>(entity)
+            .Has<string>("123")
+            .Not<double>()
+            .Not(new List<int>())
+            .Any<long>()
+            .Any(new List<float>());
+        
+        Assert.Throws<InvalidOperationException>(() => builder.Has<float>(Match.Any));
+        Assert.Throws<InvalidOperationException>(() => builder.Not<List<int>>(Match.Object));
+        Assert.Throws<InvalidOperationException>(() => builder.Any<float>(Match.Entity));
+    }
+
+
+    [Fact]
+    private void Disallows_Conflicting_Type()
+    {
+        using var world = new World();
+        using var builder = world.Query();
+        Assert.NotNull(builder);
+        builder
+            .Has<float>()
+            .Has<string>("123")
+            .Not<double>()
+            .Not<int>()
+            .Any<long>()
+            .Any(new List<float>());
+        
+        Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
+        Assert.Throws<InvalidOperationException>(() => builder.Not<string>(Match.Object));
+        Assert.Throws<InvalidOperationException>(() => builder.Any<double>());
+
+        builder.Has<string>("I'm different");
+        builder.Not<string>("Think different");
     }
 }

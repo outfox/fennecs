@@ -42,6 +42,8 @@ public class QueryBuilder : IDisposable
     public virtual QueryBuilder Has<T>(Identity target = default)
     {
         var typeExpression = TypeExpression.Of<T>(target);
+        if (StreamTypes.Contains(typeExpression)) throw new InvalidOperationException($"Type {typeExpression} is already an output of this query.");
+
         Mask.Has(typeExpression);
         return this;
     }
@@ -63,7 +65,9 @@ public class QueryBuilder : IDisposable
 
     public virtual QueryBuilder Not<T>(T target) where T : class
     {
-        Mask.Not(TypeExpression.Of<T>(Identity.Of(target)));
+        var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
+
+        Mask.Not(typeExpression);
         return this;
     }
 
