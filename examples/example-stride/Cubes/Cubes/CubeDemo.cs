@@ -75,6 +75,7 @@ public class CubeDemo : SyncScript
     //  Stride: Exports to interact with the UI
     public Slider RenderedSlider;
     public Slider SimulatedSlider;
+    public TextBlock EntityCountText;
 
     //  Stride: Read by the UI to show the simulated Entity count. (not just the visible ones)
     private int QueryCount => _query.Count;
@@ -101,6 +102,8 @@ public class CubeDemo : SyncScript
 
         // Cut off excess entities, if any.
         _query.Truncate(spawnCount);
+
+        EntityCountText.Text = $"Entity Count: {spawnCount}";
     }
 
 
@@ -115,11 +118,13 @@ public class CubeDemo : SyncScript
         Array.Resize(ref _submissionArray, MaxEntities);
 
         var root = Entity.Get<UIComponent>().Page.RootElement;
-        var simulatedSlider = root.FindVisualChildOfType<Slider>("SimulatedSlider");
-        var renderedSlider = root.FindVisualChildOfType<Slider>("RenderedSlider");
+        SimulatedSlider = root.FindVisualChildOfType<Slider>("SimulatedSlider");
+        RenderedSlider = root.FindVisualChildOfType<Slider>("RenderedSlider");
+        
+        EntityCountText = root.FindVisualChildOfType<TextBlock>("EntityCountText");
 
-        simulatedSlider.ValueChanged += _on_simulated_slider_value_changed;
-        renderedSlider.ValueChanged += _on_rendered_slider_value_changed;
+        SimulatedSlider.ValueChanged += _on_simulated_slider_value_changed;
+        RenderedSlider.ValueChanged += _on_rendered_slider_value_changed;
         
         //  Boilerplate: Prepare our Query that we'll use to interact with the Entities.
         _query = _world.Query<Matrix, Vector3, int>().Build();
@@ -128,8 +133,8 @@ public class CubeDemo : SyncScript
         SetEntityCount(MaxEntities);
 
         //  Boilerplate: Apply the initial state of the UI.
-        _on_simulated_slider_value_changed(simulatedSlider, null);
-        _on_rendered_slider_value_changed(renderedSlider, null);
+        _on_simulated_slider_value_changed(SimulatedSlider, null);
+        _on_rendered_slider_value_changed(RenderedSlider, null);
     }
 
 

@@ -19,6 +19,7 @@ Hierarchy:
                 MaximumWidth: 3.4028235E+38
                 MaximumHeight: 3.4028235E+38
                 MaximumDepth: 3.4028235E+38
+                Name: EntityCountText
                 Text: Entities
                 Font: 34cdc459-19e4-4355-81ec-50e634f229be:SpriteFont
                 TextSize: 30.0
