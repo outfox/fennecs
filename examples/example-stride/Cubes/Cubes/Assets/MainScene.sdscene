@@ -7,10 +7,10 @@ Offset: {X: 0.0, Y: 0.0, Z: 0.0}
 Hierarchy:
     RootParts:
         - ref!! 3dfa566d-9f7a-446d-bfc7-b0eba0f82135
-        - ref!! 59830208-84d4-4cf7-b289-f2983232b0ff
         - ref!! 75172297-b070-4aad-ab08-2f9366e9e519
         - ref!! d3690639-84a6-4c3d-b0c5-606415c8bbe6
         - ref!! e6bc10b0-868c-4b63-a42c-e882ae8fae28
+        - ref!! 90fc197b-ff82-49b3-b3d2-18210f085336
     Parts:
         -   Folder: null
             Entity:
@@ -128,6 +128,21 @@ Hierarchy:
                         Children:
                             d279aa52a057d4b2b6c1dcc3fa1a71e1: ref!! 2e98ba57-34f4-4e00-966b-91d906eb95cb
         -   Entity:
+                Id: 90fc197b-ff82-49b3-b3d2-18210f085336
+                Name: Camera Pivot
+                Components:
+                    d018c61cc23d2a92c935ef42aef2a509: !TransformComponent
+                        Id: 34b2f35f-fb76-46fb-82c2-064c0ac707ad
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children:
+                            99da656685b5a35c7dd7ed277f958a3f: ref!! e7ba488c-7bb3-466a-a300-6c207cd37f15
+                    fda2fa29efd120a0f6b77558e76a2da6: !Cubes.PivotSway,Cubes
+                        Id: e29c14fb-00b8-41a6-8bd9-f8ac22775c72
+                        tweens: 7.0
+                        pauses: 1.0
+        -   Entity:
                 Id: d3690639-84a6-4c3d-b0c5-606415c8bbe6
                 Name: Light Pivot
                 Components:
@@ -139,6 +154,9 @@ Hierarchy:
                         Children:
                             083e3d3516b44acf96bb1edf3d716631: ref!! dcf6fd15-69e6-46ad-8d22-6a68fc3cdd3e
                             905ba696d52e58aeaad0460c81009705: ref!! 2be6b3e3-01cc-4b9c-9751-72ccd15033c8
+                    40827fe729abc4ae8db294a5bd8233ab: !Cubes.PivotRotate,Cubes
+                        Id: bc1ac24b-f0ad-4a50-ba28-e1132df66028
+                        speed: 0.2
         -   Entity:
                 Id: d4e61954-a49e-4846-b745-2831797b594e
                 Name: Sphere

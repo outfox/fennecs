@@ -11,7 +11,7 @@ namespace Cubes;
 
 /// <summary>
 ///     <para>
-///         DemoCubes (Godot version)
+///         DemoCubes (Stride version)
 ///     </para>
 ///     <para>
 ///         All motion  is 100% CPU simulation (no GPU). Here, we demonstrate a simple case how to update the positions of a large number of Entities.
@@ -25,10 +25,10 @@ namespace Cubes;
 ///         <li>1x integer (as a simple identifier)</li>
 ///     </ul>
 ///     <para>
-///         The state is transferred into the Godot Engine in bulk each frame using Query.Raw and submitting just the Matrix4x3 structs directly to a MultiMesh.
+///         The state is transferred into the Stride Engine in bulk each frame using Query.Raw and submitting just the Matrix4x3 structs directly to a MultiMesh.
 ///     </para>
 ///     <para>
-///         That static buffer is then used by Godot's Renderer to display the Cubes.
+///         That static buffer is then used by Stride's Renderer to display the Cubes.
 ///     </para>
 /// </summary>
 public class CubeDemo : SyncScript
@@ -57,25 +57,25 @@ public class CubeDemo : SyncScript
     //  Fennecs: The Query that will be used to interact with the Entities.
     private Query<Matrix, Vector3, int> _query;
 
-    // ?? Boilerplate: Array used to copy the Entity Transform data into Godot's MultiMesh.
+    // ?? Boilerplate: Array used to copy the Entity Transform data into Stride's MultiMesh.
     private Matrix[] _submissionArray = Array.Empty<Matrix>();
 
 
     //  Calculation: Elapsed time value for the simulation.
     private float _time;
 
-    //  Godot: The main MultiMeshInstance3D that will be used to render the cubes.
+    //  Stride: The main MultiMeshInstance3D that will be used to render the cubes.
     public InstancingUserArray InstancingArray;
     public float MaxAmplitude = 200;
 
     //  Config: Size of the simulation space
     public float MinAmplitude = 150;
 
-    //  Godot: Exports to interact with the UI
+    //  Stride: Exports to interact with the UI
     public Slider RenderedSlider;
     public Slider SimulatedSlider;
 
-    //  Godot: Read by the UI to show the simulated Entity count. (not just the visible ones)
+    //  Stride: Read by the UI to show the simulated Entity count. (not just the visible ones)
     private int QueryCount => _query.Count;
 
     //  Facade: Sets and reads the MultiMesh's InstanceCount.
@@ -154,11 +154,8 @@ public class CubeDemo : SyncScript
         _goalAmplitude = MathUtil.Lerp(MinAmplitude, MaxAmplitude, amplitudePortion) * Vector3.One;
         _currentAmplitude = _currentAmplitude * 0.9f + 0.1f * _goalAmplitude;
 
-        //  Engine: Communicate the Number of Visible Entities to Godot's MultiMesh.
-        //InstanceCount = (int) _cubeCount;
-
-        // ------------------------  HERE IS WHERE THE DATA IS SENT TO GODOT ------------------------
-        //  Copy transforms into Multimesh
+        // ------------------------  HERE IS WHERE THE DATA IS SENT TO Stride ------------------------
+        //  Copy transforms into Instanced Mesh
         //  Note that this is a static anonymous method: It doesn't have the allocation baggage of a lambda's closure.
         //  We're saving a few keystrokes by using a method on the Query with only the first Stream Type (Matrix4X3).
         //  But fennecs doesn't limit us. We can use any Instance or Static method, lambda, or delegate here.
@@ -221,7 +218,7 @@ public class CubeDemo : SyncScript
     #region Signal Handlers
 
     /// <summary>
-    ///     Godot: Signal Handler
+    ///     Stride: Signal Handler
     /// </summary>
     private void _on_rendered_slider_value_changed(double value)
     {
@@ -234,7 +231,7 @@ public class CubeDemo : SyncScript
 
 
     /// <summary>
-    ///     Godot: Signal Handler
+    ///     Stride: Signal Handler
     /// </summary>
     private void _on_simulated_slider_value_changed(double value)
     {
