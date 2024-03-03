@@ -6,14 +6,53 @@ ChildrenIds: []
 Offset: {X: 0.0, Y: 0.0, Z: 0.0}
 Hierarchy:
     RootParts:
-        - ref!! 59830208-84d4-4cf7-b289-f2983232b0ff
-        - ref!! fc6fedac-e4cd-4dcd-87e3-1f5cbb8f8fc0
-        - ref!! d6a119ae-5f17-4444-a626-46ce6fa9ddf3
         - ref!! 3dfa566d-9f7a-446d-bfc7-b0eba0f82135
+        - ref!! 59830208-84d4-4cf7-b289-f2983232b0ff
+        - ref!! 75172297-b070-4aad-ab08-2f9366e9e519
+        - ref!! d3690639-84a6-4c3d-b0c5-606415c8bbe6
     Parts:
+        -   Folder: null
+            Entity:
+                Id: 12057809-dee9-42fc-9640-2e4b37db39d2
+                Name: Blue Light
+                Components:
+                    317d3167b91e43f0fe068ab70b9ad10d: !TransformComponent
+                        Id: 2be6b3e3-01cc-4b9c-9751-72ccd15033c8
+                        Position: {X: 200.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    d4c2f2a2b8ee3e2e2a57989756a8981e: !LightComponent
+                        Id: fb74333c-2392-4b22-b8ba-90e943877e45
+                        Type: !LightPoint
+                            Color: !ColorRgbProvider
+                                Value: {R: 0.0, G: 0.4900001, B: 0.93333334}
+                            Radius: 1000.0
+                            Shadow: !LightPointShadowMap
+                                Size: Small
+                                BiasParameters: {}
+                        Intensity: 3000.0
+        -   Entity:
+                Id: 3870710a-9d61-43e1-84cf-2eb8c1779b07
+                Name: GameProfiler
+                Components:
+                    ced5ba7f65f96c07c8cc08759f5c9894: !TransformComponent
+                        Id: 2e98ba57-34f4-4e00-966b-91d906eb95cb
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    cb3ce384c38fec5e6d55be33fdb50bc5: !Cubes.GameProfiler,Cubes
+                        Id: 8a1978ef-643e-4010-a739-ca9ad0f63e4d
+                        Enabled: false
+                        TextColor: {R: 144, G: 238, B: 144, A: 255}
+                        RefreshTime: 500.0
+                        SortingMode: ByTime
+                        FilteringMode: Fps
+                        ResultPage: 1
         -   Entity:
                 Id: 3dfa566d-9f7a-446d-bfc7-b0eba0f82135
-                Name: InstancingMesh
+                Name: Fennecs Cubes
                 Components:
                     4358dd2a1b3b92756a63f8f992465398: !TransformComponent
                         Id: d220599f-6230-493b-a74c-ee3cbd2e4178
@@ -23,34 +62,55 @@ Hierarchy:
                         Children: {}
                     51110b610f80c5176c62cd35c5d04ec7: !ModelComponent
                         Id: 60e11951-c2ed-460d-940c-ba4258ffbe08
-                        Model: 928ef128-c8fc-4e48-a85f-d213ec63bf8f:Sphere
+                        Model: 928ef128-c8fc-4e48-a85f-d213ec63bf8f:box-model
                         Materials:
-                            85688c103e397f0b58c977721e451613~0: e41a7ad9-dd78-4d25-91c9-a18a399410e0:Sphere Material
+                            d9a81497ff54cab1449c5728841b4ac2~0: 27dbebba-32fe-42db-b3ec-571dce9b3dbf:box-material
                     0cb197d739a22ab1fe72346ae7804ba0: !InstancingComponent
                         Id: 043798ab-e7e9-4099-9138-6f9000e8527c
                         Type: !InstancingUserArray
-                            ModelTransformUsage: Ignore
+                            ModelTransformUsage: PostMultiply
                     7d3badc4c1ac23d604678163c6776d7f: !Cubes.CubeDemo,Cubes
                         Id: 65a97e63-8cdc-4a8d-b3b6-8db2096a1ef7
+                        InstancingArray: null
+                        MaxAmplitude: 400.0
+                        MinAmplitude: 250.0
                         RenderedSlider: null
                         SimulatedSlider: null
-                        InstancingArray: null
-                        MinAmplitude: 250.0
-                        MaxAmplitude: 400.0
+        -   Entity:
+                Id: 51526e82-bbdf-46d5-a59b-8236367798c6
+                Name: Orange Light
+                Components:
+                    317d3167b91e43f0fe068ab70b9ad10d: !TransformComponent
+                        Id: dcf6fd15-69e6-46ad-8d22-6a68fc3cdd3e
+                        Position: {X: -200.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    d4c2f2a2b8ee3e2e2a57989756a8981e: !LightComponent
+                        Id: a3100427-958b-4377-b467-0fd9162db69d
+                        Type: !LightPoint
+                            Color: !ColorRgbProvider
+                                Value: {R: 0.93333334, G: 0.5019608, B: 0.0}
+                            Radius: 1000.0
+                            Shadow: !LightPointShadowMap
+                                Size: Small
+                                BiasParameters: {}
+                        Intensity: 3000.0
         -   Entity:
                 Id: 59830208-84d4-4cf7-b289-f2983232b0ff
                 Name: Camera
                 Components:
                     00ee1c24b345164800dba9d214b55586: !TransformComponent
                         Id: e7ba488c-7bb3-466a-a300-6c207cd37f15
-                        Position: {X: 64.469406, Y: 10.720188, Z: -15.260461}
-                        Rotation: {X: -0.047156245, Y: 0.78388804, Z: 0.08186131, W: 0.61367285}
+                        Position: {X: 0.0, Y: 0.0, Z: -100.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
                     8c8e47e311b1f3cb437f4caf1d8536a2: !CameraComponent
                         Id: 7242e14b-e0e6-44d7-bf4f-54a7d01c0b8c
                         Name: null
                         Projection: Perspective
+                        VerticalFieldOfView: 70.0
                         FarClipPlane: 5000.0
                         Slot: 8d278965-4f74-4685-9c0a-adddddc96104
                     b02ef22bc8be77890cf307b80611ab89: !Cubes.BasicCameraController,Cubes
@@ -63,44 +123,25 @@ Hierarchy:
                         MouseRotationSpeed: {X: 1.0, Y: 1.0}
                         TouchRotationSpeed: {X: 1.0, Y: 0.7}
         -   Entity:
-                Id: d6a119ae-5f17-4444-a626-46ce6fa9ddf3
-                Name: Skybox
+                Id: 75172297-b070-4aad-ab08-2f9366e9e519
+                Name: Profiler
                 Components:
-                    23cf1d710ecb838930a0f62789deb626: !TransformComponent
-                        Id: 938a6180-7992-4823-8149-2750bfbbb7b8
-                        Position: {X: 0.0, Y: 2.0, Z: -2.0}
+                    1a52383c2a597396a71d7a759af1d9aa: !TransformComponent
+                        Id: 8722d209-7405-4608-b5d7-2740b393240b
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                        Children: {}
-                    95406e4bd938fcd8765009df69b563c6: !BackgroundComponent
-                        Id: 8e2f036d-1e3f-4fe5-9c89-f4c4014fc505
-                        Texture: 1500f7be-08de-4153-a217-8f3b8310ff3e:Skybox texture
-                    081d6e3680683c3544380648551675a4: !LightComponent
-                        Id: 01978925-fb1e-4bb2-b9a4-7a0db17808fa
-                        Type: !LightSkybox
-                            Skybox: 60e2f878-56a3-4f05-acda-4c795345e3b4:Skybox
+                        Children:
+                            d279aa52a057d4b2b6c1dcc3fa1a71e1: ref!! 2e98ba57-34f4-4e00-966b-91d906eb95cb
         -   Entity:
-                Id: fc6fedac-e4cd-4dcd-87e3-1f5cbb8f8fc0
-                Name: Directional light
+                Id: d3690639-84a6-4c3d-b0c5-606415c8bbe6
+                Name: Light Pivot
                 Components:
-                    ade647f58ade8c2ffe8b69a314148e4a: !TransformComponent
-                        Id: 607c77a4-fbb6-45cb-aa36-ea757a69cde3
-                        Position: {X: 0.0, Y: 2.0, Z: 0.0}
-                        Rotation: {X: 1.131334E-08, Y: -0.9659258, Z: -0.25881904, W: -4.222196E-08}
+                    c854b23ddedff97f88c09d9030063a0a: !TransformComponent
+                        Id: c8630e3c-c9ba-4527-9462-3b979f5cbab1
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                        Children: {}
-                    a7ee41df5766fd977fb3146a2da86044: !LightComponent
-                        Id: 433eb448-42b7-4945-bccd-144f12191352
-                        Type: !LightDirectional
-                            Color: !ColorRgbProvider
-                                Value: {R: 1.0, G: 1.0, B: 1.0}
-                            Shadow: !LightDirectionalShadowMap
-                                Enabled: true
-                                Filter: !LightShadowMapFilterTypePcf
-                                    FilterSize: Filter5x5
-                                Size: Large
-                                DepthRange: {}
-                                PartitionMode: !LightDirectionalShadowMap.PartitionLogarithmic {}
-                                ComputeTransmittance: false
-                                BiasParameters: {}
-                        Intensity: 20.0
+                        Children:
+                            083e3d3516b44acf96bb1edf3d716631: ref!! dcf6fd15-69e6-46ad-8d22-6a68fc3cdd3e
+                            905ba696d52e58aeaad0460c81009705: ref!! 2be6b3e3-01cc-4b9c-9751-72ccd15033c8

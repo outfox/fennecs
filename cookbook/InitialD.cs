@@ -3,9 +3,8 @@
 using fennecs;
 
 if (!Console.IsOutputRedirected) Console.Clear();
-Console.WriteLine("Midnight, somewhere in Japan.");
+Console.WriteLine("Shusai: fuji hara tōfu ten");
 
-// Shusai: fuji hara tōfu ten
 var world = new World();
 
 // The Driver

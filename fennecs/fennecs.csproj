@@ -22,6 +22,8 @@
         <LangVersion>12</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

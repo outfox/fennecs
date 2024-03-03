@@ -3,7 +3,7 @@ title: 2. Initial D (Components)
 outline: [2, 3]
 ---
 
-# Tuning up a Sleeper
+# Revving up a Sleeper
 
 ::: info :neofox_floof_mug: MMMH, REAL CODE
 This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs principles.

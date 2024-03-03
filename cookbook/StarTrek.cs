@@ -11,6 +11,7 @@ var world = new World();
 var kirk = world.Spawn();
 Console.WriteLine($"{"Kirk",10} is {kirk} - boldly going!");
 
+Console.WriteLine("Kirk is gone.");
 world.Despawn(kirk);
 
 var picard = world.Spawn();
@@ -19,6 +20,7 @@ Console.WriteLine($"{"Picard",10} is {picard} - the Next Generation!");
 var janeway = world.Spawn();
 Console.WriteLine($"{"Janeway",10} is {janeway} - got her crew home!");
 
+Console.WriteLine("Picard is gone.");
 world.Despawn(picard);
 
 var georgiou = world.Spawn();

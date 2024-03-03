@@ -1,13 +1,13 @@
 !ProceduralModelAsset
-Id: 417134b7-8908-46e3-8da6-a34be5bc3f19
+Id: 928ef128-c8fc-4e48-a85f-d213ec63bf8f
 SerializedVersion: {Stride: 2.0.0.0}
 Tags: []
-Type: !PlaneProceduralModel
-    Size: {X: 10.0, Y: 10.0}
-    Tessellation: {X: 1, Y: 1}
+Type: !CubeProceduralModel
+    Size: {X: 1.0, Y: 1.0, Z: 1.0}
     Scale: {X: 1.0, Y: 1.0, Z: 1.0}
     UvScale: {X: 1.0, Y: 1.0}
     LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
     NumberOfTextureCoordinates: 10
     MaterialInstance:
-        Material: 5255b365-d17d-483a-9720-77107ad1b026:Ground Material
+        Material: 27dbebba-32fe-42db-b3ec-571dce9b3dbf:box-material
+        IsShadowCaster: false

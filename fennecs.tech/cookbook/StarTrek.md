@@ -3,7 +3,7 @@ title: 1. Star Trek (Entities)
 outline: [2, 3]
 ---
 
-# Famous Captains - none alike!
+# Famous ~~Captains~~ Entities - none alike!
 
 ::: info :neofox_floof_mug: MMMH, REAL CODE
 This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs principles.

@@ -6,7 +6,6 @@ using Stride.Core.Mathematics;
 using Stride.Engine;
 using Stride.UI.Controls;
 using Environment = System.Environment;
-using Vector3 = Stride.Core.Mathematics.Vector3;
 
 namespace Cubes;
 
@@ -67,10 +66,10 @@ public class CubeDemo : SyncScript
 
     //  Godot: The main MultiMeshInstance3D that will be used to render the cubes.
     public InstancingUserArray InstancingArray;
-    public float MaxAmplitude = 400;
+    public float MaxAmplitude = 200;
 
     //  Config: Size of the simulation space
-    public float MinAmplitude = 250;
+    public float MinAmplitude = 150;
 
     //  Godot: Exports to interact with the UI
     public Slider RenderedSlider;
@@ -111,10 +110,7 @@ public class CubeDemo : SyncScript
     {
         var component = Entity.Get<InstancingComponent>();
         InstancingArray = (InstancingUserArray) component.Type;
-
-        component.Type = InstancingArray;
-
-        //  Workaround for Godot not accepting oversize Arrays or Spans.
+        
         Array.Resize(ref _submissionArray, MaxEntities);
 
 
@@ -126,7 +122,7 @@ public class CubeDemo : SyncScript
 
         //  Boilerplate: Apply the initial state of the UI.
         _on_simulated_slider_value_changed(.5);
-        _on_rendered_slider_value_changed(.5);
+        _on_rendered_slider_value_changed(.3);
     }
 
 
@@ -216,11 +212,9 @@ public class CubeDemo : SyncScript
 
         //  Update Component: Build & store Matrix Transform (for the MultiMesh), scaling sizes between 1 and 3
         var scale = 2f * (1.5f - MathF.Sqrt(uniform.CubeCount / MaxEntities));
-        transform = new Matrix
-        {
-            TranslationVector = position * uniform.Amplitude,
-            ScaleVector = scale * Vector3.One,
-        };
+        
+        var goodMatrix = Matrix.Scaling(scale * Vector3.One) * Matrix.Translation(position * uniform.Amplitude);
+        transform = goodMatrix;
     }
 
 
