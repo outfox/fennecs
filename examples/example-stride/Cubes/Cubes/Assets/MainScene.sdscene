@@ -29,11 +29,11 @@ Hierarchy:
                         Type: !LightPoint
                             Color: !ColorRgbProvider
                                 Value: {R: 0.24313726, G: 0.4627451, B: 0.99607843}
-                            Radius: 300.0
+                            Radius: 250.0
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
-                        Intensity: 7000.0
+                        Intensity: 9000.0
         -   Entity:
                 Id: 3870710a-9d61-43e1-84cf-2eb8c1779b07
                 Name: GameProfiler
@@ -94,11 +94,11 @@ Hierarchy:
                         Type: !LightPoint
                             Color: !ColorRgbProvider
                                 Value: {R: 0.93333334, G: 0.5019608, B: 0.0}
-                            Radius: 300.0
+                            Radius: 250.0
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
-                        Intensity: 7000.0
+                        Intensity: 8000.0
         -   Entity:
                 Id: 59830208-84d4-4cf7-b289-f2983232b0ff
                 Name: Camera
@@ -116,15 +116,6 @@ Hierarchy:
                         VerticalFieldOfView: 70.0
                         FarClipPlane: 5000.0
                         Slot: 8d278965-4f74-4685-9c0a-adddddc96104
-                    b02ef22bc8be77890cf307b80611ab89: !Cubes.BasicCameraController,Cubes
-                        Id: 76b41b99-b33a-476c-a504-115ebc902e4e
-                        Gamepad: false
-                        KeyboardMovementSpeed: {X: 5.0, Y: 5.0, Z: 5.0}
-                        TouchMovementSpeed: {X: 0.7, Y: 0.7, Z: 0.3}
-                        SpeedFactor: 50.0
-                        KeyboardRotationSpeed: {X: 3.0, Y: 3.0}
-                        MouseRotationSpeed: {X: 1.0, Y: 1.0}
-                        TouchRotationSpeed: {X: 1.0, Y: 0.7}
         -   Entity:
                 Id: 75172297-b070-4aad-ab08-2f9366e9e519
                 Name: Profiler
@@ -192,9 +183,11 @@ Hierarchy:
                     4fd19bd6e4b6554f904471bcd127ab99: !LightComponent
                         Id: 17c63465-7240-4252-b548-c2dee33fb221
                         Type: !LightSkybox
-                            Skybox: a25fb4f9-359f-4029-a39d-a830b6067e5a:Skybox (2)
-                        Intensity: 0.2
+                            Skybox: a25fb4f9-359f-4029-a39d-a830b6067e5a:dark blue sky
+                        Intensity: 0.5
                     43afec2ecd92b7790a9684cc22d90cdd: !BackgroundComponent
                         Id: 513c9df8-d501-4b57-ab89-f53839ea53d5
                         Enabled: false
-                        Texture: null
+                        Texture: e86e1b8e-e9d7-4da8-83ae-7949dda244fe:skybox
+                        Intensity: 0.25
+                        Is2D: true
