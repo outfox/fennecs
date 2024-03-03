@@ -112,11 +112,11 @@ Hierarchy:
                         Children: {}
                     8c8e47e311b1f3cb437f4caf1d8536a2: !CameraComponent
                         Id: 7242e14b-e0e6-44d7-bf4f-54a7d01c0b8c
-                        Name: null
+                        Name: Main
                         Projection: Perspective
                         VerticalFieldOfView: 70.0
                         FarClipPlane: 5000.0
-                        Slot: 8d278965-4f74-4685-9c0a-adddddc96104
+                        Slot: 3c495420-6797-47d9-aa88-d8f9388f2913
                     02f7a080eaeba9f876670a190b502c46: !Cubes.PivotExtend,Cubes
                         Id: 4408d6d4-b64c-4f83-8751-73b29cf38a07
                         tweens: 7.0

@@ -1,4 +1,4 @@
-*.sln
+/*.sln
 .vs
 .vscode
 .idea
