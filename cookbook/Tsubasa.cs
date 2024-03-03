@@ -1,35 +1,38 @@
 ﻿// Tsubasa.cs (type declarations at bottom of file)
 
 using fennecs;
+using Name = string;
 
-// Practice day!
-var world = new World();
+Console.WriteLine("School's out!");
 
 // Meet the Team!
-string[] names =
+Name[] names =
 [
     "Kojiro", "Genzo", "Taro", "Hikaru", "Jun",
     "Shingo", "Ryo", "Takeshi", "Masao", "Kazuo",
 ];
 
+var world = new World();
+var random = new Random(10);
+
 foreach (var name in names)
     world.Spawn()
         .Add<Player>()
-        .Add<Name>(name)
-        .Add<Talent>(false)
-        .Add<Position>(RandomRadius(25));
+        .Add(name)
+        .Add<Talent>(data: false)
+        .Add<Position>(RandomRadius(radius: 25));
 
 // Meet our Star!
 world.Spawn()
     .Add<Player>()
-    .Add<Name>("Tsubasa")
-    .Add<Talent>(true)
-    .Add<Position>(new Vector2(0, 200));
+    .Add("Tsubasa")
+    .Add<Talent>(data: true)
+    .Add<Position>(new Vector2(x: 0, y: 200));
 
 
 var ball = world.Spawn()
     .Add<Ball>()
-    .Add<Position>(new Vector2(0, 0));
+    .Add<Position>(new Vector2(x: 0, y: 0));
 
 var team = world
     .Query<Name, Position, Talent>()
@@ -44,11 +47,11 @@ do
 {
     if (kicked)
     {
-        Thread.Sleep(500);
+        Thread.Sleep(millisecondsTimeout: 400);
         kicked = false;
     }
 
-    Thread.Sleep(100);
+    Thread.Sleep(millisecondsTimeout: 200);
     Console.Clear();
 
     //  Update each player on the field.
@@ -64,14 +67,14 @@ do
         var direction = ballPosition.value - playerPosition.value;
         if (direction.LengthSquared() > 1f)
         {
-            var dash = direction * (Random.Shared.NextSingle() * .7f + 0.1f);
+            var dash = direction * (random.NextSingle() * .7f + 0.1f);
             playerPosition += dash;
             Console.WriteLine($"{playerName,15} runs towards the ball!" +
                               $" ... d = {direction.Length():f2}m");
             return;
         }
 
-        ballPosition += RandomRadius(10, true);
+        ballPosition += RandomRadius(radius: 10, onCircle: true);
         kicked = true;
         Console.WriteLine($">>>>> {playerName} kicks the ball!");
 
@@ -82,16 +85,17 @@ do
     });
 } while (!goldenGoal);
 
-//  Hit the Showers, boys! You've earned it.
+Console.WriteLine("..... Hit the Showers, boys! You've earned it.");
 return;
 
 
+#region Components and Maths
 // Math Helpers
 Vector2 RandomRadius(float radius, bool onCircle = false)
 {
     var result = new Vector2(
-        Random.Shared.NextSingle() * radius,
-        Random.Shared.NextSingle() * radius);
+        random.NextSingle() * radius,
+        random.NextSingle() * radius);
 
     if (onCircle) return Vector2.Normalize(result) * radius;
 
@@ -111,18 +115,8 @@ internal struct Ball;
 internal readonly struct Talent(bool value)
 {
     private bool value { get; } = value;
-
-
-    public static implicit operator Talent(bool value)
-    {
-        return new Talent(value);
-    }
-
-
-    public static implicit operator bool(Talent talent)
-    {
-        return talent.value;
-    }
+    public static implicit operator Talent(bool value) => new(value);
+    public static implicit operator bool(Talent talent) => talent.value;
 }
 
 
@@ -130,38 +124,8 @@ internal readonly struct Talent(bool value)
 internal readonly struct Position(Vector2 value)
 {
     public Vector2 value { get; } = value;
-
-
-    public static implicit operator Vector2(Position other)
-    {
-        return other.value;
-    }
-
-
-    public static implicit operator Position(Vector2 value)
-    {
-        return new Position(value);
-    }
-
-
-    public override string ToString()
-    {
-        return value.ToString();
-    }
+    public static implicit operator Vector2(Position other) => other.value;
+    public static implicit operator Position(Vector2 value) => new(value);
+    public override string ToString() => value.ToString();
 }
-
-
-// Name Component wrapping a string.
-internal readonly struct Name(string who)
-{
-    public static implicit operator Name(string who)
-    {
-        return new Name(who);
-    }
-
-
-    public override string ToString()
-    {
-        return who;
-    }
-}
+#endregion

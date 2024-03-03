@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <Compile Include="InitialD.cs"/>
-        <Compile Include="GlobalUsings.cs"/>
+        <Compile Include="GlobalUsings.cs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -2,10 +2,12 @@
 
 using fennecs;
 
-// Directed by Trentin Quarantino
+Console.WriteLine("Directed by: Trentin Quarantino");
+
+// The world is a stage. 
 var world = new World();
 
-// This is us. Here. Now. 
+// This is us. Here and now.
 var us = world.Spawn().Add<Location>("here");
 
 // Ok, let's maybe not spend 4 years in a coma!
@@ -24,14 +26,14 @@ for (var i = 0; i < 5; i++)
 
 // We query for their Locations; to pay them a visit;
 // and their Entity Id. It's a surprise tool that will help us later!
-var query = world.Query<Location, Identity>()
+var betrayingVipers = world.Query<Location, Identity>()
     .Has<Betrayed>(us)
     .Build();
 
-Console.WriteLine($"As we said, there were {query.Count} of them.");
+Console.WriteLine($"As we said, there were {betrayingVipers.Count} of them.");
 
 // They went into hiding around the world.
-query.For((ref Location location) =>
+betrayingVipers.For((ref Location location) =>
 {
     location = $"hideout 0x{Random.Shared.Next():x8}";
     Console.WriteLine($"One hides in {location}.");
@@ -43,12 +45,10 @@ Console.WriteLine($"We are still {us.Ref<Location>()}, though.");
 Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
 
 // Choose your weapon:
-// query.Clear(); ... or
-// query.Truncate(0);
-// But nah... we want to see the white in their eyes!
-
-// Time to visit each one personally!
-query.For((ref Location theirLocation, ref Identity theirIdentity) =>
+//    query.Despawn();
+//    query.Truncate(0);
+// -> visiting each entity personally
+betrayingVipers.For((ref Location theirLocation, ref Identity theirIdentity) =>
 {
     ref var ourLocation = ref us.Ref<Location>();
     ourLocation = theirLocation;
@@ -61,7 +61,7 @@ query.For((ref Location theirLocation, ref Identity theirIdentity) =>
 });
 
 // Survey the aftermath.
-Console.WriteLine($"Now, there are {query.Count} of them.");
+Console.WriteLine($"Now, there are {betrayingVipers.Count} of them.");
 Console.WriteLine($"Let's get out of {us.Ref<Location>()}.");
 us.Ref<Location>() = "traveling";
 
@@ -71,7 +71,6 @@ Console.WriteLine($"We've been {us.Ref<Location>()} for a while.");
 
 
 # region Components
-
 // "tag" (size-less) component, used here to back a Relation
 internal struct Grudge;
 
@@ -83,16 +82,7 @@ internal struct Betrayed;
 // A Location Component wrapping a string.
 internal readonly struct Location(string there)
 {
-    public static implicit operator Location(string location)
-    {
-        return new Location(location);
-    }
-
-
-    public override string ToString()
-    {
-        return there;
-    }
+    public static implicit operator Location(string location) => new(location);
+    public override string ToString() => there;
 }
-
 # endregion
