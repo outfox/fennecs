@@ -23,7 +23,7 @@ Attributes:
             Offset: {X: 0.0, Y: 0.0}
             Swizzle: null
         Intensity: !ComputeFloat
-            Value*: 10.0
+            Value*: 8.0
     Transparency: !MaterialTransparencyAdditiveFeature
         Alpha: !ComputeFloat
             Value: 0.5
