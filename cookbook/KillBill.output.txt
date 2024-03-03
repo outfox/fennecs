@@ -1,10 +1,10 @@
 Directed by: Trentin Quarantino
 As we said, there were 5 of them.
-One hides in hideout 0x45c2b828.
-One hides in hideout 0x1242eac6.
-One hides in hideout 0x35d2da0c.
-One hides in hideout 0x17e27269.
-One hides in hideout 0x40589d13.
+One hides in hideout 0x164438c3.
+One hides in hideout 0x3131d41e.
+One hides in hideout 0x0b659d36.
+One hides in hideout 0x6ce7dd0d.
+One hides in hideout 0x5a13e179.
 We are still here, though.
 Do we hold grudges? True.
 Oh, hello E-00000002:00001! Remember E-00000001:00001?
@@ -13,6 +13,77 @@ Oh, hello E-00000004:00001! Remember E-00000001:00001?
 Oh, hello E-00000005:00001! Remember E-00000001:00001?
 Oh, hello E-00000006:00001! Remember E-00000001:00001?
 Now, there are 0 of them.
-Let's get out of hideout 0x40589d13.
+Let's get out of hideout 0x5a13e179.
 Any more grudges? False.
 We've been traveling for a while.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🦊
