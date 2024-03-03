@@ -30,7 +30,7 @@ Hierarchy:
                         Type: !LightPoint
                             Color: !ColorRgbProvider
                                 Value: {R: 0.24313726, G: 0.4627451, B: 0.99607843}
-                            Radius: 320.0
+                            Radius: 300.0
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
@@ -233,4 +233,4 @@ Hierarchy:
                         Page: dace278b-1b92-4bd3-bdbf-a8cd9a61c028:Demo UI Page
                         Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
                         Size: {X: 1.28, Y: 0.72, Z: 1.0}
-                        RenderGroup: Group1
+                        RenderGroup: Group31

@@ -44,7 +44,7 @@ Attributes:
         UseAlpha: true
     Transparency: !MaterialTransparencyAdditiveFeature
         Alpha: !ComputeFloat
-            Value: 1.0
+            Value: 0.8
         Tint: !ComputeColor
             PremultiplyAlpha: false
             Value: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}

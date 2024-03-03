@@ -13,7 +13,6 @@ Hierarchy:
                 DependencyProperties:
                     778882b2b5cebf6bd0af3142731eb77f~Canvas.UseAbsolutePositionPropertyKey: true
                 BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
-                Opacity: 0.4
                 Width: 320.5
                 Height: 320.5
                 Depth: 1.0
@@ -29,7 +28,6 @@ Hierarchy:
                 Id: 618a4250-1388-424d-b786-5c09a07a6488
                 DependencyProperties: {}
                 BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
-                Opacity: 0.4
                 Width: 624.0
                 Height: 44.0
                 HorizontalAlignment: Left
