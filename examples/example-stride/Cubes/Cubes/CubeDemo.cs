@@ -4,7 +4,9 @@ using System;
 using fennecs;
 using Stride.Core.Mathematics;
 using Stride.Engine;
+using Stride.UI;
 using Stride.UI.Controls;
+using Stride.UI.Events;
 using Environment = System.Environment;
 
 namespace Cubes;
@@ -112,7 +114,13 @@ public class CubeDemo : SyncScript
         
         Array.Resize(ref _submissionArray, MaxEntities);
 
+        var root = Entity.Get<UIComponent>().Page.RootElement;
+        var simulatedSlider = root.FindVisualChildOfType<Slider>("SimulatedSlider");
+        var renderedSlider = root.FindVisualChildOfType<Slider>("RenderedSlider");
 
+        simulatedSlider.ValueChanged += _on_simulated_slider_value_changed;
+        renderedSlider.ValueChanged += _on_rendered_slider_value_changed;
+        
         //  Boilerplate: Prepare our Query that we'll use to interact with the Entities.
         _query = _world.Query<Matrix, Vector3, int>().Build();
 
@@ -120,8 +128,8 @@ public class CubeDemo : SyncScript
         SetEntityCount(MaxEntities);
 
         //  Boilerplate: Apply the initial state of the UI.
-        _on_simulated_slider_value_changed(.4);
-        _on_rendered_slider_value_changed(.3);
+        _on_simulated_slider_value_changed(simulatedSlider, null);
+        _on_rendered_slider_value_changed(renderedSlider, null);
     }
 
 
@@ -219,8 +227,11 @@ public class CubeDemo : SyncScript
     /// <summary>
     ///     Stride: Signal Handler
     /// </summary>
-    private void _on_rendered_slider_value_changed(double value)
+    private void _on_rendered_slider_value_changed(object sender, RoutedEventArgs routed_event_args)
     {
+        var slider = (Slider) sender;
+        var value = slider.Value;
+        
         // Set the number of entities to render
         _currentRenderedFraction = (float) value;
 
@@ -232,8 +243,10 @@ public class CubeDemo : SyncScript
     /// <summary>
     ///     Stride: Signal Handler
     /// </summary>
-    private void _on_simulated_slider_value_changed(double value)
+    private void _on_simulated_slider_value_changed(object sender, RoutedEventArgs routed_event_args)
     {
+        var slider = (Slider) sender;
+        var value = slider.Value;
         // Set the number of entities to simulate
         var count = (int) Math.Ceiling(Math.Pow(value, MathF.Sqrt(2)) * MaxEntities);
         count = Math.Clamp((count / 100 + 1) * 100, 0, MaxEntities);
