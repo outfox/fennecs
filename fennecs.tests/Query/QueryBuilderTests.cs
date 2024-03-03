@@ -95,7 +95,13 @@ public class QueryBuilderTests
         using var builder = world.Query<int, string, double>();
         Assert.NotNull(builder);
         builder.Has<string>("123");
-        builder.Has<int>(world.Spawn());
+        builder.Has<int>(world.Spawn())
+            .Has<Thread>()
+            .Not<Half>()
+            .Not(new List<int>())
+            .Any<byte>()
+            .Any(new List<float>());
+            
         builder.Build();
     }
 
@@ -107,7 +113,12 @@ public class QueryBuilderTests
         var builder = world.Query<int, string, double, float>();
         Assert.NotNull(builder);
         builder.Has<string>("123");
-        builder.Has<int>(world.Spawn());
+        builder.Has<int>(world.Spawn())
+            .Has<Thread>()
+            .Not<Half>()
+            .Not(new List<int>())
+            .Any<byte>()
+            .Any(new List<float>());
         builder.Build();
     }
 
@@ -119,7 +130,12 @@ public class QueryBuilderTests
         using var builder = world.Query<int, string, double, float, long>();
         Assert.NotNull(builder);
         builder.Has<string>("123");
-        builder.Has<int>(world.Spawn());
+        builder.Has<int>(world.Spawn())
+            .Has<Thread>()
+            .Not<Half>()
+            .Not(new List<int>())
+            .Any<byte>()
+            .Any(new List<float>());
         builder.Build();
     }
 
