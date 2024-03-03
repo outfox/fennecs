@@ -68,12 +68,12 @@ public partial class CubeDemo : Node
 
 	// Godot: Exports to interact with the UI
 	[Export] public Camera3D Camera;
-	[Export] public float MaxAmplitude = 400;
 
 	// Godot: The main MultiMeshInstance3D that will be used to render the cubes.
 	[Export] public MultiMeshInstance3D MeshInstance;
 
 	// Config: Size of the simulation space
+	[Export] public float MaxAmplitude = 400;
 	[Export] public float MinAmplitude = 250;
 	[Export] public Slider RenderedSlider;
 	[Export] public Slider SimulatedSlider;

@@ -1,7 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene load_steps=17 format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" path="res://CubeDemo/CubeDemo.cs" id="1_1jicl"]
-[ext_resource type="Material" uid="uid://bnswggdiq40dw" path="res://CubeDemo/Materials/box_material.tres" id="2_a5jon"]
+[ext_resource type="BoxMesh" uid="uid://dqwvifxnefio3" path="res://CubeDemo/Materials/box-mesh.tres" id="2_e3y7g"]
 [ext_resource type="Theme" uid="uid://xobxg8yxjsmu" path="res://zzzShared/fennecs_theme.tres" id="3_h31e3"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="4_plwtk"]
 [ext_resource type="PackedScene" uid="uid://bdfvsd3p00icf" path="res://zzzShared/user_interface.tscn" id="5_gh02a"]
@@ -11,13 +11,9 @@
 [ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://CubeDemo/Materials/orange_light.tres" id="9_t1ajc"]
 [ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://CubeDemo/Materials/blue_light.tres" id="10_vph3x"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_so3e6"]
-material = ExtResource("2_a5jon")
-size = Vector3(3, 3, 3)
-
 [sub_resource type="MultiMesh" id="MultiMesh_fdhkq"]
 transform_format = 1
-mesh = SubResource("BoxMesh_so3e6")
+mesh = ExtResource("2_e3y7g")
 
 [sub_resource type="LabelSettings" id="LabelSettings_tpdu5"]
 font = ExtResource("4_plwtk")

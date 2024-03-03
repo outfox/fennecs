@@ -7,7 +7,7 @@ Attributes:
         DiffuseMap: !ComputeTextureColor
             FallbackValue:
                 PremultiplyAlpha: false
-                Value: {R: 1.0, G: 1.0, B: 1.0, A: 0.2509804}
+                Value: {R: 1.0, G: 1.0, B: 1.0, A: 0.3764706}
             Scale: {X: 1.0, Y: 1.0}
             Offset: {X: 0.0, Y: 0.0}
             Swizzle: null
@@ -22,7 +22,9 @@ Attributes:
             Swizzle: null
         Intensity: !ComputeFloat
             Value: 0.5
-    SpecularModel: !MaterialSpecularMicrofacetModelFeature
+    SpecularModel: !MaterialSpecularCelShadingModelFeature
+        RampFunction: !MaterialCelShadingLightDefault
+            IsBlackAndWhite: false
         Fresnel: !MaterialSpecularMicrofacetFresnelSchlick {}
         Visibility: !MaterialSpecularMicrofacetVisibilitySmithSchlickGGX {}
         NormalDistribution: !MaterialSpecularMicrofacetNormalDistributionGGX {}

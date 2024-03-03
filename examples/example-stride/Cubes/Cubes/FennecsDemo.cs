@@ -66,10 +66,9 @@ public class CubeDemo : SyncScript
 
     //  Stride: The main MultiMeshInstance3D that will be used to render the cubes.
     public InstancingUserArray InstancingArray;
-    public float MaxAmplitude = 200;
 
-    //  Config: Size of the simulation space
-    public float MinAmplitude = 150;
+    public float MaxAmplitude = 400;
+    public float MinAmplitude = 250;
 
     //  Stride: Exports to interact with the UI
     public Slider RenderedSlider;

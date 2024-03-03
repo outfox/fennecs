@@ -1,0 +1,58 @@
+!UIPageAsset
+Id: dace278b-1b92-4bd3-bdbf-a8cd9a61c028
+SerializedVersion: {Stride: 2.1.0.1}
+Tags: []
+Design:
+    Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+Hierarchy:
+    RootParts:
+        - !Grid ref!! fc5e70a6-197d-40ce-9e32-41d23284abd0
+    Parts:
+        -   UIElement: !ImageElement
+                Id: 5089cc59-8864-43d5-a3ba-1f37afde5d18
+                DependencyProperties:
+                    778882b2b5cebf6bd0af3142731eb77f~Canvas.UseAbsolutePositionPropertyKey: true
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Opacity: 0.4
+                Width: 320.5
+                Height: 320.5
+                Depth: 1.0
+                Margin: {Left: 457.0, Top: 191.5, Right: 502.5, Bottom: 208.0}
+                MaximumWidth: 3.4028235E+38
+                MaximumHeight: 3.4028235E+38
+                MaximumDepth: 3.4028235E+38
+                Source: !SpriteFromTexture
+                    Texture: 10ee4e7a-d0bb-4da5-b6cb-0e4f3c127b4d:fennecs-logo
+                    Center: {X: 0.0, Y: 0.0}
+                Color: {R: 255, G: 255, B: 255, A: 255}
+        -   UIElement: !TextBlock
+                Id: 618a4250-1388-424d-b786-5c09a07a6488
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Opacity: 0.4
+                Width: 624.0
+                Height: 44.0
+                HorizontalAlignment: Left
+                VerticalAlignment: Bottom
+                Margin: {Left: 12.0}
+                MaximumWidth: 3.4028235E+38
+                MaximumHeight: 3.4028235E+38
+                MaximumDepth: 3.4028235E+38
+                Text: https://fennecs.tech
+                Font: 34cdc459-19e4-4355-81ec-50e634f229be:SpriteFont
+                TextSize: 30.0
+                TextColor: {R: 240, G: 240, B: 240, A: 255}
+        -   UIElement: !Grid
+                Id: fc5e70a6-197d-40ce-9e32-41d23284abd0
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Margin: {}
+                MaximumWidth: 3.4028235E+38
+                MaximumHeight: 3.4028235E+38
+                MaximumDepth: 3.4028235E+38
+                Children:
+                    da091b85fcfe9058a09a5c8b6f93d399: !ImageElement ref!! 5089cc59-8864-43d5-a3ba-1f37afde5d18
+                    97ab271c8aebde41df669ec6103e50bb: !TextBlock ref!! 618a4250-1388-424d-b786-5c09a07a6488
+                RowDefinitions: {}
+                ColumnDefinitions: {}
+                LayerDefinitions: {}

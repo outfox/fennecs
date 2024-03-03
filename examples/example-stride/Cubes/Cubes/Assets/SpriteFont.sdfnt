@@ -1,0 +1,13 @@
+!SpriteFont
+Id: 34cdc459-19e4-4355-81ec-50e634f229be
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+FontSource: !SystemFontProvider
+    FontName: Bai Jamjuree
+    Style: Regular
+FontType: !SignedDistanceFieldSpriteFontType
+    CharacterSet: null
+    CharacterRegions:
+        4bd764651926bc5234b40c83ff45fd99:
+            Start: ' '
+            End: "\x7F"

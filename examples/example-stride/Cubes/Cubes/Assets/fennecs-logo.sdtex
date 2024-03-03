@@ -1,0 +1,7 @@
+!Texture
+Id: 10ee4e7a-d0bb-4da5-b6cb-0e4f3c127b4d
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file ../Resources/fennecs-logo.png
+Type: !ColorTextureType
+    ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}

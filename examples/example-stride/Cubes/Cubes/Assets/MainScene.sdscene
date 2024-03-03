@@ -11,6 +11,7 @@ Hierarchy:
         - ref!! d3690639-84a6-4c3d-b0c5-606415c8bbe6
         - ref!! e6bc10b0-868c-4b63-a42c-e882ae8fae28
         - ref!! 90fc197b-ff82-49b3-b3d2-18210f085336
+        - ref!! ec011512-7994-4171-a563-e74dc9c40da5
     Parts:
         -   Folder: null
             Entity:
@@ -29,7 +30,7 @@ Hierarchy:
                         Type: !LightPoint
                             Color: !ColorRgbProvider
                                 Value: {R: 0.24313726, G: 0.4627451, B: 0.99607843}
-                            Radius: 250.0
+                            Radius: 320.0
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
@@ -94,7 +95,7 @@ Hierarchy:
                         Type: !LightPoint
                             Color: !ColorRgbProvider
                                 Value: {R: 0.93333334, G: 0.5019608, B: 0.0}
-                            Radius: 250.0
+                            Radius: 320.0
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
@@ -105,7 +106,7 @@ Hierarchy:
                 Components:
                     00ee1c24b345164800dba9d214b55586: !TransformComponent
                         Id: e7ba488c-7bb3-466a-a300-6c207cd37f15
-                        Position: {X: 0.0, Y: 0.0, Z: 400.0}
+                        Position: {X: 0.0, Y: 0.0, Z: 200.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
@@ -116,6 +117,14 @@ Hierarchy:
                         VerticalFieldOfView: 70.0
                         FarClipPlane: 5000.0
                         Slot: 8d278965-4f74-4685-9c0a-adddddc96104
+                    02f7a080eaeba9f876670a190b502c46: !Cubes.PivotExtend,Cubes
+                        Id: 4408d6d4-b64c-4f83-8751-73b29cf38a07
+                        tweens: 7.0
+                        pauses: 1.0
+                        minimumXY: -50.0
+                        maximumXY: 50.0
+                        minimumZ: 50.0
+                        maximumZ: 400.0
         -   Entity:
                 Id: 75172297-b070-4aad-ab08-2f9366e9e519
                 Name: Profiler
@@ -209,3 +218,19 @@ Hierarchy:
                         Texture: e86e1b8e-e9d7-4da8-83ae-7949dda244fe:skybox
                         Intensity: 0.25
                         Is2D: true
+        -   Entity:
+                Id: ec011512-7994-4171-a563-e74dc9c40da5
+                Name: UI
+                Components:
+                    86ba6a9f58803dba091808ac3dd650a5: !TransformComponent
+                        Id: d6835afd-af4a-4232-95ac-851b7578dacd
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    fa60beb1aa37d717308da7a5c3041f41: !UIComponent
+                        Id: ebbffb07-68f3-41b2-ae0c-cc102c2c0c23
+                        Page: dace278b-1b92-4bd3-bdbf-a8cd9a61c028:Demo UI Page
+                        Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
+                        Size: {X: 1.28, Y: 0.72, Z: 1.0}
+                        RenderGroup: Group1
