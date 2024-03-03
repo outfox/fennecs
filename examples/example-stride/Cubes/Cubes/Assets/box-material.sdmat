@@ -5,10 +5,9 @@ Tags: []
 Attributes:
     Diffuse: !MaterialDiffuseMapFeature
         DiffuseMap: !ComputeTextureColor
-            Texture: 5362646f-6224-4f97-a4d4-21cc177a1754:cube-diffuse
             FallbackValue:
                 PremultiplyAlpha: false
-                Value: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+                Value: {R: 1.0, G: 1.0, B: 1.0, A: 0.2509804}
             Scale: {X: 1.0, Y: 1.0}
             Offset: {X: 0.0, Y: 0.0}
             Swizzle: null
@@ -22,18 +21,32 @@ Attributes:
             Offset: {X: 0.0, Y: 0.0}
             Swizzle: null
         Intensity: !ComputeFloat
-            Value: 1.0
+            Value: 0.5
     SpecularModel: !MaterialSpecularMicrofacetModelFeature
         Fresnel: !MaterialSpecularMicrofacetFresnelSchlick {}
         Visibility: !MaterialSpecularMicrofacetVisibilitySmithSchlickGGX {}
         NormalDistribution: !MaterialSpecularMicrofacetNormalDistributionGGX {}
         Environment: !MaterialSpecularMicrofacetEnvironmentGGXLUT {}
+    Emissive: !MaterialEmissiveMapFeature
+        Enabled: false
+        EmissiveMap: !ComputeTextureColor
+            Texture: 5362646f-6224-4f97-a4d4-21cc177a1754:cube-diffuse
+            FallbackValue:
+                Value: {R: 0.1254902, G: 0.1254902, B: 0.1254902, A: 0.1254902}
+            Scale: {X: 1.0, Y: 1.0}
+            Offset: {X: 0.0, Y: 0.0}
+            Enabled: false
+            Swizzle: null
+        Intensity: !ComputeFloat
+            Value: 0.1
+        UseAlpha: true
     Transparency: !MaterialTransparencyAdditiveFeature
         Alpha: !ComputeFloat
-            Value: 0.5
+            Value: 1.0
         Tint: !ComputeColor
+            PremultiplyAlpha: false
             Value: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
-        DitheredShadows: true
+        DitheredShadows: false
     Overrides:
         UVScale: {X: 1.0, Y: 1.0}
 Layers: {}

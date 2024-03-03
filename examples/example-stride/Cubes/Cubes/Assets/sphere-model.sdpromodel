@@ -1,0 +1,11 @@
+!ProceduralModelAsset
+Id: a2d4cdef-4c6e-4903-a20a-7e797ec9349c
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Type: !SphereProceduralModel
+    Scale: {X: 10.0, Y: 10.0, Z: 10.0}
+    UvScale: {X: 1.0, Y: 1.0}
+    LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
+    NumberOfTextureCoordinates: 10
+    MaterialInstance:
+        Material: ca3c568f-135b-4c7f-9cb6-f9ee4c6faef0:sun-orange-material

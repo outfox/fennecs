@@ -51,13 +51,13 @@ fog_density = 0.003
 
 [node name="fennecs Cube Demo" type="Node3D"]
 
-[node name="CubeDemo" type="Node" parent="." node_paths=PackedStringArray("Camera", "RenderedSlider", "SimulatedSlider", "MeshInstance")]
+[node name="CubeDemo" type="Node" parent="." node_paths=PackedStringArray("Camera", "MeshInstance", "RenderedSlider", "SimulatedSlider")]
 unique_name_in_owner = true
 script = ExtResource("1_1jicl")
 Camera = NodePath("../Camera Pivot/Camera3D")
+MeshInstance = NodePath("MultiMeshInstance3D")
 RenderedSlider = NodePath("../User Interface/Spawn Controls/Sliders/VisibleSlider")
 SimulatedSlider = NodePath("../User Interface/Spawn Controls/Sliders/SimulatedSlider")
-MeshInstance = NodePath("MultiMeshInstance3D")
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="CubeDemo"]
 multimesh = SubResource("MultiMesh_fdhkq")

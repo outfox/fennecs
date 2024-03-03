@@ -10,6 +10,7 @@ Hierarchy:
         - ref!! 59830208-84d4-4cf7-b289-f2983232b0ff
         - ref!! 75172297-b070-4aad-ab08-2f9366e9e519
         - ref!! d3690639-84a6-4c3d-b0c5-606415c8bbe6
+        - ref!! e6bc10b0-868c-4b63-a42c-e882ae8fae28
     Parts:
         -   Folder: null
             Entity:
@@ -21,17 +22,18 @@ Hierarchy:
                         Position: {X: 200.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                        Children: {}
+                        Children:
+                            697bf55e2cc478ed10977d95b5e7f046: ref!! 457dde46-9681-421a-ba3c-006f6313c7d7
                     d4c2f2a2b8ee3e2e2a57989756a8981e: !LightComponent
                         Id: fb74333c-2392-4b22-b8ba-90e943877e45
                         Type: !LightPoint
                             Color: !ColorRgbProvider
-                                Value: {R: 0.0, G: 0.4900001, B: 0.93333334}
-                            Radius: 1000.0
+                                Value: {R: 0.24313726, G: 0.4627451, B: 0.99607843}
+                            Radius: 300.0
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
-                        Intensity: 3000.0
+                        Intensity: 7000.0
         -   Entity:
                 Id: 3870710a-9d61-43e1-84cf-2eb8c1779b07
                 Name: GameProfiler
@@ -85,24 +87,25 @@ Hierarchy:
                         Position: {X: -200.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
-                        Children: {}
+                        Children:
+                            1f94850a1b16c3d2c5870da7bed57930: ref!! 4eada3bd-3231-419f-861e-8a5eecdd6252
                     d4c2f2a2b8ee3e2e2a57989756a8981e: !LightComponent
                         Id: a3100427-958b-4377-b467-0fd9162db69d
                         Type: !LightPoint
                             Color: !ColorRgbProvider
                                 Value: {R: 0.93333334, G: 0.5019608, B: 0.0}
-                            Radius: 1000.0
+                            Radius: 300.0
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
-                        Intensity: 3000.0
+                        Intensity: 7000.0
         -   Entity:
                 Id: 59830208-84d4-4cf7-b289-f2983232b0ff
                 Name: Camera
                 Components:
                     00ee1c24b345164800dba9d214b55586: !TransformComponent
                         Id: e7ba488c-7bb3-466a-a300-6c207cd37f15
-                        Position: {X: 0.0, Y: 0.0, Z: -100.0}
+                        Position: {X: 0.0, Y: 0.0, Z: 400.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
@@ -118,7 +121,7 @@ Hierarchy:
                         Gamepad: false
                         KeyboardMovementSpeed: {X: 5.0, Y: 5.0, Z: 5.0}
                         TouchMovementSpeed: {X: 0.7, Y: 0.7, Z: 0.3}
-                        SpeedFactor: 5.0
+                        SpeedFactor: 50.0
                         KeyboardRotationSpeed: {X: 3.0, Y: 3.0}
                         MouseRotationSpeed: {X: 1.0, Y: 1.0}
                         TouchRotationSpeed: {X: 1.0, Y: 0.7}
@@ -145,3 +148,53 @@ Hierarchy:
                         Children:
                             083e3d3516b44acf96bb1edf3d716631: ref!! dcf6fd15-69e6-46ad-8d22-6a68fc3cdd3e
                             905ba696d52e58aeaad0460c81009705: ref!! 2be6b3e3-01cc-4b9c-9751-72ccd15033c8
+        -   Entity:
+                Id: d4e61954-a49e-4846-b745-2831797b594e
+                Name: Sphere
+                Components:
+                    974eaab0902669a3b9003bd916e47506: !TransformComponent
+                        Id: 457dde46-9681-421a-ba3c-006f6313c7d7
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    5f18c1fa8b098460de67df5f592e261b: !ModelComponent
+                        Id: 0b735cf1-5dbd-4c64-a41f-b5898792f905
+                        Model: a2d4cdef-4c6e-4903-a20a-7e797ec9349c:sphere-model
+                        IsShadowCaster: false
+                        Materials:
+                            a0117cd2e4f6da96590399302f8df2c6~0: e2da3955-fbdb-442c-a52c-46745f375ab6:blue-sun-material
+        -   Entity:
+                Id: dd05acbb-80e8-4326-b4b0-043ef34a218f
+                Name: Sphere
+                Components:
+                    974eaab0902669a3b9003bd916e47506: !TransformComponent
+                        Id: 4eada3bd-3231-419f-861e-8a5eecdd6252
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    5f18c1fa8b098460de67df5f592e261b: !ModelComponent
+                        Id: 4a606243-945e-44d5-8b60-91db02093527
+                        Model: a2d4cdef-4c6e-4903-a20a-7e797ec9349c:sphere-model
+                        IsShadowCaster: false
+                        Materials: {}
+        -   Entity:
+                Id: e6bc10b0-868c-4b63-a42c-e882ae8fae28
+                Name: Skybox light
+                Components:
+                    1006571e2f391bb04d3a998b1f91f35d: !TransformComponent
+                        Id: 16b28657-2071-443d-8ca1-d28550b6907f
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    4fd19bd6e4b6554f904471bcd127ab99: !LightComponent
+                        Id: 17c63465-7240-4252-b548-c2dee33fb221
+                        Type: !LightSkybox
+                            Skybox: a25fb4f9-359f-4029-a39d-a830b6067e5a:Skybox (2)
+                        Intensity: 0.2
+                    43afec2ecd92b7790a9684cc22d90cdd: !BackgroundComponent
+                        Id: 513c9df8-d501-4b57-ab89-f53839ea53d5
+                        Enabled: false
+                        Texture: null

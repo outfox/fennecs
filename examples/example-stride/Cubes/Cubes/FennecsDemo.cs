@@ -121,7 +121,7 @@ public class CubeDemo : SyncScript
         SetEntityCount(MaxEntities);
 
         //  Boilerplate: Apply the initial state of the UI.
-        _on_simulated_slider_value_changed(.5);
+        _on_simulated_slider_value_changed(.4);
         _on_rendered_slider_value_changed(.3);
     }
 

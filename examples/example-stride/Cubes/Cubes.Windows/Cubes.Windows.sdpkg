@@ -15,4 +15,6 @@ ExplicitFolders: []
 Bundles: []
 TemplateFolders: []
 RootAssets:
+    - 928ef128-c8fc-4e48-a85f-d213ec63bf8f:box-model
+    - ca3c568f-135b-4c7f-9cb6-f9ee4c6faef0:sun-orange-material
     - e6deae7a-1e7e-4282-aeca-be89b56a2fcf:GraphicsCompositor

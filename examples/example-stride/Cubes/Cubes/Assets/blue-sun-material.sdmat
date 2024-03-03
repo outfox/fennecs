@@ -1,0 +1,35 @@
+!MaterialAsset
+Id: e2da3955-fbdb-442c-a52c-46745f375ab6
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Archetype: ca3c568f-135b-4c7f-9cb6-f9ee4c6faef0:sun-orange-material
+Attributes:
+    Diffuse: !MaterialDiffuseMapFeature
+        DiffuseMap: !ComputeTextureColor
+            FallbackValue:
+                Value: {R: 0.24313726, G: 0.4627451, B: 0.99607843, A: 1.0}
+            Scale: {X: 1.0, Y: 1.0}
+            Offset: {X: 0.0, Y: 0.0}
+            Enabled: false
+            Swizzle: null
+    DiffuseModel: !MaterialDiffuseLambertModelFeature
+        Enabled: false
+    Emissive: !MaterialEmissiveMapFeature
+        EmissiveMap: !ComputeTextureColor
+            FallbackValue:
+                PremultiplyAlpha: false
+                Value*: {R: 0.24313726, G: 0.4627451, B: 0.99607843, A: 1.0}
+            Scale: {X: 1.0, Y: 1.0}
+            Offset: {X: 0.0, Y: 0.0}
+            Swizzle: null
+        Intensity: !ComputeFloat
+            Value*: 10.0
+    Transparency: !MaterialTransparencyAdditiveFeature
+        Alpha: !ComputeFloat
+            Value: 0.5
+        Tint: !ComputeColor
+            Value: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+        DitheredShadows: true
+    Overrides:
+        UVScale: {X: 1.0, Y: 1.0}
+Layers: {}
