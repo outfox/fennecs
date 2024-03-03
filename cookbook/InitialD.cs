@@ -2,6 +2,7 @@
 
 using fennecs;
 
+if (!Console.IsOutputRedirected) Console.Clear();
 Console.WriteLine("Midnight, somewhere in Japan.");
 
 // Shusai: fuji hara tōfu ten
@@ -23,9 +24,9 @@ var ae86 = world.Spawn()
 
 // All cars in the race.
 var racers =
-    world.Query<Driver, Model, Identity>() // "Stream Types", the data we want to process
+    world.Query<Driver, Model, Identity>() // "Stream Types", data to process
         .Has<Car>() // additional Filter Expression(s) to match in the Query 
-        .Not<Vroom>() // additional Filter Expression(s) to exclude from the Query
+        .Not<Vroom>() // additional Filter Expression(s) to exclude
         .Build();
 
 
@@ -45,7 +46,8 @@ if (ae86.Has<Ready>()) ae86.Add<Steady>();
 // Or do bulk operations on the Query!
 racers.Add<Vroom>();
 
-Console.WriteLine("Watch https://www.behance.net/gallery/101574771/D-CG-Animation (60 second fan vid)");
+Console.WriteLine("Got 60 seconds to spare?");
+Console.WriteLine("--> https://behance.net/gallery/101574771/D-CG-Animation");
 
 
 #region Components
@@ -78,7 +80,7 @@ internal readonly struct Model(string value)
 // a class component, here also wrapping a string
 internal class Driver(string name)
 {
-    public void ReportForRace() => Console.WriteLine($"{name}: Christmas is so boring.");
+    public void ReportForRace() => Console.WriteLine($"{name}: I'm Ready!");
     public override string ToString() => name;
 }
 #endregion

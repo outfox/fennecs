@@ -30,6 +30,7 @@ export function neofoxPlugin(md: MarkdownIt, options?: Partial<EmojiPluginOption
       // Instead of creating a Token directly, use the push method to add a new token
       const token = state.push('emoji', '', 0);
       token.content = `${opts.baseUrl}${match[1]}${opts.fileExtension}`;
+      token.meta = { fileName: match[1] };
     }
 
     state.pos += match[0].length;
@@ -37,6 +38,8 @@ export function neofoxPlugin(md: MarkdownIt, options?: Partial<EmojiPluginOption
   });
 
   md.renderer.rules.emoji = (tokens, idx) => {
-    return `<img src="${tokens[idx].content}" alt="Neofox, CC-BY-NC-SA 4.0" style="display: inline-block; width: auto; height: 64px; margin: 0; padding: 0; vertical-align: middle;" />`;
+    const fileNameWithoutExtension = tokens[idx].meta.fileName;
+    // Use the file name without extension as the alt text
+    return `<img src="${tokens[idx].content}" alt="${'Neofox: ' + fileNameWithoutExtension}" title="${fileNameWithoutExtension}" style="display: inline-block; width: auto; height: 64px; margin: 0; padding: 0; vertical-align: middle;" />`;
   };
 }

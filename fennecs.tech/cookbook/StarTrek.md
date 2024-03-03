@@ -3,7 +3,7 @@ title: 1. Star Trek (Entities)
 outline: [2, 3]
 ---
 
-# Famous Captains, gone - one by one!
+# Famous Captains - none alike!
 
 ::: info :neofox_floof_mug: MMMH, REAL CODE
 This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs principles.
@@ -15,26 +15,14 @@ All `.csproj` and `.cs` files are [over here on Github!](https://github.com/thyg
 :::
 
 ### Premise
-Let's shed some light on a couple of the more famous Captains in the Star Trek Universe.
+Let's reminisce some famous Captains of old and new.
 
-This example will teach a little about what happens to Entities when they Despawn!
+This example will explore what Entities "look" like in your logs, and what happens when they Despawn, and how they get recycled.
 
-We create a unique [Entity](../docs/Entity.md) for each; but `kirk` gets despawned and replaced by The Next Generation (`picard`). Then we create a bunch more and output to visualize how recycled Entities compare to each other and to give a feeling over how a [World](../docs/World.md) counts Generations up when Entities are destroyed.
+We spawn a unique [Entity](../docs/Entity.md) for each captain; but `kirk` gets despawned and replaced by The Next Generation (`picard`). Then we create a bunch more and output to visualize how recycled Entities compare to each other and to give a feeling over how a [World](../docs/World.md) counts Generations up when Entities are destroyed.
 
-### Implementation
-<<< ../../cookbook/StarTrek.cs {cs:line-numbers}
-
-### Outcome
-The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble CI-CD mumble TODO mumble)*
-```shell
-dotnet run --project StarTrek.csproj
-```
-```txt 
-      Kirk is E-00000001:00001 ... boldly going!
-    Picard is E-00000001:00002 - the next Generation!
-   Janeway is E-00000002:00001 - the best Captain ever!
-      Kirk is E-00000001:00001 - and alive? False
-    Archer is E-00000001:00003, ugh, don't we hate reboots...
-  Georgiou is E-00000002:00002, now THAT's a Captain!
-   Shatner ain't Stewart, even in death! True
-```
+### Recipe
+::: code-group
+<<< ../../cookbook/StarTrek.cs {cs:line-numbers} [Implementation]
+<<< ../../cookbook/StarTrek.output.txt{txt} [Output]
+:::

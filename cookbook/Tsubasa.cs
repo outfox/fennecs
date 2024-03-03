@@ -3,6 +3,7 @@
 using fennecs;
 using Name = string;
 
+if (!Console.IsOutputRedirected) Console.Clear();
 Console.WriteLine("School's out!");
 
 // Meet the Team!
@@ -27,7 +28,7 @@ world.Spawn()
     .Add<Player>()
     .Add("Tsubasa")
     .Add<Talent>(data: true)
-    .Add<Position>(new Vector2(x: 0, y: 200));
+    .Add<Position>(new Vector2(x: 0, y: 50));
 
 
 var ball = world.Spawn()
@@ -52,7 +53,7 @@ do
     }
 
     Thread.Sleep(millisecondsTimeout: 200);
-    Console.Clear();
+    if (!Console.IsOutputRedirected) Console.Clear();
 
     //  Update each player on the field.
     team.For((
@@ -67,14 +68,14 @@ do
         var direction = ballPosition.value - playerPosition.value;
         if (direction.LengthSquared() > 1f)
         {
-            var dash = direction * (random.NextSingle() * .7f + 0.1f);
+            var dash = direction * (random.NextSingle() * .9f + 0.1f);
             playerPosition += dash;
             Console.WriteLine($"{playerName,15} runs towards the ball!" +
                               $" ... d = {direction.Length():f2}m");
             return;
         }
 
-        ballPosition += RandomRadius(radius: 10, onCircle: true);
+        ballPosition += RandomRadius(radius: 5, onCircle: true);
         kicked = true;
         Console.WriteLine($">>>>> {playerName} kicks the ball!");
 

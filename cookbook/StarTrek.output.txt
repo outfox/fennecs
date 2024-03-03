@@ -1,0 +1,5 @@
+Space. The final frontier.
+      Kirk is E-00000001:00001 - boldly going!
+    Picard is E-00000001:00002 - the Next Generation!
+   Janeway is E-00000002:00001 - got her crew home!
+  Georgiou is E-00000001:00003 - in a mirror darkly!

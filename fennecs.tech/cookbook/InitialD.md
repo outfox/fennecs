@@ -17,15 +17,8 @@ All `.csproj` and `.cs` files are [over here on Github!](https://github.com/thyg
 ### Premise
 Let's build a sleeper drift racing championship car out of nothing but Entities and Components! A smooth ride into to **fenn**ecs where you won't spill your tofu yet!
 
-### Implementation
-<<< ../../cookbook/InitialD.cs {cs:line-numbers}
-
-### Outcome
-The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble CI-CD mumble TODO mumble)*
-```shell
-dotnet run --project InitialD.csproj
-```
-```txt
-Takumi Fujiwara is ready!
-Car Toyota Sprinter Trueno AE86 is ready to go!
-```
+### Recipe
+::: code-group
+<<< ../../cookbook/InitialD.cs {cs:line-numbers} [Implementation]
+<<< ../../cookbook/InitialD.output.txt{txt} [Output]
+:::

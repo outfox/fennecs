@@ -2,6 +2,7 @@
 
 using fennecs;
 
+if (!Console.IsOutputRedirected) Console.Clear();
 Console.WriteLine("Space. The final frontier.");
 
 // Directed by Renard Nimoy

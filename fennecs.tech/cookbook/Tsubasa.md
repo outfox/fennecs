@@ -21,15 +21,8 @@ We create a team of 11 Entities with `Player`, `Name`, `Talent`, and `Position` 
 
 In our "game" loop, we get the current position of our ball Entity, and let each player Entity run after it. If they get close enough, they kick the ball to a new position. As soon as the only player with a truthy `Talent` Component scores, the match ends with a golden goal.
 
-### Implementation
-<<< ../../cookbook/Tsubasa.cs {cs:line-numbers}
-
-### Outcome
-The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble CI-CD mumble TODO mumble)*
-```shell
-dotnet run --project Tsubasa.csproj
-```
-<video controls autoplay muted loop>
-<source src="https://fennecs.tech/video/fennecs-tsubasa-demo.mp4" type="video/mp4"/>
-Your browser does not support the video tag.
-</video>
+### Recipe
+::: code-group
+<<< ../../cookbook/Tsubasa.cs{cs:line-numbers} [Implementation]
+<<< ../../cookbook/Tsubasa.output.txt{txt} [Output]
+:::

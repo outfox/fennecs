@@ -21,30 +21,8 @@ We create the Entities and define the [Relation](../docs/Relation.md) (`struct B
 
 Next, we query for the Relation, say hello, and ~~unalive~~ interact with the Entities in a [Query.For](../docs/Queries/Query.For.md). This removes our `Grudge` for them.
 
-### Implementation
-<<< ../../cookbook/KillBill.cs {cs:line-numbers}
-
-### Outcome
-The above code is the actual code, yet this output is copy-pasta and may not be re-generated each time the code is updated. *(mumble CI-CD mumble TODO mumble)*
-```shell
-dotnet run --project KillBill.csproj
-```
-```txt 
-As we said, there were 5 of them.
-One hides in hideout 0x140d9825.
-One hides in hideout 0x2328bb6c.
-One hides in hideout 0x3573a7b3.
-One hides in hideout 0x1414c263.
-One hides in hideout 0x4acbcdcf.
-We are still here.
-Do we hold grudges? True.
-Oh, hello E-00000002:00001! Remember E-00000001:00001?
-Oh, hello E-00000003:00001! Remember E-00000001:00001?
-Oh, hello E-00000004:00001! Remember E-00000001:00001?
-Oh, hello E-00000005:00001! Remember E-00000001:00001?
-Oh, hello E-00000006:00001! Remember E-00000001:00001?
-Now, there are 0 of them.
-Let's get out of hideout 0x4acbcdcf.
-We've been traveling for a while.
-Any more grudges? False.
-```
+### Recipe
+::: code-group
+<<< ../../cookbook/KillBill.cs {cs:line-numbers} [Implementation]
+<<< ../../cookbook/KillBill.output.txt{txt} [Output]
+:::

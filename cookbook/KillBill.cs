@@ -2,6 +2,7 @@
 
 using fennecs;
 
+if (!Console.IsOutputRedirected) Console.Clear();
 Console.WriteLine("Directed by: Trentin Quarantino");
 
 // The world is a stage. 
