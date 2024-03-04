@@ -1,12 +1,16 @@
-# `Query.Raw`
-# `Query.Raw<U>`
+---
+title: Query<>.Raw
+---
+# Custom Query Workloads
+# `Query<>.Raw(RefAction)`
+# `Query<>.Raw<U>(RefAction,U)`
 
 ::: danger THE FREIGHT TRAIN
 Work items as contiguous memory. Using a distinct signature, [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire workload* of each Archetype diriectly into your ~~fox~~ delegate via a single call.
 :neofox_waffle_long_blurry::neofox_scream_stare:
 :::
 
-## Process entire Memory blocks
+## Processing entire Memory Blocks
 
 Your code controls how and where. Maximum power, maximum responsibility.  
 _(in reality, `Memory<T>` is quite easy to use in C#, but can be more difficult to debug!)_
@@ -17,6 +21,40 @@ Especially for [blittable Component types](https://learn.microsoft.com/en-us/dot
 
 Copying memory regions is hard, and **Multiprocessing is HARDER.** Currently, **fenn**ecs doesn't provide parallel write restrictions, so you need to be aware of when and how you're changing data that you're processing in bulk from other threads.
 :::
+
+
+### Basic Operation
+::: code-group
+
+```cs [Raw(...) DIY]
+// This is NOT how Raw is usually used, but you can, in the trivial
+// case, use it to iterate your workload yourself. The main use for that
+// variant is to perform some sort of early-out iteration, e.g. search)
+myQuery.Raw((Memory<Vector3> velocities) => 
+{
+    foreach (ref var velocity in velocities.Span) 
+    {
+        velocity += 9.81f * Vector3.DOWN * Application.FrameRate;
+    }
+});
+```
+
+```cs [Raw&lt;U&gt;(...) with uniform]
+// This is NOT how Raw is usually used, but you can, in the trivial
+// case, use it to iterate your workload yourself. The main use for that
+// variant is to perform some sort of early-out iteration, e.g. search)
+myQuery.Raw((Memory<Vector3> velocities, (float dt, Vector3 g) uniform) => 
+{
+    foreach (ref var velocity in velocities.Span) 
+    {
+        velocity += uniform.g * uniform.dt;
+    }
+}, 
+(Time.deltaTime, 9.81f * Vector3.DOWN); 
+```
+
+:::
+
 
 ## Differences to other Runners
 `Query<>.Raw` differs from `Query<>.For` by providing a `Memory<T>` for each Stream Type instead, and instead of running the delegate for each Entity, it is instead run once for each Archetype, and the `Memory<T>` structs provided constitute the entirety of all Component data for the Stream Type `T`.

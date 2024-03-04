@@ -1,18 +1,50 @@
-# `Query.Job`
-# `Query.Job<U>`
+---
+title: Query<>.Job
+---
+# Parallel Query Workloads
+# `Query<>.Job(MemoryAction)`
+# `Query<>.Job<U>(MemoryAction,U)`
 
 ::: info THE WORKHORSE
 Many items, multi-threaded. Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instantly schedules and executes the workload split into chunks, calling many times in parallel across CPU cores.  
 :neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle:
 :::
 
-Sometimes, mommy and daddy foxes want to be on separate CPU cores. That doesn't mean they don't love you anymore! It only means that if you have **lots and lots** of entities in large Archetypes, you might get some performance gains for cheap.
+Sometimes, mommy and daddy foxes want to be on separate CPU cores. That doesn't mean they don't love each other anymore! It only means that if you ~~can keep a secret~~ have **lots and lots** of entities in large Archetypes, you might get ~~a new action figure~~ performance gains from daddy tomorrow!
 
+### Basic Syntax
+The nice part is, you can easily swap out `Query.Job` for `Query.For` and vice versa. There are optional parameters to optimize how the work is split up that you can use later to fine-tune your runtime performance.
+
+::: code-group
+
+```cs [Job(...) plain]
+myQuery.Job((ref Vector3 velocity) => 
+{
+    velocity += 9.81f * Vector3.DOWN * Time.deltaTime;
+});
+```
+
+```cs [Job&lt;U&gt;(...) with uniform]
+myQuery.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
+{
+    velocity += uniform.gravity * uniform.dt;
+}, 
+(9.81f * Vector3.DOWN, Time.deltaTime); 
+```
+
+```cs [Job&lt;U&gt;(...) with uniform + chunksize]
+myQuery.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
+{
+    velocity += uniform.gravity * uniform.dt;
+}, 
+(9.81f * Vector3.DOWN, Time.deltaTime), chunkSize: 4096); 
+```
+:::
 
 ## Chunk Size
 Choosing the right way to spread your workload across CPU cores can yield significant performance gains.
 
-By Default, **fenn**ecs parallelizes workloads only per entire Archetype. The `chunkSize` optional parameter passed into `Query.Job` affords fine-grained control over how the work is split up within each Archetype being processed.
+By Default, **fenn**ecs will parallelize workloads only per entire Archetype. The `chunkSize` optional parameter passed into `Query.Job` affords fine-grained control over how the work is split up within each Archetype being processed.
 
 :::warning :neofox_glare_sob: A GOOD TRADE-OFF LEAVES EVERYONE MAD!
 Overhead for thread scheduling is real; as are context switches between threads. Experiment finding the right workload Chunk Size (start big - try 69,420, they say it's nice) and always consider giving [`Query.For`](Query.For.md) another look if you realize there's too much overhead or ==fragmentation==.

@@ -41,7 +41,7 @@ Work in progress, more examples will get added over time! Want to contribute or 
     </tr>
     <tr>
         <td>
-        <h4>Demo: Space Battle</h4>
+        <h4>Demo: Battleships</h4>
             <ul>
             <li>Entity-Entity Relations</li>        
             <li>filtering Query streams</li>

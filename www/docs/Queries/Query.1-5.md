@@ -1,16 +1,18 @@
 ---
-title: Query&lt;C0, ...&gt;
+title: Query&lt;&gt; (Stream Queries)
 ---
 
+# Stream Queries
 # `Query<C0>`
 # `Query<C0,C1>`
 # `Query<C0,C1,C2>`
 # `Query<C0,C1,C2,C3>`
 # `Query<C0,C1,C2,C3,C4>`
 
-Queries with Type Parameters (called [Stream Types](StreamTypes.md)) provide access to Component data of their matched entities.
+Queries with Type Parameters are calles **Stream Queries**, and they provide super fast and powerful access to Component data of their matched entities.
 
-## Component Type Parameters
+In many cases, you'll be performing your processing using a Stream Query.
+## Type Parameters (Stream Types)
 
 The Type parameters, `C0, C1, C2, C3, C4` are also known as the Query's **Stream Types**. These are the types of Components that a specific Query's Runners (e.g. `For`, `Job` and `Raw`) can supply to your code. 
 
