@@ -38,13 +38,13 @@
    </tr>
 </table>
 
-## Project Website! [fennecs.tech](https://fennecs.tech)**
+# [fennecs.tech](https://fennecs.tech) (official website) ![cool finger guns](https://fennecs.tech/emoji/neofox_cool_fingerguns.png)
 Documentation, Getting Started, Cookbook, and more!
 
-## [The Cookbook](https://fennecs.tech/cookbook/)
-Want to try your paws at fennecs and play around?
+## [The Cookbook](https://fennecs.tech/cookbook/) ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png)
+Grab a cup of coffee and try our delicious buffet of playful lessons!
 
-## **[The Demos](https://fennecs.tech/demos/)**
+## [The Demos](https://fennecs.tech/demos/) ![coffee cup](https://fennecs.tech/emoji/neofox_vr.png)
 Check out some more elaborate demos for various game engines.
 
 
