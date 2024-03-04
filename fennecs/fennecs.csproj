@@ -36,8 +36,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../docs/overview.md" Pack="true" PackagePath="\" />
-        <None Include="../docs/logos/fennecs-icon-nuget.png">
+        <None Include="../www/overview.md" Pack="true" PackagePath="\" />
+        <None Include="../www/logos/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
