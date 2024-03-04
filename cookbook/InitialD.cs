@@ -3,7 +3,7 @@
 using fennecs;
 
 if (!Console.IsOutputRedirected) Console.Clear();
-Console.WriteLine("Shusai: fuji hara tōfu ten");
+Console.WriteLine("Shusai: fuji hara tofu ten");
 
 var world = new World();
 

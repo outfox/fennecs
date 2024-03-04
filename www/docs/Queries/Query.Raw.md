@@ -23,7 +23,7 @@ Copying memory regions is hard, and **Multiprocessing is HARDER.** Currently, **
 :::
 
 
-### Basic Operation
+### Basic Syntax
 ::: code-group
 
 ```cs [Raw(...) DIY]
