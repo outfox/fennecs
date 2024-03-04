@@ -1,12 +1,12 @@
 ### ... the tiny, tiny, high-energy Entity Component System!
 
-![fennecs logo](https://fennecs.tech/img/fennecs-logo-stacked-lightmode.svg)
+![fennecs logo](https://raw.githubusercontent.com/thygrrr/fennecs/main/www/logos/fennecs-logo-nuget.svg)
 
-## visit [fennecs.tech] https://fennecs.tech for docs & cookbook!
+# visit [fennecs.tech](https://fennecs.tech) for api docs, demos, and the cookbook!
 
-# What the fox, another ECS?!
+## What the fox, another ECS?!
 
-We know... oh, *we know.* ![facepalm](https://fennecs.tech/emoji/neofox_facepalm.png)
+We know... oh, *we know.* 😩
 
 ### But in a nutshell, **[fennecs](https://fennecs.tech)** is...
 
