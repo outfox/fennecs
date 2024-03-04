@@ -1,10 +1,12 @@
 ### ... the tiny, tiny, high-energy Entity Component System!
 
-![fennecs logo](https://raw.githubusercontent.com/thygrrr/fennecs/main/docs/logos/fennecs-logo-nuget.svg)
+![fennecs logo](https://fennecs.tech/img/fennecs-logo-stacked-lightmode.svg)
+
+## visit [fennecs.tech] https://fennecs.tech for docs & cookbook!
 
 # What the fox, another ECS?!
 
-We know... oh, *we know.* 😩️
+We know... oh, *we know.* ![facepalm](https://fennecs.tech/emoji/neofox_facepalm.png)
 
 ### But in a nutshell, **[fennecs](https://fennecs.tech)** is...
 
@@ -13,8 +15,6 @@ We know... oh, *we know.* 😩️
 🐾 archetype-based  
 🐾 intuitively relational  
 🐾 lithe and fast
-
-**fennecs** is a re-imagining of [RelEcs/HypEcs](https://github.com/Byteron/HypEcs), extended and compacted until it *feels just right* for high performance game development in any modern C# engine.
 
 ## Quickstart: Let's go!
 

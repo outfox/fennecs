@@ -1,4 +1,4 @@
-![fennecs logo](./docs/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./docs/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
+![fennecs logo](./www/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./www/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
 
 # _... the tiny, tiny, high-energy Entity Component System!_
 
@@ -38,14 +38,15 @@
    </tr>
 </table>
 
-## Documentation, Cookbook, and more!
-The new website is UP!  
-**[fennecs.tech](https://fennecs.tech)**
+## Project Website! [fennecs.tech](https://fennecs.tech)**
+Documentation, Getting Started, Cookbook, and more!
 
-## Demos
+## [The Cookbook](https://fennecs.tech/cookbook/)
+Want to try your paws at fennecs and play around?
 
-Check out some elaborate, in-engine demos here:  
-**[fennecs.tech/demos/](https://www.fennecs.tech/demos/)**
+## **[The Demos](https://fennecs.tech/demos/)**
+Check out some more elaborate demos for various game engines.
+
 
 ## Quickstart: Let's go!
 📦`>` `dotnet add package fennecs`
@@ -163,14 +164,6 @@ Here are some raw results from our WIP benchmark suite, from the Vector3 operati
 | Cross_RunU | 1_000_000 |     - | 1,268.4 us |  44.76 us |    - |          - |   1 B |
 | Cross_Run  | 1_000_000 |     - | 1,827.0 us |  16.76 us |    - |          - |   1 B |
 
-
-------------------------
-
-## 📅 Future Roadmap
-
-- 🟦 Unity Support: Planned for when Unity is on .NET 8 or later, and C# 12 or later. Or when we can't wait any longer.
-- ✅ ~~_**fenn**ecs_ as a NuGet package~~ (done!)
-- 🟦 _**fenn**ecs_ as a Godot addon
 
 ------------------------
 
