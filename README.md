@@ -38,7 +38,7 @@
    </tr>
 </table>
 
-# [fennecs.tech](https://fennecs.tech) (official website) ![cool finger guns](https://fennecs.tech/emoji/neofox_cool_fingerguns.png)
+# [fennecs.tech](https://fennecs.tech) (official website) ![cool finger guns](https://fennecs.tech/emoji/neofox_cool_fingerguns.png =64x64)
 Documentation, Getting Started, Cookbook, and more!
 
 ## [The Cookbook](https://fennecs.tech/cookbook/) ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png)
