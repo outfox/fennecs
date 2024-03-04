@@ -39,16 +39,10 @@
 </table>
 
 # [fennecs.tech](https://fennecs.tech) (official website) 
-![cool finger guns](https://fennecs.tech/emoji/neofox_cool_fingerguns.png)  
-Documentation, Getting Started, Cookbook, and more!
 
-## [The Cookbook](https://fennecs.tech/cookbook/)
-![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png)  
-Grab a cup of coffee and try our delicious buffet of playful lessons!
+![cool finger guns](https://fennecs.tech/emoji/neofox_cool_fingerguns.png) ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) ![reality](https://fennecs.tech/emoji/neofox_vr.png)  
 
-## [The Demos](https://fennecs.tech/demos/) 
-![reality](https://fennecs.tech/emoji/neofox_vr.png)  
-Check out some more elaborate demos for various game engines.
+Grab a cup of coffee to get started, try [The Cookbook](https://fennecs.tech/cookbook/), view The [The Demos](https://fennecs.tech/demos/) , and more!
 
 
 ## Quickstart: Let's go!
