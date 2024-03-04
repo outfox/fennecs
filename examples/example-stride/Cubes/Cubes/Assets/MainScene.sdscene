@@ -78,6 +78,7 @@ Hierarchy:
                         MinAmplitude: 250.0
                         RenderedSlider: null
                         SimulatedSlider: null
+                        EntityCountText: null
                     c04bd4cb9e274bbf131838bcd4e1d679: !UIComponent
                         Id: 3d67ed27-91e9-473e-8a6a-bd3629964944
                         Page: dace278b-1b92-4bd3-bdbf-a8cd9a61c028:Demo UI Page
@@ -103,7 +104,7 @@ Hierarchy:
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
-                        Intensity: 8000.0
+                        Intensity: 9000.0
         -   Entity:
                 Id: 59830208-84d4-4cf7-b289-f2983232b0ff
                 Name: Camera
@@ -123,12 +124,12 @@ Hierarchy:
                         Slot: 3c495420-6797-47d9-aa88-d8f9388f2913
                     02f7a080eaeba9f876670a190b502c46: !Cubes.PivotExtend,Cubes
                         Id: 4408d6d4-b64c-4f83-8751-73b29cf38a07
-                        tweens: 7.0
+                        tweens: 5.0
                         pauses: 1.0
-                        minimumXY: -50.0
-                        maximumXY: 50.0
+                        minimumXY: -70.0
+                        maximumXY: 70.0
                         minimumZ: 50.0
-                        maximumZ: 400.0
+                        maximumZ: 500.0
         -   Entity:
                 Id: 75172297-b070-4aad-ab08-2f9366e9e519
                 Name: Profiler
@@ -215,7 +216,7 @@ Hierarchy:
                         Id: 17c63465-7240-4252-b548-c2dee33fb221
                         Type: !LightSkybox
                             Skybox: a25fb4f9-359f-4029-a39d-a830b6067e5a:dark blue sky
-                        Intensity: 0.5
+                        Intensity: 0.4
                     43afec2ecd92b7790a9684cc22d90cdd: !BackgroundComponent
                         Id: 513c9df8-d501-4b57-ab89-f53839ea53d5
                         Enabled: false

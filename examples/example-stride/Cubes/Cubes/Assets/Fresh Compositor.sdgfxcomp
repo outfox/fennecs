@@ -186,10 +186,12 @@ SharedRenderers:
         BrightFilter:
             Color: {R: 1.0, G: 1.0, B: 1.0}
         Bloom:
+            Amount*: 0.5
             Distortion: {X: 1.0, Y: 1.0}
             Afterimage:
                 Enabled: false
         LightStreak:
+            Amount*: 0.25
             Attenuation: 0.7
         LensFlare: {}
         ColorTransforms:

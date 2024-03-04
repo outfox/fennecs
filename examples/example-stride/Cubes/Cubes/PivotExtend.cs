@@ -11,8 +11,8 @@ namespace Cubes
 
         public float minimumXY = -50f;
         public float maximumXY = 50f;
-        public float minimumZ = 300f;
-        public float maximumZ = 600f;
+        public float minimumZ = 600f;
+        public float maximumZ = 1200f;
         
         private readonly Random _random = new Random();
         private float _time;
@@ -34,9 +34,9 @@ namespace Cubes
                 _time = tweens;
 
                 _extensionStart = Entity.Transform.Position;
-                _extensionGoal = new Vector3(_random.NextSingle() * (maximumXY - minimumXY) + minimumXY, _random.NextSingle()
-                    * (maximumXY - minimumXY) + minimumXY, _random.NextSingle()
-                    * (maximumZ - minimumZ) + minimumZ);
+                _extensionGoal = new Vector3(_random.NextSingle() * (maximumXY - minimumXY) + minimumXY, 
+                    _random.NextSingle() * (maximumXY - minimumXY) + minimumXY, 
+                    _random.NextSingle() * (maximumZ - minimumZ) + minimumZ);
             }
             else
             {
