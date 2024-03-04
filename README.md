@@ -38,15 +38,9 @@
    </tr>
 </table>
 
-# [fennecs.tech](https://fennecs.tech) (official website) ![cool finger guns](https://fennecs.tech/emoji/neofox_cool_fingerguns.png)
-Documentation, Getting Started, Cookbook, and more!
-
-## [The Cookbook](https://fennecs.tech/cookbook/) ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png)
-Grab a cup of coffee and try our delicious buffet of playful lessons!
-
-## [The Demos](https://fennecs.tech/demos/) ![coffee cup](https://fennecs.tech/emoji/neofox_vr.png)
-Check out some more elaborate demos for various game engines.
-
+# [fennecs.tech](https://fennecs.tech) (official website) 
+Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/demos/) , and more!  
+![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) 
 
 ## Quickstart: Let's go!
 📦`>` `dotnet add package fennecs`
