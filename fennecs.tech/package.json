@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vitepress dev .",
     "build": "vitepress build .",
-    "deploy": "aws s3 rm s3://fennecs.tech/ --recursive --exclude \"img/*\" --exclude \"video/*\" && aws s3 sync .vitepress/dist s3://fennecs.tech && aws cloudfront create-invalidation --distribution-id E12V3ZFP8BEESL --paths /",
+    "deploy": "aws s3 sync s3 s3://fennecs.tech --delete && aws s3 sync .vitepress/dist s3://fennecs.tech && aws cloudfront create-invalidation --distribution-id E12V3ZFP8BEESL --paths /",
     "preview": "vitepress preview ."
   },
   "keywords": [

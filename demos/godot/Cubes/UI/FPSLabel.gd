@@ -3,7 +3,7 @@
 extends Label
 
 var smoothed : float = 0.016
-@onready var ECS : CubeDemo = %CubeDemo
+@onready var ECS : DemoCubes = %Demo
 @onready var VisibleSlider : VSlider = %VisibleSlider
 
 

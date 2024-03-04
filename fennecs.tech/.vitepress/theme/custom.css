@@ -25,8 +25,14 @@
   }
 
   :root .tile64 {
-    width: 64px;
-    height: 64px;
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 60px;
+    max-height: 60px;
+  }
+  
+  :root .nope {
+    filter: grayscale(100%) contrast(50%) brightness(40%) ;
   }
   
   .dark {
@@ -35,6 +41,3 @@
     --vp-c-bg: #222222;
   }
 
-  @media (min-width: 980px) {
-  }
-  

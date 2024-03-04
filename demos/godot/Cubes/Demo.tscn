@@ -1,15 +1,15 @@
 [gd_scene load_steps=17 format=3 uid="uid://dr2uc3nf0w2sy"]
 
-[ext_resource type="Script" path="res://CubeDemo/CubeDemo.cs" id="1_1jicl"]
-[ext_resource type="BoxMesh" uid="uid://dqwvifxnefio3" path="res://CubeDemo/Materials/box-mesh.tres" id="2_e3y7g"]
+[ext_resource type="Script" path="res://Cubes/DemoCubes.cs" id="1_1jicl"]
+[ext_resource type="BoxMesh" uid="uid://dqwvifxnefio3" path="res://Cubes/Materials/box-mesh.tres" id="2_e3y7g"]
 [ext_resource type="Theme" uid="uid://xobxg8yxjsmu" path="res://zzzShared/fennecs_theme.tres" id="3_h31e3"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="4_plwtk"]
 [ext_resource type="PackedScene" uid="uid://bdfvsd3p00icf" path="res://zzzShared/user_interface.tscn" id="5_gh02a"]
-[ext_resource type="Script" path="res://CubeDemo/UI/FPSLabel.gd" id="6_wvaw7"]
-[ext_resource type="Script" path="res://CubeDemo/UI/PivotSway.gd" id="7_1fct3"]
-[ext_resource type="Script" path="res://CubeDemo/UI/Rotate.gd" id="8_cipfs"]
-[ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://CubeDemo/Materials/orange_light.tres" id="9_t1ajc"]
-[ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://CubeDemo/Materials/blue_light.tres" id="10_vph3x"]
+[ext_resource type="Script" path="res://Cubes/UI/FPSLabel.gd" id="6_wvaw7"]
+[ext_resource type="Script" path="res://Cubes/UI/PivotSway.gd" id="7_1fct3"]
+[ext_resource type="Script" path="res://Cubes/UI/Rotate.gd" id="8_cipfs"]
+[ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://Cubes/Materials/orange_light.tres" id="9_t1ajc"]
+[ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://Cubes/Materials/blue_light.tres" id="10_vph3x"]
 
 [sub_resource type="MultiMesh" id="MultiMesh_fdhkq"]
 transform_format = 1
@@ -47,7 +47,7 @@ fog_density = 0.003
 
 [node name="fennecs Cube Demo" type="Node3D"]
 
-[node name="CubeDemo" type="Node" parent="." node_paths=PackedStringArray("Camera", "MeshInstance", "RenderedSlider", "SimulatedSlider")]
+[node name="Demo" type="Node" parent="." node_paths=PackedStringArray("Camera", "MeshInstance", "RenderedSlider", "SimulatedSlider")]
 unique_name_in_owner = true
 script = ExtResource("1_1jicl")
 Camera = NodePath("../Camera Pivot/Camera3D")
@@ -55,7 +55,7 @@ MeshInstance = NodePath("MultiMeshInstance3D")
 RenderedSlider = NodePath("../User Interface/Spawn Controls/Sliders/VisibleSlider")
 SimulatedSlider = NodePath("../User Interface/Spawn Controls/Sliders/SimulatedSlider")
 
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="CubeDemo"]
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="Demo"]
 multimesh = SubResource("MultiMesh_fdhkq")
 
 [node name="User Interface" parent="." instance=ExtResource("5_gh02a")]
@@ -213,6 +213,6 @@ mesh = SubResource("SphereMesh_s2td0")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_q01bs")
 
-[connection signal="value_changed" from="User Interface/Spawn Controls/Sliders/VisibleSlider" to="CubeDemo" method="_on_rendered_slider_value_changed"]
-[connection signal="drag_ended" from="User Interface/Spawn Controls/Sliders/SimulatedSlider" to="CubeDemo" method="_on_simulated_slider_drag_ended"]
-[connection signal="value_changed" from="User Interface/Spawn Controls/Sliders/SimulatedSlider" to="CubeDemo" method="_on_simulated_slider_value_changed"]
+[connection signal="value_changed" from="User Interface/Spawn Controls/Sliders/VisibleSlider" to="Demo" method="_on_rendered_slider_value_changed"]
+[connection signal="drag_ended" from="User Interface/Spawn Controls/Sliders/SimulatedSlider" to="Demo" method="_on_simulated_slider_drag_ended"]
+[connection signal="value_changed" from="User Interface/Spawn Controls/Sliders/SimulatedSlider" to="Demo" method="_on_simulated_slider_value_changed"]

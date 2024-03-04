@@ -10,10 +10,9 @@ config_version=5
 
 [application]
 
-config/name="example-godot"
-config/description="A set of examples using the fennecs Entity Component System
-"
-run/main_scene="res://CubeDemo/CubeDemo.tscn"
+config/name="fennecs-demos-godot"
+config/description="A set of examples using the fennecs Entity Component System"
+run/main_scene="res://Cubes/Demo.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://zzzShared/icon.svg"
 
@@ -26,11 +25,10 @@ window/vsync/vsync_mode=3
 
 [dotnet]
 
-project/assembly_name="example-godot"
+project/assembly_name="fennecs-demos-godot"
 
 [editor]
 
-movie_writer/movie_file="C:/Users/micro/Desktop/recording.avi"
 movie_writer/fps=120
 
 [gui]

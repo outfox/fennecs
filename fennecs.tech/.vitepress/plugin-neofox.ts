@@ -10,7 +10,7 @@ interface EmojiPluginOptions {
 
 export function neofoxPlugin(md: MarkdownIt, options?: Partial<EmojiPluginOptions>) {
   const defaultOptions: EmojiPluginOptions = {
-    baseUrl: 'https://fennecs.tech/img/neofox_',
+    baseUrl: 'https://fennecs.tech/emoji/neofox_',
     prefix: ':neofox_',
     postfix: ':',
     fileExtension: '.png'

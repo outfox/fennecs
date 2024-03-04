@@ -2,12 +2,11 @@
 
 using System;
 using System.Runtime.InteropServices;
-using fennecs;
 using Godot;
 using Environment = System.Environment;
 using Vector3 = System.Numerics.Vector3;
 
-namespace examples.godot.CubeDemo;
+namespace fennecs.demos.godot;
 
 /// <summary>
 ///     <para>
@@ -33,7 +32,7 @@ namespace examples.godot.CubeDemo;
 /// </summary>
 [GlobalClass]
 [Icon("res://icon.svg")]
-public partial class CubeDemo : Node
+public partial class DemoCubes : Node
 {
 	// Config: Maximum # of Entities that can be spawned. For brevity, made const instead
 	// of [Export] so we don't have to pass it in as an additional uniform.
