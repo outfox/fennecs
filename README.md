@@ -169,3 +169,5 @@ Here are some raw results from our WIP benchmark suite, from the Vector3 operati
 
 # 🧡 Acknowledgements
 Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating [HypEcs](https://github.com/Byteron/HypEcs) and [RelEcs](https://github.com/Byteron/RelEcs), the inspiring libraries that _**fenn**ecs_ evolved from.
+
+Neofox was created by [Volpeon](https://volpeon.ink/emojis/) and is in the Creative Commons [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0), the same license applies to all Neofox-derived works made for this documentation.
