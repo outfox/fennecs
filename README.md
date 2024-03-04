@@ -39,11 +39,8 @@
 </table>
 
 # [fennecs.tech](https://fennecs.tech) (official website) 
-
-![cool finger guns](https://fennecs.tech/emoji/neofox_cool_fingerguns.png) ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) ![reality](https://fennecs.tech/emoji/neofox_vr.png)  
-
-Grab a cup of coffee to get started, try [The Cookbook](https://fennecs.tech/cookbook/), view The [The Demos](https://fennecs.tech/demos/) , and more!
-
+Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/demos/) , and more!
+![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) 
 
 ## Quickstart: Let's go!
 📦`>` `dotnet add package fennecs`
