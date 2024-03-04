@@ -21,7 +21,7 @@ Attributes:
             Offset: {X: 0.0, Y: 0.0}
             Swizzle: null
         Intensity: !ComputeFloat
-            Value: 0.5
+            Value: 0.8
     SpecularModel: !MaterialSpecularCelShadingModelFeature
         RampFunction: !MaterialCelShadingLightDefault
             IsBlackAndWhite: false

@@ -100,11 +100,11 @@ Hierarchy:
                         Type: !LightPoint
                             Color: !ColorRgbProvider
                                 Value: {R: 0.93333334, G: 0.5019608, B: 0.0}
-                            Radius: 320.0
+                            Radius: 300.0
                             Shadow: !LightPointShadowMap
                                 Size: Small
                                 BiasParameters: {}
-                        Intensity: 9000.0
+                        Intensity: 8000.0
         -   Entity:
                 Id: 59830208-84d4-4cf7-b289-f2983232b0ff
                 Name: Camera
@@ -128,8 +128,8 @@ Hierarchy:
                         pauses: 1.0
                         minimumXY: -70.0
                         maximumXY: 70.0
-                        minimumZ: 50.0
-                        maximumZ: 500.0
+                        minimumZ: 100.0
+                        maximumZ: 300.0
         -   Entity:
                 Id: 75172297-b070-4aad-ab08-2f9366e9e519
                 Name: Profiler
@@ -216,7 +216,7 @@ Hierarchy:
                         Id: 17c63465-7240-4252-b548-c2dee33fb221
                         Type: !LightSkybox
                             Skybox: a25fb4f9-359f-4029-a39d-a830b6067e5a:dark blue sky
-                        Intensity: 0.4
+                        Intensity: 0.2
                     43afec2ecd92b7790a9684cc22d90cdd: !BackgroundComponent
                         Id: 513c9df8-d501-4b57-ab89-f53839ea53d5
                         Enabled: false

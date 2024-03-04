@@ -5,9 +5,7 @@ Tags: []
 FontSource: !SystemFontProvider
     FontName: Bai Jamjuree
     Style: Regular
-FontType: !SignedDistanceFieldSpriteFontType
+FontType: !OfflineRasterizedSpriteFontType
+    Size: 24.0
     CharacterSet: null
-    CharacterRegions:
-        4bd764651926bc5234b40c83ff45fd99:
-            Start: ' '
-            End: "\x7F"
+    CharacterRegions: {}

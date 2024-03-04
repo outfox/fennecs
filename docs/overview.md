@@ -8,16 +8,16 @@ We know... oh, *we know.* 😩️
 
 ### But in a nutshell, **[fennecs](https://fennecs.tech)** is...
 
- 🐾 zero codegen  
- 🐾 minimal boilerplate  
- 🐾 archetype-based  
- 🐾 intuitively relational  
- 🐾 lithe and fast  
+🐾 zero codegen  
+🐾 minimal boilerplate  
+🐾 archetype-based  
+🐾 intuitively relational  
+🐾 lithe and fast
 
- 
 **fennecs** is a re-imagining of [RelEcs/HypEcs](https://github.com/Byteron/HypEcs), extended and compacted until it *feels just right* for high performance game development in any modern C# engine.
 
 ## Quickstart: Let's go!
+
 📦`>` `dotnet add package fennecs`
 
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
@@ -43,7 +43,8 @@ query.Job(static (ref Position position, float dt) => {
 
 ### 💢... when we said minimal boilerplate, *we foxing meant it.*
 
-Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "infrastructure".
+Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "
+infrastructure".
 
 The 💫*real magic*💫 is that none of this brevity compromises on performance.
 
@@ -81,16 +82,16 @@ Here are some raw results from our benchmark suite, from the Vector3 operations 
 
 ### Executing a System.Numerics.Vector3 cross product and writing the result back with various calling methods
 
-| Method     | entities  | chunk | Mean       | StdDev    | Jobs | Contention | Alloc |
-|----------- |-----------|------:|-----------:|----------:|-----:|-----------:|------:|
-| Cross_JobU | 1_000_000 | 32768 |   349.9 us |   1.53 us |    32|     0.0029 |     - |
-| Cross_JobU | 1_000_000 | 16384 |   350.5 us |   5.82 us |    64|     0.0005 |     - |
-| Cross_JobU | 1_000_000 | 4096  |   356.1 us |   1.78 us |   248|     0.0083 |     - |
-| Cross_Job  | 1_000_000 | 4096  |   371.7 us |  15.36 us |   248|     0.0103 |     - |
-| Cross_Job  | 1_000_000 | 32768 |   381.6 us |   4.22 us |    32|          - |     - |
-| Cross_Job  | 1_000_000 | 16384 |   405.2 us |   4.56 us |    64|     0.0039 |     - |
-| Cross_RunU | 1_000_000 |     - | 1,268.4 us |  44.76 us |    - |          - |   1 B |
-| Cross_Run  | 1_000_000 |     - | 1,827.0 us |  16.76 us |    - |          - |   1 B |
+| Method     | entities  | chunk |       Mean |   StdDev | Jobs | Contention | Alloc |
+|------------|-----------|------:|-----------:|---------:|-----:|-----------:|------:|
+| Cross_JobU | 1_000_000 | 32768 |   349.9 us |  1.53 us |   32 |     0.0029 |     - |
+| Cross_JobU | 1_000_000 | 16384 |   350.5 us |  5.82 us |   64 |     0.0005 |     - |
+| Cross_JobU | 1_000_000 |  4096 |   356.1 us |  1.78 us |  248 |     0.0083 |     - |
+| Cross_Job  | 1_000_000 |  4096 |   371.7 us | 15.36 us |  248 |     0.0103 |     - |
+| Cross_Job  | 1_000_000 | 32768 |   381.6 us |  4.22 us |   32 |          - |     - |
+| Cross_Job  | 1_000_000 | 16384 |   405.2 us |  4.56 us |   64 |     0.0039 |     - |
+| Cross_RunU | 1_000_000 |     - | 1,268.4 us | 44.76 us |    - |          - |   1 B |
+| Cross_Run  | 1_000_000 |     - | 1,827.0 us | 16.76 us |    - |          - |   1 B |
 
 ------------------------
 

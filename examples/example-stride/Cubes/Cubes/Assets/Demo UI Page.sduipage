@@ -6,41 +6,44 @@ Design:
     Resolution: {X: 1280.0, Y: 720.0, Z: 1000.0}
 Hierarchy:
     RootParts:
-        - !Grid ref!! fc5e70a6-197d-40ce-9e32-41d23284abd0
+        - !Grid ref!! 63171ef8-bb75-4fc1-905c-52a689242415
     Parts:
         -   UIElement: !TextBlock
                 Id: 16bd8958-3102-4eb1-81a6-cdb41f27bb8b
                 DependencyProperties: {}
                 BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
                 Width: 624.0
-                Height: 44.0
+                Height: 250.0
+                HorizontalAlignment: Left
                 VerticalAlignment: Top
-                Margin: {Left: 636.0, Top: 16.0, Right: 20.0}
+                Margin: {Left: 640.0}
                 MaximumWidth: 3.4028235E+38
                 MaximumHeight: 3.4028235E+38
                 MaximumDepth: 3.4028235E+38
                 Name: EntityCountText
                 Text: Entities
-                Font: 34cdc459-19e4-4355-81ec-50e634f229be:SpriteFont
-                TextSize: 30.0
-                TextColor: {R: 240, G: 240, B: 240, A: 255}
+                Font: 34cdc459-19e4-4355-81ec-50e634f229be:Bai Jamjuree SDF
+                TextSize: 24.0
+                TextColor: {R: 240, G: 240, B: 240, A: 0}
                 TextAlignment: Right
         -   UIElement: !Slider
                 Id: 16eebb5d-2160-448c-bbd4-2d569d689eb9
                 DependencyProperties: {}
                 BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Opacity: 0.7
                 DrawLayerNumber: 5
                 Width: 32.0
                 Height: 440.0
-                HorizontalAlignment: Right
-                VerticalAlignment: Stretch
-                Margin: {Top: 264.0, Right: 17.0, Bottom: 16.0}
+                HorizontalAlignment: Left
+                VerticalAlignment: Top
+                Margin: {Left: 1221.0, Top: 264.0}
                 MaximumWidth: 3.4028235E+38
                 MaximumHeight: 3.4028235E+38
                 MaximumDepth: 3.4028235E+38
                 Name: SimulatedSlider
                 Value: 0.4
-                Step: 0.01
+                Minimum: 0.05
+                Step: 0.05
                 TrackBackgroundImage: !SpriteFromSheet
                     Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
                     CurrentFrame: 9
@@ -63,18 +66,20 @@ Hierarchy:
                 Id: 4a58bf6c-dbb0-48d9-9763-720bd48622dd
                 DependencyProperties: {}
                 BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Opacity: 0.7
                 DrawLayerNumber: 5
                 Width: 32.0
                 Height: 440.0
                 HorizontalAlignment: Right
                 VerticalAlignment: Stretch
-                Margin: {Top: 264.0, Right: 81.0, Bottom: 16.0}
+                Margin: {Top: 264.0, Right: 73.0}
                 MaximumWidth: 3.4028235E+38
                 MaximumHeight: 3.4028235E+38
                 MaximumDepth: 3.4028235E+38
                 Name: RenderedSlider
                 Value: 0.3
-                Step: 0.01
+                Minimum: 0.05
+                Step: 0.05
                 TrackBackgroundImage: !SpriteFromSheet
                     Sheet: 1be3340c-b797-4557-bff7-d9be92dfdb42:StrideUIDesigns
                     CurrentFrame: 9
@@ -98,60 +103,89 @@ Hierarchy:
                 DependencyProperties:
                     778882b2b5cebf6bd0af3142731eb77f~Canvas.UseAbsolutePositionPropertyKey: true
                 BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
-                Width: 320.5
-                Height: 320.5
+                Opacity: 0.5
+                Width: 480.0
+                Height: 480.0
                 Depth: 1.0
-                Margin: {Left: 457.0, Top: 191.5, Right: 502.5, Bottom: 208.0}
+                HorizontalAlignment: Left
+                VerticalAlignment: Top
+                Margin: {Left: 384.0, Top: 93.5}
                 MaximumWidth: 3.4028235E+38
                 MaximumHeight: 3.4028235E+38
                 MaximumDepth: 3.4028235E+38
+                Name: Logo
                 Source: !SpriteFromTexture
                     Texture: 10ee4e7a-d0bb-4da5-b6cb-0e4f3c127b4d:fennecs-logo
                     Center: {X: 0.0, Y: 0.0}
-                Color: {R: 255, G: 255, B: 255, A: 255}
+                Color: {R: 240, G: 240, B: 240, A: 0}
         -   UIElement: !TextBlock
                 Id: 618a4250-1388-424d-b786-5c09a07a6488
                 DependencyProperties: {}
                 BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
                 Width: 624.0
-                Height: 44.0
+                Height: 30.0
                 HorizontalAlignment: Left
-                VerticalAlignment: Bottom
-                Margin: {Left: 12.0}
+                VerticalAlignment: Top
+                Margin: {Top: 674.0}
                 MaximumWidth: 3.4028235E+38
                 MaximumHeight: 3.4028235E+38
                 MaximumDepth: 3.4028235E+38
+                Name: Hyperlink
                 Text: https://fennecs.tech
-                Font: 34cdc459-19e4-4355-81ec-50e634f229be:SpriteFont
-                TextSize: 30.0
-                TextColor: {R: 240, G: 240, B: 240, A: 255}
-        -   UIElement: !TextBlock
-                Id: e7842a48-86a3-4c67-852f-2a4f10386d58
-                DependencyProperties: {}
-                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
-                Margin: {}
-                MaximumWidth: 3.4028235E+38
-                MaximumHeight: 3.4028235E+38
-                MaximumDepth: 3.4028235E+38
-                Font: c90f3988-0544-4cbe-993f-13af7d9c23c6:StrideDefaultFont
-                TextSize: 20.0
-                TextColor: {R: 240, G: 240, B: 240, A: 255}
+                Font: 34cdc459-19e4-4355-81ec-50e634f229be:Bai Jamjuree SDF
+                TextSize: 24.0
+                TextColor: {R: 240, G: 240, B: 240, A: 0}
         -   UIElement: !Grid
-                Id: fc5e70a6-197d-40ce-9e32-41d23284abd0
+                Id: 63171ef8-bb75-4fc1-905c-52a689242415
                 DependencyProperties: {}
                 BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
                 Opacity: 0.5
-                Margin: {}
+                Margin: {Left: 8.0, Top: 8.0, Right: 8.0, Bottom: 8.0}
                 MaximumWidth: 3.4028235E+38
                 MaximumHeight: 3.4028235E+38
                 MaximumDepth: 3.4028235E+38
                 Children:
-                    da091b85fcfe9058a09a5c8b6f93d399: !ImageElement ref!! 5089cc59-8864-43d5-a3ba-1f37afde5d18
-                    97ab271c8aebde41df669ec6103e50bb: !TextBlock ref!! 618a4250-1388-424d-b786-5c09a07a6488
-                    fae3305eb40400cc689f6bebe13984b5: !TextBlock ref!! 16bd8958-3102-4eb1-81a6-cdb41f27bb8b
-                    5c4bf09c4ceaa46199e3d83751b292bb: !TextBlock ref!! e7842a48-86a3-4c67-852f-2a4f10386d58
-                    b4505872a62250b4a134889ddcee7a38: !Slider ref!! 16eebb5d-2160-448c-bbd4-2d569d689eb9
-                    b92a0455d8ab6737ba0c125827139cf4: !Slider ref!! 4a58bf6c-dbb0-48d9-9763-720bd48622dd
+                    82949e82d50dbb0df16514d418a32a21: !ImageElement ref!! 5089cc59-8864-43d5-a3ba-1f37afde5d18
+                    f5b4e3a84d4c0da1b58ee666a891db28: !TextBlock ref!! 618a4250-1388-424d-b786-5c09a07a6488
+                    0e04d49baf42e99cd994b2564a94ee08: !TextBlock ref!! 818a0d51-f6ec-45cf-89a9-2d2faf8aa6f2
+                    e736dd0d73b74002fa4d945d4055a5f2: !TextBlock ref!! 16bd8958-3102-4eb1-81a6-cdb41f27bb8b
+                    9dd94f33a8d05c8fed814dafae4670c3: !TextBlock ref!! c7349da7-6372-421f-b6d8-c2932bebef2e
+                    f64e583b996dfc6153c95b0f6fdd47a8: !Slider ref!! 16eebb5d-2160-448c-bbd4-2d569d689eb9
+                    5638db82439be688fb295cd5b431eab9: !Slider ref!! 4a58bf6c-dbb0-48d9-9763-720bd48622dd
                 RowDefinitions: {}
                 ColumnDefinitions: {}
                 LayerDefinitions: {}
+        -   UIElement: !TextBlock
+                Id: 818a0d51-f6ec-45cf-89a9-2d2faf8aa6f2
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Width: 105.0
+                Height: 30.0
+                HorizontalAlignment: Right
+                VerticalAlignment: Top
+                Margin: {Top: 234.0}
+                MaximumWidth: 3.4028235E+38
+                MaximumHeight: 3.4028235E+38
+                MaximumDepth: 3.4028235E+38
+                Name: Hyperlink
+                Text: Vis    Sim
+                Font: 34cdc459-19e4-4355-81ec-50e634f229be:Bai Jamjuree SDF
+                TextSize: 24.0
+                TextColor: {R: 240, G: 240, B: 240, A: 0}
+        -   UIElement: !TextBlock
+                Id: c7349da7-6372-421f-b6d8-c2932bebef2e
+                DependencyProperties: {}
+                BackgroundColor: {R: 0, G: 0, B: 0, A: 0}
+                Width: 384.0
+                Height: 640.0
+                HorizontalAlignment: Left
+                Margin: {Bottom: 64.0}
+                MaximumWidth: 3.4028235E+38
+                MaximumHeight: 3.4028235E+38
+                MaximumDepth: 3.4028235E+38
+                Name: InfoText
+                Text: 'Demo: Cubes (Stride Version)'
+                Font: a1b45771-ffff-4b57-aaeb-4861a5608432:Bai Jamjuree Dynamic
+                TextSize: 16.0
+                TextColor: {R: 255, G: 255, B: 255, A: 0}
+                WrapText: true

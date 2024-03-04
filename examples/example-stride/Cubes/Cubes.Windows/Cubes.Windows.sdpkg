@@ -16,6 +16,6 @@ Bundles: []
 TemplateFolders: []
 RootAssets:
     - 928ef128-c8fc-4e48-a85f-d213ec63bf8f:box-model
+    - 937342bb-c203-4ef9-bcff-b5e4920ac537:Demo Compositor
     - a25fb4f9-359f-4029-a39d-a830b6067e5a:dark blue sky
     - ca3c568f-135b-4c7f-9cb6-f9ee4c6faef0:sun-orange-material
-    - e6deae7a-1e7e-4282-aeca-be89b56a2fcf:GraphicsCompositor

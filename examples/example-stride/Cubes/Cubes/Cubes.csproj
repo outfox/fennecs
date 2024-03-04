@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net8.0-windows</TargetFrameworks>
-    <Configurations>Debug;Release</Configurations>
-    <Platforms>AnyCPU</Platforms>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net8.0-windows</TargetFrameworks>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Stride.Engine" Version="4.2.0.2067" />
+    <ItemGroup>
+        <PackageReference Include="Stride.Engine" Version="4.2.0.2067"/>
 
-    <PackageReference Include="Stride.Video" Version="4.2.0.2067" />
-    <PackageReference Include="Stride.Physics" Version="4.2.0.2067" />
-    <PackageReference Include="Stride.Navigation" Version="4.2.0.2067" />
-    <PackageReference Include="Stride.Particles" Version="4.2.0.2067" />
-    <PackageReference Include="Stride.UI" Version="4.2.0.2067" />
+        <PackageReference Include="Stride.Video" Version="4.2.0.2067"/>
+        <PackageReference Include="Stride.Physics" Version="4.2.0.2067"/>
+        <PackageReference Include="Stride.Navigation" Version="4.2.0.2067"/>
+        <PackageReference Include="Stride.Particles" Version="4.2.0.2067"/>
+        <PackageReference Include="Stride.UI" Version="4.2.0.2067"/>
 
-    <PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.2.0.2067" IncludeAssets="build;buildTransitive" />
+        <PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.2.0.2067" IncludeAssets="build;buildTransitive"/>
 
-    <ProjectReference Include="..\..\..\..\fennecs\fennecs.csproj"/>
-  </ItemGroup>
-  
+        <ProjectReference Include="..\..\..\..\fennecs\fennecs.csproj"/>
+    </ItemGroup>
+
 </Project>
