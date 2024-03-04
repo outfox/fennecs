@@ -14,7 +14,7 @@
    </tr>
    <tr>
       <td>
-         <img src="docs/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px; max-width: 320px"/>
+         <img src="www/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px; max-width: 320px"/>
       </td>
       <td style="width: fit-content">
          <h1>What the fox, another ECS?!</h1>
