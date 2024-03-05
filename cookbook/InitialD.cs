@@ -20,6 +20,8 @@ var ae86 = world.Spawn()
         Horsepower = 130, Torque = 149,
     });
 
+Console.WriteLine($"Look, {takumi} is driving his dad's\n{ae86}");
+
 
 // All cars in the race.
 var racers =

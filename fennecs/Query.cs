@@ -26,7 +26,6 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     #region Accessors
-
     /// <summary>
     ///     Gets a reference to the Component of type <typeparamref name="C" /> for the entity.
     /// </summary>
@@ -40,7 +39,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         AssertNotDisposed();
 
-        if (entity._world != World) throw new InvalidOperationException("Entity is not from this World.");
+        if (entity.World != World) throw new InvalidOperationException("Entity is not from this World.");
         World.AssertAlive(entity);
 
         if (!Contains<C>(match)) throw new TypeAccessException("Query does not match this Component type.");
@@ -49,7 +48,6 @@ public class Query : IEnumerable<Entity>, IDisposable
         //TODO: Maybe it's possible to lock the World for the lifetime of the ref?
         return ref World.GetComponent<C>(entity, match);
     }
-
     #endregion
 
 
@@ -92,7 +90,6 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     #region Internals
-
     /// <summary>
     ///     Immutable Array of TypeExpressions that are the Stream Types of the Query set at construction.
     /// </summary>
@@ -107,7 +104,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
-    protected readonly CountdownEvent Countdown = new(1);
+    protected readonly CountdownEvent Countdown = new(initialCount: 1);
 
     private protected readonly List<Archetype> Archetypes;
     private protected readonly World World;
@@ -124,12 +121,10 @@ public class Query : IEnumerable<Entity>, IDisposable
         World = world;
         Mask = mask;
     }
-
     #endregion
 
 
     #region Filtering
-
     /// <summary>
     ///     Adds a subset filter to this Query, reducing the Stream Types to a subset of the initial Stream Types.
     /// </summary>
@@ -193,12 +188,10 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
     }
-
     #endregion
 
 
     #region IEnumerable<Entity>
-
     /// <summary>
     ///     Enumerator over all the Entities in the Query.
     ///     Do not make modifications to the world affecting the Query while enumerating.
@@ -244,12 +237,10 @@ public class Query : IEnumerable<Entity>, IDisposable
         AssertNotDisposed();
         return GetEnumerator();
     }
-
     #endregion
 
 
     #region Random Access
-
     /// <summary>
     ///     Does this query match any entities?
     /// </summary>
@@ -314,12 +305,10 @@ public class Query : IEnumerable<Entity>, IDisposable
             return result;
         }
     }
-
     #endregion
 
 
     #region Bulk Operations
-
     /// <summary>
     ///     Adds a Component (using default constructor) to all Entities matched by this query.
     /// </summary>
@@ -362,30 +351,61 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
 
-    public void Clear()
+    [Obsolete("Use Despawn() instead.")]
+    public void Clear() => Despawn();
+
+
+    /// <summary>
+    /// Despawn all Entities matched by this Query.
+    /// </summary>
+    public void Despawn()
     {
-        Truncate(0);
+        Truncate(maxEntityCount: 0);
     }
 
 
-    public void Truncate(int maxEntityCount, TruncateMode mode = TruncateMode.PerArchetype)
+    /// <summary>
+    /// Despawn all Entities above the specified count in the Query, using the specified mode of distribution.
+    /// The default is a balanced distribution (with rounding).
+    /// </summary>
+    /// <param name="maxEntityCount">number of entities to preserve</param>
+    /// <param name="mode">
+    /// <ul>
+    /// <li><see cref="TruncateMode.Proportional"/>: (default) Truncate matched Archetypes proportionally to their contents (approximation by rounding).</li>
+    /// <li><see cref="TruncateMode.PerArchetype"/>: Truncate each matched Archetype to the specified maximum count.
+    /// This means a Query matching <c>n</c> Archetypes will have up to <c>n * maxEntityCount</c> Entities after this
+    /// operation.</li>
+    /// </ul>
+    /// </param>
+    public void Truncate(int maxEntityCount, TruncateMode mode = default)
     {
-        foreach (var archetype in Archetypes) archetype.Truncate(maxEntityCount);
+        var count = Count;
+        if (count <= maxEntityCount) return;
+
+        foreach (var archetype in Archetypes)
+            switch (mode)
+            {
+                case TruncateMode.PerArchetype:
+                    archetype.Truncate(maxEntityCount);
+                    break;
+                case TruncateMode.Proportional:
+                default:
+                    var ratio = (float) maxEntityCount / count;
+                    archetype.Truncate((int) Math.Round(ratio * archetype.Count));
+                    break;
+            }
     }
 
 
     public enum TruncateMode
     {
-        PerArchetype = default,
-        //FirstComeFirstServe,
-        //EvenDistribution,
+        Proportional = default,
+        PerArchetype,
     }
-
     #endregion
 
 
     #region IDisposable Implementation
-
     /// <summary>
     ///     Dispose the Query.
     /// </summary>
@@ -411,7 +431,6 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     private bool disposed { get; set; }
-
     #endregion
 }
 

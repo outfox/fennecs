@@ -211,8 +211,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <inheritdoc cref="object.ToString"/>
     public override string ToString()
     {
-        if (isWildcard || isRelation) return $"<{LanguageType.Resolve(TypeId)}>\u2192{Target}>";
-        return $"<{LanguageType.Resolve(TypeId)}> (plain)>";
+        if (isWildcard || isRelation) return $"<{LanguageType.Resolve(TypeId)}> >> {Target}";
+        return $"<{LanguageType.Resolve(TypeId)}>";
     }
 
 

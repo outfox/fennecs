@@ -1,18 +1,69 @@
 Directed by: Trentin Quarantino
 As we said, there were 5 of them.
-One hides in hideout 0x15e0423f.
-One hides in hideout 0x1138050e.
-One hides in hideout 0x4454d292.
-One hides in hideout 0x63211832.
-One hides in hideout 0x378d955f.
+One hides in hideout 0x33936a5f.
+One hides in hideout 0x6890e70a.
+One hides in hideout 0x1650a5b7.
+One hides in hideout 0x1d0d225d.
+One hides in hideout 0x66edbe6b.
+
 We are still here, though.
+
 Do we hold grudges? True.
-Oh, hello E-00000002:00001! Remember E-00000001:00001?
-Oh, hello E-00000003:00001! Remember E-00000001:00001?
-Oh, hello E-00000004:00001! Remember E-00000001:00001?
-Oh, hello E-00000005:00001! Remember E-00000001:00001?
-Oh, hello E-00000006:00001! Remember E-00000001:00001?
+This is us (and our grudges):
+E-00000001:00001
+|-<fennecs.Identity>
+|-<Location>
+|-<Grudge> >> E-00000002:00001
+|-<Grudge> >> E-00000003:00001
+|-<Grudge> >> E-00000004:00001
+|-<Grudge> >> E-00000005:00001
+\-<Grudge> >> E-00000006:00001
+
+Oh, hello E-00000002:00001! Remember us (E-00000001:00001)?
+They do. They remember everything.
+They are:
+E-00000002:00001
+|-<fennecs.Identity>
+|-<Location>
+\-<Betrayed> >> E-00000001:00001
+
+Oh, hello E-00000003:00001! Remember us (E-00000001:00001)?
+They do. They remember everything.
+They are:
+E-00000003:00001
+|-<fennecs.Identity>
+|-<Location>
+\-<Betrayed> >> E-00000001:00001
+
+Oh, hello E-00000004:00001! Remember us (E-00000001:00001)?
+They do. They remember everything.
+They are:
+E-00000004:00001
+|-<fennecs.Identity>
+|-<Location>
+\-<Betrayed> >> E-00000001:00001
+
+Oh, hello E-00000005:00001! Remember us (E-00000001:00001)?
+They do. They remember everything.
+They are:
+E-00000005:00001
+|-<fennecs.Identity>
+|-<Location>
+\-<Betrayed> >> E-00000001:00001
+
+Oh, hello E-00000006:00001! Remember us (E-00000001:00001)?
+They do. They remember everything.
+They are:
+E-00000006:00001
+|-<fennecs.Identity>
+|-<Location>
+\-<Betrayed> >> E-00000001:00001
+
 Now, there are 0 of them.
-Let's get out of hideout 0x378d955f.
+Let's get out of hideout 0x66edbe6b.
 Any more grudges? False.
-We've been traveling for a while.
+This is us now:
+E-00000001:00001
+|-<fennecs.Identity>
+\-<Location>
+We'll be traveling for a while.

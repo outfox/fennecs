@@ -40,10 +40,13 @@ betrayingVipers.For((ref Location location) =>
     Console.WriteLine($"One hides in {location}.");
 });
 
+Console.WriteLine();
 Console.WriteLine($"We are still {us.Ref<Location>()}, though.");
 
 // Has<>(Match.Entity) is the same as saying HasRelation<>()
+Console.WriteLine();
 Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
+Console.WriteLine("This is us (and our grudges):\n" + us);
 
 // Choose your weapon:
 //    query.Despawn();
@@ -51,24 +54,34 @@ Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
 // -> visiting each entity personally
 betrayingVipers.For((ref Location theirLocation, ref Identity theirIdentity) =>
 {
+    Console.WriteLine();
+    
     ref var ourLocation = ref us.Ref<Location>();
     ourLocation = theirLocation;
 
     // Knock knock.
-    Console.WriteLine($"Oh, hello {theirIdentity}! Remember {us}?");
+    Console.WriteLine($"Oh, hello {theirIdentity}! Remember us ({us.Id})?");
+    
+    // We only have an identity, so we fudge one in the world. We could also
+    // use world.ListComponents(theirIdentity). (and more API coming soon)
+    var they = new Entity(world, theirIdentity);
+    Console.WriteLine("They do. They remember everything. They are:\n" + they);
 
     // Get our revenge.
     world.Despawn(theirIdentity);
+
 });
 
 // Survey the aftermath.
+Console.WriteLine();
 Console.WriteLine($"Now, there are {betrayingVipers.Count} of them.");
 Console.WriteLine($"Let's get out of {us.Ref<Location>()}.");
 us.Ref<Location>() = "traveling";
 
 // We satisfied our grudges.
 Console.WriteLine($"Any more grudges? {us.Has<Grudge>(Match.Entity)}.");
-Console.WriteLine($"We've been {us.Ref<Location>()} for a while.");
+Console.WriteLine("This is us now:\n" + us);
+Console.WriteLine($"We'll be {us.Ref<Location>()} for a while.");
 
 
 # region Components

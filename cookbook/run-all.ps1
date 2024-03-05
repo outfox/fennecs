@@ -4,7 +4,7 @@ foreach ($file in $csprojFiles) {
     $projectName = $file.BaseName
     
     # Run dotnet run for each project and redirect output to a text file named after the project
-    dotnet run --project $file.FullName | Out-File "${projectName}.output.txt"
+    dotnet run --project $file.FullName | Out-File "${projectName}.output.txt" -Encoding UTF8
             
     
     # Pad the file with newlines to match the source length    

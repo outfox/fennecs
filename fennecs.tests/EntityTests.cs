@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests;
 
-public class EntityTests
+public class EntityTests(ITestOutputHelper output)
 {
     [Fact]
     public void Can_Relate_to_Entity()
@@ -29,12 +29,17 @@ public class EntityTests
 
 
     [Fact]
-    public void To_String()
+    public void Entity_has_ToString()
     {
         using var world = new World();
         var entity = world.Spawn();
         var builder = new Entity(world, entity.Id);
         Assert.Equal(entity.ToString(), builder.ToString());
+
+        entity.Add(123);
+        entity.AddRelation(world.Spawn(), 7.0f);
+        entity.AddLink("hello");
+        output.WriteLine(entity.ToString());
     }
 
 

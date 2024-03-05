@@ -1,4 +1,6 @@
-﻿namespace fennecs;
+﻿// SPDX-License-Identifier: MIT
+
+namespace fennecs;
 
 /// <summary>
 /// <para>
@@ -13,17 +15,16 @@
 /// <remarks>
 /// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
 /// </remarks>
-public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IComparable, IDisposable
+public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
 {
     #region Internal State
-
     /// <summary>
     /// Provides a fluent interface for constructing and modifying Entities within a world.
     /// The Entity's Identity is managed internally.
     /// </summary>
-    internal Entity(World world, Identity identity)
+    public Entity(World world, Identity identity)
     {
-        _world = world;
+        World = world;
         Id = identity;
     }
 
@@ -31,18 +32,17 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <summary>
     /// The World in which the Entity exists.
     /// </summary>
-    internal readonly World _world;
+    internal readonly World World;
+
 
     /// <summary>
     /// The Identity of the Entity.
     /// </summary>
-    internal Identity Id { get; }
-
+    public readonly Identity Id;
     #endregion
 
 
     #region CRUD
-
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
@@ -52,7 +52,8 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity entity.</exception>
-    public ref C Ref<C>(Identity target = default) => ref _world.GetComponent<C>(this, target);
+    public ref C Ref<C>(Identity target = default) => ref World.GetComponent<C>(this, target);
+
 
     /// <summary>
     /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
@@ -90,7 +91,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity AddRelation<T>(Entity targetEntity, T data)
     {
-        _world.AddRelation(Id, targetEntity.Id, data);
+        World.AddRelation(Id, targetEntity.Id, data);
         return this;
     }
 
@@ -112,7 +113,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity AddLink<T>(T target) where T : class
     {
-        _world.AddLink(Id, target);
+        World.AddLink(Id, target);
         return this;
     }
 
@@ -125,7 +126,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Add<T>(T data)
     {
-        _world.AddComponent(Id, data);
+        World.AddComponent(Id, data);
         return this;
     }
 
@@ -145,7 +146,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Remove<T>()
     {
-        _world.RemoveComponent<T>(Id);
+        World.RemoveComponent<T>(Id);
         return this;
     }
 
@@ -158,7 +159,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity RemoveRelation<T>(Entity targetEntity)
     {
-        _world.RemoveRelation<T>(Id, targetEntity);
+        World.RemoveRelation<T>(Id, targetEntity);
         return this;
     }
 
@@ -171,53 +172,61 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity RemoveLink<T>(T targetObject) where T : class
     {
-        _world.RemoveLink(Id, targetObject);
+        World.RemoveLink(Id, targetObject);
         return this;
     }
+
+
+    /// <summary>
+    /// Despawns the Entity from the World.
+    /// </summary>
+    /// <remarks>
+    /// The entity builder struct still exists afterwards, but the entity is no longer alive and subsequent CRUD operations will throw.
+    /// </remarks>
+    public void Despawn() => World.Despawn(Id);
 
 
     /// <summary>
     /// Checks if the Entity has a Plain Component.
     /// Same as calling <see cref="Has{T}(Identity)"/> with <see cref="Match.Plain"/>
     /// </summary>
-    public bool Has<T>() => _world.HasComponent<T>(Id);
+    public bool Has<T>() => World.HasComponent<T>(Id);
 
 
     /// <summary>
     /// Checks if the Entity has a Component of a specific type.
     /// Allows for a <see cref="Match"/> Expression to be specified.
     /// </summary>
-    public bool Has<T>(Identity match) => _world.HasComponent<T>(Id, match);
+    public bool Has<T>(Identity match) => World.HasComponent<T>(Id, match);
 
 
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type and specific target.
     /// </summary>
-    public bool HasLink<T>(T targetObject) where T : class => _world.HasLink(Id, targetObject);
+    public bool HasLink<T>(T targetObject) where T : class => World.HasLink(Id, targetObject);
 
 
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type.
     /// </summary>
-    public bool HasLink<T>() where T : class => _world.HasComponent<T>(Id, Match.Object);
+    public bool HasLink<T>() where T : class => World.HasComponent<T>(Id, Match.Object);
 
 
     /// <summary>
     /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
     /// </summary>
-    public bool HasRelation<T>(Entity targetEntity) => _world.HasRelation<T>(Id, targetEntity.Id);
+    public bool HasRelation<T>(Entity targetEntity) => World.HasRelation<T>(Id, targetEntity.Id);
 
 
     /// <summary>
     /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
     /// </summary>
-    public bool HasRelation<T>() => _world.HasRelation<T>(Id, Match.Entity);
-
+    public bool HasRelation<T>() => World.HasRelation<T>(Id, Match.Entity);
     #endregion
 
 
     /// <summary>
-    /// Disposes of the Entity, releasing any pooled resources.
+    /// Disposes of the Entity builder, releasing any pooled resources.
     /// </summary>
     public void Dispose()
     {
@@ -225,53 +234,44 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, ICompar
 
 
     #region Cast Operators and IEquatable<Entity>
-
-    public bool Equals(Entity other)
-    {
-        return Id.Equals(other.Id) && Equals(_world, other._world);
-    }
+    public bool Equals(Entity other) => Id.Equals(other.Id) && Equals(World, other.World);
 
 
-    public override bool Equals(object? obj)
-    {
-        return obj is Entity other && Equals(other);
-    }
+    public override bool Equals(object? obj) => obj is Entity other && Equals(other);
 
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_world, Id);
-    }
+    public override int GetHashCode() => HashCode.Combine(World, Id);
 
 
-    public static bool operator ==(Entity left, Entity right)
-    {
-        return left.Equals(right);
-    }
+    public static bool operator ==(Entity left, Entity right) => left.Equals(right);
 
 
-    public static bool operator !=(Entity left, Entity right)
-    {
-        return !(left == right);
-    }
+    public static bool operator !=(Entity left, Entity right) => !(left == right);
 
+
+    public int CompareTo(Entity other) => Id.CompareTo(other.Id);
 
     public override string ToString()
     {
-        return Id.ToString();
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine(Id.ToString());
+
+        var components = World.ListComponents(Id);
+        var typeExpressions = components as TypeExpression[] ?? components.ToArray();
+
+        for (var i = 0; i < typeExpressions.Length - 1; i++)
+        {
+            sb.Append('|');
+            sb.Append('-');
+            sb.AppendLine(typeExpressions[i].ToString());
+        }
+
+        sb.Append('\\');
+        sb.Append('-');
+        sb.Append(typeExpressions[^1].ToString());
+
+        return sb.ToString();
     }
-
-
-    public int CompareTo(object? obj)
-    {
-        return obj is Entity other ? CompareTo(other) : 0;
-    }
-
-
-    public int CompareTo(Entity other)
-    {
-        return Id.CompareTo(other.Id);
-    }
-
+    
     #endregion
 }

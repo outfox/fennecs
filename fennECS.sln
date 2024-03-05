@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs", "fennecs\fennecs.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs.tests", "fennecs.tests\fennecs.tests.csproj", "{C75030DB-1B0D-44F7-B01F-018EA46178A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "example-godot", "P:\fennECS\examples\example-godot\example-godot.csproj", "{3F902A5F-555F-432A-AA0F-87466601A3C1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs.benchmarks", "fennecs.benchmarks\fennecs.benchmarks.csproj", "{08768DCD-54CB-4DAE-AD04-E618C1522753}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KillBill", "cookbook\KillBill.csproj", "{67189493-DD27-484F-8761-135501F29E1E}"
@@ -30,10 +28,6 @@ Global
 		{C75030DB-1B0D-44F7-B01F-018EA46178A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C75030DB-1B0D-44F7-B01F-018EA46178A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C75030DB-1B0D-44F7-B01F-018EA46178A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F902A5F-555F-432A-AA0F-87466601A3C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F902A5F-555F-432A-AA0F-87466601A3C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F902A5F-555F-432A-AA0F-87466601A3C1}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F902A5F-555F-432A-AA0F-87466601A3C1}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{08768DCD-54CB-4DAE-AD04-E618C1522753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08768DCD-54CB-4DAE-AD04-E618C1522753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08768DCD-54CB-4DAE-AD04-E618C1522753}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -235,7 +235,7 @@ public class IdentityTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Id;
-        var components = world.GetComponents(identity);
+        var components = world.ListComponents(identity);
         Assert.False(world.HasComponent<int>(identity));
         Assert.True(components.Count() == 1);
     }
@@ -249,7 +249,7 @@ public class IdentityTests(ITestOutputHelper output)
         var identity = world.Spawn().Id;
         world.On(identity).Add(t1);
         Assert.True(world.HasComponent<T>(identity));
-        var components = world.GetComponents(identity);
+        var components = world.ListComponents(identity);
         Assert.True(components.Count() == 2);
     }
 
