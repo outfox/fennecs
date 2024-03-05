@@ -6,7 +6,7 @@ title: Query<>.Job
 # `Query<>.Job<U>(MemoryAction,U)`
 
 ::: info THE WORKHORSE
-Many items, multi-threaded. Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instantly schedules and executes the workload split into chunks, calling many times in parallel across CPU cores.  
+One work item at a time, multi-threaded. Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instantly schedules and executes the workload split into chunks, calling it many times in parallel across CPU cores.  
 :neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle:
 :::
 

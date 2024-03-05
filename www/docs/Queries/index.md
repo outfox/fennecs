@@ -15,35 +15,26 @@ Each Query object maintains a collection of all Archetypes it matches, and when 
 Whenever a new Archetype materializes, the World will notify _all matching Queries_ of its existence.
 :::
 
-## Processing Data in Queries
+## CRUD - Create, Read, Update, Delete
+Queries expose methods to operate quickly and with clear intent on all the entities matched by the query.
 
-Each Query with one or more [Stream Type](StreamTypes.md) offer a set of ==Runners== to execute code in batches or parallelized on all Entities in the Query.
+### Adding & Removing Components in Bulk
+`Query.Add<C>` adds a Component to each Entity in the Query. This throws if the Query already matches that Component - either ALL entities in the query would already have the Component, or the query would be empty anyway.
 
-#### Here's a mnemonic cheat sheet, follow the links in the paragraph headlines for details.
+`Query.Remove<C>` removes a Component from each Entity in the Query. This throws if the Query doesn't match that Component - NO entities in the query would have the Component on them, anyway.
 
-::: info THE CLASSIC
-# [`For`](Query.For.md) / [`For<U>`](Query.For.md) 
-One work item at a time. Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each Entity in the query, providing the Components that match the ==Stream Types== as `ref` to the code.  
-:neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_nom_waffle:
-:::
 
-::: info THE WORKHORSE
-# [`Job`](Query.Job.md) / [`Job<U>`](Query.Job.md) 
-Many items, multi-threaded. Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instantly schedules and executes the workload split into chunks, calling many times in parallel across CPU cores.  
-:neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle:
-:::
+### Adding & Removing Links in Bulk
+(TODO) object links can also be added. (coming beta 1.2)
 
-::: danger THE FREIGHT TRAIN
-#  [`Raw`](Query.Raw.md) / [`Raw<U>`](Query.Raw.md) 
-Work items as contiguous memory. Using a distinct signature, [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire workload* of each Archetype diriectly into your ~~fox~~ delegate via a single call.
-:neofox_waffle_long_blurry::neofox_scream_stare:
-:::
+### Adding & Removing Relations in Bulk
+(TODO) entity relations can also be added. (coming beta 1.2)
 
-## Cleaning up
-### Entities in Bulk
+
+### Deleting Entities in Bulk
 Use the method `Query.Clear()` to despawn all Entities in that Query.
 Alternatively, use `Query.Truncate(int, TruncateMode)` to cut your Query down to a specific size.
 
-### Queries themselves
+## Cleaning up unused Queries
 Queries have a modest memory footprint, but in Worlds with many fragmented Archetypes, the cost of Query update notifications can add up! Call `Query.Dispose()` to de-register a query from its World and free its resources.
 

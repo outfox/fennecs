@@ -6,16 +6,16 @@ title: Query<>.Raw
 # `Query<>.Raw<U>(RefAction,U)`
 
 ::: danger THE FREIGHT TRAIN
-Work items as contiguous memory. Using a distinct signature, [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire workload* of each Archetype diriectly into your ~~fox~~ delegate via a single call.
+All work items at once, as contiguous memory. Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire stream data* of each Archetype directly into your ~~fox~~ delegate in one `Memory<T>` per Stream Type.
 :neofox_waffle_long_blurry::neofox_scream_stare:
 :::
 
-## Processing entire Memory Blocks
+## Processing Memory in Contiguous Blocks
 
 Your code controls how and where. Maximum power, maximum responsibility.  
 _(in reality, `Memory<T>` is quite easy to use in C#, but can be more difficult to debug!)_
 
-Especially for [blittable Component types](https://learn.microsoft.com/en-us/dotnet/framework/interop/default-marshalling-behavior#default-marshalling-for-value-types), being able to refer to all of them an a single memory region can be a powerful utility when interacting with drivers, networks, or game engines.
+Especially for [blittable Component types](https://learn.microsoft.com/en-us/dotnet/framework/interop/default-marshalling-behavior#default-marshalling-for-value-types), being able to refer to all of them an a single memory region can be a powerful utility when interacting with GPU drivers, networks, disk I/O, and of course game engines [(see Demo: Cubes)](/demos/Cubes.md).
 
 ::: danger :neofox_solder_googly: DANGER! Memory marshaling and multithreading are POWER TOOLS!
 
@@ -28,8 +28,8 @@ Copying memory regions is hard, and **Multiprocessing is HARDER.** Currently, **
 
 ```cs [Raw(...) DIY]
 // This is NOT how Raw is usually used, but you can, in the trivial
-// case, use it to iterate your workload yourself. The main use for that
-// variant is to perform some sort of early-out iteration, e.g. search)
+// case, use it to iterate the Memory<T> yourself. The main use for
+// this is to perform some sort of early-out iteration, e.g. search)
 myQuery.Raw((Memory<Vector3> velocities) => 
 {
     foreach (ref var velocity in velocities.Span) 
@@ -41,8 +41,8 @@ myQuery.Raw((Memory<Vector3> velocities) =>
 
 ```cs [Raw&lt;U&gt;(...) with uniform]
 // This is NOT how Raw is usually used, but you can, in the trivial
-// case, use it to iterate your workload yourself. The main use for that
-// variant is to perform some sort of early-out iteration, e.g. search)
+// case, use it to iterate the Memory<T> yourself. The main use for
+// this is to perform some sort of early-out iteration, e.g. search)
 myQuery.Raw((Memory<Vector3> velocities, (float dt, Vector3 g) uniform) => 
 {
     foreach (ref var velocity in velocities.Span) 
@@ -75,19 +75,23 @@ You can either access this memory as a `Span`, cast it to the desired type, etc.
 
 ::: code-group
 ```cs [🦋 use as span]
-//TODO :)
+//TODO :) until then, you probably either have a clue already
+//or you better not be copying this code sample anyway
 ```
 
 ```cs [☠️ cast to another type]
-//TODO :)
+//TODO :) until then, you probably either have a clue already
+//or you better not be copying this code sample anyway
 ```
 
 ```cs [☠️☠️ transfer as buffer]
-//TODO :)
+//TODO :) until then, you probably either have a clue already
+//or you better not be copying this code sample anyway
 ```
 
 ```cs [☠️☠️☠️ pin for GPU]
-//TODO :)
+//TODO :) until then, you probably either have a clue already
+//or you better not be copying this code sample anyway
 ```
 :::
 
