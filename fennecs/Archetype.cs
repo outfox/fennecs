@@ -253,6 +253,50 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
+    /// <summary>
+    /// Moves all Entities from this Archetype to the destination Archetype back-filling with the provided Components.
+    /// </summary>
+    /// <param name="destination"> the Archetype to move the entities to</param>
+    /// <param name="additions"> the new components and their TypeExpressions to add to the destination Archetype</param>
+    internal void Migrate(Archetype destination, IEnumerable<(TypeExpression type, object data)> additions)
+    {
+        using var coveredTypes = PooledList<TypeExpression>.Rent();
+
+        destination.EnsureCapacity(destination.Count + Count);
+        // Subtractive copy
+        foreach (var type in Types)
+        {
+            if (!destination.Types.Contains(type)) continue;
+            coveredTypes.Add(type);
+            var srcStorage = GetStorage(type);
+            var destStorage = destination.GetStorage(type);
+            Array.Copy(srcStorage, 0, destStorage, destination.Count, Count);
+            Array.Clear(srcStorage, 0, Count);
+        }
+
+        // Additive back-fill
+        foreach (var (type, value) in additions)
+        {
+            var newDestination = (object[]) destination.GetStorage(type);
+            coveredTypes.Add(type);
+            Array.Fill(newDestination, value, destination.Count, Count);
+        }
+
+        foreach (var type in destination.Types)
+        {
+            if (!coveredTypes.Contains(type))
+            {
+                throw new InvalidOperationException($"Not all types are covered by the destination Archetype, and could not be back-filled.");
+            }
+        }
+
+        Count = 0;
+        destination._version++;
+        _version++;
+    }
+
+
+
     internal Edge GetTableEdge(TypeExpression typeExpression)
     {
         if (_edges.TryGetValue(typeExpression, out var edge)) return edge;
@@ -396,5 +440,52 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
     #endregion
+
+
     
+    /*
+    internal void MigrateAndAddComponent<T>(Archetype destination, T data)
+    {
+        destination.EnsureCapacity(destination.Count + Count);
+
+        foreach (var type in Types)
+        {
+            var srcStorage = (T[]) GetStorage(type);
+            var destStorage = destination.GetStorage(type);
+            Array.Copy(srcStorage, 0, destStorage, destination.Count, Count);
+            Array.Clear(srcStorage, 0, Count);
+        }
+
+        var finalDestination = destination.GetStorage<T>(fennecs.Match.Plain);
+        Array.Fill(finalDestination, data, destination.Count, Count);
+
+        Count = 0;
+        destination._version++;
+        _version++;
+    }
+
+
+    /// <summary>
+    /// Moves all entities from this Archetype to the destination Archetype.
+    /// </summary>
+    /// <param name="destination"> the Archetype to move the entities to</param>
+    /// <typeparam name="T"> any component type (in the source, but not the destination) archetype</typeparam>
+    internal void MigrateAndRemoveComponent(Archetype destination)
+    {
+        destination.EnsureCapacity(destination.Count + Count);
+
+        //We only need to copy the ones the destination has, discarding the one we don't have.
+        foreach (var type in destination.Types)
+        {
+            var srcStorage = GetStorage(type);
+            var destStorage = destination.GetStorage(type);
+            Array.Copy(srcStorage, 0, destStorage, destination.Count, Count);
+        }
+
+        foreach (var storage in _storages) Array.Clear(storage, 0, Count);
+        Count = 0;
+        destination._version++;
+        _version++;
+    }
+    */
 }

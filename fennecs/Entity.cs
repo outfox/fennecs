@@ -15,7 +15,7 @@ namespace fennecs;
 /// <remarks>
 /// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
 /// </remarks>
-public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>
+public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDisposable
 {
     #region Internal State
     /// <summary>

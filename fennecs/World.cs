@@ -162,7 +162,7 @@ public partial class World
     internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
 
 
-    private Archetype AddTable(ImmutableSortedSet<TypeExpression> types)
+    internal Archetype AddTable(ImmutableSortedSet<TypeExpression> types)
     {
         var table = new Archetype(this, types);
         _archetypes.Add(table);
