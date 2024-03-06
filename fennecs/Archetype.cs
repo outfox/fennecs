@@ -260,7 +260,7 @@ public sealed class Archetype : IEnumerable<Entity>
             var srcStorage = GetStorage(type);
             var destStorage = destination.GetStorage(type);
             Array.Copy(srcStorage, 0, destStorage, destination.Count, Count);
-            Array.Clear(srcStorage, 0, Count);
+            Array.Clear(srcStorage);
         }
 
         // Additive back-fill
@@ -272,7 +272,8 @@ public sealed class Archetype : IEnumerable<Entity>
             coveredTypes.Add(type);
 
             var newDestination = destination.GetStorage(type);
-            if (newDestination.GetType().GetElementType()!.IsValueType)
+            var elementType = newDestination.GetType().GetElementType()!;
+            if (elementType.IsValueType)
             {
                 for (var elementIndex = destination.Count; elementIndex < destination.Count + Count; elementIndex++)
                 {
