@@ -187,7 +187,7 @@ public class WorldTests
     {
         using var world = new World();
         var identity = world.Spawn().Add<NewableClass>().Id;
-        Assert.True(world.HasComponent<NewableClass>(identity));
+        Assert.True(world.HasComponent<NewableClass>(identity, default));
         Assert.NotNull(world.GetComponent<NewableClass>(identity));
     }
 
@@ -197,7 +197,7 @@ public class WorldTests
     {
         using var world = new World();
         var identity = world.Spawn().Add<NewableStruct>().Id;
-        Assert.True(world.HasComponent<NewableStruct>(identity));
+        Assert.True(world.HasComponent<NewableStruct>(identity, default));
         Assert.Equal(default, world.GetComponent<NewableStruct>(identity));
     }
 
@@ -207,7 +207,7 @@ public class WorldTests
     {
         using var world = new World();
         var identity = world.Spawn().Add<string>("12").Id;
-        Assert.True(world.HasComponent<string>(identity));
+        Assert.True(world.HasComponent<string>(identity, default));
         Assert.NotNull(world.GetComponent<string>(identity));
     }
 
@@ -220,10 +220,10 @@ public class WorldTests
         var worldLock = world.Lock;
 
         world.On(identity).Add(666);
-        Assert.False(world.HasComponent<int>(identity));
+        Assert.False(world.HasComponent<int>(identity, default));
         Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(identity));
         worldLock.Dispose();
-        Assert.True(world.HasComponent<int>(identity));
+        Assert.True(world.HasComponent<int>(identity, default));
         Assert.Equal(666, world.GetComponent<int>(identity));
     }
 
@@ -335,9 +335,9 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn().Add(666).Add("hallo");
         world.On(identity).Remove<int>();
-        Assert.False(world.HasComponent<int>(identity));
+        Assert.False(world.HasComponent<int>(identity, default));
         world.On(identity).Remove<string>();
-        Assert.False(world.HasComponent<string>(identity));
+        Assert.False(world.HasComponent<string>(identity, default));
     }
 
 

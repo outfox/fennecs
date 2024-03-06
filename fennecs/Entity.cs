@@ -109,11 +109,11 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
     /// <typeparam name="T">Any reference type. The type the object to be linked with the entity.</typeparam>
-    /// <param name="target">The target of the link.</param>
+    /// <param name="linkedObject">The target of the link.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity AddLink<T>(T target) where T : class
+    public Entity AddLink<T>(T linkedObject) where T : class
     {
-        World.AddLink(Id, target);
+        World.AddComponent(Id, TypeExpression.Of<T>(Identity.Of(linkedObject)), linkedObject);
         return this;
     }
 
@@ -146,7 +146,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Remove<T>()
     {
-        World.RemoveComponent<T>(Id);
+        World.RemoveComponent(Id, TypeExpression.Of<T>());
         return this;
     }
 
@@ -203,7 +203,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type and specific target.
     /// </summary>
-    public bool HasLink<T>(T targetObject) where T : class => World.HasLink(Id, targetObject);
+    public bool HasLink<T>(T targetObject) where T : class => World.HasComponent<T>(Id, Identity.Of(targetObject));
 
 
     /// <summary>
@@ -215,13 +215,13 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <summary>
     /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
     /// </summary>
-    public bool HasRelation<T>(Entity targetEntity) => World.HasRelation<T>(Id, targetEntity.Id);
+    public bool HasRelation<T>(Entity targetEntity) => World.HasComponent<T>(Id, targetEntity.Id);
 
 
     /// <summary>
     /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
     /// </summary>
-    public bool HasRelation<T>() => World.HasRelation<T>(Id, Match.Entity);
+    public bool HasRelation<T>() => World.HasComponent<T>(Id, Match.Entity);
     #endregion
 
 

@@ -5,23 +5,6 @@ namespace fennecs;
 public partial class World
 {
     #region CRUD
-    /// <summary>
-    /// Creates an Archetype relation between this identity and an object (instance of a class).
-    /// The relation is backed by the object itself, which will be enumerated by queries if desired.
-    /// Whenever the identity is enumerated by a Query, it will be batched only with other Entities
-    /// that share the exact relation, in addition to conforming with the other clauses of the Query.
-    /// The object is internally reference-counted, and the reference will be discarded once no other
-    /// identity is linked to it.
-    /// </summary>
-    ///<remarks>
-    /// Beware of Archetype Fragmentation!
-    /// This feature is great to express relations between Entities, but it will lead to
-    /// fragmentation of the Archetype Graph, i.e. Archetypes with very few Entities that
-    /// are difficult to iterate over efficiently.
-    /// </remarks>
-    /// <param name="identity"></param>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
     internal void AddLink<T>(Identity identity, [NotNull] T target) where T : class
     {
         var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
@@ -29,13 +12,6 @@ public partial class World
     }
 
 
-    /// <summary>
-    /// Checks if this identity has an object-backed relation (instance of a class).
-    /// </summary>
-    /// <param name="identity"></param>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
     internal bool HasLink<T>(Identity identity, [NotNull] T target) where T : class
     {
         var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
@@ -43,14 +19,6 @@ public partial class World
     }
 
 
-    /// <summary>
-    /// Removes the object-backed relation between this identity and the object (instance of a class).
-    /// The object is internally reference-counted, and the reference will be discarded once no other
-    /// identity is linked to it.
-    /// </summary>
-    /// <param name="identity"></param>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
     internal void RemoveLink<T>(Identity identity, T target) where T : class
     {
         var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
@@ -58,22 +26,6 @@ public partial class World
     }
 
 
-    /// <summary>
-    /// Creates an Archetype relation between this identity and another identity.
-    /// The relation is backed by an arbitrary type to provide additional data.
-    /// Whenever the identity is enumerated by a Query, it will be batched only with other Entities
-    /// that share the exact relation, in addition to conforming with the other clauses of the Query.
-    /// </summary>
-    ///<remarks>
-    /// Beware of Archetype Fragmentation!
-    /// This feature is great to express relations between Entities, but it will lead to
-    /// fragmentation of the Archetype Graph, i.e. Archetypes with very few Entities that
-    /// are difficult to iterate over efficiently.
-    /// </remarks>
-    /// <param name="identity"></param>
-    /// <param name="target"></param>
-    /// <param name="data"></param>
-    /// <typeparam name="T">any Component type</typeparam>
     internal void AddRelation<T>(Identity identity, Identity target, T data)
     {
         var typeExpression = TypeExpression.Of<T>(target);
@@ -81,14 +33,6 @@ public partial class World
     }
 
 
-    /// <summary>
-    /// Checks if this identity has a relation Component with another identity.
-    /// </summary>
-    /// <param name="identity"></param>
-    /// <param name="target"></param>
-    /// <typeparam name="T">any Component type</typeparam>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
     internal bool HasRelation<T>(Identity identity, Identity target)
     {
         var typeExpression = TypeExpression.Of<T>(target);
@@ -96,12 +40,6 @@ public partial class World
     }
 
 
-    /// <summary>
-    /// Removes the relation Component between this identity and another identity.
-    /// </summary>
-    /// <param name="identity"></param>
-    /// <param name="target"></param>
-    /// <typeparam name="T">any Component type</typeparam>
     internal void RemoveRelation<T>(Identity identity, Identity target)
     {
         var typeExpression = TypeExpression.Of<T>(target);
@@ -129,16 +67,9 @@ public partial class World
         var type = TypeExpression.Of<T>(target);
         return HasComponent(identity, type);
     }
+    
 
-
-    internal void RemoveComponent<T>(Identity identity)
-    {
-        var type = TypeExpression.Of<T>(Match.Plain);
-        RemoveComponent(identity, type);
-    }
-
-
-    private void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
+    internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
     {
         if (Mode == WorldMode.Deferred)
         {
@@ -165,7 +96,7 @@ public partial class World
     }
 
 
-    private void RemoveComponent(Identity identity, TypeExpression typeExpression)
+    internal void RemoveComponent(Identity identity, TypeExpression typeExpression)
     {
         if (Mode == WorldMode.Deferred)
         {
