@@ -214,17 +214,16 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
+        var relationQuery = world.Query<float>(Match.Entity).Build();
+        Assert.Empty(relationQuery);
+        
         var intQuery = world.Query<int>().Build();
         intQuery.Batch().AddRelation<float>(e3).Submit();
 
-        var relationQuery = world.Query<float>(Match.Entity).Build();
-        
-        Assert.Equal(3, stringQuery.Count);
-
-        Assert.Contains(e1, stringQuery);
-        Assert.Contains(e2, stringQuery);
-        Assert.Contains(e3, stringQuery);
-         
+        Assert.Equal(2, relationQuery.Count);
+        Assert.Contains(e1, relationQuery);
+        Assert.Contains(e2, relationQuery);
+        Assert.DoesNotContain(e3, relationQuery);
     }
     
 }
