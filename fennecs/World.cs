@@ -15,9 +15,14 @@ public partial class World
 
     private Meta[] _meta;
     private readonly List<Archetype> _archetypes = [];
-    private readonly Archetype _root; // "Identity" Archetype; all living Entities.
+
+    // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
+    private readonly Archetype _root; 
 
     private readonly Dictionary<int, Query> _queries = new();
+
+    // The new Type Graph that replaces the old Table Edge system.
+    private readonly Dictionary<Signature<TypeExpression>, Archetype> _typeGraph = new();
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
     private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
@@ -162,10 +167,13 @@ public partial class World
     internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
 
 
-    internal Archetype AddTable(Signature<TypeExpression> types)
+    internal Archetype GetArchetype(Signature<TypeExpression> types)
     {
-        var table = new Archetype(this, types);
+        if (_typeGraph.TryGetValue(types, out var table)) return table;
+        
+        table = new Archetype(this, types);
         _archetypes.Add(table);
+        _typeGraph.Add(types, table);
 
         foreach (var type in types)
         {

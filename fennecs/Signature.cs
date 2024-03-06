@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Immutable;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -59,7 +60,7 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>
     public bool Overlaps(IEnumerable<T> other) => _set.Overlaps(other);
 
 
-    public Signature<T> Remove(T value) => new Signature<T>(_set.Remove(value));
+    public Signature<T> Remove(T value) => new(_set.Remove(value));
 
 
     public bool SetEquals(IEnumerable<T> other) => _set.SetEquals(other);

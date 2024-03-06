@@ -10,17 +10,12 @@ public partial class World
     public void BulkAdd<T>(Archetype archetype, T data)
     {
         var typeExpression = TypeExpression.Of<T>();
-        var edge = archetype.GetTableEdge(typeExpression);
-        
-        if (edge.Add == null)
-        {
-            var types = archetype.Signature.Add(typeExpression);
-            edge.Add = AddTable(types);
-        }
+        var newSignature = archetype.Signature.Add(typeExpression);
+        var newArchetype = GetArchetype(newSignature);
 
         using var list = PooledList<(TypeExpression type, object data)>.Rent();
         list.Add((typeExpression, data!));
-        archetype.Migrate(edge.Add, list);
+        archetype.Migrate(newArchetype, list);
     }
 
 
@@ -28,23 +23,14 @@ public partial class World
     {
         foreach (var archetype in operation.Archetypes)
         {
-            var types = archetype.Signature
+            var newSignature = archetype.Signature
                 .Except(operation.Removals)
                 .Union(operation.Additions);
-
             
-            var cursor = archetype;
-            foreach (var type in operation.Removals)
-            {
-                var edge = cursor!.GetTableEdge(type);
-                cursor = cursor.GetTableEdge(type).Remove;
-                
-                if (edge.Add == null)
-                {
-                    var newTypes = archetype.Signature.Add(type);
-                    edge.Add = AddTable(newTypes);
-                }
-            }
+            var newArchetype = GetArchetype(newSignature);
+            
+            //TODO: Implement back-fill / change types
+            //archetype.Migrate(newArchetype, operation.BackFill);
         }
     }
     

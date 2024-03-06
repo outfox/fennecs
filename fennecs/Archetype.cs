@@ -13,16 +13,6 @@ namespace fennecs;
 public sealed class Archetype : IEnumerable<Entity>
 {
     /// <summary>
-    /// An Edge in the Graph that this Archetype is a member of.
-    /// </summary>
-    internal sealed class Edge
-    {
-        internal Archetype? Add;
-        internal Archetype? Remove;
-    }
-
-
-    /// <summary>
     /// The TypeExpressions that define this Archetype.
     /// </summary>
     public readonly Signature<TypeExpression> Signature;
@@ -68,8 +58,6 @@ public sealed class Archetype : IEnumerable<Entity>
     private readonly Array[] _storages;
 
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
-
-    private readonly Dictionary<TypeExpression, Edge> _edges = new();
 
     /// <summary>
     /// TODO: Buckets for Wildcard Joins (optional optimization for CrossJoin when complex archetypes get hit repeatedly in tight loops).
@@ -132,7 +120,7 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    internal void Match<T>(TypeExpression expression, IList<T[]> result)
+    private void Match<T>(TypeExpression expression, IList<T[]> result)
     {
         //TODO: Use TypeBuckets as optimization (much faster!).
         foreach (var (type, index) in _storageIndices)
@@ -296,18 +284,6 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-
-    internal Edge GetTableEdge(TypeExpression typeExpression)
-    {
-        if (_edges.TryGetValue(typeExpression, out var edge)) return edge;
-
-        edge = new Edge();
-        _edges[typeExpression] = edge;
-
-        return edge;
-    }
-
-
     public T[] GetStorage<T>(Identity target)
     {
         var type = TypeExpression.Of<T>(target);
@@ -440,52 +416,4 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
     #endregion
-
-
-    
-    /*
-    internal void MigrateAndAddComponent<T>(Archetype destination, T data)
-    {
-        destination.EnsureCapacity(destination.Count + Count);
-
-        foreach (var type in Types)
-        {
-            var srcStorage = (T[]) GetStorage(type);
-            var destStorage = destination.GetStorage(type);
-            Array.Copy(srcStorage, 0, destStorage, destination.Count, Count);
-            Array.Clear(srcStorage, 0, Count);
-        }
-
-        var finalDestination = destination.GetStorage<T>(fennecs.Match.Plain);
-        Array.Fill(finalDestination, data, destination.Count, Count);
-
-        Count = 0;
-        destination._version++;
-        _version++;
-    }
-
-
-    /// <summary>
-    /// Moves all entities from this Archetype to the destination Archetype.
-    /// </summary>
-    /// <param name="destination"> the Archetype to move the entities to</param>
-    /// <typeparam name="T"> any component type (in the source, but not the destination) archetype</typeparam>
-    internal void MigrateAndRemoveComponent(Archetype destination)
-    {
-        destination.EnsureCapacity(destination.Count + Count);
-
-        //We only need to copy the ones the destination has, discarding the one we don't have.
-        foreach (var type in destination.Types)
-        {
-            var srcStorage = GetStorage(type);
-            var destStorage = destination.GetStorage(type);
-            Array.Copy(srcStorage, 0, destStorage, destination.Count, Count);
-        }
-
-        foreach (var storage in _storages) Array.Clear(storage, 0, Count);
-        Count = 0;
-        destination._version++;
-        _version++;
-    }
-    */
 }

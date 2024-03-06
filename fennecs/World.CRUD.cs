@@ -14,28 +14,20 @@ public partial class World
         }
 
         ref var meta = ref _meta[identity.Index];
-        var oldTable = meta.Archetype;
 
-        if (!oldTable.Signature.Contains(typeExpression)) throw new ArgumentException($"cannot remove non-existent component {typeExpression} from identity {identity}");
+        var oldArchetype = meta.Archetype;
 
-        var oldEdge = oldTable.GetTableEdge(typeExpression);
-
-        var newTable = oldEdge.Remove;
-
-        if (newTable == null)
+        if (!oldArchetype.Signature.Contains(typeExpression))
         {
-            var newTypes = oldTable.Signature.Remove(typeExpression);
-            newTable = AddTable(newTypes);
-            oldEdge.Remove = newTable;
-
-            var newEdge = newTable.GetTableEdge(typeExpression);
-            newEdge.Add = oldTable;
+            throw new ArgumentException($"Entity {identity} does not have a component of type {typeExpression}");
         }
 
-        var newRow = Archetype.MoveEntry(identity, meta.Row, oldTable, newTable);
+        var newSignature = oldArchetype.Signature.Remove(typeExpression);
+        var newArchetype = GetArchetype(newSignature);
+        var newRow = Archetype.MoveEntry(identity, meta.Row, oldArchetype, newArchetype);
 
         meta.Row = newRow;
-        meta.Archetype = newTable;
+        meta.Archetype = newArchetype;
     }
     #endregion
 
@@ -177,38 +169,31 @@ public partial class World
 
     private void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
     {
-        AssertAlive(identity);
-
-        ref var meta = ref _meta[identity.Index];
-        var oldTable = meta.Archetype;
-
-        if (oldTable.Signature.Contains(typeExpression)) throw new ArgumentException($"Identity {identity} already has component of type {typeExpression}");
-
         if (Mode == WorldMode.Deferred)
         {
             _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Identity = identity, TypeExpression = typeExpression, Data = data!});
             return;
         }
 
-        var oldEdge = oldTable.GetTableEdge(typeExpression);
+        AssertAlive(identity);
 
-        var newTable = oldEdge.Add;
+        ref var meta = ref _meta[identity.Index];
+        var oldArchetype = meta.Archetype;
 
-        if (newTable == null)
+        if (oldArchetype.Signature.Contains(typeExpression))
         {
-            var newTypes = oldTable.Signature.Add(typeExpression);
-            newTable = AddTable(newTypes);
-            oldEdge.Add = newTable;
-
-            var newEdge = newTable.GetTableEdge(typeExpression);
-            newEdge.Remove = oldTable;
+            throw new ArgumentException($"Entity {identity} already has a component of type {typeExpression}");
         }
-
-        var newRow = Archetype.MoveEntry(identity, meta.Row, oldTable, newTable);
-        newTable.Set(typeExpression, data, newRow);
-
+        
+        var newSignature = oldArchetype.Signature.Add(typeExpression);
+        var newArchetype = GetArchetype(newSignature);
+        var newRow = Archetype.MoveEntry(identity, meta.Row, oldArchetype, newArchetype);
+        
+        // Back-fill the new value
+        newArchetype.Set(typeExpression, data, newRow);
+        
         meta.Row = newRow;
-        meta.Archetype = newTable;
+        meta.Archetype = newArchetype;
     }
 
 

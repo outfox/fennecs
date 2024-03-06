@@ -117,7 +117,7 @@ public partial class World : IDisposable
         _meta = new Meta[capacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = AddTable(new Signature<TypeExpression>(TypeExpression.Of<Identity>(Match.Plain)));
+        _root = GetArchetype(new Signature<TypeExpression>(TypeExpression.Of<Identity>(Match.Plain)));
     }
 
 
