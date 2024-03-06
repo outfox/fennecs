@@ -40,14 +40,13 @@ var loadedGuns = world.Query()
     .Not<Loaded>().Not<Cooldown>().Not<RequestProjectileSpawn>()
     .Build();
 
-// multiple bulk operations need to be deferred, 
-// because entities wouldn't match our query after each change
-using var worldLock = world.Lock
-{
-    loadedGuns.Add<Cooldown>(2.0f); //for our cooldown system
-    loadedGuns.Add<RequestProjectileSpawn>(); //for another system
-    loadedGuns.Remove<Loaded>(); 
-} //lock goes out of scope here, and operations are applied
+// multiple bulk operations need to be batched, because
+// entities wouldn't match our query after each change
+loadedGuns.Batch()
+    .Add<Cooldown>(2.0f); //for our cooldown system
+    .Add<RequestProjectileSpawn>(); //for another system
+    .Remove<Loaded>(); 
+    .Submit();
 ```
 
 :::
