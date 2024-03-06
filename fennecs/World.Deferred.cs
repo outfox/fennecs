@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace fennecs;
 
@@ -34,7 +35,7 @@ public partial class World
     }
 
 
-    private void Apply(ConcurrentQueue<DeferredOperation> operations)
+    private void CatchUp(ConcurrentQueue<DeferredOperation> operations)
     {
         while (operations.TryDequeue(out var op))
             switch (op.Opcode)
@@ -42,16 +43,23 @@ public partial class World
                 case Opcode.Add:
                     AddComponent(op.Identity, op.TypeExpression, op.Data);
                     break;
+
                 case Opcode.Remove:
                     RemoveComponent(op.Identity, op.TypeExpression);
                     break;
+
                 case Opcode.Despawn:
                     DespawnImpl(op.Identity);
                     break;
-                case Opcode.BulkAdd:
-                case Opcode.BulkRemove:
-                case Opcode.Truncate:
-                    throw new NotImplementedException();
+
+                case Opcode.Batch:
+                    var batch = (BatchOperation) op.Data;
+                    Commit(batch);
+                    batch.Dispose();
+                    break;
+                
+                default:
+                    throw new NotImplementedException($"OpCode {op.Opcode} not implemented");
             }
     }
 
@@ -63,6 +71,18 @@ public partial class World
         internal Identity Identity;
         internal object Data;
         internal Archetype Archetype;
+
+
+        [SetsRequiredMembers]
+        public DeferredOperation(BatchOperation operation)
+        {
+            Opcode = Opcode.Batch;
+            Data = operation;
+
+            Archetype = default!;
+            TypeExpression = default;
+            Identity = default;
+        }
     }
 
 
@@ -74,9 +94,7 @@ public partial class World
         Despawn,
 
         // Archetype operations
-        BulkAdd,
-        BulkRemove,
-        Truncate,
+        Batch,
     }
     #endregion
 }

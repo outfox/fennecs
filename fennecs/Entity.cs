@@ -259,7 +259,14 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     {
         var sb = new System.Text.StringBuilder(Id.ToString());
         sb.Append(' ');
-        sb.AppendJoin("\n  |-", World.GetSignature(Id));
+        if (World.IsAlive(Id))
+        {
+            sb.AppendJoin("\n  |-", World.GetSignature(Id));
+        }
+        else
+        {
+            sb.Append("|- DEAD");
+        }
         
         return sb.ToString();
     }

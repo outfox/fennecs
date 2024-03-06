@@ -360,6 +360,18 @@ public class Query : IEnumerable<Entity>, IDisposable
         }
     }
 
+    /// <summary>
+    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+    /// </summary>
+    /// <remarks>
+    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
+    /// after the first operation, and thus lead to undesired results.
+    /// </remarks> 
+    /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
+    public World.BatchOperation Batch()
+    {
+        return new World.BatchOperation(Archetypes, World);
+    }
 
     [Obsolete("Use Despawn() instead.")]
     public void Clear() => Despawn();
@@ -370,7 +382,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     public void Despawn()
     {
-        Truncate(maxEntityCount: 0);
+        Truncate(0);
     }
 
 
@@ -389,6 +401,10 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </param>
     public void Truncate(int maxEntityCount, TruncateMode mode = default)
     {
+        //TODO: Implement as deferred operation
+        if (World.Mode != World.WorldMode.Immediate)
+            throw new InvalidOperationException("Truncate can only be used in Immediate mode.");
+        
         var count = Count;
         if (count <= maxEntityCount) return;
 

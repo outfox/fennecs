@@ -2,7 +2,6 @@
 
 using System.Collections;
 using System.Collections.Immutable;
-using fennecs.pools;
 
 namespace fennecs;
 
@@ -72,7 +71,7 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>
     public bool TryGetValue(T equalValue, out T actualValue) => _set.TryGetValue(equalValue, out actualValue);
 
 
-    public Signature<T> Union(IEnumerable<T> other) => new Signature<T>(_set.Union(other));
+    public Signature<T> Union(IEnumerable<T> other) => new(_set.Union(other));
 
 
     public bool Equals(Signature<T> other) => _set.SetEquals(other._set);

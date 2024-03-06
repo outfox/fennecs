@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Collections.Concurrent;
-using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -17,7 +14,7 @@ public partial class World
     private readonly List<Archetype> _archetypes = [];
 
     // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
-    private readonly Archetype _root; 
+    private readonly Archetype _root;
 
     private readonly Dictionary<int, Query> _queries = new();
 
@@ -42,12 +39,11 @@ public partial class World
     {
         lock (_modeChangeLock)
         {
-            if (--_locks == 0)
-            {
-                Mode = WorldMode.CatchUp;
-                Apply(_deferredOperations);
-                Mode = WorldMode.Immediate;
-            }
+            if (--_locks != 0) return;
+
+            Mode = WorldMode.CatchUp;
+            CatchUp(_deferredOperations);
+            Mode = WorldMode.Immediate;
         }
     }
 
@@ -57,7 +53,6 @@ public partial class World
         Immediate = default,
         CatchUp,
         Deferred,
-        //Bulk
     }
     #endregion
 
@@ -170,7 +165,7 @@ public partial class World
     internal Archetype GetArchetype(Signature<TypeExpression> types)
     {
         if (_typeGraph.TryGetValue(types, out var table)) return table;
-        
+
         table = new Archetype(this, types);
         _archetypes.Add(table);
         _typeGraph.Add(types, table);

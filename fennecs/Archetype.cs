@@ -244,9 +244,10 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// Moves all Entities from this Archetype to the destination Archetype back-filling with the provided Components.
     /// </summary>
-    /// <param name="destination"> the Archetype to move the entities to</param>
-    /// <param name="additions"> the new components and their TypeExpressions to add to the destination Archetype</param>
-    internal void Migrate(Archetype destination, IEnumerable<(TypeExpression type, object data)> additions)
+    /// <param name="destination">the Archetype to move the entities to</param>
+    /// <param name="additions">the new components and their TypeExpressions to add to the destination Archetype</param>
+    /// <param name="backfills">values for each addition to add</param>
+    public void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backfills)
     {
         using var coveredTypes = PooledList<TypeExpression>.Rent();
 
@@ -263,23 +264,42 @@ public sealed class Archetype : IEnumerable<Entity>
         }
 
         // Additive back-fill
-        foreach (var (type, value) in additions)
+        for (var index = 0; index < additions.Count; index++)
         {
-            var newDestination = (object[]) destination.GetStorage(type);
+            var type = additions[index];
+            var value = backfills[index];
+            
             coveredTypes.Add(type);
-            Array.Fill(newDestination, value, destination.Count, Count);
-        }
 
-        foreach (var type in destination.Signature)
-        {
-            if (!coveredTypes.Contains(type))
+            var newDestination = destination.GetStorage(type);
+            if (newDestination.GetType().GetElementType()!.IsValueType)
             {
-                throw new InvalidOperationException($"Not all types are covered by the destination Archetype, and could not be back-filled.");
+                for (var elementIndex = destination.Count; elementIndex < destination.Count + Count; elementIndex++)
+                {
+                    newDestination.SetValue(value, elementIndex);
+                }
+            }
+            else
+            {
+                Array.Fill((object[]) newDestination, value, destination.Count, Count);
             }
         }
 
-        Count = 0;
+        // Move identities
+        for (var i = 0; i < Count; i++)
+        {
+            _world.GetEntityMeta(_identities[i]).Archetype = destination;
+        }
+        Array.Copy(_identities, 0, destination._identities, destination.Count, Count);
+        
+
+        // Update destination Archetype state
+        destination.Count += Count;
         destination._version++;
+
+        // Clear source Archetype state
+        Array.Clear(_identities, 0, Count);
+        Count = 0;
         _version++;
     }
 
@@ -416,4 +436,5 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
     #endregion
+    
 }
