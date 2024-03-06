@@ -16,7 +16,7 @@ public partial class World
         ref var meta = ref _meta[identity.Index];
         var oldTable = meta.Archetype;
 
-        if (!oldTable.Types.Contains(typeExpression)) throw new ArgumentException($"cannot remove non-existent component {typeExpression} from identity {identity}");
+        if (!oldTable.Signature.Contains(typeExpression)) throw new ArgumentException($"cannot remove non-existent component {typeExpression} from identity {identity}");
 
         var oldEdge = oldTable.GetTableEdge(typeExpression);
 
@@ -24,7 +24,7 @@ public partial class World
 
         if (newTable == null)
         {
-            var newTypes = oldTable.Types.Remove(typeExpression);
+            var newTypes = oldTable.Signature.Remove(typeExpression);
             newTable = AddTable(newTypes);
             oldEdge.Remove = newTable;
 
@@ -182,7 +182,7 @@ public partial class World
         ref var meta = ref _meta[identity.Index];
         var oldTable = meta.Archetype;
 
-        if (oldTable.Types.Contains(typeExpression)) throw new ArgumentException($"Identity {identity} already has component of type {typeExpression}");
+        if (oldTable.Signature.Contains(typeExpression)) throw new ArgumentException($"Identity {identity} already has component of type {typeExpression}");
 
         if (Mode == WorldMode.Deferred)
         {
@@ -196,7 +196,7 @@ public partial class World
 
         if (newTable == null)
         {
-            var newTypes = oldTable.Types.Add(typeExpression);
+            var newTypes = oldTable.Signature.Add(typeExpression);
             newTable = AddTable(newTypes);
             oldEdge.Add = newTable;
 
@@ -229,7 +229,7 @@ public partial class World
     {
         AssertAlive(identity);
         var meta = _meta[identity.Index];
-        var array = meta.Archetype.Types;
+        var array = meta.Archetype.Signature;
         return array;
     }
     #endregion

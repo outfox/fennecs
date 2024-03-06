@@ -14,7 +14,7 @@ public partial class World
         
         if (edge.Add == null)
         {
-            var types = archetype.Types.Add(typeExpression);
+            var types = archetype.Signature.Add(typeExpression);
             edge.Add = AddTable(types);
         }
 
@@ -28,7 +28,7 @@ public partial class World
     {
         foreach (var archetype in operation.Archetypes)
         {
-            var types = archetype.Types
+            var types = archetype.Signature
                 .Except(operation.Removals)
                 .Union(operation.Additions);
 
@@ -41,7 +41,7 @@ public partial class World
                 
                 if (edge.Add == null)
                 {
-                    var newTypes = archetype.Types.Add(type);
+                    var newTypes = archetype.Signature.Add(type);
                     edge.Add = AddTable(newTypes);
                 }
             }

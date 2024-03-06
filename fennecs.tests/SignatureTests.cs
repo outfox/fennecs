@@ -198,4 +198,13 @@ public class SignatureTests
         Assert.False(signatureA == signatureSuperset);
         Assert.True(signatureA != signatureSuperset);
     }
+
+
+    [Fact]
+    public void Signature_Has_Indexer()
+    {
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
+        Assert.Equal(TypeExpression.Of<int>(), signature[0]);
+        Assert.Equal(TypeExpression.Of<string>(), signature[1]);
+    }
 }

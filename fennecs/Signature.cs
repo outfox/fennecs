@@ -8,20 +8,19 @@ namespace fennecs;
 /// <summary>
 /// Generic IImmutableSortedSet whose hash code is a combination of its elements' hashes.
 /// </summary>
-public readonly struct Signature<T> : IEquatable<Signature<T>>, IImmutableSet<T>
+public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>
     where T : notnull
 {
-    private readonly ImmutableSortedSet<T> _set;
+    private readonly ImmutableSortedSet<T> _set = ImmutableSortedSet<T>.Empty;
     private readonly int _hashCode;
 
     public override int GetHashCode() => _hashCode;
 
-
+    
     public Signature(params T[] values) : this(values.ToImmutableSortedSet())
     {
     }
-
-
+    
     public Signature(ImmutableSortedSet<T> set)
     {
         _set = set;
@@ -30,19 +29,19 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IImmutableSet<T>
     }
 
 
-    public IImmutableSet<T> Add(T value) => new Signature<T>(_set.Add(value));
+    public Signature<T> Add(T value) => new(_set.Add(value));
 
 
-    public IImmutableSet<T> Clear() => new Signature<T>(ImmutableSortedSet<T>.Empty);
+    public Signature<T> Clear() => new(ImmutableSortedSet<T>.Empty);
 
 
     public bool Contains(T item) => _set.Contains(item);
 
 
-    public IImmutableSet<T> Except(IEnumerable<T> other) => _set.Except(other);
+    public Signature<T> Except(IEnumerable<T> other) => new(_set.Except(other));
 
 
-    public IImmutableSet<T> Intersect(IEnumerable<T> other) => _set.Intersect(other);
+    public Signature<T> Intersect(IEnumerable<T> other) => new(_set.Intersect(other));
 
 
     public bool IsProperSubsetOf(IEnumerable<T> other) => _set.IsProperSubsetOf(other);
@@ -60,19 +59,19 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IImmutableSet<T>
     public bool Overlaps(IEnumerable<T> other) => _set.Overlaps(other);
 
 
-    public IImmutableSet<T> Remove(T value) => new Signature<T>(_set.Remove(value));
+    public Signature<T> Remove(T value) => new Signature<T>(_set.Remove(value));
 
 
     public bool SetEquals(IEnumerable<T> other) => _set.SetEquals(other);
 
 
-    public IImmutableSet<T> SymmetricExcept(IEnumerable<T> other) => _set.SymmetricExcept(other);
+    public Signature<T> SymmetricExcept(IEnumerable<T> other) => new(_set.SymmetricExcept(other));
 
 
     public bool TryGetValue(T equalValue, out T actualValue) => _set.TryGetValue(equalValue, out actualValue);
 
 
-    public IImmutableSet<T> Union(IEnumerable<T> other) => new Signature<T>(_set.Union(other));
+    public Signature<T> Union(IEnumerable<T> other) => new Signature<T>(_set.Union(other));
 
 
     public bool Equals(Signature<T> other) => _set.SetEquals(other._set);
@@ -101,4 +100,6 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IImmutableSet<T>
 
 
     public int Count { get; }
+
+    public T this[int index] => _set.ElementAt(index);
 }

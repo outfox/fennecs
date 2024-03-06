@@ -83,7 +83,7 @@ public partial class World
         var meta = _meta[identity.Index];
         return meta.Identity != Match.Plain
                && meta.Identity == identity
-               && typeExpression.Matches(meta.Archetype.Types);
+               && typeExpression.Matches(meta.Archetype.Signature);
     }
 
 
@@ -162,7 +162,7 @@ public partial class World
     internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
 
 
-    internal Archetype AddTable(ImmutableSortedSet<TypeExpression> types)
+    internal Archetype AddTable(Signature<TypeExpression> types)
     {
         var table = new Archetype(this, types);
         _archetypes.Add(table);

@@ -25,7 +25,7 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// The TypeExpressions that define this Archetype.
     /// </summary>
-    public readonly ImmutableSortedSet<TypeExpression> Types;
+    public readonly Signature<TypeExpression> Signature;
 
     /// <summary>
     /// Get a Span of all Identities contained in this Archetype.
@@ -80,15 +80,15 @@ public sealed class Archetype : IEnumerable<Entity>
     private int _version;
 
 
-    public Archetype(World world, ImmutableSortedSet<TypeExpression> types)
+    public Archetype(World world, Signature<TypeExpression> signature)
     {
         _world = world;
 
-        Types = types;
+        Signature = signature;
 
         _identities = new Identity[StartCapacity];
 
-        _storages = new Array[types.Count];
+        _storages = new Array[signature.Count];
 
         // Build the relation between storages and types, as well as type Wildcards in buckets.
         var finishedTypes = PooledList<TypeID>.Rent();
@@ -97,9 +97,9 @@ public sealed class Archetype : IEnumerable<Entity>
         TypeID currentTypeId = 0;
 
         // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
-        for (var index = 0; index < types.Count; index++)
+        for (var index = 0; index < signature.Count; index++)
         {
-            var type = types[index];
+            var type = signature[index];
             _storageIndices.Add(type, index);
             _storages[index] = Array.CreateInstance(type.Type, StartCapacity);
 
@@ -164,23 +164,23 @@ public sealed class Archetype : IEnumerable<Entity>
 
     internal bool Matches(TypeExpression type)
     {
-        return type.Matches(Types);
+        return type.Matches(Signature);
     }
 
 
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.
-        var matchesNot = !mask.NotTypes.Any(t => t.Matches(Types));
+        var matchesNot = !mask.NotTypes.Any(t => t.Matches(Signature));
         if (!matchesNot) return false;
 
         //If already matching, no need to check any further. 
-        var matchesHas = mask.HasTypes.All(t => t.Matches(Types));
+        var matchesHas = mask.HasTypes.All(t => t.Matches(Signature));
         if (!matchesHas) return false;
 
         //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
         var matchesAny = mask.AnyTypes.Count == 0;
-        matchesAny |= mask.AnyTypes.Any(t => t.Matches(Types));
+        matchesAny |= mask.AnyTypes.Any(t => t.Matches(Signature));
 
         return matchesHas && matchesNot && matchesAny;
     }
@@ -191,7 +191,7 @@ public sealed class Archetype : IEnumerable<Entity>
         var match = true;
         for (var i = 0; i < matchTypes.Length; i++)
         {
-            match &= matchTypes[i].Matches(Types);
+            match &= matchTypes[i].Matches(Signature);
         }
 
         return match;
@@ -264,9 +264,9 @@ public sealed class Archetype : IEnumerable<Entity>
 
         destination.EnsureCapacity(destination.Count + Count);
         // Subtractive copy
-        foreach (var type in Types)
+        foreach (var type in Signature)
         {
-            if (!destination.Types.Contains(type)) continue;
+            if (!destination.Signature.Contains(type)) continue;
             coveredTypes.Add(type);
             var srcStorage = GetStorage(type);
             var destStorage = destination.GetStorage(type);
@@ -282,7 +282,7 @@ public sealed class Archetype : IEnumerable<Entity>
             Array.Fill(newDestination, value, destination.Count, Count);
         }
 
-        foreach (var type in destination.Types)
+        foreach (var type in destination.Signature)
         {
             if (!coveredTypes.Contains(type))
             {
@@ -383,7 +383,7 @@ public sealed class Archetype : IEnumerable<Entity>
     public override string ToString()
     {
         var sb = new StringBuilder($"Archetype ");
-        sb.AppendJoin("\n", Types);
+        sb.AppendJoin("\n", Signature);
         return sb.ToString();
     }
 

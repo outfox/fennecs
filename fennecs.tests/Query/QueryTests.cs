@@ -624,7 +624,22 @@ public class QueryTests
 
         for (var i = 0; i < 420; i++) world.Spawn().Add(i);
 
+#pragma warning disable CS0618 // Type or member is obsolete
         query.Clear();
+#pragma warning restore CS0618 // Type or member is obsolete
+        Assert.Equal(0, query.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn()
+    {
+        using var world = new World();
+        var query = world.Query<int>(Match.Any).Build();
+
+        for (var i = 0; i < 420; i++) world.Spawn().Add(i);
+
+        query.Despawn();
         Assert.Equal(0, query.Count);
     }
 }
