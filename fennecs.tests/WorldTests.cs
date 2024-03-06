@@ -301,14 +301,14 @@ public class WorldTests
     public void Apply_Deferred_Relation()
     {
         using var world = new World();
-        var identity = world.Spawn();
+        var entity = world.Spawn();
         var target = world.Spawn();
 
         var worldLock = world.Lock;
-        world.On(identity).AddRelation(target, 666);
-        Assert.False(world.HasRelation<int>(identity, target));
+        world.On(entity).AddRelation(target, 666);
+        Assert.False(entity.HasRelation<int>(target));
         worldLock.Dispose();
-        Assert.True(world.HasRelation<int>(identity, target));
+        Assert.True(entity.HasRelation<int>(target));
     }
 
 
@@ -345,10 +345,10 @@ public class WorldTests
     private void Can_Test_for_Entity_Relation_Component_Presence()
     {
         using var world = new World();
-        var identity = world.Spawn();
+        var entity = world.Spawn();
         var target = world.Spawn();
-        world.On(identity).AddRelation(target, 666);
-        Assert.True(world.HasRelation<int>(identity, target));
+        world.On(entity).AddRelation(target, 666);
+        Assert.True(entity.HasRelation<int>(target));
     }
 
 
@@ -359,7 +359,7 @@ public class WorldTests
         var entity = world.Spawn();
         object target = new { };
         world.On(entity).AddLink(target);
-        Assert.True(world.HasLink(entity, target));
+        Assert.True(entity.HasLink(target));
     }
 
 
@@ -368,7 +368,7 @@ public class WorldTests
     {
         using var world = new World();
         var entity = world.Spawn();
-        world.AddComponent<NewableStruct>(entity);
+        entity.Add<NewableStruct>();
         Assert.True(world.HasComponent<NewableStruct>(entity));
     }
 
@@ -380,8 +380,9 @@ public class WorldTests
         var entity = world.Spawn();
         object target = new { };
         world.On(entity).AddLink(target);
-        world.RemoveLink(entity, target);
-        Assert.False(world.HasLink(entity, target));
+        var typeExpression = TypeExpression.Of<object>(Identity.Of(target));
+        world.RemoveComponent(entity, typeExpression);
+        Assert.False(entity.HasLink(target));
     }
 
 
@@ -389,11 +390,11 @@ public class WorldTests
     private void Can_Relate_Over_Entity()
     {
         using var world = new World();
-        var identity = world.Spawn();
+        var entity = world.Spawn();
         var other = world.Spawn();
         var data = new Identity(123);
-        world.On(identity).AddRelation(other, data);
-        Assert.True(world.HasRelation<Identity>(identity, other));
+        world.On(entity).AddRelation(other, data);
+        Assert.True(entity.HasRelation<Identity>(other));
     }
 
 

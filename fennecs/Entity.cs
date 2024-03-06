@@ -91,7 +91,8 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity AddRelation<T>(Entity targetEntity, T data)
     {
-        World.AddRelation(Id, targetEntity.Id, data);
+        var typeExpression = TypeExpression.Of<T>(targetEntity.Id);
+        World.AddComponent(Id, typeExpression, data);
         return this;
     }
 
@@ -126,7 +127,8 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Add<T>(T data)
     {
-        World.AddComponent(Id, data);
+        var type = TypeExpression.Of<T>();
+        World.AddComponent(Id, type, data);
         return this;
     }
 
@@ -159,7 +161,8 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity RemoveRelation<T>(Entity targetEntity)
     {
-        World.RemoveRelation<T>(Id, targetEntity);
+        var typeExpression = TypeExpression.Of<T>(targetEntity);
+        World.RemoveComponent(Id, typeExpression);
         return this;
     }
 
@@ -172,7 +175,8 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity RemoveLink<T>(T targetObject) where T : class
     {
-        World.RemoveLink(Id, targetObject);
+        var typeExpression = TypeExpression.Of<T>(Identity.Of(targetObject));
+        World.RemoveComponent(Id, typeExpression);
         return this;
     }
 
@@ -253,23 +257,10 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
 
     public override string ToString()
     {
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine(Id.ToString());
-
-        var components = World.ListComponents(Id);
-        var typeExpressions = components as TypeExpression[] ?? components.ToArray();
-
-        for (var i = 0; i < typeExpressions.Length - 1; i++)
-        {
-            sb.Append('|');
-            sb.Append('-');
-            sb.AppendLine(typeExpressions[i].ToString());
-        }
-
-        sb.Append('\\');
-        sb.Append('-');
-        sb.Append(typeExpressions[^1].ToString());
-
+        var sb = new System.Text.StringBuilder(Id.ToString());
+        sb.Append(' ');
+        sb.AppendJoin("\n  |-", World.GetSignature(Id));
+        
         return sb.ToString();
     }
     

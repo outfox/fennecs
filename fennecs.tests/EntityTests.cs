@@ -10,8 +10,8 @@ public class EntityTests(ITestOutputHelper output)
         var target = world.Spawn();
         var builder = new Entity(world, entity);
         builder.AddRelation<int>(target);
-        Assert.True(world.HasRelation<int>(entity, target));
-        Assert.False(world.HasRelation<int>(entity, new Identity(9001)));
+        Assert.True(entity.HasRelation<int>(target));
+        Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
     }
 
 
@@ -23,8 +23,8 @@ public class EntityTests(ITestOutputHelper output)
         var target = world.Spawn();
         var builder = new Entity(world, entity);
         builder.AddRelation(target, 123);
-        Assert.True(world.HasRelation<int>(entity, target));
-        Assert.False(world.HasRelation<int>(entity, new Identity(9001)));
+        Assert.True(entity.HasRelation<int>(target));
+        Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
     }
 
 

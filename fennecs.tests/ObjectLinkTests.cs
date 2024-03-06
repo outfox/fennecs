@@ -76,7 +76,8 @@ public class ObjectLinkTests(ITestOutputHelper output)
         const string TARGET = "hello world";
 
         var entity = world.Spawn().AddLink(TARGET);
-        world.RemoveLink(entity, "hello world");
+        var typeExpression = TypeExpression.Of<string>(Identity.Of("hello world"));
+        world.RemoveComponent(entity, typeExpression);
 
         var runs = 0;
         query.For((ref string _) => { runs++; });

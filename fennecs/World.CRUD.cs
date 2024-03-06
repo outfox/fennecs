@@ -1,79 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace fennecs;
+﻿namespace fennecs;
 
 public partial class World
 {
     #region CRUD
-    internal void AddLink<T>(Identity identity, [NotNull] T target) where T : class
-    {
-        var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
-        AddComponent(identity, typeExpression, target);
-    }
-
-
-    internal bool HasLink<T>(Identity identity, [NotNull] T target) where T : class
-    {
-        var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
-        return HasComponent(identity, typeExpression);
-    }
-
-
-    internal void RemoveLink<T>(Identity identity, T target) where T : class
-    {
-        var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
-        RemoveComponent(identity, typeExpression);
-    }
-
-
-    internal void AddRelation<T>(Identity identity, Identity target, T data)
-    {
-        var typeExpression = TypeExpression.Of<T>(target);
-        AddComponent(identity, typeExpression, data);
-    }
-
-
-    internal bool HasRelation<T>(Identity identity, Identity target)
-    {
-        var typeExpression = TypeExpression.Of<T>(target);
-        return HasComponent(identity, typeExpression);
-    }
-
-
-    internal void RemoveRelation<T>(Identity identity, Identity target)
-    {
-        var typeExpression = TypeExpression.Of<T>(target);
-        RemoveComponent(identity, typeExpression);
-    }
-
-
-    internal void AddComponent<T>(Identity identity) where T : new()
-    {
-        var type = TypeExpression.Of<T>(Match.Plain);
-        AddComponent(identity, type, new T());
-    }
-
-
-    internal void AddComponent<T>(Identity identity, T data)
-    {
-        if (data == null) throw new ArgumentNullException(nameof(data));
-        var type = TypeExpression.Of<T>();
-        AddComponent(identity, type, data);
-    }
-
-
-    internal bool HasComponent<T>(Identity identity, Identity target = default)
-    {
-        var type = TypeExpression.Of<T>(target);
-        return HasComponent(identity, type);
-    }
-    
-
     internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
     {
+        if (data == null) throw new ArgumentNullException(nameof(data));
+
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Identity = identity, TypeExpression = typeExpression, Data = data!});
+            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Identity = identity, TypeExpression = typeExpression, Data = data});
             return;
         }
 
@@ -119,6 +55,13 @@ public partial class World
     }
 
 
+    internal bool HasComponent<T>(Identity identity, Identity target = default)
+    {
+        var type = TypeExpression.Of<T>(target);
+        return HasComponent(identity, type);
+    }
+
+
     internal ref T GetComponent<T>(Identity identity, Identity target = default)
     {
         AssertAlive(identity);
@@ -132,7 +75,7 @@ public partial class World
     }
 
 
-    public IEnumerable<TypeExpression> ListComponents(Identity identity)
+    internal Signature<TypeExpression> GetSignature(Identity identity)
     {
         AssertAlive(identity);
         var meta = _meta[identity.Index];

@@ -64,7 +64,7 @@ betrayingVipers.For((ref Location theirLocation, ref Identity theirIdentity) =>
     
     // We only have an identity, so we fudge one in the world. We could also
     // use world.ListComponents(theirIdentity). (and more API coming soon)
-    var they = new Entity(world, theirIdentity);
+    var they = world.GetEntity(theirIdentity);
     Console.WriteLine("They do. They remember everything. They are:\n" + they);
 
     // Get our revenge.

@@ -331,7 +331,12 @@ public class Query : IEnumerable<Entity>, IDisposable
         using var worldLock = World.Lock;
         //TODO: This is an inefficient allocation, but raw bulk operations on Archetypes aren't exposed yet.
         var entities = new List<Entity>(this);
-        foreach (var entity in entities) World.AddComponent(entity, data);
+        foreach (var entity in entities)
+        {
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            var type = TypeExpression.Of<T>();
+            World.AddComponent(entity, type, data);
+        }
     }
 
 
@@ -347,7 +352,12 @@ public class Query : IEnumerable<Entity>, IDisposable
         using var worldLock = World.Lock;
         //TODO: This is an inefficient allocation, but raw bulk operations on Archetypes aren't exposed yet.
         var entities = new List<Entity>(this);
-        foreach (var entity in entities) World.AddComponent(entity, data);
+        foreach (var entity in entities)
+        {
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            var type = TypeExpression.Of<T>();
+            World.AddComponent(entity, type, data);
+        }
     }
 
 
