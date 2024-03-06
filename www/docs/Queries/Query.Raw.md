@@ -79,7 +79,7 @@ You can either access this memory as a `Span`, cast it to the desired type, etc.
 //or you better not be copying this code sample anyway
 ```
 
-```cs [☠️ cast to another type]
+```cs [☠️ cast to type]
 //TODO :) until then, you probably either have a clue already
 //or you better not be copying this code sample anyway
 ```

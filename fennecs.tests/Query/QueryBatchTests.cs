@@ -196,6 +196,35 @@ public class QueryBatchTests
 
         var stringQuery = world.Query<string>().Build();
         stringQuery.Batch().Add<float>(123f).Submit();
-
     }
+
+
+    [Fact]
+    public void Can_Create_Batched_Relation()
+    {
+        
+        var world = new World();
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(234);
+        var e3 = world.Spawn().Add("lala!");
+
+        var stringQuery = world.Query<string>().Build();
+        Assert.Equal(1, stringQuery.Count);
+        Assert.DoesNotContain(e1, stringQuery);
+        Assert.DoesNotContain(e2, stringQuery);
+        Assert.Contains(e3, stringQuery);
+
+        var intQuery = world.Query<int>().Build();
+        intQuery.Batch().AddRelation<float>(e3).Submit();
+
+        var relationQuery = world.Query<float>(Match.Entity).Build();
+        
+        Assert.Equal(3, stringQuery.Count);
+
+        Assert.Contains(e1, stringQuery);
+        Assert.Contains(e2, stringQuery);
+        Assert.Contains(e3, stringQuery);
+         
+    }
+    
 }

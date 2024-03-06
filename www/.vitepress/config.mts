@@ -37,6 +37,7 @@ export default defineConfig({
         documentRootPath: '/',
         scanStartPath: '/',
         resolvePath: '/',
+        excludeFiles: ['nuget.md'],
         includeRootIndexFile: false,
         collapseDepth: 1,
         excludeFolders: [".", "node_modules", "dist", "public", "src", "vitepress", "vitepress-sidebar"],

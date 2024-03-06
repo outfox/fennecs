@@ -24,9 +24,9 @@ features:
   - title: Intuitively Relational.
     details: A unique relation system <u>keeps you in charge</u> of how your Entities and Objects relate each other. Queries feed data straight to your code, filtered, and parallel across CPU cores.
   - title: Minimal Boilerplate.
-    details: "Immediate, deliberate interactions. Make choices, not compromises. <span style='font-weight: 700'>fenn</span><span>ecs</span> will let nothing get in the way between you and your game features!<br/>...<em>and we foxing mean it</em> 💢"
+    details: Works right out of the box. Plays nice with many game engines. <u>Make choices, not compromises!</u> Light enough to add as final touch, strong enough to build upon from the start.
   - title: Zero Dependencies. Zero Codegen.
-    details: <p>Works right out of the box.</p><p>Plays nice with many game engines.</p><p>Light enough to add as final touch, strong enough to build upon from the start.</p>
+    details: <br/><br/><br/>... 💢
 
 ---
 
@@ -38,14 +38,8 @@ features:
 
 # Ok, what the fox? *Another ECS?!*
 ### :neofox_facepalm: We know... oh, _we know._    
-### But in a nutshell, **fenn**ecs is...
+### But it had to be done.
 
-🐾 zero codegen
-🐾 minimal boilerplate
-🐾 archetype-based
-🐾 intuitively relational
-🐾 lithe and fast 🐾
+In a tiny nutshell, **fenn**ecs is an archetype-based ECS that proves: "small", "clever", and "fast" don't have to be mutually exclusive attributes to look for in a game or simulation development library. And, by the way, did we mention it's free & libre open source software (MIT license)?
 
-And that's all there is to say before you go and see for yourself.
-
-### All bright-eyed and bushy-tailed!
+### Let's get all bright-eyed and bushy-tailed again!

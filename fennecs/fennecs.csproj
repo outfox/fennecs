@@ -14,7 +14,7 @@
         <PackageProjectUrl>https://github.com/thygrrr/fennecs</PackageProjectUrl>
         <RepositoryUrl>https://github.com/thygrrr/fennecs</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
-        <PackageReadmeFile>./overview.md</PackageReadmeFile>
+        <PackageReadmeFile>./nuget.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ecs, gamedev, entity, entity component system, game, gamedev, game development, godot, dots, defaultecs, hypecs, relecs, entt, flecs</PackageTags>
         <TargetFramework>net8.0</TargetFramework>
@@ -36,7 +36,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../www/overview.md" Pack="true" PackagePath="\" />
+        <None Include="../www/nuget.md" Pack="true" PackagePath="\" />
         <None Include="../www/logos/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>

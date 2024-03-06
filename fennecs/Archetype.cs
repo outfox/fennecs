@@ -246,8 +246,8 @@ public sealed class Archetype : IEnumerable<Entity>
     /// </summary>
     /// <param name="destination">the Archetype to move the entities to</param>
     /// <param name="additions">the new components and their TypeExpressions to add to the destination Archetype</param>
-    /// <param name="backfills">values for each addition to add</param>
-    public void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backfills)
+    /// <param name="backFills">values for each addition to add</param>
+    public void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills)
     {
         using var coveredTypes = PooledList<TypeExpression>.Rent();
 
@@ -267,7 +267,7 @@ public sealed class Archetype : IEnumerable<Entity>
         for (var index = 0; index < additions.Count; index++)
         {
             var type = additions[index];
-            var value = backfills[index];
+            var value = backFills[index];
             
             coveredTypes.Add(type);
 
