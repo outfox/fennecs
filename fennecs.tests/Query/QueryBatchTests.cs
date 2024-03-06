@@ -202,7 +202,6 @@ public class QueryBatchTests
     [Fact]
     public void Can_Create_Batched_Relation()
     {
-        
         var world = new World();
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(234);
@@ -216,7 +215,7 @@ public class QueryBatchTests
 
         var relationQuery = world.Query<float>(Match.Entity).Build();
         Assert.Empty(relationQuery);
-        
+
         var intQuery = world.Query<int>().Build();
         intQuery.Batch().AddRelation<float>(e3).Submit();
 
@@ -225,5 +224,32 @@ public class QueryBatchTests
         Assert.Contains(e2, relationQuery);
         Assert.DoesNotContain(e3, relationQuery);
     }
-    
+
+
+    [Fact]
+    public void Can_Create_Batched_Link()
+    {
+        var world = new World();
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(234);
+        var e3 = world.Spawn().Add("lala!");
+
+        var stringQuery = world.Query<string>().Build();
+        Assert.Equal(1, stringQuery.Count);
+        Assert.DoesNotContain(e1, stringQuery);
+        Assert.DoesNotContain(e2, stringQuery);
+        Assert.Contains(e3, stringQuery);
+
+        var linkQuery = world.Query<string>(Match.Object).Build();
+        Assert.Empty(linkQuery);
+
+        var intQuery = world.Query<int>().Build();
+        intQuery.Batch().AddLink<string>("doom").Submit();
+
+        Assert.Equal(2, linkQuery.Count);
+        Assert.Contains(e1, linkQuery);
+        Assert.Contains(e2, linkQuery);
+        Assert.DoesNotContain(e3, linkQuery);
+    }
+
 }
