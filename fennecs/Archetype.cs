@@ -247,44 +247,27 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <param name="destination">the Archetype to move the entities to</param>
     /// <param name="additions">the new components and their TypeExpressions to add to the destination Archetype</param>
     /// <param name="backFills">values for each addition to add</param>
-    public void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills)
+    internal void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills)
     {
-        using var coveredTypes = PooledList<TypeExpression>.Rent();
+        if (destination == this)
+        {
+            destination.Fill(additions, backFills, Count, 0); 
+            return;
+        }
 
         destination.EnsureCapacity(destination.Count + Count);
         // Subtractive copy
         foreach (var type in Signature)
         {
             if (!destination.Signature.Contains(type)) continue;
-            coveredTypes.Add(type);
             var srcStorage = GetStorage(type);
             var destStorage = destination.GetStorage(type);
             Array.Copy(srcStorage, 0, destStorage, destination.Count, Count);
             Array.Clear(srcStorage);
         }
 
-        // Additive back-fill
-        for (var index = 0; index < additions.Count; index++)
-        {
-            var type = additions[index];
-            var value = backFills[index];
-            
-            coveredTypes.Add(type);
-
-            var newDestination = destination.GetStorage(type);
-            var elementType = newDestination.GetType().GetElementType()!;
-            if (elementType.IsValueType)
-            {
-                for (var elementIndex = destination.Count; elementIndex < destination.Count + Count; elementIndex++)
-                {
-                    newDestination.SetValue(value, elementIndex);
-                }
-            }
-            else
-            {
-                Array.Fill((object[]) newDestination, value, destination.Count, Count);
-            }
-        }
+        // Additive back-fill of values
+        destination.Fill(additions, backFills, Count, destination.Count);
 
         // Move identities
         for (var i = 0; i < Count; i++)
@@ -304,8 +287,30 @@ public sealed class Archetype : IEnumerable<Entity>
         _version++;
     }
 
+    
+    internal void Fill(PooledList<TypeExpression> types, PooledList<object> values, int count, int startIndex = 0)
+    {
+        for (var i = 0; i < types.Count; i++)
+        {
+            var type = types[i];
+            var value = values[i];
+            var storage = GetStorage(type);
+            var elementType = storage.GetType().GetElementType()!;
+            if (elementType.IsValueType)
+            {
+                for (var elementIndex = startIndex; elementIndex < startIndex + count; elementIndex++)
+                {
+                    storage.SetValue(value, elementIndex);
+                }
+            }
+            else
+            {
+                Array.Fill((object[]) storage, value, startIndex, count);
+            }
+        }
+    }
 
-    public T[] GetStorage<T>(Identity target)
+    internal T[] GetStorage<T>(Identity target)
     {
         var type = TypeExpression.Of<T>(target);
         return (T[]) GetStorage(type);

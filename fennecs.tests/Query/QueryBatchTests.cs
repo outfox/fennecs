@@ -15,7 +15,7 @@ public class QueryBatchTests
         world.Spawn().Add(123);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch().Add("batched").Submit();
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add("batched").Submit();
     }
 
 
@@ -26,8 +26,8 @@ public class QueryBatchTests
         world.Spawn().Add(123);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch().Add(123456.0f).Submit();
-        intQuery.Batch().Add<float>(default).Submit();
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add(123456.0f).Submit();
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add<float>(default).Submit();
     }
 
 
@@ -38,8 +38,8 @@ public class QueryBatchTests
         world.Spawn().Add(123);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch().Add(new TypeA(55)).Submit();
-        intQuery.Batch().Add<TypeA>(default).Submit();
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add(new TypeA(55)).Submit();
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add<TypeA>(default).Submit();
     }
 
     
@@ -58,7 +58,7 @@ public class QueryBatchTests
         Assert.Contains(e3, stringQuery);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch().Add("batched").Submit();
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add("batched").Submit();
 
         Assert.Equal(3, stringQuery.Count);
 
@@ -155,7 +155,7 @@ public class QueryBatchTests
     public void Can_Batch_Add_Deferred()
     {
         using var world = new World();
-        
+
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
@@ -166,8 +166,8 @@ public class QueryBatchTests
         var intQuery = world.Query<int>().Build();
 
         var worldLock = world.Lock;
-        intQuery.Batch().Add("batched").Submit();
-        
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add("batched").Submit();
+
         // Deferred operations are not immediately visible
         Assert.DoesNotContain(e1, stringQuery);
         Assert.DoesNotContain(e2, stringQuery);
@@ -196,7 +196,7 @@ public class QueryBatchTests
         Assert.Empty(floatQuery);
 
         var stringQuery = world.Query<string>().Build();
-        stringQuery.Batch().Add(123f).Submit();
+        stringQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add(123f).Submit();
     }
 
 
@@ -218,7 +218,7 @@ public class QueryBatchTests
         Assert.Empty(relationQuery);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch().AddRelation<float>(e3).Submit();
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).AddRelation<float>(e3).Submit();
 
         Assert.Equal(2, relationQuery.Count);
         Assert.Contains(e1, relationQuery);
@@ -245,7 +245,7 @@ public class QueryBatchTests
         Assert.Empty(linkQuery);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch().AddLink<string>("doom").Submit();
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).AddLink<string>("doom").Submit();
 
         Assert.Equal(2, linkQuery.Count);
         Assert.Contains(e1, linkQuery);
@@ -292,4 +292,35 @@ public class QueryBatchTests
 
         Assert.Throws<InvalidOperationException>(() => intQuery.Truncate(1, fennecs.Query.TruncateMode.PerArchetype));
     }
+
+
+
+    [Fact]
+    public void Can_Batch_Add_Replace_Deferred()
+    {
+        using var world = new World();
+
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(234);
+        var e3 = world.Spawn().Add(567).Add("lala!");
+
+        var intQuery = world.Query<int>().Build();
+        Assert.Equal(3, intQuery.Count);
+
+        //var worldLock = world.Lock;
+        intQuery.Batch(World.BatchOperation.AddConflictMode.Replace).Add("batched").Submit();
+        //worldLock.Dispose();
+
+        Assert.Equal(3, intQuery.Count);
+        Assert.True(e1.Has<string>());
+        Assert.Equal("batched", e1.Ref<string>());
+        Assert.True(e2.Has<string>());
+        Assert.Equal("batched", e2.Ref<string>());
+        Assert.True(e3.Has<string>());
+        Assert.Equal("batched", e3.Ref<string>());
+        
+    }
+
+
+    
 }

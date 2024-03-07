@@ -8,6 +8,6 @@
     <RootNamespace>fennecs.demos.godot</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="fennecs" Version="0.1.0-beta" />
+    <PackageReference Include="fennecs" Version="0.1.1-beta" />
   </ItemGroup>
 </Project>

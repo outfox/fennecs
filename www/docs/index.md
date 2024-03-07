@@ -1,9 +1,18 @@
 ---
 layout: doc
 title: Documentation
+
+head:
+  - - meta
+    - name: description
+      content: API documentation for fennecs, the tiny, tiny, high-energy Entity Component System
+
 ---
 
-# Welcome to the last ECS of your life!
+# Free Entities to good home!
+
+![fennecs in a box](https://fennecs.tech/img/fennecs.png)
+*Only seven left, out of a litter of 2147483647.*
 
 ::: info :neofox_knives: THE COOKBOOK
 Ready to try **fenn**ecs for yourself? Flip through the **[Cookbook](/cookbook/index)** for some quick and easily digestible code samples that get you started in no time! Come back whenever you need to to jog your memory.

@@ -6,6 +6,7 @@ import { hyperlinkPlugin } from './plugin-hyperlink';
 // https://vitepress.dev/reference/site-config
 
 export default defineConfig({
+  lang: 'en-US',
   title: "fennecs — tiny ECS",
   description: "fennecs ...the tiny, tiny, high-energy Entity Component System!",
 

@@ -31,7 +31,7 @@ features:
 head:
   - - meta
     - name: description
-      content: fennecs, a the tiny, tiny, high-energy Entity Component System written in C#!
+      content: fennecs, the tiny, tiny, high-energy Entity Component System for C#!
 ---
 
 | [![Nuget](https://img.shields.io/nuget/v/fennecs?color=blue)](https://www.nuget.org/packages/fennecs/) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-blue) | [![License: MIT](https://img.shields.io/github/license/thygrrr/fennecs?color=blue)](https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme) |
@@ -42,8 +42,7 @@ head:
 
 # Ok, what the fox? *Another ECS?!*
 ### :neofox_facepalm: We know... oh, _we know._    
-### But it had to be done.
 
-In a tiny nutshell, **fenn**ecs is an archetype-based ECS that proves: "small", "clever", and "fast" don't have to be mutually exclusive attributes to look for in a game or simulation development library. And, by the way, did we mention it's free & libre open source software (MIT license)?
+**But it had to be done.** In a tiny nutshell, **fenn**ecs is an archetype-based ECS that proves: "small", "clever", and "fast" don't have to be mutually exclusive attributes to look for in a game or simulation development library. And, by the way, did we mention it's free & libre open source software (MIT license)?
 
-### Let's get all bright-eyed and bushy-tailed again!
+### Let's dare to be all bright-eyed and bushy-tailed again!

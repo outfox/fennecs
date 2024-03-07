@@ -13,7 +13,7 @@ public partial class World
             _deferredOperations.Enqueue(new DeferredOperation(operation));
             return false;
         }
-        
+
         Commit(operation);
         return true;
     }
@@ -23,10 +23,14 @@ public partial class World
     {
         foreach (var archetype in operation.Archetypes)
         {
-            var newSignature = archetype.Signature
-                .Except(operation.Removals)
-                .Union(operation.Additions);
+            var preAddSignature = archetype.Signature
+                .Except(operation.Removals);
 
+            if (operation.AddMode == BatchOperation.AddConflictMode.Skip 
+                && _typeGraph.TryGetValue(preAddSignature, out var preAddArchetype)
+                && preAddArchetype.Signature.Overlaps(operation.Additions)) continue;
+
+            var newSignature = preAddSignature.Union(operation.Additions);
             var newArchetype = GetArchetype(newSignature);
             archetype.Migrate(newArchetype, operation.Additions, operation.BackFill);
         }
@@ -37,7 +41,7 @@ public partial class World
     {
         private readonly World _world;
         private readonly Mask _mask;
-        
+
         internal readonly PooledList<Archetype> Archetypes = PooledList<Archetype>.Rent();
         internal readonly PooledList<TypeExpression> Additions = PooledList<TypeExpression>.Rent();
         internal readonly PooledList<TypeExpression> Removals = PooledList<TypeExpression>.Rent();
@@ -45,12 +49,14 @@ public partial class World
 
         internal readonly AddConflictMode AddMode;
         internal readonly RemoveConflictMode RemoveMode;
-        
+
+
         public void Submit()
         {
             if (_world.Submit(this)) Dispose();
         }
-        
+
+
         internal BatchOperation(IReadOnlyList<Archetype> archetypes, World world, Mask mask, AddConflictMode addMode, RemoveConflictMode removeMode)
         {
             Archetypes.AddRange(archetypes);
@@ -61,8 +67,7 @@ public partial class World
         }
 
 
-
-        public BatchOperation Add<T>(T data) => AddComponent(data, default);
+        public BatchOperation Add<T>(T data) => AddComponent(data, target: default);
         public BatchOperation AddLink<T>(T target) where T : class => AddComponent(target, Identity.Of(target));
         public BatchOperation AddRelation<T>(Entity target) where T : new() => AddComponent<T>(new T(), target.Id);
         public BatchOperation AddRelation<T>(T data, Entity target) where T : notnull => AddComponent(data, target.Id);
@@ -77,17 +82,15 @@ public partial class World
         {
             var typeExpression = TypeExpression.Of<T>(target);
 
-            if (!_mask.SafeForAddition(typeExpression))
-            {
+            if (AddMode == AddConflictMode.Disallow && !_mask.SafeForAddition(typeExpression))
                 throw new InvalidOperationException($"TypeExpression {typeExpression} is not filtered out via Not<T> by this Query/Mask, additions would cause invalid runtime state.");
-            }
 
             if (Additions.Contains(typeExpression))
                 throw new InvalidOperationException($"Duplicate addition {typeExpression} : {data}");
-            
+
             if (Removals.Contains(typeExpression))
                 throw new InvalidOperationException($"Addition {typeExpression} conflicts with removal");
-            
+
             Additions.Add(typeExpression);
             BackFill.Add(data!);
             return this;
@@ -98,12 +101,8 @@ public partial class World
         {
             var typeExpression = TypeExpression.Of<T>(target);
 
-            /*
-            if (!_mask.SafeForRemoval(typeExpression))
-            {
-              throw new InvalidOperationException($"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals would cause invalid runtime state.");
-            }
-            */
+            if (RemoveMode == RemoveConflictMode.Disallow && !_mask.SafeForRemoval(typeExpression))
+                throw new InvalidOperationException($"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals would cause invalid runtime state.");
 
             if (Additions.Contains(typeExpression))
                 throw new InvalidOperationException($"Removal {typeExpression} conflicts with addition");
@@ -138,10 +137,10 @@ public partial class World
             Disallow = default,
 
             /// <summary>
-            /// Skip Archetypes where the Component to be added is already present.
+            /// Skip Archetypes where the Component to be added is already present, preserving its original data.
             /// </summary>
             Skip,
-            
+
             /// <summary>
             /// Replace (overwrite) the Component to be added if it is already present.
             /// </summary>
