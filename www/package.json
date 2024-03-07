@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vitepress dev .",
     "build": "vitepress build .",
-    "deploy": "npm run build && npm run upload",
-    "upload": "aws s3 sync s3 s3://fennecs.tech --delete && aws s3 sync .vitepress/dist s3://fennecs.tech && aws cloudfront create-invalidation --distribution-id E12V3ZFP8BEESL --paths /",
+    "upload": "aws s3 sync s3 s3://fennecs.tech --delete && aws s3 sync .vitepress/dist s3://fennecs.tech",
+    "invalidate": " aws cloudfront create-invalidation --distribution-id E12V3ZFP8BEESL --paths /",
+    "deploy": "npm run build && npm run upload && npm run invalidate",
     "preview": "vitepress preview ."
   },
   "keywords": [
