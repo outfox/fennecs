@@ -40,8 +40,23 @@ public class EntityTests(ITestOutputHelper output)
         entity.AddRelation(world.Spawn(), 7.0f);
         entity.AddLink("hello");
         output.WriteLine(entity.ToString());
+        
+        world.Despawn(entity);
+        output.WriteLine(entity.ToString());
     }
 
+
+    [Fact]
+    public void Entity_Can_Despawn_Itself()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+        entity.AddRelation(world.Spawn(), 7.0f);
+        entity.AddLink("hello");
+        entity.Despawn();
+        Assert.False(world.IsAlive(entity));
+    }
 
     [Fact]
     public void Entity_Is_Comparable()

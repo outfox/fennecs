@@ -7,7 +7,8 @@ public class QueryBatchTests
         // ReSharper disable once UnusedMember.Local
         public long _1 = i;
     }
-    
+
+
     [Fact]
     public void Can_Batch_Reference_Types()
     {
@@ -15,7 +16,7 @@ public class QueryBatchTests
         world.Spawn().Add(123);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add("batched").Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).Add("batched").Submit();
     }
 
 
@@ -26,8 +27,21 @@ public class QueryBatchTests
         world.Spawn().Add(123);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add(123456.0f).Submit();
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add<float>(default).Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).Add(123456.0f).Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).Add<float>(default).Submit();
+    }
+
+
+    [Fact]
+    public void Can_Use_One_Shot_Batch_Ops()
+    {
+        using var world = new World();
+        world.Spawn().Add(123);
+
+        var intQuery = world.Query<int>().Not<float>().Build();
+        intQuery.Add(123456.0f);
+        intQuery.Add<float>();
+        intQuery.Remove<int>();
     }
 
 
@@ -38,11 +52,11 @@ public class QueryBatchTests
         world.Spawn().Add(123);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add(new TypeA(55)).Submit();
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add<TypeA>(default).Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).Add(new TypeA(55)).Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).Add<TypeA>(default).Submit();
     }
 
-    
+
     [Fact]
     public void Can_Batch_Add_Immediate()
     {
@@ -58,7 +72,7 @@ public class QueryBatchTests
         Assert.Contains(e3, stringQuery);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add("batched").Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).Add("batched").Submit();
 
         Assert.Equal(3, stringQuery.Count);
 
@@ -166,7 +180,7 @@ public class QueryBatchTests
         var intQuery = world.Query<int>().Build();
 
         var worldLock = world.Lock;
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add("batched").Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).Add("batched").Submit();
 
         // Deferred operations are not immediately visible
         Assert.DoesNotContain(e1, stringQuery);
@@ -196,7 +210,7 @@ public class QueryBatchTests
         Assert.Empty(floatQuery);
 
         var stringQuery = world.Query<string>().Build();
-        stringQuery.Batch(World.BatchOperation.AddConflictMode.Skip).Add(123f).Submit();
+        stringQuery.Batch(Batch.AddConflict.Skip).Add(123f).Submit();
     }
 
 
@@ -218,7 +232,7 @@ public class QueryBatchTests
         Assert.Empty(relationQuery);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).AddRelation<float>(e3).Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).AddRelation<float>(e3).Submit();
 
         Assert.Equal(2, relationQuery.Count);
         Assert.Contains(e1, relationQuery);
@@ -226,6 +240,64 @@ public class QueryBatchTests
         Assert.DoesNotContain(e3, relationQuery);
     }
 
+
+    [Fact]
+    public void Can_Create_Batched_ObjectBacked_Relation()
+    {
+        using var world = new World();
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(234);
+        var e3 = world.Spawn().Add("lala!");
+
+        var stringQuery = world.Query<string>().Build();
+        Assert.Equal(1, stringQuery.Count);
+        Assert.DoesNotContain(e1, stringQuery);
+        Assert.DoesNotContain(e2, stringQuery);
+        Assert.Contains(e3, stringQuery);
+
+        var relationQuery = world.Query<string>(Match.Entity).Build();
+        Assert.Empty(relationQuery);
+
+        var intQuery = world.Query<int>().Build();
+        intQuery.Batch(Batch.AddConflict.Skip).AddRelation<string>("object backed, buddy!", e3).Submit();
+
+        Assert.Equal(2, relationQuery.Count);
+        Assert.Contains(e1, relationQuery);
+        Assert.Contains(e2, relationQuery);
+        Assert.DoesNotContain(e3, relationQuery);
+    }
+
+
+    [Fact]
+    public void Can_RemoveLink_Batched()
+    {
+        using var world = new World();
+        const string LINK = "doom";
+        
+        var e1 = world.Spawn().AddLink<string>(LINK);
+
+        var linkQuery = world.Query<string>(Identity.Of(LINK)).Build();
+        Assert.Single(linkQuery);
+        Assert.Contains(e1, linkQuery);
+        
+        linkQuery.Batch().RemoveLink<string>(LINK).Submit();
+        
+        Assert.Empty(linkQuery);
+    }
+
+    [Fact]
+    public void Can_Remove_Batched_Relation()
+    {
+        using var world = new World();
+        var target = world.Spawn();
+        var e1 = world.Spawn().AddRelation(target, 123);
+
+        Assert.True(e1.HasRelation<int>(target));
+        var intQuery = world.Query<int>(target).Build();
+        intQuery.Batch().RemoveRelation<int>(target).Submit();
+        Assert.False(e1.HasRelation<int>(target));
+    }
+    
 
     [Fact]
     public void Can_Create_Batched_Link()
@@ -245,7 +317,7 @@ public class QueryBatchTests
         Assert.Empty(linkQuery);
 
         var intQuery = world.Query<int>().Build();
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Skip).AddLink<string>("doom").Submit();
+        intQuery.Batch(Batch.AddConflict.Skip).AddLink<string>("doom").Submit();
 
         Assert.Equal(2, linkQuery.Count);
         Assert.Contains(e1, linkQuery);
@@ -280,9 +352,9 @@ public class QueryBatchTests
     public void Cannot_Truncate_When_Locked()
     {
         using var world = new World();
-        
+
         using var _ = world.Lock;
-        
+
         world.Spawn().Add(123);
         world.Spawn().Add(234);
         world.Spawn().Add(123).Add("Archetype 2");
@@ -292,7 +364,6 @@ public class QueryBatchTests
 
         Assert.Throws<InvalidOperationException>(() => intQuery.Truncate(1, fennecs.Query.TruncateMode.PerArchetype));
     }
-
 
 
     [Fact]
@@ -308,7 +379,7 @@ public class QueryBatchTests
         Assert.Equal(3, intQuery.Count);
 
         //var worldLock = world.Lock;
-        intQuery.Batch(World.BatchOperation.AddConflictMode.Replace).Add("batched").Submit();
+        intQuery.Batch(Batch.AddConflict.Replace).Add("batched").Submit();
         //worldLock.Dispose();
 
         Assert.Equal(3, intQuery.Count);
@@ -318,9 +389,231 @@ public class QueryBatchTests
         Assert.Equal("batched", e2.Ref<string>());
         Assert.True(e3.Has<string>());
         Assert.Equal("batched", e3.Ref<string>());
-        
     }
 
 
-    
+    [Fact]
+    public void Can_Batch_Remove_Immediate_Alternate()
+    {
+        using var world = new World();
+        var e1 = world.Spawn().Add(123).Add("I must go, my people need me");
+        var e2 = world.Spawn().Add(234).Add("I must go, my people need me");
+        var e3 = world.Spawn().Add("lala!").Add<float>();
+
+        var stringQuery = world.Query<string>().Build();
+        Assert.Contains(e1, stringQuery);
+        Assert.Contains(e2, stringQuery);
+        Assert.Contains(e3, stringQuery);
+        Assert.Equal(3, stringQuery.Count);
+
+        var notStringQuery = world.Query().Not<string>().Build();
+        Assert.DoesNotContain(e1, notStringQuery);
+        Assert.DoesNotContain(e2, notStringQuery);
+        Assert.DoesNotContain(e3, notStringQuery);
+
+        stringQuery.Remove<string>();
+        Assert.Equal(0, stringQuery.Count);
+
+        Assert.DoesNotContain(e1, stringQuery);
+        Assert.DoesNotContain(e2, stringQuery);
+        Assert.DoesNotContain(e3, stringQuery);
+
+        Assert.Contains(e1, notStringQuery);
+        Assert.Contains(e2, notStringQuery);
+        Assert.Contains(e3, notStringQuery);
+    }
+
+
+    [Fact]
+    public void Cannot_Remove_Add_Conflict_with_Disallow()
+    {
+        using var world = new World();
+        var stringQuery = world.Query<string>().Build();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Disallow)
+                .Add<float>()
+                .Submit();
+        });
+    }
+
+
+    [Fact]
+    public void Cannot_Duplicate_Remove()
+    {
+        using var world = new World();
+        var stringQuery = world.Query<string>().Has<float>().Build();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.RemoveConflict.Disallow)
+                .Remove<float>()
+                .Remove<float>()
+                .Submit();
+        });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.RemoveConflict.Skip)
+                .Remove<float>()
+                .Remove<float>()
+                .Submit();
+        });
+    }
+
+
+    [Fact]
+    public void Cannot_Duplicate_Add()
+    {
+        using var world = new World();
+        var stringQuery = world.Query<string>().Not<float>().Build();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Disallow)
+                .Add<float>()
+                .Add<float>()
+                .Submit();
+        });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Skip)
+                .Add<float>()
+                .Add<float>()
+                .Submit();
+        });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Replace)
+                .Add<float>()
+                .Add<float>()
+                .Submit();
+        });
+    }
+
+
+    [Fact]
+    public void Cannot_Remove_and_Add()
+    {
+        using var world = new World();
+        var stringQuery = world.Query<string>().Build();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Disallow)
+                .Remove<string>()
+                .Add<string>("lala!")
+                .Submit();
+        });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Skip)
+                .Remove<string>()
+                .Add<string>("lala!")
+                .Submit();
+        });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Replace)
+                .Remove<string>()
+                .Add<string>("lala!")
+                .Submit();
+        });
+    }
+
+
+    [Fact]
+    public void Cannot_Add_and_Remove()
+    {
+        using var world = new World();
+        var stringQuery = world.Query<string>().Not<float>().Build();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Disallow, Batch.RemoveConflict.Skip)
+                .Add(55.5f)
+                .Remove<float>() //this fails because of the wrong reason, but is ok.
+                .Submit();
+        });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Skip, Batch.RemoveConflict.Skip)
+                .Add(55.5f)
+                .Remove<float>()
+                .Submit();
+        });
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Skip)
+                .Add(55.5f)
+                .Remove<float>()
+                .Submit();
+        });
+    }
+
+
+    [Fact]
+    public void Cannot_Remove_Conflict_with_Disallow()
+    {
+        using var world = new World();
+        var stringQuery = world.Query<string>().Build();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            stringQuery.Batch(Batch.RemoveConflict.Disallow)
+                .Remove<float>()
+                .Submit();
+        });
+    }
+
+
+    [Fact]
+    public void Can_Remove_Conflict_with_Skip()
+    {
+        using var world = new World();
+        world.Spawn().Add(123).Add("I must go, my people need me");
+        var stringQuery = world.Query<string>().Build();
+
+        stringQuery
+            .Batch(Batch.RemoveConflict.Skip)
+            .Remove<string>()
+            .Remove<float>()
+            .Submit();
+    }
+
+
+    [Fact]
+    public void Can_Add_Remove_Conflict_with_Skip_Skip()
+    {
+        using var world = new World();
+        world.Spawn().Add(123).Add("I must go, my people need me");
+        var stringQuery = world.Query<string>().Build();
+
+        stringQuery
+            .Batch(Batch.AddConflict.Skip, Batch.RemoveConflict.Skip)
+            .Remove<string>()
+            .Remove<float>()
+            .Submit();
+    }
+
+
+    [Fact]
+    public void Can_Add_With_Newable()
+    {
+        using var world = new World();
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(234);
+        var e3 = world.Spawn().Add("lala!");
+
+        var stringQuery = world.Query<string>().Build();
+        Assert.Equal(1, stringQuery.Count);
+        Assert.DoesNotContain(e1, stringQuery);
+        Assert.DoesNotContain(e2, stringQuery);
+        Assert.Contains(e3, stringQuery);
+
+        stringQuery.Batch(Batch.AddConflict.Skip).Add<int>().Submit();
+
+        Assert.Equal(1, stringQuery.Count);
+        Assert.Contains(e3, stringQuery);
+
+        var intQuery = world.Query<int>().Build();
+        Assert.Equal(3, intQuery.Count);
+        Assert.Contains(e1, intQuery);
+        Assert.Contains(e2, intQuery);
+        Assert.Contains(e3, intQuery);
+    }
 }

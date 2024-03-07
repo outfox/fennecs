@@ -53,7 +53,7 @@ public partial class World
                     break;
 
                 case Opcode.Batch:
-                    var batch = (BatchOperation) op.Data;
+                    var batch = (Batch) op.Data;
                     Commit(batch);
                     batch.Dispose();
                     break;
@@ -74,7 +74,7 @@ public partial class World
 
 
         [SetsRequiredMembers]
-        public DeferredOperation(BatchOperation operation)
+        public DeferredOperation(Batch operation)
         {
             Opcode = Opcode.Batch;
             Data = operation;

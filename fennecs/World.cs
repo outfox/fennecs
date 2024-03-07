@@ -162,7 +162,7 @@ public partial class World
     internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
 
 
-    internal Archetype GetArchetype(Signature<TypeExpression> types)
+    private Archetype GetArchetype(Signature<TypeExpression> types)
     {
         if (_typeGraph.TryGetValue(types, out var table)) return table;
 

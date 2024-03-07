@@ -313,43 +313,25 @@ public class Query : IEnumerable<Entity>, IDisposable
     ///     Adds a Component (using default constructor) to all Entities matched by this query.
     /// </summary>
     /// <inheritdoc cref="Add{T}(T)" />
-    public void Add<T>() where T : new()
-    {
-        Add<T>(new T());
-    }
-
+    public void Add<T>() where T : new() => Add<T>(new T());
+    
 
     /// <summary>
     ///     Adds the given Component (using specified data) to all Entities matched by this query.
     /// </summary>
     /// <typeparam name="T">any type</typeparam>
+    /// <param name="data">the data to add</param>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
-    public void Add<T>(T data)
-    {
-        if (!Mask.NotTypes.Contains(TypeExpression.Of<T>())) throw new InvalidOperationException("Query does not rule out this Component type in a Not<T> Filter Expression.");
-        Batch().Add(data).Submit();
-    }
+    // ReSharper disable once MemberCanBePrivate.Global
+    public void Add<T>(T data) => Batch(fennecs.Batch.AddConflict.Disallow, fennecs.Batch.RemoveConflict.Disallow).Add(data).Submit();
 
 
     /// <summary>
     ///     Removes the given Component from all Entities matched by this query.
     /// </summary>
+    /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     /// <typeparam name="T">any Component type matched by the query</typeparam>
-    public void Remove<T>(T data)
-    {
-        var typExpression = TypeExpression.Of<T>();
-        if (!Mask.HasTypes.Contains(typExpression) && !Mask.AnyTypes.Contains(typExpression)) throw new InvalidOperationException("Query does not ensure this Component type in a Stream Type, Has<T>, or Any<T> Filter Expression.");
-
-        using var worldLock = World.Lock;
-        //TODO: This is an inefficient allocation, but raw bulk operations on Archetypes aren't exposed yet.
-        var entities = new List<Entity>(this);
-        foreach (var entity in entities)
-        {
-            if (data == null) throw new ArgumentNullException(nameof(data));
-            var type = TypeExpression.Of<T>();
-            World.AddComponent(entity, type, data);
-        }
-    }
+    public void Remove<T>() => Batch(fennecs.Batch.AddConflict.Disallow, fennecs.Batch.RemoveConflict.Disallow).Remove<T>().Submit();
 
 
     /// <summary>
@@ -359,58 +341,58 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
     /// after the first operation, and thus lead to undesired results.
     /// </remarks> 
-    /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
-    public World.BatchOperation Batch()
+    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
+    public Batch Batch()
     {
-        return new World.BatchOperation(Archetypes, World, Mask.Clone(), default, default);
+        return new Batch(Archetypes, World, Mask.Clone(), default, default);
     }
 
 
     /// <summary>
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
     /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
-    /// query, see <see cref="World.BatchOperation.AddConflictMode"/>.
+    /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
     /// </summary>
     /// <remarks>
     /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
     /// after the first operation, and thus lead to undesired results.
     /// </remarks> 
-    /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
-    public World.BatchOperation Batch(World.BatchOperation.AddConflictMode addConflictMode)
+    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
+    public Batch Batch(Batch.AddConflict addConflict)
     {
-        return new World.BatchOperation(Archetypes, World, Mask.Clone(), addConflictMode, default);
+        return new Batch(Archetypes, World, Mask.Clone(), addConflict, default);
     }
 
 
     /// <summary>
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
     /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
-    /// query, see <see cref="World.BatchOperation.RemoveConflictMode"/>.
+    /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
     /// </summary>
     /// <remarks>
     /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
     /// after the first operation, and thus lead to undesired results.
     /// </remarks> 
-    /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
-    public World.BatchOperation Batch(World.BatchOperation.RemoveConflictMode removeConflictMode)
+    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
+    public Batch Batch(Batch.RemoveConflict removeConflict)
     {
-        return new World.BatchOperation(Archetypes, World, Mask.Clone(), default, removeConflictMode);
+        return new Batch(Archetypes, World, Mask.Clone(), default, removeConflict);
     }
 
 
     /// <summary>
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
     /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
-    /// query, see <see cref="World.BatchOperation.AddConflictMode"/> and <see cref="World.BatchOperation.RemoveConflictMode"/>.
+    /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
     /// </summary>
     /// <remarks>
     /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
     /// after the first operation, and thus lead to undesired results.
     /// </remarks> 
-    /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
-    public World.BatchOperation Batch(World.BatchOperation.AddConflictMode addConflictMode, World.BatchOperation.RemoveConflictMode removeConflictMode)
+    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
+    public Batch Batch(Batch.AddConflict addConflict, Batch.RemoveConflict removeConflict)
     {
-        return new World.BatchOperation(Archetypes, World, Mask.Clone(), addConflictMode, removeConflictMode);
+        return new Batch(Archetypes, World, Mask.Clone(), addConflict, removeConflict);
     }
 
 

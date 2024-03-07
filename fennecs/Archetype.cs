@@ -231,7 +231,7 @@ public sealed class Archetype : IEnumerable<Entity>
     {
         var excess = Math.Clamp(Count - maxEntityCount, 0, Count);
         if (excess <= 0) return;
-        
+
         // TODO: Build bulk deletion?
         var toDelete = Identities.Slice(Count - excess, excess);
         for (var i = toDelete.Length - 1; i >= 0; i--)
@@ -251,7 +251,7 @@ public sealed class Archetype : IEnumerable<Entity>
     {
         if (destination == this)
         {
-            destination.Fill(additions, backFills, Count, 0); 
+            destination.Fill(additions, backFills, 0, Count);
             return;
         }
 
@@ -267,15 +267,16 @@ public sealed class Archetype : IEnumerable<Entity>
         }
 
         // Additive back-fill of values
-        destination.Fill(additions, backFills, Count, destination.Count);
+        destination.Fill(additions, backFills, destination.Count, Count);
 
         // Move identities
         for (var i = 0; i < Count; i++)
         {
             _world.GetEntityMeta(_identities[i]).Archetype = destination;
         }
+
         Array.Copy(_identities, 0, destination._identities, destination.Count, Count);
-        
+
 
         // Update destination Archetype state
         destination.Count += Count;
@@ -287,8 +288,15 @@ public sealed class Archetype : IEnumerable<Entity>
         _version++;
     }
 
-    
-    internal void Fill(PooledList<TypeExpression> types, PooledList<object> values, int count, int startIndex = 0)
+
+    /// <summary>
+    /// Fills all matching Storages of the archetype with each of the provided values.
+    /// </summary>
+    /// <param name="types">typeExpressions which storages to fill</param>
+    /// <param name="values">values for the types</param>
+    /// <param name="start">the index to start filling from</param>
+    /// <param name="count">how many elements to fill</param>
+    internal void Fill(PooledList<TypeExpression> types, PooledList<object> values, int start, int count)
     {
         for (var i = 0; i < types.Count; i++)
         {
@@ -298,17 +306,18 @@ public sealed class Archetype : IEnumerable<Entity>
             var elementType = storage.GetType().GetElementType()!;
             if (elementType.IsValueType)
             {
-                for (var elementIndex = startIndex; elementIndex < startIndex + count; elementIndex++)
+                for (var elementIndex = start; elementIndex < start + count; elementIndex++)
                 {
                     storage.SetValue(value, elementIndex);
                 }
             }
             else
             {
-                Array.Fill((object[]) storage, value, startIndex, count);
+                Array.Fill((object[]) storage, value, start, count);
             }
         }
     }
+
 
     internal T[] GetStorage<T>(Identity target)
     {
@@ -411,7 +420,6 @@ public sealed class Archetype : IEnumerable<Entity>
 
 
     #region Cross Joins
-
     internal Match.Join<C0> CrossJoin<C0>(TypeExpression[] streamTypes)
     {
         return IsEmpty ? default : new Match.Join<C0>(this, streamTypes);
@@ -440,7 +448,5 @@ public sealed class Archetype : IEnumerable<Entity>
     {
         return IsEmpty ? default : new Match.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
-
     #endregion
-    
 }

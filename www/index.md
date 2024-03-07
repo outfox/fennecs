@@ -1,6 +1,7 @@
 ---
 layout: home
-title: Home
+title: fennecs
+titleTemplate: :title — tiny ECS
 
 hero:
   image: 
