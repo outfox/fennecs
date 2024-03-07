@@ -9,13 +9,13 @@ head:
 
 ---
 
-# Free Entities to good home!
+# Welcome to the last ECS of your life!
+# Cuddly, libre & free to a good home.
 
 ![fennecs in a box](https://fennecs.tech/img/fennecs.png)
-*Only seven left, out of a litter of 2147483647.*
 
 ::: info :neofox_knives: THE COOKBOOK
-Feeling snackish? Hungry? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. Snack on easily digestible code samples, and come back whenever you need to to jog your memory.
+Feeling snackish? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. Snack on easily digestible code samples, and come back whenever you need to to jog your memory.
 :::
 
 ::: info :neofox_vr: THE DEMOS
