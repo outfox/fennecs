@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Get foxy!
+title: Home
 
 hero:
   image: 
@@ -28,6 +28,10 @@ features:
   - title: Zero Dependencies. Zero Codegen.
     details: <br/><br/><br/>... 💢
 
+head:
+  - - meta
+    - name: description
+      content: fennecs, a the tiny, tiny, high-energy Entity Component System written in C#!
 ---
 
 | [![Nuget](https://img.shields.io/nuget/v/fennecs?color=blue)](https://www.nuget.org/packages/fennecs/) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-blue) | [![License: MIT](https://img.shields.io/github/license/thygrrr/fennecs?color=blue)](https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme) |

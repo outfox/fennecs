@@ -1,5 +1,5 @@
 ---
-title: Bulk CRUD
+title: Per-Query CRUD
 ---
 
 # Bulk Create, Read, Update, Delete

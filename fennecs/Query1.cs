@@ -65,7 +65,7 @@ public class Query<C0> : Query
         }
     }
 
-
+    // #region Showcase
     /// <summary>
     /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
     /// </summary>
@@ -83,7 +83,6 @@ public class Query<C0> : Query
 
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;
-
             do
             {
                 var s0 = join.Select;
@@ -95,6 +94,7 @@ public class Query<C0> : Query
             } while (join.Iterate());
         }
     }
+    // #endregion Showcase
 
 
     /// <summary>

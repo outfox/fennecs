@@ -107,7 +107,7 @@ But should you need to defer ==structural changes== for longer (i.e. your parall
 
 ::: tip :neofox_think_anime: PAWS for THOUGHT
 __You are the architect__. Perhaps you could structure your implementation ensuring that the Archetypes matched by the Query aren't changed elsewhere while your code performs async work on them?  
-_(i.e. no ??structural changes?? to any of the Entities contained)_
+_(i.e. no ==structural changes== to any of the Entities contained)_
 
 Then you might avoid having to lock your World altogether!
 
