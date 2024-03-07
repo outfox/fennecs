@@ -36,22 +36,31 @@ public partial class World
     public readonly struct BatchOperation : IDisposable
     {
         private readonly World _world;
+        private readonly Mask _mask;
         
         internal readonly PooledList<Archetype> Archetypes = PooledList<Archetype>.Rent();
         internal readonly PooledList<TypeExpression> Additions = PooledList<TypeExpression>.Rent();
         internal readonly PooledList<TypeExpression> Removals = PooledList<TypeExpression>.Rent();
         internal readonly PooledList<object> BackFill = PooledList<object>.Rent();
+
+        internal readonly AddConflictMode AddMode;
+        internal readonly RemoveConflictMode RemoveMode;
         
         public void Submit()
         {
             if (_world.Submit(this)) Dispose();
         }
         
-        internal BatchOperation(IReadOnlyList<Archetype> archetypes, World world)
+        internal BatchOperation(IReadOnlyList<Archetype> archetypes, World world, Mask mask, AddConflictMode addMode, RemoveConflictMode removeMode)
         {
             Archetypes.AddRange(archetypes);
             _world = world;
+            _mask = mask;
+            AddMode = addMode;
+            RemoveMode = removeMode;
         }
+
+
 
         public BatchOperation Add<T>(T data) => AddComponent(data, default);
         public BatchOperation AddLink<T>(T target) where T : class => AddComponent(target, Identity.Of(target));
@@ -67,7 +76,12 @@ public partial class World
         private BatchOperation AddComponent<T>(T data, Identity target)
         {
             var typeExpression = TypeExpression.Of<T>(target);
-            
+
+            if (!_mask.SafeForAddition(typeExpression))
+            {
+                throw new InvalidOperationException($"TypeExpression {typeExpression} is not filtered out via Not<T> by this Query/Mask, additions would cause invalid runtime state.");
+            }
+
             if (Additions.Contains(typeExpression))
                 throw new InvalidOperationException($"Duplicate addition {typeExpression} : {data}");
             
@@ -83,6 +97,13 @@ public partial class World
         private BatchOperation RemoveComponent<T>(Identity target = default)
         {
             var typeExpression = TypeExpression.Of<T>(target);
+
+            /*
+            if (!_mask.SafeForRemoval(typeExpression))
+            {
+              throw new InvalidOperationException($"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals would cause invalid runtime state.");
+            }
+            */
 
             if (Additions.Contains(typeExpression))
                 throw new InvalidOperationException($"Removal {typeExpression} conflicts with addition");
@@ -101,6 +122,48 @@ public partial class World
             Additions.Dispose();
             Removals.Dispose();
             BackFill.Dispose();
+            _mask.Dispose();
+        }
+
+
+        /// <summary>
+        /// Batch Addition conflict resolution mode.
+        /// </summary>
+        public enum AddConflictMode
+        {
+            /// <summary>
+            /// Disallow add operation if the Component to be added is not guaranteed to be absent
+            /// on ALL matched Archetypes see <see cref="QueryBuilder.Not{T}(fennecs.Identity)"/>.
+            /// </summary>
+            Disallow = default,
+
+            /// <summary>
+            /// Skip Archetypes where the Component to be added is already present.
+            /// </summary>
+            Skip,
+            
+            /// <summary>
+            /// Replace (overwrite) the Component to be added if it is already present.
+            /// </summary>
+            Replace,
+        }
+
+
+        /// <summary>
+        /// Batch Removal conflict resolution mode.
+        /// </summary>
+        public enum RemoveConflictMode
+        {
+            /// <summary>
+            /// Skip Archetypes where the Component to be removed is not present.
+            /// </summary>
+            Skip = default,
+
+            /// <summary>
+            /// Disallow remove operation if the Component to be removed is not guaranteed to be present
+            /// on ALL matched Archetypes, see <see cref="QueryBuilder.Has{T}(fennecs.Identity)"/>.
+            /// </summary>
+            Disallow,
         }
     }
 }

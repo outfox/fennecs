@@ -17,8 +17,8 @@ The **[Demos](/demos/index)** category has concrete examples for a growing list 
 The **Documentation** section (you're in it now!) describes the core principles of **fenn**ecs C# API. The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
 
 #### Great first picks?
-- [Entity](Entity)
-- [Queries](Queries/index)
+- [Entity](Entities/)
+- [Queries](Queries/)
 - [Query.For](Queries/Query.For.md)
 :::
 

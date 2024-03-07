@@ -19,7 +19,7 @@ Let's reminisce some famous Captains of old and new.
 
 This example will explore what Entities "look" like in your logs, and what happens when they Despawn, and how they get recycled.
 
-We spawn a unique [Entity](../docs/Entity.md) for each captain; but `kirk` gets despawned and replaced by The Next Generation (`picard`). Then we create a bunch more and output to visualize how recycled Entities compare to each other and to give a feeling over how a [World](../docs/World.md) counts Generations up when Entities are destroyed.
+We spawn a unique [Entity](/docs/Entities/index.md) for each captain; but `kirk` gets despawned and replaced by The Next Generation (`picard`). Then we create a bunch more and output to visualize how recycled Entities compare to each other and to give a feeling over how a [World](/docs/World.md) counts Generations up when Entities are destroyed.
 
 ### Recipe
 ::: code-group

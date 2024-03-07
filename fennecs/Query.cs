@@ -327,16 +327,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     public void Add<T>(T data)
     {
         if (!Mask.NotTypes.Contains(TypeExpression.Of<T>())) throw new InvalidOperationException("Query does not rule out this Component type in a Not<T> Filter Expression.");
-
-        using var worldLock = World.Lock;
-        //TODO: This is an inefficient allocation, but raw bulk operations on Archetypes aren't exposed yet.
-        var entities = new List<Entity>(this);
-        foreach (var entity in entities)
-        {
-            if (data == null) throw new ArgumentNullException(nameof(data));
-            var type = TypeExpression.Of<T>();
-            World.AddComponent(entity, type, data);
-        }
+        Batch().Add(data).Submit();
     }
 
 
@@ -360,6 +351,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         }
     }
 
+
     /// <summary>
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
     /// </summary>
@@ -370,8 +362,57 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
     public World.BatchOperation Batch()
     {
-        return new World.BatchOperation(Archetypes, World);
+        return new World.BatchOperation(Archetypes, World, Mask.Clone(), default, default);
     }
+
+
+    /// <summary>
+    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+    /// query, see <see cref="World.BatchOperation.AddConflictMode"/>.
+    /// </summary>
+    /// <remarks>
+    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
+    /// after the first operation, and thus lead to undesired results.
+    /// </remarks> 
+    /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
+    public World.BatchOperation Batch(World.BatchOperation.AddConflictMode addConflictMode)
+    {
+        return new World.BatchOperation(Archetypes, World, Mask.Clone(), addConflictMode, default);
+    }
+
+
+    /// <summary>
+    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+    /// query, see <see cref="World.BatchOperation.RemoveConflictMode"/>.
+    /// </summary>
+    /// <remarks>
+    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
+    /// after the first operation, and thus lead to undesired results.
+    /// </remarks> 
+    /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
+    public World.BatchOperation Batch(World.BatchOperation.RemoveConflictMode removeConflictMode)
+    {
+        return new World.BatchOperation(Archetypes, World, Mask.Clone(), default, removeConflictMode);
+    }
+
+
+    /// <summary>
+    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+    /// query, see <see cref="World.BatchOperation.AddConflictMode"/> and <see cref="World.BatchOperation.RemoveConflictMode"/>.
+    /// </summary>
+    /// <remarks>
+    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
+    /// after the first operation, and thus lead to undesired results.
+    /// </remarks> 
+    /// <returns>a BatchOperation that needs to be finished by calling <see cref="World.BatchOperation.Submit"/></returns>
+    public World.BatchOperation Batch(World.BatchOperation.AddConflictMode addConflictMode, World.BatchOperation.RemoveConflictMode removeConflictMode)
+    {
+        return new World.BatchOperation(Archetypes, World, Mask.Clone(), addConflictMode, removeConflictMode);
+    }
+
 
     [Obsolete("Use Despawn() instead.")]
     public void Clear() => Despawn();

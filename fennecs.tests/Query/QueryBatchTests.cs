@@ -4,7 +4,8 @@ public class QueryBatchTests
 {
     private struct TypeA(int i)
     {
-        public int _ = i;
+        // ReSharper disable once UnusedMember.Local
+        public long _1 = i;
     }
     
     [Fact]
@@ -45,7 +46,7 @@ public class QueryBatchTests
     [Fact]
     public void Can_Batch_Add_Immediate()
     {
-        var world = new World();
+        using var world = new World();
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
@@ -70,7 +71,7 @@ public class QueryBatchTests
     [Fact]
     public void Can_Batch_Remove_Immediate()
     {
-        var world = new World();
+        using var world = new World();
         var e1 = world.Spawn().Add(123).Add("I must go, my people need me");
         var e2 = world.Spawn().Add(234).Add("I must go, my people need me");
         var e3 = world.Spawn().Add("lala!").Add<float>();
@@ -108,7 +109,7 @@ public class QueryBatchTests
     [Fact]
     public void Can_Batch_Remove_Deferred()
     {
-        var world = new World();
+        using var world = new World();
         var e1 = world.Spawn().Add(123).Add("I must go, my people need me");
         var e2 = world.Spawn().Add(234).Add("I must go, my people need me");
         var e3 = world.Spawn().Add("lala!").Add<float>();
@@ -153,7 +154,7 @@ public class QueryBatchTests
     [Fact]
     public void Can_Batch_Add_Deferred()
     {
-        var world = new World();
+        using var world = new World();
         
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(234);
@@ -185,24 +186,24 @@ public class QueryBatchTests
     [Fact]
     public void Can_Batch_Mixed_Deferred()
     {
-        var world = new World();
-        var e1 = world.Spawn().Add(123).Add("I must go, my people need me");
-        var e2 = world.Spawn().Add(234).Add("I must go, my people need me");
-        var e3 = world.Spawn().Add("lala!").Add<float>();
+        using var world = new World();
+        world.Spawn().Add(123).Add("I must go, my people need me");
+        world.Spawn().Add(234).Add("I must go, my people need me");
+        world.Spawn().Add("lala!").Add<float>();
 
         var floatQuery = world.Query<float>().Not<string>().Build();
 
         Assert.Empty(floatQuery);
 
         var stringQuery = world.Query<string>().Build();
-        stringQuery.Batch().Add<float>(123f).Submit();
+        stringQuery.Batch().Add(123f).Submit();
     }
 
 
     [Fact]
     public void Can_Create_Batched_Relation()
     {
-        var world = new World();
+        using var world = new World();
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
@@ -229,7 +230,7 @@ public class QueryBatchTests
     [Fact]
     public void Can_Create_Batched_Link()
     {
-        var world = new World();
+        using var world = new World();
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
@@ -252,4 +253,43 @@ public class QueryBatchTests
         Assert.DoesNotContain(e3, linkQuery);
     }
 
+
+    [Fact]
+    public void Can_Truncate_PerArchetype()
+    {
+        using var world = new World();
+        world.Spawn().Add(123);
+        world.Spawn().Add(234);
+        world.Spawn().Add(123).Add("Archetype 2");
+        world.Spawn().Add(234).Add("Archetype 2");
+
+        var intQuery = world.Query<int>().Build();
+        var stringQuery = world.Query<string>().Build();
+
+        Assert.Equal(4, intQuery.Count);
+        Assert.Equal(2, stringQuery.Count);
+
+        intQuery.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+
+        Assert.Equal(2, intQuery.Count);
+        Assert.Equal(1, stringQuery.Count);
+    }
+
+
+    [Fact]
+    public void Cannot_Truncate_When_Locked()
+    {
+        using var world = new World();
+        
+        using var _ = world.Lock;
+        
+        world.Spawn().Add(123);
+        world.Spawn().Add(234);
+        world.Spawn().Add(123).Add("Archetype 2");
+        world.Spawn().Add(234).Add("Archetype 2");
+
+        var intQuery = world.Query<int>().Build();
+
+        Assert.Throws<InvalidOperationException>(() => intQuery.Truncate(1, fennecs.Query.TruncateMode.PerArchetype));
+    }
 }

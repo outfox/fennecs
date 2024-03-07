@@ -10,6 +10,8 @@ public sealed class Mask : IDisposable
     internal readonly List<TypeExpression> NotTypes = new(8);
     internal readonly List<TypeExpression> AnyTypes = new(8);
 
+    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
+    public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
     public void Has(TypeExpression typeExpression)
     {
@@ -97,4 +99,14 @@ public sealed class Mask : IDisposable
     public static implicit operator int(Mask self) => self.Key();
 
     public void Dispose() => MaskPool.Return(this);
+
+
+    public Mask Clone()
+    {
+        var mask = MaskPool.Rent();
+        mask.HasTypes.AddRange(HasTypes);
+        mask.NotTypes.AddRange(NotTypes);
+        mask.AnyTypes.AddRange(AnyTypes);
+        return mask;
+    }
 }
