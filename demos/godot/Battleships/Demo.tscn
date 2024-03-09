@@ -70,7 +70,7 @@ animations = [{
 }]
 
 [node name="Battleships Demo" type="Node2D"]
-texture_filter = 1
+texture_filter = 3
 
 [node name="Destroyer" type="Sprite2D" parent="."]
 
@@ -84,12 +84,10 @@ script = ExtResource("6_nk4bq")
 
 [node name="HullSprite" type="Sprite2D" parent="Destroyer"]
 z_index = -5
-texture_filter = 1
 position = Vector2(0, -1)
 texture = ExtResource("1_mpdiq")
 
 [node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer"]
-texture_filter = 1
 position = Vector2(26, -1)
 texture = ExtResource("4_gfkv0")
 offset = Vector2(-6, 0)
@@ -107,7 +105,6 @@ position = Vector2(22.5, -3.5)
 position = Vector2(22.5, 3.5)
 
 [node name="ShipBigGun" type="Sprite2D" parent="Destroyer"]
-texture_filter = 1
 position = Vector2(-56, -1)
 texture = ExtResource("5_ida0b")
 script = ExtResource("8_o6fbb")
@@ -127,7 +124,6 @@ script = ExtResource("6_nk4bq")
 
 [node name="HullSprite" type="Sprite2D" parent="Battleship"]
 z_index = -5
-texture_filter = 1
 position = Vector2(0, -1)
 texture = ExtResource("16_1knq1")
 
@@ -153,7 +149,6 @@ position = Vector2(22.5, 3.5)
 
 [node name="ShipBigGunDual3" type="Sprite2D" parent="Battleship"]
 z_index = 2
-texture_filter = 1
 position = Vector2(-44, -0.5)
 rotation = -3.14159
 texture = ExtResource("17_wgwmw")
@@ -220,4 +215,5 @@ offset = Vector2(-6, 0)
 script = ExtResource("8_o6fbb")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+top_level = true
 script = ExtResource("22_n6gg5")
