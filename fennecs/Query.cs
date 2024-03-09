@@ -119,9 +119,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     protected internal readonly Mask Mask;
 
     public IReadOnlyList<Archetype> TrackedArchetypes => _trackedArchetypes;
-    public IReadOnlyList<Archetype> CurrentArchetypes => Archetypes;
-
-
+    
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, IReadOnlyCollection<Archetype> archetypes)
     {
         StreamFilters = new List<TypeExpression>();

@@ -642,4 +642,30 @@ public class QueryTests
         query.Despawn();
         Assert.Equal(0, query.Count);
     }
+
+
+    [Fact]
+    public void Can_Enumerate()
+    {
+        using var world = new World();
+        var query = world.Query().Build();
+        
+        var entity1 = world.Spawn().Add(444);
+        var entity2 = world.Spawn().AddRelation(entity1, 555);
+
+        var spawnedEntities = new List<Entity>
+        {
+            entity1,
+            entity2,
+        };
+        Assert.Contains(entity1, query);
+        Assert.Contains(entity2, query);
+
+        foreach (var entity in query)
+        {
+            Assert.Contains(entity, spawnedEntities);
+            spawnedEntities.Remove(entity);
+        }
+        Assert.Empty(spawnedEntities);
+    }
 }

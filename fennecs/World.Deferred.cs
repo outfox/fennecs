@@ -57,9 +57,6 @@ public partial class World
                     Commit(batch);
                     batch.Dispose();
                     break;
-                
-                default:
-                    throw new NotImplementedException($"OpCode {op.Opcode} not implemented");
             }
     }
 

@@ -80,7 +80,6 @@ public class Query<C0> : Query
         foreach (var table in Archetypes)
         {
             var count = table.Count;
-            if (StreamFilters.Count > 0 && !table.IsMatchSuperSet(StreamFilters)) continue;
 
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;

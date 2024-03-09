@@ -55,14 +55,14 @@ public partial class World
     }
 
 
-    internal bool HasComponent<T>(Identity identity, Identity target = default)
+    internal bool HasComponent<T>(Identity identity, Identity target)
     {
         var type = TypeExpression.Of<T>(target);
         return HasComponent(identity, type);
     }
 
 
-    internal ref T GetComponent<T>(Identity identity, Identity target = default)
+    internal ref T GetComponent<T>(Identity identity, Identity target)
     {
         AssertAlive(identity);
 

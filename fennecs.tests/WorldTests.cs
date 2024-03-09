@@ -188,7 +188,7 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn().Add<NewableClass>().Id;
         Assert.True(world.HasComponent<NewableClass>(identity, default));
-        Assert.NotNull(world.GetComponent<NewableClass>(identity));
+        Assert.NotNull(world.GetComponent<NewableClass>(identity, default));
     }
 
 
@@ -198,7 +198,7 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn().Add<NewableStruct>().Id;
         Assert.True(world.HasComponent<NewableStruct>(identity, default));
-        Assert.Equal(default, world.GetComponent<NewableStruct>(identity));
+        Assert.Equal(default, world.GetComponent<NewableStruct>(identity, default));
     }
 
 
@@ -208,7 +208,7 @@ public class WorldTests
         using var world = new World();
         var identity = world.Spawn().Add<string>("12").Id;
         Assert.True(world.HasComponent<string>(identity, default));
-        Assert.NotNull(world.GetComponent<string>(identity));
+        Assert.NotNull(world.GetComponent<string>(identity, default));
     }
 
 
@@ -221,10 +221,10 @@ public class WorldTests
 
         world.On(identity).Add(666);
         Assert.False(world.HasComponent<int>(identity, default));
-        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(identity));
+        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(identity, default));
         worldLock.Dispose();
         Assert.True(world.HasComponent<int>(identity, default));
-        Assert.Equal(666, world.GetComponent<int>(identity));
+        Assert.Equal(666, world.GetComponent<int>(identity, default));
     }
 
 
@@ -263,11 +263,11 @@ public class WorldTests
         var worldLock = world.Lock;
         world.On(identity).Add(666);
 
-        Assert.False(world.HasComponent<int>(identity));
+        Assert.False(world.HasComponent<int>(identity, default));
         worldLock.Dispose();
 
-        Assert.True(world.HasComponent<int>(identity));
-        Assert.Equal(666, world.GetComponent<int>(identity));
+        Assert.True(world.HasComponent<int>(identity, default));
+        Assert.Equal(666, world.GetComponent<int>(identity, default));
     }
 
 
@@ -280,7 +280,7 @@ public class WorldTests
         world.On(identity).Remove<int>();
 
         worldLock.Dispose();
-        Assert.False(world.HasComponent<int>(identity));
+        Assert.False(world.HasComponent<int>(identity, default));
     }
 
 
@@ -321,11 +321,11 @@ public class WorldTests
         using var worldLock = world.Lock;
         world.On(identity).AddRelation(target, 666);
         world.On(identity).RemoveRelation<int>(target);
-        Assert.False(world.HasComponent<int>(identity));
-        Assert.False(world.HasComponent<int>(target));
+        Assert.False(world.HasComponent<int>(identity, default), default);
+        Assert.False(world.HasComponent<int>(target, default));
 
-        Assert.False(world.HasComponent<int>(identity));
-        Assert.False(world.HasComponent<int>(target));
+        Assert.False(world.HasComponent<int>(identity, default));
+        Assert.False(world.HasComponent<int>(target, default));
     }
 
 
@@ -369,7 +369,7 @@ public class WorldTests
         using var world = new World();
         var entity = world.Spawn();
         entity.Add<NewableStruct>();
-        Assert.True(world.HasComponent<NewableStruct>(entity));
+        Assert.True(world.HasComponent<NewableStruct>(entity, default));
     }
 
 
@@ -507,6 +507,24 @@ public class WorldTests
         Assert.False(world.IsAlive(entity2));
         Assert.False(world.IsAlive(entity3));
         Assert.True(world.IsAlive(entity4));
+    }
+
+
+    [Fact]
+    private void Can_Take_Out_Multiple_Locks()
+    {
+        using var world = new World();
+        var lock1 = world.Lock;
+        var lock2 = world.Lock;
+
+        var e = world.Spawn();
+        e.Add<float>();
+
+        Assert.False(e.Has<float>());
+        lock1.Dispose();
+        Assert.False(e.Has<float>());
+        lock2.Dispose();
+        Assert.True(e.Has<float>());
     }
 
 

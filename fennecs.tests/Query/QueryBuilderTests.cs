@@ -201,4 +201,14 @@ public class QueryBuilderTests
         builder.Has<string>("I'm different");
         builder.Not<string>("Think different");
     }
+
+
+    [Fact]
+    private void Cannot_Add_Stream_Type_Twice()
+    {
+        using var world = new World();
+        var builder = world.Query<int>();
+        Assert.NotNull(builder);
+        Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
+    }
 }

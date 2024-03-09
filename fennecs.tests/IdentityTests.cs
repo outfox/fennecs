@@ -236,7 +236,7 @@ public class IdentityTests(ITestOutputHelper output)
         using var world = new World();
         var identity = world.Spawn().Id;
         var components = world.GetSignature(identity);
-        Assert.False(world.HasComponent<int>(identity));
+        Assert.False(world.HasComponent<int>(identity, default));
         Assert.True(components.Count() == 1);
     }
 
@@ -248,7 +248,7 @@ public class IdentityTests(ITestOutputHelper output)
         using var world = new World();
         var identity = world.Spawn().Id;
         world.On(identity).Add(t1);
-        Assert.True(world.HasComponent<T>(identity));
+        Assert.True(world.HasComponent<T>(identity, default));
         var components = world.GetSignature(identity);
         Assert.True(components.Count() == 2);
     }
@@ -262,7 +262,7 @@ public class IdentityTests(ITestOutputHelper output)
         var entity = world.Spawn().Add(t1);
         world.Despawn(entity);
 
-        Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity));
+        Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity, default));
     }
 
 
@@ -276,7 +276,7 @@ public class IdentityTests(ITestOutputHelper output)
         var entity2 = world.Spawn().Add(t1);
 
         Assert.Equal(entity1.Id.Index, entity2.Id.Index);
-        Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity1));
+        Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity1, default));
     }
 
 
@@ -286,7 +286,7 @@ public class IdentityTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add(t1).Id;
-        var x = world.GetComponent<T>(identity);
+        var x = world.GetComponent<T>(identity, default);
         Assert.Equal(t1, x);
     }
 
@@ -299,7 +299,7 @@ public class IdentityTests(ITestOutputHelper output)
         var identity = world.Spawn().Id;
         world.On(identity).Add(t1);
         world.On(identity).Remove<T>();
-        Assert.False(world.HasComponent<T>(identity));
+        Assert.False(world.HasComponent<T>(identity, default));
     }
 
 
@@ -312,7 +312,7 @@ public class IdentityTests(ITestOutputHelper output)
         world.On(identity).Add(t1);
         world.On(identity).Remove<T>();
         world.On(identity).Add(t1);
-        Assert.True(world.HasComponent<T>(identity));
+        Assert.True(world.HasComponent<T>(identity, default));
     }
 
 
