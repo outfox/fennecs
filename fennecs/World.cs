@@ -191,7 +191,13 @@ public partial class World
             typeList.Add(type);
         }
 
-        foreach (var query in _queries.Values.Where(query => table.Matches(query.Mask))) query.TrackArchetype(table);
+        foreach (var query in _queries.Values)
+        {
+            if (table.Matches(query.Mask))
+            {
+                query.TrackArchetype(table);
+            }
+        }
 
         return table;
     }

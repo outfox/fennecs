@@ -528,6 +528,32 @@ public class WorldTests
     }
 
 
+    [Fact]
+    private void Can_Garbage_Collect()
+    {
+        using var world = new World();
+
+        var e = world.Spawn();
+        e.Add<float>();
+
+        var query = world.Query<float>().Build();
+        Assert.Single(query);
+        e.Despawn();
+        Assert.Single(query.TrackedArchetypes);
+        world.GC();
+        Assert.Empty(query.TrackedArchetypes);
+    }
+
+
+    [Fact]
+    private void Cannot_Garbage_Collect_in_Locked_World()
+    {
+        using var world = new World();
+        using var worldLock = world.Lock;
+        Assert.Throws<InvalidOperationException>(() => world.GC());
+    }
+
+
     private class NewableClass;
 
     private struct NewableStruct;

@@ -122,6 +122,47 @@ public partial class World : IDisposable
 
 
     /// <summary>
+    ///  Runs the World's Garbage Collection (placeholder for future GC - currently removes all empty Archetypes).
+    /// </summary>
+    public void GC()
+    {
+        lock (_modeChangeLock)
+        {
+            if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
+            
+            foreach (var archetype in _archetypes)
+            {
+                if (archetype.Count == 0) ForgetArchetype(archetype);
+            }
+            
+            _archetypes.Clear();
+            _archetypes.AddRange(_typeGraph.Values);
+        }
+    }
+
+
+    private void ForgetArchetype(Archetype archetype)
+    {
+        _typeGraph.Remove(archetype.Signature);
+        
+        foreach (var type in archetype.Signature)
+        {
+            _tablesByType[type].Remove(archetype);
+            if (type.isRelation) _typesByRelationTarget[type.Target].Remove(type);
+
+            if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
+            if (type.isRelation && _typesByRelationTarget[type.Target].Count == 0) _typesByRelationTarget.Remove(type.Target);
+        }
+
+        foreach (var query in _queries.Values)
+        {
+            // TODO: Will require some optimization later.
+            query.ForgetArchetype(archetype);
+        }
+    }
+
+
+    /// <summary>
     /// Disposes of the World. Currently a no-op.
     /// </summary>
     public void Dispose()
@@ -137,6 +178,6 @@ public partial class World : IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public WorldLock Lock => new(this);
-
+    
     #endregion
 }
