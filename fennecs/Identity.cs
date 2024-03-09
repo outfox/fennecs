@@ -37,7 +37,6 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
 
     #region IComparable/IEquatable Implementation
-
     public static bool operator ==(Identity left, Identity right) => left.Equals(right);
     public static bool operator !=(Identity left, Identity right) => !left.Equals(right);
 
@@ -62,7 +61,6 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
             return (int) (0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
         }
     }
-
     #endregion
 
 
@@ -76,7 +74,6 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
 
     #region Constructors / Creators
-
     public static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
 
 
@@ -101,7 +98,6 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
             return new Identity(Index, generationWrappedStartingAtOne);
         }
     }
-
     #endregion
 
 

@@ -255,6 +255,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
 
     public int CompareTo(Entity other) => Id.CompareTo(other.Id);
 
+
     public override string ToString()
     {
         var sb = new System.Text.StringBuilder(Id.ToString());
@@ -267,9 +268,8 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
         {
             sb.Append("|- DEAD");
         }
-        
+
         return sb.ToString();
     }
-    
     #endregion
 }

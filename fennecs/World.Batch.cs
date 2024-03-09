@@ -24,7 +24,7 @@ public partial class World
             var preAddSignature = archetype.Signature
                 .Except(operation.Removals);
 
-            if (operation.AddMode == Batch.AddConflict.Skip 
+            if (operation.AddMode == Batch.AddConflict.Skip
                 && _typeGraph.TryGetValue(preAddSignature, out var preAddArchetype)
                 && preAddArchetype.Signature.Overlaps(operation.Additions)) continue;
 

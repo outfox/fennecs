@@ -5,7 +5,6 @@ namespace fennecs;
 public partial class World : IDisposable
 {
     #region Entity Spawn, Liveness, and Desapwn
-
     /// <summary>
     /// Creates a new Identity in this World, and returns its Entity builder struct.
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
@@ -66,12 +65,10 @@ public partial class World : IDisposable
     /// The number of living entities in the World.
     /// </summary>
     public int Count => _identityPool.Count;
-
     #endregion
 
 
     #region Bulk Operations
-
     /// <summary>
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
@@ -87,7 +84,7 @@ public partial class World : IDisposable
             foreach (var identity in entities.Span) DespawnImpl(identity);
         });
     }
-    
+
 
     /// <summary>
     /// Bulk Despawn Entities from a World.
@@ -100,12 +97,10 @@ public partial class World : IDisposable
             DespawnImpl(identity);
         }
     }
-
     #endregion
 
 
     #region Lifecycle & Locking
-
     /// <summary>
     /// Create a new World.
     /// </summary>
@@ -129,12 +124,12 @@ public partial class World : IDisposable
         lock (_modeChangeLock)
         {
             if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
-            
+
             foreach (var archetype in _archetypes)
             {
                 if (archetype.Count == 0) ForgetArchetype(archetype);
             }
-            
+
             _archetypes.Clear();
             _archetypes.AddRange(_typeGraph.Values);
         }
@@ -144,7 +139,7 @@ public partial class World : IDisposable
     private void ForgetArchetype(Archetype archetype)
     {
         _typeGraph.Remove(archetype.Signature);
-        
+
         foreach (var type in archetype.Signature)
         {
             _tablesByType[type].Remove(archetype);
@@ -178,6 +173,5 @@ public partial class World : IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public WorldLock Lock => new(this);
-    
     #endregion
 }

@@ -23,7 +23,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     ///     Affected by Filters.
     /// </summary>
     public int Count => _trackedArchetypes.Sum(t => t.Count);
-    
+
     #region Accessors
     /// <summary>
     ///     Gets a reference to the Component of type <typeparamref name="C" /> for the entity.
@@ -58,7 +58,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     public bool Contains(Entity entity)
     {
         AssertNotDisposed();
-        
+
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
         return _trackedArchetypes.Contains(table);
@@ -114,12 +114,13 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     private readonly List<Archetype> _trackedArchetypes;
     protected readonly List<Archetype> Archetypes;
-    
+
     private protected readonly World World;
     protected internal readonly Mask Mask;
 
     public IReadOnlyList<Archetype> TrackedArchetypes => _trackedArchetypes;
-    
+
+
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, IReadOnlyCollection<Archetype> archetypes)
     {
         StreamFilters = new List<TypeExpression>();
@@ -200,6 +201,8 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <summary>
     ///     Enumerator over a subset of the Entities in the Query, which must also match the filters.
     ///     Do not make modifications to the world affecting the Query while enumerating.
+    ///     This is a convenience method for filtering the Query without changing its filter state.
+    ///     Any pre-existing filter state is being honored.
     /// </summary>
     /// <returns>
     ///     An enumerator over the Entities in the Query that match all provided <see cref="TypeExpression">TypeExpressions</see>.
@@ -208,10 +211,12 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         AssertNotDisposed();
 
-        foreach (var table in _trackedArchetypes)
-            if (table.IsMatchSuperSet(filterExpressions))
-                foreach (var entity in table)
-                    yield return entity;
+        foreach (var table in Archetypes)
+        {
+            if (!table.IsMatchSuperSet(filterExpressions)) continue;
+            
+            foreach (var entity in table) yield return entity;
+        }
     }
 
 
@@ -298,7 +303,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     /// <inheritdoc cref="Add{T}(T)" />
     public void Add<T>() where T : new() => Add<T>(new T());
-    
+
 
     /// <summary>
     ///     Adds the given Component (using specified data) to all Entities matched by this query.
@@ -411,7 +416,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         //TODO: Make available as deferred operation.
         if (World.Mode != World.WorldMode.Immediate)
             throw new InvalidOperationException("Truncate can only be used in Immediate mode.");
-        
+
         var count = Count;
         if (count <= maxEntityCount) return;
 

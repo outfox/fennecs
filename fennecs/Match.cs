@@ -81,7 +81,6 @@ public static class Match
 
 
     #region Cross Join
-
     internal static bool CrossJoin(Span<int> counter, Span<int> limiter)
     {
         // Loop through all counters, counting up to goal and wrapping until saturated
@@ -127,7 +126,7 @@ public static class Match
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
             _allocated = true;
-            
+
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -164,7 +163,7 @@ public static class Match
         public void Dispose()
         {
             if (!_allocated) return;
-            
+
             _storages0.Dispose();
             ArrayPool<int>.Shared.Return(_counter);
             ArrayPool<int>.Shared.Return(_limiter);
@@ -190,7 +189,7 @@ public static class Match
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
             _allocated = true;
-            
+
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -242,7 +241,7 @@ public static class Match
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
             _allocated = true;
-            
+
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -298,7 +297,7 @@ public static class Match
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
             _allocated = true;
-            
+
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -358,7 +357,7 @@ public static class Match
         internal Join(Archetype archetype, TypeExpression[] streamTypes)
         {
             _allocated = true;
-            
+
             _counter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _limiter = ArrayPool<int>.Shared.Rent(streamTypes.Length);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
@@ -398,6 +397,5 @@ public static class Match
             ArrayPool<int>.Shared.Return(_limiter);
         }
     }
-
     #endregion
 }

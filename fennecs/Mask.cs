@@ -13,6 +13,7 @@ public sealed class Mask : IDisposable
     public bool SafeForAddition(TypeExpression typeExpression) => NotTypes.Contains(typeExpression);
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
+
     public void Has(TypeExpression typeExpression)
     {
         if (typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes))

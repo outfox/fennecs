@@ -23,7 +23,6 @@ namespace fennecs;
 public class Query<C0> : Query
 {
     #region Internals
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Query{C0}"/> class.
     /// </summary>
@@ -34,12 +33,10 @@ public class Query<C0> : Query
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
-
     #endregion
 
 
     #region Runners
-
     /// <summary>
     /// Executes an action for each entity that matches the query.
     /// </summary>
@@ -64,6 +61,7 @@ public class Query<C0> : Query
             } while (join.Iterate());
         }
     }
+
 
     // #region Showcase
     /// <summary>
@@ -264,6 +262,5 @@ public class Query<C0> : Query
             } while (join.Iterate());
         }
     }
-
     #endregion
 }

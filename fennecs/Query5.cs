@@ -10,16 +10,13 @@ namespace fennecs;
 public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 {
     #region Internals
-
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
-
     #endregion
 
 
     #region Runners
-
     /// <inheritdoc cref="Query{C0}.For"/>
     public void For(RefAction<C0, C1, C2, C3, C4> action)
     {
@@ -228,6 +225,5 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
             } while (join.Iterate());
         }
     }
-
     #endregion
 }

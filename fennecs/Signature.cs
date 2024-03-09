@@ -16,11 +16,12 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>
 
     public override int GetHashCode() => _hashCode;
 
-    
+
     public Signature(params T[] values) : this(values.ToImmutableSortedSet())
     {
     }
-    
+
+
     public Signature(ImmutableSortedSet<T> set)
     {
         _set = set;

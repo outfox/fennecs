@@ -16,6 +16,7 @@ public readonly struct Batch : IDisposable
     internal readonly PooledList<object> BackFill = PooledList<object>.Rent();
 
     internal readonly AddConflict AddMode;
+
     // ReSharper disable once MemberCanBePrivate.Global
     internal readonly RemoveConflict RemoveMode;
 
@@ -34,7 +35,7 @@ public readonly struct Batch : IDisposable
     {
         _world = world;
         _mask = mask;
-        
+
         Archetypes.AddRange(archetypes);
         AddMode = addMode;
         RemoveMode = removeMode;
@@ -57,7 +58,8 @@ public readonly struct Batch : IDisposable
         var typeExpression = TypeExpression.Of<T>(target);
 
         if (AddMode == AddConflict.Disallow && !_mask.SafeForAddition(typeExpression))
-            throw new InvalidOperationException($"TypeExpression {typeExpression} is not filtered out via Not<T> by this Query/Mask, additions could cause unintended runtime state. See QueryBuilder.Not<T>(). See AddConflict.Disallow, AddConflict.Skip, AddConflict.Replace.");
+            throw new InvalidOperationException(
+                $"TypeExpression {typeExpression} is not filtered out via Not<T> by this Query/Mask, additions could cause unintended runtime state. See QueryBuilder.Not<T>(). See AddConflict.Disallow, AddConflict.Skip, AddConflict.Replace.");
 
         if (Additions.Contains(typeExpression))
             throw new InvalidOperationException($"Duplicate addition {typeExpression} : {data}  in same batch!");
@@ -76,7 +78,8 @@ public readonly struct Batch : IDisposable
         var typeExpression = TypeExpression.Of<T>(target);
 
         if (RemoveMode == RemoveConflict.Disallow && !_mask.SafeForRemoval(typeExpression))
-            throw new InvalidOperationException($"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals could cause unintended runtime state. See QueryBuilder.Has<T>(). See RemoveConflict.Disallow, RemoveConflict.Skip.");
+            throw new InvalidOperationException(
+                $"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals could cause unintended runtime state. See QueryBuilder.Has<T>(). See RemoveConflict.Disallow, RemoveConflict.Skip.");
 
         if (Additions.Contains(typeExpression))
             throw new InvalidOperationException($"Removal {typeExpression} conflicts with addition in same batch!");
@@ -134,6 +137,7 @@ public readonly struct Batch : IDisposable
         /// </remarks>
         Replace,
     }
+
 
     /// <summary>
     /// Batch Removal conflict resolution mode.

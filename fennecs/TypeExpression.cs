@@ -12,7 +12,6 @@ namespace fennecs;
 public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
     #region Struct Data Layout
-
     //             This is a 64 bit union struct.
     //                 Layout: (little endian)
     //   | LSB                                   MSB |
@@ -40,7 +39,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
-
     #endregion
 
 
@@ -88,7 +86,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     public bool Matches(IEnumerable<TypeExpression> other)
     {
         var self = this;
-        
+
         foreach (var type in other)
         {
             if (self.Matches(type)) return true;
