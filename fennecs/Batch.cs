@@ -30,13 +30,14 @@ public readonly struct Batch : IDisposable
     }
 
 
-    internal Batch(IReadOnlyList<Archetype> archetypes, World world, Mask mask, AddConflict addMode, RemoveConflict remove)
+    internal Batch(List<Archetype> archetypes, World world, Mask mask, AddConflict addMode, RemoveConflict removeMode)
     {
-        Archetypes.AddRange(archetypes);
         _world = world;
         _mask = mask;
+        
+        Archetypes.AddRange(archetypes);
         AddMode = addMode;
-        RemoveMode = remove;
+        RemoveMode = removeMode;
     }
 
 
@@ -103,27 +104,36 @@ public readonly struct Batch : IDisposable
 
 
     /// <summary>
-    /// Batch Addition conflict resolution mode.
+    /// Specifies behavior when adding a component to an archetype that already has the same type of component. 
     /// </summary>
     public enum AddConflict
     {
         /// <summary>
-        /// Disallow add operation if the Component to be added is not guaranteed to be absent
-        /// on ALL matched Archetypes see <see cref="QueryBuilder.Not{T}(fennecs.Identity)"/>.
+        /// Disallows the addition of the component.
         /// </summary>
         Disallow = default,
 
         /// <summary>
-        /// Skip Archetypes where the Component to be added is already present, preserving its original data.
+        /// Ignores archetypes that already contain the component, leaving their data and state unchanged.
         /// </summary>
+        /// <remarks>
+        /// If an archetype already has the component that a batch tries to add, no entities of that archetype are affected. This is true regardless of whether or not they match the batch's EntityQuery.
+        /// </remarks> 
         Skip,
 
         /// <summary>
-        /// Replace (overwrite) the Component to be added if it is already present.
+        /// Keeps the existing component data when trying to add a duplicate, but continues the remaining operations.
         /// </summary>
+        Preserve,
+
+        /// <summary>
+        /// Overwrites an existing component with the new component if it is already present.
+        /// </summary>
+        /// <remarks>
+        /// This is particularly useful when setting component data en masse. This includes the special case of sending information from a 'leader' entity to its 'followers' using a shared component to store the leader's last known position. Using the 'Replace' option makes updating the leader's position for all followers easier.
+        /// </remarks>
         Replace,
     }
-
 
     /// <summary>
     /// Batch Removal conflict resolution mode.
@@ -137,8 +147,10 @@ public readonly struct Batch : IDisposable
         Disallow = default,
 
         /// <summary>
-        /// Skip Archetypes where the Component to be removed is not present.
+        /// Allow operating on Archetypes where the Component to be removed is not present.
+        /// Removal operations are Idempotent on these archetypes, i.e. they don't change them
+        /// on their own.
         /// </summary>
-        Skip,
+        Allow,
     }
 }

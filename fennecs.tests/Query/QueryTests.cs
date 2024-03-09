@@ -274,7 +274,7 @@ public class QueryTests
         world.Spawn().Add(p3).AddRelation(bob, 555);
         world.Spawn().Add(p3).AddRelation(eve, 666);
 
-        var query = world.Query<Identity, Vector3, int>()
+        var query = world.Query<Identity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
             .Not<int>(bob)
             .Build();
 
@@ -586,7 +586,7 @@ public class QueryTests
         var entity1 = world.Spawn().Add(444);
         world.Spawn().AddRelation(entity1, 555);
 
-        Assert.Equal(2, query.ArchetypesReadOnly.Count);
+        Assert.Equal(2, query.TrackedArchetypes.Count);
     }
 
 
@@ -641,5 +641,31 @@ public class QueryTests
 
         query.Despawn();
         Assert.Equal(0, query.Count);
+    }
+
+
+    [Fact]
+    public void Can_Enumerate()
+    {
+        using var world = new World();
+        var query = world.Query().Build();
+        
+        var entity1 = world.Spawn().Add(444);
+        var entity2 = world.Spawn().AddRelation(entity1, 555);
+
+        var spawnedEntities = new List<Entity>
+        {
+            entity1,
+            entity2,
+        };
+        Assert.Contains(entity1, query);
+        Assert.Contains(entity2, query);
+
+        foreach (var entity in query)
+        {
+            Assert.Contains(entity, spawnedEntities);
+            spawnedEntities.Remove(entity);
+        }
+        Assert.Empty(spawnedEntities);
     }
 }

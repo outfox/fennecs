@@ -452,7 +452,7 @@ public class QueryBatchTests
         });
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.RemoveConflict.Skip)
+            stringQuery.Batch(Batch.RemoveConflict.Allow)
                 .Remove<float>()
                 .Remove<float>()
                 .Submit();
@@ -525,21 +525,21 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Not<float>().Build();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.AddConflict.Disallow, Batch.RemoveConflict.Skip)
+            stringQuery.Batch(Batch.AddConflict.Disallow, Batch.RemoveConflict.Allow)
                 .Add(55.5f)
                 .Remove<float>() //this fails because of the wrong reason, but is ok.
                 .Submit();
         });
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.AddConflict.Skip, Batch.RemoveConflict.Skip)
+            stringQuery.Batch(Batch.AddConflict.Skip, Batch.RemoveConflict.Allow)
                 .Add(55.5f)
                 .Remove<float>()
                 .Submit();
         });
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Skip)
+            stringQuery.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow)
                 .Add(55.5f)
                 .Remove<float>()
                 .Submit();
@@ -569,7 +569,7 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Build();
 
         stringQuery
-            .Batch(Batch.RemoveConflict.Skip)
+            .Batch(Batch.RemoveConflict.Allow)
             .Remove<string>()
             .Remove<float>()
             .Submit();
@@ -584,7 +584,7 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Build();
 
         stringQuery
-            .Batch(Batch.AddConflict.Skip, Batch.RemoveConflict.Skip)
+            .Batch(Batch.AddConflict.Skip, Batch.RemoveConflict.Allow)
             .Remove<string>()
             .Remove<float>()
             .Submit();

@@ -174,10 +174,10 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    internal bool IsMatchSuperSet(TypeExpression[] matchTypes)
+    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> matchTypes)
     {
         var match = true;
-        for (var i = 0; i < matchTypes.Length; i++)
+        for (var i = 0; i < matchTypes.Count; i++)
         {
             match &= matchTypes[i].Matches(Signature);
         }
@@ -393,7 +393,7 @@ public sealed class Archetype : IEnumerable<Entity>
 
     public override string ToString()
     {
-        var sb = new StringBuilder($"Archetype ");
+        var sb = new StringBuilder("Archetype ");
         sb.AppendJoin("\n", Signature);
         return sb.ToString();
     }

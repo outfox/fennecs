@@ -104,8 +104,11 @@ public class Match2Tests
 
         query.Job((ref string str, ref float _) =>
         {
-            Assert.DoesNotContain(str, seen);
-            seen.Add(str);
+            lock (seen)
+            {
+                Assert.DoesNotContain(str, seen);
+                seen.Add(str);
+            }
         });
 
         Assert.Contains(OBJECT1, seen);

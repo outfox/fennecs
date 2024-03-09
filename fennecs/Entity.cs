@@ -194,7 +194,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// Checks if the Entity has a Plain Component.
     /// Same as calling <see cref="Has{T}(Identity)"/> with <see cref="Match.Plain"/>
     /// </summary>
-    public bool Has<T>() => World.HasComponent<T>(Id);
+    public bool Has<T>() => World.HasComponent<T>(Id, default);
 
 
     /// <summary>
