@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests.Query;
+﻿using System.Text;
+
+namespace fennecs.tests.Query;
 
 public class QueryBuilderTests
 {
@@ -78,13 +80,14 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string>();
         Assert.NotNull(builder);
-        builder
-            .Has<float>()
-            .Has<string>("123")
-            .Not<double>()
+        builder.Has(new StringBuilder("123"));
+        builder.Has<TypeA>(world.Spawn())
+            .Has<Thread>()
+            .Not<Half>()
             .Not(new List<int>())
-            .Any<long>()
+            .Any<byte>()
             .Any(new List<float>());
+        builder.Build();
     }
 
 
@@ -94,14 +97,13 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string, double>();
         Assert.NotNull(builder);
-        builder.Has<string>("123");
-        builder.Has<int>(world.Spawn())
+        builder.Has(new StringBuilder("123"));
+        builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-            
         builder.Build();
     }
 
@@ -112,8 +114,8 @@ public class QueryBuilderTests
         using var world = new World();
         var builder = world.Query<int, string, double, float>();
         Assert.NotNull(builder);
-        builder.Has<string>("123");
-        builder.Has<int>(world.Spawn())
+        builder.Has(new StringBuilder("123"));
+        builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
             .Not(new List<int>())
@@ -123,14 +125,16 @@ public class QueryBuilderTests
     }
 
 
+    struct TypeA;
+
     [Fact]
     private void Can_Create_C1_C2_C3_C4_C5_Query()
     {
         using var world = new World();
         using var builder = world.Query<int, string, double, float, long>();
         Assert.NotNull(builder);
-        builder.Has<string>("123");
-        builder.Has<int>(world.Spawn())
+        builder.Has(new StringBuilder("123"));
+        builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
             .Not(new List<int>())

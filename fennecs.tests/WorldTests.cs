@@ -534,7 +534,7 @@ public class WorldTests
         using var world = new World();
 
         var e = world.Spawn();
-        e.Add<float>();
+        e.AddRelation<float>(world.Spawn());
 
         var query = world.Query<float>().Build();
         Assert.Single(query);

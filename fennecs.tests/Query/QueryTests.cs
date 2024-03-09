@@ -514,11 +514,11 @@ public class QueryTests
 
 
     [Fact]
-    private void Query_does_not_Contain_Type_Superset()
+    private void Query_Containss_Type_Superset()
     {
         using var world = new World();
         var query = world.Query<int>(Match.Any).Build();
-        Assert.False(query.Contains<int>(Match.Plain));
+        Assert.True(query.Contains<int>(Match.Plain));
         Assert.False(query.Contains<float>(Match.Object));
     }
 
