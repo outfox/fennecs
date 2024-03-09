@@ -88,7 +88,14 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     public bool Matches(IEnumerable<TypeExpression> other)
     {
         var self = this;
-        return other.Any(type => self.Matches(type));
+        
+        foreach (var type in other)
+        {
+            if (self.Matches(type)) return true;
+            if (type.Matches(self)) return true;
+        }
+
+        return false;
     }
 
 

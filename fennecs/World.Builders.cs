@@ -8,7 +8,12 @@ public partial class World
     }
 
 
-    public QueryBuilder<C> Query<C>(Identity match = default)
+    public QueryBuilder<C> Query<C>()
+    {
+        return new QueryBuilder<C>(this, Match.Any);
+    }
+
+    public QueryBuilder<C> Query<C>(Identity match)
     {
         return new QueryBuilder<C>(this, match);
     }

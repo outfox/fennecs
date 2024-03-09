@@ -11,7 +11,7 @@ public sealed class Mask : IDisposable
     internal readonly List<TypeExpression> AnyTypes = new(8);
 
     public bool SafeForAddition(TypeExpression typeExpression) => NotTypes.Contains(typeExpression);
-    public bool SafeForRemoval(TypeExpression typeExpression) => HasTypes.Contains(typeExpression) || AnyTypes.Contains(typeExpression);
+    public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
     public void Has(TypeExpression typeExpression)
     {
