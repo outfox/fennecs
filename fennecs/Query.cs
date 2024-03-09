@@ -84,7 +84,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     internal void TrackArchetype(Archetype archetype)
     {
         _trackedArchetypes.Add(archetype);
-        if (archetype.IsMatchSuperSet(StreamFilters)) Archetypes.Add(archetype);
+        if (archetype.IsMatchSuperSet(_streamFilters)) Archetypes.Add(archetype);
     }
 
 
@@ -105,7 +105,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <summary>
     ///  Filters for the Archetypes matched by the StreamTypes
     /// </summary>
-    protected readonly List<TypeExpression> StreamFilters;
+    private readonly List<TypeExpression> _streamFilters;
 
     /// <summary>
     ///     Countdown event for parallel runners.
@@ -123,7 +123,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, IReadOnlyCollection<Archetype> archetypes)
     {
-        StreamFilters = new List<TypeExpression>();
+        _streamFilters = new List<TypeExpression>();
         StreamTypes = streamTypes.ToArray();
         _trackedArchetypes = archetypes.ToList();
         Archetypes = archetypes.ToList();
@@ -155,11 +155,11 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <exception cref="InvalidOperationException">if the requested filter doesn't match any of the Query's Archetypes</exception>
     public void AddFilter<T>(Identity match)
     {
-        StreamFilters.Add(TypeExpression.Of<T>(match));
+        _streamFilters.Add(TypeExpression.Of<T>(match));
         Archetypes.Clear();
         foreach (var archetype in _trackedArchetypes)
         {
-            if (archetype.IsMatchSuperSet(StreamFilters)) Archetypes.Add(archetype);
+            if (archetype.IsMatchSuperSet(_streamFilters)) Archetypes.Add(archetype);
         }
     }
 
@@ -169,7 +169,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     public void ClearStreamFilter()
     {
-        StreamFilters.Clear();
+        _streamFilters.Clear();
         Archetypes.Clear();
         Archetypes.AddRange(_trackedArchetypes);
     }
@@ -190,7 +190,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
         foreach (var table in _trackedArchetypes)
         {
-            if (!table.IsMatchSuperSet(StreamFilters)) continue;
+            if (!table.IsMatchSuperSet(_streamFilters)) continue;
 
             foreach (var entity in table)
                 yield return entity;

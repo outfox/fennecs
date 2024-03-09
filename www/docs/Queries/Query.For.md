@@ -37,7 +37,7 @@ myQuery.For((ref Vector3 velocity) =>
 ```cs [For&lt;U&gt;(...) with uniform]
 myQuery.For((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
 {
-    velocity += uniform.gravity * uniform.dt;
+    velocity += 9.81f * Vector3.DOWN * uniform.dt;
 }, 
 (9.81f * Vector3.DOWN, Time.deltaTime)); 
 
@@ -117,6 +117,7 @@ And yet... don't skimp on static functions just because you need data from your 
 
 But amazingly, a **Uniform** can be anything: a primitive type like `int`, a `struct`, a `class`, and also the new `System.ValueTuple`. The latter makes it possible to capture arbitrary data, and provide it in a readable, named, *and allocation-free* way into your `static` anonymous or named functions, without having to declare a struct somewhere else.
 
+::: details REMINDER
 ```cs
 // Declaring with a System.ValueTuple Uniform for the win!
 myQuery.For(static (ref Vector3 velocity, (Vector3 gravity, float dt) uniform) =>
@@ -125,5 +126,4 @@ myQuery.For(static (ref Vector3 velocity, (Vector3 gravity, float dt) uniform) =
 }, 
 (Vector3.DOWN, Time.deltaTime)); //and the actual ValueTuple being passed in
 ```
-
-
+:::

@@ -31,8 +31,42 @@ features:
 
 head:
   - - meta
+    - name: title
+      content: fennecs — tiny ECS
+  - - meta
     - name: description
-      content: fennecs, the tiny, tiny, high-energy Entity Component System for C#!
+      content: A tiny, fast, modern C# Entity Component System for games and simulations!
+  - - meta
+    - property: og:type
+      content: website
+  - - meta
+    - property: og:url
+      content: https://fennecs.tech
+  - - meta
+    - property: og:title
+      content: fennecs — tiny ECS
+  - - meta
+    - property: og:description
+      content: A tiny, fast, modern C# Entity Component System for games and simulations!
+  - - meta
+    - property: og:image
+      content: https://fennecs.tech/img/fennecs-social-panel.png
+  - - meta
+    - property: twitter:card
+      content: summary_large_image
+  - - meta
+    - property: twitter:url
+      content: https://fennecs.tech
+  - - meta
+    - property: twitter:title
+      content: fennecs — tiny ECS
+  - - meta
+    - property: twitter:description
+      content: A tiny, fast, modern C# Entity Component System for games and simulations!
+  - - meta
+    - property: twitter:image
+      content: https://fennecs.tech/img/fennecs-social-panel.png
+
 ---
 
 | [![Nuget](https://img.shields.io/nuget/v/fennecs?color=blue)](https://www.nuget.org/packages/fennecs/) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-blue) | [![License: MIT](https://img.shields.io/github/license/thygrrr/fennecs?color=blue)](https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme) |

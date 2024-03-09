@@ -3,7 +3,10 @@ layout: doc
 title: Entities
 ---
 
-## Entities
+![fennecs in a box](https://fennecs.tech/img/fennecs-1024.png)
+
+# Entities
+*(cuddly, incredibly lively, come in litters of 2,147,483,647)*
 
 An Entity is a specific type of ==Identity== (a 64-bit number) associated with a specific [World](/docs/World.md).
 
