@@ -94,4 +94,30 @@ public class ArchetypeTests(ITestOutputHelper output)
 
         Assert.Equal(1, count);
     }
+
+
+    [Fact]
+    public void Can_Truncate_Nothing()
+    {
+        using var world = new World();
+        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var table = world.GetEntityMeta(identity).Archetype;
+
+        table.Truncate(2000);
+        Assert.Equal(1, table.Count);
+        table.Truncate(1);
+        Assert.Equal(1, table.Count);
+    }
+
+
+    [Fact]
+    public void Can_Truncate_Negative()
+    {
+        using var world = new World();
+        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var table = world.GetEntityMeta(identity).Archetype;
+
+        table.Truncate(-2);
+        Assert.Equal(0, table.Count);
+    }
 }
