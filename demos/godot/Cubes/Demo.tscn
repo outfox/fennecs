@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene load_steps=20 format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" path="res://Cubes/DemoCubes.cs" id="1_1jicl"]
 [ext_resource type="BoxMesh" uid="uid://dqwvifxnefio3" path="res://Cubes/Materials/box-mesh.tres" id="2_e3y7g"]
@@ -44,6 +44,14 @@ glow_blend_mode = 1
 fog_enabled = true
 fog_light_color = Color(0, 0, 0.0156863, 1)
 fog_density = 0.003
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_py15u"]
+albedo_color = Color(0, 0.584314, 0.74902, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0w8j8"]
+material = SubResource("StandardMaterial3D_py15u")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_smlxl"]
 
 [node name="fennecs Cube Demo" type="Node3D"]
 
@@ -212,6 +220,15 @@ mesh = SubResource("SphereMesh_s2td0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_q01bs")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_0w8j8")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_smlxl")
 
 [connection signal="value_changed" from="User Interface/Spawn Controls/Sliders/VisibleSlider" to="Demo" method="_on_rendered_slider_value_changed"]
 [connection signal="drag_ended" from="User Interface/Spawn Controls/Sliders/SimulatedSlider" to="Demo" method="_on_simulated_slider_drag_ended"]

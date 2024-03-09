@@ -12,7 +12,7 @@ config_version=5
 
 config/name="fennecs-demos-godot"
 config/description="A set of examples using the fennecs Entity Component System"
-run/main_scene="res://Cubes/Demo.tscn"
+run/main_scene="res://Battleships/Demo.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://zzzShared/icon.svg"
 
@@ -34,6 +34,24 @@ movie_writer/fps=120
 [gui]
 
 common/snap_controls_to_pixels=false
+
+[input]
+
+look>pan={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":4,"position":Vector2(290, 5),"global_position":Vector2(296, 67),"factor":1.0,"button_index":3,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+look>zoom+={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":8,"position":Vector2(178, 18),"global_position":Vector2(184, 80),"factor":1.0,"button_index":4,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+look>zoom-={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":16,"position":Vector2(170, 18),"global_position":Vector2(176, 80),"factor":1.0,"button_index":5,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
 
 [rendering]
 
