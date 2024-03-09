@@ -274,7 +274,7 @@ public class QueryTests
         world.Spawn().Add(p3).AddRelation(bob, 555);
         world.Spawn().Add(p3).AddRelation(eve, 666);
 
-        var query = world.Query<Identity, Vector3, int>()
+        var query = world.Query<Identity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
             .Not<int>(bob)
             .Build();
 
@@ -586,7 +586,7 @@ public class QueryTests
         var entity1 = world.Spawn().Add(444);
         world.Spawn().AddRelation(entity1, 555);
 
-        Assert.Equal(2, query.ArchetypesReadOnly.Count);
+        Assert.Equal(2, query.TrackedArchetypes.Count);
     }
 
 

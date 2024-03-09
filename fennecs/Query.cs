@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 
 namespace fennecs;
 
@@ -21,10 +20,10 @@ public class Query : IEnumerable<Entity>, IDisposable
 {
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
+    ///     Affected by Filters.
     /// </summary>
-    public int Count => Archetypes.Sum(t => t.Count);
-
-
+    public int Count => _trackedArchetypes.Sum(t => t.Count);
+    
     #region Accessors
     /// <summary>
     ///     Gets a reference to the Component of type <typeparamref name="C" /> for the entity.
@@ -59,10 +58,10 @@ public class Query : IEnumerable<Entity>, IDisposable
     public bool Contains(Entity entity)
     {
         AssertNotDisposed();
-
+        
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
-        return Archetypes.Contains(table);
+        return _trackedArchetypes.Contains(table);
     }
 
 
@@ -82,19 +81,21 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
 
-    internal void AddTable(Archetype archetype)
+    internal void TrackArchetype(Archetype archetype)
     {
-        AssertNotDisposed();
-        Archetypes.Add(archetype);
+        _trackedArchetypes.Add(archetype);
+        if (archetype.IsMatchSuperSet(StreamFilters)) Archetypes.Add(archetype);
+    }
+
+
+    internal void ForgetArchetype(Archetype archetype)
+    {
+        _trackedArchetypes.Remove(archetype);
+        Archetypes.Remove(archetype);
     }
 
 
     #region Internals
-    /// <summary>
-    ///     Immutable Array of TypeExpressions that are the Stream Types of the Query set at construction.
-    /// </summary>
-    private readonly TypeExpression[] _initialStreamTypes;
-
     /// <summary>
     ///     Array of TypeExpressions for the Output Stream of this Query.
     ///     Mutated by Filter Expressions.
@@ -102,22 +103,31 @@ public class Query : IEnumerable<Entity>, IDisposable
     internal readonly TypeExpression[] StreamTypes;
 
     /// <summary>
+    ///  Filters for the Archetypes matched by the StreamTypes
+    /// </summary>
+    protected readonly List<TypeExpression> StreamFilters;
+
+    /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
     protected readonly CountdownEvent Countdown = new(initialCount: 1);
 
-    private protected readonly List<Archetype> Archetypes;
+    private readonly List<Archetype> _trackedArchetypes;
+    protected readonly List<Archetype> Archetypes;
+    
     private protected readonly World World;
     protected internal readonly Mask Mask;
 
-    public IReadOnlyList<Archetype> ArchetypesReadOnly => Archetypes;
+    public IReadOnlyList<Archetype> TrackedArchetypes => _trackedArchetypes;
+    public IReadOnlyList<Archetype> CurrentArchetypes => Archetypes;
 
 
-    internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes)
+    internal Query(World world, List<TypeExpression> streamTypes, Mask mask, IReadOnlyCollection<Archetype> archetypes)
     {
-        _initialStreamTypes = streamTypes.ToArray();
+        StreamFilters = new List<TypeExpression>();
         StreamTypes = streamTypes.ToArray();
-        Archetypes = archetypes;
+        _trackedArchetypes = archetypes.ToList();
+        Archetypes = archetypes.ToList();
         World = world;
         Mask = mask;
     }
@@ -143,50 +153,26 @@ public class Query : IEnumerable<Entity>, IDisposable
     ///     a Match Expression that is narrower than the respective Stream Type's initial
     ///     Match Expression.
     /// </param>
-    /// <param name="onStreamTypeIndex">
-    ///     optional parameter to try setting a specific type index; is only relevant
-    ///     if the Query needs to enumerate the same backing Component Type twice in two separate Stream Types
-    /// </param>
     /// <exception cref="InvalidOperationException">if the requested filter doesn't match any of the Query's Archetypes</exception>
-    [Experimental("StatefulFiltering")]
-    public void AddStreamFilter<T>(Identity match, int onStreamTypeIndex = -1)
+    public void AddFilter<T>(Identity match)
     {
-        var valid = false;
-        var filterExpression = TypeExpression.Of<T>(match);
-
-        var startIndex = 0;
-        var endIndex = StreamTypes.Length;
-
-        if (onStreamTypeIndex >= 0)
+        StreamFilters.Add(TypeExpression.Of<T>(match));
+        Archetypes.Clear();
+        foreach (var archetype in _trackedArchetypes)
         {
-            if (onStreamTypeIndex >= StreamTypes.Length) throw new IndexOutOfRangeException($"onStreamTypeIndex is out of range, the Query only has {StreamTypes.Length} Stream Types.");
-            startIndex = onStreamTypeIndex;
-            endIndex = onStreamTypeIndex + 1;
+            if (archetype.IsMatchSuperSet(StreamFilters)) Archetypes.Add(archetype);
         }
-
-        for (var i = startIndex; i < endIndex; i++)
-        {
-            var ownExpression = _initialStreamTypes[i];
-            if (!ownExpression.Matches(filterExpression)) continue;
-
-            StreamTypes[i] = filterExpression;
-            valid = true;
-            break;
-        }
-
-        if (valid) return;
-
-        throw new InvalidOperationException("Can't set filter because the TypeExpression is no subset of the initial Stream Types.");
     }
 
 
     /// <summary>
-    ///     Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="AddStreamFilter{T}" />.
+    ///     Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="AddFilter{T}" />.
     /// </summary>
-    [Experimental("StatefulFiltering")]
     public void ClearStreamFilter()
     {
-        _initialStreamTypes.CopyTo(StreamTypes.AsSpan());
+        StreamFilters.Clear();
+        Archetypes.Clear();
+        Archetypes.AddRange(_trackedArchetypes);
     }
     #endregion
 
@@ -203,9 +189,9 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         AssertNotDisposed();
 
-        foreach (var table in Archetypes)
+        foreach (var table in _trackedArchetypes)
         {
-            if (!table.IsMatchSuperSet(StreamTypes)) continue;
+            if (!table.IsMatchSuperSet(StreamFilters)) continue;
 
             foreach (var entity in table)
                 yield return entity;
@@ -224,7 +210,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         AssertNotDisposed();
 
-        foreach (var table in Archetypes)
+        foreach (var table in _trackedArchetypes)
             if (table.IsMatchSuperSet(filterExpressions))
                 foreach (var entity in table)
                     yield return entity;
@@ -291,7 +277,7 @@ public class Query : IEnumerable<Entity>, IDisposable
             using var worldLock = World.Lock;
             Entity result = default;
 
-            foreach (var table in Archetypes)
+            foreach (var table in _trackedArchetypes)
             {
                 if (index < table.Count)
                 {
@@ -344,7 +330,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch()
     {
-        return new Batch(Archetypes, World, Mask.Clone(), default, default);
+        return new Batch(_trackedArchetypes, World, Mask.Clone(), default, default);
     }
 
 
@@ -360,7 +346,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.AddConflict addConflict)
     {
-        return new Batch(Archetypes, World, Mask.Clone(), addConflict, default);
+        return new Batch(_trackedArchetypes, World, Mask.Clone(), addConflict, default);
     }
 
 
@@ -376,7 +362,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.RemoveConflict removeConflict)
     {
-        return new Batch(Archetypes, World, Mask.Clone(), default, removeConflict);
+        return new Batch(_trackedArchetypes, World, Mask.Clone(), default, removeConflict);
     }
 
 
@@ -392,7 +378,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.AddConflict addConflict, Batch.RemoveConflict removeConflict)
     {
-        return new Batch(Archetypes, World, Mask.Clone(), addConflict, removeConflict);
+        return new Batch(_trackedArchetypes, World, Mask.Clone(), addConflict, removeConflict);
     }
 
 
@@ -424,14 +410,14 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </param>
     public void Truncate(int maxEntityCount, TruncateMode mode = default)
     {
-        //TODO: Implement as deferred operation
+        //TODO: Make available as deferred operation.
         if (World.Mode != World.WorldMode.Immediate)
             throw new InvalidOperationException("Truncate can only be used in Immediate mode.");
         
         var count = Count;
         if (count <= maxEntityCount) return;
 
-        foreach (var archetype in Archetypes)
+        foreach (var archetype in _trackedArchetypes)
             switch (mode)
             {
                 case TruncateMode.PerArchetype:
@@ -465,7 +451,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
         AssertNotDisposed();
 
-        Archetypes.Clear();
+        _trackedArchetypes.Clear();
         disposed = true;
         World.RemoveQuery(this);
         Mask.Dispose();

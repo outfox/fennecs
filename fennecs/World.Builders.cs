@@ -16,7 +16,7 @@ public partial class World
 
     public QueryBuilder<C1, C2> Query<C1, C2>()
     {
-        return new QueryBuilder<C1, C2>(this, default, default);
+        return new QueryBuilder<C1, C2>(this, Match.Any, Match.Any);
     }
 
 
@@ -28,7 +28,7 @@ public partial class World
 
     public QueryBuilder<C1, C2, C3> Query<C1, C2, C3>()
     {
-        return new QueryBuilder<C1, C2, C3>(this, default, default, default);
+        return new QueryBuilder<C1, C2, C3>(this, Match.Any, Match.Any, Match.Any);
     }
 
 
@@ -40,7 +40,7 @@ public partial class World
 
     public QueryBuilder<C1, C2, C3, C4> Query<C1, C2, C3, C4>()
     {
-        return new QueryBuilder<C1, C2, C3, C4>(this, default, default, default, default);
+        return new QueryBuilder<C1, C2, C3, C4>(this, Match.Any, Match.Any, Match.Any, Match.Any);
     }
 
 
@@ -52,7 +52,7 @@ public partial class World
 
     public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>()
     {
-        return new QueryBuilder<C1, C2, C3, C4, C5>(this, default, default, default, default, default);
+        return new QueryBuilder<C1, C2, C3, C4, C5>(this, Match.Any, Match.Any, Match.Any, Match.Any, Match.Any);
     }
 
 
