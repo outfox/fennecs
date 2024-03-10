@@ -11,5 +11,6 @@ public partial class Ship : Sprite2D
 	{
 		base._Ready();
 		//TODO: Hook up to ECS world.
+		
 	}
 }

@@ -12,7 +12,7 @@ class_name CameraZoomAndPan
 
 @onready var camera : Camera2D = $".." if ($".." is Camera2D) else self
 
-#region Exported Parameters
+#region exported Parameters
 @export_range(1, 20, 0.01) var maxZoom : float = 5.0
 @export_range(0.01, 1, 0.01) var minZoom : float = 0.1
 @export_range(0.01, 0.2, 0.01) var zoomStepRatio : float = 0.1
@@ -31,8 +31,8 @@ class_name CameraZoomAndPan
 @export var zoomOutButton : MouseButton = MOUSE_BUTTON_WHEEL_DOWN
 
 @export_group("Smoothing")
-@export_range(0, 0.5, 0.01) var panSmoothing : float = 0.1
-@export_range(0, 0.5, 0.01) var zoomSmoothing : float = 0.1
+@export_range(0, 0.4, 0.01) var panSmoothing : float = 0.2
+@export_range(0, 0.4, 0.01) var zoomSmoothing : float = 0.2
 #endregion
 
 
@@ -98,6 +98,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	var current_mouse := get_local_mouse_position()
+
 	if Input.is_action_pressed(panAction) or (fallback_mouse_pan and Input.is_mouse_button_pressed(panButton)):
 		position_goal += (last_mouse - current_mouse)
 
@@ -118,6 +119,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _SmoothDamp(state: Array[Vector2], target : Vector2, smoothTime : float, deltaTime : float):
+		# We speed up the spring to allow for nicer input values
+		# and a behaviour closer to the "actual" time to come to rest
+		smoothTime /= 2.0
+
 		var current := state[0]
 		var linear_velocity := state[1]
 
@@ -129,7 +134,7 @@ func _SmoothDamp(state: Array[Vector2], target : Vector2, smoothTime : float, de
 		var omega := 2.0 / smoothTime
 
 		var x := omega * deltaTime;
-		var exp := 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x);
+		var expo := 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x);
 
 		var change := current - target;
 		var originalTo := target;
@@ -140,8 +145,8 @@ func _SmoothDamp(state: Array[Vector2], target : Vector2, smoothTime : float, de
 		target = current - change;
 
 		var temp := (linear_velocity + omega * change) * deltaTime
-		linear_velocity = (linear_velocity - omega * temp) * exp
-		var output := target + (change + temp) * exp
+		linear_velocity = (linear_velocity - omega * temp) * expo
+		var output := target + (change + temp) * expo
 
 		# Prevent overshooting - FIXME
 		# likely needs to treat all components separately

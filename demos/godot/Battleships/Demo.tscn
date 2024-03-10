@@ -1,7 +1,8 @@
-[gd_scene load_steps=25 format=3 uid="uid://dbsfli58h85j1"]
+[gd_scene load_steps=26 format=3 uid="uid://dbsfli58h85j1"]
 
 [ext_resource type="Texture2D" uid="uid://cksybw015ecn5" path="res://Battleships/Sprites/water_ripple_medium_000.png" id="1_36tmx"]
 [ext_resource type="Texture2D" uid="uid://dml80u5fkcf3h" path="res://Battleships/Sprites/ship_medium_body.png" id="1_mpdiq"]
+[ext_resource type="Script" path="res://Battleships/BattleShipsDemo.cs" id="1_wuhof"]
 [ext_resource type="Texture2D" uid="uid://c8tiu4pl00u1i" path="res://Battleships/Sprites/water_ripple_medium_001.png" id="2_kdxpr"]
 [ext_resource type="Texture2D" uid="uid://b3o314u5nbtc3" path="res://Battleships/Sprites/ship_big_gun_dual_hit.png" id="3_fu8pa"]
 [ext_resource type="Texture2D" uid="uid://csjqy4cgeidmh" path="res://Battleships/Sprites/water_ripple_medium_002.png" id="3_jr5lu"]
@@ -71,6 +72,7 @@ animations = [{
 
 [node name="Battleships Demo" type="Node2D"]
 texture_filter = 3
+script = ExtResource("1_wuhof")
 
 [node name="Destroyer" type="Sprite2D" parent="."]
 
