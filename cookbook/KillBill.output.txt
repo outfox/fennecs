@@ -1,10 +1,10 @@
 Directed by: Trentin Quarantino
 As we said, there were 5 of them.
-One hides in hideout 0x63028e4d.
-One hides in hideout 0x7674adf2.
-One hides in hideout 0x0a8cfcdd.
-One hides in hideout 0x1824bf6e.
-One hides in hideout 0x6f08b9a1.
+One hides in hideout 0x669d3d82.
+One hides in hideout 0x679b96bc.
+One hides in hideout 0x03ed09e6.
+One hides in hideout 0x0d987cab.
+One hides in hideout 0x751b52dd.
 
 We are still here, though.
 
@@ -49,7 +49,7 @@ E-00000006:00001 <fennecs.Identity>
   |-<Betrayed> >> E-00000001:00001
 
 Now, there are 0 of them.
-Let's get out of hideout 0x6f08b9a1.
+Let's get out of hideout 0x751b52dd.
 Any more grudges? False.
 This is us now:
 E-00000001:00001 <fennecs.Identity>

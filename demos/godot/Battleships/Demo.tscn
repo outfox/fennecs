@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dbsfli58h85j1"]
+[gd_scene load_steps=19 format=3 uid="uid://dbsfli58h85j1"]
 
 [ext_resource type="Texture2D" uid="uid://cksybw015ecn5" path="res://Battleships/Sprites/water_ripple_medium_000.png" id="1_36tmx"]
 [ext_resource type="Texture2D" uid="uid://dml80u5fkcf3h" path="res://Battleships/Sprites/ship_medium_body.png" id="1_mpdiq"]
@@ -11,17 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://ci3taoovbw6a5" path="res://Battleships/Sprites/water_ripple_medium_004.png" id="5_7wb2b"]
 [ext_resource type="Texture2D" uid="uid://ks3f84kp8lki" path="res://Battleships/Sprites/ship_big_gun.png" id="5_ida0b"]
 [ext_resource type="Script" path="res://Battleships/AutoPlayAnimation.gd" id="6_nk4bq"]
-[ext_resource type="Script" path="res://Battleships/ShipBigGunDual.gd" id="8_o6fbb"]
-[ext_resource type="Texture2D" uid="uid://p7q4q1rodnlq" path="res://Battleships/Sprites/water_ripple_big_000.png" id="11_80ki4"]
-[ext_resource type="Script" path="res://Battleships/Ship.cs" id="12_20cjt"]
-[ext_resource type="Texture2D" uid="uid://8bryp1fdt883" path="res://Battleships/Sprites/water_ripple_big_001.png" id="12_b0xnu"]
-[ext_resource type="Texture2D" uid="uid://cbitsj45f225v" path="res://Battleships/Sprites/water_ripple_big_002.png" id="13_6qnmn"]
-[ext_resource type="Texture2D" uid="uid://brxsyr32usni2" path="res://Battleships/Sprites/water_ripple_big_003.png" id="14_15vj7"]
-[ext_resource type="Texture2D" uid="uid://c0lmfeifyi5sx" path="res://Battleships/Sprites/water_ripple_big_004.png" id="15_yf4vf"]
-[ext_resource type="Texture2D" uid="uid://cpqp5071mtith" path="res://Battleships/Sprites/ship_large_body.png" id="16_1knq1"]
-[ext_resource type="Texture2D" uid="uid://ch3o16w121j7t" path="res://Battleships/Sprites/ship_gun_huge.png" id="17_wgwmw"]
-[ext_resource type="Texture2D" uid="uid://b7nki6gphu1w6" path="res://Battleships/Sprites/ship_gun_red.png" id="18_mxyil"]
-[ext_resource type="Texture2D" uid="uid://dmpt66slnt16s" path="res://Battleships/Sprites/ship_gun_dual_gray.png" id="19_3wmom"]
+[ext_resource type="PackedScene" uid="uid://dflthu5dnjmkt" path="res://Battleships/Vessels/battleship.tscn" id="13_auviu"]
+[ext_resource type="Script" path="res://Battleships/Spawner.gd" id="15_orx4g"]
+[ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="16_um5ly"]
+[ext_resource type="Script" path="res://Battleships/Gun.cs" id="20_tj12v"]
 [ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="22_n6gg5"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_q1es4"]
@@ -47,34 +40,16 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_yuk5n"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("11_80ki4")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_b0xnu")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_6qnmn")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_15vj7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_yf4vf")
-}],
-"loop": true,
-"name": &"default",
-"speed": 10.0
-}]
+[sub_resource type="LabelSettings" id="LabelSettings_80l2o"]
+font = ExtResource("16_um5ly")
+font_size = 24
 
 [node name="Battleships Demo" type="Node2D"]
 texture_filter = 3
 script = ExtResource("1_wuhof")
 
 [node name="Destroyer" type="Sprite2D" parent="."]
+visible = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer"]
 z_index = -42
@@ -93,7 +68,7 @@ texture = ExtResource("1_mpdiq")
 position = Vector2(26, -1)
 texture = ExtResource("4_gfkv0")
 offset = Vector2(-6, 0)
-script = ExtResource("8_o6fbb")
+script = ExtResource("20_tj12v")
 
 [node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer/ShipBigGunDual"]
 visible = false
@@ -109,227 +84,31 @@ position = Vector2(22.5, 3.5)
 [node name="ShipBigGun" type="Sprite2D" parent="Destroyer"]
 position = Vector2(-56, -1)
 texture = ExtResource("5_ida0b")
-script = ExtResource("8_o6fbb")
-
-[node name="Destroyer2" type="Sprite2D" parent="."]
-position = Vector2(855, -857)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer2"]
-z_index = -42
-position = Vector2(-11, -2)
-sprite_frames = SubResource("SpriteFrames_q1es4")
-frame = 3
-frame_progress = 0.961274
-script = ExtResource("6_nk4bq")
-
-[node name="HullSprite" type="Sprite2D" parent="Destroyer2"]
-z_index = -5
-position = Vector2(0, -1)
-texture = ExtResource("1_mpdiq")
-
-[node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer2"]
-position = Vector2(26, -1)
-texture = ExtResource("4_gfkv0")
-offset = Vector2(-6, 0)
-script = ExtResource("8_o6fbb")
-
-[node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer2/ShipBigGunDual"]
-visible = false
-texture = ExtResource("3_fu8pa")
-offset = Vector2(-6, 0)
-
-[node name="Muzzle1" type="Node2D" parent="Destroyer2/ShipBigGunDual"]
-position = Vector2(22.5, -3.5)
-
-[node name="Muzzle2" type="Node2D" parent="Destroyer2/ShipBigGunDual"]
-position = Vector2(22.5, 3.5)
-
-[node name="ShipBigGun" type="Sprite2D" parent="Destroyer2"]
-position = Vector2(-56, -1)
-texture = ExtResource("5_ida0b")
-script = ExtResource("8_o6fbb")
-
-[node name="Destroyer3" type="Sprite2D" parent="."]
-position = Vector2(1766, 737)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer3"]
-z_index = -42
-position = Vector2(-11, -2)
-sprite_frames = SubResource("SpriteFrames_q1es4")
-frame = 3
-frame_progress = 0.961274
-script = ExtResource("6_nk4bq")
-
-[node name="HullSprite" type="Sprite2D" parent="Destroyer3"]
-z_index = -5
-position = Vector2(0, -1)
-texture = ExtResource("1_mpdiq")
-
-[node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer3"]
-position = Vector2(26, -1)
-texture = ExtResource("4_gfkv0")
-offset = Vector2(-6, 0)
-script = ExtResource("8_o6fbb")
-
-[node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer3/ShipBigGunDual"]
-visible = false
-texture = ExtResource("3_fu8pa")
-offset = Vector2(-6, 0)
-
-[node name="Muzzle1" type="Node2D" parent="Destroyer3/ShipBigGunDual"]
-position = Vector2(22.5, -3.5)
-
-[node name="Muzzle2" type="Node2D" parent="Destroyer3/ShipBigGunDual"]
-position = Vector2(22.5, 3.5)
-
-[node name="ShipBigGun" type="Sprite2D" parent="Destroyer3"]
-position = Vector2(-56, -1)
-texture = ExtResource("5_ida0b")
-script = ExtResource("8_o6fbb")
-
-[node name="Destroyer4" type="Sprite2D" parent="."]
-position = Vector2(152, 1194)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer4"]
-z_index = -42
-position = Vector2(-11, -2)
-sprite_frames = SubResource("SpriteFrames_q1es4")
-frame = 3
-frame_progress = 0.961274
-script = ExtResource("6_nk4bq")
-
-[node name="HullSprite" type="Sprite2D" parent="Destroyer4"]
-z_index = -5
-position = Vector2(0, -1)
-texture = ExtResource("1_mpdiq")
-
-[node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer4"]
-position = Vector2(26, -1)
-texture = ExtResource("4_gfkv0")
-offset = Vector2(-6, 0)
-script = ExtResource("8_o6fbb")
-
-[node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer4/ShipBigGunDual"]
-visible = false
-texture = ExtResource("3_fu8pa")
-offset = Vector2(-6, 0)
-
-[node name="Muzzle1" type="Node2D" parent="Destroyer4/ShipBigGunDual"]
-position = Vector2(22.5, -3.5)
-
-[node name="Muzzle2" type="Node2D" parent="Destroyer4/ShipBigGunDual"]
-position = Vector2(22.5, 3.5)
-
-[node name="ShipBigGun" type="Sprite2D" parent="Destroyer4"]
-position = Vector2(-56, -1)
-texture = ExtResource("5_ida0b")
-script = ExtResource("8_o6fbb")
-
-[node name="Battleship" type="Sprite2D" parent="." node_paths=PackedStringArray("Guns")]
-position = Vector2(0, 119)
-script = ExtResource("12_20cjt")
-Guns = [NodePath("ShipBigGunDual2"), NodePath("ShipBigGunDual3"), NodePath("ShipGunRed"), NodePath("ShipGunRed2"), NodePath("ShipGunRed3"), NodePath("ShipGunRed4"), NodePath("ShipGunHuge"), NodePath("ShipGunHuge2"), NodePath("ShipGunDualGray"), NodePath("ShipGunDualGray2")]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Battleship"]
-z_index = -42
-position = Vector2(-11, -2)
-sprite_frames = SubResource("SpriteFrames_yuk5n")
-frame = 4
-frame_progress = 0.815771
-script = ExtResource("6_nk4bq")
-
-[node name="HullSprite" type="Sprite2D" parent="Battleship"]
-z_index = -5
-position = Vector2(0, -1)
-texture = ExtResource("16_1knq1")
-
-[node name="ShipBigGunDual2" type="Sprite2D" parent="Battleship"]
-z_index = 1
-texture_filter = 1
-position = Vector2(-79, -0.5)
-rotation = -3.14159
-texture = ExtResource("17_wgwmw")
-offset = Vector2(-6, 0)
-script = ExtResource("8_o6fbb")
-
-[node name="ShipBigGunDualHit" type="Sprite2D" parent="Battleship/ShipBigGunDual2"]
-visible = false
-texture = ExtResource("3_fu8pa")
-offset = Vector2(-6, 0)
-
-[node name="Muzzle1" type="Node2D" parent="Battleship/ShipBigGunDual2"]
-position = Vector2(22.5, -3.5)
-
-[node name="Muzzle2" type="Node2D" parent="Battleship/ShipBigGunDual2"]
-position = Vector2(22.5, 3.5)
-
-[node name="ShipBigGunDual3" type="Sprite2D" parent="Battleship"]
-z_index = 2
-position = Vector2(-44, -0.5)
-rotation = -3.14159
-texture = ExtResource("17_wgwmw")
-offset = Vector2(-6, 0)
-script = ExtResource("8_o6fbb")
-
-[node name="ShipBigGunDualHit" type="Sprite2D" parent="Battleship/ShipBigGunDual3"]
-visible = false
-texture = ExtResource("3_fu8pa")
-offset = Vector2(-6, 0)
-
-[node name="Muzzle1" type="Node2D" parent="Battleship/ShipBigGunDual3"]
-position = Vector2(22.5, -3.5)
-
-[node name="Muzzle2" type="Node2D" parent="Battleship/ShipBigGunDual3"]
-position = Vector2(22.5, 3.5)
-
-[node name="ShipGunRed" type="Sprite2D" parent="Battleship"]
-position = Vector2(-73, -45)
-rotation = -1.5708
-texture = ExtResource("18_mxyil")
-script = ExtResource("8_o6fbb")
-
-[node name="ShipGunRed2" type="Sprite2D" parent="Battleship"]
-position = Vector2(-45, -45)
-rotation = -1.5708
-texture = ExtResource("18_mxyil")
-script = ExtResource("8_o6fbb")
-
-[node name="ShipGunRed3" type="Sprite2D" parent="Battleship"]
-position = Vector2(-46, 41)
-rotation = 1.5708
-texture = ExtResource("18_mxyil")
-script = ExtResource("8_o6fbb")
-
-[node name="ShipGunRed4" type="Sprite2D" parent="Battleship"]
-position = Vector2(-72, 42)
-rotation = 1.5708
-texture = ExtResource("18_mxyil")
-script = ExtResource("8_o6fbb")
-
-[node name="ShipGunHuge" type="Sprite2D" parent="Battleship"]
-z_index = 2
-position = Vector2(22, -1)
-texture = ExtResource("17_wgwmw")
-script = ExtResource("8_o6fbb")
-
-[node name="ShipGunHuge2" type="Sprite2D" parent="Battleship"]
-z_index = 1
-position = Vector2(60, 0)
-texture = ExtResource("17_wgwmw")
-script = ExtResource("8_o6fbb")
-
-[node name="ShipGunDualGray" type="Sprite2D" parent="Battleship"]
-position = Vector2(25, -34)
-texture = ExtResource("19_3wmom")
-offset = Vector2(-6, 0)
-script = ExtResource("8_o6fbb")
-
-[node name="ShipGunDualGray2" type="Sprite2D" parent="Battleship"]
-position = Vector2(25, 32)
-texture = ExtResource("19_3wmom")
-offset = Vector2(-6, 0)
-script = ExtResource("8_o6fbb")
+script = ExtResource("20_tj12v")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 top_level = true
 script = ExtResource("22_n6gg5")
+panSmoothing = 0.1
+zoomSmoothing = 0.1
+
+[node name="Spawner" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+script = ExtResource("15_orx4g")
+prefab = ExtResource("13_auviu")
+
+[node name="Ui Layer" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="Label" type="Label" parent="Ui Layer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -39.5
+offset_right = 39.5
+offset_bottom = 30.0
+grow_horizontal = 2
+text = "123456"
+label_settings = SubResource("LabelSettings_80l2o")
+horizontal_alignment = 2

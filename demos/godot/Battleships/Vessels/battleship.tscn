@@ -1,0 +1,143 @@
+[gd_scene load_steps=15 format=3 uid="uid://dflthu5dnjmkt"]
+
+[ext_resource type="Script" path="res://Battleships/Ship.cs" id="1_dsb5r"]
+[ext_resource type="Texture2D" uid="uid://p7q4q1rodnlq" path="res://Battleships/Sprites/water_ripple_big_000.png" id="2_i3bi2"]
+[ext_resource type="Texture2D" uid="uid://8bryp1fdt883" path="res://Battleships/Sprites/water_ripple_big_001.png" id="3_tupby"]
+[ext_resource type="Texture2D" uid="uid://cbitsj45f225v" path="res://Battleships/Sprites/water_ripple_big_002.png" id="4_uvi2f"]
+[ext_resource type="Texture2D" uid="uid://brxsyr32usni2" path="res://Battleships/Sprites/water_ripple_big_003.png" id="5_u5iuw"]
+[ext_resource type="Texture2D" uid="uid://c0lmfeifyi5sx" path="res://Battleships/Sprites/water_ripple_big_004.png" id="6_66qe8"]
+[ext_resource type="Script" path="res://Battleships/AutoPlayAnimation.gd" id="7_gq6ax"]
+[ext_resource type="Texture2D" uid="uid://cpqp5071mtith" path="res://Battleships/Sprites/ship_large_body.png" id="8_rf2oa"]
+[ext_resource type="Texture2D" uid="uid://ch3o16w121j7t" path="res://Battleships/Sprites/ship_gun_huge.png" id="9_xabas"]
+[ext_resource type="Script" path="res://Battleships/Gun.cs" id="10_24wpl"]
+[ext_resource type="Texture2D" uid="uid://b3o314u5nbtc3" path="res://Battleships/Sprites/ship_big_gun_dual_hit.png" id="11_4suva"]
+[ext_resource type="Texture2D" uid="uid://b7nki6gphu1w6" path="res://Battleships/Sprites/ship_gun_red.png" id="12_it1cs"]
+[ext_resource type="Texture2D" uid="uid://dmpt66slnt16s" path="res://Battleships/Sprites/ship_gun_dual_gray.png" id="13_set35"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yuk5n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_i3bi2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tupby")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_uvi2f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_u5iuw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_66qe8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="Battleship" type="Sprite2D" node_paths=PackedStringArray("Guns")]
+position = Vector2(0, 119)
+script = ExtResource("1_dsb5r")
+Guns = [null, null, null, null, null, null, null, null, null, null]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = -42
+position = Vector2(-11, -2)
+sprite_frames = SubResource("SpriteFrames_yuk5n")
+frame = 4
+frame_progress = 0.815771
+script = ExtResource("7_gq6ax")
+
+[node name="Hull" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(0, -1)
+texture = ExtResource("8_rf2oa")
+
+[node name="ShipBigGunDual2" type="Sprite2D" parent="Hull"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-79, 0.5)
+rotation = -3.14159
+texture = ExtResource("9_xabas")
+offset = Vector2(-6, 0)
+script = ExtResource("10_24wpl")
+
+[node name="ShipBigGunDualHit" type="Sprite2D" parent="Hull/ShipBigGunDual2"]
+visible = false
+texture = ExtResource("11_4suva")
+offset = Vector2(-6, 0)
+
+[node name="Muzzle1" type="Node2D" parent="Hull/ShipBigGunDual2"]
+position = Vector2(22.5, -3.5)
+
+[node name="Muzzle2" type="Node2D" parent="Hull/ShipBigGunDual2"]
+position = Vector2(22.5, 3.5)
+
+[node name="ShipBigGunDual3" type="Sprite2D" parent="Hull"]
+z_index = 2
+position = Vector2(-44, 0.5)
+rotation = -3.14159
+texture = ExtResource("9_xabas")
+offset = Vector2(-6, 0)
+script = ExtResource("10_24wpl")
+
+[node name="ShipBigGunDualHit" type="Sprite2D" parent="Hull/ShipBigGunDual3"]
+visible = false
+texture = ExtResource("11_4suva")
+offset = Vector2(-6, 0)
+
+[node name="Muzzle1" type="Node2D" parent="Hull/ShipBigGunDual3"]
+position = Vector2(22.5, -3.5)
+
+[node name="Muzzle2" type="Node2D" parent="Hull/ShipBigGunDual3"]
+position = Vector2(22.5, 3.5)
+
+[node name="ShipGunRed" type="Sprite2D" parent="Hull"]
+position = Vector2(-73, -44)
+rotation = -1.5708
+texture = ExtResource("12_it1cs")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunRed2" type="Sprite2D" parent="Hull"]
+position = Vector2(-45, -44)
+rotation = -1.5708
+texture = ExtResource("12_it1cs")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunRed3" type="Sprite2D" parent="Hull"]
+position = Vector2(-46, 42)
+rotation = 1.5708
+texture = ExtResource("12_it1cs")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunRed4" type="Sprite2D" parent="Hull"]
+position = Vector2(-72, 43)
+rotation = 1.5708
+texture = ExtResource("12_it1cs")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunHuge" type="Sprite2D" parent="Hull"]
+z_index = 2
+position = Vector2(22, 0)
+texture = ExtResource("9_xabas")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunHuge2" type="Sprite2D" parent="Hull"]
+z_index = 1
+position = Vector2(60, 1)
+texture = ExtResource("9_xabas")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunDualGray" type="Sprite2D" parent="Hull"]
+position = Vector2(25, -33)
+texture = ExtResource("13_set35")
+offset = Vector2(-6, 0)
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunDualGray2" type="Sprite2D" parent="Hull"]
+position = Vector2(25, 33)
+texture = ExtResource("13_set35")
+offset = Vector2(-6, 0)
+script = ExtResource("10_24wpl")

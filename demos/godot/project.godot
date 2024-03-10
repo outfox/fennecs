@@ -29,6 +29,7 @@ project/assembly_name="fennecs-demos-godot"
 
 [editor]
 
+movie_writer/movie_file="D:/Capture/godot.avi"
 movie_writer/fps=120
 
 [gui]
