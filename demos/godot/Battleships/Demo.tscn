@@ -21,7 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://ch3o16w121j7t" path="res://Battleships/Sprites/ship_gun_huge.png" id="17_wgwmw"]
 [ext_resource type="Texture2D" uid="uid://b7nki6gphu1w6" path="res://Battleships/Sprites/ship_gun_red.png" id="18_mxyil"]
 [ext_resource type="Texture2D" uid="uid://dmpt66slnt16s" path="res://Battleships/Sprites/ship_gun_dual_gray.png" id="19_3wmom"]
-[ext_resource type="Script" path="res://Battleships/CameraControls.gd" id="22_n6gg5"]
+[ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="22_n6gg5"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_q1es4"]
 animations = [{
@@ -105,6 +105,120 @@ position = Vector2(22.5, -3.5)
 position = Vector2(22.5, 3.5)
 
 [node name="ShipBigGun" type="Sprite2D" parent="Destroyer"]
+position = Vector2(-56, -1)
+texture = ExtResource("5_ida0b")
+script = ExtResource("8_o6fbb")
+
+[node name="Destroyer2" type="Sprite2D" parent="."]
+position = Vector2(855, -857)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer2"]
+z_index = -42
+position = Vector2(-11, -2)
+sprite_frames = SubResource("SpriteFrames_q1es4")
+frame = 3
+frame_progress = 0.961274
+script = ExtResource("6_nk4bq")
+
+[node name="HullSprite" type="Sprite2D" parent="Destroyer2"]
+z_index = -5
+position = Vector2(0, -1)
+texture = ExtResource("1_mpdiq")
+
+[node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer2"]
+position = Vector2(26, -1)
+texture = ExtResource("4_gfkv0")
+offset = Vector2(-6, 0)
+script = ExtResource("8_o6fbb")
+
+[node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer2/ShipBigGunDual"]
+visible = false
+texture = ExtResource("3_fu8pa")
+offset = Vector2(-6, 0)
+
+[node name="Muzzle1" type="Node2D" parent="Destroyer2/ShipBigGunDual"]
+position = Vector2(22.5, -3.5)
+
+[node name="Muzzle2" type="Node2D" parent="Destroyer2/ShipBigGunDual"]
+position = Vector2(22.5, 3.5)
+
+[node name="ShipBigGun" type="Sprite2D" parent="Destroyer2"]
+position = Vector2(-56, -1)
+texture = ExtResource("5_ida0b")
+script = ExtResource("8_o6fbb")
+
+[node name="Destroyer3" type="Sprite2D" parent="."]
+position = Vector2(1766, 737)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer3"]
+z_index = -42
+position = Vector2(-11, -2)
+sprite_frames = SubResource("SpriteFrames_q1es4")
+frame = 3
+frame_progress = 0.961274
+script = ExtResource("6_nk4bq")
+
+[node name="HullSprite" type="Sprite2D" parent="Destroyer3"]
+z_index = -5
+position = Vector2(0, -1)
+texture = ExtResource("1_mpdiq")
+
+[node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer3"]
+position = Vector2(26, -1)
+texture = ExtResource("4_gfkv0")
+offset = Vector2(-6, 0)
+script = ExtResource("8_o6fbb")
+
+[node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer3/ShipBigGunDual"]
+visible = false
+texture = ExtResource("3_fu8pa")
+offset = Vector2(-6, 0)
+
+[node name="Muzzle1" type="Node2D" parent="Destroyer3/ShipBigGunDual"]
+position = Vector2(22.5, -3.5)
+
+[node name="Muzzle2" type="Node2D" parent="Destroyer3/ShipBigGunDual"]
+position = Vector2(22.5, 3.5)
+
+[node name="ShipBigGun" type="Sprite2D" parent="Destroyer3"]
+position = Vector2(-56, -1)
+texture = ExtResource("5_ida0b")
+script = ExtResource("8_o6fbb")
+
+[node name="Destroyer4" type="Sprite2D" parent="."]
+position = Vector2(152, 1194)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer4"]
+z_index = -42
+position = Vector2(-11, -2)
+sprite_frames = SubResource("SpriteFrames_q1es4")
+frame = 3
+frame_progress = 0.961274
+script = ExtResource("6_nk4bq")
+
+[node name="HullSprite" type="Sprite2D" parent="Destroyer4"]
+z_index = -5
+position = Vector2(0, -1)
+texture = ExtResource("1_mpdiq")
+
+[node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer4"]
+position = Vector2(26, -1)
+texture = ExtResource("4_gfkv0")
+offset = Vector2(-6, 0)
+script = ExtResource("8_o6fbb")
+
+[node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer4/ShipBigGunDual"]
+visible = false
+texture = ExtResource("3_fu8pa")
+offset = Vector2(-6, 0)
+
+[node name="Muzzle1" type="Node2D" parent="Destroyer4/ShipBigGunDual"]
+position = Vector2(22.5, -3.5)
+
+[node name="Muzzle2" type="Node2D" parent="Destroyer4/ShipBigGunDual"]
+position = Vector2(22.5, 3.5)
+
+[node name="ShipBigGun" type="Sprite2D" parent="Destroyer4"]
 position = Vector2(-56, -1)
 texture = ExtResource("5_ida0b")
 script = ExtResource("8_o6fbb")
