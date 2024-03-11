@@ -37,7 +37,7 @@ myQuery.For((ref Vector3 velocity) =>
 ```cs [For&lt;U&gt;(...) with uniform]
 myQuery.For((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
 {
-    velocity += 9.81f * Vector3.DOWN * uniform.dt;
+    velocity += uniform.gravity * uniform.dt;
 }, 
 (9.81f * Vector3.DOWN, Time.deltaTime)); 
 

@@ -38,7 +38,7 @@ animations = [{
 }]
 
 [node name="Battleship" type="Sprite2D" node_paths=PackedStringArray("Guns")]
-texture_filter = 1
+texture_filter = 5
 script = ExtResource("1_dsb5r")
 Guns = [null, null, null, null, null, null, null, null, null, null]
 
@@ -51,7 +51,7 @@ texture = ExtResource("8_rf2oa")
 z_index = -42
 position = Vector2(-11, -2)
 sprite_frames = SubResource("SpriteFrames_yuk5n")
-frame = 4
+frame = 3
 frame_progress = 0.815771
 script = ExtResource("7_gq6ax")
 

@@ -4,9 +4,10 @@ extends Timer
 
 
 func _ready() -> void:
-	for j in range(500):
+	for i in range(50):
 		await timeout
-		var ship = prefab.instantiate() as Node2D
-		ship.rotate(randf() * TAU)
-		ship.name = str(j)
-		add_sibling(ship)
+		for j in range(10):
+			var ship = prefab.instantiate() as Node2D
+			ship.rotate(randf() * TAU)
+			ship.name = str(j)
+			add_sibling(ship)

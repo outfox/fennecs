@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dbsfli58h85j1"]
+[gd_scene load_steps=21 format=3 uid="uid://dbsfli58h85j1"]
 
 [ext_resource type="Texture2D" uid="uid://cksybw015ecn5" path="res://Battleships/Sprites/water_ripple_medium_000.png" id="1_36tmx"]
 [ext_resource type="Texture2D" uid="uid://dml80u5fkcf3h" path="res://Battleships/Sprites/ship_medium_body.png" id="1_mpdiq"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://dflthu5dnjmkt" path="res://Battleships/Vessels/battleship.tscn" id="13_auviu"]
 [ext_resource type="Script" path="res://Battleships/Spawner.gd" id="15_orx4g"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="16_um5ly"]
+[ext_resource type="SpriteFrames" uid="uid://bm5fnxtudky7e" path="res://Battleships/Sprites/sheet_flag.tres" id="17_a473v"]
 [ext_resource type="Script" path="res://Battleships/Gun.cs" id="20_tj12v"]
 [ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="22_n6gg5"]
 
@@ -43,6 +44,11 @@ animations = [{
 [sub_resource type="LabelSettings" id="LabelSettings_80l2o"]
 font = ExtResource("16_um5ly")
 font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_sms3j"]
+font = ExtResource("16_um5ly")
+font_size = 80
+font_color = Color(1, 1, 1, 0.25098)
 
 [node name="Battleships Demo" type="Node2D"]
 texture_filter = 3
@@ -89,6 +95,7 @@ script = ExtResource("20_tj12v")
 [node name="Camera2D" type="Camera2D" parent="."]
 top_level = true
 script = ExtResource("22_n6gg5")
+useFallbackButtons = "Never"
 panSmoothing = 0.1
 zoomSmoothing = 0.1
 
@@ -112,6 +119,179 @@ grow_horizontal = 2
 text = "123456"
 label_settings = SubResource("LabelSettings_80l2o")
 horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
 
-[node name="Battleship" parent="." node_paths=PackedStringArray("Guns") instance=ExtResource("13_auviu")]
-Guns = [null, null, null, null, null, null, null, null, null, null]
+[node name="ObjectiveA" type="Node2D" parent="."]
+z_index = -69
+position = Vector2(-1520, -3559)
+scale = Vector2(5, 5)
+
+[node name="Label" type="Label" parent="ObjectiveA"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.8
+offset_top = -26.8
+offset_right = 82.2
+offset_bottom = 73.2
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Alpha"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveB" type="Node2D" parent="."]
+z_index = -69
+position = Vector2(-3869, 481)
+scale = Vector2(5, 5)
+
+[node name="Label" type="Label" parent="ObjectiveB"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -126.4
+offset_top = -27.8
+offset_right = 82.6
+offset_bottom = 72.2
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Bravo"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveC" type="Node2D" parent="."]
+z_index = -69
+position = Vector2(-2283, 3080)
+scale = Vector2(5, 5)
+
+[node name="Label" type="Label" parent="ObjectiveC"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.2
+offset_top = -18.2
+offset_right = 108.8
+offset_bottom = 81.8
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Charlie"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveD" type="Node2D" parent="."]
+z_index = -69
+position = Vector2(4638, -74)
+scale = Vector2(5, 5)
+
+[node name="Label" type="Label" parent="ObjectiveD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -116.6
+offset_top = -23.6
+offset_right = 77.4
+offset_bottom = 76.4
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Delta"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveE" type="Node2D" parent="."]
+z_index = -69
+position = Vector2(1895, -1551)
+scale = Vector2(5, 5)
+
+[node name="Label" type="Label" parent="ObjectiveE"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.2
+offset_top = -29.0
+offset_right = 69.7999
+offset_bottom = 71.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Echo
+"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveF" type="Node2D" parent="."]
+z_index = -69
+scale = Vector2(5, 5)
+
+[node name="Label" type="Label" parent="ObjectiveF"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.4
+offset_top = -14.6
+offset_right = 118.6
+offset_bottom = 85.4
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Foxtrot"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Admiralty1" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty1"]
+z_index = -69
+position = Vector2(-5000, -5000)
+scale = Vector2(5, 5)
+sprite_frames = ExtResource("17_a473v")
+frame_progress = 0.894212
+script = ExtResource("6_nk4bq")
+
+[node name="Admiralty2" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty2"]
+z_index = -69
+position = Vector2(5000, -5000)
+scale = Vector2(5, 5)
+sprite_frames = ExtResource("17_a473v")
+script = ExtResource("6_nk4bq")
+
+[node name="Admiralty4" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty4"]
+z_index = -69
+position = Vector2(-5000, 5000)
+scale = Vector2(5, 5)
+sprite_frames = ExtResource("17_a473v")
+script = ExtResource("6_nk4bq")
+
+[node name="Admiralty3" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty3"]
+z_index = -69
+position = Vector2(5000, 5000)
+scale = Vector2(5, 5)
+sprite_frames = ExtResource("17_a473v")
+script = ExtResource("6_nk4bq")
