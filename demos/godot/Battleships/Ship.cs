@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using Vector2 = System.Numerics.Vector2;
 
 
 namespace fennecs.demos.godot.Battleships;
@@ -29,13 +30,15 @@ public partial class Ship : Sprite2D
 		Faction = Random.Shared.Next(FactionCount);
 		var hull = GetNode<Sprite2D>("Hull");
 			
-		hull.Modulate = Color.FromOkHsl(Faction/(float)FactionCount, 0.9f, 0.8f, 1);
+		hull.Modulate = Color.FromOkHsl(Faction/(float)FactionCount, 0.9f, .9f, 1);
 
 		_entity = demo.World.Spawn();
 		_entity.Add(this);
-		_entity.Add<Targets>();
+		_entity.Add(new MotionState {Course = Transform.Rotation, Position = new Vector2(GlobalPosition.X, GlobalPosition.Y), Speed = Speed});
+		
+		_entity.Add<Targeting>();
 
-		foreach (var candidate in hull.GetChildren())
+		foreach (var candidate in GetChildren())
 		{
 			if (candidate is not Gun gun) continue;
 			_guns.Add(gun);
@@ -47,11 +50,18 @@ public partial class Ship : Sprite2D
 }
 
 
-public struct Targets
+public struct MotionState
 {
-	private readonly List<Node2D> _targets = [];
+	public Vector2 Position;
+	public float Course;
+	public float Speed;
+}
+
+public struct Targeting
+{
+	private readonly List<Entity> _targets = [];
 	
-	public Targets()
+	public Targeting()
 	{
 	}
 }

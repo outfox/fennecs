@@ -112,3 +112,6 @@ grow_horizontal = 2
 text = "123456"
 label_settings = SubResource("LabelSettings_80l2o")
 horizontal_alignment = 2
+
+[node name="Battleship" parent="." node_paths=PackedStringArray("Guns") instance=ExtResource("13_auviu")]
+Guns = [null, null, null, null, null, null, null, null, null, null]

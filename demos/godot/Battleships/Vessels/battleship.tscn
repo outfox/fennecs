@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cpqp5071mtith" path="res://Battleships/Sprites/ship_large_body.png" id="8_rf2oa"]
 [ext_resource type="Texture2D" uid="uid://ch3o16w121j7t" path="res://Battleships/Sprites/ship_gun_huge.png" id="9_xabas"]
 [ext_resource type="Script" path="res://Battleships/Gun.cs" id="10_24wpl"]
-[ext_resource type="Texture2D" uid="uid://b3o314u5nbtc3" path="res://Battleships/Sprites/ship_big_gun_dual_hit.png" id="11_4suva"]
+[ext_resource type="SpriteFrames" uid="uid://b57lmxck3xv3o" path="res://Battleships/Sprites/Projectiles/sf-muzzles.tres" id="12_dxm0s"]
 [ext_resource type="Texture2D" uid="uid://b7nki6gphu1w6" path="res://Battleships/Sprites/ship_gun_red.png" id="12_it1cs"]
 [ext_resource type="Texture2D" uid="uid://dmpt66slnt16s" path="res://Battleships/Sprites/ship_gun_dual_gray.png" id="13_set35"]
 
@@ -34,15 +34,20 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 10.0
+"speed": 12.0
 }]
 
 [node name="Battleship" type="Sprite2D" node_paths=PackedStringArray("Guns")]
-position = Vector2(0, 119)
+texture_filter = 1
 script = ExtResource("1_dsb5r")
 Guns = [null, null, null, null, null, null, null, null, null, null]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="Hull" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(0, -1)
+texture = ExtResource("8_rf2oa")
+
+[node name="Wake" type="AnimatedSprite2D" parent="."]
 z_index = -42
 position = Vector2(-11, -2)
 sprite_frames = SubResource("SpriteFrames_yuk5n")
@@ -50,94 +55,87 @@ frame = 4
 frame_progress = 0.815771
 script = ExtResource("7_gq6ax")
 
-[node name="Hull" type="Sprite2D" parent="."]
-z_index = -5
-position = Vector2(0, -1)
-texture = ExtResource("8_rf2oa")
-
-[node name="ShipBigGunDual2" type="Sprite2D" parent="Hull"]
-z_index = 1
+[node name="GunHeavy0" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(-79, 0.5)
+position = Vector2(-79, -0.5)
 rotation = -3.14159
 texture = ExtResource("9_xabas")
 offset = Vector2(-6, 0)
 script = ExtResource("10_24wpl")
 
-[node name="ShipBigGunDualHit" type="Sprite2D" parent="Hull/ShipBigGunDual2"]
-visible = false
-texture = ExtResource("11_4suva")
-offset = Vector2(-6, 0)
+[node name="Muzzle0" type="Node2D" parent="GunHeavy0"]
+position = Vector2(27, 0)
 
-[node name="Muzzle1" type="Node2D" parent="Hull/ShipBigGunDual2"]
-position = Vector2(22.5, -3.5)
+[node name="Flash0" type="AnimatedSprite2D" parent="GunHeavy0/Muzzle0"]
+position = Vector2(12, 5.5)
+sprite_frames = ExtResource("12_dxm0s")
+animation = &"01"
+frame_progress = 0.165101
+script = ExtResource("7_gq6ax")
 
-[node name="Muzzle2" type="Node2D" parent="Hull/ShipBigGunDual2"]
-position = Vector2(22.5, 3.5)
-
-[node name="ShipBigGunDual3" type="Sprite2D" parent="Hull"]
-z_index = 2
-position = Vector2(-44, 0.5)
+[node name="GunHeavy2" type="Sprite2D" parent="."]
+z_index = 3
+texture_filter = 1
+position = Vector2(-48, 0)
 rotation = -3.14159
 texture = ExtResource("9_xabas")
 offset = Vector2(-6, 0)
 script = ExtResource("10_24wpl")
 
-[node name="ShipBigGunDualHit" type="Sprite2D" parent="Hull/ShipBigGunDual3"]
-visible = false
-texture = ExtResource("11_4suva")
-offset = Vector2(-6, 0)
-
-[node name="Muzzle1" type="Node2D" parent="Hull/ShipBigGunDual3"]
-position = Vector2(22.5, -3.5)
-
-[node name="Muzzle2" type="Node2D" parent="Hull/ShipBigGunDual3"]
-position = Vector2(22.5, 3.5)
-
-[node name="ShipGunRed" type="Sprite2D" parent="Hull"]
-position = Vector2(-73, -44)
-rotation = -1.5708
-texture = ExtResource("12_it1cs")
-script = ExtResource("10_24wpl")
-
-[node name="ShipGunRed2" type="Sprite2D" parent="Hull"]
-position = Vector2(-45, -44)
-rotation = -1.5708
-texture = ExtResource("12_it1cs")
-script = ExtResource("10_24wpl")
-
-[node name="ShipGunRed3" type="Sprite2D" parent="Hull"]
-position = Vector2(-46, 42)
-rotation = 1.5708
-texture = ExtResource("12_it1cs")
-script = ExtResource("10_24wpl")
-
-[node name="ShipGunRed4" type="Sprite2D" parent="Hull"]
-position = Vector2(-72, 43)
-rotation = 1.5708
-texture = ExtResource("12_it1cs")
-script = ExtResource("10_24wpl")
-
-[node name="ShipGunHuge" type="Sprite2D" parent="Hull"]
-z_index = 2
-position = Vector2(22, 0)
-texture = ExtResource("9_xabas")
-script = ExtResource("10_24wpl")
-
-[node name="ShipGunHuge2" type="Sprite2D" parent="Hull"]
+[node name="Muzzle0" type="Node2D" parent="GunHeavy2"]
 z_index = 1
-position = Vector2(60, 1)
+position = Vector2(27, 0)
+
+[node name="Flash0" type="AnimatedSprite2D" parent="GunHeavy2/Muzzle0"]
+position = Vector2(12, 5.5)
+sprite_frames = ExtResource("12_dxm0s")
+animation = &"01"
+script = ExtResource("7_gq6ax")
+
+[node name="ShipGunRed" type="Sprite2D" parent="."]
+position = Vector2(-73, -45)
+rotation = -1.5708
+texture = ExtResource("12_it1cs")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunRed2" type="Sprite2D" parent="."]
+position = Vector2(-45, -45)
+rotation = -1.5708
+texture = ExtResource("12_it1cs")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunRed3" type="Sprite2D" parent="."]
+position = Vector2(-46, 41)
+rotation = 1.5708
+texture = ExtResource("12_it1cs")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunRed4" type="Sprite2D" parent="."]
+position = Vector2(-72, 42)
+rotation = 1.5708
+texture = ExtResource("12_it1cs")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunHuge" type="Sprite2D" parent="."]
+z_index = 2
+position = Vector2(22, -1)
 texture = ExtResource("9_xabas")
 script = ExtResource("10_24wpl")
 
-[node name="ShipGunDualGray" type="Sprite2D" parent="Hull"]
-position = Vector2(25, -33)
+[node name="ShipGunHuge2" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(60, 0)
+texture = ExtResource("9_xabas")
+script = ExtResource("10_24wpl")
+
+[node name="ShipGunDualGray" type="Sprite2D" parent="."]
+position = Vector2(25, -34)
 texture = ExtResource("13_set35")
 offset = Vector2(-6, 0)
 script = ExtResource("10_24wpl")
 
-[node name="ShipGunDualGray2" type="Sprite2D" parent="Hull"]
-position = Vector2(25, 33)
+[node name="ShipGunDualGray2" type="Sprite2D" parent="."]
+position = Vector2(25, 32)
 texture = ExtResource("13_set35")
 offset = Vector2(-6, 0)
 script = ExtResource("10_24wpl")

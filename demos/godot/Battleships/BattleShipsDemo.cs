@@ -12,11 +12,16 @@ public partial class BattleShipsDemo : Node2D
 	{
 		_fps = _fps * 0.99 + 0.01 * (1.0/delta);
 
+		var dt = (float) delta;
 
-		var ships = World.Query<Ship>().Build();
-		ships.For((ref Ship ship) =>
+		var ships = World.Query<Ship, MotionState>().Build();
+		ships.For((ref Ship ship, ref MotionState motion) =>
 		{
-			ship.Position += ship.Transform.X * (float) delta * ship.Speed;
+			var direction = System.Numerics.Vector2.UnitX;
+			direction = System.Numerics.Vector2.Transform(direction, System.Numerics.Matrix3x2.CreateRotation(motion.Course));
+			motion.Position += motion.Speed * dt * direction;
+
+			ship.Position = new Vector2(motion.Position.X, motion.Position.Y);
 		});
 
 
@@ -27,7 +32,6 @@ public partial class BattleShipsDemo : Node2D
 			gun.Aim = aim;
 			gun.LookAt(gun.Aim);
 		}, pos);
-
 
 
 		GetNode<Label>("Ui Layer/Label").Text = $"Ships: {ships.Count} Guns: {guns.Count}\n FPS {Mathf.RoundToInt(_fps)}";
