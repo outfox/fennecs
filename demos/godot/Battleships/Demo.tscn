@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dbsfli58h85j1"]
+[gd_scene load_steps=22 format=3 uid="uid://dbsfli58h85j1"]
 
 [ext_resource type="Texture2D" uid="uid://cksybw015ecn5" path="res://Battleships/Sprites/water_ripple_medium_000.png" id="1_36tmx"]
 [ext_resource type="Texture2D" uid="uid://dml80u5fkcf3h" path="res://Battleships/Sprites/ship_medium_body.png" id="1_mpdiq"]
@@ -12,9 +12,10 @@
 [ext_resource type="Texture2D" uid="uid://ks3f84kp8lki" path="res://Battleships/Sprites/ship_big_gun.png" id="5_ida0b"]
 [ext_resource type="Script" path="res://Battleships/AutoPlayAnimation.gd" id="6_nk4bq"]
 [ext_resource type="PackedScene" uid="uid://dflthu5dnjmkt" path="res://Battleships/Vessels/battleship.tscn" id="13_auviu"]
-[ext_resource type="Script" path="res://Battleships/Spawner.gd" id="15_orx4g"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="16_um5ly"]
+[ext_resource type="Script" path="res://Battleships/Objective.cs" id="17_0i071"]
 [ext_resource type="SpriteFrames" uid="uid://bm5fnxtudky7e" path="res://Battleships/Sprites/sheet_flag.tres" id="17_a473v"]
+[ext_resource type="Script" path="res://Battleships/Admiralty.cs" id="17_kr6vl"]
 [ext_resource type="Script" path="res://Battleships/Gun.cs" id="20_tj12v"]
 [ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="22_n6gg5"]
 
@@ -99,12 +100,6 @@ useFallbackButtons = "Never"
 panSmoothing = 0.1
 zoomSmoothing = 0.1
 
-[node name="Spawner" type="Timer" parent="."]
-wait_time = 0.1
-autostart = true
-script = ExtResource("15_orx4g")
-prefab = ExtResource("13_auviu")
-
 [node name="Ui Layer" type="CanvasLayer" parent="."]
 layer = 3
 
@@ -121,10 +116,11 @@ label_settings = SubResource("LabelSettings_80l2o")
 horizontal_alignment = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="ObjectiveA" type="Node2D" parent="."]
+[node name="ObjectiveA" type="Node2D" parent="." groups=["Objective"]]
 z_index = -69
 position = Vector2(-1520, -3559)
 scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
 
 [node name="Label" type="Label" parent="ObjectiveA"]
 anchors_preset = 8
@@ -144,10 +140,11 @@ label_settings = SubResource("LabelSettings_sms3j")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ObjectiveB" type="Node2D" parent="."]
+[node name="ObjectiveB" type="Node2D" parent="." groups=["Objective"]]
 z_index = -69
 position = Vector2(-3869, 481)
 scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
 
 [node name="Label" type="Label" parent="ObjectiveB"]
 anchors_preset = 8
@@ -167,10 +164,11 @@ label_settings = SubResource("LabelSettings_sms3j")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ObjectiveC" type="Node2D" parent="."]
+[node name="ObjectiveC" type="Node2D" parent="." groups=["Objective"]]
 z_index = -69
 position = Vector2(-2283, 3080)
 scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
 
 [node name="Label" type="Label" parent="ObjectiveC"]
 anchors_preset = 8
@@ -190,10 +188,11 @@ label_settings = SubResource("LabelSettings_sms3j")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ObjectiveD" type="Node2D" parent="."]
+[node name="ObjectiveD" type="Node2D" parent="." groups=["Objective"]]
 z_index = -69
 position = Vector2(4638, -74)
 scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
 
 [node name="Label" type="Label" parent="ObjectiveD"]
 anchors_preset = 8
@@ -213,10 +212,11 @@ label_settings = SubResource("LabelSettings_sms3j")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ObjectiveE" type="Node2D" parent="."]
+[node name="ObjectiveE" type="Node2D" parent="." groups=["Objective"]]
 z_index = -69
 position = Vector2(1895, -1551)
 scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
 
 [node name="Label" type="Label" parent="ObjectiveE"]
 anchors_preset = 8
@@ -237,9 +237,10 @@ label_settings = SubResource("LabelSettings_sms3j")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ObjectiveF" type="Node2D" parent="."]
+[node name="ObjectiveF" type="Node2D" parent="." groups=["Objective"]]
 z_index = -69
 scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
 
 [node name="Label" type="Label" parent="ObjectiveF"]
 anchors_preset = 8
@@ -259,39 +260,45 @@ label_settings = SubResource("LabelSettings_sms3j")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Admiralty1" type="Node2D" parent="."]
+[node name="Admiralty1" type="Node2D" parent="." groups=["Admiralty"]]
+position = Vector2(-5178, -3708)
+script = ExtResource("17_kr6vl")
+Blueprints = [ExtResource("13_auviu")]
+MaxFleetValue = 300
+SpawnRadius = 500.0
+Color = Color(1, 0.594265, 0.582941, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty1"]
 z_index = -69
-position = Vector2(-5000, -5000)
 scale = Vector2(5, 5)
 sprite_frames = ExtResource("17_a473v")
 frame_progress = 0.894212
 script = ExtResource("6_nk4bq")
 
-[node name="Admiralty2" type="Node2D" parent="."]
+[node name="Admiralty2" type="Node2D" parent="." groups=["Admiralty"]]
+position = Vector2(3788, -3532)
+script = ExtResource("17_kr6vl")
+Blueprints = [ExtResource("13_auviu")]
+MaxFleetValue = 300
+SpawnRadius = 500.0
+Color = Color(0, 0.87547, 0.189829, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty2"]
 z_index = -69
-position = Vector2(5000, -5000)
 scale = Vector2(5, 5)
 sprite_frames = ExtResource("17_a473v")
 script = ExtResource("6_nk4bq")
 
-[node name="Admiralty4" type="Node2D" parent="."]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty4"]
-z_index = -69
-position = Vector2(-5000, 5000)
-scale = Vector2(5, 5)
-sprite_frames = ExtResource("17_a473v")
-script = ExtResource("6_nk4bq")
-
-[node name="Admiralty3" type="Node2D" parent="."]
+[node name="Admiralty3" type="Node2D" parent="." groups=["Admiralty"]]
+position = Vector2(2016, 2691)
+script = ExtResource("17_kr6vl")
+Blueprints = [ExtResource("13_auviu")]
+MaxFleetValue = 300
+SpawnRadius = 500.0
+Color = Color(0.670588, 0.694118, 1, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty3"]
 z_index = -69
-position = Vector2(5000, 5000)
 scale = Vector2(5, 5)
 sprite_frames = ExtResource("17_a473v")
 script = ExtResource("6_nk4bq")

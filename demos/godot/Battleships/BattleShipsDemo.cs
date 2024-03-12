@@ -8,23 +8,8 @@ public partial class BattleShipsDemo : Node2D
 	[Export] public int FactionCount = 4;
 
 	public readonly World World = new();
-	public readonly Admiralty[] Admiralties = new Admiralty[4];
 	
 	private double _fps = 120;
-
-	public override void _EnterTree()
-	{
-		base._EnterTree();	
-		for (var i = 0; i < 4; i++)
-		{
-			Admiralties[i] = new Admiralty
-			{
-				Color = Color.FromOkHsl((float) i / FactionCount, 0.9f, 0.9f),
-			};
-		}		
-	}
-
-
 	
 	public override void _Process(double delta)
 	{
@@ -39,7 +24,8 @@ public partial class BattleShipsDemo : Node2D
 			direction = System.Numerics.Vector2.Transform(direction, System.Numerics.Matrix3x2.CreateRotation(motion.Course));
 			motion.Position += motion.Speed * dt * direction;
 
-			ship.Position = new Vector2(motion.Position.X, motion.Position.Y);
+			ship.GlobalPosition = new Vector2(motion.Position.X, motion.Position.Y);
+			ship.Rotation = motion.Course;
 		});
 
 

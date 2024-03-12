@@ -38,9 +38,11 @@ animations = [{
 }]
 
 [node name="Battleship" type="Sprite2D" node_paths=PackedStringArray("Guns")]
+top_level = true
 texture_filter = 5
 script = ExtResource("1_dsb5r")
 Guns = [null, null, null, null, null, null, null, null, null, null]
+Points = 4
 
 [node name="Hull" type="Sprite2D" parent="."]
 z_index = -5

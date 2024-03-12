@@ -9,36 +9,47 @@ namespace fennecs.demos.godot.Battleships;
 public partial class Ship : Sprite2D
 {
 	[Export] public Sprite2D[] Guns;
-	
+
 	[Export] internal float Speed = 100f;
-	
+
+	[Export] internal int Points = 1;
+
 	public Admiralty Faction;
-	
-	
+
+
 	private Entity _entity;
 	private readonly List<Gun> _guns = [];
-	
+
 	public override void _Ready()
 	{
 		base._Ready();
 
 		WeakReference<GodotObject> wr;
-		
+
 		var demo = GetParent<BattleShipsDemo>();
 
-		//TODO: Admiralty should instantiate its own ships.
-		Faction = demo.Admiralties[Random.Shared.Next(demo.FactionCount)];
-		
 		var hull = GetNode<Sprite2D>("Hull");
 
-		hull.Modulate = Faction.Color; 
+		hull.Modulate = Faction.Color;
 
 		_entity = demo.World.Spawn();
+
+		// Used for grouping and targeting
+		_entity.AddLink(Faction);
+
+		// This is a ship ...
 		_entity.Add(this);
-		_entity.Add(new MotionState {Course = Transform.Rotation, Position = new Vector2(GlobalPosition.X, GlobalPosition.Y), Speed = Speed});
+
+		// ... and its state components
+		var goal = Faction.FleetObjective.GlobalPosition + new Godot.Vector2(GD.RandRange(-500, 500), GD.RandRange(-500, 500));
+		var course = GlobalPosition.AngleToPoint(goal);
+		Rotation = course;
+		_entity.Add(new MotionState {Course = course, Position = new Vector2(GlobalPosition.X, GlobalPosition.Y), Speed = Speed});
 		_entity.Add<Objective>();
 		_entity.Add<Targeting>();
 
+
+		// Register the Guns as Entities, too
 		foreach (var candidate in GetChildren())
 		{
 			if (candidate is not Gun gun) continue;
@@ -47,8 +58,6 @@ public partial class Ship : Sprite2D
 			var gunEntity = demo.World.Spawn();
 			gunEntity.Add(gun);
 		}
-		
-		
 	}
 }
 
@@ -60,17 +69,11 @@ public struct MotionState
 	public float Speed;
 }
 
-public class Objective
-{
-	public Admiralty Owner;
-	public Vector2 Position;
-	public float Radius;
-}
 
 public struct Targeting
 {
 	private readonly List<Entity> _targets = [];
-	
+
 	public Targeting()
 	{
 	}
