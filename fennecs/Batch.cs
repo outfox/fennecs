@@ -127,6 +127,7 @@ public readonly struct Batch : IDisposable
         /// <summary>
         /// Keeps the existing component data when trying to add a duplicate, but continues the remaining operations.
         /// </summary>
+        [Obsolete("Not implemented.", true)]
         Preserve,
 
         /// <summary>

@@ -24,8 +24,6 @@ public partial class Ship : Sprite2D
 	{
 		base._Ready();
 
-		WeakReference<GodotObject> wr;
-
 		var demo = GetParent<BattleShipsDemo>();
 
 		var hull = GetNode<Sprite2D>("Hull");
@@ -77,4 +75,29 @@ public struct Targeting
 	public Targeting()
 	{
 	}
+}
+
+
+public class SpatialClient
+{
+	public Vector2 Position;
+	public float Radius;
+
+	public int LastHash;
+
+	private int GridX => Mathf.RoundToInt(Position.X / 100f);
+	private int GridY => Mathf.RoundToInt(Position.Y / 100f);
+
+
+	private Dictionary<int, HashSet<SpatialClient>> _grid;
+
+	public void AddToGrid(Dictionary<int, HashSet<SpatialClient>> grid)
+	{
+		LastHash = GetHashCode();
+
+		_grid = grid;
+		_grid[GetHashCode()].Add(this);
+	}
+
+	public override int GetHashCode() => HashCode.Combine(GridX, GridY);
 }

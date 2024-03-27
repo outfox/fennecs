@@ -1,4 +1,5 @@
-﻿using fennecs.pools;
+﻿using System.Text;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -173,5 +174,18 @@ public partial class World : IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public WorldLock Lock => new(this);
+    #endregion
+    
+    #region Debug Tools
+    public string DebugString()
+    {
+        var sb = new StringBuilder(s);
+        sb.AppendLine("World:");
+        sb.AppendLine($"  Entities: {Count}");
+        sb.AppendLine($"  Archetypes: {_archetypes.Count}");
+        sb.AppendLine($"  Queries: {_queries.Count}");
+        sb.AppendLine($"  Mode: {Mode}");
+        return sb.ToString();
+    }
     #endregion
 }

@@ -12,6 +12,38 @@ We contextually sometimes say:
 - "the World contains", which can refer to both Entites and Archetypes.
 - "the Archetype contains", which can refer both to the Entities that share this Archetype, but also the Types that constitute said Archetype.
 
+## Fragmentation
+Archetype Fragmentation is an intrinsic disadvantage of an archetype-based ECS, stemming directly from its greatest strength. 
+
+::: info :neofox_magnify: BEHIND THE SCENES
+Each *extant* combination of Components, Object Links, and Relations on an Entity will create an Archetype in the Type graph that houses all the Entities and their data for that specific combination of Type Expressions. For Links and Relations, each specific target and backing data type counts as its own unique Type Expression. Plain Components contribute in the same way, albeit to a lesser extent.
+:::
+
+::: danger :neofox_nom_fox_nervous: HOW DOES THAT BITE US?
+Runners efficiently parallelize their work within and across Archetypes, but if each Archetype only contains a small number of Entities, eventually runtime and memory overheads will eat into these efficiency gains.
+
+An indirect symptom of fragmentation can be that you might be performing too many structural changes, possibly heterogeneously.
+:::
+
+
+For instance adding a unique "name" string to each entity using an Object Link would create a single Archetype for each single Entity. Instead, you'd always add the "name" as a string component (or struct or class that contains a string).
+
+A certain amount of Fragmentation is natural and often relatively harmless if you have low counts of entities (up to a few thousand), but it can become a detriment to performance when your Entity counts being processed each tick climbs into the hundreds of thousands.
+
+### Mitigating Fragmentation
+Mitigations for everyday fragmentation may include enabling/disabling components with a flag and just skipping over them in the runner code (if it's a minority of entities affected), but usually each use case will need custom optimizations when that time comes. 
+
+It's also recommended to perform large bulk operations such as adding or removing components to a large number of Entities through the [Query CRUD](/docs/Queries/CRUD.md), instead of the [per-Entity CRUD](/docs/Entities/CRUD.md).
+
+You'll likely get a long way before Archetype Fragmentation becomes a serious threat, but among the performance risks, this may quickly become the biggest one. 
+
+You can examine your World's `DebugString()` to see how many you have, and how many Entities they contain, at any given time.
+
+```cs
+var myWorld = new World();
+Console.WriteLine(myWorld.DebugString());
+```
+
 ## Structural Changes
 
 Changes to the layout of Entities - meaning which Components, Links, or Relations they have - define which [Archetype](/docs/Archetype.md) they falls into. 
