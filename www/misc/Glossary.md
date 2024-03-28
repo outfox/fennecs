@@ -22,7 +22,7 @@ Each *extant* combination of Components, Object Links, and Relations on an Entit
 ::: danger :neofox_nom_fox_nervous: HOW DOES THAT BITE US?
 Runners efficiently parallelize their work within and across Archetypes, but if each Archetype only contains a small number of Entities, eventually runtime and memory overheads will eat into these efficiency gains.
 
-An indirect symptom of fragmentation can be that you might be performing too many structural changes, possibly heterogeneously.
+An indirect symptom of fragmentation can be that you might be performing frequent or many structural changes, possibly even heterogeneously (per-Entity). [Bulk and Batch Operations](/docs/Queries/CRUD.md#batch-operations) can help streamline these operations, and they also benefit greatly from larger Archetypes (i.e. less fragmentation).
 :::
 
 
@@ -43,6 +43,12 @@ You can examine your World's `DebugString()` to see how many you have, and how m
 var myWorld = new World();
 Console.WriteLine(myWorld.DebugString());
 ```
+
+## Identity
+An Identity is a 64-bit number. When associated with a World, the majority of Identities are called Entities. Identities can represent multiple things:
+- a specific Entity (as itself or for targeting)
+- a specific Object's Identity (for Link targeting)
+- a Wildcard for a Query Filter (see [Match Expressions](/docs/Queries/MatchExpressions.md))
 
 ## Structural Changes
 

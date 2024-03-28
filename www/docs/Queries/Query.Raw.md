@@ -5,12 +5,13 @@ title: Query<>.Raw
 # `Query<>.Raw(RefAction)`
 # `Query<>.Raw<U>(RefAction,U)`
 
-::: danger THE FREIGHT TRAIN
-All work items at once, as contiguous memory. Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire stream data* of each Archetype directly into your ~~fox~~ delegate in one `Memory<T>` per Stream Type.
-:neofox_waffle_long_blurry::neofox_scream_stare:
+::: danger ARCHETYPE BY ARCHETYPE
+Entire Archetypes, delivered as contiguous memory. Here's your truckload of stuff - dig in!
+![a fennec with a big stack of pizza in boxes](https://fennecs.tech/img/fennec-raw.png)
+Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire stream data* of each Archetype directly ~~into your fox~~ to your delegate in one `Memory<T>` per Stream Type.
 :::
 
-## Processing Memory in Contiguous Blocks
+### Processing Memory in Contiguous Blocks
 
 Your code controls how and where. Maximum power, maximum responsibility.  
 _(in reality, `Memory<T>` is quite easy to use in C#, but can be more difficult to debug!)_
@@ -75,8 +76,12 @@ You can either access this memory as a `Span`, cast it to the desired type, etc.
 
 ::: code-group
 ```cs [🦋 use as span]
-//TODO :) until then, you probably either have a clue already
-//or you better not be copying this code sample anyway
+var movers = World.Query<Position, Velocity>().Build();
+movers.Raw((Memory<Position> positions, Memory<Velocity> velocities, float dt) => 
+{
+    Engine.Physics.Integrate(positions.Span, velocities.Span, dt);
+},
+Time.deltaTime); 
 ```
 
 ```cs [☠️ cast to type]

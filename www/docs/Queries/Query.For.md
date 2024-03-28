@@ -6,17 +6,16 @@ title: Query<>.For
 # `Query<>.For(RefAction)`
 # `Query<>.For<U>(RefAction,U)`
 
-::: info THE CLASSIC
-One work item at a time. Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each Entity in the query, providing the Components that match the ==Stream Types== as `ref` to the code.  
-:neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_waffle::neofox_nom_waffle:
+::: info ENTITY BY ENTITY, ONE BY ONE
+Process one work item at a time. Fast, fun, and flexible.
+![a fennec eating pizza alone](https://fennecs.tech/img/fennec-for.png)
+Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each Entity in the query, providing the Components that match the ==Stream Types== as `ref` to the code.  
 :::
 
 "**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  Chances are you can ship your entire game with just this one. Let us know how it went!
 
-## Description
+### Description
 Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](StreamTypes.md).
-
-For each Entity in the Query, calls the appropriate `RefAction`, with or without passing an uniform data parameter depending on the overload.
 
 Each `For`-Runner takes a [`RefAction`](Delegates.md#refaction-and-refactionu) or [`RefActionU<>`](Delegates.md#refaction-and-refactionu) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Query.1-5.md#prefix-subsets).
 

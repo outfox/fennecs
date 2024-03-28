@@ -118,11 +118,13 @@ public readonly struct Batch : IDisposable
 
         /// <summary>
         /// Ignores archetypes that already contain the component, leaving their data and state unchanged.
+        /// ⚠️ This affects all operations to be submitted with the Batch, even retroactively, when a conflicting
+        /// Add operation is added.
         /// </summary>
         /// <remarks>
         /// If an archetype already has the component that a batch tries to add, no entities of that archetype are affected. This is true regardless of whether or not they match the batch's EntityQuery.
         /// </remarks> 
-        Skip,
+        SkipEntirely,
 
         /// <summary>
         /// Keeps the existing component data when trying to add a duplicate, but continues the remaining operations.

@@ -5,12 +5,13 @@ title: Query<>.Job
 # `Query<>.Job(MemoryAction)`
 # `Query<>.Job<U>(MemoryAction,U)`
 
-::: info THE WORKHORSE
-One work item at a time, multi-threaded. Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instantly schedules and executes the workload split into chunks, calling it many times in parallel across CPU cores.  
-:neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle::neofox_waffle::neofox_nom_waffle:
+::: info ENTITY BY ENTITY, ONE BY ONE (IN PARALLEL!)
+One work item at a time, multi-threaded. Super-fast, and with few synchronization caveats.
+![three fennecs eating pizza together](https://fennecs.tech/img/fennec-job.png)
+Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instantly schedules and executes the workload split into chunks, calling it many times in parallel across CPU cores.  
 :::
 
-Sometimes, mommy and daddy foxes want to be on separate CPU cores. That doesn't mean they don't love each other anymore! It only means that if you ~~can keep a secret~~ have **lots and lots** of entities in large Archetypes, you might get ~~a new action figure~~ performance gains from daddy tomorrow!
+Sometimes, mommy and daddy foxes want to be on separate CPU cores. That doesn't mean they don't love each other anymore! It only means that if you ~~can keep a secret~~ have **lots and lots** of entities in large Archetypes, you might get ~~a new action figure~~ performance gains tomorrow!
 
 ### Basic Syntax
 The nice part is, you can easily swap out `Query.Job` for `Query.For` and vice versa. There are optional parameters to optimize how the work is split up that you can use later to fine-tune your runtime performance.

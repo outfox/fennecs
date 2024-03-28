@@ -1,5 +1,5 @@
 ---
-title: Per-Query CRUD
+title: Bulk CRUD
 ---
 
 # Bulk Create, Read, Update, Delete
@@ -65,7 +65,7 @@ loadedGuns.Batch()
 (TODO) entity relations can also be added. (coming beta 1.2)
 
 
-## Batching Operations
+## Batch Operations
 Structural changes to all the Entities in a Query often mean that the Query no longer contains these entities. For this purpose, the `Query.Batch(...)` method and its overloads exist.
 
 They return a `Batch` IDisposable builder pattern that allows you to queue up multiple structural changes.
@@ -74,8 +74,8 @@ Call `Submit()` on the `Batch` to defer or immediately execute all the Operation
 
 Once you `Submit()` a `Batch`, you pass ownership and responsibility to `Dispose()` it to the World. You only need to dispose the Batch if you decide not to submit it. *(not a realistic use case)*
 
-## Batch Conflicts
-Batch Operations can also be used to overwrite and add or remove components at the same time. This means some semantic conflicts may occur, typically:
+### Handling Semantic Conflicts
+Batch Operations can be requested for queries that do not or will not contain all affected Entities. They can be used to overwrite and add or remove components at the same time. This means some semantic conflicts may occur, typically:
 * `Remove<T>` called on a Batch for a Query where not every Entity has that component
 * `Add<T>` called on a Batch for a Query where some or all Entities already have that component.
 
@@ -83,25 +83,25 @@ These could be used to great effect, e.g. to set a new Component value for all E
 
 `Batch.AddConflict` and `Batch.RemoveConflict` are enums that can be passed to `Query.Batch(AddConflict, RemoveConflict)` to specify what the `Batch` behaviour for these conflict types should be:
 
-### Additions
-`Batch.AddConflict.Disallow = default`  
+### Batch.AddConflict
+`Disallow = default`  
 Throw an exception if attempting to add a component that is not explicitly excluded from the query.
 
-`Batch.AddConflict.Skip`  
-Skip over each Archetype (group of Entities) that already has the Component, not adding or changing the existing one.
+`SkipEntirely`  
+Skip each Archetype (group of Entities tracked by the Query) that already has the Component, not adding or changing the existing one. 
+::: danger CAUTION - FOOT GUN
+This will skip all operations of the batch on that archetype, including removals and other additions. This will also "retroactively" affect other operations, as a batch is treated as a set of atomic operations all rolled into one.
+:::
 
-`Batch.AddConflict.Skip`  
-Skip each Archetype (group of Entities) that already has the Component, not adding or changing the existing one. CAUTION: This will affect all operations of the batch on that archetype, including removals.
-
-`Batch.AddConflict.Preserve`  
+`Preserve`  
 Preserve the Values of already present Components, and adds the new ones where not present. *(currently not implemented)*
 
-`Batch.AddConflict.Replace`  
+`Replace`  
 Replaces any existing components in addition to adding the new ones where not present.
 
-### Removals
-`Batch.RemoveConflict.Disallow = default`  
+### Batch.RemoveConflict
+`Disallow = default`  
 Throw if attempting to remove a component unless it is expressly included in the query (and thus present on all entities.)
 
-`Batch.RemoveConflict.Allow`  
+`Allow`  
 Allow operating on Archetypes where the Component to be removed is not present. Removal operations are Idempotent on these archetypes, i.e. they don't change them (on their own) and have a near-zero cost.
