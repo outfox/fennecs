@@ -179,8 +179,7 @@ public partial class World : IDisposable
     #region Debug Tools
     public string DebugString()
     {
-        var sb = new StringBuilder();
-        sb.AppendLine("World:");
+        var sb = new StringBuilder("World:");
         sb.AppendLine($"  Entities: {Count}");
         sb.AppendLine($"  Archetypes: {_archetypes.Count}");
         sb.AppendLine($"  Queries: {_queries.Count}");
