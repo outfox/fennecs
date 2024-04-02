@@ -78,6 +78,6 @@ head:
 # Ok, what the fox? *Another ECS?!*
 ### :neofox_facepalm: We know... oh, _we know._    
 
-**But it had to be done.** In a tiny nutshell, **fenn**ecs is an archetype-based ECS that proves: "small", "clever", and "fast" don't have to be mutually exclusive attributes to look for in a game or simulation development library. And, by the way, did we mention it's free & libre open source software (MIT license)?
+In a tiny nutshell, **fenn**ecs is an archetype-based ECS that proves: "small", "clever", and "fast" don't have to be mutually exclusive attributes to look for in a game or simulation development library. And, by the way, did we mention it's free & libre open source software (MIT license)?
 
-### Let's dare to be all bright-eyed and bushy-tailed again!
+### Time to get all bright-eyed and bushy-tailed again!

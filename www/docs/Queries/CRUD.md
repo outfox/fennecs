@@ -89,6 +89,7 @@ Throw an exception if attempting to add a component that is not explicitly exclu
 
 `SkipEntirely`  
 Skip each Archetype (group of Entities tracked by the Query) that already has the Component, not adding or changing the existing one. 
+
 ::: danger CAUTION - FOOT GUN
 This will skip all operations of the batch on that archetype, including removals and other additions. This will also "retroactively" affect other operations, as a batch is treated as a set of atomic operations all rolled into one.
 :::
