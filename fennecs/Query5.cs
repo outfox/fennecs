@@ -71,7 +71,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     }
 
     
-    /// <inheritdoc cref="Query{C0}.For(fennecs.EntityAction{C0})"/>
+    /// <inheritdoc cref="Query{C0}.For(EntityAction{C0})"/>
     public void For(EntityAction<C0, C1, C2, C3, C4> action)
     {
         AssertNotDisposed();
@@ -91,12 +91,12 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span3 = s3.AsSpan(0, table.Count);
                 var span4 = s4.AsSpan(0, table.Count);
 
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i],ref span4[i]);
+                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
             } while (join.Iterate());
         }
     }
 
-    /// <inheritdoc cref="Query{C0}.For{U}(fennecs.EntityActionU{C0,U})"/>
+    /// <inheritdoc cref="Query{C0}.For{U}(EntityActionU{C0,U})"/>
     public void For<U>(EntityActionU<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         AssertNotDisposed();

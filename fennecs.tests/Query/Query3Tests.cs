@@ -30,11 +30,11 @@ public class Query3Tests
                 .Add('Q');
         }
 
-        query.For((ref int _, ref string str, ref char _) =>
+        query.For((Entity x, ref int _, ref string str, ref char _, float uniform ) =>
         {
             Assert.Equal("one", str);
             str = "two";
-        });
+        }, 12f);
 
         query.Raw((integers, strings, _) =>
         {

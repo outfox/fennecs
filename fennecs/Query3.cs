@@ -13,16 +13,18 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
+    
     #endregion
 
 
     #region Runners
-    /// <inheritdoc cref="Query{C0}.For"/>
+    /// <inheritdoc cref="Query{C0}.For(RefAction{C0})"/>
     public void For(RefAction<C0, C1, C2> action)
     {
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
+        
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
@@ -41,12 +43,13 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     }
     
 
-    /// <inheritdoc cref="Query{C0}.For{U}"/>
+    /// <inheritdoc cref="Query{C0}.For{U}(RefActionU{C0,U}"/>
     public void For<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
+        
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
@@ -63,12 +66,13 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         }
     }
     
-    /// <inheritdoc cref="Query{C0}.For(fennecs.EntityAction{C0})"/>
+    /// <inheritdoc cref="Query{C0}.For(EntityAction{C0})"/>
     public void For(EntityAction<C0, C1, C2> action)
     {
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
+        
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
@@ -86,12 +90,13 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     }
 
 
-    /// <inheritdoc cref="Query{C0}.For{U}(fennecs.EntityActionU{C0, U})"/>
+    /// <inheritdoc cref="Query{C0}.For{U}(EntityActionU{C0,U})"/>
     public void For<U>(EntityActionU<C0, C1, C2, U> action, U uniform)
     {
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
+        
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);

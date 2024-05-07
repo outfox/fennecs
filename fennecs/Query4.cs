@@ -69,7 +69,7 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     }
 
 
-    /// <inheritdoc cref="Query{C0}.For(fennecs.EntityAction{C0})"/>
+    /// <inheritdoc cref="Query{C0}.For(EntityAction{C0})"/>
     public void For(EntityAction<C0, C1, C2, C3> action)
     {
         AssertNotDisposed();
@@ -93,7 +93,7 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     }
 
 
-    /// <inheritdoc cref="Query{C0}.For{U}(fennecs.EntityActionU{C0, U})"/>
+    /// <inheritdoc cref="Query{C0}.For{U}(EntityActionU{C0,U})"/>
     public void For<U>(EntityActionU<C0, C1, C2, C3, U> action, U uniform)
     {
         AssertNotDisposed();

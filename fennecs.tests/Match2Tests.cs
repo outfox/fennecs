@@ -23,7 +23,7 @@ public class Match2Tests
             .AddRelation(bob, RELATION1);
     }
 
-
+    
     [Fact]
     public void Any_Enumerates_all_Components_Once()
     {

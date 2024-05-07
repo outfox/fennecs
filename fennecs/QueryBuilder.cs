@@ -162,7 +162,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
     }
 
 
-    public Query Build()
+    public Query<C1, C2> Build()
     {
         return (Query<C1, C2>) World.GetQuery(StreamTypes, Mask, CreateQuery);
     }

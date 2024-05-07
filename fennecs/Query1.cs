@@ -14,7 +14,7 @@ namespace fennecs;
 /// <ul>
 /// <li><c>ForEach(...)</c> - call a delegate <see cref="RefAction{C0}"/> for each Entity.</li>
 /// <li><c>Job(...)</c> - parallel process, calling a delegate <see cref="RefAction{C0}"/> for each Entity.</li>
-/// <li><c>Raw(...)</c> - pass Memory regions / Spans too a delegate <see cref="MemoryAction{C0}"/> per matched Archetype (× matched Wildcards) of entities.</li>
+/// <li><c>Raw(...)</c> - pass Memory regions / Spans to a delegate <see cref="MemoryAction{C0}"/> per matched Archetype (× matched Wildcards) of entities.</li>
 /// </ul>
 /// </summary>
 /// <remarks>
@@ -60,11 +60,43 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
-                foreach (ref var c0 in span0) action(ref c0);
+                //for (var i = 0; i < table.Count; i++) action(ref span0[i]);
+                foreach (ref var c0 in span0) action(ref c0); // foreach is faster than for loop
             } while (join.Iterate());
         }
     }
     
+
+    // #region Showcase
+    /// <summary>
+    /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
+    /// </summary>
+    /// <param name="action"><see cref="RefActionU{C0,U}"/> taking references to Component Types.</param>
+    /// <param name="uniform">The uniform data to pass to the action.</param>
+    public void For<U>(RefActionU<C0, U> action, U uniform)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+
+        foreach (var table in Archetypes)
+        {
+            var count = table.Count;
+
+            using var join = table.CrossJoin<C0>(StreamTypes);
+            if (join.Empty) continue;
+            do
+            {
+                var s0 = join.Select;
+                var span0 = s0.AsSpan(0, count);
+                //for (var i = 0; i < table.Count; i++) action(ref span0[i]);
+                foreach (ref var c0 in span0) action(ref c0, uniform); // foreach is faster than for loop
+            } while (join.Iterate());
+        }
+    }
+    // #endregion Showcase
+
+
     /// <summary>
     /// Executes an action for each entity that matches the query.
     /// Also passes the Entity to the action, making structural changes easy and accessible.
@@ -91,7 +123,7 @@ public class Query<C0> : Query
         }
     }
 
-    
+
     /// <summary>
     /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
     /// Also passes the Entity to the action, making structural changes easy and accessible.
@@ -118,41 +150,8 @@ public class Query<C0> : Query
             } while (join.Iterate());
         }
     }
-
-
-
-    // #region Showcase
-    /// <summary>
-    /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
-    /// </summary>
-    /// <param name="action"><see cref="RefActionU{C0,U}"/> taking references to Component Types.</param>
-    /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void For<U>(RefActionU<C0, U> action, U uniform)
-    {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
-
-        foreach (var table in Archetypes)
-        {
-            var count = table.Count;
-
-            using var join = table.CrossJoin<C0>(StreamTypes);
-            if (join.Empty) continue;
-            do
-            {
-                var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                foreach (ref var c0 in span0)
-                {
-                    action(ref c0, uniform);
-                }
-            } while (join.Iterate());
-        }
-    }
-    // #endregion Showcase
-
-
+    
+    
     /// <summary>
     /// Executes an action <em>in parallel chunks</em> for each entity that matches the query.
     /// </summary>
@@ -320,5 +319,6 @@ public class Query<C0> : Query
             } while (join.Iterate());
         }
     }
+    
     #endregion
 }
