@@ -75,7 +75,7 @@ public partial class World : IDisposable
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
     /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
-    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/>, <see cref="Match.Target"/>
+    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/> or <see cref="Match.Target"/>
     /// </param>
     public void DespawnAllWith<T>(Identity match = default)
     {
@@ -159,7 +159,7 @@ public partial class World : IDisposable
 
 
     /// <summary>
-    /// Disposes of the World. Currently a no-op.
+    /// Disposes of the World. Currently, a no-op.
     /// </summary>
     public void Dispose()
     {
@@ -174,6 +174,7 @@ public partial class World : IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
     public WorldLock Lock => new(this);
+    
     #endregion
     
     #region Debug Tools

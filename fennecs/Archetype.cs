@@ -415,7 +415,13 @@ public sealed class Archetype : IEnumerable<Entity>
         return GetEnumerator();
     }
 
-
+    /// <summary>
+    /// Returns (constructs) the Entity at the given index, associated with the World this Archetype belongs to.
+    /// </summary>
+    /// <remarks>
+    /// There's no bounds checking, so be sure to check against the Count property before using this method.
+    /// (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
+    /// </remarks>
     public Entity this[int index] => new(_world, _identities[index]);
 
 

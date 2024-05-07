@@ -39,7 +39,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             } while (join.Iterate());
         }
     }
-
+    
 
     /// <inheritdoc cref="Query{C0}.For{U}"/>
     public void For<U>(RefActionU<C0, C1, C2, U> action, U uniform)
@@ -62,6 +62,52 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             } while (join.Iterate());
         }
     }
+    
+    /// <inheritdoc cref="Query{C0}.For(fennecs.EntityAction{C0})"/>
+    public void For(EntityAction<C0, C1, C2> action)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
+            if (join.Empty) continue;
+
+            do
+            {
+                var (s0, s1, s2) = join.Select;
+                var span0 = s0.AsSpan(0, table.Count);
+                var span1 = s1.AsSpan(0, table.Count);
+                var span2 = s2.AsSpan(0, table.Count);
+                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i]);
+            } while (join.Iterate());
+        }
+    }
+
+
+    /// <inheritdoc cref="Query{C0}.For{U}(fennecs.EntityActionU{C0, U})"/>
+    public void For<U>(EntityActionU<C0, C1, C2, U> action, U uniform)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
+            if (join.Empty) continue;
+
+            do
+            {
+                var (s0, s1, s2) = join.Select;
+                var span0 = s0.AsSpan(0, table.Count);
+                var span1 = s1.AsSpan(0, table.Count);
+                var span2 = s2.AsSpan(0, table.Count);
+                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
+            } while (join.Iterate());
+        }
+    }
+  
 
 
     /// <inheritdoc cref="Query{C0}.Job"/>

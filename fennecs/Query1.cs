@@ -23,6 +23,7 @@ namespace fennecs;
 public class Query<C0> : Query
 {
     #region Internals
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Query{C0}"/> class.
     /// </summary>
@@ -33,10 +34,12 @@ public class Query<C0> : Query
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
+
     #endregion
 
 
     #region Runners
+
     /// <summary>
     /// Executes an action for each entity that matches the query.
     /// </summary>
@@ -61,13 +64,68 @@ public class Query<C0> : Query
             } while (join.Iterate());
         }
     }
+    
+    /// <summary>
+    /// Executes an action for each entity that matches the query.
+    /// Also passes the Entity to the action, making structural changes easy and accessible.
+    /// </summary>
+    /// <param name="action"><see cref="EntityAction{C0}"/> taking references to Component Types.</param>
+    public void For(EntityAction<C0> action)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+        foreach (var table in Archetypes)
+        {
+            var count = table.Count;
+
+            using var join = table.CrossJoin<C0>(StreamTypes);
+            if (join.Empty) continue;
+
+            do
+            {
+                var s0 = join.Select;
+                var span0 = s0.AsSpan(0, count);
+                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i]);
+            } while (join.Iterate());
+        }
+    }
+
+    
+    /// <summary>
+    /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
+    /// Also passes the Entity to the action, making structural changes easy and accessible.
+    /// </summary>
+    /// <param name="action"><see cref="EntityActionU{C0,U}"/> taking references to Component Types.</param>
+    /// <param name="uniform">The uniform data to pass to the action.</param>
+    public void For<U>(EntityActionU<C0, U> action, U uniform)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+        foreach (var table in Archetypes)
+        {
+            var count = table.Count;
+
+            using var join = table.CrossJoin<C0>(StreamTypes);
+            if (join.Empty) continue;
+
+            do
+            {
+                var s0 = join.Select;
+                var span0 = s0.AsSpan(0, count);
+                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], uniform);
+            } while (join.Iterate());
+        }
+    }
+
 
 
     // #region Showcase
     /// <summary>
     /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
     /// </summary>
-    /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
+    /// <param name="action"><see cref="RefActionU{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
     public void For<U>(RefActionU<C0, U> action, U uniform)
     {

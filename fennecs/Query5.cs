@@ -17,7 +17,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
 
     #region Runners
-    /// <inheritdoc cref="Query{C0}.For"/>
+    /// <inheritdoc cref="Query{C0}.For(fennecs.RefAction{C0})"/>
     public void For(RefAction<C0, C1, C2, C3, C4> action)
     {
         AssertNotDisposed();
@@ -44,7 +44,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     }
 
 
-    /// <inheritdoc cref="Query{C0}.For{U}"/>
+    /// <inheritdoc cref="Query{C0}.For(fennecs.RefAction{C0})"/>
     public void For<U>(RefActionU<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -70,6 +70,57 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
         }
     }
 
+    
+    /// <inheritdoc cref="Query{C0}.For(fennecs.EntityAction{C0})"/>
+    public void For(EntityAction<C0, C1, C2, C3, C4> action)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
+
+            do
+            {
+                var (s0, s1, s2, s3, s4) = join.Select;
+                var span0 = s0.AsSpan(0, table.Count);
+                var span1 = s1.AsSpan(0, table.Count);
+                var span2 = s2.AsSpan(0, table.Count);
+                var span3 = s3.AsSpan(0, table.Count);
+                var span4 = s4.AsSpan(0, table.Count);
+
+                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i],ref span4[i]);
+            } while (join.Iterate());
+        }
+    }
+
+    /// <inheritdoc cref="Query{C0}.For{U}(fennecs.EntityActionU{C0,U})"/>
+    public void For<U>(EntityActionU<C0, C1, C2, C3, C4, U> action, U uniform)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
+            if (join.Empty) continue;
+
+            do
+            {
+                var (s0, s1, s2, s3, s4) = join.Select;
+                var span0 = s0.AsSpan(0, table.Count);
+                var span1 = s1.AsSpan(0, table.Count);
+                var span2 = s2.AsSpan(0, table.Count);
+                var span3 = s3.AsSpan(0, table.Count);
+                var span4 = s4.AsSpan(0, table.Count);
+
+                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i],ref span4[i], uniform);
+            } while (join.Iterate());
+        }
+    }
+    
 
     /// <inheritdoc cref="Query{C0}.Job"/>
     public void Job(RefAction<C0, C1, C2, C3, C4> action, int chunkSize = int.MaxValue)

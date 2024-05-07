@@ -45,8 +45,9 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     public int CompareTo(Identity other) => Value.CompareTo(other.Value);
 
     public static implicit operator Identity(Entity entity) => entity.Id;
-
-
+    
+    public static implicit operator bool(Identity self) => self != default;
+    
     public override bool Equals(object? obj)
     {
         throw new InvalidCastException("Entity: Boxing equality comparisons disallowed. Use IEquatable<Entity>.Equals(Entity other) instead.");

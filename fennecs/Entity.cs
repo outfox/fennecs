@@ -51,7 +51,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity entity.</exception>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
     public ref C Ref<C>(Identity target = default) => ref World.GetComponent<C>(this, target);
 
 
@@ -240,7 +240,13 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     #region Cast Operators and IEquatable<Entity>
     public bool Equals(Entity other) => Id.Equals(other.Id) && Equals(World, other.World);
 
-
+    /// <summary>
+    /// Implicit cast to Boolean. Returns true if the Entity is alive and its Identity is nondefault.
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    public static implicit operator bool(Entity entity) => entity.Id && entity.World.IsAlive(entity.Id);
+    
     public override bool Equals(object? obj) => obj is Entity other && Equals(other);
 
 
