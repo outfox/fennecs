@@ -519,4 +519,50 @@ public class Query2Tests
             }
         });
     }
+    
+    [Fact]
+    private void Can_Loop_With_Entity()
+    {
+        using var world = new World();
+
+        var e1 = world.Spawn().Add(123).Add<string>("123");
+        var e2 = world.Spawn().Add(555).Add<string>("ralf");
+        
+        var query = world.Query<int, string>().Build();
+
+        var found = new List<Entity>();
+        
+        query.For((Entity e, ref int _, ref string _) =>
+        {
+            found.Add(e);
+        });
+
+        Assert.Equal(2, found.Count);
+        Assert.Contains(e1, found);
+        Assert.Contains(e2, found);
+    }
+
+    
+    [Fact]
+    private void Can_Loop_With_Entity_and_Uniform()
+    {
+        using var world = new World();
+
+        var e1 = world.Spawn().Add(123).Add<string>("123");
+        var e2 = world.Spawn().Add(555).Add<string>("ralf");
+        
+        var query = world.Query<int, string>().Build();
+
+        var found = new List<Entity>();
+        
+        query.For((Entity e, ref int _, ref string _, float uniform) =>
+        {
+            found.Add(e);
+            Assert.Equal(3.1415f, uniform);
+        }, 3.1415f);
+
+        Assert.Equal(2, found.Count);
+        Assert.Contains(e1, found);
+        Assert.Contains(e2, found);
+    }
 }

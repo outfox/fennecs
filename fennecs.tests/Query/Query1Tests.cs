@@ -498,4 +498,50 @@ public class Query1Tests
         query.For((ref long value, int _) => { Assert.Equal(index2++, value); },
             1337);
     }
+
+    [Fact]
+    private void Can_Loop_With_Entity()
+    {
+        using var world = new World();
+
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(555);
+        
+        var query = world.Query<int>().Build();
+
+        var found = new List<Entity>();
+        
+        query.For((Entity e, ref int _) =>
+        {
+            found.Add(e);
+        });
+
+        Assert.Equal(2, found.Count);
+        Assert.Contains(e1, found);
+        Assert.Contains(e2, found);
+    }
+
+    
+    [Fact]
+    private void Can_Loop_With_Entity_and_Uniform()
+    {
+        using var world = new World();
+
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(555);
+        
+        var query = world.Query<int>().Build();
+
+        var found = new List<Entity>();
+        
+        query.For((Entity e, ref int _, float uniform) =>
+        {
+            found.Add(e);
+            Assert.Equal(3.1415f, uniform);
+        }, 3.1415f);
+
+        Assert.Equal(2, found.Count);
+        Assert.Contains(e1, found);
+        Assert.Contains(e2, found);
+    }
 }

@@ -24,8 +24,8 @@ public class Query5Tests
         {
             Assert.Equal(index, query.Count);
 
-            world.Spawn()
-                .Add<TypeA>()
+            var e = world.Spawn();
+                e.Add(new TypeA(){entity = e})
                 .Add(99.999)
                 .Add(index)
                 .Add("one")
@@ -99,9 +99,29 @@ public class Query5Tests
         }, 9);
 
 
-        query.For((ref TypeA _, ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
+        query.For((Entity e, ref TypeA a, ref double _, ref int _, ref string str, ref char _) =>
+        {
+            Assert.True(e);
+            Assert.Equal(e, a.entity);
+            
+            Assert.Equal(9.ToString(), str);
+            str = "10";
+        });
+
+        
+        query.For((Entity _, ref TypeA _, ref double _, ref int _, ref string str, ref char _, int uniform) =>
+        {
+            Assert.Equal(10.ToString(), str);
+            str = uniform.ToString();
+        }, 11);
+
+
+        query.For((ref TypeA _, ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(11.ToString(), str); });
     }
 
 
-    private struct TypeA;
+    private struct TypeA
+    {
+        public Entity entity;
+    };
 }

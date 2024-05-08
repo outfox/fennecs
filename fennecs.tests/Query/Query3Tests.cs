@@ -95,6 +95,20 @@ public class Query3Tests
             }
         }, 9);
 
-        query.For((ref int _, ref string str, ref char _) => { Assert.Equal(9.ToString(), str); });
+        query.For((Entity e, ref int _, ref string str, ref char _) =>
+        {
+            Assert.Equal(9.ToString(), str);
+            str = "10";
+        });
+
+        
+        query.For((Entity e, ref int _, ref string str, ref char _, int uniform) =>
+        {
+            Assert.Equal(10.ToString(), str);
+            str = uniform.ToString();
+        }, 11);
+
+        
+        query.For((ref int _, ref string str, ref char _) => { Assert.Equal(11.ToString(), str); });
     }
 }

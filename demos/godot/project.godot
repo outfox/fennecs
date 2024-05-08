@@ -12,7 +12,7 @@ config_version=5
 
 config/name="fennecs-demos-godot"
 config/description="A set of examples using the fennecs Entity Component System"
-run/main_scene="res://Battleships/Demo.tscn"
+run/main_scene="res://Cubes/Demo.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://zzzShared/icon.svg"
 
