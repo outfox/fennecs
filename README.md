@@ -38,7 +38,7 @@
    </tr>
 </table>
 
-# [fennecs.tech](https://fennecs.tech) (official website) 
+# 📕 DOCUMENTATION: [fennecs.tech](https://fennecs.tech) (official website) 
 Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/demos/) , and more!  
 ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) 
 

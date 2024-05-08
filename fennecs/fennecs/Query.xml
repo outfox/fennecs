@@ -1688,52 +1688,59 @@
         </member>
         <member name="M:fennecs.QueryBuilder.Has``1(fennecs.Identity)">
             <summary>
-            
+            Include only Entities that have the given Component or Relation.
             </summary>
-            <param name="target"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-            <exception cref="T:System.InvalidOperationException"></exception>
+            <param name="target">relation target (defaults to no target = Plain Component)</param>
+            <typeparam name="T">component type</typeparam>
+            <returns>itself (fluent pattern)</returns>
+            <exception cref="T:System.InvalidOperationException">if the StreamTypes already cover this</exception>
         </member>
         <member name="M:fennecs.QueryBuilder.Has``1(``0)">
             <summary>
-            
+            Include only Entities that have the given ObjectLink.
             </summary>
-            <param name="target"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
+            <param name="target">relation target</param>
+            <typeparam name="T">component type</typeparam>
+            <returns>itself (fluent pattern)</returns>
+            <exception cref="T:System.InvalidOperationException">if the StreamTypes already cover this</exception>
         </member>
         <member name="M:fennecs.QueryBuilder.Not``1(fennecs.Identity)">
             <summary>
-            
+            Exclude all Entities that have the given Component or Relation.
             </summary>
-            <param name="target"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
+            <param name="target">relation target (defaults to no target = Plain Component)</param>
+            <typeparam name="T">component type</typeparam>
+            <returns>itself (fluent pattern)</returns>
+            <exception cref="T:System.InvalidOperationException">if the StreamTypes already cover this</exception>
         </member>
         <member name="M:fennecs.QueryBuilder.Not``1(``0)">
             <summary>
-            
+            Exclude all Entities that have the given ObjectLink.
             </summary>
-            <param name="target"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
+            <param name="target">link target</param>
+            <typeparam name="T">component type</typeparam>
+            <returns>itself (fluent pattern)</returns>
+            <exception cref="T:System.InvalidOperationException">if the StreamTypes already cover this</exception>
         </member>
         <member name="M:fennecs.QueryBuilder.Any``1(fennecs.Identity)">
             <summary>
-            
+            Include Entities that have the given Component or Relation, or any other Relation that is
+            givein in other <see cref="M:fennecs.QueryBuilder.Any``1(fennecs.Identity)"/> calls.
             </summary>
-            <param name="target"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
+            <param name="target">relation target (defaults to no target = Plain Component)</param>
+            <typeparam name="T">component type</typeparam>
+            <returns>itself (fluent pattern)</returns>
+            <exception cref="T:System.InvalidOperationException">if the StreamTypes already cover this</exception>
         </member>
         <member name="M:fennecs.QueryBuilder.Any``1(``0)">
             <summary>
-            
+            Include Entities that have the given Object Link, or any other Object Link that is
+            given in other <see cref="M:fennecs.QueryBuilder.Any``1(``0)"/> calls.
             </summary>
-            <param name="target"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
+            <param name="target">link target</param>
+            <typeparam name="T">component type</typeparam>
+            <returns>itself (fluent pattern)</returns>
+            <exception cref="T:System.InvalidOperationException">if the StreamTypes already cover this</exception>
         </member>
         <member name="T:fennecs.QueryBuilder`1">
             <inheritdoc />
