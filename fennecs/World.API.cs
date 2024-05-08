@@ -3,6 +3,9 @@ using fennecs.pools;
 
 namespace fennecs;
 
+/// <summary>
+/// A fennecs.World contains Entities, their Components, and manages their lifecycles.
+/// </summary>
 public partial class World : IDisposable
 {
     #region Entity Spawn, Liveness, and Desapwn
@@ -178,7 +181,15 @@ public partial class World : IDisposable
     #endregion
     
     #region Debug Tools
-    public string DebugString()
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return DebugString();
+    }
+
+    /// <inheritdoc cref="ToString"/>
+    private string DebugString()
     {
         var sb = new StringBuilder("World:");
         sb.AppendLine($"  Entities: {Count}");
@@ -187,5 +198,6 @@ public partial class World : IDisposable
         sb.AppendLine($"  Mode: {Mode}");
         return sb.ToString();
     }
+
     #endregion
 }

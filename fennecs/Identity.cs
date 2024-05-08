@@ -14,9 +14,9 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     [FieldOffset(0)] internal readonly ulong Value;
 
     //Identity Components
-    [FieldOffset(0)] public readonly int Index;
-    [FieldOffset(4)] public readonly ushort Generation;
-    [FieldOffset(4)] public readonly TypeID Decoration;
+    [FieldOffset(0)] internal readonly int Index;
+    [FieldOffset(4)] internal readonly ushort Generation;
+    [FieldOffset(4)] internal readonly TypeID Decoration;
 
     //Type header (only used in TypeExpression, so must be 0 here) 
     [FieldOffset(6)] internal readonly TypeID RESERVED = 0;
@@ -27,12 +27,27 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
 
     // Entity Reference.
+    /// <summary>
+    /// Truthy if the Identity represents an actual Entity.
+    /// Falsy if it is a virtual concept or a tracked object.
+    /// Falsy if it is the <c>default</c> Identity.
+    /// </summary>
     public bool IsEntity => Index > 0 && Decoration > 0;
 
     // Tracked Object Reference.
+    /// <summary>
+    /// Truthy if the Identity represents a tracked object.
+    /// Falsy if it is a virtual concept or an actual Entity.
+    /// Falsy if it is the <c>default</c> Identity.
+    /// </summary>
     public bool IsObject => Decoration < 0;
 
     // Wildcard Entities, such as Any, Object, Entity, or Relation.
+    /// <summary>
+    /// Truthy if the Identity represents a virtual concept (see <see cref="Match"/>).
+    /// Falsy if it is an actual Entity or a tracked object.
+    /// Falsy if it is the <c>default</c> Identity.
+    /// </summary>
     public bool IsWildcard => Decoration == 0 && Index < 0;
 
 
@@ -96,6 +111,13 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
 
     #region Constructors / Creators
+    /// <summary>
+    /// Create an Identity for a tracked object and the backing Object Link type.
+    /// Used to set targets of Object Links. 
+    /// </summary>
+    /// <param name="item">target item (an instance of object)</param>
+    /// <typeparam name="T">type of the item (becomes the backing type of the object link)</typeparam>
+    /// <returns></returns>
     public static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
 
 
@@ -123,6 +145,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     #endregion
 
 
+    /// <inheritdoc />
     public override string ToString()
     {
         if (Equals(Match.Plain))

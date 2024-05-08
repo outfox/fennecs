@@ -96,6 +96,21 @@ public partial class World
     }
 
 
+    /// <summary>
+    /// Creates a fluent Builder for a query with three output Stream Types.
+    /// A <see cref="Match"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
+    /// </summary>
+    /// <remarks>
+    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.AddFilter{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
+    /// </remarks>
+    /// <param name="match1">Match Expression for Stream Type 1</param>
+    /// <param name="match2">Match Expression for Stream Type 2</param>
+    /// <param name="match3">Match Expression for Stream Type 3</param>
+    /// <typeparam name="C1">component Stream Type 1</typeparam>
+    /// <typeparam name="C2">component Stream Type 2</typeparam>
+    /// <typeparam name="C3">component Stream Type 3</typeparam>
+    /// <returns><see cref="QueryBuilder{C1, C2, C3}"/></returns>
     public QueryBuilder<C1, C2, C3> Query<C1, C2, C3>(Identity match1, Identity match2, Identity match3)
     {
         return new QueryBuilder<C1, C2, C3>(this, match1, match2, match3);
@@ -119,6 +134,23 @@ public partial class World
     }
 
 
+    /// <summary>
+    /// Creates a fluent Builder for a query with four output Stream Types.
+    /// A <see cref="Match"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
+    /// </summary>
+    /// <remarks>
+    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.AddFilter{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
+    /// </remarks>
+    /// <param name="match1">Match Expression for Stream Type 1</param>
+    /// <param name="match2">Match Expression for Stream Type 2</param>
+    ///  <param name="match3">Match Expression for Stream Type 3</param>
+    ///  <param name="match4">Match Expression for Stream Type 4</param>
+    /// <typeparam name="C1">component Stream Type 1</typeparam>
+    /// <typeparam name="C2">component Stream Type 2</typeparam>
+    ///  <typeparam name="C3">component Stream Type 3</typeparam>
+    ///  <typeparam name="C4">component Stream Type 4</typeparam>
+    /// <returns><see cref="QueryBuilder{C1, C2, C3, C4}"/></returns>
     public QueryBuilder<C1, C2, C3, C4> Query<C1, C2, C3, C4>(Identity match1, Identity match2, Identity match3, Identity match4)
     {
         return new QueryBuilder<C1, C2, C3, C4>(this, match1, match2, match3, match4);
@@ -143,6 +175,25 @@ public partial class World
     }
 
 
+    /// <summary>
+    /// Creates a fluent Builder for a query with five output Stream Types.
+    /// A <see cref="Match"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
+    /// </summary>
+    /// <remarks>
+    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.AddFilter{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
+    /// </remarks>
+    /// <param name="match1">Match Expression for Stream Type 1</param>
+    /// <param name="match2">Match Expression for Stream Type 2</param>
+    /// <param name="match3">Match Expression for Stream Type 3</param>
+    /// <param name="match4">Match Expression for Stream Type 4</param>
+    /// <param name="match5">Match Expression for Stream Type 5</param>
+    /// <typeparam name="C1">component Stream Type 1</typeparam>
+    /// <typeparam name="C2">component Stream Type 2</typeparam>
+    /// <typeparam name="C3">component Stream Type 3</typeparam>
+    /// <typeparam name="C4">component Stream Type 4</typeparam>
+    /// <typeparam name="C5">component Stream Type 5</typeparam>
+    /// <returns><see cref="QueryBuilder{C1, C2, C3, C4, C5}"/></returns>
     public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>(Identity match1, Identity match2, Identity match3, Identity match4, Identity match5)
     {
         return new QueryBuilder<C1, C2, C3, C4, C5>(this, match1, match2, match3, match4, match5);

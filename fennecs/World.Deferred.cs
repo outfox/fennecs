@@ -11,12 +11,16 @@ public partial class World
 
 
     #region Locking & Deferred Operations
+    /// <summary>
+    /// Locks the World (setting into a Deferred mode) for the scope of the returned WorldLock.
+    /// Used internally during the execution of Query runners.
+    /// Can be used to "freeze" a World, deferring structural changes to it until the lock is released.
+    /// </summary>
     public struct WorldLock : IDisposable
     {
         private World _world;
-
-
-        public WorldLock(World world)
+        
+        internal WorldLock(World world)
         {
             lock (world._modeChangeLock)
             {
@@ -27,6 +31,15 @@ public partial class World
         }
 
 
+        /// <summary>
+        /// Releases the lock, allowing deferred operations to be executed.
+        /// </summary>
+        /// <remarks>
+        /// The execution is immediate if this is the last lock to be released.
+        /// The world first moves from <see cref="WorldMode.Deferred"/> to <see cref="WorldMode.CatchUp"/> 
+        /// and finally returns to <see cref="WorldMode.Immediate"/> after all <see cref="DeferredOperation"/> have been executed.
+        /// </remarks>
+        /// <inheritdoc />
         public void Dispose()
         {
             _world.Unlock();
