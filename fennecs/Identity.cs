@@ -37,24 +37,45 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
 
     #region IComparable/IEquatable Implementation
+    /// <inheritdoc cref="Equals(fennecs.Identity)"/>
     public static bool operator ==(Identity left, Identity right) => left.Equals(right);
+    /// <inheritdoc cref="Equals(fennecs.Identity)"/>
     public static bool operator !=(Identity left, Identity right) => !left.Equals(right);
 
+    /// <inheritdoc cref="IEquatable{T}"/>
     public bool Equals(Identity other) => Value == other.Value;
 
+    /// <inheritdoc cref="IComparable{T}"/>
     public int CompareTo(Identity other) => Value.CompareTo(other.Value);
 
+    /// <summary>
+    /// Casts an Entity to its Identity. (extracting the appropriatefield)
+    /// </summary>
+    /// <param name="entity">an Entity</param>
+    /// <returns>the Identity</returns>
     public static implicit operator Identity(Entity entity) => entity.Id;
     
+    /// <summary>
+    /// Truthy if the Identity is not default.
+    /// </summary>
+    /// <param name="self">an Identity</param>
+    /// <returns>truthiness value</returns>
     public static implicit operator bool(Identity self) => self != default;
     
+    
+    ///<summary>
+    /// Implements <see cref="System.IEquatable{T}"/>.Equals(object? obj)
+    /// </summary>
+    /// <remarks>
+    /// ⚠️This method ALWAYS throws InvalidCastException, as boxing of this type is disallowed.
+    /// </remarks>
     public override bool Equals(object? obj)
     {
-        throw new InvalidCastException("Entity: Boxing equality comparisons disallowed. Use IEquatable<Entity>.Equals(Entity other) instead.");
-        //return obj is Entity other && Equals(other); //<-- second best option   
+        throw new InvalidCastException("fennecs.Identity: Boxing equality comparisons disallowed. Use IEquatable<Identity>.Equals(Identity other) instead.");
     }
 
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         unchecked
@@ -65,7 +86,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     #endregion
 
 
-    public Type Type => Decoration switch
+    internal Type Type => Decoration switch
     {
         // Decoration is Type Id
         <= 0 => LanguageType.Resolve(Math.Abs(Decoration)),

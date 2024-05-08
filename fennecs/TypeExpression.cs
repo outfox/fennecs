@@ -142,7 +142,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <remarks>
     /// ⚠️This method ALWAYS throws InvalidCastException, as boxing of this type is disallowed.
     /// </remarks>
-    public override bool Equals(object? obj) => throw new InvalidCastException("Boxing Disallowed; use TypeId.Equals(TypeId) instead.");
+    public override bool Equals(object? obj) => throw new InvalidCastException("fennecs.TypeExpression: Boxing Disallowed; use Equals(TypeExpression) instead.");
 
 
     /// <summary>
