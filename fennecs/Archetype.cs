@@ -394,6 +394,7 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
+    /// <inheritdoc />
     public override string ToString()
     {
         var sb = new StringBuilder("Archetype ");
@@ -402,6 +403,7 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
+    /// <inheritdoc />
     public IEnumerator<Entity> GetEnumerator()
     {
         var snapshot = Volatile.Read(ref _version);

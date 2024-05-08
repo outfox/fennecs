@@ -42,14 +42,67 @@ public readonly struct Batch : IDisposable
     }
 
 
+    /// <summary>
+    /// Append an AddComponent operation to the batch.
+    /// </summary>
+    /// <typeparam name="T">component type</typeparam>
+    /// <param name="data">component data</param>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch Add<T>(T data) => AddComponent(data, target: default);
+
+    /// <summary>
+    /// Append an AddComponent operation to the batch.
+    /// </summary>
+    /// <typeparam name="T">component type (newable)</typeparam>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch Add<T>() where T : new() => AddComponent(new T(), target: default);
+
+    /// <summary>
+    /// Append an AddLink operation to the batch.
+    /// </summary>
+    /// <param name="target">target of the link</param>
+    /// <typeparam name="T">component type (newable)</typeparam>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch AddLink<T>(T target) where T : class => AddComponent(target, Identity.Of(target));
+
+    /// <summary>
+    /// Append an AddRelation operation to the batch.
+    /// </summary>
+    /// <param name="target">target of the relation</param>
+    /// <typeparam name="T">component type (newable)</typeparam>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch AddRelation<T>(Entity target) where T : new() => AddComponent<T>(new T(), target.Id);
+
+    /// <summary>
+    /// Append an AddRelation operation to the batch.
+    /// </summary>
+    /// <param name="data">backing component data</param>
+    /// <param name="target">target of the relation</param>
+    /// <typeparam name="T">component type (newable)</typeparam>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch AddRelation<T>(T data, Entity target) where T : notnull => AddComponent(data, target.Id);
 
+    /// <summary>
+    /// Append an RemoveComponent operation to the batch.
+    /// </summary>
+    /// <typeparam name="T">component type</typeparam>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch Remove<T>() => RemoveComponent<T>();
+
+    /// <summary>
+    /// Append an RemoveLink operation to the batch.
+    /// </summary>
+    /// <typeparam name="T">component type</typeparam>
+    /// <param name="target">target of the link</param>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch RemoveLink<T>(T target) where T : class => RemoveComponent<T>(Identity.Of(target));
+
+    /// <summary>
+    /// Append a RemoveRelation operation to the batch.
+    /// </summary>
+    /// <typeparam name="T">component type</typeparam>
+    /// <param name="target">target of the relation</param>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch RemoveRelation<T>(Entity target) => RemoveComponent<T>(target.Id);
 
 
@@ -129,8 +182,7 @@ public readonly struct Batch : IDisposable
         /// <summary>
         /// Keeps the existing component data when trying to add a duplicate, but continues the remaining operations.
         /// </summary>
-        [Obsolete("Not implemented.", true)]
-        Preserve,
+        [Obsolete("Not implemented.", true)] Preserve,
 
         /// <summary>
         /// Overwrites an existing component with the new component if it is already present.

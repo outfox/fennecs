@@ -77,6 +77,12 @@
             <param name="start">the index to start filling from</param>
             <param name="count">how many elements to fill</param>
         </member>
+        <member name="M:fennecs.Archetype.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Archetype.GetEnumerator">
+            <inheritdoc />
+        </member>
         <member name="P:fennecs.Archetype.Item(System.Int32)">
             <summary>
             Returns (constructs) the Entity at the given index, associated with the World this Archetype belongs to.
@@ -96,6 +102,69 @@
             Submit this Batch to its World, which will take ownership of the IDisposable.
             The world wil defer the operation if it is not in immediate mode and dispose afterwards.
             </summary>
+        </member>
+        <member name="M:fennecs.Batch.Add``1(``0)">
+            <summary>
+            Append an AddComponent operation to the batch.
+            </summary>
+            <typeparam name="T">component type</typeparam>
+            <param name="data">component data</param>
+            <returns>the Batch itself (fluent syntax)</returns>
+        </member>
+        <member name="M:fennecs.Batch.Add``1">
+            <summary>
+            Append an AddComponent operation to the batch.
+            </summary>
+            <typeparam name="T">component type (newable)</typeparam>
+            <returns>the Batch itself (fluent syntax)</returns>
+        </member>
+        <member name="M:fennecs.Batch.AddLink``1(``0)">
+            <summary>
+            Append an AddLink operation to the batch.
+            </summary>
+            <param name="target">target of the link</param>
+            <typeparam name="T">component type (newable)</typeparam>
+            <returns>the Batch itself (fluent syntax)</returns>
+        </member>
+        <member name="M:fennecs.Batch.AddRelation``1(fennecs.Entity)">
+            <summary>
+            Append an AddRelation operation to the batch.
+            </summary>
+            <param name="target">target of the relation</param>
+            <typeparam name="T">component type (newable)</typeparam>
+            <returns>the Batch itself (fluent syntax)</returns>
+        </member>
+        <member name="M:fennecs.Batch.AddRelation``1(``0,fennecs.Entity)">
+            <summary>
+            Append an AddRelation operation to the batch.
+            </summary>
+            <param name="data">backing component data</param>
+            <param name="target">target of the relation</param>
+            <typeparam name="T">component type (newable)</typeparam>
+            <returns>the Batch itself (fluent syntax)</returns>
+        </member>
+        <member name="M:fennecs.Batch.Remove``1">
+            <summary>
+            Append an RemoveComponent operation to the batch.
+            </summary>
+            <typeparam name="T">component type</typeparam>
+            <returns>the Batch itself (fluent syntax)</returns>
+        </member>
+        <member name="M:fennecs.Batch.RemoveLink``1(``0)">
+            <summary>
+            Append an RemoveLink operation to the batch.
+            </summary>
+            <typeparam name="T">component type</typeparam>
+            <param name="target">target of the link</param>
+            <returns>the Batch itself (fluent syntax)</returns>
+        </member>
+        <member name="M:fennecs.Batch.RemoveRelation``1(fennecs.Entity)">
+            <summary>
+            Append a RemoveRelation operation to the batch.
+            </summary>
+            <typeparam name="T">component type</typeparam>
+            <param name="target">target of the relation</param>
+            <returns>the Batch itself (fluent syntax)</returns>
         </member>
         <member name="M:fennecs.Batch.Dispose">
             <summary>
@@ -153,6 +222,386 @@
             Removal operations are Idempotent on these archetypes, i.e. they don't change them
             on their own.
             </summary>
+        </member>
+        <member name="T:fennecs.RefAction`1">
+            <member name="T:RefAction">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefAction`2">
+            <member name="T:RefAction">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefAction`3">
+            <member name="T:RefAction">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefAction`4">
+            <member name="T:RefAction">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefAction`5">
+            <member name="T:RefAction">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefActionU`2">
+            <member name="T:RefActionU">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefActionU`3">
+            <member name="T:RefActionU">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefActionU`4">
+            <member name="T:RefActionU">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefActionU`5">
+            <member name="T:RefActionU">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.RefActionU`6">
+            <member name="T:RefActionU">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br />Delegate for Query runner actions that take references to Component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityAction`1">
+            <member name="T:EntityAction">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity and references to Component data.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityAction`2">
+            <member name="T:EntityAction">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity and references to Component data.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityAction`3">
+            <member name="T:EntityAction">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity and references to Component data.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityAction`4">
+            <member name="T:EntityAction">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity and references to Component data.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityAction`5">
+            <member name="T:EntityAction">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity and references to Component data.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityActionU`2">
+            <member name="T:EntityActionU">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity, references to Component data, and a uniform value.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityActionU`3">
+            <member name="T:EntityActionU">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity, references to Component data, and a uniform value.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityActionU`4">
+            <member name="T:EntityActionU">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity, references to Component data, and a uniform value.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityActionU`5">
+            <member name="T:EntityActionU">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity, references to Component data, and a uniform value.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.EntityActionU`6">
+            <member name="T:EntityActionU">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br />Delegate for Query runner actions that take an Entity, references to Component data, and a uniform value.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryAction`1">
+            <member name="T:MemoryAction">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryAction`2">
+            <member name="T:MemoryAction">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryAction`3">
+            <member name="T:MemoryAction">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryAction`4">
+            <member name="T:MemoryAction">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryAction`5">
+            <member name="T:MemoryAction">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryActionU`2">
+            <member name="T:MemoryActionU">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryActionU`3">
+            <member name="T:MemoryActionU">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryActionU`4">
+            <member name="T:MemoryActionU">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryActionU`5">
+            <member name="T:MemoryActionU">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+        </member>
+        <member name="T:fennecs.MemoryActionU`6">
+            <member name="T:MemoryActionU">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br />Delegate for Query runner actions that take Memory structs with component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
         </member>
         <member name="T:fennecs.Entity">
             <summary>
@@ -789,7 +1238,10 @@
         <summary>
             Performs a query with specified action, passing in values for requested stream types.
         </summary>
-        <param name="action"><see cref="!:RefAction" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:RefAction" />
+            taking references to Component Types.
+        </param>
     </member>
         </member>
         <member name="M:fennecs.Query`1.For``1(fennecs.RefActionU{`0,``0},``0)">
@@ -800,9 +1252,12 @@
             <param name="uniform">The uniform data to pass to the action.</param>
             <member name="T:ForU">
         <summary>
-            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="!:RefActionU" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:RefActionU" />
+            taking references to Component Types.
+        </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -816,7 +1271,10 @@
         <summary>
             Performs a query with specified action, passing in an Entity, and values for requested stream types.
         </summary>
-        <param name="action"><see cref="!:EntityAction" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:EntityAction" />
+            taking references to Component Types.
+        </param>
     </member>
         </member>
         <member name="M:fennecs.Query`1.For``1(fennecs.EntityActionU{`0,``0},``0)">
@@ -830,7 +1288,10 @@
         <summary>
             Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="!:EntityActionU" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:EntityActionU" />
+            taking references to Component Types.
+        </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -888,15 +1349,21 @@
         <summary>
             Performs a query with specified action, passing in values for requested stream types.
         </summary>
-        <param name="action"><see cref="!:RefAction" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:RefAction" />
+            taking references to Component Types.
+        </param>
     </member>
         </member>
         <member name="M:fennecs.Query`2.For``1(fennecs.RefActionU{`0,`1,``0},``0)">
             <member name="T:ForU">
         <summary>
-            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="!:RefActionU" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:RefActionU" />
+            taking references to Component Types.
+        </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -905,7 +1372,10 @@
         <summary>
             Performs a query with specified action, passing in an Entity, and values for requested stream types.
         </summary>
-        <param name="action"><see cref="!:EntityAction" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:EntityAction" />
+            taking references to Component Types.
+        </param>
     </member>
         </member>
         <member name="M:fennecs.Query`2.For``1(fennecs.EntityActionU{`0,`1,``0},``0)">
@@ -913,7 +1383,10 @@
         <summary>
             Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="!:EntityActionU" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:EntityActionU" />
+            taking references to Component Types.
+        </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -937,9 +1410,12 @@
         <member name="M:fennecs.Query`3.For(fennecs.RefAction{`0,`1,`2})">
             <member name="T:ForU">
         <summary>
-            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="!:RefActionU" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:RefActionU" />
+            taking references to Component Types.
+        </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -947,9 +1423,12 @@
             <summary />
             <member name="T:ForU">
         <summary>
-            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="!:RefActionU" /> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="!:RefActionU" />
+            taking references to Component Types.
+        </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>

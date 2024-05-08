@@ -4,26 +4,108 @@
         <summary>
             Performs a query with specified action, passing in values for requested stream types.
         </summary>
-        <param name="action"><see cref="RefAction"/> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="RefAction"/>
+            taking references to Component Types.
+        </param>
     </member>
     <member name="T:ForU">
         <summary>
-            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="RefActionU"/> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="RefActionU"/>
+            taking references to Component Types.
+        </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
     <member name="T:ForE">
         <summary>
             Performs a query with specified action, passing in an Entity, and values for requested stream types.
         </summary>
-        <param name="action"><see cref="EntityAction"/> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="EntityAction"/>
+            taking references to Component Types.
+        </param>
     </member>
     <member name="T:ForEU">
         <summary>
             Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="EntityActionU"/> taking references to Component Types.</param>
+        <param name="action">
+            <see cref="EntityActionU"/>
+            taking references to Component Types.
+        </param>
         <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+
+    <member name="T:EntityAction">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br/>Delegate for Query runner actions that take an Entity and references to Component data.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+
+    <member name="T:EntityActionU">
+        <summary>
+            used by
+            <c>Query.For</c>
+            <br/>Delegate for Query runner actions that take an Entity, references to Component data, and a uniform value.
+            Entity can be used to make structural changes as needed. They will be queued in the World and then executed once the runner returns.
+        </summary>
+        <remarks>
+            The EntityAction variant is provided to make it eas to schedule structural changes from within a runner.
+        </remarks>
+    </member>
+
+    <member name="T:RefAction">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br/>Delegate for Query runner actions that take references to Component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+
+    <member name="T:RefActionU">
+        <summary>
+            used by <c>Query.For</c> and
+            <c>Query.Job</c>
+            <br/>Delegate for Query runner actions that take references to Component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
+        </remarks>
+    </member>
+
+    <member name="T:MemoryAction">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br/>Delegate for Query runner actions that take Memory structs with component data.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
+    </member>
+
+    <member name="T:MemoryActionU">
+        <summary>
+            used by
+            <c>Query.Raw</c>
+            <br/>Delegate for Query runner actions that take Memory structs with component data and a uniform value.
+        </summary>
+        <remarks>
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+        </remarks>
     </member>
 </members>
