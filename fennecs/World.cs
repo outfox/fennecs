@@ -128,7 +128,7 @@ public partial class World
     #region Queries
     internal Query GetQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
-        if (_queries.TryGetValue(mask, out var query))
+        if (_queries.TryGetValue(mask.GetHashCode(), out var query))
         {
             MaskPool.Return(mask);
             return query;
@@ -148,14 +148,14 @@ public partial class World
 
         query = createQuery(this, streamTypes, mask, matchingTables);
 
-        _queries.Add(mask, query);
+        _queries.Add(query.GetHashCode(), query);
         return query;
     }
 
 
     internal void RemoveQuery(Query query)
     {
-        _queries.Remove(query.Mask);
+        _queries.Remove(query.GetHashCode());
     }
 
 

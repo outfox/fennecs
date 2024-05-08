@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.ComponentModel;
 
 namespace fennecs;
 
@@ -33,7 +34,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for Entity entity.</exception>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
     public ref C Ref<C>(Entity entity, Identity match = default)
     {
         AssertNotDisposed();
@@ -113,10 +114,14 @@ public class Query : IEnumerable<Entity>, IDisposable
     protected readonly CountdownEvent Countdown = new(initialCount: 1);
 
     private readonly List<Archetype> _trackedArchetypes;
-    protected readonly List<Archetype> Archetypes;
+    private protected readonly List<Archetype> Archetypes;
 
     private protected readonly World World;
-    protected internal readonly Mask Mask;
+    
+    /// <summary>
+    ///  Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
+    /// </summary>
+    internal readonly Mask Mask;
 
     public IReadOnlyList<Archetype> TrackedArchetypes => _trackedArchetypes;
 
@@ -405,8 +410,8 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <param name="maxEntityCount">number of entities to preserve</param>
     /// <param name="mode">
     /// <ul>
-    /// <li><see cref="TruncateMode.Proportional"/>: (default) Truncate matched Archetypes proportionally to their contents (approximation by rounding).</li>
-    /// <li><see cref="TruncateMode.PerArchetype"/>: Truncate each matched Archetype to the specified maximum count.
+    /// <li><see cref="TruncateMode.Proportional"/> (default) Truncate matched Archetypes proportionally to their contents (approximation by rounding).</li>
+    /// <li><see cref="TruncateMode.PerArchetype"/> Truncate each matched Archetype to the specified maximum count.
     /// This means a Query matching <c>n</c> Archetypes will have up to <c>n * maxEntityCount</c> Entities after this
     /// operation.</li>
     /// </ul>
@@ -442,6 +447,14 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
     #endregion
 
+    #region Hashing
+
+    public override int GetHashCode()
+    {
+        return Mask.GetHashCode();
+    }
+
+    #endregion
 
     #region IDisposable Implementation
     /// <summary>

@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 
 namespace fennecs.pools;
 
-public static class MaskPool
+internal static class MaskPool
 {
     internal static readonly ConcurrentBag<Mask> Pool = [];
 

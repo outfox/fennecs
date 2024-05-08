@@ -9,7 +9,7 @@ namespace fennecs;
 public class QueryBuilder : IDisposable
 {
     internal readonly World World;
-    protected readonly Mask Mask = MaskPool.Rent();
+    internal readonly Mask Mask = MaskPool.Rent();
 
     protected readonly PooledList<TypeExpression> StreamTypes = PooledList<TypeExpression>.Rent();
 

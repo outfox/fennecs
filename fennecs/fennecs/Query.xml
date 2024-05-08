@@ -344,6 +344,20 @@
             real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
             </summary>
         </member>
+        <member name="M:fennecs.Mask.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Mask.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Mask.Clone">
+            <summary>
+            Clones the mask and returns a new instance.
+            </summary>
+            <remarks>
+            The new instance should be Disposed after use to re-cycle its resources to the internal pool.
+            </remarks> 
+        </member>
         <member name="T:fennecs.Match">
             <summary>
             <para>Match Expressions for Query Matching.</para>
@@ -525,7 +539,7 @@
             <typeparam name="C">any Component type</typeparam>
             <returns>ref C, reference to the Component</returns>
             <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
-            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for Entity entity.</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="T:fennecs.Entity"/> entity.</exception>
         </member>
         <member name="M:fennecs.Query.Contains(fennecs.Entity)">
             <summary>
@@ -558,6 +572,11 @@
         <member name="F:fennecs.Query.Countdown">
             <summary>
                 Countdown event for parallel runners.
+            </summary>
+        </member>
+        <member name="F:fennecs.Query.Mask">
+            <summary>
+             Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
             </summary>
         </member>
         <member name="M:fennecs.Query.AddFilter``1(fennecs.Identity)">
@@ -723,8 +742,8 @@
             <param name="maxEntityCount">number of entities to preserve</param>
             <param name="mode">
             <ul>
-            <li><see cref="F:fennecs.Query.TruncateMode.Proportional"/>: (default) Truncate matched Archetypes proportionally to their contents (approximation by rounding).</li>
-            <li><see cref="F:fennecs.Query.TruncateMode.PerArchetype"/>: Truncate each matched Archetype to the specified maximum count.
+            <li><see cref="F:fennecs.Query.TruncateMode.Proportional"/> (default) Truncate matched Archetypes proportionally to their contents (approximation by rounding).</li>
+            <li><see cref="F:fennecs.Query.TruncateMode.PerArchetype"/> Truncate each matched Archetype to the specified maximum count.
             This means a Query matching <c>n</c> Archetypes will have up to <c>n * maxEntityCount</c> Entities after this
             operation.</li>
             </ul>
@@ -770,7 +789,7 @@
         <summary>
             Performs a query with specified action, passing in values for requested stream types.
         </summary>
-        <param name="action"><see cref="T:fennecs.RefAction`1" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:RefAction" /> taking references to Component Types.</param>
     </member>
         </member>
         <member name="M:fennecs.Query`1.For``1(fennecs.RefActionU{`0,``0},``0)">
@@ -783,7 +802,7 @@
         <summary>
             Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:RefActionU" /> taking references to Component Types.</param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -797,7 +816,7 @@
         <summary>
             Performs a query with specified action, passing in an Entity, and values for requested stream types.
         </summary>
-        <param name="action"><see cref="T:fennecs.EntityAction`1" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:EntityAction" /> taking references to Component Types.</param>
     </member>
         </member>
         <member name="M:fennecs.Query`1.For``1(fennecs.EntityActionU{`0,``0},``0)">
@@ -811,7 +830,7 @@
         <summary>
             Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="T:fennecs.EntityActionU`2" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:EntityActionU" /> taking references to Component Types.</param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -869,7 +888,7 @@
         <summary>
             Performs a query with specified action, passing in values for requested stream types.
         </summary>
-        <param name="action"><see cref="T:fennecs.RefAction`1" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:RefAction" /> taking references to Component Types.</param>
     </member>
         </member>
         <member name="M:fennecs.Query`2.For``1(fennecs.RefActionU{`0,`1,``0},``0)">
@@ -877,7 +896,7 @@
         <summary>
             Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:RefActionU" /> taking references to Component Types.</param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -886,7 +905,7 @@
         <summary>
             Performs a query with specified action, passing in an Entity, and values for requested stream types.
         </summary>
-        <param name="action"><see cref="T:fennecs.EntityAction`1" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:EntityAction" /> taking references to Component Types.</param>
     </member>
         </member>
         <member name="M:fennecs.Query`2.For``1(fennecs.EntityActionU{`0,`1,``0},``0)">
@@ -894,7 +913,7 @@
         <summary>
             Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="T:fennecs.EntityActionU`2" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:EntityActionU" /> taking references to Component Types.</param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -920,7 +939,7 @@
         <summary>
             Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:RefActionU" /> taking references to Component Types.</param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
@@ -930,7 +949,7 @@
         <summary>
             Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
         </summary>
-        <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+        <param name="action"><see cref="!:RefActionU" /> taking references to Component Types.</param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>

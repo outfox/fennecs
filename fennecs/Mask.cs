@@ -4,7 +4,7 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public sealed class Mask : IDisposable
+internal sealed class Mask : IDisposable
 {
     internal readonly List<TypeExpression> HasTypes = new(8);
     internal readonly List<TypeExpression> NotTypes = new(8);
@@ -97,11 +97,19 @@ public sealed class Mask : IDisposable
     }
 
 
-    public static implicit operator int(Mask self) => self.Key();
+    /// <inheritdoc />
+    public override int GetHashCode() => Key();
 
+    /// <inheritdoc />
     public void Dispose() => MaskPool.Return(this);
 
 
+    /// <summary>
+    /// Clones the mask and returns a new instance.
+    /// </summary>
+    /// <remarks>
+    /// The new instance should be Disposed after use to re-cycle its resources to the internal pool.
+    /// </remarks> 
     public Mask Clone()
     {
         var mask = MaskPool.Rent();
