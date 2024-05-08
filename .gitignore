@@ -10,3 +10,4 @@ Temp
 *.Artifacts
 s3/
 .dist
+*.old
