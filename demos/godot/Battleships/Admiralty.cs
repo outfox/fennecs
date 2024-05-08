@@ -99,14 +99,14 @@ public partial class Admiralty : Node2D
     private void PickFleetObjective()
     {
         // Already have an objective. No retreat! No prisoners!
-        if (FleetObjective != null && FleetObjective.Owner != this) return;
+        if (FleetObjective != null && FleetObjective.Controller != this) return;
         
         ShuffleObjectives();
 
         foreach (var objective in Objectives)
         {
             if (objective == FleetObjective) continue;
-            if (objective.Owner == this) continue;
+            if (objective.Controller == this) continue;
             
             FleetObjective = objective;
             GD.Print("Fleet Objective Updated!", objective.Name);

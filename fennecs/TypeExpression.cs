@@ -128,16 +128,16 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     }
 
 
-    /// <inheritdoc cref="IEquatable{T}.Equals(T?)"/>
+    /// <inheritdoc cref="System.IEquatable{T}"/>
     public bool Equals(TypeExpression other) => Value == other.Value;
-
-
-    /// <inheritdoc cref="IComparable{T}.CompareTo"/>
+    
+    
+    /// <inheritdoc cref="System.IComparable{T}"/>
     public int CompareTo(TypeExpression other) => Value.CompareTo(other.Value);
 
 
     ///<summary>
-    /// Implements <see cref="IEquatable{T}.Equals(object?)"/>
+    /// Implements <see cref="System.IEquatable{T}"/>.Equals(object? obj)
     /// </summary>
     /// <remarks>
     /// ⚠️This method ALWAYS throws InvalidCastException, as boxing of this type is disallowed.
@@ -221,12 +221,14 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     }
 
 
+    /// <inheritdoc cref="Equals(fennecs.TypeExpression)"/>
     public static bool operator ==(TypeExpression left, TypeExpression right)
     {
         return left.Equals(right);
     }
 
 
+    /// <inheritdoc cref="Equals(fennecs.TypeExpression)"/>
     public static bool operator !=(TypeExpression left, TypeExpression right)
     {
         return !(left == right);
