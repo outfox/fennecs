@@ -192,10 +192,11 @@ public partial class World : IDisposable
     private string DebugString()
     {
         var sb = new StringBuilder("World:");
-        sb.AppendLine($"  Entities: {Count}");
-        sb.AppendLine($"  Archetypes: {_archetypes.Count}");
-        sb.AppendLine($"  Queries: {_queries.Count}");
-        sb.AppendLine($"  Mode: {Mode}");
+        sb.AppendLine();
+        sb.AppendLine($" {_archetypes.Count} Archetypes");
+        sb.AppendLine($" {Count} Entities");
+        sb.AppendLine($" {_queries.Count} Queries");
+        sb.AppendLine($"{nameof(WorldMode)}.{Mode}");
         return sb.ToString();
     }
 

@@ -1,6 +1,6 @@
 namespace fennecs.tests;
 
-public class WorldTests
+public class WorldTests(ITestOutputHelper output)
 {
     [Fact]
     public void World_Creates()
@@ -17,6 +17,14 @@ public class WorldTests
         world.Dispose();
     }
 
+    [Fact]
+    public void World_ToString()
+    {
+        using var world = new World();
+        var str = world.ToString();
+        output.WriteLine(str);
+        Assert.StartsWith(nameof(World), str);
+    }
 
     [Fact]
     public void World_Spawns_valid_Entities()
