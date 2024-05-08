@@ -40,7 +40,7 @@ public class Query<C0> : Query
 
     #region Runners  
 
-    /// <include file='Query.xml' path='members/member[@name="T:For"]'/>
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0> action)
     {
         AssertNotDisposed();
@@ -70,7 +70,7 @@ public class Query<C0> : Query
     /// </summary>
     /// <param name="action"><see cref="RefActionU{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    // /// <include file='Query.xml' path='members/member[@name="T:ForU"]'/>
+    // /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -95,7 +95,7 @@ public class Query<C0> : Query
     // #endregion Showcase
 
 
-    /// <include file='Query.xml' path='members/member[@name="T:ForE"]'/>
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0> action)
     {
         AssertNotDisposed();
@@ -118,7 +118,7 @@ public class Query<C0> : Query
     }
 
 
-    /// <include file='Query.xml' path='members/member[@name="T:ForEU"]'/>
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(EntityActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -148,7 +148,7 @@ public class Query<C0> : Query
     /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
     public void Job(RefAction<C0> action, int chunkSize = int.MaxValue)
     {
-        AssertNotDisposed();
+        AssertNotDisposed(); 
 
         using var worldLock = World.Lock;
         Countdown.Reset();

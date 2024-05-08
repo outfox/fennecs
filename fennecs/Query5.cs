@@ -17,7 +17,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
 
     #region Runners
-    /// <include file='Query.xml' path='members/member[@name="T:For"]'/>
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0, C1, C2, C3, C4> action)
     {
         AssertNotDisposed();
@@ -44,7 +44,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     }
 
 
-    /// <include file='Query.xml' path='members/member[@name="T:ForU"]'/>
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -71,7 +71,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     }
 
     
-    /// <include file='Query.xml' path='members/member[@name="T:ForE"]'/>
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0, C1, C2, C3, C4> action)
     {
         AssertNotDisposed();
@@ -96,7 +96,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
         }
     }
 
-    /// <include file='Query.xml' path='members/member[@name="T:ForEU"]'/>
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(EntityActionU<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         AssertNotDisposed();

@@ -50,7 +50,7 @@
 
     <ItemGroup>
       <None Remove="QueryDocs.xml" />
-      <None Include="Query.xml">
+      <None Include="XMLdoc.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
