@@ -10,6 +10,9 @@ using fennecs.pools;
 
 namespace fennecs;
 
+/// <summary>
+/// A storage of a class of Entities with a fixed set of Components, its <see cref="Signature"/>.
+/// </summary>
 public sealed class Archetype : IEnumerable<Entity>
 {
     /// <summary>
@@ -68,7 +71,7 @@ public sealed class Archetype : IEnumerable<Entity>
     private int _version;
 
 
-    public Archetype(World world, Signature<TypeExpression> signature)
+    internal Archetype(World world, Signature<TypeExpression> signature)
     {
         _world = world;
 
@@ -186,7 +189,7 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    public int Add(Identity identity)
+    internal int Add(Identity identity)
     {
         Interlocked.Increment(ref _version);
 
@@ -196,7 +199,7 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    public void Remove(int row)
+    internal void Remove(int row)
     {
         Interlocked.Increment(ref _version);
 

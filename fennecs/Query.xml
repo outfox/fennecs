@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<members>
+    <member name="T:For">
+        <summary>
+            Performs a query with specified action, passing in values for requested stream types.
+        </summary>
+        <param name="action"><see cref="RefAction"/> taking references to Component Types.</param>
+    </member>
+    <member name="T:ForU">
+        <summary>
+            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action"><see cref="RefActionU"/> taking references to Component Types.</param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+    <member name="T:ForE">
+        <summary>
+            Performs a query with specified action, passing in an Entity, and values for requested stream types.
+        </summary>
+        <param name="action"><see cref="EntityAction"/> taking references to Component Types.</param>
+    </member>
+    <member name="T:ForEU">
+        <summary>
+            Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action"><see cref="EntityActionU"/> taking references to Component Types.</param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+</members>

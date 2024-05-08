@@ -18,7 +18,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
 
 
     #region Runners
-    /// <inheritdoc cref="Query{C0}.For(RefAction{C0})"/>
+    /// <include file='Query.xml' path='members/member[@name="T:ForU"]'/>
     public void For(RefAction<C0, C1, C2> action)
     {
         AssertNotDisposed();
@@ -43,7 +43,8 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     }
     
 
-    /// <inheritdoc cref="Query{C0}.For{U}(RefActionU{C0,U}"/>
+    /// <summary></summary>
+    /// <include file='Query.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
         AssertNotDisposed();

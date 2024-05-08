@@ -26,6 +26,10 @@
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DocumentationFile>fennecs\Query.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).tests</_Parameter1>
@@ -42,5 +46,12 @@
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="QueryDocs.xml" />
+      <None Include="Query.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

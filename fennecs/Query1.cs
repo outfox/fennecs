@@ -43,7 +43,7 @@ public class Query<C0> : Query
     /// <summary>
     /// Executes an action for each entity that matches the query.
     /// </summary>
-    /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
+    /// <include file='Query.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0> action)
     {
         AssertNotDisposed();
@@ -73,6 +73,7 @@ public class Query<C0> : Query
     /// </summary>
     /// <param name="action"><see cref="RefActionU{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
+    /// <include file='Query.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -102,6 +103,7 @@ public class Query<C0> : Query
     /// Also passes the Entity to the action, making structural changes easy and accessible.
     /// </summary>
     /// <param name="action"><see cref="EntityAction{C0}"/> taking references to Component Types.</param>
+    /// <include file='Query.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0> action)
     {
         AssertNotDisposed();
@@ -130,6 +132,7 @@ public class Query<C0> : Query
     /// </summary>
     /// <param name="action"><see cref="EntityActionU{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
+    /// <include file='Query.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(EntityActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();

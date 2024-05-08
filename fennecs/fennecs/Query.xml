@@ -1,0 +1,1334 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>fennecs</name>
+    </assembly>
+    <members>
+        <member name="T:fennecs.Archetype">
+            <summary>
+            A storage of a class of Entities with a fixed set of Components, its <see cref="F:fennecs.Archetype.Signature"/>.
+            </summary>
+        </member>
+        <member name="F:fennecs.Archetype.Signature">
+            <summary>
+            The TypeExpressions that define this Archetype.
+            </summary>
+        </member>
+        <member name="P:fennecs.Archetype.Identities">
+            <summary>
+            Get a Span of all Identities contained in this Archetype.
+            </summary>
+        </member>
+        <member name="P:fennecs.Archetype.Count">
+            <summary>
+            Number of Entities contained in this Archetype.
+            </summary>
+        </member>
+        <member name="P:fennecs.Archetype.IsEmpty">
+            <summary>
+            Does this Archetype currently contain no Entities?
+            </summary>
+        </member>
+        <member name="P:fennecs.Archetype.Capacity">
+            <summary>
+            Current Capacity of this Archetype. This will grow as Entities are added and the Archetype resizes.
+            </summary>
+        </member>
+        <member name="F:fennecs.Archetype._world">
+            <summary>
+            The World this Archetype is a part of.
+            </summary>
+        </member>
+        <member name="F:fennecs.Archetype._identities">
+            <summary>
+            The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
+            </summary>
+        </member>
+        <member name="F:fennecs.Archetype._storages">
+            <summary>
+            Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
+            </summary>
+        </member>
+        <member name="F:fennecs.Archetype._buckets">
+            <summary>
+            TODO: Buckets for Wildcard Joins (optional optimization for CrossJoin when complex archetypes get hit repeatedly in tight loops).
+            </summary>
+        </member>
+        <member name="M:fennecs.Archetype.Truncate(System.Int32)">
+            <summary>
+             Remove Entities from the Archetype that exceed a given count.
+            </summary>
+            <param name="maxEntityCount"></param>
+        </member>
+        <member name="M:fennecs.Archetype.Migrate(fennecs.Archetype,fennecs.pools.PooledList{fennecs.TypeExpression},fennecs.pools.PooledList{System.Object})">
+            <summary>
+            Moves all Entities from this Archetype to the destination Archetype back-filling with the provided Components.
+            </summary>
+            <param name="destination">the Archetype to move the entities to</param>
+            <param name="additions">the new components and their TypeExpressions to add to the destination Archetype</param>
+            <param name="backFills">values for each addition to add</param>
+        </member>
+        <member name="M:fennecs.Archetype.Fill(fennecs.pools.PooledList{fennecs.TypeExpression},fennecs.pools.PooledList{System.Object},System.Int32,System.Int32)">
+            <summary>
+            Fills all matching Storages of the archetype with each of the provided values.
+            </summary>
+            <param name="types">typeExpressions which storages to fill</param>
+            <param name="values">values for the types</param>
+            <param name="start">the index to start filling from</param>
+            <param name="count">how many elements to fill</param>
+        </member>
+        <member name="P:fennecs.Archetype.Item(System.Int32)">
+            <summary>
+            Returns (constructs) the Entity at the given index, associated with the World this Archetype belongs to.
+            </summary>
+            <remarks>
+            There's no bounds checking, so be sure to check against the Count property before using this method.
+            (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
+            </remarks>
+        </member>
+        <member name="T:fennecs.Batch">
+            <summary>
+            Wraps a set of operations to be executed atomically on a set of Archetypes (usually those matching a Query).
+            </summary>
+        </member>
+        <member name="M:fennecs.Batch.Submit">
+            <summary>
+            Submit this Batch to its World, which will take ownership of the IDisposable.
+            The world wil defer the operation if it is not in immediate mode and dispose afterwards.
+            </summary>
+        </member>
+        <member name="M:fennecs.Batch.Dispose">
+            <summary>
+            Disposes the Batch Operation, freeing internals resources.
+            Automatically called by Submit().
+            </summary>
+        </member>
+        <member name="T:fennecs.Batch.AddConflict">
+            <summary>
+            Specifies behavior when adding a component to an archetype that already has the same type of component. 
+            </summary>
+        </member>
+        <member name="F:fennecs.Batch.AddConflict.Disallow">
+            <summary>
+            Disallows the addition of the component.
+            </summary>
+        </member>
+        <member name="F:fennecs.Batch.AddConflict.SkipEntirely">
+            <summary>
+            Ignores archetypes that already contain the component, leaving their data and state unchanged.
+            ⚠️ This affects all operations to be submitted with the Batch, even retroactively, when a conflicting
+            Add operation is added.
+            </summary>
+            <remarks>
+            If an archetype already has the component that a batch tries to add, no entities of that archetype are affected. This is true regardless of whether or not they match the batch's EntityQuery.
+            </remarks> 
+        </member>
+        <member name="F:fennecs.Batch.AddConflict.Preserve">
+            <summary>
+            Keeps the existing component data when trying to add a duplicate, but continues the remaining operations.
+            </summary>
+        </member>
+        <member name="F:fennecs.Batch.AddConflict.Replace">
+            <summary>
+            Overwrites an existing component with the new component if it is already present.
+            </summary>
+            <remarks>
+            This is particularly useful when setting component data en masse. This includes the special case of sending information from a 'leader' entity to its 'followers' using a shared component to store the leader's last known position. Using the 'Replace' option makes updating the leader's position for all followers easier.
+            </remarks>
+        </member>
+        <member name="T:fennecs.Batch.RemoveConflict">
+            <summary>
+            Batch Removal conflict resolution mode.
+            </summary>
+        </member>
+        <member name="F:fennecs.Batch.RemoveConflict.Disallow">
+            <summary>
+            Disallow remove operation if the Component to be removed is not guaranteed to be present
+            on ALL matched Archetypes, see <see cref="M:fennecs.QueryBuilder.Has``1(fennecs.Identity)"/>.
+            </summary>
+        </member>
+        <member name="F:fennecs.Batch.RemoveConflict.Allow">
+            <summary>
+            Allow operating on Archetypes where the Component to be removed is not present.
+            Removal operations are Idempotent on these archetypes, i.e. they don't change them
+            on their own.
+            </summary>
+        </member>
+        <member name="T:fennecs.Entity">
+            <summary>
+            <para>
+            <b>Entity</b>
+            </para>
+            <para>
+            Builder Pattern to operate on Identities.
+            Provides a fluent interface for constructing and modifying Entities within a world.
+            The Entity's Identity and World are managed internally.
+            </para>
+            </summary>
+            <remarks>
+            Implements <see cref="T:System.IDisposable"/> to later release shared builder resources. Currently a no-op.
+            </remarks>
+        </member>
+        <member name="M:fennecs.Entity.#ctor(fennecs.World,fennecs.Identity)">
+            <summary>
+            Provides a fluent interface for constructing and modifying Entities within a world.
+            The Entity's Identity is managed internally.
+            </summary>
+        </member>
+        <member name="F:fennecs.Entity.World">
+            <summary>
+            The World in which the Entity exists.
+            </summary>
+        </member>
+        <member name="F:fennecs.Entity.Id">
+            <summary>
+            The Identity of the Entity.
+            </summary>
+        </member>
+        <member name="M:fennecs.Entity.Ref``1(fennecs.Identity)">
+            <summary>
+            Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
+            </summary>
+            <param name="target">specific (targeted) Match Expression for the component type. No wildcards!</param>
+            <typeparam name="C">any Component type</typeparam>
+            <returns>ref C, reference to the Component</returns>
+            <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
+            <exception cref="T:System.ObjectDisposedException">If the Entity is not Alive..</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
+        </member>
+        <member name="M:fennecs.Entity.AddRelation``1(fennecs.Entity)">
+             <summary>
+             Adds a relation of a specific type, with specific data, between the current entity and the target entity.
+             The relation is backed by the Component data of the relation. Entities with the same relations are placed
+             in the same Archetype for faster enumeration and processing as a group.
+            
+             The Component data is instantiated / initialized via the default constructor of the relation type.
+             </summary>
+             <typeparam name="B">Any value or reference type. The type of the relation to be added.</typeparam>
+             <remarks>
+             Beware of Archetype fragmentation! 
+             You can end up with a large number of Archetypes with few Entities in them,
+             which negatively impacts processing speed and memory usage.
+             Try to keep the size of your Archetypes as large as possible for maximum performance.
+             </remarks>
+             <param name="targetEntity">The entity with which to establish the relation.</param>
+             <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+        </member>
+        <member name="M:fennecs.Entity.AddRelation``1(fennecs.Entity,``0)">
+            <summary>
+            Adds a relation of a specific type, with specific data, between the current entity and the target entity.
+            The relation is backed by the Component data of the relation. Entities with the same relations are placed
+            in the same Archetype for faster enumeration and processing as a group.
+            </summary>
+            <typeparam name="T">Any value or reference type. The type of the relation to be added.</typeparam>
+            <remarks>
+            Beware of Archetype fragmentation! 
+            You can end up with a large number of Archetypes with few Entities in them,
+            which negatively impacts processing speed and memory usage.
+            Try to keep the size of your Archetypes as large as possible for maximum performance.
+            </remarks>
+            <param name="targetEntity">The entity with which to establish the relation.</param>
+            <param name="data">The data associated with the relation.</param>
+            <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+        </member>
+        <member name="M:fennecs.Entity.AddLink``1(``0)">
+            <summary>
+            Adds a object link to the current entity.
+            Object links, in addition to making the object available as a Component,
+            place all Entities with a link to the same object into a single Archetype,
+            which can optimize processing them in queries.
+            </summary>
+            <remarks>
+            Beware of Archetype fragmentation! 
+            You can end up with a large number of Archetypes with few Entities in them,
+            which negatively impacts processing speed and memory usage.
+            Try to keep the size of your Archetypes as large as possible for maximum performance.
+            </remarks>
+            <typeparam name="T">Any reference type. The type the object to be linked with the entity.</typeparam>
+            <param name="linkedObject">The target of the link.</param>
+            <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+        </member>
+        <member name="M:fennecs.Entity.Add``1(``0)">
+            <summary>
+            Adds a Component of a specific type, with specific data, to the current entity.
+            </summary>
+            <typeparam name="T">The type of the Component to be added.</typeparam>
+            <param name="data">The data associated with the Component.</param>
+            <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+        </member>
+        <member name="M:fennecs.Entity.Add``1">
+            <summary>
+            Adds a Component of a specific type to the current entity.
+            </summary>
+            <typeparam name="T">The type of the Component to be added.</typeparam>
+            <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+        </member>
+        <member name="M:fennecs.Entity.Remove``1">
+            <summary>
+            Removes a Component of a specific type from the current entity.
+            </summary>
+            <typeparam name="T">The type of the Component to be removed.</typeparam>
+            <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+        </member>
+        <member name="M:fennecs.Entity.RemoveRelation``1(fennecs.Entity)">
+            <summary>
+            Removes a relation of a specific type between the current entity and the target entity.
+            </summary>
+            <typeparam name="T">The type of the relation to be removed.</typeparam>
+            <param name="targetEntity">The entity from which the relation will be removed.</param>
+            <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+        </member>
+        <member name="M:fennecs.Entity.RemoveLink``1(``0)">
+            <summary>
+            Removes the link of a specific type with the target object.
+            </summary>
+            <typeparam name="T">The type of the link to be removed.</typeparam>
+            <param name="targetObject">The target object from which the link will be removed.</param>
+            <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+        </member>
+        <member name="M:fennecs.Entity.Despawn">
+            <summary>
+            Despawns the Entity from the World.
+            </summary>
+            <remarks>
+            The entity builder struct still exists afterwards, but the entity is no longer alive and subsequent CRUD operations will throw.
+            </remarks>
+        </member>
+        <member name="M:fennecs.Entity.Has``1">
+            <summary>
+            Checks if the Entity has a Plain Component.
+            Same as calling <see cref="M:fennecs.Entity.Has``1(fennecs.Identity)"/> with <see cref="F:fennecs.Match.Plain"/>
+            </summary>
+        </member>
+        <member name="M:fennecs.Entity.Has``1(fennecs.Identity)">
+            <summary>
+            Checks if the Entity has a Component of a specific type.
+            Allows for a <see cref="T:fennecs.Match"/> Expression to be specified.
+            </summary>
+        </member>
+        <member name="M:fennecs.Entity.HasLink``1(``0)">
+            <summary>
+            Checks if the Entity has an Object Link of a specific type and specific target.
+            </summary>
+        </member>
+        <member name="M:fennecs.Entity.HasLink``1">
+            <summary>
+            Checks if the Entity has an Object Link of a specific type.
+            </summary>
+        </member>
+        <member name="M:fennecs.Entity.HasRelation``1(fennecs.Entity)">
+            <summary>
+            Checks if the Entity has an Entity-Entity Relation backed by a specific type.
+            </summary>
+        </member>
+        <member name="M:fennecs.Entity.HasRelation``1">
+            <summary>
+            Checks if the Entity has an Entity-Entity Relation backed by a specific type.
+            </summary>
+        </member>
+        <member name="M:fennecs.Entity.Dispose">
+            <summary>
+            Disposes of the Entity builder, releasing any pooled resources.
+            </summary>
+        </member>
+        <member name="M:fennecs.Entity.op_Implicit(fennecs.Entity)~System.Boolean">
+            <summary>
+            Implicit cast to Boolean. Returns true if the Entity is alive and its Identity is nondefault.
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fennecs.Identity">
+            <summary>
+            Refers to an identity:
+            real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
+            </summary>
+        </member>
+        <member name="T:fennecs.Match">
+            <summary>
+            <para>Match Expressions for Query Matching.</para>
+            <para>
+            Match's static readonly constants differentiate between Plain Components, Entity-Entity Relations, and Entity-Object Relations.
+            The class offers a set of Wildcards for matching combinations of the above in <see cref="T:fennecs.Query">Queries</see>; as opposed to filtering for only a specific target.
+            </para>
+            </summary>
+        </member>
+        <member name="F:fennecs.Match.Plain">
+            <summary>
+            <para>
+            <c>default</c><br/>In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
+            </para>
+            <para>
+            Since it's specific, this Match Expression is always free and has no enumeration cost.
+            </para>
+            </summary>
+            <remarks>
+            Not a wildcard. Formerly known as "None", as plain components without a target
+            can only exist once per Entity (same as components with a particular target).
+            </remarks>
+        </member>
+        <member name="F:fennecs.Match.Entity">
+            <summary>
+            <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
+            </para>
+            <para>This expression is free when applied to a Filter expression, see <see cref="T:fennecs.Query"/>.
+            </para>
+            <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+            </summary>
+            <inheritdoc cref="F:fennecs.Match.Any"/>
+        </member>
+        <member name="F:fennecs.Match.Object">
+            <summary>
+            <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
+            </para>
+            <para>Use it freely in filter expressions to match any component type. See <see cref="T:fennecs.QueryBuilder"/> for how to apply it in queries.</para>
+            <para>This expression is free when applied to a Filter expression, see <see cref="T:fennecs.Query"/>.
+            </para>
+            <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+            </summary>
+            <inheritdoc cref="F:fennecs.Match.Any"/>
+        </member>
+        <member name="F:fennecs.Match.Any">
+            <summary>
+            <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
+            </para>
+            <para>This expression is free when applied to a Filter expression, see <see cref="T:fennecs.Query"/>.
+            </para>
+            <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+            </summary>
+            <remarks>
+            <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for
+            each matching component. While querying is efficient, this increases the number of operations per entity.</para>
+            <para>This effect is more pronounced in large archetypes with many matching components, potentially
+            multiplying the workload significantly. However, for smaller archetypes or simpler tasks, impacts are minimal.</para>
+            <para>Risks and considerations include:</para>
+            <ul>
+            <li>Repeated enumeration: Entities matching a wildcard are processed multiple times, for each matching
+            component type combination.</li>
+            <li>Complex queries: Especially in Archetypes where Entities match multiple components, multiple wildcards
+            can create a cartesian product effect, significantly increasing complexity and workload.</li>
+            <li>Use wildcards deliberately and sparingly.</li>
+            </ul>
+            </remarks>
+        </member>
+        <member name="F:fennecs.Match.Target">
+            <summary>
+            <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="P:fennecs.TypeExpression.Target"/>.
+            <para>This expression is free when applied to a Filter expression, see <see cref="T:fennecs.Query"/>.
+            </para>
+            <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+            </summary>
+            <inheritdoc cref="F:fennecs.Match.Any"/>
+        </member>
+        <member name="T:fennecs.Match.Join`1">
+            <summary>
+            Cross-Joins the Archetype with a list of StreamTypes.
+            </summary>
+        </member>
+        <member name="M:fennecs.Match.Join`1.#ctor(fennecs.Archetype,fennecs.TypeExpression[])">
+            <summary>
+            Cross-Joins the Archetype with a list of StreamTypes.
+            </summary>
+        </member>
+        <member name="P:fennecs.Match.Join`1.Select">
+            <summary>
+            Returns the Storage in the current internal Cross Join counter configuration.
+            Call <see cref="M:fennecs.Match.Join`1.Iterate"/> to select the next permutation.
+            </summary>
+        </member>
+        <member name="M:fennecs.Match.Join`1.Iterate">
+            <summary>
+            Ticks the internal counter of the Join operation, readying the next permutation to use in <see cref="P:fennecs.Match.Join`1.Select"/>.
+            </summary>
+            <returns>
+            <c>true</c> if permutation exists<br/><c>false</c> if the Cross Join has exhausted all permutations.
+            </returns>
+        </member>
+        <member name="P:fennecs.Match.Join`1.Empty">
+            <summary>
+            Returns <c>true</c> if the Join is empty, i.e. no permutations are available.
+            </summary>
+        </member>
+        <member name="T:fennecs.Match.Join`2">
+            <summary>
+            Cross-Joins the Archetype with a list of StreamTypes.
+            </summary>
+        </member>
+        <member name="T:fennecs.Match.Join`3">
+            <summary>
+            Cross-Joins the Archetype with a list of StreamTypes.
+            </summary>
+        </member>
+        <member name="T:fennecs.Match.Join`4">
+            <summary>
+            Cross-Joins the Archetype with a list of StreamTypes.
+            </summary>
+        </member>
+        <member name="T:fennecs.Match.Join`5">
+            <summary>
+            Cross-Joins the Archetype with a list of StreamTypes.
+            </summary>
+        </member>
+        <member name="T:fennecs.Meta">
+            <summary>
+            Meta Table that holds the Archetype, Row, and Identity of an "Entity"
+            (the semantic concept, not the <see cref="T:fennecs.Entity"/> builder struct).
+            </summary>
+        </member>
+        <member name="M:fennecs.Meta.#ctor(fennecs.Identity,fennecs.Archetype,System.Int32)">
+            <summary>
+            Meta Table that holds the Archetype, Row, and Identity of an "Entity"
+            (the semantic concept, not the <see cref="T:fennecs.Entity"/> builder struct).
+            </summary>
+        </member>
+        <member name="F:fennecs.Meta.Archetype">
+            <summary>
+            Archetype the Entity lives in.
+            </summary>
+        </member>
+        <member name="F:fennecs.Meta.Row">
+            <summary>
+            Position within the Archetype Table
+            </summary>
+        </member>
+        <member name="F:fennecs.Meta.Identity">
+            <summary>
+            Entity Identity
+            </summary>
+        </member>
+        <member name="T:fennecs.Query">
+            <summary>
+                <para>
+                    <b>Query Base Class.</b>
+                </para>
+                <para>
+                    It has no output Stream Types, and thus cannot be iterated in ways other than enumerating its Entities.
+                </para>
+                <para>
+                    See <see cref="T:fennecs.Query`1" /> through <see cref="T:fennecs.Query`5" /> for Queries with configurable
+                    output Stream Types for fast iteration.
+                </para>
+            </summary>
+        </member>
+        <member name="P:fennecs.Query.Count">
+            <summary>
+                The sum of all distinct Entities currently matched by this Query.
+                Affected by Filters.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query.Ref``1(fennecs.Entity,fennecs.Identity)">
+            <summary>
+                Gets a reference to the Component of type <typeparamref name="C" /> for the entity.
+            </summary>
+            <param name="entity">the entity to get the component from</param>
+            <param name="match">Match Expression for the component type <see cref="T:fennecs.Match" /></param>
+            <typeparam name="C">any Component type</typeparam>
+            <returns>ref C, reference to the Component</returns>
+            <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for Entity entity.</exception>
+        </member>
+        <member name="M:fennecs.Query.Contains(fennecs.Entity)">
+            <summary>
+                Does this Query match ("contain") the Entity, and would enumerate it?
+            </summary>
+            <param name="entity"></param>
+            <returns>true if Entity is in the Query</returns>
+        </member>
+        <member name="M:fennecs.Query.Contains``1(fennecs.Identity)">
+            <summary>
+                Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?
+            </summary>
+            <param name="match">
+                Match Expression for the component type <see cref="T:fennecs.Match" />.
+                The default is <see cref="F:fennecs.Match.Plain" />
+            </param>
+            <returns>true if the Query contains the Type with the given Match Expression</returns>
+        </member>
+        <member name="F:fennecs.Query.StreamTypes">
+            <summary>
+                Array of TypeExpressions for the Output Stream of this Query.
+                Mutated by Filter Expressions.
+            </summary>
+        </member>
+        <member name="F:fennecs.Query._streamFilters">
+            <summary>
+             Filters for the Archetypes matched by the StreamTypes
+            </summary>
+        </member>
+        <member name="F:fennecs.Query.Countdown">
+            <summary>
+                Countdown event for parallel runners.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query.AddFilter``1(fennecs.Identity)">
+            <summary>
+                Adds a subset filter to this Query, reducing the Stream Types to a subset of the initial Stream Types.
+            </summary>
+            <remarks>
+                <para>
+                    This can be used to narrow a query with Wildcard Match Expressions in its Stream Types, e.g. to match only
+                    a specific Object Link in a Query that matches all Object Links of a given type.
+                    Call this method repeatedly to set multiple filters.
+                </para>
+                <para>
+                    Clear the filter with <see cref="M:fennecs.Query.ClearStreamFilter" />.
+                </para>
+            </remarks>
+            <typeparam name="T">any component type that is present in the Query's Stream Types</typeparam>
+            <param name="match">
+                a Match Expression that is narrower than the respective Stream Type's initial
+                Match Expression.
+            </param>
+            <exception cref="T:System.InvalidOperationException">if the requested filter doesn't match any of the Query's Archetypes</exception>
+        </member>
+        <member name="M:fennecs.Query.ClearStreamFilter">
+            <summary>
+                Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="M:fennecs.Query.AddFilter``1(fennecs.Identity)" />.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query.GetEnumerator">
+            <summary>
+                Enumerator over all the Entities in the Query.
+                Do not make modifications to the world affecting the Query while enumerating.
+            </summary>
+            <returns>
+                An enumerator over all the Entities in the Query.
+            </returns>
+        </member>
+        <member name="M:fennecs.Query.Filtered(fennecs.TypeExpression[])">
+            <summary>
+                Enumerator over a subset of the Entities in the Query, which must also match the filters.
+                Do not make modifications to the world affecting the Query while enumerating.
+                This is a convenience method for filtering the Query without changing its filter state.
+                Any pre-existing filter state is being honored.
+            </summary>
+            <returns>
+                An enumerator over the Entities in the Query that match all provided <see cref="T:fennecs.TypeExpression">TypeExpressions</see>.
+            </returns>
+        </member>
+        <member name="M:fennecs.Query.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc cref="M:System.Collections.IEnumerable.GetEnumerator" />
+        </member>
+        <member name="P:fennecs.Query.IsEmpty">
+            <summary>
+                Does this query match any entities?
+            </summary>
+        </member>
+        <member name="M:fennecs.Query.Random">
+            <summary>
+                Returns an Entity matched by this Query, selected at random.
+            </summary>
+            <exception cref="T:System.IndexOutOfRangeException">if the Query <see cref="P:fennecs.Query.IsEmpty" /></exception>
+        </member>
+        <member name="P:fennecs.Query.Item(System.Int32)">
+            <summary>
+                Returns the <see cref="T:fennecs.Entity" /> at the given <em>momentary position</em> in the Query.
+            </summary>
+            <remarks>
+                <para>
+                    DO NOT use indexes to identify Entities across frames or World modifications.
+                </para>
+                <para>
+                    Instead, use the Entities themselves.
+                </para>
+                <para>
+                    The reason is that a Query can gain and lose both <b>Entities</b> and <b>Archetypes</b> over time.
+                    This affects the <see cref="P:fennecs.Query.Count" /> of the Query, similar to how changing an <see cref="T:System.Collections.Generic.ICollection`1" />
+                    would change its <see cref="P:System.Collections.Generic.ICollection`1.Count" /> and positions. Treat the Entity returned as a <em>momentary result</em>
+                    for that index, which <em>should not be kept or tracked</em> across World modifications or even scopes.
+                </para>
+                <para>
+                    The Entity returned is, of course, usable as expected.
+                </para>
+            </remarks>
+            <param name="index">a value between 0 and <see cref="P:fennecs.Query.Count" /></param>
+        </member>
+        <member name="M:fennecs.Query.Add``1">
+            <summary>
+                Adds a Component (using default constructor) to all Entities matched by this query.
+            </summary>
+            <inheritdoc cref="M:fennecs.Query.Add``1(``0)" />
+        </member>
+        <member name="M:fennecs.Query.Add``1(``0)">
+            <summary>
+                Adds the given Component (using specified data) to all Entities matched by this query.
+            </summary>
+            <typeparam name="T">any type</typeparam>
+            <param name="data">the data to add</param>
+            <exception cref="T:System.InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
+        </member>
+        <member name="M:fennecs.Query.Remove``1">
+            <summary>
+                Removes the given Component from all Entities matched by this query.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
+            <typeparam name="T">any Component type matched by the query</typeparam>
+        </member>
+        <member name="M:fennecs.Query.Batch">
+            <summary>
+            Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+            </summary>
+            <remarks>
+            (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
+            after the first operation, and thus lead to undesired results.
+            </remarks> 
+            <returns>a BatchOperation that needs to be executed by calling <see cref="M:fennecs.Batch.Submit"/></returns>
+        </member>
+        <member name="M:fennecs.Query.Batch(fennecs.Batch.AddConflict)">
+            <summary>
+            Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+            Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+            query, see <see cref="T:fennecs.Batch.AddConflict"/> and <see cref="T:fennecs.Batch.AddConflict"/>.
+            </summary>
+            <remarks>
+            (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
+            after the first operation, and thus lead to undesired results.
+            </remarks> 
+            <returns>a BatchOperation that needs to be executed by calling <see cref="M:fennecs.Batch.Submit"/></returns>
+        </member>
+        <member name="M:fennecs.Query.Batch(fennecs.Batch.RemoveConflict)">
+            <summary>
+            Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+            Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+            query, see <see cref="T:fennecs.Batch.AddConflict"/> and <see cref="T:fennecs.Batch.AddConflict"/>.
+            </summary>
+            <remarks>
+            (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
+            after the first operation, and thus lead to undesired results.
+            </remarks> 
+            <returns>a BatchOperation that needs to be executed by calling <see cref="M:fennecs.Batch.Submit"/></returns>
+        </member>
+        <member name="M:fennecs.Query.Batch(fennecs.Batch.AddConflict,fennecs.Batch.RemoveConflict)">
+            <summary>
+            Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+            Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+            query, see <see cref="T:fennecs.Batch.AddConflict"/> and <see cref="T:fennecs.Batch.AddConflict"/>.
+            </summary>
+            <remarks>
+            (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
+            after the first operation, and thus lead to undesired results.
+            </remarks> 
+            <returns>a BatchOperation that needs to be executed by calling <see cref="M:fennecs.Batch.Submit"/></returns>
+        </member>
+        <member name="M:fennecs.Query.Despawn">
+            <summary>
+            Despawn all Entities matched by this Query.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query.Truncate(System.Int32,fennecs.Query.TruncateMode)">
+            <summary>
+            Despawn all Entities above the specified count in the Query, using the specified mode of distribution.
+            The default is a balanced distribution (with rounding).
+            </summary>
+            <param name="maxEntityCount">number of entities to preserve</param>
+            <param name="mode">
+            <ul>
+            <li><see cref="F:fennecs.Query.TruncateMode.Proportional"/>: (default) Truncate matched Archetypes proportionally to their contents (approximation by rounding).</li>
+            <li><see cref="F:fennecs.Query.TruncateMode.PerArchetype"/>: Truncate each matched Archetype to the specified maximum count.
+            This means a Query matching <c>n</c> Archetypes will have up to <c>n * maxEntityCount</c> Entities after this
+            operation.</li>
+            </ul>
+            </param>
+        </member>
+        <member name="M:fennecs.Query.Dispose">
+            <summary>
+                Dispose the Query.
+            </summary>
+        </member>
+        <member name="T:fennecs.Query`1">
+            <summary>
+            <para>
+            Query with 1 output Stream Type, <c>C0</c>.
+            </para>
+            <para>
+            Queries expose methods to rapidly iterate all Entities that match their Mask and Stream Types.
+            </para>
+            <ul>
+            <li><c>ForEach(...)</c> - call a delegate <see cref="T:fennecs.RefAction`1"/> for each Entity.</li>
+            <li><c>Job(...)</c> - parallel process, calling a delegate <see cref="T:fennecs.RefAction`1"/> for each Entity.</li>
+            <li><c>Raw(...)</c> - pass Memory regions / Spans to a delegate <see cref="T:fennecs.MemoryAction`1"/> per matched Archetype (× matched Wildcards) of entities.</li>
+            </ul>
+            </summary>
+            <remarks>
+            
+            </remarks>
+        </member>
+        <member name="M:fennecs.Query`1.#ctor(fennecs.World,System.Collections.Generic.List{fennecs.TypeExpression},fennecs.Mask,System.Collections.Generic.List{fennecs.Archetype})">
+            <summary>
+            Initializes a new instance of the <see cref="T:fennecs.Query`1"/> class.
+            </summary>
+            <param name="world">The world context for the query.</param>
+            <param name="streamTypes">The stream types for the query.</param>
+            <param name="mask">The mask for the query.</param>
+            <param name="archetypes">The archetypes for the query.</param>
+        </member>
+        <member name="M:fennecs.Query`1.For(fennecs.RefAction{`0})">
+            <summary>
+            Executes an action for each entity that matches the query.
+            </summary>
+            <member name="T:For">
+        <summary>
+            Performs a query with specified action, passing in values for requested stream types.
+        </summary>
+        <param name="action"><see cref="T:fennecs.RefAction`1" /> taking references to Component Types.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`1.For``1(fennecs.RefActionU{`0,``0},``0)">
+            <summary>
+            Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
+            </summary>
+            <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+            <param name="uniform">The uniform data to pass to the action.</param>
+            <member name="T:ForU">
+        <summary>
+            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`1.For(fennecs.EntityAction{`0})">
+            <summary>
+            Executes an action for each entity that matches the query.
+            Also passes the Entity to the action, making structural changes easy and accessible.
+            </summary>
+            <param name="action"><see cref="T:fennecs.EntityAction`1" /> taking references to Component Types.</param>
+            <member name="T:ForE">
+        <summary>
+            Performs a query with specified action, passing in an Entity, and values for requested stream types.
+        </summary>
+        <param name="action"><see cref="T:fennecs.EntityAction`1" /> taking references to Component Types.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`1.For``1(fennecs.EntityActionU{`0,``0},``0)">
+            <summary>
+            Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
+            Also passes the Entity to the action, making structural changes easy and accessible.
+            </summary>
+            <param name="action"><see cref="T:fennecs.EntityActionU`2" /> taking references to Component Types.</param>
+            <param name="uniform">The uniform data to pass to the action.</param>
+            <member name="T:ForEU">
+        <summary>
+            Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action"><see cref="T:fennecs.EntityActionU`2" /> taking references to Component Types.</param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`1.Job(fennecs.RefAction{`0},System.Int32)">
+            <summary>
+            Executes an action <em>in parallel chunks</em> for each entity that matches the query.
+            </summary>
+            <param name="action"><see cref="T:fennecs.RefAction`1"/> taking references to Component Types.</param>
+            <param name="chunkSize">The size of the chunk for parallel processing.</param>
+        </member>
+        <member name="M:fennecs.Query`1.Job``1(fennecs.RefActionU{`0,``0},``0,System.Int32)">
+            <summary>
+            Executes an action <em>in parallel chunks</em> for each entity that matches the query, passing an additional uniform parameter to the action.
+            </summary>
+            <param name="action"><see cref="T:fennecs.RefAction`1"/> taking references to Component Types.</param>
+            <param name="uniform">The uniform data to pass to the action.</param>
+            <param name="chunkSize">The size of the chunk for parallel processing.</param>
+        </member>
+        <member name="M:fennecs.Query`1.Raw(fennecs.MemoryAction{`0})">
+            <summary>
+            Executes an action passing in bulk data in <see cref="T:System.Memory`1"/> streams that match the query.
+            </summary>
+            <remarks>
+            <para>
+            Suggested uses include search algorithms with early-out, and passing bulk data into a game engine's native structures.
+            </para>
+            <para>
+            <see cref="T:System.Memory`1"/> contains a <c>Span</c> that can be used to access the data in a contiguous block of memory.
+            </para>
+            </remarks>
+            <param name="action"><see cref="T:fennecs.MemoryAction`1"/> action to execute.</param>
+        </member>
+        <member name="M:fennecs.Query`1.Raw``1(fennecs.MemoryActionU{`0,``0},``0)">
+            <summary>
+            Executes an action passing in bulk data in <see cref="T:System.Memory`1"/> streams that match the query, and providing an additional uniform parameter.
+            </summary>
+            <remarks>
+            <para>
+            Suggested uses include search algorithms with early-out, and passing bulk data into a game engine's native structures.
+            </para>
+            <para>
+            <see cref="T:System.Memory`1"/> contains a <c>Span</c> that can be used to access the data in a contiguous block of memory.
+            </para>
+            </remarks>
+            <param name="action"><see cref="T:fennecs.MemoryAction`1"/> action to execute.</param>
+            <param name="uniform">The uniform data to pass to the action.</param>
+        </member>
+        <member name="T:fennecs.Query`2">
+            <summary>
+            Query with 2 output Stream Types, <c>C0</c> and <c>C1</c>.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query`2.For(fennecs.RefAction{`0,`1})">
+            <member name="T:For">
+        <summary>
+            Performs a query with specified action, passing in values for requested stream types.
+        </summary>
+        <param name="action"><see cref="T:fennecs.RefAction`1" /> taking references to Component Types.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`2.For``1(fennecs.RefActionU{`0,`1,``0},``0)">
+            <member name="T:ForU">
+        <summary>
+            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`2.For(fennecs.EntityAction{`0,`1})">
+            <member name="T:ForE">
+        <summary>
+            Performs a query with specified action, passing in an Entity, and values for requested stream types.
+        </summary>
+        <param name="action"><see cref="T:fennecs.EntityAction`1" /> taking references to Component Types.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`2.For``1(fennecs.EntityActionU{`0,`1,``0},``0)">
+            <member name="T:ForEU">
+        <summary>
+            Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action"><see cref="T:fennecs.EntityActionU`2" /> taking references to Component Types.</param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`2.Job(fennecs.RefAction{`0,`1},System.Int32)">
+            <inheritdoc cref="M:fennecs.Query`1.Job(fennecs.RefAction{`0},System.Int32)"/>
+        </member>
+        <member name="M:fennecs.Query`2.Job``1(fennecs.RefActionU{`0,`1,``0},``0,System.Int32)">
+            <inheritdoc cref="M:fennecs.Query`1.Job``1(fennecs.RefActionU{`0,``0},``0,System.Int32)"/>
+        </member>
+        <member name="M:fennecs.Query`2.Raw(fennecs.MemoryAction{`0,`1})">
+            <inheritdoc cref="M:fennecs.Query`1.Raw(fennecs.MemoryAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`2.Raw``1(fennecs.MemoryActionU{`0,`1,``0},``0)">
+            <inheritdoc cref="M:fennecs.Query`1.Raw``1(fennecs.MemoryActionU{`0,``0},``0)"/>
+        </member>
+        <member name="T:fennecs.Query`3">
+            <summary>
+            Query with 3 output Stream Types, <c>C0</c> to <c>C2</c>.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query`3.For(fennecs.RefAction{`0,`1,`2})">
+            <member name="T:ForU">
+        <summary>
+            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`3.For``1(fennecs.RefActionU{`0,`1,`2,``0},``0)">
+            <summary />
+            <member name="T:ForU">
+        <summary>
+            Performs a query with specified action, passing in  values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
+        </member>
+        <member name="M:fennecs.Query`3.For(fennecs.EntityAction{`0,`1,`2})">
+            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.EntityAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`3.For``1(fennecs.EntityActionU{`0,`1,`2,``0},``0)">
+            <inheritdoc cref="!:Query&lt;C0&gt;.For&lt;U&gt;(EntityActionU&lt;C0,U&gt;)"/>
+        </member>
+        <member name="M:fennecs.Query`3.Job(fennecs.RefAction{`0,`1,`2},System.Int32)">
+            <inheritdoc cref="M:fennecs.Query`1.Job(fennecs.RefAction{`0},System.Int32)"/>
+        </member>
+        <member name="M:fennecs.Query`3.Job``1(fennecs.RefActionU{`0,`1,`2,``0},``0,System.Int32)">
+            <inheritdoc cref="M:fennecs.Query`1.Job``1(fennecs.RefActionU{`0,``0},``0,System.Int32)"/>
+        </member>
+        <member name="M:fennecs.Query`3.Raw(fennecs.MemoryAction{`0,`1,`2})">
+            <inheritdoc cref="M:fennecs.Query`1.Raw(fennecs.MemoryAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`3.Raw``1(fennecs.MemoryActionU{`0,`1,`2,``0},``0)">
+            <inheritdoc cref="M:fennecs.Query`1.Raw``1(fennecs.MemoryActionU{`0,``0},``0)"/>
+        </member>
+        <member name="T:fennecs.Query`4">
+            <summary>
+            Query with 4 output Stream Types, <c>C0</c> to <c>C3</c>.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query`4.For(fennecs.RefAction{`0,`1,`2,`3})">
+            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.RefAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`4.For``1(fennecs.RefActionU{`0,`1,`2,`3,``0},``0)">
+            <inheritdoc cref="M:fennecs.Query`1.For``1(fennecs.RefActionU{`0,``0},``0)"/>
+        </member>
+        <member name="M:fennecs.Query`4.For(fennecs.EntityAction{`0,`1,`2,`3})">
+            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.EntityAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`4.For``1(fennecs.EntityActionU{`0,`1,`2,`3,``0},``0)">
+            <inheritdoc cref="!:Query&lt;C0&gt;.For&lt;U&gt;(EntityActionU&lt;C0,U&gt;)"/>
+        </member>
+        <member name="M:fennecs.Query`4.Job(fennecs.RefAction{`0,`1,`2,`3},System.Int32)">
+            <inheritdoc cref="M:fennecs.Query`1.Job(fennecs.RefAction{`0},System.Int32)"/>
+        </member>
+        <member name="M:fennecs.Query`4.Job``1(fennecs.RefActionU{`0,`1,`2,`3,``0},``0,System.Int32)">
+            <inheritdoc cref="M:fennecs.Query`1.Job``1(fennecs.RefActionU{`0,``0},``0,System.Int32)"/>
+        </member>
+        <member name="M:fennecs.Query`4.Raw(fennecs.MemoryAction{`0,`1,`2,`3})">
+            <inheritdoc cref="M:fennecs.Query`1.Raw(fennecs.MemoryAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`4.Raw``1(fennecs.MemoryActionU{`0,`1,`2,`3,``0},``0)">
+            <inheritdoc cref="M:fennecs.Query`1.Raw``1(fennecs.MemoryActionU{`0,``0},``0)"/>
+        </member>
+        <member name="T:fennecs.Query`5">
+            <summary>
+            Query with 5 output Stream Types, <c>C0</c> to <c>C4</c>.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query`5.For(fennecs.RefAction{`0,`1,`2,`3,`4})">
+            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.RefAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`5.For``1(fennecs.RefActionU{`0,`1,`2,`3,`4,``0},``0)">
+            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.RefAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`5.For(fennecs.EntityAction{`0,`1,`2,`3,`4})">
+            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.EntityAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`5.For``1(fennecs.EntityActionU{`0,`1,`2,`3,`4,``0},``0)">
+            <inheritdoc cref="!:Query&lt;C0&gt;.For&lt;U&gt;(EntityActionU&lt;C0,U&gt;)"/>
+        </member>
+        <member name="M:fennecs.Query`5.Job(fennecs.RefAction{`0,`1,`2,`3,`4},System.Int32)">
+            <inheritdoc cref="M:fennecs.Query`1.Job(fennecs.RefAction{`0},System.Int32)"/>
+        </member>
+        <member name="M:fennecs.Query`5.Job``1(fennecs.RefActionU{`0,`1,`2,`3,`4,``0},``0,System.Int32)">
+            <inheritdoc cref="M:fennecs.Query`1.Job``1(fennecs.RefActionU{`0,``0},``0,System.Int32)"/>
+        </member>
+        <member name="M:fennecs.Query`5.Raw(fennecs.MemoryAction{`0,`1,`2,`3,`4})">
+            <inheritdoc cref="M:fennecs.Query`1.Raw(fennecs.MemoryAction{`0})"/>
+        </member>
+        <member name="M:fennecs.Query`5.Raw``1(fennecs.MemoryActionU{`0,`1,`2,`3,`4,``0},``0)">
+            <inheritdoc cref="M:fennecs.Query`1.Raw``1(fennecs.MemoryActionU{`0,``0},``0)"/>
+        </member>
+        <member name="M:fennecs.QueryBuilder.Outputs``1(fennecs.Identity)">
+            <summary>
+            
+            </summary>
+            <param name="target"></param>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:fennecs.Signature`1">
+            <summary>
+            Generic IImmutableSortedSet whose hash code is a combination of its elements' hashes.
+            </summary>
+        </member>
+        <member name="M:fennecs.Signature`1.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Signature`1.#ctor(`0[])">
+            <summary>
+            Creates a new <see cref="T:fennecs.Signature`1"/> from the given values.
+            </summary>
+            <param name="values">constituent values of the signature; will be converted to an <see cref="T:System.Collections.Immutable.ImmutableSortedSet`1"/></param>
+        </member>
+        <member name="M:fennecs.Signature`1.#ctor(System.Collections.Immutable.ImmutableSortedSet{`0})">
+            <summary>
+            Creates a new <see cref="T:fennecs.Signature`1"/> from the given values.
+            </summary>
+            <param name="set">a set of constituent values of the signature</param>
+            <inheritdoc cref="T:System.Collections.Immutable.ImmutableSortedSet`1"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Add(`0)">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.Add(`0)"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Clear">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.Clear"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Contains(`0)">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.Contains(`0)"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Except(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.Except(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Intersect(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.Intersect(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.IsProperSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.IsProperSubsetOf(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.IsProperSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.IsProperSupersetOf(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.IsSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.IsSubsetOf(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.IsSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.IsSupersetOf(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Overlaps(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.Overlaps(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Remove(`0)">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.Remove(`0)"/>
+        </member>
+        <member name="M:fennecs.Signature`1.SetEquals(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.SetEquals(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.SymmetricExcept(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.SymmetricExcept(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.TryGetValue(`0,`0@)">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.TryGetValue(`0,`0@)"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Union(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.Union(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.Equals(fennecs.Signature{`0})">
+            <inheritdoc cref="M:System.Collections.Immutable.ImmutableSortedSet`1.SetEquals(System.Collections.Generic.IEnumerable{`0})"/>
+        </member>
+        <member name="M:fennecs.Signature`1.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Signature`1.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Signature`1.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Signature`1.op_Equality(fennecs.Signature{`0},fennecs.Signature{`0})">
+            <inheritdoc cref="M:fennecs.Signature`1.SetEquals(System.Collections.Generic.IEnumerable{`0})" />
+        </member>
+        <member name="M:fennecs.Signature`1.op_Inequality(fennecs.Signature{`0},fennecs.Signature{`0})">
+            <inheritdoc cref="M:fennecs.Signature`1.SetEquals(System.Collections.Generic.IEnumerable{`0})" />
+        </member>
+        <member name="P:fennecs.Signature`1.Count">
+            <summary>
+            Number of constituent values in this signature.
+            </summary>
+        </member>
+        <member name="P:fennecs.Signature`1.Item(System.Int32)">
+            <inheritdoc cref="M:System.Linq.Enumerable.ElementAt``1(System.Collections.Generic.IEnumerable{``0},System.Index)"/>
+        </member>
+        <member name="T:fennecs.TypeExpression">
+            <summary>
+            Represents a union structure that encapsulates type expressions, including Components,
+            Entity-Entity relations, Entity-object relations, and Wildcard expressions matching multiple.
+            </summary>
+        </member>
+        <member name="P:fennecs.TypeExpression.Target">
+            <summary>
+            The Target of this <see cref="T:fennecs.TypeExpression"/>, determining whether it acts as a plain Component,
+            an Object Link, an Entity Relation, or a Wildcard Match Expression.
+            </summary>
+            <remarks>
+            <para>If <see cref="F:fennecs.Match.Plain"/>, the type expression matches a plain Component of its <see cref="P:fennecs.TypeExpression.Type"/>.</para>
+            <para>If a specific <see cref="T:fennecs.Identity"/> (e.g. <see cref="P:fennecs.Identity.IsEntity"/> or <see cref="P:fennecs.Identity.IsObject"/> are true), the type expression represents a relation targeting that Entity.</para>
+            <para>If <see cref="F:fennecs.Match.Any"/>, the type expression acts as a Wildcard 
+              expression that matches any target, INCLUDING <see cref="F:fennecs.Match.Plain"/>.</para>
+            <para> If <see cref="F:fennecs.Match.Target"/>, the type expression acts as a Wildcard 
+              expression that matches relations and their targets, EXCEPT <see cref="F:fennecs.Match.Plain"/>.</para>
+            <para> If <see cref="F:fennecs.Match.Entity"/>, the type expression acts as a Wildcard 
+              expression that matches ONLY Entity-entity relations.</para>
+            <para> If <see cref="F:fennecs.Match.Object"/>, the type expression acts as a Wildcard 
+              expression that matches ONLY entity-object relations.</para>
+            </remarks>
+        </member>
+        <member name="P:fennecs.TypeExpression.isRelation">
+            <summary>
+            The <see cref="T:fennecs.TypeExpression"/> is a relation, meaning it has a target other than None.
+            </summary>
+        </member>
+        <member name="P:fennecs.TypeExpression.isWildcard">
+            <summary>
+             Is this TypeExpression a Wildcard expression? See <see cref="T:fennecs.Match"/>.
+            </summary>
+        </member>
+        <member name="P:fennecs.TypeExpression.Type">
+            <summary>
+            Get the backing Component type that this <see cref="T:fennecs.TypeExpression"/> represents.
+            </summary>
+        </member>
+        <member name="M:fennecs.TypeExpression.Matches(System.Collections.Generic.IEnumerable{fennecs.TypeExpression})">
+            <summary>
+            Does this <see cref="T:fennecs.TypeExpression"/> match any of the given type expressions?
+            </summary>
+            <param name="other">a collection of type expressions</param>
+            <returns>true if matched</returns>
+        </member>
+        <member name="M:fennecs.TypeExpression.Matches(fennecs.TypeExpression)">
+            <summary>
+            Match against another TypeExpression; used for Query Matching, and is Non-Commutative.
+            Examines the Target field and decides whether the other TypeExpression is a match.
+            </summary>
+            <param name="other">another type expression</param>
+            <returns>true if matched</returns>
+        </member>
+        <member name="M:fennecs.TypeExpression.Equals(fennecs.TypeExpression)">
+            <inheritdoc cref="!:IEquatable&lt;T&gt;.Equals(T?)"/>
+        </member>
+        <member name="M:fennecs.TypeExpression.CompareTo(fennecs.TypeExpression)">
+            <inheritdoc cref="M:System.IComparable`1.CompareTo(`0)"/>
+        </member>
+        <member name="M:fennecs.TypeExpression.Equals(System.Object)">
+            <summary>
+             Implements <see cref="!:IEquatable&lt;T&gt;.Equals(object?)"/>
+             </summary>
+             <remarks>
+             ⚠️This method ALWAYS throws InvalidCastException, as boxing of this type is disallowed.
+             </remarks>
+        </member>
+        <member name="M:fennecs.TypeExpression.Of``1(fennecs.Identity)">
+            <summary>
+            Creates a new <see cref="T:fennecs.TypeExpression"/> for a given Component type and target entity.
+            This may express a plain Component if <paramref name="target"/> is <see cref="F:fennecs.Match.Plain"/>, 
+            or a relation if <paramref name="target"/> is a normal Entity or an object Entity obtained 
+            from <c>Entity.Of&lt;T&gt;(T target)</c>.
+            Providing any of the special virtual Entities <see cref="F:fennecs.Match.Any"/>, <see cref="F:fennecs.Match.Target"/>,
+            <see cref="F:fennecs.Match.Entity"/>, or <see cref="F:fennecs.Match.Object"/> will create a Wildcard expression.
+            </summary>
+            <remarks>
+            <para>If <paramref name="target"/> is <see cref="F:fennecs.Match.Plain"/>, the type expression matches a plain Component of its <see cref="P:fennecs.TypeExpression.Type"/>.</para>
+            <para>If <paramref name="target"/> is <see cref="F:fennecs.Match.Any"/>, the type expression acts as a Wildcard 
+              expression that matches any target, INCLUDING <see cref="F:fennecs.Match.Plain"/>.</para>
+            <para> If <paramref name="target"/> is <see cref="F:fennecs.Match.Target"/>, the type expression acts as a Wildcard 
+              expression that matches relations and their targets, EXCEPT <see cref="F:fennecs.Match.Plain"/>.</para>
+            <para> If <paramref name="target"/> is <see cref="F:fennecs.Match.Entity"/>, the type expression acts as a Wildcard 
+              expression that matches ONLY entity-entity relations.</para>
+            <para> If <paramref name="target"/> is <see cref="F:fennecs.Match.Object"/>, the type expression acts as a Wildcard 
+              expression that matches ONLY entity-object relations.</para>
+            </remarks>
+            <typeparam name="T">The backing type for which to generate the expression.</typeparam>
+            <param name="target">The target entity, with a default of <see cref="F:fennecs.Match.Plain"/>, specifically NO target.</param>
+            <returns>A new <see cref="T:fennecs.TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
+        </member>
+        <member name="M:fennecs.TypeExpression.Of(System.Type,fennecs.Identity)">
+            <summary>
+            Creates a new <see cref="T:fennecs.TypeExpression"/> for a given Component type and target entity.
+            This may express a plain Component if <paramref name="target"/> is <see cref="F:fennecs.Match.Plain"/>, 
+            or a relation if <paramref name="target"/> is a normal Entity or an object Entity obtained 
+            from <c>Entity.Of&lt;T&gt;(T target)</c>.
+            Providing any of the special virtual Entities <see cref="F:fennecs.Match.Any"/>, <see cref="F:fennecs.Match.Target"/>,
+            <see cref="F:fennecs.Match.Entity"/>, or <see cref="F:fennecs.Match.Object"/> will create a Wildcard expression.
+            </summary>
+            <remarks>
+            <para>If <paramref name="target"/> is <see cref="F:fennecs.Match.Plain"/>, the type expression matches a plain Component of its <see cref="P:fennecs.TypeExpression.Type"/>.</para>
+            <para>If <paramref name="target"/> is <see cref="F:fennecs.Match.Any"/>, the type expression acts as a Wildcard 
+              expression that matches any Component or relation, INCLUDING <see cref="F:fennecs.Match.Plain"/>.</para>
+            <para> If <paramref name="target"/> is <see cref="F:fennecs.Match.Target"/>, the type expression acts as a Wildcard 
+              expression that matches relations and their targets, EXCEPT <see cref="F:fennecs.Match.Plain"/>.</para>
+            <para> If <paramref name="target"/> is <see cref="F:fennecs.Match.Entity"/>, the type expression acts as a Wildcard 
+              expression that matches ONLY entity-entity relations.</para>
+            <para> If <paramref name="target"/> is <see cref="F:fennecs.Match.Object"/>, the type expression acts as a Wildcard 
+              expression that matches ONLY entity-object relations.</para>
+            </remarks>
+            <param name="type">The Component type.</param>
+            <param name="target">The target entity, with a default of <see cref="F:fennecs.Match.Plain"/>, specifically NO target.</param>
+            <returns>A new <see cref="T:fennecs.TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
+        </member>
+        <member name="M:fennecs.TypeExpression.GetHashCode">
+            <summary>
+            Implements a hash function that aims for a low collision rate.
+            </summary>
+        </member>
+        <member name="M:fennecs.TypeExpression.ToString">
+            <inheritdoc cref="M:System.Object.ToString"/>
+        </member>
+        <member name="M:fennecs.TypeExpression.#ctor(fennecs.Identity,System.Int16)">
+            <summary>
+            Internal constructor, used by <see cref="M:fennecs.TypeExpression.Of``1(fennecs.Identity)"/> and by unit tests.
+            </summary>
+            <param name="target">literal target Entity value</param>
+            <param name="typeId">literal TypeID value</param>
+        </member>
+        <member name="M:fennecs.World.Spawn">
+            <summary>
+            Creates a new Identity in this World, and returns its Entity builder struct.
+            Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
+            </summary>
+            <returns>an EntityBuilder to operate on</returns>
+        </member>
+        <member name="M:fennecs.World.Despawn(fennecs.Entity)">
+            <summary>
+            Despawn (destroy) an Entity from this World.
+            </summary>
+            <param name="entity">the entity to despawn.</param>
+        </member>
+        <member name="M:fennecs.World.Despawn(fennecs.Identity)">
+            <summary>
+            Despawn (destroy) an Entity from this World by its Identity.
+            </summary>
+            <param name="identity">the entity to despawn.</param>
+        </member>
+        <member name="M:fennecs.World.On(fennecs.Identity)">
+            <summary>
+            Interact with an Identity as an Entity.
+            Perform operations on the given identity in this world, via fluid API.
+            </summary>
+            <example>
+            <code>world.On(identity).Add(123).Add("string").Remove&lt;int&gt;();</code>
+            </example>
+            <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
+        </member>
+        <member name="M:fennecs.World.GetEntity(fennecs.Identity)">
+            <summary>
+            Alias for <see cref="M:fennecs.World.On(fennecs.Identity)"/>, returning an Entity builder struct to operate on. Included to
+            provide a more intuitive verb to "get" an Entity to assign to a variable.
+            </summary>
+            <example>
+            <code>var bob = world.GetEntity(bobsIdentity);</code>
+            </example>
+            <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
+        </member>
+        <member name="M:fennecs.World.IsAlive(fennecs.Identity)">
+            <summary>
+            Checks if the entity is alive (was not despawned).
+            </summary>
+            <param name="identity">an Entity</param>
+            <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
+        </member>
+        <member name="P:fennecs.World.Count">
+            <summary>
+            The number of living entities in the World.
+            </summary>
+        </member>
+        <member name="M:fennecs.World.DespawnAllWith``1(fennecs.Identity)">
+            <summary>
+            Despawn (destroy) all Entities matching a given Type and Match Expression.
+            </summary>
+            <typeparam name="T">any component type</typeparam>
+            <param name="match">default <see cref="F:fennecs.Match.Plain"/>.<br/>Can alternatively be one
+            of <see cref="F:fennecs.Match.Any"/>, <see cref="F:fennecs.Match.Object"/> or <see cref="F:fennecs.Match.Target"/>
+            </param>
+        </member>
+        <member name="M:fennecs.World.Despawn(System.ReadOnlySpan{fennecs.Identity})">
+            <summary>
+            Bulk Despawn Entities from a World.
+            </summary>
+            <param name="toDelete">the entities to despawn (remove)</param>
+        </member>
+        <member name="M:fennecs.World.#ctor(System.Int32)">
+            <summary>
+            Create a new World.
+            </summary>
+            <param name="capacity">initial Entity capacity to reserve. The world will grow automatically.</param>
+        </member>
+        <member name="M:fennecs.World.GC">
+            <summary>
+             Runs the World's Garbage Collection (placeholder for future GC - currently removes all empty Archetypes).
+            </summary>
+        </member>
+        <member name="M:fennecs.World.Dispose">
+            <summary>
+            Disposes of the World. Currently, a no-op.
+            </summary>
+        </member>
+        <member name="P:fennecs.World.Lock">
+            <summary>
+            Locks the World (setting into a Deferred mode) for the scope of the returned WorldLock.
+            Multiple Locks can be taken out, and all structural Operations on Entities will be queued,
+            and executed once the last Lock is released. 
+            </summary>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+    </members>
+</doc>
