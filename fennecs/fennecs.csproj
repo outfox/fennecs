@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.2.0-beta</Version>
+        <Version>0.3.0-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -18,6 +18,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ecs, gamedev, entity, entity component system, game, gamedev, game development, godot, dots, defaultecs, hypecs, relecs, entt, flecs</PackageTags>
         <TargetFramework>net8.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
         <LangVersion>12</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
@@ -25,11 +26,7 @@
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DocumentationFile>fennecs\Query.xml</DocumentationFile>
-    </PropertyGroup>
-
+    
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).tests</_Parameter1>
@@ -46,12 +43,5 @@
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="QueryDocs.xml" />
-      <None Include="XMLdoc.xml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 </Project>
