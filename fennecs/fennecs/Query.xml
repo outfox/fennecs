@@ -1300,15 +1300,12 @@
             <param name="archetypes">The archetypes for the query.</param>
         </member>
         <member name="M:fennecs.Query`1.For(fennecs.RefAction{`0})">
-            <summary>
-            Executes an action for each entity that matches the query.
-            </summary>
             <member name="T:For">
         <summary>
             Performs a query with specified action, passing in values for requested stream types.
         </summary>
         <param name="action">
-            <see cref="!:RefAction" />
+            <see cref="T:RefAction" />
             taking references to Component Types.
         </param>
     </member>
@@ -1317,48 +1314,27 @@
             <summary>
             Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
             </summary>
-            <param name="action"><see cref="T:fennecs.RefActionU`2" /> taking references to Component Types.</param>
+            <param name="action"><see cref="T:fennecs.RefActionU`2"/> taking references to Component Types.</param>
             <param name="uniform">The uniform data to pass to the action.</param>
-            <member name="T:ForU">
-        <summary>
-            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
-        </summary>
-        <param name="action">
-            <see cref="!:RefActionU" />
-            taking references to Component Types.
-        </param>
-        <param name="uniform">The uniform data to pass to the action.</param>
-    </member>
         </member>
         <member name="M:fennecs.Query`1.For(fennecs.EntityAction{`0})">
-            <summary>
-            Executes an action for each entity that matches the query.
-            Also passes the Entity to the action, making structural changes easy and accessible.
-            </summary>
-            <param name="action"><see cref="T:fennecs.EntityAction`1" /> taking references to Component Types.</param>
             <member name="T:ForE">
         <summary>
             Performs a query with specified action, passing in an Entity, and values for requested stream types.
         </summary>
         <param name="action">
-            <see cref="!:EntityAction" />
+            <see cref="T:EntityAction" />
             taking references to Component Types.
         </param>
     </member>
         </member>
         <member name="M:fennecs.Query`1.For``1(fennecs.EntityActionU{`0,``0},``0)">
-            <summary>
-            Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
-            Also passes the Entity to the action, making structural changes easy and accessible.
-            </summary>
-            <param name="action"><see cref="T:fennecs.EntityActionU`2" /> taking references to Component Types.</param>
-            <param name="uniform">The uniform data to pass to the action.</param>
             <member name="T:ForEU">
         <summary>
             Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
         </summary>
         <param name="action">
-            <see cref="!:EntityActionU" />
+            <see cref="T:EntityActionU" />
             taking references to Component Types.
         </param>
         <param name="uniform">The uniform data to pass to the action.</param>
@@ -1419,7 +1395,7 @@
             Performs a query with specified action, passing in values for requested stream types.
         </summary>
         <param name="action">
-            <see cref="!:RefAction" />
+            <see cref="T:RefAction" />
             taking references to Component Types.
         </param>
     </member>
@@ -1430,7 +1406,7 @@
             Performs a query with specified action, passing in values for requested stream types, and a uniform value.
         </summary>
         <param name="action">
-            <see cref="!:RefActionU" />
+            <see cref="T:RefActionU" />
             taking references to Component Types.
         </param>
         <param name="uniform">The uniform data to pass to the action.</param>
@@ -1442,7 +1418,7 @@
             Performs a query with specified action, passing in an Entity, and values for requested stream types.
         </summary>
         <param name="action">
-            <see cref="!:EntityAction" />
+            <see cref="T:EntityAction" />
             taking references to Component Types.
         </param>
     </member>
@@ -1453,7 +1429,7 @@
             Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
         </summary>
         <param name="action">
-            <see cref="!:EntityActionU" />
+            <see cref="T:EntityActionU" />
             taking references to Component Types.
         </param>
         <param name="uniform">The uniform data to pass to the action.</param>
@@ -1477,35 +1453,50 @@
             </summary>
         </member>
         <member name="M:fennecs.Query`3.For(fennecs.RefAction{`0,`1,`2})">
-            <member name="T:ForU">
+            <member name="T:For">
         <summary>
-            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
+            Performs a query with specified action, passing in values for requested stream types.
         </summary>
         <param name="action">
-            <see cref="!:RefActionU" />
+            <see cref="T:RefAction" />
             taking references to Component Types.
         </param>
-        <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
         <member name="M:fennecs.Query`3.For``1(fennecs.RefActionU{`0,`1,`2,``0},``0)">
-            <summary />
             <member name="T:ForU">
         <summary>
             Performs a query with specified action, passing in values for requested stream types, and a uniform value.
         </summary>
         <param name="action">
-            <see cref="!:RefActionU" />
+            <see cref="T:RefActionU" />
             taking references to Component Types.
         </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
         </member>
         <member name="M:fennecs.Query`3.For(fennecs.EntityAction{`0,`1,`2})">
-            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.EntityAction{`0})"/>
+            <member name="T:ForE">
+        <summary>
+            Performs a query with specified action, passing in an Entity, and values for requested stream types.
+        </summary>
+        <param name="action">
+            <see cref="T:EntityAction" />
+            taking references to Component Types.
+        </param>
+    </member>
         </member>
         <member name="M:fennecs.Query`3.For``1(fennecs.EntityActionU{`0,`1,`2,``0},``0)">
-            <inheritdoc cref="!:Query&lt;C0&gt;.For&lt;U&gt;(EntityActionU&lt;C0,U&gt;)"/>
+            <member name="T:ForEU">
+        <summary>
+            Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action">
+            <see cref="T:EntityActionU" />
+            taking references to Component Types.
+        </param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
         </member>
         <member name="M:fennecs.Query`3.Job(fennecs.RefAction{`0,`1,`2},System.Int32)">
             <inheritdoc cref="M:fennecs.Query`1.Job(fennecs.RefAction{`0},System.Int32)"/>
@@ -1525,16 +1516,50 @@
             </summary>
         </member>
         <member name="M:fennecs.Query`4.For(fennecs.RefAction{`0,`1,`2,`3})">
-            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.RefAction{`0})"/>
+            <member name="T:For">
+        <summary>
+            Performs a query with specified action, passing in values for requested stream types.
+        </summary>
+        <param name="action">
+            <see cref="T:RefAction" />
+            taking references to Component Types.
+        </param>
+    </member>
         </member>
         <member name="M:fennecs.Query`4.For``1(fennecs.RefActionU{`0,`1,`2,`3,``0},``0)">
-            <inheritdoc cref="M:fennecs.Query`1.For``1(fennecs.RefActionU{`0,``0},``0)"/>
+            <member name="T:ForU">
+        <summary>
+            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action">
+            <see cref="T:RefActionU" />
+            taking references to Component Types.
+        </param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
         </member>
         <member name="M:fennecs.Query`4.For(fennecs.EntityAction{`0,`1,`2,`3})">
-            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.EntityAction{`0})"/>
+            <member name="T:ForE">
+        <summary>
+            Performs a query with specified action, passing in an Entity, and values for requested stream types.
+        </summary>
+        <param name="action">
+            <see cref="T:EntityAction" />
+            taking references to Component Types.
+        </param>
+    </member>
         </member>
         <member name="M:fennecs.Query`4.For``1(fennecs.EntityActionU{`0,`1,`2,`3,``0},``0)">
-            <inheritdoc cref="!:Query&lt;C0&gt;.For&lt;U&gt;(EntityActionU&lt;C0,U&gt;)"/>
+            <member name="T:ForEU">
+        <summary>
+            Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action">
+            <see cref="T:EntityActionU" />
+            taking references to Component Types.
+        </param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
         </member>
         <member name="M:fennecs.Query`4.Job(fennecs.RefAction{`0,`1,`2,`3},System.Int32)">
             <inheritdoc cref="M:fennecs.Query`1.Job(fennecs.RefAction{`0},System.Int32)"/>
@@ -1554,16 +1579,50 @@
             </summary>
         </member>
         <member name="M:fennecs.Query`5.For(fennecs.RefAction{`0,`1,`2,`3,`4})">
-            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.RefAction{`0})"/>
+            <member name="T:For">
+        <summary>
+            Performs a query with specified action, passing in values for requested stream types.
+        </summary>
+        <param name="action">
+            <see cref="T:RefAction" />
+            taking references to Component Types.
+        </param>
+    </member>
         </member>
         <member name="M:fennecs.Query`5.For``1(fennecs.RefActionU{`0,`1,`2,`3,`4,``0},``0)">
-            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.RefAction{`0})"/>
+            <member name="T:ForU">
+        <summary>
+            Performs a query with specified action, passing in values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action">
+            <see cref="T:RefActionU" />
+            taking references to Component Types.
+        </param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
         </member>
         <member name="M:fennecs.Query`5.For(fennecs.EntityAction{`0,`1,`2,`3,`4})">
-            <inheritdoc cref="M:fennecs.Query`1.For(fennecs.EntityAction{`0})"/>
+            <member name="T:ForE">
+        <summary>
+            Performs a query with specified action, passing in an Entity, and values for requested stream types.
+        </summary>
+        <param name="action">
+            <see cref="T:EntityAction" />
+            taking references to Component Types.
+        </param>
+    </member>
         </member>
         <member name="M:fennecs.Query`5.For``1(fennecs.EntityActionU{`0,`1,`2,`3,`4,``0},``0)">
-            <inheritdoc cref="!:Query&lt;C0&gt;.For&lt;U&gt;(EntityActionU&lt;C0,U&gt;)"/>
+            <member name="T:ForEU">
+        <summary>
+            Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
+        </summary>
+        <param name="action">
+            <see cref="T:EntityActionU" />
+            taking references to Component Types.
+        </param>
+        <param name="uniform">The uniform data to pass to the action.</param>
+    </member>
         </member>
         <member name="M:fennecs.Query`5.Job(fennecs.RefAction{`0,`1,`2,`3,`4},System.Int32)">
             <inheritdoc cref="M:fennecs.Query`1.Job(fennecs.RefAction{`0},System.Int32)"/>

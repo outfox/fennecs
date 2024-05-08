@@ -32,17 +32,14 @@ public class Query<C0> : Query
     /// <param name="mask">The mask for the query.</param>
     /// <param name="archetypes">The archetypes for the query.</param>
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
-    {
+    { 
     }
 
     #endregion
 
 
-    #region Runners
+    #region Runners  
 
-    /// <summary>
-    /// Executes an action for each entity that matches the query.
-    /// </summary>
     /// <include file='Query.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0> action)
     {
@@ -73,7 +70,7 @@ public class Query<C0> : Query
     /// </summary>
     /// <param name="action"><see cref="RefActionU{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    /// <include file='Query.xml' path='members/member[@name="T:ForU"]'/>
+    // /// <include file='Query.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
@@ -98,11 +95,6 @@ public class Query<C0> : Query
     // #endregion Showcase
 
 
-    /// <summary>
-    /// Executes an action for each entity that matches the query.
-    /// Also passes the Entity to the action, making structural changes easy and accessible.
-    /// </summary>
-    /// <param name="action"><see cref="EntityAction{C0}"/> taking references to Component Types.</param>
     /// <include file='Query.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0> action)
     {
@@ -126,12 +118,6 @@ public class Query<C0> : Query
     }
 
 
-    /// <summary>
-    /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
-    /// Also passes the Entity to the action, making structural changes easy and accessible.
-    /// </summary>
-    /// <param name="action"><see cref="EntityActionU{C0,U}"/> taking references to Component Types.</param>
-    /// <param name="uniform">The uniform data to pass to the action.</param>
     /// <include file='Query.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(EntityActionU<C0, U> action, U uniform)
     {
