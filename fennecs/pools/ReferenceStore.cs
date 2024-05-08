@@ -1,9 +1,12 @@
 ﻿namespace fennecs.pools;
 
-public class ReferenceStore(int capacity = 4096)
+/// <summary>
+/// Storage for the targets of ObjectLinks
+/// </summary>
+/// <param name="capacity">initial capacity (count) of references dictionary</param>
+internal class ReferenceStore(int capacity = 4096)
 {
     private readonly Dictionary<Identity, StoredReference<object>> _storage = new(capacity);
-
 
     public Identity Request<T>(T item) where T : class
     {

@@ -2,7 +2,7 @@
 
 namespace fennecs.pools;
 
-public class PooledList<T> : List<T>, IDisposable
+internal class PooledList<T> : List<T>, IDisposable
 {
     private const int BagCapacity = 16;
     private const int DefaultInstanceCapacity = 64;

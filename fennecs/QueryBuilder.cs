@@ -11,7 +11,7 @@ public class QueryBuilder : IDisposable
     internal readonly World World;
     internal readonly Mask Mask = MaskPool.Rent();
 
-    protected readonly PooledList<TypeExpression> StreamTypes = PooledList<TypeExpression>.Rent();
+    private protected readonly PooledList<TypeExpression> StreamTypes = PooledList<TypeExpression>.Rent();
 
     /* TODO: Implement deferred builder
     private List<ValueTuple<Type, Identity, object>> _has;

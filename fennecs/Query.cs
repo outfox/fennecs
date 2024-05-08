@@ -123,6 +123,19 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     internal readonly Mask Mask;
 
+    /// <summary>
+    /// A Read Only View of the Archetypes that this query "tracks", meaning:
+    /// <ul>
+    /// <li>it will match (enumerate) entities in them</li>
+    /// <li>it can perform batch operations on them</li>
+    /// <li>filters will only be applied to these archetypes (filters are subtractive)</li>
+    /// </ul>
+    /// </summary>
+    /// <remarks>
+    /// Does not exclude unmatched Archetypes (through Filter expressions), as Filters are applied on top.
+    /// This is primarily debug information, left available as a public property, because it can be useful to understand the "weight" and range of a query.
+    /// The world it will update this list when they are added or removed.
+    /// </remarks>
     public IReadOnlyList<Archetype> TrackedArchetypes => _trackedArchetypes;
 
 
@@ -390,6 +403,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
 
+    /// <inheritdoc cref="Despawn" />
     [Obsolete("Use Despawn() instead.")]
     public void Clear() => Despawn();
 
@@ -420,7 +434,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         //TODO: Make available as deferred operation.
         if (World.Mode != World.WorldMode.Immediate)
-            throw new InvalidOperationException("Truncate can only be used in Immediate mode.");
+            throw new InvalidOperationException("Query.Truncate can only be used in Immediate mode.");
 
         var count = Count;
         if (count <= maxEntityCount) return;
@@ -440,15 +454,25 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
 
+    /// <summary>
+    /// Strategies for Query Truncation <see cref="Query.Truncate"/>
+    /// </summary>
     public enum TruncateMode
     {
+        /// <summary>
+        /// Truncate matched Archetypes proportionally to their contents (approximation by rounding).
+        /// </summary>
         Proportional = default,
+        /// <summary>
+        /// Truncate each matched Archetype to the specified maximum count.
+        /// </summary>
         PerArchetype,
     }
     #endregion
 
     #region Hashing
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         return Mask.GetHashCode();
@@ -474,7 +498,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
 
 
-    protected void AssertNotDisposed()
+    private protected void AssertNotDisposed()
     {
         if (!disposed) return;
         throw new ObjectDisposedException(nameof(Query));

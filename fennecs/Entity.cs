@@ -238,6 +238,8 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
 
 
     #region Cast Operators and IEquatable<Entity>
+
+    /// <inheritdoc />
     public bool Equals(Entity other) => Id.Equals(other.Id) && Equals(World, other.World);
 
     /// <summary>
@@ -246,22 +248,28 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <param name="entity"></param>
     /// <returns></returns>
     public static implicit operator bool(Entity entity) => entity.Id && entity.World.IsAlive(entity.Id);
-    
+
+    /// <inheritdoc />
     public override bool Equals(object? obj) => obj is Entity other && Equals(other);
 
 
+    /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(World, Id);
 
 
+    /// <inheritdoc cref="Equals(fennecs.Entity)"/>
     public static bool operator ==(Entity left, Entity right) => left.Equals(right);
 
 
+    /// <inheritdoc cref="Equals(fennecs.Entity)"/>
     public static bool operator !=(Entity left, Entity right) => !(left == right);
 
 
+    /// <inheritdoc/>
     public int CompareTo(Entity other) => Id.CompareTo(other.Id);
 
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         var sb = new System.Text.StringBuilder(Id.ToString());

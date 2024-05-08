@@ -780,12 +780,33 @@
             Disposes of the Entity builder, releasing any pooled resources.
             </summary>
         </member>
+        <member name="M:fennecs.Entity.Equals(fennecs.Entity)">
+            <inheritdoc />
+        </member>
         <member name="M:fennecs.Entity.op_Implicit(fennecs.Entity)~System.Boolean">
             <summary>
             Implicit cast to Boolean. Returns true if the Entity is alive and its Identity is nondefault.
             </summary>
             <param name="entity"></param>
             <returns></returns>
+        </member>
+        <member name="M:fennecs.Entity.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Entity.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:fennecs.Entity.op_Equality(fennecs.Entity,fennecs.Entity)">
+            <inheritdoc cref="M:fennecs.Entity.Equals(fennecs.Entity)"/>
+        </member>
+        <member name="M:fennecs.Entity.op_Inequality(fennecs.Entity,fennecs.Entity)">
+            <inheritdoc cref="M:fennecs.Entity.Equals(fennecs.Entity)"/>
+        </member>
+        <member name="M:fennecs.Entity.CompareTo(fennecs.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:fennecs.Entity.ToString">
+            <inheritdoc/>
         </member>
         <member name="T:fennecs.Identity">
             <summary>
@@ -959,6 +980,18 @@
             Entity Identity
             </summary>
         </member>
+        <member name="T:fennecs.pools.ReferenceStore">
+            <summary>
+            Storage for the targets of ObjectLinks
+            </summary>
+            <param name="capacity">initial capacity (count) of references dictionary</param>
+        </member>
+        <member name="M:fennecs.pools.ReferenceStore.#ctor(System.Int32)">
+            <summary>
+            Storage for the targets of ObjectLinks
+            </summary>
+            <param name="capacity">initial capacity (count) of references dictionary</param>
+        </member>
         <member name="T:fennecs.Query">
             <summary>
                 <para>
@@ -1027,6 +1060,21 @@
             <summary>
              Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
             </summary>
+        </member>
+        <member name="P:fennecs.Query.TrackedArchetypes">
+            <summary>
+            A Read Only View of the Archetypes that this query "tracks", meaning:
+            <ul>
+            <li>it will match (enumerate) entities in them</li>
+            <li>it can perform batch operations on them</li>
+            <li>filters will only be applied to these archetypes (filters are subtractive)</li>
+            </ul>
+            </summary>
+            <remarks>
+            Does not exclude unmatched Archetypes (through Filter expressions), as Filters are applied on top.
+            This is primarily debug information, left available as a public property, because it can be useful to understand the "weight" and range of a query.
+            The world it will update this list when they are added or removed.
+            </remarks>
         </member>
         <member name="M:fennecs.Query.AddFilter``1(fennecs.Identity)">
             <summary>
@@ -1178,6 +1226,9 @@
             </remarks> 
             <returns>a BatchOperation that needs to be executed by calling <see cref="M:fennecs.Batch.Submit"/></returns>
         </member>
+        <member name="M:fennecs.Query.Clear">
+            <inheritdoc cref="M:fennecs.Query.Despawn" />
+        </member>
         <member name="M:fennecs.Query.Despawn">
             <summary>
             Despawn all Entities matched by this Query.
@@ -1197,6 +1248,24 @@
             operation.</li>
             </ul>
             </param>
+        </member>
+        <member name="T:fennecs.Query.TruncateMode">
+            <summary>
+            Strategies for Query Truncation <see cref="M:fennecs.Query.Truncate(System.Int32,fennecs.Query.TruncateMode)"/>
+            </summary>
+        </member>
+        <member name="F:fennecs.Query.TruncateMode.Proportional">
+            <summary>
+            Truncate matched Archetypes proportionally to their contents (approximation by rounding).
+            </summary>
+        </member>
+        <member name="F:fennecs.Query.TruncateMode.PerArchetype">
+            <summary>
+            Truncate each matched Archetype to the specified maximum count.
+            </summary>
+        </member>
+        <member name="M:fennecs.Query.GetHashCode">
+            <inheritdoc />
         </member>
         <member name="M:fennecs.Query.Dispose">
             <summary>
