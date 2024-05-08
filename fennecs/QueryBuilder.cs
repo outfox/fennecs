@@ -85,12 +85,12 @@ public abstract class QueryBuilder : IDisposable
     public abstract Query Build();
     
     /// <summary>
-    /// 
+    /// Include only Entities that have the given Component or Relation.
     /// </summary>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
+    /// <param name="target">relation target (defaults to no target = Plain Component)</param>
+    /// <typeparam name="T">component type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
     public virtual QueryBuilder Has<T>(Identity target = default)
     {
         var typeExpression = TypeExpression.Of<T>(target);
@@ -102,11 +102,12 @@ public abstract class QueryBuilder : IDisposable
 
 
     /// <summary>
-    /// 
+    /// Include only Entities that have the given ObjectLink.
     /// </summary>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="target">relation target</param>
+    /// <typeparam name="T">component type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
     public virtual QueryBuilder Has<T>(T target) where T : class
     {
         Mask.Has(TypeExpression.Of<T>(Identity.Of(target)));
@@ -115,11 +116,12 @@ public abstract class QueryBuilder : IDisposable
 
 
     /// <summary>
-    /// 
+    /// Exclude all Entities that have the given Component or Relation.
     /// </summary>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="target">relation target (defaults to no target = Plain Component)</param>
+    /// <typeparam name="T">component type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
     public virtual QueryBuilder Not<T>(Identity target = default)
     {
         Mask.Not(TypeExpression.Of<T>(target));
@@ -128,11 +130,12 @@ public abstract class QueryBuilder : IDisposable
 
 
     /// <summary>
-    /// 
+    /// Exclude all Entities that have the given ObjectLink.
     /// </summary>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="target">link target</param>
+    /// <typeparam name="T">component type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
     public virtual QueryBuilder Not<T>(T target) where T : class
     {
         var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
@@ -143,11 +146,13 @@ public abstract class QueryBuilder : IDisposable
 
 
     /// <summary>
-    /// 
+    /// Include Entities that have the given Component or Relation, or any other Relation that is
+    /// givein in other <see cref="Any{T}(fennecs.Identity)"/> calls.
     /// </summary>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="target">relation target (defaults to no target = Plain Component)</param>
+    /// <typeparam name="T">component type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
     public virtual QueryBuilder Any<T>(Identity target = default)
     {
         Mask.Any(TypeExpression.Of<T>(target));
@@ -156,11 +161,13 @@ public abstract class QueryBuilder : IDisposable
 
 
     /// <summary>
-    /// 
+    /// Include Entities that have the given Object Link, or any other Object Link that is
+    /// given in other <see cref="Any{T}(T)"/> calls.
     /// </summary>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="target">link target</param>
+    /// <typeparam name="T">component type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
     public virtual QueryBuilder Any<T>(T target) where T : class
     {
         Mask.Any(TypeExpression.Of<T>(Identity.Of(target)));
