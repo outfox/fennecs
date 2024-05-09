@@ -23,6 +23,6 @@ Next, we query for the Relation, say hello, and ~~unalive~~ interact with the En
 
 ### Recipe
 ::: code-group
-<<< ../../cookbook/KillBill.cs {cs:line-numbers} [Implementation]
-<<< ../../cookbook/KillBill.output.txt{txt} [Output]
+<<< ../../../cookbook/KillBill.cs {cs:line-numbers} [Implementation]
+<<< ../../../cookbook/KillBill.output.txt{txt} [Output]
 :::

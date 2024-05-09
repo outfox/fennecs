@@ -22,12 +22,12 @@ hero:
       link: https://github.com/thygrrr/fennecs
 
 features:
-  - title: Intuitively Relational.
-    details: A unique relation system <u>keeps you in charge</u> of how your Entities and Objects relate each other. Queries feed data straight to your code, filtered, and parallel across CPU cores.
   - title: Minimal Boilerplate.
-    details: Works right out of the box. Plays nice with many game engines. <u>Make choices, not compromises!</u> Light enough to add as final touch, strong enough to build upon from the start.
-  - title: Zero Dependencies. Zero Codegen.
-    details: <br/><br/><br/>... 💢
+    details: Works right out of the box. Plays nice with many game engines. <u>Make choices, not compromises!</u>
+  - title: Magical? Relational!
+    details: An intuitive relation system <u>puts you in control</u> of how your Entities and Objects relate. 
+  - title: Zero Dependencies. Zero Codegen. 
+    details: "<pre><span style='font-size: 24px'> ..... 💢</span></pre>"
 
 head:
   - - meta
@@ -78,6 +78,6 @@ head:
 # Ok, what the fox? *Another ECS?!*
 ### :neofox_facepalm: We know... oh, _we know._    
 
-In a tiny nutshell, **fenn**ecs is an archetype-based ECS that proves: "small", "clever", and "fast" don't have to be mutually exclusive attributes to look for in a game or simulation development library. And, by the way, did we mention it's free & libre open source software (MIT license)?
+In a tiny nutshell, **fenn**ecs is an archetype-based [🔗Entity Component System](https://en.wikipedia.org/wiki/Entity_component_system) (Wikipedia) and embodies "small", "clever", and "fast". We see its primary use is in game and simulation development! And, by the way, did we mention it's free & libre open source software (MIT license)?
 
 ### Time to get all bright-eyed and bushy-tailed again!
