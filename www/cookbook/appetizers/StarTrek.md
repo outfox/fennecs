@@ -17,7 +17,9 @@ All `.csproj` and `.cs` files are [over here on Github!](https://github.com/thyg
 ### Premise
 Let's reminisce some famous Captains of old and new.
 
-This example will explore what Entities "look" like in your logs, and what happens when they Despawn, and how they get recycled.
+This example will explore what Entities "look" like in your logs or `DebuggerDisplay`, and what happens when they Despawn, and how they get recycled.
+
+[Entity](/docs/Entities/index.md)'s `ToString()` method lets us take a quick peek where no human has gone before.
 
 We spawn a unique [Entity](/docs/Entities/index.md) for each captain; but `kirk` gets despawned and replaced by The Next Generation (`picard`). Then we create a bunch more and output to visualize how recycled Entities compare to each other and to give a feeling over how a [World](/docs/World.md) counts Generations up when Entities are destroyed.
 

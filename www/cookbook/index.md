@@ -12,9 +12,9 @@ head:
 
 ![three fennecs eating pizza together](https://fennecs.tech/img/fennec-job.png)
 
-Come in, we have cookies, and pizza! Let's get you ~~sated~~ started! 
+Come in, we have cookies & pizza! Let's get you ~~sated~~ started! 
 
-# Tippity-tap ...
+## Tippity-tap ...
 ```shell
 dotnet add package fennecs
 ```
@@ -29,8 +29,13 @@ using fennecs;
 :neofox_surprised_pika:
 
 
-## Need everything but the kitchen sink?
-Good old git. Nothing beats that!
+----------------
+
+
+::: details Need everything but the kitchen sink?
+Good old git. Nothing beats that!  
+*(repo includes the Appetizers and Demos, ready to run!)*
+
 ::: code-group
 
 ```shell [ssh...]
@@ -46,5 +51,3 @@ gh repo clone thygrrr/fennecs
 ```
 
 :::
-### (even includes the Appetizers and Demos, ready to run!)
-
