@@ -84,7 +84,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     internal void TrackArchetype(Archetype archetype)
     {
         _trackedArchetypes.Add(archetype);
-        if (archetype.IsMatchSuperSet(_streamFilters)) Archetypes.Add(archetype);
+        if (!archetype.Matches(_streamExclusions) && archetype.IsMatchSuperSet(_streamFilters)) Archetypes.Add(archetype);
     }
 
 
@@ -103,9 +103,14 @@ public class Query : IEnumerable<Entity>, IDisposable
     internal readonly TypeExpression[] StreamTypes;
 
     /// <summary>
-    ///  Filters for the Archetypes matched by the StreamTypes
+    ///  Filters for the Archetypes matched by the StreamTypes (must match)
     /// </summary>
     private readonly List<TypeExpression> _streamFilters;
+
+    /// <summary>
+    ///  Additional exclusions for the Archetypes matched by the StreamTypes (must not match)
+    /// </summary>
+    private readonly List<TypeExpression> _streamExclusions;
 
     /// <summary>
     ///     Countdown event for parallel runners.
@@ -141,6 +146,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, IReadOnlyCollection<Archetype> archetypes)
     {
         _streamFilters = new List<TypeExpression>();
+        _streamExclusions = new List<TypeExpression>();
         StreamTypes = streamTypes.ToArray();
         _trackedArchetypes = archetypes.ToList();
         Archetypes = archetypes.ToList();
@@ -151,42 +157,87 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     #region Filtering
+    /// <inheritdoc cref="Subset{T}()"/>
+    /// <param name="match">
+    ///     a Match Expression that is narrower than the respective Stream Type's initial
+    ///     Match Expression (e.g. if Query has Match.Any, Match.Plain or Match.Object would be useful here).
+    /// </param>
+    public void Subset<T>(Identity match)
+    {
+        _streamFilters.Add(TypeExpression.Of<T>(match));
+        FilterArchetypes();
+    }
+
     /// <summary>
-    ///     Adds a subset filter to this Query, reducing the Stream Types to a subset of the initial Stream Types.
+    ///    Applies a subset filter to this Query, reducing the matched entities to a subset of the initially matched ones.
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         This can be used to narrow a query with Wildcard Match Expressions in its Stream Types, e.g. to match only
+    ///         Used to finely narrow down a query with Wildcard Match Expressions in its Stream Types, e.g. to match only
     ///         a specific Object Link in a Query that matches all Object Links of a given type.
+    ///     </para>
+    ///     <para>
     ///         Call this method repeatedly to set multiple filters.
     ///     </para>
     ///     <para>
-    ///         Clear the filter with <see cref="ClearStreamFilter" />.
+    ///         Clear the filter with <see cref="ClearFilters" />.
     ///     </para>
     /// </remarks>
-    /// <typeparam name="T">any component type that is present in the Query's Stream Types</typeparam>
+    /// <typeparam name="T">component type</typeparam>
+    public void Subset<T>() => Subset<T>(Match.Any);
+
+    
+    /// <inheritdoc cref="Subset{T}()"/>
+    /// <summary>
+    /// Specify a match expression to exclude certain relations.
+    /// </summary>
     /// <param name="match">
     ///     a Match Expression that is narrower than the respective Stream Type's initial
-    ///     Match Expression.
+    ///     Match Expression. If it is wider, the matched set will be empty. 
     /// </param>
-    /// <exception cref="InvalidOperationException">if the requested filter doesn't match any of the Query's Archetypes</exception>
-    public void AddFilter<T>(Identity match)
+    public void Exclude<T>(Identity match)
     {
-        _streamFilters.Add(TypeExpression.Of<T>(match));
+        _streamExclusions.Add(TypeExpression.Of<T>(match));
+        FilterArchetypes();
+    }
+
+    /// <summary>
+    ///    Applies an exclusion filter to this Query, excluding any entities that match the given Component Type.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Used to broadly narrow down a query, selectively excluding entities with certain components
+    ///         or relations.
+    ///     </para>
+    ///     <para>
+    ///         Call this method repeatedly to set multiple filters.
+    ///     </para>
+    ///     <para>
+    ///         Clear the filter with <see cref="ClearFilters" />.
+    ///     </para>
+    /// </remarks>
+    /// <typeparam name="T"></typeparam>
+    public void Exclude<T>() => Exclude<T>(Match.Any);
+
+    private void FilterArchetypes()
+    {
         Archetypes.Clear();
         foreach (var archetype in _trackedArchetypes)
         {
-            if (archetype.IsMatchSuperSet(_streamFilters)) Archetypes.Add(archetype);
+            if (!archetype.Matches(_streamExclusions) && archetype.IsMatchSuperSet(_streamFilters))
+            {
+                Archetypes.Add(archetype);
+            }
         }
     }
 
-
     /// <summary>
-    ///     Clears all narrowing filters on this Query, returning it to its initial state. See <see cref="AddFilter{T}" />.
+    ///     Clears all <see cref="Subset{T}(fennecs.Identity)"/> and <see cref="Exclude{T}(fennecs.Identity)"/> filters on this Query, returning it to its initial state. See <see cref="Include{T}" />.
     /// </summary>
-    public void ClearStreamFilter()
+    public void ClearFilters()
     {
         _streamFilters.Clear();
+        _streamExclusions.Clear();
         Archetypes.Clear();
         Archetypes.AddRange(_trackedArchetypes);
     }

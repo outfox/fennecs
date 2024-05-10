@@ -74,6 +74,20 @@ public abstract class QueryBuilder : IDisposable
     #region Public API
 
     /// <summary>
+    /// Disables conflict checks for subsequent Match Expressions.
+    /// </summary>
+    /// <remarks>
+    /// This is useful for programmatically created queries, where duplicate or conflicting Match
+    /// Expressions can be intentional or impossible to prevent.
+    /// </remarks>
+    /// <returns>itself (fluent pattern)</returns>
+    public virtual QueryBuilder Unchecked()
+    {
+        Mask.safety = false;
+        return this;
+    }
+    
+    /// <summary>
     /// Builds (compiles) the Query from the current state of the QueryBuilder.
     /// </summary>
     /// <remarks>
@@ -94,7 +108,7 @@ public abstract class QueryBuilder : IDisposable
     public virtual QueryBuilder Has<T>(Identity target = default)
     {
         var typeExpression = TypeExpression.Of<T>(target);
-        if (StreamTypes.Contains(typeExpression)) throw new InvalidOperationException($"Type {typeExpression} is already an output of this query.");
+        if (StreamTypes.Contains(typeExpression)) throw new InvalidOperationException($"Duplicate Has<C>: Type {typeExpression} is already an output of this query.");
 
         Mask.Has(typeExpression);
         return this;
@@ -191,6 +205,12 @@ public sealed class QueryBuilder<C1> : QueryBuilder
 
 
     /// <inheritdoc />
+    public override QueryBuilder<C1> Unchecked()
+    {
+        return (QueryBuilder<C1>) base.Unchecked();
+    }
+
+    /// <inheritdoc />
     public override Query<C1> Build()
     {
         return (Query<C1>) World.GetQuery(StreamTypes, Mask, CreateQuery);
@@ -252,6 +272,13 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
         Outputs<C2>(match2);
     }
 
+
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2> Unchecked()
+    {
+        return (QueryBuilder<C1, C2>) base.Unchecked();
+    }
+   
 
     /// <inheritdoc />
     public override Query<C1, C2> Build()
@@ -317,7 +344,13 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
     }
 
 
+
     /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3> Unchecked()
+    {
+        return (QueryBuilder<C1, C2, C3>) base.Unchecked();
+    }
+    
     /// <inheritdoc />
     public override Query<C1, C2, C3> Build()
     {
@@ -382,6 +415,12 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
         Outputs<C4>(match4);
     }
 
+
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3, C4> Unchecked()
+    {
+        return (QueryBuilder<C1, C2, C3, C4>) base.Unchecked();
+    }
 
     /// <inheritdoc />
     public override Query<C1, C2, C3, C4> Build()
@@ -449,6 +488,12 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
     }
 
 
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3, C4, C5> Unchecked()
+    {
+        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Unchecked();
+    }
+    
     /// <inheritdoc />
     public override Query<C1, C2, C3, C4, C5> Build()
     {

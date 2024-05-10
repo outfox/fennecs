@@ -1,29 +1,40 @@
 ---
 title: Queries
 layout: doc
+outline: [2, 3]
 ---
 
 # Queries
 
-A Query is a view into a World, representing a subset of its Entities. It remains associated with this specific World, and Queries can not bridge multiple Worlds.
-
-They serve the following primary purposes:
+As a key concept behind **fenn**ecs, Queries have three main purposes.
 
 [[toc]]
 
+Each Query is a view into a World, representing a subset of its Entities. Queries are incredibly fast and update accordingly whenever entities spawn or their component structure changes. 
 
-### 1. Filtering & Tracking Archetypes
-Queries use [Filter Expressions](FilterExpressions.md) to define the subset of Entities they ==contain== ("match").
+::: details (expand to see world)
+A World contains Entities and their Components, as well as their structure and Relations.
+![World Example: blue circle labeled world filled with fox emojis with many different traits](https://fennecs.tech/img/diagram-world.png)
+:::
+
+![Query Visualization: fox emojis with various traits grouped by common traits in several colored boxes](https://fennecs.tech/img/diagram-queries.png)
 
 
-### 2. CRUD - Create, Read, Update, Delete
+
+
+## 1. Matching & Filtering Entities
+It remains associated with this specific World, and Queries can not bridge multiple Worlds. Queries use [Match Expressions](MatchExpressions.md) to define the subset of Entities they ==contain== ("match").
+
+## 2. Processing Data (via [Stream Queries](Query.1-5.md))
+
+The most powerful feature of Queries is that they can un code on all Entities they match; and even feed references to component data (the Stream Types) to the delegate code being passed in.
+
+
+## 3. Bulk Create, Read, Update, Delete
 Queries expose methods to operate quickly and with clear intent on all the entities matched by the query - [read more!](CRUD.md)
 
 Use the method `Query.Despawn()` to despawn all Entities in that Query.
 Alternatively, use `Query.Truncate(int, TruncateMode)` to cut your Query down to a specific size.
-
-
-### 3. Processing (via [Stream Queries](Query.1-5.md))
 
 
 

@@ -50,7 +50,7 @@ By Default, **fenn**ecs will parallelize workloads only per entire Archetype. Th
 :::warning :neofox_glare_sob: A GOOD TRADE-OFF LEAVES EVERYONE MAD!
 Overhead for thread scheduling is real; as are context switches between threads. Experiment finding the right workload Chunk Size (start big - try 69,420, they say it's nice) and always consider giving [`Query.For`](Query.For.md) another look if you realize there's too much overhead or ==fragmentation==.
 
-You can also set the [Filter State](FilterExpressions.md) of your Query to only include the Archetypes you want to process as a `Query.Job`, and use `Query.For` to do the rest. Or make it even easier: **Create Two Queries.**
+You can also set the [Filter State](Filters.md) of your Query to only include the Archetypes you want to process as a `Query.Job`, and use `Query.For` to do the rest. Or make it even easier: **Create Two Queries.**
 :::
 
 Scheduling Jobs has a certain overhead, so just splitting work across as many CPUs as possible sometimes slows down processing speeds.

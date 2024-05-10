@@ -3,7 +3,9 @@ title: Bulk CRUD
 ---
 
 # Bulk Create, Read, Update, Delete
-`fennecs.Query` let you Add or Remove components, much like `fennecs.Entity`, to allow easy operation in bulk on all entities matched by the query!
+OMG! `fennecs.Query` lets you Add or Remove components *(and even Despawn!*), much like an individual `fennecs.Entity`!
+
+It's an easy, powerful way to operate in bulk on all entities matched by the query!
 
 
 ### TLDR; (sneak peek)
@@ -19,7 +21,7 @@ whoTookDamage.For((ref Health health, ref Damage damage, ref Identity id) =>
     if (health.hp < 0) world.On(id).Add<Exploding>();
 });
 
-//All damage values were accounted for! Bulk remove the values.
+// 👇 All damage values were accounted for! Bulk remove the values.
 whoTookDamage.Remove<Damage>();
 ```
 
@@ -30,7 +32,7 @@ var whosExplodingWhere = world.Query<Position>().Has<Exploding>().Build();
 // Do something for each Entity in Query
 whosExplodingWhere.For((ref Position position) => Game.SpawnExplosion(position));
 
-// Despawn all Entities matched by Query
+// 👇 Despawn all Entities matched by Query
 whosExplodingWhere.Despawn();
 ```
 
@@ -40,12 +42,13 @@ var loadedGuns = world.Query()
     .Not<Loaded>().Not<Cooldown>().Not<RequestProjectileSpawn>()
     .Build();
 
-// multiple bulk operations need to be batched, because
-// entities wouldn't match our query after each change
-// (there's a way to allow this, see in the documentation)
+// ⚠️ multiple bulk operations may require batching, because
+// entities wouldn't necessarily match our query after each change
+// and thus "escape" before subsequent operations would be applied.
+// (there's a way to customize this, see in the documentation)
 loadedGuns.Batch()
     .Add<Cooldown>(2.0f); //for our cooldown system
-    .Add<RequestProjectileSpaw7n>(); //for another system
+    .Add<RequestProjectileSpawn>(); //for another system
     .Remove<Loaded>(); 
     .Submit();
 ```
@@ -59,10 +62,10 @@ loadedGuns.Batch()
 
 
 ## Adding & Removing Links in Bulk
-(TODO) object links can also be added. (coming beta 1.2)
+(TODO) object links can also be added. (coming 0.1.2-beta)
 
 ## Adding & Removing Relations in Bulk
-(TODO) entity relations can also be added. (coming beta 1.2)
+(TODO) entity relations can also be added. (coming 0.1.2-beta)
 
 
 ## Batch Operations

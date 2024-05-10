@@ -10,55 +10,55 @@ internal sealed class Mask : IDisposable
     internal readonly List<TypeExpression> NotTypes = new(8);
     internal readonly List<TypeExpression> AnyTypes = new(8);
 
+    internal bool safety = true;
+    
+    
     public bool SafeForAddition(TypeExpression typeExpression) => NotTypes.Contains(typeExpression);
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
 
     public void Has(TypeExpression typeExpression)
     {
-        if (typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes))
+        switch (safety)
         {
-            throw new InvalidOperationException($"Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
+            case true when typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes):
+                throw new InvalidOperationException($"Overlapping Has<C>: Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
+            case true when typeExpression.Matches(NotTypes):
+                throw new InvalidOperationException($"Conflicting Has<C>: Type {typeExpression} is already filtered out by this Query/Mask (result is always empty).");
+            default:
+                HasTypes.Add(typeExpression);
+                break;
         }
-
-        if (typeExpression.Matches(NotTypes))
-        {
-            throw new InvalidOperationException($"Type {typeExpression} is already filtered out by this Query/Mask.");
-        }
-
-        HasTypes.Add(typeExpression);
     }
 
 
     public void Not(TypeExpression typeExpression)
     {
-        if (typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes))
+        switch (safety)
         {
-            throw new InvalidOperationException($"Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
+            case true when typeExpression.Matches(NotTypes):
+                throw new InvalidOperationException($"Duplicate Not<C>: Type {typeExpression} is already filtered out by this Query/Mask.");
+            case true when typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes):
+                throw new InvalidOperationException($"Conflicting Not<C>: Type {typeExpression} is already (partially or fully) included by this Query/Mask (result or sub-result is always empty).");
+            default:
+                NotTypes.Add(typeExpression);
+                break;
         }
-
-        if (typeExpression.Matches(NotTypes))
-        {
-            throw new InvalidOperationException($"Type {typeExpression} is already filtered out by this Query/Mask.");
-        }
-
-        NotTypes.Add(typeExpression);
     }
 
 
     public void Any(TypeExpression typeExpression)
     {
-        if (typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes))
+        switch (safety)
         {
-            throw new InvalidOperationException($"Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
+            case true when typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes):
+                throw new InvalidOperationException($"Overlapping Any<C>: Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
+            case true when typeExpression.Matches(NotTypes):
+                throw new InvalidOperationException($"Conflicting Any<C>: Type {typeExpression} is already filtered out by this Query/Mask.");
+            default:
+                AnyTypes.Add(typeExpression);
+                break;
         }
-
-        if (typeExpression.Matches(NotTypes))
-        {
-            throw new InvalidOperationException($"Type {typeExpression} is already filtered out by this Query/Mask.");
-        }
-
-        AnyTypes.Add(typeExpression);
     }
 
 

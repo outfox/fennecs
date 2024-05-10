@@ -1,9 +1,10 @@
 ---
-title: 6. WIP Thanos (Filters)
+title: Damage over Time
 outline: [2, 3]
 ---
 
-# How to Snap (only) half the World away
+# Turns out, Vampires aren't Survivors?!
+
 
 ::: warning :neofox_what: WHAT THE...
 Sorry, work in progress! come back soon.

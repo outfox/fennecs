@@ -208,6 +208,33 @@ public class QueryBuilderTests
 
 
     [Fact]
+    private void Unchecked_Allows_Conflicting_and_Repeat_Type()
+    {
+        using var world = new World();
+        using var builder = world.Query().Unchecked();
+        
+        builder
+            .Has<float>()
+            .Has<string>("123")
+            .Not<double>()
+            .Not<int>()
+            .Any<long>()
+            .Any(new List<float>());
+        
+        //Conflict
+        builder.Has<int>().Not<string>(Match.Object).Any<double>();
+        
+        //Repeat
+        builder.Has<int>();
+
+        builder.Has<string>("I'm allowed");
+        builder.Not<string>("Say that aloud?");
+
+        builder.Build();
+    }
+
+
+    [Fact]
     private void Cannot_Add_Stream_Type_Twice()
     {
         using var world = new World();

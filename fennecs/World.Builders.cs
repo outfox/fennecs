@@ -35,7 +35,7 @@ public partial class World
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
-    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.AddFilter{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
+    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Include{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
     /// </remarks>
     /// <param name="match">Match Expression</param>
     /// <typeparam name="C">component type that runners of this query will have access to</typeparam>
@@ -67,7 +67,7 @@ public partial class World
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
-    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.AddFilter{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
+    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Include{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
     /// </remarks>
     /// <param name="match1">Match Expression for Stream Type 1</param>
     /// <param name="match2">Match Expression for Stream Type 2</param>
@@ -102,7 +102,7 @@ public partial class World
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
-    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.AddFilter{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
+    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Include{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
     /// </remarks>
     /// <param name="match1">Match Expression for Stream Type 1</param>
     /// <param name="match2">Match Expression for Stream Type 2</param>
@@ -140,7 +140,7 @@ public partial class World
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
-    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.AddFilter{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
+    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Include{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
     /// </remarks>
     /// <param name="match1">Match Expression for Stream Type 1</param>
     /// <param name="match2">Match Expression for Stream Type 2</param>
@@ -181,7 +181,7 @@ public partial class World
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
-    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.AddFilter{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
+    /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Include{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
     /// </remarks>
     /// <param name="match1">Match Expression for Stream Type 1</param>
     /// <param name="match2">Match Expression for Stream Type 2</param>

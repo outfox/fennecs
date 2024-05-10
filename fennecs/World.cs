@@ -116,6 +116,11 @@ public partial class World
                 var tablesWithType = _tablesByType[type];
 
                 //TODO: There should be a bulk remove method instead.
+                //TODO: Operation of this more efficient method could be:
+                // 1. find each table that matches the type, and the table without the removed component
+                // 2. determine signature of target type (with the removed component)
+                // 3. migrate to the new archetype
+                // 4. dispose or compact the old archetype (it is practically impossible that it will re-emerge) 
                 foreach (var tableWithType in tablesWithType)
                     for (var i = tableWithType.Count - 1; i >= 0; i--)
                         RemoveComponent(tableWithType.Identities[i], type);

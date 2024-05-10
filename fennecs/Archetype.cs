@@ -159,6 +159,12 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
+    internal bool Matches(IReadOnlyList<TypeExpression> types)
+    {
+        return types.Any(Matches);
+    }
+
+
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.

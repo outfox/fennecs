@@ -24,7 +24,7 @@ public class QueryFilterTests
         var entity3 = _world.Spawn().Add(new ComponentA()).Add(new ComponentB());
 
         // Act
-        _query.AddFilter<ComponentA>(Match.Plain);
+        _query.Subset<ComponentA>(Match.Plain);
         var results = _query.ToList();
 
         // Assert
@@ -41,10 +41,10 @@ public class QueryFilterTests
         var entity2 = _world.Spawn().Add(new ComponentB());
         var entity3 = _world.Spawn().Add(new ComponentA()).Add(new ComponentB());
 
-        _query.AddFilter<ComponentA>(Match.Plain);
+        _query.Subset<ComponentA>(Match.Plain);
 
         // Act
-        _query.ClearStreamFilter();
+        _query.ClearFilters();
         var results = _query.ToList();
 
         // Assert
@@ -65,8 +65,8 @@ public class QueryFilterTests
         // ... add more components as needed for the test
 
         // Act
-        query1.AddFilter<ComponentA>(Match.Plain);
-        query2.AddFilter<ComponentB>(Match.Plain);
+        query1.Subset<ComponentA>(Match.Plain);
+        query2.Subset<ComponentB>(Match.Plain);
         // ... apply filters to other queries
 
         // Assert
