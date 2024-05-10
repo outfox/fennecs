@@ -78,10 +78,8 @@ head:
 # Ok, what the fox? *Another ECS?!*
 ### :neofox_facepalm: We know... oh, _we know._    
 
-In a tiny nutshell, **fenn**ecs is an archetype-based [🔗Entity Component System (Wikipedia)](https://en.wikipedia.org/wiki/Entity_component_system)  and follows the philofoxy of being small, clever, <u>and</u> fast. 
+In a tiny nutshell, **fenn**ecs is an archetype-based [🔗Entity Component System (Wikipedia)](https://en.wikipedia.org/wiki/Entity_component_system)  and follows the philofoxy of being small, clever, <u>and</u> fast. While **fenn**ecs are best adapted for their natural habitats of **game** and **simulation** development, scientists agree that foxes like being used! 
 
-While **fenn**ecs are best adapted for their natural habitats of **game** and **simulation** development, scientists agree that foxes like being used! 
-
-And, by the way, did we mention this project is free & libre open source software?
+By the way, did we mention this project is free & libre open source software?
 
 ### Time to get all bright-eyed and bushy-tailed again!

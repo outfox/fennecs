@@ -10,19 +10,22 @@ From the start, a Query includes only entities that match all of its [Stream Typ
 
 In ECS, the presence of another component often carries a meaning in itself, and Queries expose powerful, performant matching of Entities based on such presence.
 
-# `QueryBuilder<>.Has<C>()`
-# `QueryBuilder<>.Has<C>(Identity)`
+# `Query<>.Has<C>()`
+# `Query<>.Has<C>(Identity)`
 Query includes only Entities that have the given component or relation.
 
-# `QueryBuilder<>.Not<C>()`
+# `Query<>.Not<C>()`
 # `Query<>.Not<C>(Identity)`
 Query excludes all Entities that have the given component.
 
-# `QueryBuilder<>.Any<C>()`
-# `QueryBuilder<>.Any<C>(Identity)`
+# `Query<>.Any<C>()`
+# `Query<>.Any<C>(Identity)`
 Query matches Entities that match at least one the Any statements.
 
 
+::: details :neofox_magnify: Behind the Scenes
+Technically, all of these are actually methods on `QueryBuilder<>` instances, but in practice you almost never type the word `QueryBuilder`. Instead, you acquire them via `World.Query<>`. The builders expose a fluent interface to configure and then compile the query right away.
+:::
 
 ## Mix & Match!
 
@@ -112,8 +115,8 @@ Exclusion criteria like those below are hard-baked into the query. This is *slig
 
 ```cs
 var friendsInNeed = world.Query<Friend>()
-    .Has<Owes>(Match.Any)
-    .Unchecked()    // because the next two conflict with Any
+    .Has<Owes>(Match.Entity)  // we care about Entity-Entity relations
+    .Unchecked()    // because the next two conflict with Entity
     .Has<Owes>(bob) // subset - specifically anyone who owes bob
     .Not<Owes>(me)  // exclusion - but who does not owe myself
     .Build();
@@ -126,11 +129,11 @@ What if bob despawns?  In that case, a whole new query needs to be compiled (thi
 
 As a rule of paw, consider [Filters](Filters.md) first for these cases. A Filter has similar performance characteristics to a compiled (and thus immutable) query, and can be dynamically reconfigured!
 
-::: tip :neofox_thumbsup: PROTIP: SUBSET and EXCLUSION via [Filters](Filters.md)
-Our query is always valid as compiled, and we can dynamically narrow down its matched archetypes whenever our criteria change. 
+::: tip :neofox_thumbsup: PROTIP: SUBSET and EXCLUSION via [Stream Filters](Filters.md)
+Our Query is always valid as compiled, and we can dynamically narrow down its matched archetypes whenever our criteria change. 
 ```cs
 var friendsInNeed = world.Query<Friend>()
-    .Has<Owes>(Match.Any)
+    .Has<Owes>(Match.Entity)  // we care about Entity-Entity relations
     .Build();
 
 friendsInNeed.Subset<Owes>(bob);
@@ -140,3 +143,8 @@ friendsInNeed.For(PayOffDebt);
 // optional: restore or change when criteria change
 friendsInNeed.ClearFilters();
 ```
+
+If needed, the filter state can stick around forever (at a minimal cost per query whenever new relations create new archetypes).
+
+:::
+
