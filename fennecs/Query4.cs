@@ -122,8 +122,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     {
         AssertNotDisposed();
 
-        ThreadPool.GetMaxThreads(out var workerThreads, out _);
-        var chunkSize = Count / workerThreads;
+        
+        var chunkSize = Count / Concurrency;
         
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -174,8 +174,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     {
         AssertNotDisposed();
 
-        ThreadPool.GetMaxThreads(out var workerThreads, out _);
-        var chunkSize = Count / workerThreads;
+        
+        var chunkSize = Count / Concurrency;
 
         using var worldLock = World.Lock;
         Countdown.Reset();

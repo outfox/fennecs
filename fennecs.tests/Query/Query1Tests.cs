@@ -315,7 +315,7 @@ public class Query1Tests
 
     [Theory]
     [ClassData(typeof(QueryChunkGenerator))]
-    private void Job_Uniform_Visits_All_Entities_Chunked(int count, int chunk, bool createEmptyTable)
+    private void Job_Uniform_Visits_All_Entities_Chunked(int count, bool createEmptyTable)
     {
         using var world = new World();
 

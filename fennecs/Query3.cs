@@ -119,8 +119,8 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     {
         AssertNotDisposed();
         
-        ThreadPool.GetMaxThreads(out var workerThreads, out _);
-        var chunkSize = Count / workerThreads;
+        
+        var chunkSize = Count / Concurrency;
 
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -170,9 +170,8 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     public void Job<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
         AssertNotDisposed();
-
-        ThreadPool.GetMaxThreads(out var workerThreads, out _);
-        var chunkSize = Count / workerThreads;
+        
+        var chunkSize = Count / Concurrency;
         
         using var worldLock = World.Lock;
         Countdown.Reset();
