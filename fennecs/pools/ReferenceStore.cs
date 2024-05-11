@@ -1,4 +1,6 @@
-﻿namespace fennecs.pools;
+﻿using System.Diagnostics;
+
+namespace fennecs.pools;
 
 /// <summary>
 /// Storage for the targets of ObjectLinks
@@ -19,8 +21,11 @@ internal class ReferenceStore(int capacity = 4096)
             // Already tracking this item.
             if (_storage.TryGetValue(identity, out var reference))
             {
+                //TODO: Consider replacing exception with assert.
+                Debug.Assert(reference.Item != item, $"GetHashCode() collision in {typeof(T)}, causing Identity collision between {item} and {reference.Item} in {reference}.");
                 if (reference.Item != item)
                 {
+                    //TODO: Maybe disable the exception handling here, gives better inlining performance.
                     throw new InvalidOperationException($"GetHashCode() collision in {typeof(T)}, causing Identity collision between {item} and {reference.Item} in {reference}.");
                 }
 

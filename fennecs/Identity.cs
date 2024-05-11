@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace fennecs;
@@ -86,7 +87,9 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// </remarks>
     public override bool Equals(object? obj)
     {
+        Debug.Assert(false, "fennecs.Identity: Boxing equality comparisons disallowed. Use IEquatable<Identity>.Equals(Identity other) instead.");
         throw new InvalidCastException("fennecs.Identity: Boxing equality comparisons disallowed. Use IEquatable<Identity>.Equals(Identity other) instead.");
+        return false;
     }
 
 

@@ -1,4 +1,6 @@
-﻿namespace fennecs;
+﻿using Schedulers;
+
+namespace fennecs;
 
 internal class Work<C1> : IThreadPoolWorkItem
 {
@@ -58,14 +60,13 @@ internal class UniformWork<C1, C2, U> : IThreadPoolWorkItem
 
     public void Execute()
     {
-        for (var i = 0; i < Memory1.Length; i++) 
-            Action(ref Memory1.Span[i], ref Memory2.Span[i], Uniform);
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], Uniform);
         CountDown.Signal();
     }
 }
 
 
-internal class Work<C1, C2, C3> : IThreadPoolWorkItem
+internal class Work<C1, C2, C3> : IThreadPoolWorkItem, IJob
 {
     public Memory<C1> Memory1 = null!;
     public Memory<C2> Memory2 = null!;
@@ -78,6 +79,21 @@ internal class Work<C1, C2, C3> : IThreadPoolWorkItem
     {
         for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i]);
         CountDown.Signal();
+    }
+}
+
+internal class Work2<C1, C2, C3> : IThreadPoolWorkItem, IJob
+{
+    public Memory<C1> Memory1 = null!;
+    public Memory<C2> Memory2 = null!;
+    public Memory<C3> Memory3 = null!;
+    public RefAction<C1, C2, C3> Action = null!;
+    public CountdownEvent CountDown = null!;
+
+
+    public void Execute()
+    {
+        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i]);
     }
 }
 

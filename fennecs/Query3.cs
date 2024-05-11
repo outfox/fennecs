@@ -1,9 +1,7 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System.ComponentModel;
-using System.Numerics;
-using System.Threading.Channels;
 using fennecs.pools;
+using Schedulers;
 
 namespace fennecs;
 
@@ -115,20 +113,14 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             } while (join.Iterate());
         }
     }
-  
-
+    
 
     /// <inheritdoc cref="Query{C0}.Job"/>
     public void Job(RefAction<C0, C1, C2> action, int chunkSize = default)
     {
         AssertNotDisposed();
 
-        chunkSize = chunkSize switch
-        {
-            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
-            < 0 => int.MaxValue,
-            _ => chunkSize,
-        };
+        chunkSize = ChunkSizeHeuristic(chunkSize);
 
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -160,11 +152,12 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                     job.Action = action;
                     job.CountDown = Countdown;
                     jobs.Add(job);
-
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
+                
             } while (join.Iterate());
         }
+
 
         Countdown.Signal();
         Countdown.Wait();
@@ -178,12 +171,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     {
         AssertNotDisposed();
 
-        chunkSize = chunkSize switch
-        {
-            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
-            < 0 => int.MaxValue,
-            _ => chunkSize,
-        };
+        chunkSize = ChunkSizeHeuristic(chunkSize);
         
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -216,10 +204,13 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                     job.Uniform = uniform;
                     job.CountDown = Countdown;
                     jobs.Add(job);
-
-                    ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
             } while (join.Iterate());
+        }
+
+        foreach (var job in jobs)
+        {
+            ThreadPool.UnsafeQueueUserWorkItem(job, true);
         }
 
         Countdown.Signal();

@@ -115,12 +115,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        chunkSize = chunkSize switch
-        {
-            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
-            < 0 => int.MaxValue,
-            _ => chunkSize,
-        };
+        chunkSize = ChunkSizeHeuristic(chunkSize);
 
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -163,18 +158,13 @@ public class Query<C0, C1> : Query<C0>
         JobPool<Work<C0, C1>>.Return(jobs);
     }
 
-
+    
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
     public void Job<U>(RefActionU<C0, C1, U> action, U uniform, int chunkSize = default)
     {
         AssertNotDisposed();
 
-        chunkSize = chunkSize switch
-        {
-            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
-            < 0 => int.MaxValue,
-            _ => chunkSize,
-        };
+        chunkSize = ChunkSizeHeuristic(chunkSize);
 
         using var worldLock = World.Lock;
         Countdown.Reset();

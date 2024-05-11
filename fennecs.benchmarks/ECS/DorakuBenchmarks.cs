@@ -1,7 +1,9 @@
 ﻿using System.Buffers;
+using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnostics.Windows.Configs;
 using BenchmarkDotNet.Order;
 using fennecs;
 using fennecs_Components;
@@ -10,8 +12,10 @@ using fennecs.pools;
 namespace Benchmark.ECS;
 
 [ShortRunJob]
-[ThreadingDiagnoser]
+[TailCallDiagnoser]
+//[ThreadingDiagnoser]
 [MemoryDiagnoser]
+//[InliningDiagnoser(true, true)]
 //[HardwareCounters(HardwareCounter.CacheMisses)]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 public class SystemWithThreeComponents
@@ -21,7 +25,7 @@ public class SystemWithThreeComponents
 
     [Params(100_000)] public int entityCount { get; set; } = 100_000;
     [Params(10)] public int entityPadding { get; set; } = 10;
-    
+
     [GlobalSetup]
     public void Setup()
     {
@@ -29,7 +33,7 @@ public class SystemWithThreeComponents
 
         _world = new World();
         _query = _world.Query<Component1, Component2, Component3>().Build().Warmup();
-        
+
         for (int i = 0; i < entityCount; ++i)
         {
             for (int j = 0; j < entityPadding; ++j)
@@ -54,18 +58,33 @@ public class SystemWithThreeComponents
                 .Add(new Component3 {Value = 1});
         }
     }
-
+    private RefAction<Component1,Component2,Component3> myDelegate = Workload;
+    
     [GlobalCleanup]
     public void Cleanup()
     {
         _world.Dispose();
     }
 
+    /// <summary>
+    /// This could be a static anonymous delegate, but this way, we don't need to repeat ourselves
+    /// and reduce the risk of errors when refactoring or unit testing.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    private static void Workload(ref Component1 c1, ref Component2 c2, ref Component3 c3)
+    {
+        c1.Value += c2.Value + c3.Value;
+    }
+
     //[BenchmarkCategory("fennecs2")]
     [Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
-        _query.For(delegate (ref Component1 c1, ref Component2 c2, ref Component3 c3) { c1.Value += c2.Value + c3.Value; });
+        _query.For(
+            static delegate (ref Component1 c1, ref Component2 c2, ref Component3 c3)
+            {
+                c1.Value += c2.Value + c3.Value;
+            });
     }
 
 
@@ -73,7 +92,7 @@ public class SystemWithThreeComponents
     [Benchmark(Description = "fennecs (For WL)")]
     public void fennecs_For_WL()
     {
-        _query.For(Workload);
+        _query.For(myDelegate);
     }
 
 
@@ -81,18 +100,7 @@ public class SystemWithThreeComponents
     [Benchmark(Description = $"fennecs (Job)")]
     public void fennecs_Job()
     {
-        // We use a simple heuristic here, later versions of fennecs have an auto-mode at the default value (0).
-        var chunkSize = entityCount / int.Max(1, Environment.ProcessorCount-2);
-        _query.Job(static delegate (ref Component1 c1, ref Component2 c2, ref Component3 c3) { c1.Value += c2.Value + c3.Value; }, chunkSize);
-    }
-
-    /// <summary>
-    /// This could be a static anonymous delegate, but this way, we don't need to repeat ourselves
-    /// and reduce the risk of errors when refactoring or unit testing.
-    /// </summary>
-    private static void Workload(Entity e, ref Component1 c1, ref Component2 c2, ref Component3 c3)
-    {
-        c1.Value += c2.Value + c3.Value;
+        _query.Job(static (ref Component1 c1, ref Component2 c2, ref Component3 c3) => { c1.Value += c2.Value + c3.Value; });
     }
 
     [BenchmarkCategory("fennecs3")]
@@ -112,10 +120,6 @@ public class SystemWithThreeComponents
         {
             _query.Raw(Raw_Workload_AVX2);
         }
-        else
-        {
-            throw new NotSupportedException("AVX2 are required for this benchmark");
-        }
     }
 
     [BenchmarkCategory("fennecs3")]
@@ -134,10 +138,6 @@ public class SystemWithThreeComponents
         if (Sse2.IsSupported)
         {
             _query.Raw(Raw_Workload_SSE2);
-        }
-        else
-        {
-            throw new NotSupportedException("SSE2 are required for this benchmark");
         }
     }
 
@@ -206,4 +206,5 @@ public class SystemWithThreeComponents
             }
         }
     }
+
 }

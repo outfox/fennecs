@@ -10,13 +10,16 @@ namespace fennecs;
 public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 {
     #region Internals
+
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
+
     #endregion
 
 
     #region Runners
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0, C1, C2, C3, C4> action)
     {
@@ -70,7 +73,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
         }
     }
 
-    
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0, C1, C2, C3, C4> action)
     {
@@ -116,24 +119,19 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span3 = s3.AsSpan(0, table.Count);
                 var span4 = s4.AsSpan(0, table.Count);
 
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i],ref span4[i], uniform);
+                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
             } while (join.Iterate());
         }
     }
-    
+
 
     /// <inheritdoc cref="Query{C0}.Job"/>
     public void Job(RefAction<C0, C1, C2, C3, C4> action, int chunkSize = default)
     {
         AssertNotDisposed();
 
-        chunkSize = chunkSize switch
-        {
-            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
-            < 0 => int.MaxValue,
-            _ => chunkSize,
-        };
-
+        chunkSize = ChunkSizeHeuristic(chunkSize);
+        
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -184,13 +182,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        chunkSize = chunkSize switch
-        {
-            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
-            < 0 => int.MaxValue,
-            _ => chunkSize,
-        };
-
+        chunkSize = ChunkSizeHeuristic(chunkSize);
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -290,9 +282,9 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
             } while (join.Iterate());
         }
     }
-    
+
     #endregion
-    
+
     /// <inheritdoc />
     public override Query<C0, C1, C2, C3, C4> Warmup()
     {
@@ -300,8 +292,8 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
         PooledList<Work<C0, C1, C2, C3, C4>>.Rent().Dispose();
         JobPool<Work<C0, C1, C2, C3, C4>>.Return(JobPool<Work<C0, C1, C2, C3, C4>>.Rent());
         return this;
-    }    
-    
+    }
+
     /// <inheritdoc />
     public override Query<C0, C1, C2, C3, C4> Warmup<U>()
     {

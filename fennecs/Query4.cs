@@ -122,13 +122,7 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     {
         AssertNotDisposed();
 
-        chunkSize = chunkSize switch
-        {
-            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
-            < 0 => int.MaxValue,
-            _ => chunkSize,
-        };
-
+               chunkSize = ChunkSizeHeuristic(chunkSize);
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -178,13 +172,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     {
         AssertNotDisposed();
 
-        chunkSize = chunkSize switch
-        {
-            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
-            < 0 => int.MaxValue,
-            _ => chunkSize,
-        };
-
+        chunkSize = ChunkSizeHeuristic(chunkSize);
+        
         using var worldLock = World.Lock;
         Countdown.Reset();
 

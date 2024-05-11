@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.Diagnostics;
 
 namespace fennecs;
 
@@ -18,6 +19,29 @@ namespace fennecs;
 /// </summary>
 public class Query : IEnumerable<Entity>, IDisposable
 {
+    /// <summary>
+    /// Default tuned chunk size for Job runners.
+    /// TODO: Needs to be made configurable.
+    /// (after better scheduler integrated)
+    /// </summary>
+    protected const int ChunkSizeDefault = 500;
+
+    /// <summary>
+    /// Heuristic function to determine chunk size, or pick user intent
+    /// </summary>
+    /// <param name="chunkSize"></param>
+    /// <returns></returns>
+    protected int ChunkSizeHeuristic(int chunkSize)
+    {
+        return chunkSize switch
+        {
+            0 => int.Max(ChunkSizeDefault, Math.Max(1, Count / Environment.ProcessorCount)),
+            < 0 => int.MaxValue,
+            _ => chunkSize,
+        };
+    }
+
+
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
     ///     Affected by Filters.
@@ -568,8 +592,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     private protected void AssertNotDisposed()
     {
-        if (!disposed) return;
-        throw new ObjectDisposedException(nameof(Query));
+        Debug.Assert(!disposed, $"{nameof(Query)} is disposed.");
     }
 
 
