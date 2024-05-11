@@ -150,7 +150,7 @@ public class Query<C0> : Query
         AssertNotDisposed();
 
         
-        var chunkSize = Count / Concurrency;
+        var chunkSize = Math.Max(1, Count / Concurrency);
         
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -203,7 +203,7 @@ public class Query<C0> : Query
         AssertNotDisposed();
 
         
-        var chunkSize = Count / Concurrency;
+        var chunkSize = Math.Max(1, Count / Concurrency);
         
         using var worldLock = World.Lock;
         Countdown.Reset();

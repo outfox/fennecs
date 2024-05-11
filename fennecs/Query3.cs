@@ -119,8 +119,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     {
         AssertNotDisposed();
         
-        
-        var chunkSize = Count / Concurrency;
+        var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -171,7 +170,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     {
         AssertNotDisposed();
         
-        var chunkSize = Count / Concurrency;
+        var chunkSize = Math.Max(1, Count / Concurrency);
         
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -204,13 +203,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                     job.Uniform = uniform;
                     job.CountDown = Countdown;
                     jobs.Add(job);
+                    ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
             } while (join.Iterate());
-        }
-
-        foreach (var job in jobs)
-        {
-            ThreadPool.UnsafeQueueUserWorkItem(job, true);
         }
 
         Countdown.Signal();
