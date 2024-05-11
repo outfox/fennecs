@@ -12,8 +12,8 @@ using fennecs.pools;
 namespace Benchmark.ECS;
 
 [ShortRunJob]
-[TailCallDiagnoser]
-//[ThreadingDiagnoser]
+//[TailCallDiagnoser]
+[ThreadingDiagnoser]
 [MemoryDiagnoser]
 //[InliningDiagnoser(true, true)]
 //[HardwareCounters(HardwareCounter.CacheMisses)]
@@ -32,13 +32,12 @@ public class SystemWithThreeComponents
         PooledList<UniformWork<Component1, Component2, Component3>>.Rent().Dispose();
 
         _world = new World();
-        _query = _world.Query<Component1, Component2, Component3>().Build().Warmup();
-
-        for (int i = 0; i < entityCount; ++i)
+        _query = _world.Query<Component1, Component2, Component3>().Build();
+        for (var i = 0; i < entityCount; ++i)
         {
-            for (int j = 0; j < entityPadding; ++j)
+            for (var j = 0; j < entityPadding; ++j)
             {
-                Entity padding = _world.Spawn();
+                var padding = _world.Spawn();
                 switch (j % 3)
                 {
                     case 0:
@@ -57,8 +56,9 @@ public class SystemWithThreeComponents
                 .Add(new Component2 {Value = 1})
                 .Add(new Component3 {Value = 1});
         }
+
+        _query.Warmup();
     }
-    private RefAction<Component1,Component2,Component3> myDelegate = Workload;
     
     [GlobalCleanup]
     public void Cleanup()
@@ -92,7 +92,7 @@ public class SystemWithThreeComponents
     [Benchmark(Description = "fennecs (For WL)")]
     public void fennecs_For_WL()
     {
-        _query.For(myDelegate);
+        _query.For(Workload);
     }
 
 
@@ -145,24 +145,24 @@ public class SystemWithThreeComponents
     {
         (int Item1, int Item2) range = (0, c1V.Length);
 
-        using MemoryHandle mem1 = c1V.Pin();
-        using MemoryHandle mem2 = c2V.Pin();
-        using MemoryHandle mem3 = c3V.Pin();
+        using var mem1 = c1V.Pin();
+        using var mem2 = c2V.Pin();
+        using var mem3 = c3V.Pin();
 
         unsafe
         {
-            int* p1 = (int*) mem1.Pointer;
-            int* p2 = (int*) mem2.Pointer;
-            int* p3 = (int*) mem3.Pointer;
+            var p1 = (int*) mem1.Pointer;
+            var p2 = (int*) mem2.Pointer;
+            var p3 = (int*) mem3.Pointer;
 
-            int vectorSize = Vector256<int>.Count;
-            int i = range.Item1;
+            var vectorSize = Vector256<int>.Count;
+            var i = range.Item1;
             for (; i <= range.Item2 - vectorSize; i += vectorSize)
             {
-                Vector256<int> v1 = Avx.LoadVector256(p1 + i);
-                Vector256<int> v2 = Avx.LoadVector256(p2 + i);
-                Vector256<int> v3 = Avx.LoadVector256(p3 + i);
-                Vector256<int> sum = Avx2.Add(v1, Avx2.Add(v2, v3));
+                var v1 = Avx.LoadVector256(p1 + i);
+                var v2 = Avx.LoadVector256(p2 + i);
+                var v3 = Avx.LoadVector256(p3 + i);
+                var sum = Avx2.Add(v1, Avx2.Add(v2, v3));
 
                 Avx.Store(p1 + i, sum);
             }
@@ -178,24 +178,24 @@ public class SystemWithThreeComponents
     {
         (int Item1, int Item2) range = (0, c1V.Length);
 
-        using MemoryHandle mem1 = c1V.Pin();
-        using MemoryHandle mem2 = c2V.Pin();
-        using MemoryHandle mem3 = c3V.Pin();
+        using var mem1 = c1V.Pin();
+        using var mem2 = c2V.Pin();
+        using var mem3 = c3V.Pin();
 
         unsafe
         {
-            int* p1 = (int*) mem1.Pointer;
-            int* p2 = (int*) mem2.Pointer;
-            int* p3 = (int*) mem3.Pointer;
+            var p1 = (int*) mem1.Pointer;
+            var p2 = (int*) mem2.Pointer;
+            var p3 = (int*) mem3.Pointer;
 
-            int vectorSize = Vector128<int>.Count;
-            int i = range.Item1;
+            var vectorSize = Vector128<int>.Count;
+            var i = range.Item1;
             for (; i <= range.Item2 - vectorSize; i += vectorSize)
             {
-                Vector128<int> v1 = Sse2.LoadVector128(p1 + i);
-                Vector128<int> v2 = Sse2.LoadVector128(p2 + i);
-                Vector128<int> v3 = Sse2.LoadVector128(p3 + i);
-                Vector128<int> sum = Sse2.Add(v1, Sse2.Add(v2, v3));
+                var v1 = Sse2.LoadVector128(p1 + i);
+                var v2 = Sse2.LoadVector128(p2 + i);
+                var v3 = Sse2.LoadVector128(p3 + i);
+                var sum = Sse2.Add(v1, Sse2.Add(v2, v3));
 
                 Sse2.Store(p1 + i, sum);
             }

@@ -119,9 +119,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     {
         AssertNotDisposed();
         
+        using var worldLock = World.Lock;
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0, C1, C2>>.Rent();
@@ -267,17 +267,23 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     public override Query<C0, C1, C2> Warmup()
     {
         base.Warmup();
-        PooledList<Work<C0, C1, C2>>.Rent().Dispose();
-        JobPool<Work<C0, C1, C2>>.Return(JobPool<Work<C0, C1, C2>>.Rent());
+        Job(NoOp);
         return this;
     }
-    
+
+    private void NoOp(ref C0 c0, ref C1 c1, ref C2 c2)
+    {
+    }
+
+    private void NoOp(ref C0 c0, ref C1 c1, ref C2 c2, int uniform)
+    {
+    }
+
     /// <inheritdoc />
     public override Query<C0, C1, C2> Warmup<U>()
     {
         base.Warmup<U>();
-        PooledList<UniformWork<C0, C1, C2, U>>.Rent().Dispose();
-        JobPool<UniformWork<C0, C1, C2, U>>.Return(JobPool<UniformWork<C0, C1, C2, U>>.Rent());
+        Job(NoOp, 0);
         return this;
     }
 }

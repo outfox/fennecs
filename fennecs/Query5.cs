@@ -131,9 +131,9 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
         AssertNotDisposed();
 
         
+        using var worldLock = World.Lock;
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0, C1, C2, C3, C4>>.Rent();
@@ -184,9 +184,9 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
         AssertNotDisposed();
 
         
+        using var worldLock = World.Lock;
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock;
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C0, C1, C2, C3, C4, U>>.Rent();

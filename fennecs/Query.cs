@@ -19,7 +19,7 @@ namespace fennecs;
 /// </summary>
 public class Query : IEnumerable<Entity>, IDisposable
 {
-    internal int Concurrency => Math.Max(1, Environment.ProcessorCount-4);
+    internal static int Concurrency => Math.Max(1, Environment.ProcessorCount-2);
     
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
