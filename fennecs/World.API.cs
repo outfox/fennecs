@@ -8,13 +8,21 @@ namespace fennecs;
 /// </summary>
 public partial class World : IDisposable
 {
-    #region Entity Spawn, Liveness, and Desapwn
+    #region Entity Spawn, Liveness, and Despawn
     /// <summary>
     /// Creates a new Identity in this World, and returns its Entity builder struct.
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
     /// </summary>
-    /// <returns>an EntityBuilder to operate on</returns>
+    /// <returns>an Entity to operate on</returns>
     public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
+
+
+    /// <summary>
+    /// Creates <paramref name="count"/> new Identities in this World, and returns its <see cref="EntityBatch"/> struct.
+    /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
+    /// </summary>
+    /// <returns>an EntityBatch to operate on</returns>
+    //public EntityBatch Spawn(int count) => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
 
 
     /// <summary>
@@ -201,4 +209,27 @@ public partial class World : IDisposable
     }
 
     #endregion
+
+public class EntityBatch : IDisposable
+{
+    private readonly World _world;
+    private PooledList<Identity> _identities = PooledList<Identity>.Rent();
+    private Signature<TypeExpression> _signature;
+    private Dictionary<TypeExpression, object> _components;
+
+    internal EntityBatch(World world, int count)
+    {
+        _world = world;
+        _identities.AddRange(_world._identityPool.Spawn(count));
+    }
+
+    public void Submit()
+    {
+        
+    }
+    public void Dispose()
+    {
+        _identities.Dispose();
+    }
+}
 }

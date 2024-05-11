@@ -94,7 +94,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void ForE<U>(EntityActionU<C0, C1, C2, U> action, U uniform)
+    public void For<U>(EntityActionU<C0, C1, C2, U> action, U uniform)
     {
         AssertNotDisposed();
 
