@@ -1,5 +1,8 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.ComponentModel;
+using System.Numerics;
+using System.Threading.Channels;
 using fennecs.pools;
 
 namespace fennecs;
@@ -91,7 +94,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(EntityActionU<C0, C1, C2, U> action, U uniform)
+    public void ForE<U>(EntityActionU<C0, C1, C2, U> action, U uniform)
     {
         AssertNotDisposed();
 
@@ -116,9 +119,16 @@ public class Query<C0, C1, C2> : Query<C0, C1>
 
 
     /// <inheritdoc cref="Query{C0}.Job"/>
-    public void Job(RefAction<C0, C1, C2> action, int chunkSize = int.MaxValue)
+    public void Job(RefAction<C0, C1, C2> action, int chunkSize = default)
     {
         AssertNotDisposed();
+
+        chunkSize = chunkSize switch
+        {
+            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
+            < 0 => int.MaxValue,
+            _ => chunkSize,
+        };
 
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -164,10 +174,17 @@ public class Query<C0, C1, C2> : Query<C0, C1>
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(RefActionU<C0, C1, C2, U> action, U uniform, int chunkSize = int.MaxValue)
+    public void Job<U>(RefActionU<C0, C1, C2, U> action, U uniform, int chunkSize = default)
     {
         AssertNotDisposed();
 
+        chunkSize = chunkSize switch
+        {
+            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
+            < 0 => int.MaxValue,
+            _ => chunkSize,
+        };
+        
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -259,4 +276,22 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         }
     }
     #endregion
+
+    /// <inheritdoc />
+    public override Query<C0, C1, C2> Warmup()
+    {
+        base.Warmup();
+        PooledList<Work<C0, C1, C2>>.Rent().Dispose();
+        JobPool<Work<C0, C1, C2>>.Return(JobPool<Work<C0, C1, C2>>.Rent());
+        return this;
+    }
+    
+    /// <inheritdoc />
+    public override Query<C0, C1, C2> Warmup<U>()
+    {
+        base.Warmup<U>();
+        PooledList<UniformWork<C0, C1, C2, U>>.Rent().Dispose();
+        JobPool<UniformWork<C0, C1, C2, U>>.Return(JobPool<UniformWork<C0, C1, C2, U>>.Rent());
+        return this;
+    }
 }

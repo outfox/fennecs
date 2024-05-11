@@ -58,7 +58,8 @@ internal class UniformWork<C1, C2, U> : IThreadPoolWorkItem
 
     public void Execute()
     {
-        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], Uniform);
+        for (var i = 0; i < Memory1.Length; i++) 
+            Action(ref Memory1.Span[i], ref Memory2.Span[i], Uniform);
         CountDown.Signal();
     }
 }

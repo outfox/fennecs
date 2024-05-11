@@ -111,9 +111,16 @@ public class Query<C0, C1> : Query<C0>
 
 
     /// <inheritdoc cref="Query{C0}.Job"/>
-    public void Job(RefAction<C0, C1> action, int chunkSize = int.MaxValue)
+    public void Job(RefAction<C0, C1> action, int chunkSize = default)
     {
         AssertNotDisposed();
+
+        chunkSize = chunkSize switch
+        {
+            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
+            < 0 => int.MaxValue,
+            _ => chunkSize,
+        };
 
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -158,9 +165,16 @@ public class Query<C0, C1> : Query<C0>
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(RefActionU<C0, C1, U> action, U uniform, int chunkSize = int.MaxValue)
+    public void Job<U>(RefActionU<C0, C1, U> action, U uniform, int chunkSize = default)
     {
         AssertNotDisposed();
+
+        chunkSize = chunkSize switch
+        {
+            0 => int.Max(1024, Count / (Environment.ProcessorCount-1)),
+            < 0 => int.MaxValue,
+            _ => chunkSize,
+        };
 
         using var worldLock = World.Lock;
         Countdown.Reset();
@@ -251,4 +265,23 @@ public class Query<C0, C1> : Query<C0>
     }
 
     #endregion
+    
+    /// <inheritdoc />
+    public override Query<C0, C1> Warmup()
+    {
+        base.Warmup();
+        PooledList<Work<C0, C1>>.Rent().Dispose();
+        JobPool<Work<C0, C1>>.Return(JobPool<Work<C0, C1>>.Rent());
+        return this;
+    }
+    
+    /// <inheritdoc />
+    public override Query<C0, C1> Warmup<U>()
+    {
+        base.Warmup<U>();
+        PooledList<UniformWork<C0, C1, U>>.Rent().Dispose();
+        JobPool<UniformWork<C0, C1, U>>.Return(JobPool<UniformWork<C0, C1, U>>.Rent());
+        return this;
+    }
 }
+    

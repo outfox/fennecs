@@ -18,8 +18,8 @@
   "author": "Tiger Jove",
   "license": "MIT",
   "devDependencies": {
-    "markdown-it": "^14.0.0",
-    "vitepress": "^1.0.0-rc.44",
-    "vitepress-sidebar": "^1.19.0"
+    "markdown-it": "^14.1.0",
+    "vitepress": "1.1.4",
+    "vitepress-sidebar": "^1.22.0"
   }
 }

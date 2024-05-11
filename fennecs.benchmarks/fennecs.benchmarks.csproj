@@ -11,6 +11,7 @@
         <IsPackable>false</IsPackable>
         <PackageId>fennecs.benchmarks</PackageId>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

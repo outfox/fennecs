@@ -24,7 +24,7 @@
             Performs a query with specified action, passing in an Entity, and values for requested stream types.
         </summary>
         <param name="action">
-            <see cref="T:EntityAction"/>
+            <see cref="T:fennecs.EntityAction"/>
             taking references to Component Types.
         </param>
     </member>
@@ -33,13 +33,13 @@
             Performs a query with specified action, passing in an Entity, values for requested stream types, and a uniform value.
         </summary>
         <param name="action">
-            <see cref="T:EntityActionU"/>
+            <see cref="T:fennecs.EntityActionU"/>
             taking references to Component Types.
         </param>
         <param name="uniform">The uniform data to pass to the action.</param>
     </member>
 
-    <member name="T:EntityAction">
+    <member name="T:fennecs.EntityAction">
         <summary>
             used by
             <c>Query.For</c>
@@ -51,7 +51,7 @@
         </remarks>
     </member>
 
-    <member name="T:EntityActionU">
+    <member name="T:fennecs.EntityActionU">
         <summary>
             used by
             <c>Query.For</c>

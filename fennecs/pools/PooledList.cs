@@ -4,9 +4,9 @@ namespace fennecs.pools;
 
 internal class PooledList<T> : List<T>, IDisposable
 {
-    private const int BagCapacity = 16;
+    private const int BagCapacity = 32;
     private const int DefaultInstanceCapacity = 64;
-    private const int ReturnedInstanceCapacityLimit = 256;
+    private const int ReturnedInstanceCapacityLimit = 512;
 
     private static readonly ConcurrentBag<PooledList<T>> Recycled = [];
 

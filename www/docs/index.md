@@ -10,13 +10,22 @@ head:
 ---
 
 # Welcome to the last ECS of your life!
-
 ::: info :neofox_knives: THE COOKBOOK - Tutorials and Tricks
 Feeling snackish? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. Snack on easily digestible code samples, and come back whenever you need to to jog your memory.
+
+🍴👇 *Here! Grab a fork and have an amüse-gueueu... horse-œuf... treat!* 
 :::
 
-::: info :neofox_vr: THE DEMOS - Smol but Shiny Examples
-The **[Demos](/demos/index)** category has concrete examples for a growing list of renderers and game engines! Something useful and something pretty to look at at the same time? It cannot be possible, *and yet!*
+::: code-group
+```cs [🦊 1, 2, 3 - gravity!]
+var world = new fennecs.World();
+var entity = world.Spawn().Add<Vector3>();
+var query = world.Query<Vector3>().Compile();
+
+query.Job(static (ref Vector3 velocity, float dt) => {
+    velocity.Y -= 9.81f * dt;
+}, uniform: Time.Delta);
+```
 :::
 
 ::: tip :neofox_book: THE DOCS - all the Deets and Don'ts
@@ -27,6 +36,11 @@ The **Documentation** section (you're in it now!) describes the core principles 
 - [Components](Component.md)
 - [Queries](Queries/)
 - [Query.For](Queries/Query.For.md)
+:::
+
+
+::: info :neofox_vr: THE DEMOS - Smol but Shiny Examples
+The **[Demos](/demos/index)** category has concrete examples for a growing list of renderers and game engines! Something useful and something pretty to look at at the same time? It cannot be possible, *and yet!*
 :::
 
 

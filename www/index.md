@@ -12,8 +12,8 @@ hero:
   tagline: <em>... a tiny, tiny, high-energy ECS!</em>
   actions:
     - theme: brand
-      text: Start Here!
-      link: /docs/index
+      text: Quickstart!
+      link: /docs/index.md
     - theme: alt
       text: Cookbook
       link: /cookbook/
