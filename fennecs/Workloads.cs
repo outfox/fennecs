@@ -1,6 +1,4 @@
-﻿using Schedulers;
-
-namespace fennecs;
+﻿namespace fennecs;
 
 internal class Work<C1> : IThreadPoolWorkItem
 {
@@ -15,7 +13,6 @@ internal class Work<C1> : IThreadPoolWorkItem
         CountDown.Signal();
     }
 }
-
 
 internal class UniformWork<C1, U> : IThreadPoolWorkItem
 {
@@ -32,7 +29,6 @@ internal class UniformWork<C1, U> : IThreadPoolWorkItem
     }
 }
 
-
 internal class Work<C1, C2> : IThreadPoolWorkItem
 {
     public Memory<C1> Memory1 = null!;
@@ -47,7 +43,6 @@ internal class Work<C1, C2> : IThreadPoolWorkItem
         CountDown.Signal();
     }
 }
-
 
 internal class UniformWork<C1, C2, U> : IThreadPoolWorkItem
 {
@@ -65,8 +60,7 @@ internal class UniformWork<C1, C2, U> : IThreadPoolWorkItem
     }
 }
 
-
-internal class Work<C1, C2, C3> : IThreadPoolWorkItem, IJob
+internal class Work<C1, C2, C3> : IThreadPoolWorkItem
 {
     public Memory<C1> Memory1 = null!;
     public Memory<C2> Memory2 = null!;
@@ -81,22 +75,6 @@ internal class Work<C1, C2, C3> : IThreadPoolWorkItem, IJob
         CountDown.Signal();
     }
 }
-
-internal class Work2<C1, C2, C3> : IThreadPoolWorkItem, IJob
-{
-    public Memory<C1> Memory1 = null!;
-    public Memory<C2> Memory2 = null!;
-    public Memory<C3> Memory3 = null!;
-    public RefAction<C1, C2, C3> Action = null!;
-    public CountdownEvent CountDown = null!;
-
-
-    public void Execute()
-    {
-        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], ref Memory3.Span[i]);
-    }
-}
-
 
 internal class UniformWork<C1, C2, C3, U> : IThreadPoolWorkItem
 {
@@ -115,7 +93,6 @@ internal class UniformWork<C1, C2, C3, U> : IThreadPoolWorkItem
     }
 }
 
-
 internal class Work<C1, C2, C3, C4> : IThreadPoolWorkItem
 {
     public Memory<C1> Memory1 = null!;
@@ -132,7 +109,6 @@ internal class Work<C1, C2, C3, C4> : IThreadPoolWorkItem
         CountDown.Signal();
     }
 }
-
 
 internal class UniformWork<C1, C2, C3, C4, U> : IThreadPoolWorkItem
 {
@@ -152,7 +128,6 @@ internal class UniformWork<C1, C2, C3, C4, U> : IThreadPoolWorkItem
     }
 }
 
-
 internal class Work<C1, C2, C3, C4, C5> : IThreadPoolWorkItem
 {
     public Memory<C1> Memory1 = null!;
@@ -170,7 +145,6 @@ internal class Work<C1, C2, C3, C4, C5> : IThreadPoolWorkItem
         CountDown.Signal();
     }
 }
-
 
 internal class UniformWork<C1, C2, C3, C4, C5, U> : IThreadPoolWorkItem
 {

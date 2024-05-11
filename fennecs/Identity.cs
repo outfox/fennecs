@@ -89,7 +89,6 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     {
         Debug.Assert(false, "fennecs.Identity: Boxing equality comparisons disallowed. Use IEquatable<Identity>.Equals(Identity other) instead.");
         throw new InvalidCastException("fennecs.Identity: Boxing equality comparisons disallowed. Use IEquatable<Identity>.Equals(Identity other) instead.");
-        return false;
     }
 
 

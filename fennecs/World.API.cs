@@ -174,7 +174,6 @@ public partial class World : IDisposable
     /// </summary>
     public void Dispose()
     {
-        Scheduler.Dispose();
         //TODO: Release all Object Links?
     }
 
