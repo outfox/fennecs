@@ -25,7 +25,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     ///     The sum of all distinct Entities currently matched by this Query.
     ///     Affected by Filters.
     /// </summary>
-    public int Count => _trackedArchetypes.Sum(t => t.Count);
+    public int Count => Archetypes.Sum(t => t.Count);
 
     #region Accessors
     /// <summary>
@@ -138,7 +138,15 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     protected readonly CountdownEvent Countdown = new(initialCount: 1);
 
+    /// <summary>
+    /// All the archetypes that this query can potentially match.
+    /// </summary>
     private readonly List<Archetype> _trackedArchetypes;
+    
+    /// <summary>
+    /// This query's currently matched Archetypes.
+    /// (affected by filters)
+    /// </summary>
     private protected readonly List<Archetype> Archetypes;
 
     private protected readonly World World;
@@ -562,6 +570,10 @@ public class Query : IEnumerable<Entity>, IDisposable
 
         AssertNotDisposed();
 
+        _streamExclusions.Clear();
+        _streamFilters.Clear();
+        
+        Archetypes.Clear();
         _trackedArchetypes.Clear();
         disposed = true;
         World.RemoveQuery(this);
