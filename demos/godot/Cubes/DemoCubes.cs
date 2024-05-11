@@ -144,7 +144,7 @@ public partial class DemoCubes : Node
 		// Update Transforms and Positions of all Cube Entities.
 		//  We decided to put the code for this into a static method.
 		// -------------------------------------------------------------------------------------------
-		_query.Job(UpdatePositionForCube, (_time, _currentAmplitude, _cubeCount, dt), chunkSize);
+		_query.Job(UpdatePositionForCube, (_time, _currentAmplitude, _cubeCount, dt));
 
 		// Workaround for Godot not accepting oversize Arrays or Spans.
 		Array.Resize(ref _submissionArray, (int) (_cubeCount * Matrix4X3.SizeInFloats));

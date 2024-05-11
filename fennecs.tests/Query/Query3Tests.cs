@@ -61,14 +61,14 @@ public class Query3Tests
             Assert.Equal(index, index);
             Assert.Equal("four", str);
             str = "five";
-        }, 4096);
+        });
 
         query.Job((ref int index, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
             str = uniform.ToString();
-        }, 6, 4096);
+        }, 6);
 
 
         query.For((ref int _, ref string str, ref char _, int uniform) =>

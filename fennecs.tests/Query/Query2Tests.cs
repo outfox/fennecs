@@ -56,14 +56,14 @@ public class Query2Tests
             Assert.Equal(index, index);
             Assert.Equal("four", str);
             str = "five";
-        }, 4096);
+        });
 
         query.Job((ref int index, ref string str, int uniform) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
             str = uniform.ToString();
-        }, 6, 4096);
+        }, 6);
 
 
         query.For((ref int _, ref string str, int uniform) =>
@@ -351,7 +351,7 @@ public class Query2Tests
             index = 123;
             Assert.Equal("I'll stay", str);
             str = "fools";
-        }, chunk);
+        });
 
         Assert.Equal(count, processed);
 
@@ -360,7 +360,7 @@ public class Query2Tests
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
             Assert.Equal("fools", str);
-        }, chunk);
+        });
     }
 
 
@@ -390,7 +390,7 @@ public class Query2Tests
             index = 123;
             Assert.Equal("I'll stay", str);
             str = "fools";
-        }, 0, chunk);
+        }, 0);
 
         Assert.Equal(count, processed);
 
@@ -399,7 +399,7 @@ public class Query2Tests
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
             Assert.Equal("fools", str);
-        }, 0, chunk);
+        }, 0);
     }
 
 

@@ -126,12 +126,13 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
 
     /// <inheritdoc cref="Query{C0}.Job"/>
-    public void Job(RefAction<C0, C1, C2, C3, C4> action, int chunkSize = default)
+    public void Job(RefAction<C0, C1, C2, C3, C4> action)
     {
         AssertNotDisposed();
 
-        chunkSize = ChunkSizeHeuristic(chunkSize);
-        
+        ThreadPool.GetMaxThreads(out var workerThreads, out _);
+        var chunkSize = Count / workerThreads;
+
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -178,11 +179,13 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(RefActionU<C0, C1, C2, C3, C4, U> action, U uniform, int chunkSize = default)
+    public void Job<U>(RefActionU<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        chunkSize = ChunkSizeHeuristic(chunkSize);
+        ThreadPool.GetMaxThreads(out var workerThreads, out _);
+        var chunkSize = Count / workerThreads;
+
         using var worldLock = World.Lock;
         Countdown.Reset();
 

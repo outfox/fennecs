@@ -14,7 +14,7 @@ public class DocumentationExampleTests
 
         const float MULTIPLIER = 10f;
 
-        query.Job((ref Position pos, float uniform) => { pos *= uniform; }, MULTIPLIER, chunkSize: 2048);
+        query.Job((ref Position pos, float uniform) => { pos *= uniform; }, MULTIPLIER);
 
         var pos1 = world.GetComponent<Position>(entity1, default);
         var expected = new Position() * MULTIPLIER;
@@ -54,27 +54,27 @@ public class DocumentationExampleTests
 
         query1.Job((ref Position _) =>
         {
-        }, chunkSize: chunkSize);
+        });
         Assert.Equal(count, query1.Count);
 
         query2.Job((ref Position _, ref int _) =>
         {
-        }, chunkSize: chunkSize);
+        });
         Assert.Equal(count, query2.Count);
 
         query3.Job((ref float _, ref Position _, ref int _) =>
         {
-        }, chunkSize: chunkSize);
+        });
         Assert.Equal(count, query3.Count);
 
         query4.Job((ref Identity _, ref string _, ref Position _, ref int _) =>
         {
-        }, chunkSize: chunkSize);
+        });
         Assert.Equal(count, query4.Count);
 
         query5.Job((ref Position _, ref int _, ref float _, ref string _, ref TypeA _) =>
         {
-        }, chunkSize: chunkSize);
+        });
         Assert.Equal(count, query5.Count);
         
     }

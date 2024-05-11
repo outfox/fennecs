@@ -55,13 +55,13 @@ public class SimpleEntityBenchmarks
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Delegate_Chunk1k()
     {
-        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 1024);
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Delegate_Chunk4k()
     {
-        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); }, 4096);
+        _queryV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]

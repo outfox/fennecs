@@ -53,13 +53,13 @@ public class Query1Tests
         {
             Assert.Equal("four", str);
             str = "five";
-        }, 4096);
+        });
 
         query.Job((ref string str, int uniform) =>
         {
             Assert.Equal("five", str);
             str = uniform.ToString();
-        }, 6, 4096);
+        }, 6);
 
 
         query.For((ref string str, int uniform) =>
@@ -280,7 +280,7 @@ public class Query1Tests
 
     [Theory]
     [ClassData(typeof(QueryChunkGenerator))]
-    private void Job_Visits_All_Entities_Chunked(int count, int chunk, bool createEmptyTable)
+    private void Job_Visits_All_Entities_Chunked(int count, bool createEmptyTable)
     {
         using var world = new World();
 
@@ -301,7 +301,7 @@ public class Query1Tests
         {
             Interlocked.Increment(ref processed);
             index = 123;
-        }, chunk);
+        });
 
         Assert.Equal(count, processed);
 
@@ -309,7 +309,7 @@ public class Query1Tests
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
-        }, chunk);
+        });
     }
 
 
@@ -336,7 +336,7 @@ public class Query1Tests
         {
             Interlocked.Increment(ref processed);
             index = 123;
-        }, 0, chunk);
+        }, 0);
 
         Assert.Equal(count, processed);
 
@@ -344,7 +344,7 @@ public class Query1Tests
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
-        }, 0, chunk);
+        }, 0);
     }
 
 

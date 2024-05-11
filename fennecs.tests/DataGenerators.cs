@@ -40,8 +40,8 @@ public class QueryChunkGenerator : IEnumerable<object[]>
         yield return [1_000, 1_000, true]; //exact
 
         yield return [15_383, 1024, true]; //typical
-        yield return [69_420, 4096, false]; //typical
-        //yield return [214_363, 4096, true]; //typical
+        yield return [69_420, false]; //typical
+        //yield return [214_363, true]; //typical
 
         yield return [433, 149, false]; // prime numbers
         yield return [149, 433, true]; // prime numbers

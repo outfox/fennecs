@@ -145,13 +145,13 @@ public class Query<C0> : Query
     /// Executes an action <em>in parallel chunks</em> for each entity that matches the query.
     /// </summary>
     /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
-    /// <param name="chunkSize">The size of the chunk for parallel processing. default for auto-detect.</param>
-    public void Job(RefAction<C0> action, int chunkSize = default)
+    public void Job(RefAction<C0> action)
     {
         AssertNotDisposed();
 
-        chunkSize = ChunkSizeHeuristic(chunkSize);
-
+        ThreadPool.GetMaxThreads(out var workerThreads, out _);
+        var chunkSize = Count / workerThreads;
+        
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -198,13 +198,13 @@ public class Query<C0> : Query
     /// </summary>
     /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    /// <param name="chunkSize">The size of the chunk for parallel processing.</param>
-    public void Job<U>(RefActionU<C0, U> action, U uniform, int chunkSize = default)
+    public void Job<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        chunkSize = ChunkSizeHeuristic(chunkSize);
-
+        ThreadPool.GetMaxThreads(out var workerThreads, out _);
+        var chunkSize = Count / workerThreads;
+        
         using var worldLock = World.Lock;
         Countdown.Reset();
 
