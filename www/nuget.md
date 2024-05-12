@@ -35,10 +35,10 @@ var entity = world.Spawn().Add<Position>().Id();
 // Queries are cached, just build them right where you want to use them.
 var query = world.Query<Position>().Build();
 
-// Run code on all entities in the query. (omit chunksize to parallelize only by archetype)
-query.Job(static (ref Position position, float dt) => {
+// Run code for all entities in the query. Need threads? Replace "For" with "Job"!
+query.For(static (ref Position position, float dt) => {
     position.Y -= 9.81f * dt;
-}, uniform: Time.Delta: 2048);
+});
 ```
 
 ### 💢... when we said minimal boilerplate, *we foxing meant it.*
