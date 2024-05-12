@@ -101,7 +101,7 @@ _query.Raw(static delegate(Memory<IntComp1> c1V, Memory<IntComp2> c2V)
 {
     var count = c1V.Length;
 
-    // These are simple components just containing a single int32
+    // This example uses simple components just containing a single int32
     using var mem1 = c1V.Pin();
     using var mem2 = c2V.Pin();
 
