@@ -22,7 +22,7 @@ internal class ReferenceStore(int capacity = 4096)
             if (_storage.TryGetValue(identity, out var reference))
             {
                 //TODO: Consider replacing exception with assert.
-                Debug.Assert(reference.Item != item, $"GetHashCode() collision in {typeof(T)}, causing Identity collision between {item} and {reference.Item} in {reference}.");
+                //Debug.Assert(reference.Item != item, $"GetHashCode() collision in {typeof(T)}, causing Identity collision between {item} and {reference.Item} in {reference}.");
                 if (reference.Item != item)
                 {
                     //TODO: Maybe disable the exception handling here, gives better inlining performance.
