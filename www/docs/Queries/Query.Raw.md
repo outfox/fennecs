@@ -85,13 +85,52 @@ Time.deltaTime);
 ```
 
 ```cs [☠️ cast to type]
-//TODO :) until then, you probably either have a clue already
-//or you better not be copying this code sample anyway
+_query.Raw(static delegate(Memory<Matrix4X3> transforms)
+{
+    var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
+    
+    RenderingServer.MultimeshSetBuffer(uniform.mesh, floatSpan);
+});
+//This is a Godot-Pseudo-Example, because RenderingServer doesn't 
+//support undersize arrays or spans at the moment. See Cubes Demo for
+//workaround if stumped (it's easy)! 🦊
 ```
 
-```cs [☠️☠️ transfer as buffer]
-//TODO :) until then, you probably either have a clue already
-//or you better not be copying this code sample anyway
+```cs [☠️☠️ process with SIMD  ]
+_query.Raw(static delegate(Memory<IntComp1> c1V, Memory<IntComp2> c2V)
+{
+    var count = c1V.Length;
+
+    // These are simple components just containing a single int32
+    using var mem1 = c1V.Pin();
+    using var mem2 = c2V.Pin();
+
+    // Use AVX2 Instruction Set to add 8x32bits of component data at once
+    unsafe
+    {
+        var p1 = (int*) mem1.Pointer;
+        var p2 = (int*) mem2.Pointer;
+
+        // Process the part that fits into whole vectors first
+        var vectorSize = Vector256<int>.Count;
+        var vectorEnd = count - count % vectorSize;
+        for (var i = 0; i <= vectorEnd; i += vectorSize)
+        {
+            var v1 = Avx.LoadVector256(p1 + i);
+            var v2 = Avx.LoadVector256(p2 + i);
+            var sum = Avx2.Add(v1, v2);
+
+            Avx.Store(p1 + i, sum);
+        }
+
+        // Now do the remaining elements 1 by 1
+        for (var i = vectorEnd; i < count; i++) 
+        {
+            // Tip: RyuJIT prefers explicit over compound assignment in loops!
+            p1[i] = p1[i] + p2[i];
+        }
+    }
+});
 ```
 
 ```cs [☠️☠️☠️ pin for GPU]

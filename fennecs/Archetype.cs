@@ -330,14 +330,45 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// Fills the appropriate storage of the archetype with the provided value.
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="value"></param>
-    /// <typeparam name="T"></typeparam>
     internal void Fill<T>(TypeExpression type, T value)
     {
         var storage = (T[]) GetStorage(type);
         Array.Fill(storage, value);
     }
+
+    /// <summary>
+    /// Fills the appropriate storage of the archetype with the provided values (in order).
+    /// The values are repeated if the count exceeds the length of the values.
+    /// </summary>
+    /// <remarks>
+    /// It is much faster to either write a single value with <see cref="Fill"/>
+    /// or to write a large number of values, because they are copied blockwise.
+    /// </remarks>
+    /// <returns>
+    /// integer that is the number of elements written in the last iteration
+    /// </returns>
+    internal int Fill<T>(TypeExpression type, IList<T> values)
+    {
+        var storage = (T[]) GetStorage(type);
+        
+        var written = 0;
+
+        if (Count > values.Count)
+        {
+            for (; written < storage.Length; written+=values.Count)
+            {
+                values.CopyTo(storage, written);
+            }
+        }
+        
+        for (; written < Count; written++)
+        {
+            storage[written] = values[written % values.Count];
+        }
+        
+        return written % values.Count; 
+    }
+    
 
     internal T[] GetStorage<T>(Identity target)
     {
