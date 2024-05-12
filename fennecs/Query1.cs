@@ -112,7 +112,8 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i]);
+                                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i]);
             } while (join.Iterate());
         }
     }
@@ -135,7 +136,8 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], uniform);
+                                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], uniform);
             } while (join.Iterate());
         }
     }

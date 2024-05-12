@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Runtime.CompilerServices;
 using fennecs.pools;
 
 namespace fennecs;
@@ -10,46 +11,129 @@ namespace fennecs;
 public class Query<C0, C1, C2> : Query<C0, C1>
 {
     #region Internals
+
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
     {
     }
-    
+
     #endregion
 
 
     #region Runners
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0, C1, C2> action)
     {
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
-        
+
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
-
+            
+            var count = table.Count;
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, table.Count);
-                var span1 = s1.AsSpan(0, table.Count);
-                var span2 = s2.AsSpan(0, table.Count);
+                var span0 = s0.AsSpan(0, count);
+                var span1 = s1.AsSpan(0, count);
+                var span2 = s2.AsSpan(0, count);
 
-                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i]);
+                for (var i = 0; i < count; i++) action(ref span0[i], ref span1[i], ref span2[i]);
+            } while (join.Iterate());
+        }
+    }
+
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    public void ForUnr8(RefAction<C0, C1, C2> action)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
+            if (join.Empty) continue;
+            
+            var count = table.Count;
+            do
+            {
+                var (s0, s1, s2) = join.Select;
+                var span0 = s0.AsSpan(0, count);
+                var span1 = s1.AsSpan(0, count);
+                var span2 = s2.AsSpan(0, count);
+
+                Unroll8(span0, span1, span2, action);
             } while (join.Iterate());
         }
     }
     
-    
+    private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, RefAction<C0, C1, C2> action)
+    {
+        var c = span0.Length / 8 * 8;
+        for (var i = 0; i < c; i += 8)
+        {
+            action(ref span0[i], ref span1[i], ref span2[i]);
+            action(ref span0[i+1], ref span1[i+1], ref span2[i+1]);
+            action(ref span0[i+2], ref span1[i+2], ref span2[i+2]);
+            action(ref span0[i+3], ref span1[i+3], ref span2[i+3]);
+            action(ref span0[i+4], ref span1[i+4], ref span2[i+4]);
+            action(ref span0[i+5], ref span1[i+5], ref span2[i+5]);
+            action(ref span0[i+6], ref span1[i+6], ref span2[i+6]);
+            action(ref span0[i+7], ref span1[i+7], ref span2[i+7]);
+        }
+
+        var d = span0.Length % 8;
+        for (var i = 0; i < d; i++)
+        {
+            action(ref span0[i], ref span1[i], ref span2[i]);
+        }
+    }
+
+    public void ForUnr1(RefAction<C0, C1, C2> action)
+    {
+        AssertNotDisposed();
+
+        using var worldLock = World.Lock;
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
+            if (join.Empty) continue;
+            
+            var count = table.Count;
+            do
+            {
+                var (s0, s1, s2) = join.Select;
+                var span0 = s0.AsSpan(0, count);
+                var span1 = s1.AsSpan(0, count);
+                var span2 = s2.AsSpan(0, count);
+
+                Unroll1(span0, span1, span2, action);
+            } while (join.Iterate());
+        }
+    }
+
+    private static void Unroll1(Span<C0> span0, Span<C1> span1, Span<C2> span2, RefAction<C0, C1, C2> action)
+    {
+        var d = span0.Length;
+        for (var i = 0; i < d; i++)
+        {
+            action(ref span0[i], ref span1[i], ref span2[i]);
+        }
+    }
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
-        
+
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
@@ -61,18 +145,20 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
                 var span2 = s2.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], uniform);
+
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(ref span0[i], ref span1[i], ref span2[i], uniform);
             } while (join.Iterate());
         }
     }
-    
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0, C1, C2> action)
     {
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
-        
+
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
@@ -84,7 +170,8 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
                 var span2 = s2.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i]);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i]);
             } while (join.Iterate());
         }
     }
@@ -96,7 +183,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
-        
+
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
@@ -108,17 +195,18 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
                 var span2 = s2.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
             } while (join.Iterate());
         }
     }
-    
+
 
     /// <inheritdoc cref="Query{C0}.Job"/>
     public void Job(RefAction<C0, C1, C2> action)
     {
         AssertNotDisposed();
-        
+
         using var worldLock = World.Lock;
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -153,7 +241,6 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                     jobs.Add(job);
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
-                
             } while (join.Iterate());
         }
 
@@ -169,9 +256,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
     public void Job<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
         AssertNotDisposed();
-        
+
         var chunkSize = Math.Max(1, Count / Concurrency);
-        
+
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -261,6 +348,7 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             } while (join.Iterate());
         }
     }
+
     #endregion
 
     /// <inheritdoc />
@@ -273,6 +361,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
 
     private void NoOp(ref C0 c0, ref C1 c1, ref C2 c2)
     {
+        c0 = c0;
+        c1 = c1;
+        c2 = c2;
     }
 
     private void NoOp(ref C0 c0, ref C1 c1, ref C2 c2, int uniform)

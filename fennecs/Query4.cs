@@ -38,7 +38,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
                 var span1 = s1.AsSpan(0, table.Count);
                 var span2 = s2.AsSpan(0, table.Count);
                 var span3 = s3.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
             } while (join.Iterate());
         }
     }
@@ -63,7 +64,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
                 var span2 = s2.AsSpan(0, table.Count);
                 var span3 = s3.AsSpan(0, table.Count);
 
-                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], uniform);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -87,7 +89,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
                 var span1 = s1.AsSpan(0, table.Count);
                 var span2 = s2.AsSpan(0, table.Count);
                 var span3 = s3.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
             } while (join.Iterate());
         }
     }
@@ -111,7 +114,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
                 var span1 = s1.AsSpan(0, table.Count);
                 var span2 = s2.AsSpan(0, table.Count);
                 var span3 = s3.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], uniform);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -122,9 +126,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     {
         AssertNotDisposed();
 
-        
         var chunkSize = Math.Max(1, Count / Concurrency);
-        
+
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -174,7 +177,6 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     {
         AssertNotDisposed();
 
-        
         using var worldLock = World.Lock;
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -273,7 +275,7 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
     }
 
     #endregion
-    
+
     /// <inheritdoc />
     public override Query<C0, C1, C2, C3> Warmup()
     {
@@ -282,7 +284,7 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
         JobPool<Work<C0, C1, C2, C3>>.Return(JobPool<Work<C0, C1, C2, C3>>.Rent());
         return this;
     }
-    
+
     /// <inheritdoc />
     public override Query<C0, C1, C2, C3> Warmup<U>()
     {

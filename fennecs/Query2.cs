@@ -16,15 +16,16 @@ public class Query<C0, C1> : Query<C0>
     }
 
     #endregion
-    
+
     #region Runners
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0, C1> action)
     {
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
-        
+
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1>(StreamTypes);
@@ -35,7 +36,8 @@ public class Query<C0, C1> : Query<C0>
                 var (s0, s1) = join.Select;
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i]);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(ref span0[i], ref span1[i]);
             } while (join.Iterate());
         }
     }
@@ -47,7 +49,7 @@ public class Query<C0, C1> : Query<C0>
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
-        
+
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1>(StreamTypes);
@@ -58,7 +60,8 @@ public class Query<C0, C1> : Query<C0>
                 var (s0, s1) = join.Select;
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], uniform);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(ref span0[i], ref span1[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -70,7 +73,7 @@ public class Query<C0, C1> : Query<C0>
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
-        
+
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1>(StreamTypes);
@@ -81,7 +84,8 @@ public class Query<C0, C1> : Query<C0>
                 var (s0, s1) = join.Select;
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i]);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i]);
             } while (join.Iterate());
         }
     }
@@ -93,7 +97,7 @@ public class Query<C0, C1> : Query<C0>
         AssertNotDisposed();
 
         using var worldLock = World.Lock;
-        
+
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1>(StreamTypes);
@@ -104,7 +108,8 @@ public class Query<C0, C1> : Query<C0>
                 var (s0, s1) = join.Select;
                 var span0 = s0.AsSpan(0, table.Count);
                 var span1 = s1.AsSpan(0, table.Count);
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], uniform);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -114,7 +119,7 @@ public class Query<C0, C1> : Query<C0>
     public void Job(RefAction<C0, C1> action)
     {
         AssertNotDisposed();
-        
+
         using var worldLock = World.Lock;
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -158,15 +163,14 @@ public class Query<C0, C1> : Query<C0>
         JobPool<Work<C0, C1>>.Return(jobs);
     }
 
-    
+
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
     public void Job<U>(RefActionU<C0, C1, U> action, U uniform)
     {
         AssertNotDisposed();
 
-        
         var chunkSize = Math.Max(1, Count / Concurrency);
-        
+
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -256,7 +260,7 @@ public class Query<C0, C1> : Query<C0>
     }
 
     #endregion
-    
+
     /// <inheritdoc />
     public override Query<C0, C1> Warmup()
     {
@@ -265,7 +269,7 @@ public class Query<C0, C1> : Query<C0>
         JobPool<Work<C0, C1>>.Return(JobPool<Work<C0, C1>>.Rent());
         return this;
     }
-    
+
     /// <inheritdoc />
     public override Query<C0, C1> Warmup<U>()
     {
@@ -275,4 +279,3 @@ public class Query<C0, C1> : Query<C0>
         return this;
     }
 }
-    

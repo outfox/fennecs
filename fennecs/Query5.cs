@@ -41,7 +41,8 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span2 = s2.AsSpan(0, count);
                 var span3 = s3.AsSpan(0, count);
                 var span4 = s4.AsSpan(0, count);
-                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
             } while (join.Iterate());
         }
     }
@@ -68,7 +69,8 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span2 = s2.AsSpan(0, count);
                 var span3 = s3.AsSpan(0, count);
                 var span4 = s4.AsSpan(0, count);
-                for (var i = 0; i < table.Count; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -94,7 +96,8 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span3 = s3.AsSpan(0, table.Count);
                 var span4 = s4.AsSpan(0, table.Count);
 
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
             } while (join.Iterate());
         }
     }
@@ -119,7 +122,8 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
                 var span3 = s3.AsSpan(0, table.Count);
                 var span4 = s4.AsSpan(0, table.Count);
 
-                for (var i = 0; i < table.Count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
+                var c = table.Count;
+                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -130,7 +134,6 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        
         using var worldLock = World.Lock;
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -183,7 +186,6 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        
         using var worldLock = World.Lock;
         var chunkSize = Math.Max(1, Count / Concurrency);
 
