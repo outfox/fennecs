@@ -41,92 +41,10 @@ public class Query<C0, C1, C2> : Query<C0, C1>
                 var span1 = s1.AsSpan(0, count);
                 var span2 = s2.AsSpan(0, count);
 
-                for (var i = 0; i < count; i++) action(ref span0[i], ref span1[i], ref span2[i]);
-            } while (join.Iterate());
-        }
-    }
-
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    public void ForUnr8(RefAction<C0, C1, C2> action)
-    {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
-
-        foreach (var table in Archetypes)
-        {
-            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
-            if (join.Empty) continue;
-            
-            var count = table.Count;
-            do
-            {
-                var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
-
                 Unroll8(span0, span1, span2, action);
             } while (join.Iterate());
         }
     }
-    
-    private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, RefAction<C0, C1, C2> action)
-    {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
-        {
-            action(ref span0[i], ref span1[i], ref span2[i]);
-            action(ref span0[i+1], ref span1[i+1], ref span2[i+1]);
-            action(ref span0[i+2], ref span1[i+2], ref span2[i+2]);
-            action(ref span0[i+3], ref span1[i+3], ref span2[i+3]);
-            action(ref span0[i+4], ref span1[i+4], ref span2[i+4]);
-            action(ref span0[i+5], ref span1[i+5], ref span2[i+5]);
-            action(ref span0[i+6], ref span1[i+6], ref span2[i+6]);
-            action(ref span0[i+7], ref span1[i+7], ref span2[i+7]);
-        }
-
-        var d = span0.Length % 8;
-        for (var i = 0; i < d; i++)
-        {
-            action(ref span0[i], ref span1[i], ref span2[i]);
-        }
-    }
-
-    public void ForUnr1(RefAction<C0, C1, C2> action)
-    {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
-
-        foreach (var table in Archetypes)
-        {
-            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
-            if (join.Empty) continue;
-            
-            var count = table.Count;
-            do
-            {
-                var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
-
-                Unroll1(span0, span1, span2, action);
-            } while (join.Iterate());
-        }
-    }
-
-    private static void Unroll1(Span<C0> span0, Span<C1> span1, Span<C2> span2, RefAction<C0, C1, C2> action)
-    {
-        var d = span0.Length;
-        for (var i = 0; i < d; i++)
-        {
-            action(ref span0[i], ref span1[i], ref span2[i]);
-        }
-    }
-
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
@@ -139,15 +57,15 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
 
+            var count = table.Count;
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, table.Count);
-                var span1 = s1.AsSpan(0, table.Count);
-                var span2 = s2.AsSpan(0, table.Count);
+                var span0 = s0.AsSpan(0, count);
+                var span1 = s1.AsSpan(0, count);
+                var span2 = s2.AsSpan(0, count);
 
-                var c = table.Count;
-                for (var i = 0; i < c; i++) action(ref span0[i], ref span1[i], ref span2[i], uniform);
+                Unroll8U(span0, span1, span2, action, uniform);
             } while (join.Iterate());
         }
     }
@@ -163,15 +81,15 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
-
+            
+            var count = table.Count;
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, table.Count);
-                var span1 = s1.AsSpan(0, table.Count);
-                var span2 = s2.AsSpan(0, table.Count);
-                var c = table.Count;
-                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i]);
+                var span0 = s0.AsSpan(0, count);
+                var span1 = s1.AsSpan(0, count);
+                var span2 = s2.AsSpan(0, count);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i]);
             } while (join.Iterate());
         }
     }
@@ -188,15 +106,15 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         {
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
-
+            
+            var count = table.Count;
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, table.Count);
-                var span1 = s1.AsSpan(0, table.Count);
-                var span2 = s2.AsSpan(0, table.Count);
-                var c = table.Count;
-                for (var i = 0; i < c; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
+                var span0 = s0.AsSpan(0, count);
+                var span1 = s1.AsSpan(0, count);
+                var span2 = s2.AsSpan(0, count);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -314,12 +232,14 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
 
+            var count = table.Count;
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var mem0 = s0.AsMemory(0, table.Count);
-                var mem1 = s1.AsMemory(0, table.Count);
-                var mem2 = s2.AsMemory(0, table.Count);
+                var mem0 = s0.AsMemory(0, count);
+                var mem1 = s1.AsMemory(0, count);
+                var mem2 = s2.AsMemory(0, count);
+                
                 action(mem0, mem1, mem2);
             } while (join.Iterate());
         }
@@ -338,12 +258,14 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
 
+            var count = table.Count;
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var mem0 = s0.AsMemory(0, table.Count);
-                var mem1 = s1.AsMemory(0, table.Count);
-                var mem2 = s2.AsMemory(0, table.Count);
+                var mem0 = s0.AsMemory(0, count);
+                var mem1 = s1.AsMemory(0, count);
+                var mem2 = s2.AsMemory(0, count);
+                
                 action(mem0, mem1, mem2, uniform);
             } while (join.Iterate());
         }
@@ -351,6 +273,8 @@ public class Query<C0, C1, C2> : Query<C0, C1>
 
     #endregion
 
+    #region Warmup & Unroll
+    
     /// <inheritdoc />
     public override Query<C0, C1, C2> Warmup()
     {
@@ -359,14 +283,13 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         return this;
     }
 
-    private void NoOp(ref C0 c0, ref C1 c1, ref C2 c2)
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void NoOp(ref C0 c0, ref C1 c1, ref C2 c2)
     {
-        c0 = c0;
-        c1 = c1;
-        c2 = c2;
     }
 
-    private void NoOp(ref C0 c0, ref C1 c1, ref C2 c2, int uniform)
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void NoOp(ref C0 c0, ref C1 c1, ref C2 c2, int uniform)
     {
     }
 
@@ -377,4 +300,52 @@ public class Query<C0, C1, C2> : Query<C0, C1>
         Job(NoOp, 0);
         return this;
     }
+    
+    private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, RefAction<C0, C1, C2> action)
+    {
+        var c = span0.Length / 8 * 8;
+        for (var i = 0; i < c; i += 8)
+        {
+            action(ref span0[i], ref span1[i], ref span2[i]);
+            action(ref span0[i+1], ref span1[i+1], ref span2[i+1]);
+            action(ref span0[i+2], ref span1[i+2], ref span2[i+2]);
+            action(ref span0[i+3], ref span1[i+3], ref span2[i+3]);
+
+            action(ref span0[i+4], ref span1[i+4], ref span2[i+4]);
+            action(ref span0[i+5], ref span1[i+5], ref span2[i+5]);
+            action(ref span0[i+6], ref span1[i+6], ref span2[i+6]);
+            action(ref span0[i+7], ref span1[i+7], ref span2[i+7]);
+        }
+
+        var d = span0.Length;
+        for (var i = c; i < d; i++)
+        {
+            action(ref span0[i], ref span1[i], ref span2[i]);
+        }
+    }
+
+    private  static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, RefActionU<C0, C1, C2, U> action, U uniform)
+    {
+        var c = span0.Length / 8 * 8;
+        for (var i = 0; i < c; i += 8)
+        {
+            action(ref span0[i], ref span1[i], ref span2[i], uniform);
+            action(ref span0[i+1], ref span1[i+1], ref span2[i+1], uniform);
+            action(ref span0[i+2], ref span1[i+2], ref span2[i+2], uniform);
+            action(ref span0[i+3], ref span1[i+3], ref span2[i+3], uniform);
+
+            action(ref span0[i+4], ref span1[i+4], ref span2[i+4], uniform);
+            action(ref span0[i+5], ref span1[i+5], ref span2[i+5], uniform);
+            action(ref span0[i+6], ref span1[i+6], ref span2[i+6], uniform);
+            action(ref span0[i+7], ref span1[i+7], ref span2[i+7], uniform);
+        }
+
+        var d = span0.Length;
+        for (var i = c; i < d; i++)
+        {
+            action(ref span0[i], ref span1[i], ref span2[i], uniform);
+        }
+    }
+    
+    #endregion
 }

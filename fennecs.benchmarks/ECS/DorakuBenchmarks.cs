@@ -17,7 +17,7 @@ namespace Benchmark.ECS;
 //[InliningDiagnoser(true, true)]
 //[HardwareCounters(HardwareCounter.CacheMisses)]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
-[AnyCategoriesFilter("fennecs2", "fennecs4")]
+[AnyCategoriesFilter("fennecs", "fennecs2")]
 // ReSharper disable once IdentifierTypo
 public class DorakuBenchmarks
 {
@@ -76,28 +76,11 @@ public class DorakuBenchmarks
         c1.Value = c1.Value + c2.Value + c3.Value;
     }
 
-    [BenchmarkCategory("fennecs2")]
+    [BenchmarkCategory("fennecs")]
     [Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
         _query.For(static delegate(ref Component1 c1, ref Component2 c2, ref Component3 c3)  { c1.Value = c1.Value + c2.Value + c3.Value; });
-    }
-
-
-    [BenchmarkCategory("fennecs2")]
-    [Benchmark(Description = "fennecs (ForU8)")]
-    public void fennecs_ForUnr()
-    {
-        _query.ForUnr8(static delegate(ref Component1 c1, ref Component2 c2, ref Component3 c3) { c1.Value = c1.Value + c2.Value + c3.Value; });
-    }
-
-
-    [BenchmarkCategory("fennecs2")]
-    [Benchmark(Description = "fennecs (ForU1)")]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void fennecs_ForUnr1()
-    {
-        _query.ForUnr1(static delegate(ref Component1 c1, ref Component2 c2, ref Component3 c3)  { c1.Value = c1.Value + c2.Value + c3.Value; });
     }
 
 

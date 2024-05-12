@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Runtime.CompilerServices;
 using fennecs.pools;
 
 namespace fennecs;
@@ -32,13 +33,13 @@ public class Query<C0> : Query
     /// <param name="mask">The mask for the query.</param>
     /// <param name="archetypes">The archetypes for the query.</param>
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
-    { 
+    {
     }
 
     #endregion
 
 
-    #region Runners  
+    #region Runners
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0> action)
@@ -57,12 +58,12 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
-                //for (var i = 0; i < table.Count; i++) action(ref span0[i]);
-                foreach (ref var c0 in span0) action(ref c0); // foreach is faster than for loop
+                // foreach is faster than for loop & unroll
+                foreach (ref var c0 in span0) action(ref c0); 
             } while (join.Iterate());
         }
     }
-    
+
 
     // #region Showcase
     /// <summary>
@@ -87,8 +88,8 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
-                //for (var i = 0; i < table.Count; i++) action(ref span0[i]);
-                foreach (ref var c0 in span0) action(ref c0, uniform); // foreach is faster than for loop
+                // foreach is faster than for loop & unroll
+                foreach (ref var c0 in span0) action(ref c0, uniform); 
             } while (join.Iterate());
         }
     }
@@ -103,17 +104,16 @@ public class Query<C0> : Query
         using var worldLock = World.Lock;
         foreach (var table in Archetypes)
         {
-            var count = table.Count;
-
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;
 
+            var count = table.Count;
             do
             {
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
-                                var c = table.Count;
-                for (var i = 0; i < c; i++) action(table[i], ref span0[i]);
+                
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i]);
             } while (join.Iterate());
         }
     }
@@ -127,22 +127,21 @@ public class Query<C0> : Query
         using var worldLock = World.Lock;
         foreach (var table in Archetypes)
         {
-            var count = table.Count;
-
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;
 
+            var count = table.Count;
             do
             {
                 var s0 = join.Select;
                 var span0 = s0.AsSpan(0, count);
-                                var c = table.Count;
-                for (var i = 0; i < c; i++) action(table[i], ref span0[i], uniform);
+                
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], uniform);
             } while (join.Iterate());
         }
     }
-    
-    
+
+
     /// <summary>
     /// Executes an action <em>in parallel chunks</em> for each entity that matches the query.
     /// </summary>
@@ -151,9 +150,9 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        
+
         var chunkSize = Math.Max(1, Count / Concurrency);
-        
+
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -204,9 +203,9 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        
+
         var chunkSize = Math.Max(1, Count / Concurrency);
-        
+
         using var worldLock = World.Lock;
         Countdown.Reset();
 
@@ -276,6 +275,7 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
+                
                 action(mem0);
             } while (join.Iterate());
         }
@@ -310,28 +310,41 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
+                
                 action(mem0, uniform);
             } while (join.Iterate());
         }
     }
-    
+
     #endregion
-    
+
+    #region Warmup & Unroll
+
     /// <inheritdoc />
     public override Query<C0> Warmup()
     {
         base.Warmup();
-        PooledList<Work<C0>>.Rent().Dispose();
-        JobPool<Work<C0>>.Return(JobPool<Work<C0>>.Rent());
+        Job(NoOp);
         return this;
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void NoOp(ref C0 c0)
+    {
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void NoOp(ref C0 c0, int uniform)
+    {
     }
 
     /// <inheritdoc />
     public override Query<C0> Warmup<U>()
     {
         base.Warmup<U>();
-        PooledList<UniformWork<C0, U>>.Rent().Dispose();
-        JobPool<UniformWork<C0, U>>.Return(JobPool<UniformWork<C0, U>>.Rent());
+        Job(NoOp, 0);
         return this;
     }
+    
+    #endregion
 }
