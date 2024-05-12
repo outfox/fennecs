@@ -291,6 +291,24 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
 
     #endregion
 
+    
+    #region Blitters
+
+    /// <inheritdoc cref="Query{C0}.Blit"/>
+    public void Blit(C4 value, Identity target = default)
+    {
+        using var worldLock = World.Lock;
+
+        var typeExpression = TypeExpression.Of<C4>(target);
+
+        foreach (var table in Archetypes)
+        {
+            table.Fill(typeExpression, value);
+        }
+    }
+    
+    #endregion
+
 
     #region Warmup & Unroll
     

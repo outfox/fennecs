@@ -317,6 +317,27 @@ public class Query<C0> : Query
     }
 
     #endregion
+    
+    #region Blitters
+
+    /// <summary>
+    /// Blit (write) a component value of a stream type to all entities matched by this query.
+    /// </summary>
+    /// <param name="value">a component value</param>
+    /// <param name="target">a </param>
+    public void Blit(C0 value, Identity target = default)
+    {
+        using var worldLock = World.Lock;
+
+        var typeExpression = TypeExpression.Of<C0>(target);
+
+        foreach (var table in Archetypes)
+        {
+            table.Fill(typeExpression, value);
+        }
+    }
+
+    #endregion
 
     #region Warmup & Unroll
 

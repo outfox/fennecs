@@ -273,6 +273,24 @@ public class Query<C0, C1, C2> : Query<C0, C1>
 
     #endregion
 
+    #region Blitters
+
+    /// <inheritdoc cref="Query{C0}.Blit"/>
+    public void Blit(C2 value, Identity target = default)
+    {
+        using var worldLock = World.Lock;
+
+        var typeExpression = TypeExpression.Of<C2>(target);
+
+        foreach (var table in Archetypes)
+        {
+            table.Fill(typeExpression, value);
+        }
+    }
+    
+    #endregion
+
+
     #region Warmup & Unroll
     
     /// <inheritdoc />

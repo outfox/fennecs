@@ -327,6 +327,17 @@ public sealed class Archetype : IEnumerable<Entity>
         }
     }
 
+    /// <summary>
+    /// Fills the appropriate storage of the archetype with the provided value.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="value"></param>
+    /// <typeparam name="T"></typeparam>
+    internal void Fill<T>(TypeExpression type, T value)
+    {
+        var storage = (T[]) GetStorage(type);
+        Array.Fill(storage, value);
+    }
 
     internal T[] GetStorage<T>(Identity target)
     {
