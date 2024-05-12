@@ -472,7 +472,7 @@ public class QueryTests
         var query = world.Query<int>().Build();
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42);
-        Assert.Contains(query.Random(), [entity23, entity42]);
+        Assert.Contains(query.Random(), new []{entity23, entity42});
     }
 
 

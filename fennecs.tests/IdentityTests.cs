@@ -211,12 +211,11 @@ public class IdentityTests(ITestOutputHelper output)
 
 
     [Fact]
-    public Identity Entity_is_Alive_after_Spawn()
+    public void Entity_is_Alive_after_Spawn()
     {
         using var world = new World();
         var identity = world.Spawn();
         Assert.True(world.IsAlive(identity));
-        return identity;
     }
 
 
