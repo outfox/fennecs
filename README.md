@@ -1,6 +1,6 @@
 ![fennecs logo](./www/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./www/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
 
-# _... the tiny, tiny, high-energy Entity Component System!_
+# _... the tiny, tiny, high-energy Entity-Component System!_
 
 <table style="width: 100%">
    <tr>
@@ -79,7 +79,7 @@ So how does _**fenn**ecs_ compare to other ECSs?
 This library is a tiny, tiny ECS with a focus on good performance and great simplicity. But it *cares enough* to provide a few things you might not expect.
 
 > [!IMPORTANT]
-> The idea of _**fenn**ecs_ was to fill the gaps that the author felt working with various established Entity Component Systems. This is why this matrix is clearly imbalanced, it's a shopping list of things that _**fenn**ecs_ does well and was made to do
+> The idea of _**fenn**ecs_ was to fill the gaps that the author felt working with various established Entity-Component Systems. This is why this matrix is clearly imbalanced, it's a shopping list of things that _**fenn**ecs_ does well and was made to do
 well; and things it may aspire to do but compromised on in order to be able to achieve the others.
 >
 > <em>(TL;DR - Foxes are soft, choices are hard - Unity dumb, .NET 8 really sharp.)</em>
