@@ -8,7 +8,7 @@ hero:
     dark: https://fennecs.tech/img/fennecs-logo-stacked-darkmode.svg
     light: https://fennecs.tech/img/fennecs-logo-stacked-lightmode.svg
     alt: fennecs Entity Component System
-  text: It's small foxes,<br/>all the way down!
+  text: With foxes we must play the fox!
   tagline: <em>... a tiny, tiny, high-energy ECS!</em>
   actions:
     - theme: brand
@@ -27,7 +27,7 @@ features:
   - title: Magical? Relational!
     details: An intuitive relation system <u>puts you in control</u> of how your Entities and Objects relate. 
   - title: Zero Dependencies. Zero Codegen. 
-    details: "<pre><span style='font-size: 24px'> ..... 💢</span></pre>"
+    details: "<pre><span style='font-size: 20px'> ..... 💢</span></pre>"
 
 head:
   - - meta
@@ -73,13 +73,11 @@ head:
 |-----|-----|-----|
 
 <br/>
-<br/>
 
-# Ok, what the fox? *Another ECS?!*
-### :neofox_facepalm: We know... oh, _we know._    
 
-In a tiny nutshell, **fenn**ecs is an archetype-based [🔗Entity Component System (Wikipedia)](https://en.wikipedia.org/wiki/Entity_component_system)  and follows the philofoxy of being small, clever, <u>and</u> fast. While **fenn**ecs are best adapted for their natural habitats of **game** and **simulation** development, scientists agree that foxes like being used! 
+### Ok, what the fox? *Another ECS?!*
+# :neofox_facepalm: We know... oh, _we know._    
 
-By the way, did we mention this project is free & libre open source software?
+In a tiny nutshell, **fenn**ecs is an archetype-based [🔗Entity Component System (Wikipedia)](https://en.wikipedia.org/wiki/Entity_component_system), an Architecture and Design Pattern most commonly used in **Game Development** and **Simulation Software**. It allows rapid querying, copying, changing, writing of data for games and game engines. This little library deftly proves that software can be:
 
-### Time to get all bright-eyed and bushy-tailed again!
+<span style='font-size: 24px'>small ... <br/><span style='margin-left: 40px'>clever ... <br/></span><span style='margin-left: 80px'>fast ... <br/></span></span><br/>*... <u>and</u>* full of trash-tier puns!

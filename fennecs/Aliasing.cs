@@ -1,4 +1,8 @@
-﻿namespace fennecs
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
+
+namespace fennecs
 {
     /// <summary>
     /// Fox Typing is a way to wrap existing types in a new type, so they can have individual
@@ -16,4 +20,19 @@
         /// <returns></returns>
         public T Value { get; set; }
     }
+    
+    /// <summary>
+    /// A 128-bit Fox, for SIMD operations.
+    /// Promises that the struct will be 128 bits.
+    /// (4 floats/ints)
+    /// </summary>
+    public interface Fox128<T> : Fox<Vector128<T>>;
+    
+    
+    /// <summary>
+    /// A 256-bit Fox, for SIMD operations.
+    /// Promises that the struct will be 256 bits.
+    /// (8 floats/ints)
+    /// </summary>
+    public interface Fox256<T> : Fox<Vector256<T>>;
 }
