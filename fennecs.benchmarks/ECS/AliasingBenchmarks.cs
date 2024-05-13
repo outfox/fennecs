@@ -13,12 +13,18 @@ namespace Benchmark.ECS;
 [MemoryDiagnoser]
 //[HardwareCounters(HardwareCounter.CacheMisses)]
 [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
-//[AllCategoriesFilter("Blit")]
+[AllCategoriesFilter("Blit")]
+[StructLayout(LayoutKind.Auto, Pack = 32)]
 public class AliasingBenchmarks
 {
+    private Vector4[] _testArray = null!;
+    
+    private static readonly Vector4 UniformConstantVector = new(3, 4, 5, 6);
+
+
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     // ReSharper disable once MemberCanBePrivate.Global
-    [Params(1_000_000)] public int entityCount { get; set; } = 100_000;
+    [Params(1_000_000)] public int entityCount { get; set; } = 400_000;
 
     private static readonly Random RandomV = new(1337);
     private static readonly Random RandomF = new(1337);
@@ -80,8 +86,16 @@ public class AliasingBenchmarks
     public void Setup()
     {
         Console.WriteLine($"F4 {Unsafe.SizeOf<FoxVector4>()}, F3 {Unsafe.SizeOf<FoxVector3>()}, S4 {Unsafe.SizeOf<FoxVector4Simd>()}, S3 {Unsafe.SizeOf<FoxVector3Simd>()}, V4 {Unsafe.SizeOf<Vector4>()}, V3 {Unsafe.SizeOf<Vector3>()}");
+
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<Vector4>()) Console.WriteLine("Vector4 is reference");
+        if (!Vector.IsHardwareAccelerated) Console.WriteLine("Vectorization is not supported");
+        if (Unsafe.SizeOf<Vector4>() > Vector<byte>.Count) Console.WriteLine("FoxVector4Simd is too large for SIMD");
+        if (!BitOperations.IsPow2(Unsafe.SizeOf<Vector4>())) Console.WriteLine("Vector4 is not power of 2");
+        Console.WriteLine("...");
         
         _world = new(entityCount * 3);
+
+        _testArray = new Vector4[entityCount];
 
         for (var i = 0; i < entityCount; i++)
         {
@@ -108,10 +122,7 @@ public class AliasingBenchmarks
         _world.Dispose();
         _world = null!;
     }
-
-    private static readonly Vector4 UniformConstantVector = new(3, 4, 5, 6);
-
-
+    
     #region Write (Store) Vector
 
     [Benchmark]
@@ -190,6 +201,14 @@ public class AliasingBenchmarks
 
     [Benchmark]
     [BenchmarkCategory("Blit", "Write")]
+    public void Generic_Span_Fill_Control()
+    {
+        var span = _testArray.AsSpan();
+        span.Fill(UniformConstantVector);
+    }
+
+    [Benchmark]
+    [BenchmarkCategory("Blit", "Write")]
     public void Vector4_Write_Raw()
     {
         _queryV4.Raw(static (v, uniform) =>
@@ -212,33 +231,63 @@ public class AliasingBenchmarks
     [BenchmarkCategory("Blit", "Write")]
     public void Vector4_Write_SIMD()
     {
-        _queryV4.Raw(static (v, uniform) =>
+        _queryV4.Raw(static (mem, uniform) =>
         {
-            using var mem1 = v.Pin();
+            using var handle = mem.Pin();
             unsafe
             {
-                var p1 = (float*)mem1.Pointer;
+                var length = mem.Length * sizeof(Vector4) / sizeof(float);
+            
+                var p1 = (float*)handle.Pointer;
 
                 var uHalf = uniform.AsVector128();
-
                 var u256 = Vector256.Create(uHalf, uHalf);
 
                 var vectorSize = Vector256<float>.Count;
+                var vectorEnd = length / vectorSize * vectorSize;
 
-                var vectorEnd = v.Length / vectorSize * vectorSize;
-                
-                for (var i = 0; i < v.Length; i += vectorSize)
+                for (var i = 0; i < length; i += vectorSize)
                 {
                     var addr = p1 + i;
                     Avx.Store(addr, u256);
                 }
 
-                for (var i = vectorEnd; i < v.Length; i += 3) // remaining elements
+                for (var i = vectorEnd; i < length; i++) // remaining elements
                 {
-                    p1[i + 0] = uniform.X;
-                    p1[i + 1] = uniform.Y;
-                    p1[i + 2] = uniform.Z;
-                    p1[i + 3] = uniform.W;
+                    p1[i] = uniform[i % 4];
+                }
+            }
+        }, UniformConstantVector);
+    }
+
+    
+    [Benchmark]
+    [BenchmarkCategory("Blit", "Write")]
+    public void Vector4_Write_SIMD128()
+    {
+        _queryV4.Raw(static (mem, uniform) =>
+        {
+            using var handle = mem.Pin();
+            unsafe
+            {
+                var length = mem.Length * sizeof(Vector4) / sizeof(float);
+            
+                var p1 = (float*)handle.Pointer;
+
+                var u128 = uniform.AsVector128();
+
+                var vectorSize = Vector128<float>.Count;
+                var vectorEnd = length / vectorSize * vectorSize;
+
+                for (var i = 0; i < length; i += vectorSize)
+                {
+                    var addr = p1 + i;
+                    Sse.Store(addr, u128);
+                }
+
+                for (var i = vectorEnd; i < length; i++) // remaining elements
+                {
+                    p1[i] = uniform[i % 4];
                 }
             }
         }, UniformConstantVector);
@@ -248,33 +297,30 @@ public class AliasingBenchmarks
     [BenchmarkCategory("Blit", "Write")]
     public void FoxVector4_Write_SIMD()
     {
-        _queryF4.Raw(static (v, uniform) =>
+        _queryF4.Raw(static (mem, uniform) =>
         {
-            using var mem1 = v.Pin();
+            using var handle = mem.Pin();
             unsafe
             {
-                var p1 = (float*)mem1.Pointer;
-                
+                var length = mem.Length * sizeof(FoxVector4) / sizeof(float);
+            
+                var p1 = (float*)handle.Pointer;
+
                 var uHalf = uniform.Value.AsVector128();
-                
                 var u256 = Vector256.Create(uHalf, uHalf);
 
                 var vectorSize = Vector256<float>.Count;
+                var vectorEnd = length / vectorSize * vectorSize;
 
-                var vectorEnd = v.Length / vectorSize * vectorSize;
-                
-                for (var i = 0; i < v.Length; i += vectorSize)
+                for (var i = 0; i < length; i += vectorSize)
                 {
                     var addr = p1 + i;
                     Avx.Store(addr, u256);
                 }
 
-                for (var i = vectorEnd; i < v.Length; i += 3) // remaining elements
+                for (var i = vectorEnd; i < length; i++) // remaining elements
                 {
-                    p1[i + 0] = uniform.Value.X;
-                    p1[i + 1] = uniform.Value.Y;
-                    p1[i + 2] = uniform.Value.Z;
-                    p1[i + 3] = uniform.Value.W;
+                    p1[i] = uniform.Value[i % 4];
                 }
             }
         }, new FoxVector4(UniformConstantVector));

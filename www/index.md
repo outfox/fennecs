@@ -8,7 +8,7 @@ hero:
     dark: https://fennecs.tech/img/fennecs-logo-stacked-darkmode.svg
     light: https://fennecs.tech/img/fennecs-logo-stacked-lightmode.svg
     alt: fennecs Entity-Component System
-  text: With foxes we must play the fox!
+  text: It's small foxes,<br/>all the way down.
   tagline: <em>... a tiny, tiny, high-energy ECS!</em>
   actions:
     - theme: brand
@@ -27,7 +27,7 @@ features:
   - title: Magical? Relational!
     details: An intuitive relation system <u>puts you in control</u> of how your Entities and Objects relate. 
   - title: Zero Dependencies. Zero Codegen. 
-    details: "<pre><span style='font-size: 20px'> ..... 💢</span></pre>"
+    details: <br/> . . . . . 💢
 
 head:
   - - meta
@@ -80,6 +80,4 @@ head:
 
 In a tiny nutshell, **fenn**ecs is an archetype-based [🔗Entity-Component System (Wikipedia)](https://en.wikipedia.org/wiki/Entity_component_system). ECS is an architecture and Design Pattern most commonly used in **Game Development** and **Simulation Software**. It facilitates rapid creation, copying, changing, and querying of data and relationships at microsecond scale. This makes it play exceptionally well with game engines and real-time applications like interactive simulations. 
 
-Our cheeky little library set out to prove that software can be
-
-<span style='font-size: 24px'>quick ... <br/><span style='margin-left: 40px'>small ... <br/></span><span style='margin-left: 80px'>clever ... <br/></span></span><br/>*... <u>and</u> full of trash-tier puns!*
+Our cheeky little library lives up to its name by all at once being **small, clever, quick,** *and <u>full of</u>* **trash-tier puns!**
