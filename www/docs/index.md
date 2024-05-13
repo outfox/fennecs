@@ -33,7 +33,7 @@ The **Documentation** section (you're in it now!) describes the core principles 
 
 #### Great first picks?
 - [Entities](Entities/)
-- [Components](Components)
+- [Components](Components/)
 - [Queries](Queries/)
 - [Query.For](Queries/Query.For.md)
 :::

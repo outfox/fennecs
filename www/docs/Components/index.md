@@ -1,5 +1,5 @@
 ---
-title: WIP Components
+title: Components
 ---
 
 # Component
