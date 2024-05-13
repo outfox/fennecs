@@ -333,7 +333,8 @@ public sealed class Archetype : IEnumerable<Entity>
     internal void Fill<T>(TypeExpression type, T value)
     {
         var storage = (T[]) GetStorage(type);
-        Array.Fill(storage, value);
+        var span = storage.AsSpan(0, Count);
+        span.Fill(value);
     }
 
     /// <summary>

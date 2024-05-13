@@ -147,9 +147,9 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
-    private protected readonly List<Archetype> Archetypes;
+    protected private readonly List<Archetype> Archetypes;
 
-    private protected readonly World World;
+    protected private readonly World World;
     
     /// <summary>
     ///  Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.

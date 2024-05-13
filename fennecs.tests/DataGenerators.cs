@@ -6,7 +6,7 @@ public class QueryCountGenerator : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
-        // base induction
+        // base inductionR
         for (var i = 0; i <= 8; i++) yield return [i, i % 2 == 0];
 
         // common powers of 2

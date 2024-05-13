@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -327,7 +328,7 @@ public class Query<C0> : Query
     /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
     public void Blit(C0 value, Identity target = default)
     {
-        using var worldLock = World.Lock;
+        //using var worldLock = World.Lock;
 
         var typeExpression = TypeExpression.Of<C0>(target);
 
@@ -347,7 +348,7 @@ public class Query<C0> : Query
     /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
     public void Blit(IList<C0> values, Identity target = default)
     {
-        using var worldLock = World.Lock;
+        Debug.Assert(World.Mode == World.WorldMode.Immediate, "Can only blit into an unlocked world");
 
         var typeExpression = TypeExpression.Of<C0>(target);
 
