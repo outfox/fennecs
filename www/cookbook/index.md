@@ -4,7 +4,7 @@ title: Cookbook
 head:
   - - meta
     - name: description
-      content: Beginner Cookbook for fennecs, the tiny, tiny, high-energy Entity Component System
+      content: Beginner Cookbook for fennecs, the tiny, tiny, high-energy Entity-Component System
 
 ---
 

@@ -4,7 +4,7 @@ title: Concepts
 head:
   - - meta
     - name: description
-      content: Conceptual overview over the fennecs Entity Component System
+      content: Conceptual overview over the fennecs Entity-Component System
 ---
 
 # Conceptual Overview

@@ -60,10 +60,10 @@ var entity = world.Spawn().Add<Velocity>();
 // Queries are cached, just build them right where you want to use them.
 var query = world.Query<Velocity>().Build();
 
-// Run code on all entities in the query. (omit chunksize to parallelize only by archetype)
-query.Job(static (ref Velocity velocity, float dt) => {
+// Run code on all entities in the query. (exchange 'For' with 'Job' for parallel processing)
+query.For(static (ref Velocity velocity, float dt) => {
     velocity.Y -= 9.81f * dt;
-}, uniform: Time.Delta, chunkSize: 2048);
+}, uniform: Time.Delta);
 ```
 
 #### 💢... when we said minimal boilerplate, <em>we meant it.</em>

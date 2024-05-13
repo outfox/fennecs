@@ -5,7 +5,7 @@ title: Documentation
 head:
   - - meta
     - name: description
-      content: API documentation for fennecs, the tiny, tiny, high-energy Entity Component System
+      content: API documentation for fennecs, the tiny, tiny, high-energy Entity-Component System
 
 ---
 
@@ -33,7 +33,7 @@ The **Documentation** section (you're in it now!) describes the core principles 
 
 #### Great first picks?
 - [Entities](Entities/)
-- [Components](Component.md)
+- [Components](Components)
 - [Queries](Queries/)
 - [Query.For](Queries/Query.For.md)
 :::

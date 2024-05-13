@@ -17,7 +17,7 @@ All `.csproj` and `.cs` files are [over here on Github!](https://github.com/thyg
 ### Premise
 Japan's least coordinated soccer team tries to score a goal. They're just kids, all running after the ball at once. Only one of them is kind of a good shot, some kid named "Tsubasa"...
 
-We create a team of 11 Entities with `Player`, `Name`, `Talent`, and `Position` [Components](../../docs/Component.md), and a ball entity with `Ball` and `Position` Components.
+We create a team of 11 Entities with `Player`, `Name`, `Talent`, and `Position` [Components](../../docs/Components), and a ball entity with `Ball` and `Position` Components.
 
 In our "game" loop, we get the current position of our ball Entity, and let each player Entity run after it. If they get close enough, they kick the ball to a new position. As soon as the only player with a truthy `Talent` Component scores, the match ends with a golden goal.
 

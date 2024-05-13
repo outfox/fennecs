@@ -5,7 +5,7 @@ title: Demos
 head:
   - - meta
     - name: description
-      content: Real-World Demos for fennecs, the tiny, tiny, high-energy Entity Component System
+      content: Real-World Demos for fennecs, the tiny, tiny, high-energy Entity-Component System
 
 ---
 

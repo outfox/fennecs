@@ -1,4 +1,4 @@
-### ... the tiny, tiny, high-energy Entity Component System!
+### ... the tiny, tiny, high-energy Entity-Component System!
 
 ![fennecs logo](https://raw.githubusercontent.com/thygrrr/fennecs/main/www/logos/fennecs-logo-nuget.svg)
 

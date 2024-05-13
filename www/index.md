@@ -7,7 +7,7 @@ hero:
   image: 
     dark: https://fennecs.tech/img/fennecs-logo-stacked-darkmode.svg
     light: https://fennecs.tech/img/fennecs-logo-stacked-lightmode.svg
-    alt: fennecs Entity Component System
+    alt: fennecs Entity-Component System
   text: With foxes we must play the fox!
   tagline: <em>... a tiny, tiny, high-energy ECS!</em>
   actions:
@@ -35,7 +35,7 @@ head:
       content: fennecs — tiny ECS
   - - meta
     - name: description
-      content: A tiny, fast, modern C# Entity Component System for games and simulations!
+      content: A tiny, fast, modern C# Entity-Component System for games and simulations!
   - - meta
     - property: og:type
       content: website
@@ -47,7 +47,7 @@ head:
       content: fennecs — tiny ECS
   - - meta
     - property: og:description
-      content: A tiny, fast, modern C# Entity Component System for games and simulations!
+      content: A tiny, fast, modern C# Entity-Component System for games and simulations!
   - - meta
     - property: og:image
       content: https://fennecs.tech/img/fennecs-social-panel.png
@@ -62,7 +62,7 @@ head:
       content: fennecs — tiny ECS
   - - meta
     - property: twitter:description
-      content: A tiny, fast, modern C# Entity Component System for games and simulations!
+      content: A tiny, fast, modern C# Entity-Component System for games and simulations!
   - - meta
     - property: twitter:image
       content: https://fennecs.tech/img/fennecs-social-panel.png
@@ -78,7 +78,7 @@ head:
 ### Ok, what the fox? *Another ECS?!*
 # :neofox_facepalm: We know... oh, _we know._    
 
-In a tiny nutshell, **fenn**ecs is an archetype-based [🔗Entity Component System (Wikipedia)](https://en.wikipedia.org/wiki/Entity_component_system). ECS is an architecture and Design Pattern most commonly used in **Game Development** and **Simulation Software**. It facilitates rapid creation, copying, changing, and querying of data and relationships at microsecond scale. This makes it play exceptionally well with game engines and real-time applications like interactive simulations. 
+In a tiny nutshell, **fenn**ecs is an archetype-based [🔗Entity-Component System (Wikipedia)](https://en.wikipedia.org/wiki/Entity_component_system). ECS is an architecture and Design Pattern most commonly used in **Game Development** and **Simulation Software**. It facilitates rapid creation, copying, changing, and querying of data and relationships at microsecond scale. This makes it play exceptionally well with game engines and real-time applications like interactive simulations. 
 
 Our cheeky little library set out to prove that software can be
 

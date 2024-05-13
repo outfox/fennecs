@@ -8,7 +8,7 @@ import { hyperlinkPlugin } from './plugin-hyperlink';
 export default defineConfig({
   lang: 'en-US',
   title: "fennecs — tiny ECS",
-  description: "fennecs ...the tiny, tiny, high-energy Entity Component System!",
+  description: "fennecs ...the tiny, tiny, high-energy Entity-Component System!",
 
   markdown: {
     config: (md) => {
