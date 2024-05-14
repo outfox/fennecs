@@ -19,11 +19,21 @@ public class StorageTests
 #pragma warning disable CA1859
         IStorage storage = new Storage<int>();
 #pragma warning restore CA1859
-        
+
         storage.Append(1);
         Assert.Equal(1, storage.Count);
         storage.Append(337, 2);
         Assert.Equal(3, storage.Count);
+
+        var refStorage = new Storage<ReferenceType>();
+        var rt = new ReferenceType();
+        refStorage.Append(rt);
+        Assert.Equal(1, refStorage.Count);
+        refStorage.Append(rt, 2);
+        Assert.Equal(3, refStorage.Count);
+        Assert.Equal(rt, refStorage[0]);
+        Assert.Equal(rt, refStorage[1]);
+        Assert.Equal(rt, refStorage[2]);
     }
 
     [Fact]
@@ -32,7 +42,7 @@ public class StorageTests
 #pragma warning disable CA1859
         IStorage storage = new Storage<int>();
 #pragma warning restore CA1859
-        
+
         Assert.Throws<InvalidCastException>(() => storage.Append(8.5f));
         Assert.Throws<InvalidCastException>(() => storage.Append("Dieter", 69));
         Assert.Throws<InvalidCastException>(() => storage.Append(new object()));
@@ -47,7 +57,7 @@ public class StorageTests
 #pragma warning disable CA1859
         IStorage generic = storage;
 #pragma warning restore CA1859
-        
+
         generic.Append(7, 3);
         Assert.Equal(7, storage[0]);
         Assert.Equal(7, storage[1]);
@@ -65,7 +75,7 @@ public class StorageTests
         var storage = new Storage<int>();
         storage.Append(7, 3);
         Assert.Equal(3, storage.Count);
-        
+
         storage.Clear();
         Assert.Equal(0, storage.Count);
         Assert.Equal(default, storage[0]);
@@ -124,5 +134,31 @@ public class StorageTests
         Assert.Equal(420, storage[0]);
         Assert.Equal(420, storage[1]);
         Assert.Equal(420, storage[2]);
+    }
+
+    [Fact]
+    public void Can_Migrate()
+    {
+        var source = new Storage<string>();
+        var destination = new Storage<string>();
+        
+        destination.Append("world", 3);
+        
+        source.Append("hello", 3);
+
+#pragma warning disable CA1859
+        var genericSource = (IStorage)source;
+#pragma warning restore CA1859
+        genericSource.Migrate(destination);
+        
+        Assert.Equal(0, source.Count);
+        Assert.Equal(6, destination.Count);
+        
+        Assert.Equal("world", destination[0]);
+        Assert.Equal("world", destination[1]);
+        Assert.Equal("world", destination[2]);
+        Assert.Equal("hello", destination[3]);
+        Assert.Equal("hello", destination[4]);
+        Assert.Equal("hello", destination[5]);
     }
 }

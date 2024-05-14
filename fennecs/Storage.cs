@@ -35,6 +35,27 @@ internal interface IStorage
     /// Tries to downsize the storage to the smallest power of 2 that can contain all elements.
     /// </summary>
     void Compact();
+
+    /// <summary>
+    /// Moves all elements from this storage into destination.
+    /// The destination must be the same or a derived type.
+    /// </summary>
+    /// <param name="destination">a storage of the type of this storage</param>
+    void Migrate(IStorage destination);
+    
+    
+    /// <summary>
+    /// Instantiates the appropriate Storage for a <see cref="TypeExpression"/>.
+    /// </summary>
+    /// <param name="expression">a typeexpression</param>
+    /// <returns>generic IStorage reference backed by the specialized instance of the <see cref="Storage{T}"/></returns>
+    public static IStorage Instantiate(TypeExpression expression)
+    {
+        var storageType = typeof(Storage<>).MakeGenericType(expression.Type);
+        var instance = (IStorage) Activator.CreateInstance(storageType)!;
+        if (instance == null) throw new InvalidOperationException($"Could not instantiate Storage for {expression}");
+        return instance;
+    }
 }
 
 /// <summary>
@@ -57,7 +78,7 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     {
         if (additions <= 0) return;
         EnsureCapacity(Count + additions);
-        _data.AsSpan().Slice(Count, additions).Fill(value);
+        FullSpan.Slice(Count, additions).Fill(value);
         Count += additions;
     }
 
@@ -76,9 +97,9 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     {
         if (removals <= 0) return;
         Span[(index + removals)..].CopyTo(Span[index..]);
-        
+
         //Only clear subsection (this could be very large free space!)
-        Span[(Count - removals)..Count].Clear(); 
+        Span[(Count - removals)..Count].Clear();
         Count -= removals;
     }
 
@@ -127,11 +148,37 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
         Array.Resize(ref _data, newSize);
     }
 
+
+    /// <summary>
+    /// Migrates all the entries in this storage to the destination storage.
+    /// </summary>
+    /// <param name="destination">a storage of the same type</param>
+    public void Migrate(Storage<T> destination)
+    {
+        destination.Append(Span);
+        Clear();
+    }
+
+    /// <summary>
+    /// Boxed / General migration method.
+    /// </summary>
+    /// <param name="destination">a storage, must be of the same type</param>
+    public void Migrate(IStorage destination) => Migrate((Storage<T>)destination);
+
+
+    private void Append(Span<T> appendage)
+    {
+        EnsureCapacity(Count + appendage.Length);
+        appendage.CopyTo(FullSpan[Count..]);
+        Count += appendage.Length;
+    }
+
     /// <summary>
     /// Returns a span representation of the actually contained data.
     /// </summary>
     public Span<T> Span => _data.AsSpan(0, Count);
 
+    private Span<T> FullSpan => _data.AsSpan();
 
     /// <summary>
     /// Indexer (for debug purposes!)
