@@ -25,28 +25,21 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// Get a Span of all Identities contained in this Archetype.
     /// </summary>
-    public ReadOnlySpan<Identity> Identities => _identities.AsSpan(0, Count);
+    public ReadOnlySpan<Identity> Identities => _identities.Span;
 
     internal IStorage[] Storages => _storages;
 
     /// <summary>
     /// Number of Entities contained in this Archetype.
     /// </summary>
-    public int Count { get; private set; }
+    public int Count => _identities.Count;
 
     /// <summary>
     /// Does this Archetype currently contain no Entities?
     /// </summary>
     public bool IsEmpty => Count == 0;
-
-    /// <summary>
-    /// Current Capacity of this Archetype. This will grow as Entities are added and the Archetype resizes.
-    /// </summary>
-    public int Capacity => _identities.Length;
-
-    private const int StartCapacity = 4;
-
-
+    
+    
     /// <summary>
     /// The World this Archetype is a part of.
     /// </summary>
@@ -55,7 +48,7 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
     /// </summary>
-    private Identity[] _identities;
+    internal Storage<Identity> _identities;
 
     /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
@@ -79,8 +72,8 @@ public sealed class Archetype : IEnumerable<Entity>
 
         Signature = signature;
 
-        _identities = new Identity[StartCapacity];
-
+        _identities = new Storage<Identity>();
+        
         _storages = new IStorage[signature.Count];
 
         // Build the relation between storages and types, as well as type Wildcards in buckets.
@@ -197,38 +190,27 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
+/*    [Obsolete("Don't add identities 1 by 1", true)]
     internal int Add(Identity identity)
     {
         Interlocked.Increment(ref _version);
 
+        /*
         EnsureCapacity(Count + 1);
         _identities[Count] = identity;
         return Count++;
     }
-
+*/
 
     internal void Remove(int row)
     {
         Interlocked.Increment(ref _version);
 
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(row, Count, nameof(row));
-
-        Count--;
-
-        // If removing not the last row, move the last row to the removed row
-        if (row < Count)
+        _identities.Delete(row);
+        foreach (var storage in _storages)
         {
-            _identities[row] = _identities[Count];
-            foreach (var storage in _storages)
-            {
-                storage.Delete(row);
-            }
-
-            _world.GetEntityMeta(_identities[row]).Row = row;
+            storage.Delete(row);
         }
-
-        // Free the last row
-        _identities[Count] = default;
     }
 
 
@@ -264,7 +246,6 @@ public sealed class Archetype : IEnumerable<Entity>
             return;
         }
 
-        destination.EnsureCapacity(destination.Count + Count);
         // Subtractive copy
         foreach (var type in Signature)
         {
@@ -284,17 +265,9 @@ public sealed class Archetype : IEnumerable<Entity>
             _world.GetEntityMeta(_identities[i]).Archetype = destination;
         }
 
-        Array.Copy(_identities, 0, destination._identities, destination.Count, Count);
+        _identities.Migrate(destination._identities);
 
-
-        // Update destination Archetype state
-        destination.Count += Count;
-        destination._version++;
-
-        // Clear source Archetype state
-        Array.Clear(_identities, 0, Count);
-        Count = 0;
-        _version++;
+        Interlocked.Increment(ref _version);
     }
 
 
@@ -337,27 +310,7 @@ public sealed class Archetype : IEnumerable<Entity>
 
     internal IStorage GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
 
-
-    private void EnsureCapacity(int capacity)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));
-
-        if (capacity <= _identities.Length) return;
-
-        Resize(Math.Max(capacity, StartCapacity) * 2);
-    }
-
-
-    internal void Resize(int length)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
-        ArgumentOutOfRangeException.ThrowIfLessThan(length, Count, nameof(length));
-
-        Array.Resize(ref _identities, length);
-        foreach (var storage in _storages) storage.EnsureCapacity(length);
-    }
-
-
+    
     internal void Set<T>(TypeExpression typeExpression, T value, int newRow)
     {
         // DeferredOperation sends data as objects
@@ -374,10 +327,13 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    internal static int MoveEntry(Identity identity, int oldRow, Archetype oldArchetype, Archetype newArchetype)
+    internal static int MoveEntry(int oldRow, Archetype oldArchetype, Archetype newArchetype)
     {
-        var newRow = newArchetype.Add(identity);
+        Interlocked.Increment(ref oldArchetype._version);
+        Interlocked.Increment(ref newArchetype._version);
 
+        oldArchetype._identities.Move(oldRow, newArchetype._identities);
+        
         foreach (var (type, oldIndex) in oldArchetype._storageIndices)
         {
             if (!newArchetype._storageIndices.TryGetValue(type, out var newIndex)) continue;
@@ -387,7 +343,8 @@ public sealed class Archetype : IEnumerable<Entity>
 
             oldStorage.Move(oldRow, newStorage);
         }
-        return newRow;
+
+        return newArchetype.Count - 1;
     }
 
 
@@ -462,8 +419,6 @@ public sealed class Archetype : IEnumerable<Entity>
     {
         using var worldLock = _world.Lock;
         
-        EnsureCapacity(Count + count);
-
         foreach (var component in components)
         {
             var type = TypeExpression.Of(component.GetType());

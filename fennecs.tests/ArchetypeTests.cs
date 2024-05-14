@@ -18,36 +18,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Contains(typeof(int).ToString(), table.ToString());
         Assert.Contains(typeof(float).ToString(), table.ToString());
     }
-
-
-    [Fact]
-    public void Table_Resizing_Fails_On_Wrong_Size()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
-
-        var table = world.GetEntityMeta(identity).Archetype;
-
-        Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(-1));
-        Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(0));
-    }
-
-
-    [Fact]
-    public void Table_Resizing_Matches_Length()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
-
-        var table = world.GetEntityMeta(identity).Archetype;
-
-        table.Resize(10);
-        Assert.Equal(10, table.Capacity);
-
-        table.Resize(5);
-        Assert.Equal(5, table.Capacity);
-    }
-
+    
 
     [Fact]
     public void Table_GetStorage_Returns_System_Array()

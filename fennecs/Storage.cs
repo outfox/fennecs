@@ -134,14 +134,17 @@ internal class Storage<T> : IStorage
 
         // We copy as many elements as needed from the back to the site of removal.
         // TODO: But it melts brains to think about the bounds checking, maybe
-        //Span[(Count - removals)..Count].CopyTo(Span[index..(index + removals)]);
+        //Span[(Count - removals + 1)..Count].CopyTo(Span[index..(index + removals)]);
 
         // Wasteful: Shift EVERYTHING backwards.
-        if (Count > index+removals) Span[(index + removals)..].CopyTo(Span[index..]);
+        if (index+removals < Span.Length) 
+            Span[(index + removals)..].CopyTo(Span[index..]);
         
-        Count -= removals;
         //TODO: Only clear subsection (this could be very large free space!)
-        FullSpan[Count..(Count+removals)].Clear();
+        Count -= removals;
+        FullSpan[Count..].Clear();
+        //FullSpan[(Count-removals+1)..Count].Clear();
+        
     }
 
 

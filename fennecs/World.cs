@@ -63,8 +63,10 @@ public partial class World
         lock (_spawnLock)
         {
             var identity = _identityPool.Spawn();
-
-            var row = _root.Add(identity);
+            
+            // Fixme: Cleanup!
+            _root._identities.Append(identity);
+            var row = _root.Count - 1;
 
             while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
 
