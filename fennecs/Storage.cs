@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace fennecs;
 
@@ -78,8 +79,10 @@ internal interface IStorage
 /// A front-end to System.Array for fast storage write and blit operations.
 /// </summary>
 /// <typeparam name="T">the type of the array elements</typeparam>
-internal class Storage<T>(int initialCapacity = 16) : IStorage
+internal class Storage<T> : IStorage
 {
+    private const int initialCapacity = 2;
+        
     private T[] _data = new T[initialCapacity];
 
     /// <summary>
@@ -88,6 +91,7 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     public void Store(int index, T value)
     {
         _data[index] = value;
+        if (index > Count) Count = index; //HACK - must refactor to use Add (and less store)
     }
 
 
@@ -129,14 +133,15 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
         if (removals <= 0) return;
 
         // We copy as many elements as needed from the back to the site of removal.
-        Span[(Count - removals)..Count].CopyTo(Span[index..(index + removals)]);
+        // TODO: But it melts brains to think about the bounds checking, maybe
+        //Span[(Count - removals)..Count].CopyTo(Span[index..(index + removals)]);
 
         // Wasteful: Shift EVERYTHING backwards.
-        // Span[(index + removals)..].CopyTo(Span[index..]);
-
-        //Only clear subsection (this could be very large free space!)
-        Span[(Count - removals)..Count].Clear();
+        if (Count > index+removals) Span[(index + removals)..].CopyTo(Span[index..]);
+        
         Count -= removals;
+        //TODO: Only clear subsection (this could be very large free space!)
+        FullSpan[Count..(Count+removals)].Clear();
     }
 
 

@@ -103,7 +103,7 @@ public class StorageTests
     [Fact]
     public void Storage_Identical_After_Compact()
     {
-        var storage = new Storage<int>(2);
+        var storage = new Storage<int>();
         storage.Append(420, 3);
         storage.Append(69, 3);
         Assert.Equal(6, storage.Count);
