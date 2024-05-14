@@ -114,7 +114,7 @@ public static class Match
         private readonly int[] _counter;
         private readonly int[] _limiter;
 
-        private readonly PooledList<C0[]> _storages0;
+        private readonly PooledList<Storage<C0>> _storages0;
 
         private readonly bool _allocated;
         private readonly bool _populated;
@@ -142,14 +142,14 @@ public static class Match
         /// Returns the Storage in the current internal Cross Join counter configuration.
         /// Call <see cref="Iterate"/> to select the next permutation.
         /// </summary>
-        internal C0[] Select => _storages0[_counter[0]];
+        internal Storage<C0> Select => _storages0[_counter[0]];
 
 
         /// <summary>
         /// Ticks the internal counter of the Join operation, readying the next permutation to use in <see cref="Select"/>.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if permutation exists<br/><c>false</c> if the Cross Join has exhausted all permutations.
+        /// <c>true</c> if permutation exists,<br/><c>false</c> if the Cross Join has exhausted all permutations.
         /// </returns>
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
@@ -179,8 +179,8 @@ public static class Match
         private readonly int[] _counter;
         private readonly int[] _limiter;
 
-        private readonly PooledList<C0[]> _storages0;
-        private readonly PooledList<C1[]> _storages1;
+        private readonly PooledList<Storage<C0>> _storages0;
+        private readonly PooledList<Storage<C1>> _storages1;
 
         private readonly bool _allocated;
         private readonly bool _populated;
@@ -203,7 +203,7 @@ public static class Match
         }
 
 
-        internal (C0[], C1[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]]);
+        internal (Storage<C0>, Storage<C1>) Select => (_storages0[_counter[0]], _storages1[_counter[1]]);
 
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
@@ -230,9 +230,9 @@ public static class Match
         private readonly int[] _counter;
         private readonly int[] _limiter;
 
-        private readonly PooledList<C0[]> _storages0;
-        private readonly PooledList<C1[]> _storages1;
-        private readonly PooledList<C2[]> _storages2;
+        private readonly PooledList<Storage<C0>> _storages0;
+        private readonly PooledList<Storage<C1>> _storages1;
+        private readonly PooledList<Storage<C2>> _storages2;
 
         private readonly bool _allocated;
         private readonly bool _populated;
@@ -257,7 +257,7 @@ public static class Match
         }
 
 
-        internal (C0[], C1[], C2[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]]);
+        internal (Storage<C0>, Storage<C1>, Storage<C2>) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]]);
 
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
@@ -285,10 +285,10 @@ public static class Match
         private readonly int[] _counter;
         private readonly int[] _limiter;
 
-        private readonly PooledList<C0[]> _storages0;
-        private readonly PooledList<C1[]> _storages1;
-        private readonly PooledList<C2[]> _storages2;
-        private readonly PooledList<C3[]> _storages3;
+        private readonly PooledList<Storage<C0>> _storages0;
+        private readonly PooledList<Storage<C1>> _storages1;
+        private readonly PooledList<Storage<C2>> _storages2;
+        private readonly PooledList<Storage<C3>> _storages3;
 
         private readonly bool _allocated;
         private readonly bool _populated;
@@ -315,7 +315,7 @@ public static class Match
         }
 
 
-        internal (C0[], C1[], C2[], C3[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]], _storages3[_counter[3]]);
+        internal (Storage<C0>, Storage<C1>, Storage<C2>, Storage<C3>) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]], _storages3[_counter[3]]);
 
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 
@@ -344,11 +344,11 @@ public static class Match
         private readonly int[] _counter;
         private readonly int[] _limiter;
 
-        private readonly PooledList<C0[]> _storages0;
-        private readonly PooledList<C1[]> _storages1;
-        private readonly PooledList<C2[]> _storages2;
-        private readonly PooledList<C3[]> _storages3;
-        private readonly PooledList<C4[]> _storages4;
+        private readonly PooledList<Storage<C0>> _storages0;
+        private readonly PooledList<Storage<C1>> _storages1;
+        private readonly PooledList<Storage<C2>> _storages2;
+        private readonly PooledList<Storage<C3>> _storages3;
+        private readonly PooledList<Storage<C4>> _storages4;
 
         private readonly bool _allocated;
         private readonly bool _populated;
@@ -377,7 +377,7 @@ public static class Match
         }
 
 
-        internal (C0[], C1[], C2[], C3[], C4[]) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]], _storages3[_counter[3]], _storages4[_counter[4]]);
+        internal (Storage<C0>, Storage<C1>, Storage<C2>, Storage<C3>, Storage<C4>) Select => (_storages0[_counter[0]], _storages1[_counter[1]], _storages2[_counter[2]], _storages3[_counter[3]], _storages4[_counter[4]]);
 
         internal bool Iterate() => CrossJoin(_counter, _limiter);
 

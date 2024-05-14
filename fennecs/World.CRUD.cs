@@ -71,7 +71,7 @@ public partial class World
         var meta = _meta[identity.Index];
         var table = meta.Archetype;
         var storage = table.GetStorage<T>(target);
-        return ref storage[meta.Row];
+        return ref storage.Span[meta.Row];
     }
 
 

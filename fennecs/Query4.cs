@@ -36,10 +36,10 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
             do
             {
                 var (s0, s1, s2, s3) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
-                var span3 = s3.AsSpan(0, count);
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                var span2 = s2.Span;
+                var span3 = s3.Span;
                 
                 Unroll8(span0, span1, span2, span3, action);
             } while (join.Iterate());
@@ -62,10 +62,10 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
             do
             {
                 var (s0, s1, s2, s3) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
-                var span3 = s3.AsSpan(0, count);
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                var span2 = s2.Span;
+                var span3 = s3.Span;
 
                 Unroll8U(span0, span1, span2, span3, action, uniform);
             } while (join.Iterate());
@@ -88,10 +88,10 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
             do
             {
                 var (s0, s1, s2, s3) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
-                var span3 = s3.AsSpan(0, count);
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                var span2 = s2.Span;;
+                var span3 = s3.Span;;
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
             } while (join.Iterate());
         }
@@ -113,10 +113,10 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>
             do
             {
                 var (s0, s1, s2, s3) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
-                var span3 = s3.AsSpan(0, count);
+                var span0 = s0.Span;;
+                var span1 = s1.Span;;
+                var span2 = s2.Span;;
+                var span3 = s3.Span;;
 
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], uniform);
             } while (join.Iterate());

@@ -70,8 +70,8 @@ public partial class World
 
             _meta[identity.Index] = new Meta(identity, _root, row);
 
-            var entityStorage = (Identity[]) _root.Storages.First();
-            entityStorage[row] = identity;
+            var entityStorage = (Storage<Identity>) _root.Storages.First();
+            entityStorage.Append(identity);
 
             return identity;
         }

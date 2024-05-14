@@ -58,7 +58,7 @@ public class Query<C0> : Query
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
+                var span0 = s0.Span;
                 // foreach is faster than for loop & unroll
                 foreach (ref var c0 in span0) action(ref c0); 
             } while (join.Iterate());
@@ -88,7 +88,7 @@ public class Query<C0> : Query
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
+                var span0 = s0.Span;
                 // foreach is faster than for loop & unroll
                 foreach (ref var c0 in span0) action(ref c0, uniform); 
             } while (join.Iterate());
@@ -112,7 +112,7 @@ public class Query<C0> : Query
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
+                var span0 = s0.Span;
                 
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i]);
             } while (join.Iterate());
@@ -135,7 +135,7 @@ public class Query<C0> : Query
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
+                var span0 = s0.Span;
                 
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], uniform);
             } while (join.Iterate());

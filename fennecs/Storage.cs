@@ -10,9 +10,19 @@ internal interface IStorage
     int Count { get; }
 
     /// <summary>
+    /// Stores a boxed value at the given index.
+    /// </summary>
+    void Store(int index, object value);
+
+    /// <summary>
     /// Adds a boxed value (or number of identical values) to the storage.
     /// </summary>
     void Append(object value, int additions = 1);
+
+    /// <summary>
+    /// Removes a range of elements. 
+    /// </summary>
+    void Delete(int index, int removals = 1);
 
     /// <summary>
     /// Writes the given boxed value over all elements of the storage.
@@ -42,8 +52,14 @@ internal interface IStorage
     /// </summary>
     /// <param name="destination">a storage of the type of this storage</param>
     void Migrate(IStorage destination);
-    
-    
+
+    /// <summary>
+    /// Moves one element from this storage to the destination storage. 
+    /// </summary>
+    /// <param name="index">element index to move</param>
+    /// <param name="destination">a storage of the same type</param>
+    void Move(int index, IStorage destination);
+
     /// <summary>
     /// Instantiates the appropriate Storage for a <see cref="TypeExpression"/>.
     /// </summary>
@@ -52,7 +68,7 @@ internal interface IStorage
     public static IStorage Instantiate(TypeExpression expression)
     {
         var storageType = typeof(Storage<>).MakeGenericType(expression.Type);
-        var instance = (IStorage) Activator.CreateInstance(storageType)!;
+        var instance = (IStorage)Activator.CreateInstance(storageType)!;
         if (instance == null) throw new InvalidOperationException($"Could not instantiate Storage for {expression}");
         return instance;
     }
@@ -67,9 +83,23 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     private T[] _data = new T[initialCapacity];
 
     /// <summary>
+    ///  Stores a value at the given index.
+    /// </summary>
+    public void Store(int index, T value)
+    {
+        _data[index] = value;
+    }
+
+
+    /// <inheritdoc />
+    public void Store(int index, object value) => Store(index, (T)value);
+
+
+    /// <summary>
     /// Number of Elements actually stored.
     /// </summary>
     public int Count { get; private set; }
+
 
     /// <summary>
     /// Adds a value (or number of identical values) to the storage.
@@ -81,6 +111,7 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
         FullSpan.Slice(Count, additions).Fill(value);
         Count += additions;
     }
+
 
     /// <summary>
     /// Adds a boxed value (or number of identical values) to the storage.
@@ -96,12 +127,18 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     public void Delete(int index, int removals = 1)
     {
         if (removals <= 0) return;
-        Span[(index + removals)..].CopyTo(Span[index..]);
+
+        // We copy as many elements as needed from the back to the site of removal.
+        Span[(Count - removals)..Count].CopyTo(Span[index..(index + removals)]);
+
+        // Wasteful: Shift EVERYTHING backwards.
+        // Span[(index + removals)..].CopyTo(Span[index..]);
 
         //Only clear subsection (this could be very large free space!)
         Span[(Count - removals)..Count].Clear();
         Count -= removals;
     }
+
 
     /// <summary>
     /// Writes the given value over all elements of the storage.
@@ -111,6 +148,7 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     {
         Span[..Count].Fill(value);
     }
+
 
     /// <summary>
     /// Writes the given boxed value over all elements of the storage.
@@ -155,9 +193,36 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     /// <param name="destination">a storage of the same type</param>
     public void Migrate(Storage<T> destination)
     {
-        destination.Append(Span);
+        if (destination.Count >= Count)
+        {
+            destination.Append(Span);
+        }
+        else
+        {
+            // In many cases, we're migrating a much larger Archetype/Storage into a smaller or empty one.
+            Append(destination.Span);
+
+            // the old switcheroo 🦊
+            (_data, destination._data) = (destination._data, _data);
+        }
+
+        // We are still the "source" archetype, so we are expected to be empty (and we do the emptying)
         Clear();
     }
+
+    /// <summary>
+    /// Moves one element from this storage to the destination storage.
+    /// </summary>
+    /// <param name="index">element index to move</param>
+    /// <param name="destination">a storage of the same type</param>
+    public void Move(int index, Storage<T> destination)
+    {
+        destination.Append(_data[Count]);
+        Delete(index);
+    }
+
+    /// <inheritdoc/>
+    public void Move(int index, IStorage destination) => Move(index, (Storage<T>)destination);
 
     /// <summary>
     /// Boxed / General migration method.
@@ -171,6 +236,32 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
         EnsureCapacity(Count + appendage.Length);
         appendage.CopyTo(FullSpan[Count..]);
         Count += appendage.Length;
+    }
+
+    /// <summary>
+    /// A wrapping copy implementation to nicely fill storages with data.
+    /// </summary>
+    /// <param name="values"></param>
+    /// <param name="wrap"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public void Blit(Span<T> values, bool wrap = false)
+    {
+        if (values.Length == 0) throw new ArgumentException("Cannot Blit empty Span.");
+
+        for (var i = 0; i < Count - values.Length; i += values.Length)
+        {
+            values.CopyTo(Span[i..]);
+        }
+
+        for (var i = Count - Count % values.Length; i < Count; i++)
+        {
+            Span[i] = values[i % values.Length];
+        }
+    }
+
+    public Memory<T> AsMemory(int start, int length)
+    {
+        return _data.AsMemory(start, length);
     }
 
     /// <summary>

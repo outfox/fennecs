@@ -37,9 +37,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                var span2 = s2.Span;
 
                 Unroll8(span0, span1, span2, action);
             } while (join.Iterate());
@@ -61,9 +61,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                var span2 = s2.Span;
 
                 Unroll8U(span0, span1, span2, action, uniform);
             } while (join.Iterate());
@@ -86,9 +86,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                var span2 = s2.Span;
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i]);
             } while (join.Iterate());
         }
@@ -111,9 +111,9 @@ public class Query<C0, C1, C2> : Query<C0, C1>
             do
             {
                 var (s0, s1, s2) = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                var span1 = s1.AsSpan(0, count);
-                var span2 = s2.AsSpan(0, count);
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                var span2 = s2.Span;
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
             } while (join.Iterate());
         }

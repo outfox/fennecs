@@ -27,7 +27,7 @@ public sealed class Archetype : IEnumerable<Entity>
     /// </summary>
     public ReadOnlySpan<Identity> Identities => _identities.AsSpan(0, Count);
 
-    internal Array[] Storages => _storages;
+    internal IStorage[] Storages => _storages;
 
     /// <summary>
     /// Number of Entities contained in this Archetype.
@@ -60,14 +60,14 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
     /// </summary>
-    private readonly Array[] _storages;
+    private readonly IStorage[] _storages;
 
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
 
     /// <summary>
     /// TODO: Buckets for Wildcard Joins (optional optimization for CrossJoin when complex archetypes get hit repeatedly in tight loops).
     /// </summary>
-    private readonly ImmutableDictionary<TypeID, Array[]> _buckets;
+    private readonly ImmutableDictionary<TypeID, IStorage[]> _buckets;
 
     // Used by Queries to check if the table has been modified while enumerating.
     private int _version;
@@ -81,12 +81,12 @@ public sealed class Archetype : IEnumerable<Entity>
 
         _identities = new Identity[StartCapacity];
 
-        _storages = new Array[signature.Count];
+        _storages = new IStorage[signature.Count];
 
         // Build the relation between storages and types, as well as type Wildcards in buckets.
         var finishedTypes = PooledList<TypeID>.Rent();
-        var finishedBuckets = PooledList<Array[]>.Rent();
-        var currentBucket = PooledList<Array>.Rent();
+        var finishedBuckets = PooledList<IStorage[]>.Rent();
+        var currentBucket = PooledList<IStorage>.Rent();
         TypeID currentTypeId = 0;
 
         // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
@@ -94,7 +94,7 @@ public sealed class Archetype : IEnumerable<Entity>
         {
             var type = signature[index];
             _storageIndices.Add(type, index);
-            _storages[index] = Array.CreateInstance(type.Type, StartCapacity);
+            _storages[index] = IStorage.Instantiate(type);
 
             // Time for a new bucket?
             if (currentTypeId != type.TypeId)
@@ -105,7 +105,7 @@ public sealed class Archetype : IEnumerable<Entity>
                     finishedTypes.Add(currentTypeId);
                     finishedBuckets.Add(currentBucket.ToArray());
                     currentBucket.Dispose();
-                    currentBucket = PooledList<Array>.Rent();
+                    currentBucket = PooledList<IStorage>.Rent();
                 }
 
                 currentTypeId = type.TypeId;
@@ -125,22 +125,22 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    private void Match<T>(TypeExpression expression, IList<T[]> result)
+    private void Match<T>(TypeExpression expression, IList<Storage<T>> result)
     {
         //TODO: Use TypeBuckets as optimization (much faster!).
         foreach (var (type, index) in _storageIndices)
         {
             if (expression.Matches(type))
             {
-                result.Add((T[]) _storages[index]);
+                result.Add((Storage<T>) _storages[index]);
             }
         }
     }
 
 
-    internal PooledList<T[]> Match<T>(TypeExpression expression)
+    internal PooledList<Storage<T>> Match<T>(TypeExpression expression)
     {
-        var result = PooledList<T[]>.Rent();
+        var result = PooledList<Storage<T>>.Rent();
         Match(expression, result);
         return result;
     }
@@ -221,7 +221,7 @@ public sealed class Archetype : IEnumerable<Entity>
             _identities[row] = _identities[Count];
             foreach (var storage in _storages)
             {
-                Array.Copy(storage, Count, storage, row, 1);
+                storage.Delete(row);
             }
 
             _world.GetEntityMeta(_identities[row]).Row = row;
@@ -229,8 +229,6 @@ public sealed class Archetype : IEnumerable<Entity>
 
         // Free the last row
         _identities[Count] = default;
-
-        foreach (var storage in _storages) Array.Clear(storage, Count, 1);
     }
 
 
@@ -273,12 +271,12 @@ public sealed class Archetype : IEnumerable<Entity>
             if (!destination.Signature.Contains(type)) continue;
             var srcStorage = GetStorage(type);
             var destStorage = destination.GetStorage(type);
-            Array.Copy(srcStorage, 0, destStorage, destination.Count, Count);
-            Array.Clear(srcStorage);
+            srcStorage.Migrate(destStorage);
         }
 
         // Additive back-fill of values
-        destination.Fill(additions, backFills, destination.Count, Count);
+        //FIXME: TODO: How does this work with the new storages?
+        //destination.Append(additions, backFills, destination.Count, Count);
 
         // Move identities
         for (var i = 0; i < Count; i++)
@@ -314,19 +312,9 @@ public sealed class Archetype : IEnumerable<Entity>
             var type = types[i];
             var value = values[i];
             var storage = GetStorage(type);
-            var elementType = storage.GetType().GetElementType()!;
             
-            if (elementType.IsValueType)
-            {
-                for (var elementIndex = start; elementIndex < start + count; elementIndex++)
-                {
-                    storage.SetValue(value, elementIndex);
-                }
-            }
-            else
-            {
-                Array.Fill((object[]) storage, value, start, count);
-            }
+            //FIXME: Split this up in Append and Blit
+            storage.Blit(value);
         }
     }
 
@@ -335,53 +323,19 @@ public sealed class Archetype : IEnumerable<Entity>
     /// </summary>
     internal void Fill<T>(TypeExpression type, T value)
     {
-        var storage = (T[]) GetStorage(type);
-        var span = storage.AsSpan(0, Count);
-        span.Fill(value);
+        var storage = GetStorage<T>(type.Target);
+        storage.Blit(value);
     }
 
-    /// <summary>
-    /// Fills the appropriate storage of the archetype with the provided values (in order).
-    /// The values are repeated if the count exceeds the length of the values.
-    /// </summary>
-    /// <remarks>
-    /// It is much faster to either write a single value with <see cref="Fill"/>
-    /// or to write a large number of values, because they are copied blockwise.
-    /// </remarks>
-    /// <returns>
-    /// integer that is the number of elements written in the last iteration
-    /// </returns>
-    internal int Fill<T>(TypeExpression type, IList<T> values)
-    {
-        var storage = (T[]) GetStorage(type);
-        
-        var written = 0;
 
-        if (Count > values.Count)
-        {
-            for (; written < storage.Length; written+=values.Count)
-            {
-                values.CopyTo(storage, written);
-            }
-        }
-        
-        for (; written < Count; written++)
-        {
-            storage[written] = values[written % values.Count];
-        }
-        
-        return written % values.Count; 
-    }
-    
-
-    internal T[] GetStorage<T>(Identity target)
+    internal Storage<T> GetStorage<T>(Identity target)
     {
         var type = TypeExpression.Of<T>(target);
-        return (T[]) GetStorage(type);
+        return (Storage<T>) GetStorage(type);
     }
 
 
-    internal Array GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
+    internal IStorage GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
 
 
     private void EnsureCapacity(int capacity)
@@ -400,29 +354,23 @@ public sealed class Archetype : IEnumerable<Entity>
         ArgumentOutOfRangeException.ThrowIfLessThan(length, Count, nameof(length));
 
         Array.Resize(ref _identities, length);
-
-        for (var i = 0; i < _storages.Length; i++)
-        {
-            var elementType = _storages[i].GetType().GetElementType()!;
-            var newStorage = Array.CreateInstance(elementType, length);
-            Array.Copy(_storages[i], newStorage, Math.Min(_storages[i].Length, length));
-            _storages[i] = newStorage;
-        }
+        foreach (var storage in _storages) storage.EnsureCapacity(length);
     }
 
 
-    internal void Set<T>(TypeExpression typeExpression, T data, int newRow)
+    internal void Set<T>(TypeExpression typeExpression, T value, int newRow)
     {
         // DeferredOperation sends data as objects
         if (typeof(T).IsAssignableFrom(typeof(object)))
         {
             var sysArray = GetStorage(typeExpression);
-            sysArray.SetValue(data, newRow);
+            //TODO: Settle on whether storing null values is desirable
+            sysArray.Store(newRow, value!);
             return;
         }
 
-        var storage = (T[]) GetStorage(typeExpression);
-        storage[newRow] = data;
+        var storage = (Storage<T>) GetStorage(typeExpression);
+        storage.Store(newRow, value);
     }
 
 
@@ -437,11 +385,8 @@ public sealed class Archetype : IEnumerable<Entity>
             var oldStorage = oldArchetype._storages[oldIndex];
             var newStorage = newArchetype._storages[newIndex];
 
-            Array.Copy(oldStorage, oldRow, newStorage, newRow, 1);
+            oldStorage.Move(oldRow, newStorage);
         }
-
-        oldArchetype.Remove(oldRow);
-
         return newRow;
     }
 
