@@ -4,6 +4,7 @@ using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using fennecs.pools;
 
@@ -314,6 +315,7 @@ public sealed class Archetype : IEnumerable<Entity>
             var value = values[i];
             var storage = GetStorage(type);
             var elementType = storage.GetType().GetElementType()!;
+            
             if (elementType.IsValueType)
             {
                 for (var elementIndex = start; elementIndex < start + count; elementIndex++)
@@ -510,4 +512,18 @@ public sealed class Archetype : IEnumerable<Entity>
         return IsEmpty ? default : new Match.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
     #endregion
+
+    public void Spawn(int count, object[] components)
+    {
+        using var worldLock = _world.Lock;
+        
+        EnsureCapacity(Count + count);
+
+        foreach (var component in components)
+        {
+            var type = TypeExpression.Of(component.GetType());
+            var storage = GetStorage(type);
+            //Array.Fill(storage, component, Count, count);
+        }
+    }
 }

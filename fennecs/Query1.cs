@@ -1,5 +1,6 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -38,7 +39,6 @@ public class Query<C0> : Query
     }
 
     #endregion
-
 
     #region Runners
 
@@ -359,6 +359,37 @@ public class Query<C0> : Query
     }
     #endregion
 
+#region Spawning
+
+/// <summary>
+/// Publishes all Private entities in this query
+/// </summary>
+/// <param name="target">an entity to publish, or default (and Match.Any, but don't use that) to publish all matched entities</param>
+/// <exception cref="ArgumentException"></exception>
+public void Publish(Identity target)
+{
+    if (target.IsEntity)
+    {
+        World.On(target).RemoveLink(this);
+    }
+    else if (target == default || target == Match.Any)
+    {
+        Batch().RemoveLink(this).Submit();
+    }
+    else
+    {
+        throw new ArgumentException("Can only Publish specific Entity, " +
+                                    "or default and Match.Any for all private entities " +
+                                    "of this query");
+    }
+}
+
+public void Clone(Entity entity, int count = 1)
+{
+    
+}
+
+#endregion
     #region Warmup & Unroll
 
     /// <inheritdoc />

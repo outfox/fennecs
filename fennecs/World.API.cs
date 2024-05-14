@@ -18,6 +18,28 @@ public partial class World : IDisposable
 
 
     /// <summary>
+    /// Spawns a number of pre-configured Entities 
+    /// </summary>
+    /// <param name="components">TypeExpressions and boxed objects to spawn</param>
+    /// <param name="count"></param>
+    public void Spawn(int count = 1, params object[] components)
+    {
+        var signature = new Signature<TypeExpression>(components.Select(c => TypeExpression.Of(c.GetType())).ToArray());
+        var archetype = GetArchetype(signature);
+        archetype.Spawn(count, components);
+    }
+
+
+    /// <summary>
+    /// Spawns a number of pre-configured Entities 
+    /// </summary>
+    /// <param name="components">TypeExpressions and boxed objects to spawn</param>
+    /// <param name="count"></param>
+    public void Spawn(ValueTuple<TypeExpression, object>[] components, int count = 1)
+    {
+    }
+
+    /// <summary>
     /// Creates <paramref name="count"/> new Identities in this World, and returns its <see cref="EntityBatch"/> struct.
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
     /// </summary>

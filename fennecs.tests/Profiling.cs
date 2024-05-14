@@ -17,13 +17,13 @@ public class Profiling(ITestOutputHelper output)
 
     private void BlitTest(Query<Vector3> query, Random rnd, Vector3 uniformConstantVector)
     {
-        for (int i = 0; i < 10000; i++) query.Blit(uniformConstantVector);
+        for (var i = 0; i < 100; i++) query.Blit(uniformConstantVector);
     }
 }
 
 public class ProfilingWorld : IEnumerable<object[]>
 {
-    private const int EntityCount = 1000000;
+    private const int EntityCount = 1000;
     public IEnumerator<object[]> GetEnumerator()
     {
         World world = new(EntityCount * 3);
