@@ -105,7 +105,7 @@ public class StorageTests
     public void Storage_Can_Compact()
     {
         var storage = new Storage<float>();
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
         {
             storage.Append(i * 1.337f);
         }

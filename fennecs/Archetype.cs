@@ -104,8 +104,10 @@ public sealed class Archetype : IEnumerable<Entity>
             currentBucket.Add(_storages[index]);
         }
 
-        // Get quick lookup for Identity component - TODO: maybe this can be refactored out, too?
-        IdentityStorage = (Storage<Identity>) _storages[0];
+        // Get quick lookup for Identity component
+        // CAVEAT: This isn't necessarily at index 0 because another
+        // TypeExpression may have been created before the first TE of Identity.
+        IdentityStorage = GetStorage<Identity>(default);
 
         // Bake buckets dictionary
         _buckets = Zip(finishedTypes, finishedBuckets);
