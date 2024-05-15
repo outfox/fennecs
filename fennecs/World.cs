@@ -71,10 +71,7 @@ public partial class World
             while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
 
             _meta[identity.Index] = new Meta(identity, _root, row);
-
-            var entityStorage = (Storage<Identity>) _root.Storages.First();
-            entityStorage.Append(identity);
-
+            
             return identity;
         }
     }

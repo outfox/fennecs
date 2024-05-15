@@ -91,4 +91,19 @@ public class ArchetypeTests(ITestOutputHelper output)
         table.Truncate(-2);
         Assert.Equal(0, table.Count);
     }
+
+    [Fact]
+    public void Moved_Entity_Leaves_Archetype()
+    {
+        using var world = new World();
+
+        var entity = world.Spawn();
+        var entityInt = world.Spawn().Add(123);
+        
+        var queryAll = world.Query().Build();
+        var queryInt = world.Query().Has<int>().Build();
+        
+        Assert.Equal(2, queryAll.Count);
+        Assert.Equal(1, queryInt.Count);
+    }
 }
