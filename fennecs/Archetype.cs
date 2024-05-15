@@ -180,13 +180,13 @@ public sealed class Archetype : IEnumerable<Entity>
 
     internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> matchTypes)
     {
-        var match = true;
+        var matches = true;
         for (var i = 0; i < matchTypes.Count; i++)
         {
-            match &= matchTypes[i].Matches(Signature);
+            matches &= matchTypes[i].Matches(Signature);
         }
 
-        return match;
+        return matches;
     }
 
 
@@ -202,13 +202,13 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 */
 
-    internal void Remove(int row)
+    internal void Remove(int entry)
     {
         Interlocked.Increment(ref _version);
 
         foreach (var storage in _storages)
         {
-            storage.Delete(row);
+            storage.Delete(entry);
         }
     }
 

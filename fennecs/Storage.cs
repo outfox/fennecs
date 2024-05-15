@@ -144,9 +144,9 @@ internal class Storage<T> : IStorage
             // Then copy just these elements to the site of removal!
             FullSpan[(Count - removals)..Count].CopyTo(FullSpan[index..]);
         }
-        else
+        else if (Count > index + removals)
         {
-            // Else shift back all remaining elements.
+            // Else shift back all remaining elements (if any).
             FullSpan[(index + removals)..Count].CopyTo(FullSpan[index..]);
         }
 
