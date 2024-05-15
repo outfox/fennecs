@@ -4,8 +4,6 @@ using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using fennecs.pools;
 
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
@@ -25,14 +23,14 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// Get a Span of all Identities contained in this Archetype.
     /// </summary>
-    public ReadOnlySpan<Identity> Identities => _identities.Span;
+    public ReadOnlySpan<Identity> Identities => IdentityStorage.Span;
 
     internal IStorage[] Storages => _storages;
 
     /// <summary>
     /// Number of Entities contained in this Archetype.
     /// </summary>
-    public int Count => _identities.Count;
+    public int Count => IdentityStorage.Count;
 
     /// <summary>
     /// Does this Archetype currently contain no Entities?
@@ -48,7 +46,7 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
     /// </summary>
-    internal Storage<Identity> _identities;
+    internal readonly Storage<Identity> IdentityStorage;
 
     /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
@@ -69,13 +67,10 @@ public sealed class Archetype : IEnumerable<Entity>
     internal Archetype(World world, Signature<TypeExpression> signature)
     {
         _world = world;
-
-        Signature = signature;
-
-        _identities = new Storage<Identity>();
-        
         _storages = new IStorage[signature.Count];
-
+        
+        Signature = signature;
+        
         // Build the relation between storages and types, as well as type Wildcards in buckets.
         var finishedTypes = PooledList<TypeID>.Rent();
         var finishedBuckets = PooledList<IStorage[]>.Rent();
@@ -108,6 +103,9 @@ public sealed class Archetype : IEnumerable<Entity>
             Debug.Assert(currentTypeId != 0, "Trying to create bucket for a null type.");
             currentBucket.Add(_storages[index]);
         }
+
+        // Get quick lookup for Identity component - TODO: maybe this can be refactored out, too?
+        IdentityStorage = (Storage<Identity>) _storages[0];
 
         // Bake buckets dictionary
         _buckets = Zip(finishedTypes, finishedBuckets);
@@ -206,7 +204,6 @@ public sealed class Archetype : IEnumerable<Entity>
     {
         Interlocked.Increment(ref _version);
 
-        _identities.Delete(row);
         foreach (var storage in _storages)
         {
             storage.Delete(row);
@@ -224,6 +221,7 @@ public sealed class Archetype : IEnumerable<Entity>
         if (excess <= 0) return;
 
         // TODO: Build bulk deletion?
+        // IDEA: Just return a chunk from IdentityStorage back to the pool?
         var toDelete = Identities.Slice(Count - excess, excess);
         for (var i = toDelete.Length - 1; i >= 0; i--)
         {
@@ -246,6 +244,12 @@ public sealed class Archetype : IEnumerable<Entity>
             return;
         }
 
+        // Mark identities as moved
+        for (var i = 0; i < Count; i++)
+        {
+            _world.GetEntityMeta(IdentityStorage[i]).Archetype = destination;
+        }
+        
         // Subtractive copy
         foreach (var type in Signature)
         {
@@ -258,14 +262,6 @@ public sealed class Archetype : IEnumerable<Entity>
         // Additive back-fill of values
         //FIXME: TODO: How does this work with the new storages?
         //destination.Append(additions, backFills, destination.Count, Count);
-
-        // Move identities
-        for (var i = 0; i < Count; i++)
-        {
-            _world.GetEntityMeta(_identities[i]).Archetype = destination;
-        }
-
-        _identities.Migrate(destination._identities);
 
         Interlocked.Increment(ref _version);
     }
@@ -326,25 +322,53 @@ public sealed class Archetype : IEnumerable<Entity>
         storage.Store(newRow, value);
     }
 
-
-    internal static int MoveEntry(int oldRow, Archetype oldArchetype, Archetype newArchetype)
+    internal void BackFill<T>(TypeExpression typeExpression, T value)
     {
-        Interlocked.Increment(ref oldArchetype._version);
-        Interlocked.Increment(ref newArchetype._version);
-
-        oldArchetype._identities.Move(oldRow, newArchetype._identities);
-        
-        foreach (var (type, oldIndex) in oldArchetype._storageIndices)
+        // DeferredOperation sends data as objects (decorated with TypeExpressions)
+        if (typeof(T).IsAssignableFrom(typeof(object)))
         {
-            if (!newArchetype._storageIndices.TryGetValue(type, out var newIndex)) continue;
-
-            var oldStorage = oldArchetype._storages[oldIndex];
-            var newStorage = newArchetype._storages[newIndex];
-
-            oldStorage.Move(oldRow, newStorage);
+            var sysArray = GetStorage(typeExpression);
+            //TODO: Settle on whether storing null values is desirable
+            sysArray.Append(value!);
+            return;
         }
 
-        return newArchetype.Count - 1;
+        var storage = (Storage<T>) GetStorage(typeExpression);
+        storage.Append(value);
+    }
+
+
+    internal static int MoveEntry(int entry, Archetype source, Archetype destination)
+    {
+        // We do this at the start to flag down any running, possibly async enumerators.
+        Interlocked.Increment(ref source._version);
+        Interlocked.Increment(ref destination._version);
+
+        // Mark entity as moved in Meta.
+        var identity = source.Identities[entry];
+        source._world.GetEntityMeta(identity).Archetype = destination;
+        
+        if (destination._storageIndices.Keys.Any(k => !source._storageIndices.ContainsKey(k)))
+        {
+            //throw new InvalidOperationException("Destination Archetype has more types than source Archetype, a back-fill value would be needed.");
+        }
+        
+        foreach (var (type, oldIndex) in source._storageIndices)
+        {
+            if (!destination._storageIndices.TryGetValue(type, out var newIndex))
+            {
+                // Move is subtractive, discard anything we don't have in the destination
+                source._storages[oldIndex].Delete(entry);
+                continue;
+            }
+
+            var oldStorage = source._storages[oldIndex];
+            var newStorage = destination._storages[newIndex];
+
+            oldStorage.Move(entry, newStorage);
+        }
+
+        return destination.Count-1;
     }
 
 
@@ -364,7 +388,7 @@ public sealed class Archetype : IEnumerable<Entity>
         for (var i = 0; i < Count; i++)
         {
             if (snapshot != Volatile.Read(ref _version)) throw new InvalidOperationException("Collection modified while enumerating.");
-            yield return new Entity(_world, _identities[i]);
+            yield return new Entity(_world, IdentityStorage[i]);
         }
     }
 
@@ -381,7 +405,7 @@ public sealed class Archetype : IEnumerable<Entity>
     /// There's no bounds checking, so be sure to check against the Count property before using this method.
     /// (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
     /// </remarks>
-    public Entity this[int index] => new(_world, _identities[index]);
+    public Entity this[int index] => new(_world, IdentityStorage[index]);
 
 
     #region Cross Joins

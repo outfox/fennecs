@@ -21,16 +21,16 @@ public class ArchetypeTests(ITestOutputHelper output)
     
 
     [Fact]
-    public void Table_GetStorage_Returns_System_Array()
+    public void GetStorage_Returns_IStorage_Backed_By_Specific_Type()
     {
         using var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(identity).Archetype;
         var storage = table.GetStorage(TypeExpression.Of<string>(Match.Plain));
-        Assert.IsAssignableFrom<Array>(storage);
+        Assert.IsAssignableFrom<IStorage>(storage);
+        Assert.IsAssignableFrom<Storage<string>>(storage);
     }
-
-
+    
     [Fact]
     public void Table_Matches_TypeExpression()
     {

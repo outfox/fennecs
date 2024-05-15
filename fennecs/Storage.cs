@@ -142,7 +142,14 @@ internal class Storage<T> : IStorage
         
         //TODO: Only clear subsection (this could be very large free space!)
         Count -= removals;
-        FullSpan[Count..].Clear();
+        if (Count > 0)
+        {
+            FullSpan[(Count-1)..Count].Clear();
+        }
+        else
+        {
+            FullSpan.Clear();
+        }
         //FullSpan[(Count-removals+1)..Count].Clear();
         
     }
@@ -225,7 +232,7 @@ internal class Storage<T> : IStorage
     /// <param name="destination">a storage of the same type</param>
     public void Move(int index, Storage<T> destination)
     {
-        destination.Append(_data[Count]);
+        destination.Append(Span[index]);
         Delete(index);
     }
 

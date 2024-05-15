@@ -161,4 +161,28 @@ public class StorageTests
         Assert.Equal("hello", destination[4]);
         Assert.Equal("hello", destination[5]);
     }
+
+
+    [Fact]
+    public void Can_Move()
+    {
+        var source = new Storage<string>();
+        var destination = new Storage<string>();
+
+        destination.Append("world", 3);
+        source.Append("hello", 3);
+        
+        source.Move(1, destination);
+        
+        Assert.Equal(2, source.Count);
+        Assert.Equal(4, destination.Count); 
+        
+        Assert.Equal("hello", source[0]);
+        Assert.Equal("hello", source[1]);
+        Assert.Equal("world", destination[0]);
+        Assert.Equal("world", destination[1]);
+        Assert.Equal("world", destination[2]);
+        Assert.Equal("hello", destination[3]);
+
+    }
 }

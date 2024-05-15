@@ -65,7 +65,7 @@ public partial class World
             var identity = _identityPool.Spawn();
             
             // Fixme: Cleanup!
-            _root._identities.Append(identity);
+            _root.IdentityStorage.Append(identity);
             var row = _root.Count - 1;
 
             while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
@@ -177,6 +177,17 @@ public partial class World
         _archetypes.Add(table);
         _typeGraph.Add(types, table);
 
+        // TODO: This is a suboptimal lookup (enumerate dictionary)
+        // IDEA: Maybe we can keep Queries in a Tree which
+        // identifies them just by their Signature root. (?) 
+        foreach (var query in _queries.Values)
+        {
+            if (table.Matches(query.Mask))
+            {
+                query.TrackArchetype(table);
+            }
+        }
+        
         foreach (var type in types)
         {
             if (!_tablesByType.TryGetValue(type, out var tableList))
@@ -196,14 +207,6 @@ public partial class World
             }
 
             typeList.Add(type);
-        }
-
-        foreach (var query in _queries.Values)
-        {
-            if (table.Matches(query.Mask))
-            {
-                query.TrackArchetype(table);
-            }
         }
 
         return table;

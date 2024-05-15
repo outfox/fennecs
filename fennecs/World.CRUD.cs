@@ -25,7 +25,7 @@ public partial class World
         var newRow = Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
 
         // Back-fill the new value
-        newArchetype.Set(typeExpression, data, newRow);
+        newArchetype.BackFill<T>(typeExpression, data);
 
         meta.Row = newRow;
         meta.Archetype = newArchetype;
