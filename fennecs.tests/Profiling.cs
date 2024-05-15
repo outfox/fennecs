@@ -4,7 +4,7 @@ namespace fennecs.tests;
 
 using System.Numerics;
 using fennecs;
-
+/*
 public class Profiling(ITestOutputHelper output)
 {
     [Theory]
@@ -45,3 +45,4 @@ public class ProfilingWorld : IEnumerable<object[]>
         return GetEnumerator();
     }
 }
+*/

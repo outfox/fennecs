@@ -106,6 +106,12 @@ internal class Storage<T> : IStorage
 
 
     /// <summary>
+    /// Number of Elements actually stored.
+    /// </summary>
+    public int Capacity => _data.Length;
+
+
+    /// <summary>
     /// Adds a value (or number of identical values) to the storage.
     /// </summary>
     public void Append(T value, int additions = 1)
@@ -132,26 +138,28 @@ internal class Storage<T> : IStorage
     {
         if (removals <= 0) return;
 
-        // We copy as many elements as needed from the back to the site of removal.
-        // TODO: But it melts brains to think about the bounds checking, maybe
-        //Span[(Count - removals + 1)..Count].CopyTo(Span[index..(index + removals)]);
-
-        // Wasteful: Shift EVERYTHING backwards.
-        if (index+removals < Span.Length) 
-            Span[(index + removals)..].CopyTo(Span[index..]);
-        
-        //TODO: Only clear subsection (this could be very large free space!)
-        Count -= removals;
-        if (Count > 0)
+        // Are there enough elements after the removal site to fill the gap created?
+        if (Count - removals > index + removals)
         {
-            FullSpan[(Count-1)..Count].Clear();
+            // Then copy just these elements to the site of removal!
+            FullSpan[(Count - removals)..Count].CopyTo(FullSpan[index..]);
         }
         else
         {
-            FullSpan.Clear();
+            // Else shift back all remaining elements.
+            FullSpan[(index + removals)..Count].CopyTo(FullSpan[index..]);
         }
-        //FullSpan[(Count-removals+1)..Count].Clear();
+
+        // Clear the space at the end.
+        FullSpan[(Count - removals)..].Clear();
         
+        Count -= removals;
+
+        /*
+        // Naive Wasteful: Shift EVERYTHING backwards.
+        FullSpan[(index + removals)..].CopyTo(FullSpan[index..]);
+        if (Count < _data.Length) FullSpan[Count..].Clear();
+        */        
     }
 
 

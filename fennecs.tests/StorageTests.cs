@@ -91,34 +91,54 @@ public class StorageTests
 
         storage.Delete(1);
         Assert.Equal(5, storage.Count);
-
+        
+        // Check if element was moved into gap from the back!
         Assert.Equal(420, storage[0]);
-        Assert.Equal(420, storage[1]);
-        Assert.Equal(69, storage[2]);
+        Assert.Equal(69, storage[1]);
+        Assert.Equal(420, storage[2]);
         Assert.Equal(69, storage[3]);
         Assert.Equal(69, storage[4]);
         Assert.Equal(default, storage[5]);
     }
 
     [Fact]
+    public void Storage_Can_Compact()
+    {
+        var storage = new Storage<float>();
+        for (int i = 0; i < 10; i++)
+        {
+            storage.Append(i * 1.337f);
+        }
+        Assert.Equal(10, storage.Count);
+        Assert.Equal(16, storage.Capacity);
+        
+        storage.Delete(3, 5);
+        storage.Compact();
+        Assert.Equal(5, storage.Count);
+        Assert.Equal(8, storage.Capacity);
+    }
+    
+    
+    [Fact]
     public void Storage_Identical_After_Compact()
     {
         var storage = new Storage<int>();
         storage.Append(420, 3);
-        storage.Append(69, 3);
-        Assert.Equal(6, storage.Count);
+        storage.Append(69, 2);
+        Assert.Equal(5, storage.Count);
 
         storage.Delete(1);
-        Assert.Equal(5, storage.Count);
+        Assert.Equal(4, storage.Count);
+        Assert.Equal(8, storage.Capacity);
 
-        storage.Compact();
-        Assert.Equal(5, storage.Count);
+        storage.Compact(); // should internally resize down to 4
+        Assert.Equal(4, storage.Capacity);
+        Assert.Equal(4, storage.Count);
 
         Assert.Equal(420, storage[0]);
-        Assert.Equal(420, storage[1]);
-        Assert.Equal(69, storage[2]);
+        Assert.Equal(69, storage[1]);
+        Assert.Equal(420, storage[2]);
         Assert.Equal(69, storage[3]);
-        Assert.Equal(69, storage[4]);
     }
 
     [Fact]
@@ -167,10 +187,11 @@ public class StorageTests
     public void Can_Move()
     {
         var source = new Storage<string>();
-        var destination = new Storage<string>();
-
-        destination.Append("world", 3);
         source.Append("hello", 3);
+
+        var destination = new Storage<string>();
+        destination.Append("world", 3);
+        
         
         source.Move(1, destination);
         
