@@ -247,7 +247,7 @@ public sealed class Archetype : IEnumerable<Entity>
 
     private void PatchMetas(int entry, int count = 1)
     {
-        for (var i = 0; i < Count; i++)
+        for (var i = 0; i < count; i++)
         {
             // TODO: This is a very inefficient operation, with lots of random memory access.
             // TODO: In many cases, only one of these values needs updating, but it varies which.
