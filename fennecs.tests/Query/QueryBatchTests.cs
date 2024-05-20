@@ -64,17 +64,19 @@ public class QueryBatchTests
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
+        var e4 = world.Spawn().Add(69).Add("sixty-nine!");
 
         var stringQuery = world.Query<string>().Build();
-        Assert.Equal(1, stringQuery.Count);
+        Assert.Equal(2, stringQuery.Count);
         Assert.DoesNotContain(e1, stringQuery);
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
+        Assert.Contains(e4, stringQuery);
 
-        var intQuery = world.Query<int>().Build();
-        intQuery.Batch(Batch.AddConflict.SkipEntirely).Add("batched").Submit();
+        var intQuery = world.Query<int>().Not<string>().Build();
+        intQuery.Batch(Batch.AddConflict.Replace).Add("batched").Submit();
 
-        Assert.Equal(3, stringQuery.Count);
+        Assert.Equal(4, stringQuery.Count);
 
         Assert.Contains(e1, stringQuery);
         Assert.Contains(e2, stringQuery);
@@ -140,7 +142,7 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, intQuery);
         Assert.DoesNotContain(e3, intQuery);
 
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         stringQuery.Batch().Remove<string>().Submit();
 
         // Deferred operations are not immediately visible
@@ -179,7 +181,7 @@ public class QueryBatchTests
 
         var intQuery = world.Query<int>().Build();
 
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         intQuery.Batch(Batch.AddConflict.SkipEntirely).Add("batched").Submit();
 
         // Deferred operations are not immediately visible
@@ -353,7 +355,7 @@ public class QueryBatchTests
     {
         using var world = new World();
 
-        using var _ = world.Lock;
+        using var _ = world.Lock();
 
         world.Spawn().Add(123);
         world.Spawn().Add(234);
@@ -431,7 +433,7 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Build();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.AddConflict.Disallow)
+            stringQuery.Batch(Batch.AddConflict.Strict)
                 .Add<float>()
                 .Submit();
         });
@@ -445,7 +447,7 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Has<float>().Build();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.RemoveConflict.Disallow)
+            stringQuery.Batch(Batch.RemoveConflict.Strict)
                 .Remove<float>()
                 .Remove<float>()
                 .Submit();
@@ -467,7 +469,7 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Not<float>().Build();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.AddConflict.Disallow)
+            stringQuery.Batch(Batch.AddConflict.Strict)
                 .Add<float>()
                 .Add<float>()
                 .Submit();
@@ -496,7 +498,7 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Build();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.AddConflict.Disallow)
+            stringQuery.Batch(Batch.AddConflict.Strict)
                 .Remove<string>()
                 .Add<string>("lala!")
                 .Submit();
@@ -525,7 +527,7 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Not<float>().Build();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.AddConflict.Disallow, Batch.RemoveConflict.Allow)
+            stringQuery.Batch(Batch.AddConflict.Strict, Batch.RemoveConflict.Allow)
                 .Add(55.5f)
                 .Remove<float>() //this fails because of the wrong reason, but is ok.
                 .Submit();
@@ -554,7 +556,7 @@ public class QueryBatchTests
         var stringQuery = world.Query<string>().Build();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.RemoveConflict.Disallow)
+            stringQuery.Batch(Batch.RemoveConflict.Strict)
                 .Remove<float>()
                 .Submit();
         });
@@ -577,7 +579,7 @@ public class QueryBatchTests
 
 
     [Fact]
-    public void Can_Add_Remove_Conflict_with_Skip_Skip()
+    public void Can_Add_Remove_Conflict_with_Skip_Allow()
     {
         using var world = new World();
         world.Spawn().Add(123).Add("I must go, my people need me");

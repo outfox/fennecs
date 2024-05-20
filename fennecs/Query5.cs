@@ -26,7 +26,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
@@ -53,7 +53,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
@@ -80,7 +80,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
@@ -106,7 +106,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
@@ -133,7 +133,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         Countdown.Reset();
@@ -185,7 +185,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         Countdown.Reset();
@@ -239,7 +239,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -267,7 +267,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -297,7 +297,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3>
     /// <inheritdoc cref="Query{C0}.Blit"/>
     public void Blit(C4 value, Identity target = default)
     {
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         var typeExpression = TypeExpression.Of<C4>(target);
 

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using fennecs.pools;
 
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
@@ -242,29 +243,44 @@ public sealed class Archetype : IEnumerable<Entity>
     {
         if (destination == this)
         {
-            destination.Fill(additions, backFills, 0, Count);
+            destination.Fill(additions, backFills);
             return;
         }
 
         // Mark identities as moved
         for (var i = 0; i < Count; i++)
         {
-            _world.GetEntityMeta(IdentityStorage[i]).Archetype = destination;
+            ref var meta = ref _world.GetEntityMeta(IdentityStorage[i]); 
+            meta.Archetype = destination;
+            meta.Row = destination.Count + i;
         }
         
         // Subtractive copy
         foreach (var type in Signature)
         {
-            if (!destination.Signature.Contains(type)) continue;
             var srcStorage = GetStorage(type);
-            var destStorage = destination.GetStorage(type);
-            srcStorage.Migrate(destStorage);
+            if (destination.Signature.Contains(type))
+            {
+                var destStorage = destination.GetStorage(type);
+                srcStorage.Migrate(destStorage);
+            }
+            else
+            {
+                // Discard values not in the destination (subtract components)
+                srcStorage.Clear();
+            }
         }
 
         // Additive back-fill of values
-        //FIXME: TODO: How does this work with the new storages?
-        //destination.Append(additions, backFills, destination.Count, Count);
-
+        foreach (var type in destination.Signature.Except(Signature))
+        {
+            var value = backFills[additions.IndexOf(type)];
+            destination.BackFill(type, value);
+            
+            //TODO: handle "Preserve" and "Replace" addition modes accordingly.
+            //(this inadvertently is preserve right now)
+        }
+        
         Interlocked.Increment(ref _version);
     }
 
@@ -274,9 +290,7 @@ public sealed class Archetype : IEnumerable<Entity>
     /// </summary>
     /// <param name="types">typeExpressions which storages to fill</param>
     /// <param name="values">values for the types</param>
-    /// <param name="start">the index to start filling from</param>
-    /// <param name="count">how many elements to fill</param>
-    internal void Fill(PooledList<TypeExpression> types, PooledList<object> values, int start, int count)
+    internal void Fill(PooledList<TypeExpression> types, PooledList<object> values)
     {
         for (var i = 0; i < types.Count; i++)
         {
@@ -285,6 +299,19 @@ public sealed class Archetype : IEnumerable<Entity>
             var storage = GetStorage(type);
             
             //FIXME: Split this up in Append and Blit
+            storage.Blit(value);
+        }
+    }
+
+    /// <summary>
+    /// Fills matching Storages of the archetype with each of the provided values.
+    /// </summary>
+    /// <param name="fills">tuples of <see cref="TypeExpression"/> and boxed values (as objects)</param>
+    internal void Fill(PooledList<(TypeExpression, object)> fills)
+    {
+        foreach (var (type, value) in fills)
+        {
+            var storage = GetStorage(type);
             storage.Blit(value);
         }
     }
@@ -329,9 +356,9 @@ public sealed class Archetype : IEnumerable<Entity>
         // DeferredOperation sends data as objects (decorated with TypeExpressions)
         if (typeof(T).IsAssignableFrom(typeof(object)))
         {
-            var sysArray = GetStorage(typeExpression);
+            var iStorage = GetStorage(typeExpression);
             //TODO: Settle on whether storing null values is desirable
-            sysArray.Append(value!);
+            iStorage.Append(value!);
             return;
         }
 
@@ -370,6 +397,7 @@ public sealed class Archetype : IEnumerable<Entity>
             oldStorage.Move(entry, newStorage);
         }
 
+        // This is the "new row", TODO: abstract this enough so it is not needed.
         return destination.Count-1;
     }
 
@@ -443,7 +471,7 @@ public sealed class Archetype : IEnumerable<Entity>
 
     public void Spawn(int count, object[] components)
     {
-        using var worldLock = _world.Lock;
+        using var worldLock = _world.Lock();
         
         foreach (var component in components)
         {

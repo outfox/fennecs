@@ -206,8 +206,8 @@ public partial class World : IDisposable
     /// and executed once the last Lock is released. 
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
-    public WorldLock Lock => new(this);
-    
+    public WorldLock Lock() => new(this);
+
     #endregion
     
     #region Debug Tools

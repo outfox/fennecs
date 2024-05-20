@@ -21,8 +21,7 @@ public partial class World
     {
         foreach (var archetype in operation.Archetypes)
         {
-            var preAddSignature = archetype.Signature
-                .Except(operation.Removals);
+            var preAddSignature = archetype.Signature.Except(operation.Removals);
 
             if (operation.AddMode == Batch.AddConflict.SkipEntirely
                 && _typeGraph.TryGetValue(preAddSignature, out var preAddArchetype)

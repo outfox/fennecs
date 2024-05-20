@@ -25,7 +25,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -50,7 +50,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -75,7 +75,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -99,7 +99,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -123,7 +123,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         Countdown.Reset();
@@ -174,7 +174,7 @@ public class Query<C0, C1> : Query<C0>
 
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C0, C1, U>>.Rent();
@@ -222,7 +222,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -247,7 +247,7 @@ public class Query<C0, C1> : Query<C0>
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -274,7 +274,7 @@ public class Query<C0, C1> : Query<C0>
     /// <inheritdoc cref="Query{C0}.Blit"/>
     public void Blit(C1 value, Identity target = default)
     {
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         var typeExpression = TypeExpression.Of<C1>(target);
 

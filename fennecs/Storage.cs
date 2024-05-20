@@ -185,6 +185,8 @@ internal class Storage<T> : IStorage
     /// </summary>
     public void Clear()
     {
+        if (Count <= 0) return;
+        
         Span.Clear();
         Count = 0;
     }
@@ -227,6 +229,7 @@ internal class Storage<T> : IStorage
 
             // the old switcheroo 🦊
             (_data, destination._data) = (destination._data, _data);
+            (Count, destination.Count) = (destination.Count, Count);
         }
 
         // We are still the "source" archetype, so we are expected to be empty (and we do the emptying)

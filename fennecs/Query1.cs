@@ -47,7 +47,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             var count = table.Count;
@@ -77,7 +77,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -102,7 +102,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0>(StreamTypes);
@@ -125,7 +125,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0>(StreamTypes);
@@ -154,7 +154,7 @@ public class Query<C0> : Query
 
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0>>.Rent();
@@ -207,7 +207,7 @@ public class Query<C0> : Query
 
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C0, U>>.Rent();
@@ -265,7 +265,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -300,7 +300,7 @@ public class Query<C0> : Query
     {
         AssertNotDisposed();
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {

@@ -28,6 +28,6 @@ internal struct Meta(Identity identity, Archetype archetype, int row)
     {
         Identity = default;
         Archetype = default!;
-        Row = 0;
+        Row = -1;
     }
 }

@@ -374,7 +374,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
             if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
-            using var worldLock = World.Lock;
+            using var worldLock = World.Lock();
             Entity result = default;
 
             foreach (var table in _trackedArchetypes)
@@ -409,7 +409,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <param name="data">the data to add</param>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     // ReSharper disable once MemberCanBePrivate.Global
-    public void Add<T>(T data) => Batch(fennecs.Batch.AddConflict.Disallow, fennecs.Batch.RemoveConflict.Disallow).Add(data).Submit();
+    public void Add<T>(T data) => Batch(fennecs.Batch.AddConflict.Strict, fennecs.Batch.RemoveConflict.Strict).Add(data).Submit();
 
 
     /// <summary>
@@ -417,7 +417,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     /// <typeparam name="T">any Component type matched by the query</typeparam>
-    public void Remove<T>() => Batch(fennecs.Batch.AddConflict.Disallow, fennecs.Batch.RemoveConflict.Disallow).Remove<T>().Submit();
+    public void Remove<T>() => Batch(fennecs.Batch.AddConflict.Strict, fennecs.Batch.RemoveConflict.Strict).Remove<T>().Submit();
 
 
     /// <summary>
@@ -481,7 +481,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         return new Batch(_trackedArchetypes, World, Mask.Clone(), addConflict, removeConflict);
     }
 
-
+    
     /// <inheritdoc cref="Despawn" />
     [Obsolete("Use Despawn() instead.")]
     public void Clear() => Despawn();

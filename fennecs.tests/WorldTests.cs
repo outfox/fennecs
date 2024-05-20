@@ -225,7 +225,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Id;
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
 
         world.On(identity).Add(666);
         Assert.False(world.HasComponent<int>(identity, default));
@@ -240,7 +240,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Can_Lock_and_Unlock_World()
     {
         using var world = new World();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
     }
 
 
@@ -248,7 +248,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Can_Lock_Locked_World()
     {
         using var world = new World();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
     }
 
 
@@ -256,7 +256,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Apply_Can_Spawn_while_Locked()
     {
         using var world = new World();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
         var entity = world.Spawn();
         Assert.True(world.IsAlive(entity));
     }
@@ -268,7 +268,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var identity = world.Spawn().Id;
 
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         world.On(identity).Add(666);
 
         Assert.False(world.HasComponent<int>(identity, default));
@@ -284,7 +284,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add(666).Id;
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         world.On(identity).Remove<int>();
 
         worldLock.Dispose();
@@ -297,7 +297,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entity = world.Spawn().Add(666).Add("hallo");
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         world.Despawn(entity);
         Assert.True(world.IsAlive(entity));
         worldLock.Dispose();
@@ -312,7 +312,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var target = world.Spawn();
 
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         world.On(entity).AddRelation(target, 666);
         Assert.False(entity.HasRelation<int>(target));
         worldLock.Dispose();
@@ -326,7 +326,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var identity = world.Spawn();
         var target = world.Spawn();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
         world.On(identity).AddRelation(target, 666);
         world.On(identity).RemoveRelation<int>(target);
         Assert.False(world.HasComponent<int>(identity, default), default);
@@ -522,8 +522,8 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Take_Out_Multiple_Locks()
     {
         using var world = new World();
-        var lock1 = world.Lock;
-        var lock2 = world.Lock;
+        var lock1 = world.Lock();
+        var lock2 = world.Lock();
 
         var e = world.Spawn();
         e.Add<float>();
@@ -557,7 +557,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Cannot_Garbage_Collect_in_Locked_World()
     {
         using var world = new World();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
         Assert.Throws<InvalidOperationException>(() => world.GC());
     }
 

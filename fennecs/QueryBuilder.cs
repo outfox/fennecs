@@ -97,7 +97,7 @@ public abstract class QueryBuilder : IDisposable
     /// </remarks>
     /// <returns>compiled query (you can compile more than one query from the same builder)</returns>
     public abstract Query Build();
-    
+
     /// <summary>
     /// Include only Entities that have the given Component or Relation.
     /// </summary>

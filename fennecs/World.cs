@@ -64,10 +64,10 @@ public partial class World
         {
             var identity = _identityPool.Spawn();
             
-            // Fixme: Cleanup!
             _root.IdentityStorage.Append(identity);
             var row = _root.Count - 1;
 
+            // FIXME: Cleanup / Unify!
             while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
 
             _meta[identity.Index] = new Meta(identity, _root, row);
