@@ -561,6 +561,50 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Throws<InvalidOperationException>(() => world.GC());
     }
 
+    
+    [Fact]
+    private void Meta_Integrity_Preserved_On_Add()
+    {
+        using var world = new World();
+
+        var entity0 = world.Spawn();
+        var entity1 = world.Spawn();
+
+        ref var meta0 = ref world.GetEntityMeta(entity0);
+        ref var meta1 = ref world.GetEntityMeta(entity1);
+        
+        Assert.Equal(0, meta0.Row);
+        Assert.Equal(1, meta1.Row);
+
+        entity1.Add(8.0f);
+        Assert.Equal(0, meta1.Row);
+        
+        entity0.Add(18.0f);
+        Assert.Equal(1, meta0.Row);
+    }
+
+
+    [Fact]
+    private void Meta_Integrity_Preserved_On_Remove()
+    {
+        using var world = new World();
+
+        var entity0 = world.Spawn();
+        var entity1 = world.Spawn();
+
+        ref var meta0 = ref world.GetEntityMeta(entity0);
+        ref var meta1 = ref world.GetEntityMeta(entity1);
+
+        entity1.Add(8.0f);
+        entity0.Add(18.0f);
+
+        entity1.Remove<float>();
+        entity0.Remove<float>();
+        
+        Assert.Equal(1, meta0.Row);
+        Assert.Equal(0, meta1.Row);
+    }
+
 
     private class NewableClass;
 

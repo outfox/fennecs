@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Tracing;
 using fennecs.pools;
 
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
@@ -244,6 +245,18 @@ public sealed class Archetype : IEnumerable<Entity>
         }
     }
 
+    private void PatchMetas(int entry, int count = 1)
+    {
+        for (var i = 0; i < Count; i++)
+        {
+            // TODO: This is a very inefficient operation, with lots of random memory access.
+            // TODO: In many cases, only one of these values needs updating, but it varies which.
+            ref var meta = ref _world.GetEntityMeta(IdentityStorage[entry+i]);
+            meta.Archetype = this;
+            meta.Row = entry+i;
+        }
+    }
+
     /// <summary>
     /// Moves all Entities from this Archetype to the destination Archetype back-filling with the provided Components.
     /// </summary>
@@ -383,11 +396,13 @@ public sealed class Archetype : IEnumerable<Entity>
         // Mark entity as moved in Meta.
         var identity = source.Identities[entry];
         source._world.GetEntityMeta(identity).Archetype = destination;
-        
+
+        /* This condition can probably be ruled out through good testing.
         if (destination._storageIndices.Keys.Any(k => !source._storageIndices.ContainsKey(k)))
         {
-            //throw new InvalidOperationException("Destination Archetype has more types than source Archetype, a back-fill value would be needed.");
+            throw new InvalidOperationException("Destination Archetype has more types than source Archetype, a back-fill value would be needed.");
         }
+        */
         
         foreach (var (type, oldIndex) in source._storageIndices)
         {
@@ -404,6 +419,9 @@ public sealed class Archetype : IEnumerable<Entity>
             oldStorage.Move(entry, newStorage);
         }
 
+        // Only if we cycled an entity from the end of the storages back (its row changed).
+        if (source.Count > entry) source.PatchMetas(entry);
+        
         // This is the "new row", TODO: abstract this enough so it is not needed.
         return destination.Count-1;
     }
