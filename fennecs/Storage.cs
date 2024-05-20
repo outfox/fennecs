@@ -224,10 +224,11 @@ internal class Storage<T> : IStorage
         }
         else
         {
-            // In many cases, we're migrating a much larger Archetype/Storage into a smaller or empty one.
+            // In many cases, we're migrating a much larger Archetype/Storage into a smaller
+            // or empty one. We then just perform the copy operation the other way around...
             Append(destination.Span);
 
-            // the old switcheroo 🦊
+            // ... and we just switch counts and data pointers for this storage.
             (_data, destination._data) = (destination._data, _data);
             (Count, destination.Count) = (destination.Count, Count);
         }

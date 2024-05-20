@@ -231,7 +231,18 @@ public sealed class Archetype : IEnumerable<Entity>
             _world.Despawn(new Entity(_world, toDelete[i]));
         }
     }
-
+    
+    private void PatchMetas()
+    {
+        for (var i = 0; i < Count; i++)
+        {
+            // TODO: This is a very inefficient operation, with lots of random memory access.
+            // TODO: In many cases, only one of these values needs updating, but it varies which.
+            ref var meta = ref _world.GetEntityMeta(IdentityStorage[i]);
+            meta.Archetype = this;
+            meta.Row = i;
+        }
+    }
 
     /// <summary>
     /// Moves all Entities from this Archetype to the destination Archetype back-filling with the provided Components.
@@ -245,14 +256,6 @@ public sealed class Archetype : IEnumerable<Entity>
         {
             destination.Fill(additions, backFills);
             return;
-        }
-
-        // Mark identities as moved
-        for (var i = 0; i < Count; i++)
-        {
-            ref var meta = ref _world.GetEntityMeta(IdentityStorage[i]); 
-            meta.Archetype = destination;
-            meta.Row = destination.Count + i;
         }
         
         // Subtractive copy
@@ -280,6 +283,10 @@ public sealed class Archetype : IEnumerable<Entity>
             //TODO: handle "Preserve" and "Replace" addition modes accordingly.
             //(this inadvertently is preserve right now)
         }
+        
+        // Update all Meta info to mark entities as moved.
+        // TODO: determine if this was a swap (?) to take appropriate shortcuts.
+        destination.PatchMetas();
         
         Interlocked.Increment(ref _version);
     }
