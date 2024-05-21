@@ -75,7 +75,7 @@ public class WorldTests(ITestOutputHelper output)
     [InlineData(1_000)]
     [InlineData(10_000)]
     [InlineData(1_000_000)]
-    private void Can_Batch_Spawn(int count)
+    private void Can_Batch_Spawn_Raw(int count)
     {
         using var world = new World();
         world.Spawn(count, (TypeExpression.Of<int>(), 666), (TypeExpression.Of<string>(), "i'm a string"));
@@ -89,6 +89,32 @@ public class WorldTests(ITestOutputHelper output)
             Assert.Equal("i'm a string", s);
             i++;
             s = "yup.";
+        });
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    [InlineData(69_420)]
+    private void Can_Batch_Spawn(int count)
+    {
+        using var world = new World();
+        world.Entity()
+            .Add(555)
+            .Add("hallo")
+            .Spawn(count);
+
+        var query = world.Query<int, string>().Build();
+        Assert.Equal(count, query.Count);
+        
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(555, i);
+            Assert.Equal("hallo", s);
+            i++;
+            s = "correct.";
         });
     }
 

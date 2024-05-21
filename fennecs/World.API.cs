@@ -44,6 +44,43 @@ public partial class World : IDisposable
     /// <summary>
     /// Spawns a number of pre-configured Entities 
     /// </summary>
+    /// <remarks>
+    /// It's more comfortable to spawn via <see cref="Query.Spawn"/>
+    /// </remarks>
+    public EntitySpawner Entity()
+    {
+        return new EntitySpawner(this);
+        /*
+        var signature = new Signature<TypeExpression>(components.Select(c => c.Item1).Append(TypeExpression.Of<Identity>()).ToImmutableSortedSet());
+        var archetype = GetArchetype(signature);
+        archetype.Spawn(count, components.Select(c => c.Item2).ToArray());
+        */
+    }
+
+
+    /// <summary>
+    /// Spawns a number of pre-configured Entities 
+    /// </summary>
+    /// <remarks>
+    /// It's more comfortable to spawn via <see cref="Query.Spawn"/>
+    /// </remarks>
+    /// <param name="components">TypeExpressions and boxed objects to spawn</param>
+    /// <param name="count"></param>
+    /// <param name="values">component values</param>
+    internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    {
+        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>());
+        var archetype = GetArchetype(signature);
+        archetype.Spawn(count, components, values);
+    }
+
+
+    /// <summary>
+    /// Spawns a number of pre-configured Entities 
+    /// </summary>
+    /// <remarks>
+    /// It's more comfortable to spawn via <see cref="Query.Spawn"/>
+    /// </remarks>
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
     public void Spawn(int count = 1, params (TypeExpression, object)[] components)

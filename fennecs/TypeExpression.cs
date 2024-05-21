@@ -200,6 +200,17 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         return new TypeExpression(target, LanguageType.Identify(type));
     }
 
+    
+    /// <summary>
+    /// Creates a TypeExpression that embodies an Object Link.
+    /// </summary>
+    /// <param name="target">the target object</param>
+    /// <typeparam name="T">type (or supertype) of this object</typeparam>
+    /// <returns>a TypeExpression representing the link</returns>
+    public static TypeExpression Link<T>(T target) where T : class
+    {
+        return new TypeExpression(Identity.Of(target), LanguageType<T>.Id);
+    }
 
     /// <summary>
     /// Implements a hash function that aims for a low collision rate.

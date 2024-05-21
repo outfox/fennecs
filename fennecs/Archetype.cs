@@ -506,17 +506,17 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         IdentityStorage.Append(identities);
         PatchMetas(first, count);
     }
-    
-    internal void Spawn(int count = 1, params (TypeExpression, object)[] components)
+
+    internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
         using var worldLock = _world.Lock();
         
         var first = Count;
-        
-        foreach (var (type, component) in components)
+
+        for (var i = 0; i < components.Count; i++)
         {
-            var storage = GetStorage(type);
-            storage.Append(component, count);
+            var storage = GetStorage(components[i]);
+            storage.Append(values[i], count);
         }
 
         using var identities = _world.SpawnBare(count);

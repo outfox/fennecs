@@ -368,31 +368,35 @@ public class Query<C0> : Query
 #region Spawning
 
 /// <summary>
-/// Publishes all Private entities in this query
+/// Spawns a number of entities in this query, with the provided component values.
 /// </summary>
-/// <param name="target">an entity to publish, or default (and Match.Any, but don't use that) to publish all matched entities</param>
-/// <exception cref="ArgumentException"></exception>
-public void Publish(Identity target)
+/// <param name="count">how many to spawn</param>
+/// <param name="values">values for the components</param>
+public void Spawn(int count, params object[] values)
 {
-    if (target.IsEntity)
+    if (World.Mode != World.WorldMode.Immediate)
     {
-        World.On(target).RemoveLink(this);
+        throw new InvalidOperationException("Can only spawn into an unlocked world");
     }
-    else if (target == default || target == Match.Any)
-    {
-        Batch().RemoveLink(this).Submit();
-    }
-    else
-    {
-        throw new ArgumentException("Can only Publish specific Entity, " +
-                                    "or default and Match.Any for all private entities " +
-                                    "of this query");
-    }
-}
-
-public void Clone(Entity entity, int count = 1)
-{
     
+    if (values.Length != StreamTypes.Length)
+    {
+        throw new ArgumentException("Values count and order must match StreamTypes count and types.");
+    }
+
+    using var tuples = PooledList<(TypeExpression, object)>.Rent();
+    
+    for (var i = 0; i < values.Length; i++)
+    {
+        if (values[i].GetType() != StreamTypes[i].GetType())
+        {
+            throw new ArgumentException($"Value {i} type {values[i].GetType()} does not match StreamType {i} type {StreamTypes[i]}");
+        }
+        
+        tuples.Add((StreamTypes[i], values[i]));
+    }
+
+    World.Spawn(count, tuples.ToArray());
 }
 
 #endregion
