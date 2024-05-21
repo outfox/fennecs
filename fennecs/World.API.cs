@@ -20,9 +20,12 @@ public partial class World : IDisposable
     
     internal PooledList<Identity> SpawnBare(int count)
     {
-        return _identityPool.Spawn(count);
+        var identities = _identityPool.Spawn(count);
+        while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
+        return identities;
     }
 
+    /*
 
     /// <summary>
     /// Spawns a number of pre-configured Entities 
@@ -31,20 +34,21 @@ public partial class World : IDisposable
     /// <param name="count"></param>
     public void Spawn(int count = 1, params object[] components)
     {
-        var signature = new Signature<TypeExpression>(components.Select(c => TypeExpression.Of(c.GetType())).ToImmutableSortedSet());
+        var typeSet = components.Select(c => TypeExpression.Of(c.GetType())).Append(TypeExpression.Of<Identity>()).ToImmutableSortedSet();
+        var signature = new Signature<TypeExpression>(typeSet);
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components);
     }
-
+    */
 
     /// <summary>
     /// Spawns a number of pre-configured Entities 
     /// </summary>
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
-    public void Spawn(ValueTuple<TypeExpression, object>[] components, int count = 1)
+    public void Spawn(int count = 1, params (TypeExpression, object)[] components)
     {
-        var signature = new Signature<TypeExpression>(components.Select(c => c.Item1).ToImmutableSortedSet());
+        var signature = new Signature<TypeExpression>(components.Select(c => c.Item1).Append(TypeExpression.Of<Identity>()).ToImmutableSortedSet());
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components.Select(c => c.Item2).ToArray());
     }
