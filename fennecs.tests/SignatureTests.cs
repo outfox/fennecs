@@ -14,23 +14,23 @@ public class SignatureTests
         ];
         yield return
         [
-            new[] {TypeExpression.Of<int>()}.ToImmutableSortedSet(),
-            new[] {TypeExpression.Of<int>()}.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>() }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>() }.ToImmutableSortedSet(),
         ];
         yield return
         [
-            new[] {TypeExpression.Of<int>(), TypeExpression.Of<string>()}.ToImmutableSortedSet(),
-            new[] {TypeExpression.Of<int>(), TypeExpression.Of<string>()}.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>() }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>() }.ToImmutableSortedSet(),
         ];
         yield return
         [
-            new[] {TypeExpression.Of<int>(), TypeExpression.Of<string>(Identity.Of("Hello World"))}.ToImmutableSortedSet(),
-            new[] {TypeExpression.Of<string>(Identity.Of("Hello World")), TypeExpression.Of<int>()}.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>(Identity.Of("Hello World")) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<string>(Identity.Of("Hello World")), TypeExpression.Of<int>() }.ToImmutableSortedSet(),
         ];
         yield return
         [
-            new[] {TypeExpression.Of<int>(), TypeExpression.Of<string>()}.ToImmutableSortedSet(),
-            new[] {TypeExpression.Of<string>(), TypeExpression.Of<int>()}.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>() }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<string>(), TypeExpression.Of<int>() }.ToImmutableSortedSet(),
         ];
     }
 
@@ -39,13 +39,13 @@ public class SignatureTests
     {
         yield return
         [
-            new[] {TypeExpression.Of<int>()}.ToImmutableSortedSet(),
-            new[] {TypeExpression.Of<string>()}.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>() }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<string>() }.ToImmutableSortedSet(),
         ];
         yield return
         [
-            new[] {TypeExpression.Of<int>(), TypeExpression.Of<string>()}.ToImmutableSortedSet(),
-            new[] {TypeExpression.Of<int>(), TypeExpression.Of<string>(Identity.Of("Hello World"))}.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>() }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>(Identity.Of("Hello World")) }.ToImmutableSortedSet(),
         ];
     }
 
@@ -115,7 +115,7 @@ public class SignatureTests
         Assert.True(signatureA.Overlaps(signatureSubset));
         Assert.True(signatureA.Overlaps(signatureEqual));
     }
-    
+
     [Fact]
     public void Signature_Union_Intersect_SymmetricExcept()
     {
@@ -147,17 +147,17 @@ public class SignatureTests
         Assert.True(signatureA.Equals(signatureEqual));
         Assert.False(signatureA.Equals(signatureSubset));
         Assert.False(signatureA.Equals(signatureSuperset));
-        
+
         Assert.False(signatureA.Equals(null));
         Assert.False(signatureA.Equals(new object()));
     }
-    
+
     [Fact]
     public void Signature_Has_Enumerator()
     {
         var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
         using var enumerator = signature.GetEnumerator();
-        
+
         Assert.True(enumerator.MoveNext());
         Assert.Equal(TypeExpression.Of<string>(), enumerator.Current);
         Assert.True(enumerator.MoveNext());
@@ -173,8 +173,8 @@ public class SignatureTests
         var cleared = signature.Clear();
         Assert.Empty(cleared);
     }
-    
-    
+
+
     [Fact]
     public void Signature_Has_TryGetValue()
     {
@@ -218,14 +218,14 @@ public class SignatureTests
         Assert.Contains(tString.ToString(), signature.ToString());
         Assert.Contains(tInt.ToString(), signature.ToString());
     }
-    
+
     [Fact]
     public void Signature_Has_Blank_Enumerator()
     {
         var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
 
         IEnumerable enumerable = signature;
-        
+
         foreach (var expr in enumerable)
         {
             if (expr is TypeExpression expression)
@@ -245,13 +245,13 @@ public class SignatureTests
         var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
         Assert.True(signature.CompareTo(default) > 0);
     }
-
+    
     [Fact]
     public void Differing_Signature_Of_Same_Length_Comparable_Complementary()
     {
         var signature1 = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
         var signature2 = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<float>());
-        
+
         Assert.Equal(-1 * signature1.CompareTo(signature2), signature2.CompareTo(signature1));
     }
 }
