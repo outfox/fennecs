@@ -369,13 +369,47 @@ public class QueryBatchTests
 
 
     [Fact]
+    public void Can_Batch_Add_Preserve()
+    {
+        using var world = new World();
+
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(234);
+        var e3 = world.Spawn().Add(567).Add("pre-existing");
+
+        // Added here because ther was an issue below that currupted e3's meta,
+        // and needed to ruled that out as a precondition.
+        Assert.Equal("pre-existing", e3.Ref<string>());
+
+        var intQuery = world.Query<int>().Build();
+        Assert.Equal(3, intQuery.Count);
+
+        // ! no lock !
+        intQuery.Batch(Batch.AddConflict.Preserve).Add("batched").Submit();
+        // ! no lock !
+
+        Assert.Equal(3, intQuery.Count);
+        Assert.True(e1.Has<string>());
+        Assert.Equal("batched", e1.Ref<string>());
+        Assert.True(e2.Has<string>());
+        Assert.Equal("batched", e2.Ref<string>());
+        Assert.True(e3.Has<string>());
+        Assert.Equal("pre-existing", e3.Ref<string>());
+    }
+
+
+    [Fact]
     public void Can_Batch_Add_Replace()
     {
         using var world = new World();
 
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(234);
-        var e3 = world.Spawn().Add(567).Add("lala!");
+        var e3 = world.Spawn().Add(567).Add("pre-existing");
+
+        // Added here because ther was an issue below that currupted e3's meta,
+        // and needed to ruled that out as a precondition.
+        Assert.Equal("pre-existing", e3.Ref<string>());
 
         var intQuery = world.Query<int>().Build();
         Assert.Equal(3, intQuery.Count);

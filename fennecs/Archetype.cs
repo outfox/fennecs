@@ -15,7 +15,7 @@ namespace fennecs;
 /// <summary>
 /// A storage of a class of Entities with a fixed set of Components, its <see cref="Signature"/>.
 /// </summary>
-public sealed class Archetype : IEnumerable<Entity>
+public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 {
     /// <summary>
     /// The TypeExpressions that define this Archetype.
@@ -254,23 +254,27 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <param name="addMode"></param>
     internal void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills, Batch.AddConflict addMode)
     {
-        if (destination == this)
-        {
-            destination.Fill(additions, backFills);
-            return;
-        }
+        Interlocked.Increment(ref _version);
 
-        // Replacement back-fill of values ("Replace")
+        var addedCount = Count;
+        var addedStart = destination.Count;
+
+        // Replacement pre-fill of values ("Replace")
         if (addMode == Batch.AddConflict.Replace)
         {
-            foreach (var type in destination.Signature.Intersect(Signature).Intersect(additions))
+            var alreadyPresent = Signature.Intersect(additions);
+            foreach (var type in alreadyPresent)
             {
                 var value = backFills[additions.IndexOf(type)];
                 Fill(type, value); //Fill with value to replace before migrating.
             }
         }
         
-        // Subtractive copy
+        // Certain Add-modes permit operating on archetypes that themselves are in the query.
+        // No more migrations are needed at this point (they would be semantically idempotent)
+        if (destination == this) return;
+
+        // Migration (and subtractive copy)
         foreach (var type in Signature)
         {
             var srcStorage = GetStorage(type);
@@ -290,14 +294,11 @@ public sealed class Archetype : IEnumerable<Entity>
         foreach (var type in destination.Signature.Except(Signature))
         {
             var value = backFills[additions.IndexOf(type)];
-            destination.BackFill(type, value);
+            destination.BackFill(type, value, addedCount);
         }
         
         // Update all Meta info to mark entities as moved.
-        // TODO: determine if this was a swap (?) to take appropriate shortcuts.
-        destination.PatchMetas();
-        
-        Interlocked.Increment(ref _version);
+        destination.PatchMetas(addedStart, addedCount);
     }
 
 
@@ -335,10 +336,19 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <summary>
     /// Fills the appropriate storage of the archetype with the provided value.
     /// </summary>
-    internal void Fill<T>(TypeExpression type, T value)
+    internal void Fill<T>(TypeExpression type, T value) where T: notnull
     {
-        var storage = GetStorage<T>(type.Target);
+        // DeferredOperation sends data as objects
+        if (typeof(T).IsAssignableFrom(typeof(object)))
+        {
+            var sysArray = GetStorage(type);
+            sysArray.Blit(value);
+            return;
+        }
+
+        var storage = (Storage<T>) GetStorage(type);
         storage.Blit(value);
+        
     }
 
 
@@ -352,14 +362,13 @@ public sealed class Archetype : IEnumerable<Entity>
     internal IStorage GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
 
     
-    internal void Set<T>(TypeExpression typeExpression, T value, int newRow)
+    internal void Set<T>(TypeExpression typeExpression, T value, int newRow) where T : notnull
     {
         // DeferredOperation sends data as objects
         if (typeof(T).IsAssignableFrom(typeof(object)))
         {
             var sysArray = GetStorage(typeExpression);
-            //TODO: Settle on whether storing null values is desirable
-            sysArray.Store(newRow, value!);
+            sysArray.Store(newRow, value);
             return;
         }
 
@@ -367,17 +376,16 @@ public sealed class Archetype : IEnumerable<Entity>
         storage.Store(newRow, value);
     }
 
-    internal void BackFill<T>(TypeExpression typeExpression, T value)
+    internal void BackFill<T>(TypeExpression typeExpression, T value, int additions) where T: notnull
     {
         // DeferredOperation sends data as objects (decorated with TypeExpressions)
         if (typeof(T).IsAssignableFrom(typeof(object)))
         {
             var iStorage = GetStorage(typeExpression);
-            //TODO: Settle on whether storing null values is desirable
-            iStorage.Append(value!);
+            iStorage.Append(value, additions);
             return;
         }
-
+        
         var storage = (Storage<T>) GetStorage(typeExpression);
         storage.Append(value);
     }
@@ -422,6 +430,12 @@ public sealed class Archetype : IEnumerable<Entity>
         destination.PatchMetas(destination.Count-1);
     }
 
+
+    /// <inheritdoc />
+    public int CompareTo(Archetype? other)
+    {
+        return other == null ? 1 : Signature.CompareTo(other.Signature);
+    }
 
     /// <inheritdoc />
     public override string ToString()

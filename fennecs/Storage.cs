@@ -218,9 +218,12 @@ internal class Storage<T> : IStorage
     /// <param name="destination">a storage of the same type</param>
     public void Migrate(Storage<T> destination)
     {
+        destination.Append(Span);
+        Clear();
+        return;
+        
         if (destination.Count >= Count)
         {
-            destination.Append(Span);
         }
         else
         {
