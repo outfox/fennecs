@@ -287,37 +287,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     /// <summary>
-    /// Fills all matching Storages of the archetype with each of the provided values.
-    /// </summary>
-    /// <param name="types">typeExpressions which storages to fill</param>
-    /// <param name="values">values for the types</param>
-    internal void Fill(PooledList<TypeExpression> types, PooledList<object> values)
-    {
-        for (var i = 0; i < types.Count; i++)
-        {
-            var type = types[i];
-            var value = values[i];
-            var storage = GetStorage(type);
-            
-            //FIXME: Split this up in Append and Blit
-            storage.Blit(value);
-        }
-    }
-
-    /// <summary>
-    /// Fills matching Storages of the archetype with each of the provided values.
-    /// </summary>
-    /// <param name="fills">tuples of <see cref="TypeExpression"/> and boxed values (as objects)</param>
-    internal void Fill(PooledList<(TypeExpression, object)> fills)
-    {
-        foreach (var (type, value) in fills)
-        {
-            var storage = GetStorage(type);
-            storage.Blit(value);
-        }
-    }
-
-    /// <summary>
     /// Fills the appropriate storage of the archetype with the provided value.
     /// </summary>
     internal void Fill<T>(TypeExpression type, T value) where T: notnull
