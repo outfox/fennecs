@@ -221,24 +221,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         }
     }
     
-    private void PatchMetas()
-    {
-        for (var i = 0; i < Count; i++)
-        {
-            // TODO: This is a very inefficient operation, with lots of random memory access.
-            // TODO: In many cases, only one of these values needs updating, but it varies which.
-            ref var meta = ref _world.GetEntityMeta(IdentityStorage[i]);
-            meta.Archetype = this;
-            meta.Row = i;
-        }
-    }
-
     private void PatchMetas(int entry, int count = 1)
     {
         for (var i = 0; i < count; i++)
         {
-            // TODO: This is a very inefficient operation, with lots of random memory access.
-            // TODO: In many cases, only one of these values needs updating, but it varies which.
             ref var meta = ref _world.GetEntityMeta(IdentityStorage[entry+i]);
             meta.Archetype = this;
             meta.Row = entry+i;

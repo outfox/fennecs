@@ -81,9 +81,9 @@ internal interface IStorage
 /// <typeparam name="T">the type of the array elements</typeparam>
 internal class Storage<T> : IStorage
 {
-    private const int initialCapacity = 2;
+    private const int InitialCapacity = 2;
         
-    private T[] _data = new T[initialCapacity];
+    private T[] _data = new T[InitialCapacity];
 
     /// <summary>
     ///  Stores a value at the given index.
@@ -207,7 +207,7 @@ internal class Storage<T> : IStorage
     /// </summary>
     public void Compact()
     {
-        var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Max(initialCapacity, Count));
+        var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Max(InitialCapacity, Count));
         Array.Resize(ref _data, newSize);
     }
 
@@ -220,10 +220,15 @@ internal class Storage<T> : IStorage
     {
         destination.Append(Span);
         Clear();
-        return;
-        
+
+        // TODO: This is a potentially huge optimization, but it struggles with backfill logic. 
+        // (i.e. what if there's nothing to migrate yet, but we are going to need to backfill?)
+        // (and what's the case for swap vs. copy?)
+        // (and despite saving the copy, Meta updates will be more expensive)
+        /*
         if (destination.Count >= Count)
         {
+            destination.Append(Span);
         }
         else
         {
@@ -238,6 +243,7 @@ internal class Storage<T> : IStorage
 
         // We are still the "source" archetype, so we are expected to be empty (and we do the emptying)
         Clear();
+        */
     }
 
     /// <summary>
