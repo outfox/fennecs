@@ -157,7 +157,7 @@ public class StorageTests
     }
 
     [Fact]
-    public void Can_Migrate()
+    public void Can_Migrate_Generic()
     {
         var source = new Storage<string>();
         var destination = new Storage<string>();
@@ -200,10 +200,46 @@ public class StorageTests
         
         Assert.Equal("hello", source[0]);
         Assert.Equal("hello", source[1]);
+        
         Assert.Equal("world", destination[0]);
         Assert.Equal("world", destination[1]);
         Assert.Equal("world", destination[2]);
         Assert.Equal("hello", destination[3]);
 
+    }
+
+    [Fact]
+    public void All_Elements_Moved_After_Migrate()
+    {
+        var source = new Storage<string>();
+        source.Append("hello", 3);
+
+        var destination = new Storage<string>();
+        destination.Append("world", 3);
+        
+        source.Migrate(destination);
+        
+        Assert.Equal(6, destination.Count);
+        
+        Assert.Equal("world", destination[0]);
+        Assert.Equal("world", destination[1]);
+        Assert.Equal("world", destination[2]);
+        Assert.Equal("hello", destination[3]);
+        Assert.Equal("hello", destination[4]);
+        Assert.Equal("hello", destination[5]);
+    }
+
+    [Fact]
+    public void Empty_After_Migrate()
+    {
+        var source = new Storage<string>();
+        source.Append("hello", 3);
+
+        var destination = new Storage<string>();
+        destination.Append("world", 3);
+        
+        source.Migrate(destination);
+        
+        Assert.Equal(0, source.Count);
     }
 }

@@ -3,7 +3,7 @@
 public partial class World
 {
     #region CRUD
-    internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
+    internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data) where T : notnull
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
 
@@ -25,7 +25,7 @@ public partial class World
         Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
 
         // Back-fill the new value
-        newArchetype.BackFill<T>(typeExpression, data, 1);
+        newArchetype.BackFill(typeExpression, data, 1);
     }
 
 

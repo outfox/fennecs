@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
 
 namespace fennecs;
 
@@ -224,7 +223,8 @@ internal class Storage<T> : IStorage
         // TODO: This is a potentially huge optimization, but it struggles with backfill logic. 
         // (i.e. what if there's nothing to migrate yet, but we are going to need to backfill?)
         // (and what's the case for swap vs. copy?)
-        // (and despite saving the copy, Meta updates will be more expensive)
+        // (and despite saving CPU on the copy, Meta updates will be much more expensive)
+        // (meaning there's not a direct correlation between Storage size and efficiency)
         /*
         if (destination.Count >= Count)
         {
