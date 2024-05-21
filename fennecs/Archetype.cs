@@ -4,8 +4,6 @@ using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Tracing;
 using fennecs.pools;
 
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator

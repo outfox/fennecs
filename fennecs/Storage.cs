@@ -12,6 +12,7 @@ internal interface IStorage
 
     /// <summary>
     /// Stores a boxed value at the given index.
+    /// (use <c>Append</c> to add a new one)
     /// </summary>
     void Store(int index, object value);
 
@@ -85,12 +86,12 @@ internal class Storage<T> : IStorage
     private T[] _data = new T[InitialCapacity];
 
     /// <summary>
-    ///  Stores a value at the given index.
+    /// Replaces the value at the given index.
+    /// (use <c>Append</c> to add a new one)
     /// </summary>
     public void Store(int index, T value)
     {
-        _data[index] = value;
-        if (index > Count) Count = index; //HACK - must refactor to use Add (and less store)
+        Span[index] = value;
     }
 
 
@@ -284,27 +285,6 @@ internal class Storage<T> : IStorage
         EnsureCapacity(Count + appendage.Length);
         appendage.CopyTo(FullSpan[Count..]);
         Count += appendage.Length;
-    }
-
-    /// <summary>
-    /// A wrapping copy implementation to nicely fill storages with data.
-    /// </summary>
-    /// <param name="values"></param>
-    /// <param name="wrap"></param>
-    /// <exception cref="ArgumentException"></exception>
-    public void Blit(Span<T> values, bool wrap = false)
-    {
-        if (values.Length == 0) throw new ArgumentException("Cannot Blit empty Span.");
-
-        for (var i = 0; i < Count - values.Length; i += values.Length)
-        {
-            values.CopyTo(Span[i..]);
-        }
-
-        for (var i = Count - Count % values.Length; i < Count; i++)
-        {
-            Span[i] = values[i % values.Length];
-        }
     }
 
     public Memory<T> AsMemory(int start, int length)

@@ -242,4 +242,17 @@ public class StorageTests
         
         Assert.Equal(0, source.Count);
     }
+
+    [Fact]
+    public void Can_Store_Object()
+    {
+        var storage = new Storage<string>();
+        storage.Append("world");
+        Assert.Equal("world", storage.Span[0]);
+        
+        object obj = "hello";
+        storage.Store(0, obj);
+        Assert.Equal(1, storage.Count);
+        Assert.Equal("hello", storage.Span[0]);
+    }
 }

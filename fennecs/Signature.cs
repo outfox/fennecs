@@ -2,7 +2,6 @@
 
 using System.Collections;
 using System.Collections.Immutable;
-using fennecs.pools;
 
 namespace fennecs;
 
@@ -37,14 +36,6 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>, 
     public Signature(ImmutableSortedSet<T> set)
     {
         _set = set;
-        Count = set.Count;
-        _hashCode = BakeHash(_set);
-    }
-    
-    
-    internal Signature(PooledList<T> set)
-    {
-        _set = set.ToImmutableSortedSet();
         Count = set.Count;
         _hashCode = BakeHash(_set);
     }

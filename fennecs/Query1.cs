@@ -340,27 +340,7 @@ public class Query<C0> : Query where C0 : notnull
             table.Fill(typeExpression, value);
         }
     }
-
     
-    
-    /// <summary>
-    /// <para>Blit (write) a component value of a stream type to all entities matched by this query.
-    /// The provided IList will be wrapped around (repeated) if there are fewer elements than Entities.</para>
-    /// <para>🚀 Very fast!</para>
-    /// </summary>
-    /// <param name="values">a component value</param>
-    /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
-    public void Blit(IList<C0> values, Identity target = default)
-    {
-        Debug.Assert(World.Mode == World.WorldMode.Immediate, "Can only blit into an unlocked world");
-
-        var typeExpression = TypeExpression.Of<C0>(target);
-
-        foreach (var table in Archetypes)
-        {
-            table.Fill(typeExpression, values);
-        }
-    }
     #endregion
 
 #region Spawning

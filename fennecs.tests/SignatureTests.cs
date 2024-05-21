@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections;
+using System.Collections.Immutable;
 
 namespace fennecs.tests;
 
@@ -206,5 +207,51 @@ public class SignatureTests
         var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
         Assert.Equal(TypeExpression.Of<string>(), signature[0]);
         Assert.Equal(TypeExpression.Of<int>(), signature[1]);
+    }
+
+    [Fact]
+    public void Signature_Has_ToString()
+    {
+        var tInt = TypeExpression.Of<int>();
+        var tString = TypeExpression.Of<string>();
+        var signature = new Signature<TypeExpression>(tInt, tString);
+        Assert.Contains(tString.ToString(), signature.ToString());
+        Assert.Contains(tInt.ToString(), signature.ToString());
+    }
+    
+    [Fact]
+    public void Signature_Has_Blank_Enumerator()
+    {
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
+
+        IEnumerable enumerable = signature;
+        
+        foreach (var expr in enumerable)
+        {
+            if (expr is TypeExpression expression)
+            {
+                Assert.True(expression.Equals(TypeExpression.Of<int>()) || expression.Equals(TypeExpression.Of<string>()));
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+    }
+
+    [Fact]
+    public void Signature_Always_Greater_Than_Default()
+    {
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
+        Assert.True(signature.CompareTo(default) > 0);
+    }
+
+    [Fact]
+    public void Differing_Signature_Of_Same_Length_Comparable_Complementary()
+    {
+        var signature1 = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<string>());
+        var signature2 = new Signature<TypeExpression>(TypeExpression.Of<int>(), TypeExpression.Of<float>());
+        
+        Assert.Equal(-1 * signature1.CompareTo(signature2), signature2.CompareTo(signature1));
     }
 }
