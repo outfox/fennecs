@@ -5,6 +5,9 @@ namespace fennecs;
 /// <summary>
 /// A builder than spawns Entities after adding pre-configured components.
 /// </summary>
+/// <remarks>
+/// Call <see cref="Spawn"/> to actually spawn the Entities.
+/// </remarks>
 public sealed class EntitySpawner : IDisposable
 {
     private readonly World _world;

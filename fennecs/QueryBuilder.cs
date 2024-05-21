@@ -87,6 +87,9 @@ public abstract class QueryBuilder : IDisposable
         return this;
     }
     
+    /// <inheritdoc cref="Compile"/>
+    public abstract Query Build();
+    
     /// <summary>
     /// Builds (compiles) the Query from the current state of the QueryBuilder.
     /// </summary>
@@ -96,8 +99,19 @@ public abstract class QueryBuilder : IDisposable
     /// or any of its overloads.
     /// </remarks>
     /// <returns>compiled query (you can compile more than one query from the same builder)</returns>
-    public abstract Query Build();
-
+    public abstract Query Compile();
+    
+    /// <summary>
+    /// Compiles the query, but does not add it to the internal cache.
+    /// </summary>
+    /// <remarks>
+    /// This is useful for queries with frequently changing filter states, where
+    /// other queries operating on the same sets of entities should not inherit this state.
+    /// </remarks>
+    /// <returns>compiled query (you can compile more than one query from the same builder)</returns>
+    public abstract Query Unique();
+    
+    
     /// <summary>
     /// Include only Entities that have the given Component or Relation.
     /// </summary>
@@ -128,7 +142,7 @@ public abstract class QueryBuilder : IDisposable
         return this;
     }
 
-
+    
     /// <summary>
     /// Exclude all Entities that have the given Component or Relation.
     /// </summary>
@@ -192,7 +206,7 @@ public abstract class QueryBuilder : IDisposable
 }
 
 /// <inheritdoc />
-public sealed class QueryBuilder<C1> : QueryBuilder
+public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1>(world, streamTypes, mask, matchingTables);
@@ -210,12 +224,24 @@ public sealed class QueryBuilder<C1> : QueryBuilder
         return (QueryBuilder<C1>) base.Unchecked();
     }
 
+    
     /// <inheritdoc />
-    public override Query<C1> Build()
+    public override Query<C1> Compile() 
     {
-        return (Query<C1>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+        return (Query<C1>) World.CacheQuery(StreamTypes, Mask, CreateQuery);
     }
 
+    
+    /// <inheritdoc />
+    public override Query<C1> Build() => Compile();
+
+
+    /// <inheritdoc />
+    public override Query<C1> Unique()
+    {
+        return (Query<C1>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
+    }
+    
 
     /// <inheritdoc />
     public override QueryBuilder<C1> Has<T>(Identity target = default)
@@ -260,7 +286,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder
 }
 
 /// <inheritdoc />
-public sealed class QueryBuilder<C1, C2> : QueryBuilder
+public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where C1 : notnull
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1, C2>(world, streamTypes, mask, matchingTables);
@@ -281,11 +307,21 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder
    
 
     /// <inheritdoc />
-    public override Query<C1, C2> Build()
+    public override Query<C1, C2> Compile() 
     {
-        return (Query<C1, C2>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+        return (Query<C1, C2>) World.CacheQuery(StreamTypes, Mask, CreateQuery);
     }
 
+    
+    /// <inheritdoc />
+    public override Query<C1, C2> Build() => Compile();
+
+
+    /// <inheritdoc />
+    public override Query<C1, C2> Unique()
+    {
+        return (Query<C1, C2>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
+    }
 
     /// <inheritdoc />
     public override QueryBuilder<C1, C2> Has<T>(Identity target = default)
@@ -351,12 +387,23 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
         return (QueryBuilder<C1, C2, C3>) base.Unchecked();
     }
     
+    
     /// <inheritdoc />
-    public override Query<C1, C2, C3> Build()
+    public override Query<C1, C2, C3> Compile() 
     {
-        return (Query<C1, C2, C3>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+        return (Query<C1, C2, C3>) World.CacheQuery(StreamTypes, Mask, CreateQuery);
     }
 
+    
+    /// <inheritdoc />
+    public override Query<C1, C2, C3> Build() => Compile();
+
+
+    /// <inheritdoc />
+    public override Query<C1, C2, C3> Unique()
+    {
+        return (Query<C1, C2, C3>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
+    }
 
     /// <inheritdoc />
     public override QueryBuilder<C1, C2, C3> Has<T>(Identity target = default)
@@ -423,11 +470,21 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
     }
 
     /// <inheritdoc />
-    public override Query<C1, C2, C3, C4> Build()
+    public override Query<C1, C2, C3, C4> Compile() 
     {
-        return (Query<C1, C2, C3, C4>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+        return (Query<C1, C2, C3, C4>) World.CacheQuery(StreamTypes, Mask, CreateQuery);
     }
 
+    
+    /// <inheritdoc />
+    public override Query<C1, C2, C3, C4> Build() => Compile();
+
+
+    /// <inheritdoc />
+    public override Query<C1, C2, C3, C4> Unique()
+    {
+        return (Query<C1, C2, C3, C4>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
+    }
 
     /// <inheritdoc />
     public override QueryBuilder<C1, C2, C3, C4> Has<T>(Identity target = default)
@@ -495,9 +552,20 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
     }
     
     /// <inheritdoc />
-    public override Query<C1, C2, C3, C4, C5> Build()
+    public override Query<C1, C2, C3, C4, C5> Compile() 
     {
-        return (Query<C1, C2, C3, C4, C5>) World.GetQuery(StreamTypes, Mask, CreateQuery);
+        return (Query<C1, C2, C3, C4, C5>) World.CacheQuery(StreamTypes, Mask, CreateQuery);
+    }
+
+    
+    /// <inheritdoc />
+    public override Query<C1, C2, C3, C4, C5> Build() => Compile();
+
+
+    /// <inheritdoc />
+    public override Query<C1, C2, C3, C4, C5> Unique()
+    {
+        return (Query<C1, C2, C3, C4, C5>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
     }
 
 

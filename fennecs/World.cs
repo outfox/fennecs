@@ -134,14 +134,9 @@ public partial class World
 
 
     #region Queries
-    internal Query GetQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
-    {
-        if (_queries.TryGetValue(mask.GetHashCode(), out var query))
-        {
-            MaskPool.Return(mask);
-            return query;
-        }
 
+    internal Query CompileQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
+    {
         var type = mask.HasTypes[index: 0];
         if (!_tablesByType.TryGetValue(type, out var typeTables))
         {
@@ -151,12 +146,25 @@ public partial class World
 
         var matchingTables = PooledList<Archetype>.Rent();
         foreach (var table in _archetypes)
-            if (table.Matches(mask))
-                matchingTables.Add(table);
+        {
+            if (table.Matches(mask)) matchingTables.Add(table);
+        }
 
-        query = createQuery(this, streamTypes, mask, matchingTables);
-
-        _queries.Add(query.GetHashCode(), query);
+        var query = createQuery(this, streamTypes, mask, matchingTables);
+        return query;
+    }
+    
+    internal Query CacheQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
+    {
+        // Compile if not cached.
+        if (!_queries.TryGetValue(mask.GetHashCode(), out var query))
+        {
+            query = CompileQuery(streamTypes, mask, createQuery);
+            _queries.Add(query.GetHashCode(), query);
+            return query;
+        }
+        
+        MaskPool.Return(mask);
         return query;
     }
 

@@ -25,36 +25,12 @@ public partial class World : IDisposable
         return identities;
     }
 
-    /*
-
     /// <summary>
-    /// Spawns a number of pre-configured Entities 
+    /// Spawns a number of pre-configured Entities. 
     /// </summary>
-    /// <param name="components">TypeExpressions and boxed objects to spawn</param>
-    /// <param name="count"></param>
-    public void Spawn(int count = 1, params object[] components)
-    {
-        var typeSet = components.Select(c => TypeExpression.Of(c.GetType())).Append(TypeExpression.Of<Identity>()).ToImmutableSortedSet();
-        var signature = new Signature<TypeExpression>(typeSet);
-        var archetype = GetArchetype(signature);
-        archetype.Spawn(count, components);
-    }
-    */
-
-    /// <summary>
-    /// Spawns a number of pre-configured Entities 
-    /// </summary>
-    /// <remarks>
-    /// It's more comfortable to spawn via <see cref="Query.Spawn"/>
-    /// </remarks>
     public EntitySpawner Entity()
     {
         return new EntitySpawner(this);
-        /*
-        var signature = new Signature<TypeExpression>(components.Select(c => c.Item1).Append(TypeExpression.Of<Identity>()).ToImmutableSortedSet());
-        var archetype = GetArchetype(signature);
-        archetype.Spawn(count, components.Select(c => c.Item2).ToArray());
-        */
     }
 
 
@@ -182,12 +158,12 @@ public partial class World : IDisposable
     /// <summary>
     /// Create a new World.
     /// </summary>
-    /// <param name="capacity">initial Entity capacity to reserve. The world will grow automatically.</param>
-    public World(int capacity = 4096)
+    /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
+    public World(int initialCapacity = 4096)
     {
-        _identityPool = new IdentityPool(capacity);
+        _identityPool = new IdentityPool(initialCapacity);
 
-        _meta = new Meta[capacity];
+        _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
         _root = GetArchetype(new Signature<TypeExpression>(TypeExpression.Of<Identity>(Match.Plain)));

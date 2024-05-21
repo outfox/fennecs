@@ -122,6 +122,36 @@ public class WorldTests(ITestOutputHelper output)
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    private void Can_Batch_Spawn_Twice(int count)
+    {
+        using var world = new World();
+        using var spawner = world.Entity();
+            
+        spawner.Add(555)
+        .Add("hallo")
+        .Spawn(count, false);
+
+        spawner.Add(420.0f);
+        spawner.Spawn(count, false);
+
+        var query = world.Query<int, string>().Build();
+        Assert.Equal(count * 2, query.Count);
+        
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(555, i);
+            Assert.Equal("hallo", s);
+            i++;
+            s = "correct.";
+        });
+    }
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
     [InlineData(10)]
     private void Cannot_Batch_Spawn_with_Duplicate(int count)
     {
