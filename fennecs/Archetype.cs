@@ -387,7 +387,7 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-    internal static int MoveEntry(int entry, Archetype source, Archetype destination)
+    internal static void MoveEntry(int entry, Archetype source, Archetype destination)
     {
         // We do this at the start to flag down any running, possibly async enumerators.
         Interlocked.Increment(ref source._version);
@@ -422,8 +422,8 @@ public sealed class Archetype : IEnumerable<Entity>
         // Only if we cycled an entity from the end of the storages back (its row changed).
         if (source.Count > entry) source.PatchMetas(entry);
         
-        // This is the "new row", TODO: abstract this enough so it is not needed.
-        return destination.Count-1;
+        // Entity was moved, needs both Archetype and Row update.
+        destination.PatchMetas(destination.Count-1);
     }
 
 
@@ -494,7 +494,8 @@ public sealed class Archetype : IEnumerable<Entity>
     }
     #endregion
 
-    public void Spawn(int count, object[] components)
+
+    public void Spawn(int count, params object[] components)
     {
         using var worldLock = _world.Lock();
         

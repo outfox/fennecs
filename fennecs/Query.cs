@@ -409,7 +409,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <param name="data">the data to add</param>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     // ReSharper disable once MemberCanBePrivate.Global
-    public void Add<T>(T data) => Batch(fennecs.Batch.AddConflict.Strict, fennecs.Batch.RemoveConflict.Strict).Add(data).Submit();
+    public void Add<T>(T data) => Batch().Add(data).Submit();
 
 
     /// <summary>
@@ -417,7 +417,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     /// <typeparam name="T">any Component type matched by the query</typeparam>
-    public void Remove<T>() => Batch(fennecs.Batch.AddConflict.Strict, fennecs.Batch.RemoveConflict.Strict).Remove<T>().Submit();
+    public void Remove<T>() => Batch().Remove<T>().Submit();
 
 
     /// <summary>

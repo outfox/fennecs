@@ -22,13 +22,10 @@ public partial class World
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
-        var newRow = Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
+        Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
 
         // Back-fill the new value
         newArchetype.BackFill<T>(typeExpression, data);
-
-        meta.Row = newRow;
-        meta.Archetype = newArchetype;
     }
 
 
@@ -48,10 +45,7 @@ public partial class World
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
         var newArchetype = GetArchetype(newSignature);
-        var newRow = Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
-
-        meta.Row = newRow;
-        meta.Archetype = newArchetype;
+        Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
     }
 
 
