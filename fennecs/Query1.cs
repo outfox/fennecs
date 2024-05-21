@@ -23,7 +23,7 @@ namespace fennecs;
 /// <remarks>
 /// 
 /// </remarks>
-public class Query<C0> : Query
+public class Query<C0> : Query where C0 : notnull
 {
     #region Internals
 
@@ -323,7 +323,7 @@ public class Query<C0> : Query
 
     /// <summary>
     /// <para>Blit (write) a component value of a stream type to all entities matched by this query.</para>
-    /// <para>Very fast, and does not cause a structural change!</para>
+    /// <para>🚀 Very fast!</para>
     /// </summary>
     /// <remarks>
     /// Each entity in the Query must possess the component type.
@@ -333,8 +333,6 @@ public class Query<C0> : Query
     /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
     public void Blit(C0 value, Identity target = default)
     {
-        //using var worldLock = World.Lock;
-
         var typeExpression = TypeExpression.Of<C0>(target);
 
         foreach (var table in Archetypes)
@@ -346,9 +344,9 @@ public class Query<C0> : Query
     
     
     /// <summary>
-    /// Blit (write) a component value of a stream type to all entities matched by this query.
-    /// The provided IList will be wrapped around (repeated) if there are fewer elements than Entities.
-    /// <para>Very fast, and does not cause a structural change!</para>
+    /// <para>Blit (write) a component value of a stream type to all entities matched by this query.
+    /// The provided IList will be wrapped around (repeated) if there are fewer elements than Entities.</para>
+    /// <para>🚀 Very fast!</para>
     /// </summary>
     /// <param name="values">a component value</param>
     /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>

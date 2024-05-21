@@ -332,7 +332,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
         var storage = (Storage<T>) GetStorage(type);
         storage.Blit(value);
-        
     }
 
 

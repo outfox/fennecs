@@ -69,8 +69,7 @@ internal interface IStorage
     public static IStorage Instantiate(TypeExpression expression)
     {
         var storageType = typeof(Storage<>).MakeGenericType(expression.Type);
-        var instance = (IStorage)Activator.CreateInstance(storageType)!;
-        if (instance == null) throw new InvalidOperationException($"Could not instantiate Storage for {expression}");
+        var instance = (IStorage) Activator.CreateInstance(storageType)!;
         return instance;
     }
 }

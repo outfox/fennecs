@@ -8,7 +8,7 @@ namespace fennecs;
 /// <summary>
 /// Query with 2 output Stream Types, <c>C0</c> and <c>C1</c>.
 /// </summary>
-public class Query<C0, C1> : Query<C0>
+public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
 {
     #region Internals
 

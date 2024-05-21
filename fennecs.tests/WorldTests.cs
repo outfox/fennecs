@@ -153,11 +153,11 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>(Match.Plain, Identity.Of("dieter")).Build();
         Assert.Equal(count, query.Count);
         
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         query.For((ref int i, ref string s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("dieter", s);
-            i++;
         });
     }
 
@@ -182,11 +182,11 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>(Match.Plain, other).Build();
         Assert.Equal(count, query.Count);
         
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         query.For((ref int i, ref string s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("relation", s);
-            i++;
         });
     }
 

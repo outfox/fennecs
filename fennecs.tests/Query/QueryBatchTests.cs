@@ -369,6 +369,75 @@ public class QueryBatchTests
 
 
     [Fact]
+    public void Blit_1()
+    {
+        using var world = new World();
+
+        var e1 = world.Spawn().Add(123);
+        var e2 = world.Spawn().Add(234);
+        var e3 = world.Spawn().Add(567).Add("pre-existing");
+
+        var intQuery = world.Query<int>().Build();
+        
+        intQuery.Blit(314);
+        
+        Assert.Equal(3, intQuery.Count);
+        Assert.True(e1.Has<int>());
+        Assert.Equal(314, e1.Ref<int>());
+        Assert.True(e2.Has<int>());
+        Assert.Equal(314, e2.Ref<int>());
+        Assert.True(e3.Has<int>());
+        Assert.Equal(314, e3.Ref<int>());
+    }
+
+
+    [Fact]
+    public void Blit_2()
+    {
+        using var world = new World();
+
+        var e1 = world.Spawn().Add(123).Add("jalthers");
+        var e2 = world.Spawn().Add(234).Add("goofy");;
+        var e3 = world.Spawn().Add(567).Add("pre-existing");
+
+        var query = world.Query<int, string>().Build();
+        
+        query.Blit(314);
+        query.Blit("works");
+        
+        Assert.Equal(3, query.Count);
+        
+        Assert.True(e1.Has<int>());
+        Assert.Equal(314, e1.Ref<int>());
+        Assert.Equal("works", e1.Ref<string>());
+        
+        Assert.True(e2.Has<int>());
+        Assert.Equal(314, e2.Ref<int>());
+        Assert.Equal("works", e2.Ref<string>());
+        
+        Assert.True(e3.Has<int>());
+        Assert.Equal(314, e3.Ref<int>());
+        Assert.Equal("works", e3.Ref<string>());
+    }
+
+
+    [Fact]
+    public void Blit_Empty_Query()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(123.5f);
+
+        var query = world.Query<int, string>().Build();
+        
+        query.Blit(314);
+        query.Blit("works");
+        
+        Assert.Equal(0, query.Count);
+    }
+
+
+    [Fact]
     public void Can_Batch_Add_Preserve()
     {
         using var world = new World();
@@ -377,7 +446,7 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add(567).Add("pre-existing");
 
-        // Added here because ther was an issue below that currupted e3's meta,
+        // Added here because there was an issue below that currupted e3's meta,
         // and needed to ruled that out as a precondition.
         Assert.Equal("pre-existing", e3.Ref<string>());
 
