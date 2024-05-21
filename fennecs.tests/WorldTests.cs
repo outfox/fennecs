@@ -119,6 +119,78 @@ public class WorldTests(ITestOutputHelper output)
     }
 
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    [InlineData(69_420)]
+    private void Can_Batch_Spawn_Linked(int count)
+    {
+        using var world = new World();
+        world.Entity()
+            .Add(555)
+            .AddLink("dieter")
+            .Spawn(count);
+
+        var query = world.Query<int, string>(Match.Plain, Identity.Of("dieter")).Build();
+        Assert.Equal(count, query.Count);
+        
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(555, i);
+            Assert.Equal("dieter", s);
+            i++;
+        });
+    }
+
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    [InlineData(69_420)]
+    private void Can_Batch_Spawn_Related(int count)
+    {
+        using var world = new World();
+        var other = world.Spawn();
+        
+        world.Entity()
+            .Add(555)
+            .AddRelation("relation", other)
+            .Spawn(count);
+
+        var query = world.Query<int, string>(Match.Plain, other).Build();
+        Assert.Equal(count, query.Count);
+        
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(555, i);
+            Assert.Equal("relation", s);
+            i++;
+        });
+    }
+
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    [InlineData(69_420)]
+    private void Can_Batch_Spawn_Entity_With_No_Components(int count)
+    {
+        using var world = new World();
+        world.Entity().Spawn(count);
+
+        var query = world.Query().Build();
+        Assert.Equal(count, query.Count);
+    }
+
+
 
     [Theory]
     [InlineData(1)]

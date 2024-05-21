@@ -16,11 +16,7 @@ public sealed class EntitySpawner : IDisposable
         _world = world;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="component"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <inheritdoc cref="Entity.Add{T}()"/>
     public EntitySpawner Add<T>(T component) where T : notnull
     {
         _components.Add(TypeExpression.Of<T>());
@@ -28,12 +24,7 @@ public sealed class EntitySpawner : IDisposable
         return this;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="component"></param>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <inheritdoc cref="Entity.AddRelation{T}(fennecs.Entity,T)"/>
     public EntitySpawner AddRelation<T>(T component, Identity target) where T : class
     {
         _components.Add(TypeExpression.Of<T>(target));
@@ -41,11 +32,7 @@ public sealed class EntitySpawner : IDisposable
         return this;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="target"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <inheritdoc cref="Entity.AddLink{T}"/>
     public EntitySpawner AddLink<T>(T target) where T : class
     {
         _components.Add(TypeExpression.Link(target));
@@ -54,13 +41,14 @@ public sealed class EntitySpawner : IDisposable
     }
 
     /// <summary>
-    /// 
+    /// Spawns <c>count</c> entities with the configured components.
     /// </summary>
-    /// <param name="count"></param>
-    public EntitySpawner Spawn(int count = 1)
+    /// <param name="count">number of entities to spawn</param>
+    /// <param name="dispose">dispose the spawner after use</param>
+    public void Spawn(int count = 1, bool dispose = true)
     {
         _world.Spawn(count, _components, _values);
-        return this;
+        if (dispose) Dispose();
     }
 
     /// <inheritdoc />
