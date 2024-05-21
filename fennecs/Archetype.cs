@@ -343,22 +343,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     internal IStorage GetStorage(TypeExpression typeExpression) => Storages[_storageIndices[typeExpression]];
-
     
-    internal void Set<T>(TypeExpression typeExpression, T value, int newRow) where T : notnull
-    {
-        // DeferredOperation sends data as objects
-        if (typeof(T).IsAssignableFrom(typeof(object)))
-        {
-            var sysArray = GetStorage(typeExpression);
-            sysArray.Store(newRow, value);
-            return;
-        }
-
-        var storage = (Storage<T>) GetStorage(typeExpression);
-        storage.Store(newRow, value);
-    }
-
+    
     internal void BackFill<T>(TypeExpression typeExpression, T value, int additions) where T: notnull
     {
         // DeferredOperation sends data as objects (decorated with TypeExpressions)
@@ -383,13 +369,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         // Mark entity as moved in Meta.
         var identity = source.Identities[entry];
         source._world.GetEntityMeta(identity).Archetype = destination;
-
-        /* This condition can probably be ruled out through good testing.
-        if (destination._storageIndices.Keys.Any(k => !source._storageIndices.ContainsKey(k)))
-        {
-            throw new InvalidOperationException("Destination Archetype has more types than source Archetype, a back-fill value would be needed.");
-        }
-        */
         
         foreach (var (type, oldIndex) in source._storageIndices)
         {

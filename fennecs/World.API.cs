@@ -38,7 +38,7 @@ public partial class World : IDisposable
     /// Spawns a number of pre-configured Entities 
     /// </summary>
     /// <remarks>
-    /// It's more comfortable to spawn via <see cref="Query.Spawn"/>
+    /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
     /// </remarks>
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
@@ -55,7 +55,7 @@ public partial class World : IDisposable
     /// Spawns a number of pre-configured Entities 
     /// </summary>
     /// <remarks>
-    /// It's more comfortable to spawn via <see cref="Query.Spawn"/>
+    /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
     /// </remarks>
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
@@ -251,27 +251,4 @@ public partial class World : IDisposable
     }
 
     #endregion
-
-public class EntityBatch : IDisposable
-{
-    private readonly World _world;
-    private PooledList<Identity> _identities = PooledList<Identity>.Rent();
-    private Signature<TypeExpression> _signature;
-    private Dictionary<TypeExpression, object> _components;
-
-    internal EntityBatch(World world, int count)
-    {
-        _world = world;
-        _identities.AddRange(_world._identityPool.Spawn(count));
-    }
-
-    public void Submit()
-    {
-        
-    }
-    public void Dispose()
-    {
-        _identities.Dispose();
-    }
-}
 }

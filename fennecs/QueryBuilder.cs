@@ -47,14 +47,14 @@ public abstract class QueryBuilder : IDisposable
     internal readonly World World;
     internal readonly Mask Mask = MaskPool.Rent();
 
-    private protected readonly PooledList<TypeExpression> StreamTypes = PooledList<TypeExpression>.Rent();
+    protected private readonly PooledList<TypeExpression> StreamTypes = PooledList<TypeExpression>.Rent();
 
     internal QueryBuilder(World world)
     {
         World = world;
     }
 
-    private protected void Outputs<T>(Identity target = default)
+    protected private void Outputs<T>(Identity target = default)
     {
         var typeExpression = TypeExpression.Of<T>(target);
         StreamTypes.Add(typeExpression);
@@ -66,6 +66,7 @@ public abstract class QueryBuilder : IDisposable
     {
         Mask.Dispose();
         StreamTypes.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     #endregion
@@ -366,7 +367,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 }
 
 /// <inheritdoc />
-public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
+public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull where C3 : notnull where C1 : notnull
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3>(world, streamTypes, mask, matchingTables);
@@ -448,7 +449,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder
 }
 
 /// <inheritdoc />
-public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
+public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnull where C3 : notnull where C2 : notnull where C1 : notnull
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3, C4>(world, streamTypes, mask, matchingTables);
@@ -529,7 +530,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder
 }
 
 /// <inheritdoc />
-public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder
+public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : notnull where C4 : notnull where C3 : notnull where C2 : notnull where C1 : notnull
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(world, streamTypes, mask, matchingTables);
