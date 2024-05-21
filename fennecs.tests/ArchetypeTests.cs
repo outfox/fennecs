@@ -106,4 +106,20 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Equal(2, queryAll.Count);
         Assert.Equal(1, queryInt.Count);
     }
+
+    [Fact]
+    public void IsComparable_Same_As_Signature()
+    {
+        using var world = new World();
+        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var entity2 = world.Spawn().Add(123).Add(17.0f).Id;
+        
+        var table1 = world.GetEntityMeta(entity1).Archetype;
+        var table2 = world.GetEntityMeta(entity1).Archetype;
+
+        Assert.True(table1.CompareTo(table2) == table1.Signature.CompareTo(table2.Signature));
+
+        Assert.True(table1.CompareTo(null) == table1.Signature.CompareTo(default));
+    }
+
 }

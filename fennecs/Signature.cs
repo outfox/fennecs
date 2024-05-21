@@ -122,6 +122,8 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>, 
     /// <inheritdoc />
     public int CompareTo(Signature<T> other)
     {
+        if (other._set == default!) return 1;
+        
         var minCount = Math.Min(_set.Count, other._set.Count);
 
         for (var i = 0; i < minCount; i++)
