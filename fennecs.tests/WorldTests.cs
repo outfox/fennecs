@@ -1,7 +1,9 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 namespace fennecs.tests;
 
+[SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
 public class WorldTests(ITestOutputHelper output)
 {
     [Fact]
@@ -183,7 +185,6 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>(Match.Plain, Identity.Of("dieter")).Build();
         Assert.Equal(count, query.Count);
         
-        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         query.For((ref int i, ref string s) =>
         {
             Assert.Equal(555, i);
@@ -212,7 +213,7 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>(Match.Plain, other).Build();
         Assert.Equal(count, query.Count);
         
-        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
         query.For((ref int i, ref string s) =>
         {
             Assert.Equal(555, i);

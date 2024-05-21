@@ -397,7 +397,7 @@ public class QueryBatchTests
         using var world = new World();
 
         var e1 = world.Spawn().Add(123).Add("jalthers");
-        var e2 = world.Spawn().Add(234).Add("goofy");;
+        var e2 = world.Spawn().Add(234).Add("goofy");
         var e3 = world.Spawn().Add(567).Add("pre-existing");
 
         var query = world.Query<int, string>().Build();
