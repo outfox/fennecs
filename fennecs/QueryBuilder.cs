@@ -124,8 +124,6 @@ public abstract class QueryBuilder : IDisposable
     {
         var typeExpression = TypeExpression.Of<T>(target);
         
-        if (StreamTypes.Contains(typeExpression) || (Mask.safety && Mask.HasTypes.Contains(typeExpression))) throw new InvalidOperationException($"Duplicate Has<C>: Type {typeExpression} is already an output of this query.");
-
         Mask.Has(typeExpression);
         return this;
     }
