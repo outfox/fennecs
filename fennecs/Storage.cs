@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -126,6 +127,7 @@ internal class Storage<T> : IStorage
     /// Adds a boxed value (or number of identical values) to the storage.
     /// </summary>
     public void Append(object value, int additions = 1) => Append((T)value, additions);
+
 
 
     /// <summary>
@@ -267,6 +269,17 @@ internal class Storage<T> : IStorage
     public void Migrate(IStorage destination) => Migrate((Storage<T>)destination);
 
 
+    /// <summary>
+    /// Used for memory-efficient spawning
+    /// </summary>
+    /// <param name="values">PooledList as gotten from <see cref="World.SpawnBare"/></param>
+    internal void Append(PooledList<T> values)
+    {
+        EnsureCapacity(Count + values.Count);
+        values.CopyTo(FullSpan[Count..]);
+        Count += values.Count;    
+    }
+    
     private void Append(Span<T> appendage)
     {
         EnsureCapacity(Count + appendage.Length);

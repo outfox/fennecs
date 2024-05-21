@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace fennecs.tests;
 
 public class WorldTests(ITestOutputHelper output)
@@ -55,7 +57,22 @@ public class WorldTests(ITestOutputHelper output)
     }
 
 
-    [Theory(Skip = "Deadlock at the moment")]
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1_000)]
+    [InlineData(10_000)]
+    [InlineData(1_000_000)]
+    private void Can_Batch_Spawn_Bare(int count)
+    {
+        using var world = new World();
+        var identities = world.SpawnBare(count);
+        Assert.Equal(count, identities.Count);
+        Assert.Equal(count, identities.ToImmutableSortedSet().Count);
+    }
+
+
+
+    [Theory]
     [InlineData(1)]
     [InlineData(1_000)]
     [InlineData(10_000)]

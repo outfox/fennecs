@@ -27,7 +27,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// </summary>
     public ReadOnlySpan<Identity> Identities => IdentityStorage.Span;
 
-    internal IStorage[] Storages => _storages;
+    /// <summary>
+    /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
+    /// </summary>
+    private IStorage[] Storages { get; }
 
     /// <summary>
     /// Number of Entities contained in this Archetype.
@@ -50,11 +53,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// </summary>
     internal readonly Storage<Identity> IdentityStorage;
 
-    /// <summary>
-    /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
-    /// </summary>
-    private readonly IStorage[] _storages;
-
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
 
     /// <summary>
@@ -69,7 +67,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     internal Archetype(World world, Signature<TypeExpression> signature)
     {
         _world = world;
-        _storages = new IStorage[signature.Count];
+        Storages = new IStorage[signature.Count];
         
         Signature = signature;
         
@@ -84,7 +82,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         {
             var type = signature[index];
             _storageIndices.Add(type, index);
-            _storages[index] = IStorage.Instantiate(type);
+            Storages[index] = IStorage.Instantiate(type);
 
             // Time for a new bucket?
             if (currentTypeId != type.TypeId)
@@ -103,7 +101,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
             //TODO: Harmless assert, but...  is it pretty? We could disallow TypeExpression 0, or skip null types.
             Debug.Assert(currentTypeId != 0, "Trying to create bucket for a null type.");
-            currentBucket.Add(_storages[index]);
+            currentBucket.Add(Storages[index]);
         }
 
         // Get quick lookup for Identity component
@@ -127,7 +125,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         {
             if (expression.Matches(type))
             {
-                result.Add((Storage<T>) _storages[index]);
+                result.Add((Storage<T>) Storages[index]);
             }
         }
     }
@@ -196,7 +194,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     {
         Interlocked.Increment(ref _version);
 
-        foreach (var storage in _storages)
+        foreach (var storage in Storages)
         {
             storage.Delete(entry);
         }
@@ -220,14 +218,14 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             _world.Despawn(new Entity(_world, toDelete[i]));
         }
     }
-    
-    private void PatchMetas(int entry, int count = 1)
+
+    internal void PatchMetas(int entry, int count = 1)
     {
         for (var i = 0; i < count; i++)
         {
-            ref var meta = ref _world.GetEntityMeta(IdentityStorage[entry+i]);
-            meta.Archetype = this;
-            meta.Row = entry+i;
+            var identity = IdentityStorage[entry + i];
+            ref var meta = ref _world.GetEntityMeta(identity);
+            meta = new Meta(identity, this, entry + i);
         }
     }
 
@@ -345,7 +343,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal IStorage GetStorage(TypeExpression typeExpression) => _storages[_storageIndices[typeExpression]];
+    internal IStorage GetStorage(TypeExpression typeExpression) => Storages[_storageIndices[typeExpression]];
 
     
     internal void Set<T>(TypeExpression typeExpression, T value, int newRow) where T : notnull
@@ -399,12 +397,12 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             if (!destination._storageIndices.TryGetValue(type, out var newIndex))
             {
                 // Move is subtractive, discard anything we don't have in the destination
-                source._storages[oldIndex].Delete(entry);
+                source.Storages[oldIndex].Delete(entry);
                 continue;
             }
 
-            var oldStorage = source._storages[oldIndex];
-            var newStorage = destination._storages[newIndex];
+            var oldStorage = source.Storages[oldIndex];
+            var newStorage = destination.Storages[newIndex];
 
             oldStorage.Move(entry, newStorage);
         }
@@ -491,15 +489,43 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     #endregion
 
 
-    public void Spawn(int count, params object[] components)
+    internal void Spawn(int count, object[] components)
     {
         using var worldLock = _world.Lock();
+        
+        var first = Count;
         
         foreach (var component in components)
         {
             var type = TypeExpression.Of(component.GetType());
             var storage = GetStorage(type);
-            //Array.Fill(storage, component, Count, count);
+            storage.Append(component, count);
         }
+        
+        using var identities = _world.SpawnBare(count); 
+        IdentityStorage.Append(identities);
+        PatchMetas(first, count);
+    }
+    
+    internal void Spawn(int count = 1, params (TypeExpression, object)[] components)
+    {
+        using var worldLock = _world.Lock();
+        
+        var first = Count;
+        
+        foreach (var (type, component) in components)
+        {
+            var storage = GetStorage(type);
+            storage.Append(component, count);
+        }
+
+        using var identities = _world.SpawnBare(count);
+        IdentityStorage.Append(identities);
+        PatchMetas(first, count);
+    }
+
+    internal void Invalidate()
+    {
+        Interlocked.Increment(ref _version);
     }
 }

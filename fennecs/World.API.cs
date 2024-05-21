@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Text;
 using fennecs.pools;
 
 namespace fennecs;
@@ -16,6 +17,12 @@ public partial class World : IDisposable
     /// <returns>an Entity to operate on</returns>
     public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
 
+    
+    internal PooledList<Identity> SpawnBare(int count)
+    {
+        return _identityPool.Spawn(count);
+    }
+
 
     /// <summary>
     /// Spawns a number of pre-configured Entities 
@@ -24,7 +31,7 @@ public partial class World : IDisposable
     /// <param name="count"></param>
     public void Spawn(int count = 1, params object[] components)
     {
-        var signature = new Signature<TypeExpression>(components.Select(c => TypeExpression.Of(c.GetType())).ToArray());
+        var signature = new Signature<TypeExpression>(components.Select(c => TypeExpression.Of(c.GetType())).ToImmutableSortedSet());
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components);
     }
@@ -37,14 +44,10 @@ public partial class World : IDisposable
     /// <param name="count"></param>
     public void Spawn(ValueTuple<TypeExpression, object>[] components, int count = 1)
     {
+        var signature = new Signature<TypeExpression>(components.Select(c => c.Item1).ToImmutableSortedSet());
+        var archetype = GetArchetype(signature);
+        archetype.Spawn(count, components.Select(c => c.Item2).ToArray());
     }
-
-    /// <summary>
-    /// Creates <paramref name="count"/> new Identities in this World, and returns its <see cref="EntityBatch"/> struct.
-    /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
-    /// </summary>
-    /// <returns>an EntityBatch to operate on</returns>
-    //public EntityBatch Spawn(int count) => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
 
 
     /// <summary>

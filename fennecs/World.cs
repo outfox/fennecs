@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -63,14 +64,17 @@ public partial class World
         lock (_spawnLock)
         {
             var identity = _identityPool.Spawn();
-            
-            _root.IdentityStorage.Append(identity);
-            var row = _root.Count - 1;
 
-            // FIXME: Cleanup / Unify!
+            // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
             while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
 
-            _meta[identity.Index] = new Meta(identity, _root, row);
+            _meta[identity.Index] = new Meta();
+            
+            _root.IdentityStorage.Append(identity);
+            
+            var row = _root.Count - 1;
+            _root.PatchMetas(row);
+            _root.Invalidate();   
             
             return identity;
         }
