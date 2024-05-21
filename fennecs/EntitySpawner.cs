@@ -16,28 +16,33 @@ public sealed class EntitySpawner : IDisposable
         _world = world;
     }
 
+    private EntitySpawner AddComponent(TypeExpression type, object value)
+    {
+        if (_components.Contains(type)) throw new InvalidOperationException($"Component of Type {type} already added.");
+        _components.Add(type);
+        _values.Add(value);
+        return this;
+    }
+    
     /// <inheritdoc cref="Entity.Add{T}()"/>
     public EntitySpawner Add<T>(T component) where T : notnull
     {
-        _components.Add(TypeExpression.Of<T>());
-        _values.Add(component);
-        return this;
+        var type = TypeExpression.Of<T>();
+        return AddComponent(type, component);
     }
 
     /// <inheritdoc cref="Entity.AddRelation{T}(fennecs.Entity,T)"/>
     public EntitySpawner AddRelation<T>(T component, Identity target) where T : class
     {
-        _components.Add(TypeExpression.Of<T>(target));
-        _values.Add(component);
-        return this;
+        var type = TypeExpression.Of<T>(target);
+        return AddComponent(type, component);
     }
 
     /// <inheritdoc cref="Entity.AddLink{T}"/>
     public EntitySpawner AddLink<T>(T target) where T : class
     {
-        _components.Add(TypeExpression.Link(target));
-        _values.Add(target);
-        return this;
+        var type = TypeExpression.Link(target);
+        return AddComponent(type, target);
     }
 
     /// <summary>

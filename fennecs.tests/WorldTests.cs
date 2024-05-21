@@ -122,6 +122,23 @@ public class WorldTests(ITestOutputHelper output)
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
+    [InlineData(10)]
+    private void Cannot_Batch_Spawn_with_Duplicate(int count)
+    {
+        using var world = new World();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            world.Entity()
+                .Add(555)
+                .Add(666)
+                .Spawn(count);
+        });
+    }
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
     [InlineData(123)]
     [InlineData(9_000)]
     [InlineData(69_420)]
