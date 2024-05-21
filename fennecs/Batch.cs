@@ -172,9 +172,9 @@ public readonly struct Batch : IDisposable
         /// </summary>
         /// <remarks>
         /// Exclude the component from the query via <see cref="QueryBuilder{C1}.Not{T}(fennecs.Identity)"/> or similar
-        /// means. If you want to allow the addition of components that are already present, use <see cref="SkipEntirely"/>
-        /// to ignore the Archetypes where the component is already present, and use <see cref="Replace"/> if you'd like
-        /// to overwrite the component value everywhere it is already encountered in the query.
+        /// means. If you want to allow the addition of components that are already present, use <see cref="Preserve"/>
+        /// to keep any values already present, and use <see cref="Replace"/> if you'd like to overwrite the component
+        /// value everywhere it is already encountered in the query.
         /// </remarks>
         Strict = default,
 
