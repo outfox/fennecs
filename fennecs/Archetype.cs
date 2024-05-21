@@ -192,18 +192,6 @@ public sealed class Archetype : IEnumerable<Entity>
     }
 
 
-/*    [Obsolete("Don't add identities 1 by 1", true)]
-    internal int Add(Identity identity)
-    {
-        Interlocked.Increment(ref _version);
-
-        /*
-        EnsureCapacity(Count + 1);
-        _identities[Count] = identity;
-        return Count++;
-    }
-*/
-
     internal void Remove(int entry)
     {
         Interlocked.Increment(ref _version);
@@ -263,12 +251,23 @@ public sealed class Archetype : IEnumerable<Entity>
     /// <param name="destination">the Archetype to move the entities to</param>
     /// <param name="additions">the new components and their TypeExpressions to add to the destination Archetype</param>
     /// <param name="backFills">values for each addition to add</param>
-    internal void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills)
+    /// <param name="addMode"></param>
+    internal void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills, Batch.AddConflict addMode)
     {
         if (destination == this)
         {
             destination.Fill(additions, backFills);
             return;
+        }
+
+        // Replacement back-fill of values ("Replace")
+        if (addMode == Batch.AddConflict.Replace)
+        {
+            foreach (var type in destination.Signature.Intersect(Signature).Intersect(additions))
+            {
+                var value = backFills[additions.IndexOf(type)];
+                Fill(type, value); //Fill with value to replace before migrating.
+            }
         }
         
         // Subtractive copy
@@ -287,14 +286,11 @@ public sealed class Archetype : IEnumerable<Entity>
             }
         }
 
-        // Additive back-fill of values
+        // Additive back-fill of values ("Preserve" and "Strict")
         foreach (var type in destination.Signature.Except(Signature))
         {
             var value = backFills[additions.IndexOf(type)];
             destination.BackFill(type, value);
-            
-            //TODO: handle "Preserve" and "Replace" addition modes accordingly.
-            //(this inadvertently is preserve right now)
         }
         
         // Update all Meta info to mark entities as moved.

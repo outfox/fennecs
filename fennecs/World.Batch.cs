@@ -22,14 +22,9 @@ public partial class World
         foreach (var archetype in operation.Archetypes)
         {
             var preAddSignature = archetype.Signature.Except(operation.Removals);
-
-            if (operation.AddMode == Batch.AddConflict.SkipEntirely
-                && _typeGraph.TryGetValue(preAddSignature, out var preAddArchetype)
-                && preAddArchetype.Signature.Overlaps(operation.Additions)) continue;
-
             var newSignature = preAddSignature.Union(operation.Additions);
             var newArchetype = GetArchetype(newSignature);
-            archetype.Migrate(newArchetype, operation.Additions, operation.BackFill);
+            archetype.Migrate(newArchetype, operation.Additions, operation.BackFill, operation.AddMode);
         }
     }
 }

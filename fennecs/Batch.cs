@@ -14,7 +14,7 @@ public readonly struct Batch : IDisposable
     internal readonly PooledList<TypeExpression> Additions = PooledList<TypeExpression>.Rent();
     internal readonly PooledList<TypeExpression> Removals = PooledList<TypeExpression>.Rent();
     internal readonly PooledList<object> BackFill = PooledList<object>.Rent();
-    
+
     internal readonly AddConflict AddMode;
 
     // ReSharper disable once MemberCanBePrivate.Global
@@ -186,18 +186,20 @@ public readonly struct Batch : IDisposable
         /// <remarks>
         /// If an archetype already has the component that a batch tries to add, no entities of that archetype are affected. This is true regardless of whether or not they match the batch's EntityQuery.
         /// </remarks>
+        [Obsolete("Use Preserve instead.", true)]
         SkipEntirely,
 
         /// <summary>
-        /// Keeps the existing component data when trying to add a duplicate, but performans all remaining operations.
+        /// Keeps the existing component data whenever trying to add a duplicate.
         /// </summary>
-        [Obsolete("Not implemented (yet).", true)] Preserve,
+        Preserve,
 
         /// <summary>
-        /// Overwrites an existing component with the addded component if it is already present.
+        /// Overwrites existing component data with the addded component if it is already present.
         /// </summary>
         /// <remarks>
-        /// This is particularly useful when setting component data en masse. This includes the special case of sending information from a 'leader' entity to its 'followers' using a shared component to store the leader's last known position. Using the 'Replace' option makes updating the leader's position for all followers easier.
+        /// Alternatively, you can use the faster <see cref="Query{C0}.Blit(C0,fennecs.Identity)"/> if you
+        /// can ensure that the component is present on all entities in the query.
         /// </remarks>
         Replace,
     }

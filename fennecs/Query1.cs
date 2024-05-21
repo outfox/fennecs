@@ -322,8 +322,13 @@ public class Query<C0> : Query
     #region Blitters
 
     /// <summary>
-    /// Blit (write) a component value of a stream type to all entities matched by this query.
+    /// <para>Blit (write) a component value of a stream type to all entities matched by this query.</para>
+    /// <para>Very fast, and does not cause a structural change!</para>
     /// </summary>
+    /// <remarks>
+    /// Each entity in the Query must possess the component type.
+    /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
+    /// </remarks>
     /// <param name="value">a component value</param>
     /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
     public void Blit(C0 value, Identity target = default)
@@ -341,8 +346,9 @@ public class Query<C0> : Query
     
     
     /// <summary>
-    /// Blit (write) component values of a stream type to all entities matched by this query.
+    /// Blit (write) a component value of a stream type to all entities matched by this query.
     /// The provided IList will be wrapped around (repeated) if there are fewer elements than Entities.
+    /// <para>Very fast, and does not cause a structural change!</para>
     /// </summary>
     /// <param name="values">a component value</param>
     /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
