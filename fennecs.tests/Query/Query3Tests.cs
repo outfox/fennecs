@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests.Query;
+﻿using System.Numerics;
+
+namespace fennecs.tests.Query;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -110,5 +112,14 @@ public class Query3Tests
 
         
         query.For((ref int _, ref string str, ref char _) => { Assert.Equal(11.ToString(), str); });
+    }
+    
+    [Fact]
+    private void Can_Warmup()
+    {
+        using var world = new World();
+        var query = world.Query<string, Vector3, int>().Build();
+        query.Warmup();
+        query.Warmup<float>();
     }
 }

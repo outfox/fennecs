@@ -123,7 +123,8 @@ public abstract class QueryBuilder : IDisposable
     public virtual QueryBuilder Has<T>(Identity target = default)
     {
         var typeExpression = TypeExpression.Of<T>(target);
-        if (StreamTypes.Contains(typeExpression)) throw new InvalidOperationException($"Duplicate Has<C>: Type {typeExpression} is already an output of this query.");
+        
+        if (StreamTypes.Contains(typeExpression) || (Mask.safety && Mask.HasTypes.Contains(typeExpression))) throw new InvalidOperationException($"Duplicate Has<C>: Type {typeExpression} is already an output of this query.");
 
         Mask.Has(typeExpression);
         return this;

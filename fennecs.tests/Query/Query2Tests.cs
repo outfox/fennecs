@@ -487,4 +487,13 @@ public class Query2Tests
         Assert.Contains(e1, found);
         Assert.Contains(e2, found);
     }
+    
+    [Fact]
+    private void Can_Warmup()
+    {
+        using var world = new World();
+        var query = world.Query<int, byte>().Build();
+        query.Warmup();
+        query.Warmup<float>();
+    }
 }
