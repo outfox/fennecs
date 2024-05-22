@@ -176,7 +176,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     #region Filtering
-    /// <inheritdoc cref="Subset{T}()"/>
+    /// <inheritdoc cref="Subset{T}"/>
     /// <param name="match">
     ///     a Match Expression that is narrower than the respective Stream Type's initial
     ///     Match Expression (e.g. if Query has Match.Any, Match.Plain or Match.Object would be useful here).
@@ -186,27 +186,8 @@ public class Query : IEnumerable<Entity>, IDisposable
         _streamFilters.Add(TypeExpression.Of<T>(match));
         FilterArchetypes();
     }
-
-    /// <summary>
-    ///    Applies a subset filter to this Query, reducing the matched entities to a subset of the initially matched ones.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         Used to finely narrow down a query with Wildcard Match Expressions in its Stream Types, e.g. to match only
-    ///         a specific Object Link in a Query that matches all Object Links of a given type.
-    ///     </para>
-    ///     <para>
-    ///         Call this method repeatedly to set multiple filters.
-    ///     </para>
-    ///     <para>
-    ///         Clear the filter with <see cref="ClearFilters" />.
-    ///     </para>
-    /// </remarks>
-    /// <typeparam name="T">component type</typeparam>
-    public void Subset<T>() => Subset<T>(Match.Any);
-
     
-    /// <inheritdoc cref="Subset{T}()"/>
+    /// <inheritdoc cref="Subset{T}"/>
     /// <summary>
     /// Specify a match expression to exclude certain relations.
     /// </summary>
@@ -219,24 +200,6 @@ public class Query : IEnumerable<Entity>, IDisposable
         _streamExclusions.Add(TypeExpression.Of<T>(match));
         FilterArchetypes();
     }
-
-    /// <summary>
-    ///    Applies an exclusion filter to this Query, excluding any entities that match the given Component Type.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         Used to broadly narrow down a query, selectively excluding entities with certain components
-    ///         or relations.
-    ///     </para>
-    ///     <para>
-    ///         Call this method repeatedly to set multiple filters.
-    ///     </para>
-    ///     <para>
-    ///         Clear the filter with <see cref="ClearFilters" />.
-    ///     </para>
-    /// </remarks>
-    /// <typeparam name="T"></typeparam>
-    public void Exclude<T>() => Exclude<T>(Match.Any);
 
     private void FilterArchetypes()
     {
@@ -265,7 +228,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     #region IEnumerable<Entity>
     /// <summary>
-    ///     Enumerator over all the Entities in the Query.
+    ///     Enumerator over all the Entities in the Query (dependent on filter state).
     ///     Do not make modifications to the world affecting the Query while enumerating.
     /// </summary>
     /// <returns>
@@ -275,12 +238,9 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         AssertNotDisposed();
 
-        foreach (var table in _trackedArchetypes)
+        foreach (var table in Archetypes)
         {
-            if (!table.IsMatchSuperSet(_streamFilters)) continue;
-
-            foreach (var entity in table)
-                yield return entity;
+            foreach (var entity in table) yield return entity;
         }
     }
 

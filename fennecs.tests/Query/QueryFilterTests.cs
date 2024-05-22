@@ -54,7 +54,7 @@ public class QueryFilterTests
     }
 
     [Fact]
-    public void AddFilter_WithInheritors_ShouldWorkCorrectly()
+    public void Subset_WithInheritors_ShouldWorkCorrectly()
     {
         // Arrange
         var query1 = _world.Query<ComponentA>().Build();
@@ -75,7 +75,28 @@ public class QueryFilterTests
         // ... assert other queries
     }
 
-    // Additional tests for other inheritors of Query...
+    [Fact]
+    public void Exclude_WithInheritors_ShouldWorkCorrectly()
+    {
+        // Arrange
+        var query1 = _world.Query<ComponentA>().Build();
+        var query2 = _world.Query<ComponentA, ComponentB>().Build();
+        // ... up to query5 for Query<ComponentA, ComponentB, ComponentC, ComponentD, ComponentE>
+
+        var entity = _world.Spawn().Add(new ComponentA()).Add(new ComponentB());
+        // ... add more components as needed for the test
+
+        // Act
+        query1.Exclude<ComponentA>(Match.Plain);
+        query2.Exclude<ComponentB>(Match.Plain);
+        // ... apply filters to other queries
+
+        // Assert
+        Assert.Empty(query1.ToList());
+        Assert.Empty(query2.ToList());
+        // ... assert other queries
+    }
+
 }
 
 
