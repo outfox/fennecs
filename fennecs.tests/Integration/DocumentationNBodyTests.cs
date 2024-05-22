@@ -145,6 +145,17 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         
         var pos3 = sun3.Ref<Position>().Value;
         Assert.Equal(body3.position, pos3);
-        Assert.NotEqual(p3, pos3);
+
+        var force1 = Vector3.Normalize(p2 - p1) * body2.mass / Vector3.DistanceSquared(p2, p1);
+        force1 += Vector3.Normalize(p3 - p1) * body3.mass / Vector3.DistanceSquared(p3, p1);
+        Assert.Equal(force1, sun1.Ref<Force>().Value);
+        
+        var force2 = Vector3.Normalize(p1 - p2) * body1.mass / Vector3.DistanceSquared(p1, p2);
+        force2 += Vector3.Normalize(p3 - p2) * body3.mass / Vector3.DistanceSquared(p3, p2);
+        Assert.Equal(force2, sun2.Ref<Force>().Value);
+        
+        var force3 = Vector3.Normalize(p1 - p3) * body1.mass / Vector3.DistanceSquared(p1, p3);
+        force3 += Vector3.Normalize(p2 - p3) * body2.mass / Vector3.DistanceSquared(p2, p3);
+        Assert.Equal(force3, sun3.Ref<Force>().Value);
     }
 }
