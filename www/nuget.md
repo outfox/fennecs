@@ -38,7 +38,7 @@ var query = world.Query<Position>().Compile();
 // Run code for all entities in the query. Need threads? Replace "For" with "Job"!
 query.For(static (ref Position position, float dt) => {
     position.Y -= 9.81f * dt;
-});
+}, uniform: Time.deltaTime);
 ```
 
 ### 💢... when we said minimal boilerplate, *we foxing meant it.*
