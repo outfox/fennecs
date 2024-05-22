@@ -10,7 +10,7 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         public Vector3 Value { get; set; }
     }
 
-    private struct Forces : Fox<Vector3>
+    private struct Force : Fox<Vector3>
     {
         public Vector3 Value { get; set; }
     }
@@ -25,12 +25,6 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         public Vector3 position;
         public float mass = 1f;
     }
-
-
-    private struct Mass : Fox<float>
-    {
-        public float Value { get; set; }
-    }
     
 
     [Fact]
@@ -38,27 +32,31 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
     {
         var world = new World();
         
+        // By adding all attractor relations to all bodies,
+        // they all end up in the same Archetype (not strictly necessary)
+        var p1 = new Vector3(-10, -4, 0);
+        var p2 = new Vector3(0, 12, 0);
+        var p3 = new Vector3(7, 0, 4);
+        
+        var body1 = new Body{position = p1, mass = 2.0f};
+        var body2 = new Body{position = p2, mass = 1.5f};
+        var body3 = new Body{position = p3, mass = 3.5f};
+
         var sun1 = world.Spawn();
-        sun1.Add<Forces>();
-        sun1.Add(new Position {Value = new Vector3(-10, -4, 0)});
+        sun1.Add<Force>();
+        sun1.Add(new Position {Value = body1.position});
         sun1.Add<Velocity>();
 
         var sun2 = world.Spawn();
-        sun2.Add<Forces>();
-        sun2.Add(new Position {Value = new Vector3(0, 12, 0)});
+        sun2.Add<Force>();
+        sun2.Add(new Position {Value = body2.position});
         sun2.Add<Velocity>();
 
         var sun3 = world.Spawn();
-        sun3.Add<Forces>();
-        sun3.Add(new Position {Value = new Vector3(7, 0, 4)});
+        sun3.Add<Force>();
+        sun3.Add(new Position {Value = body3.position});
         sun3.Add<Velocity>();
         
-        // By adding all attractor relations to all bodies,
-        // they all end up in the same Archetype (not strictly necessary)
-        var body1 = new Body();
-        var body2 = new Body();
-        var body3 = new Body();
-
         sun1.Add(body1);
         sun1.AddRelation(sun1, body1);
         sun1.AddRelation(sun2, body2);
@@ -69,7 +67,7 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         sun2.AddRelation(sun2, body2);
         sun2.AddRelation(sun3, body3);
         
-        sun3.Add(body2);
+        sun3.Add(body3);
         sun3.AddRelation(sun1, body1);
         sun3.AddRelation(sun2, body2);
         sun3.AddRelation(sun3, body3);
@@ -78,7 +76,7 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         // var accumulator = world.Query<Forces, Position, Body>().Compile();
         
         // Used to accumulate all forces acting on a body from the other bodies
-        using var accumulator = world.Query<Forces, Position, Body>(Match.Plain, Match.Plain, Match.Entity).Compile();
+        using var accumulator = world.Query<Force, Position, Body>(Match.Plain, Match.Plain, Match.Entity).Compile();
         
         Assert.Equal(3, accumulator.Count);
         Assert.Contains(sun1, accumulator);
@@ -86,7 +84,7 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         Assert.Contains(sun3, accumulator);
 
         // Used to calculate the the forces into the velocities and positions
-        using var integrator = world.Query<Forces, Velocity, Position>().Compile();
+        using var integrator = world.Query<Force, Velocity, Position>().Compile();
         
         // Used to copy the Position into the Body components of the same object (plain = non-relation component)
         using var consolidator = world.Query<Position, Body>(Match.Plain, Match.Plain).Compile();
@@ -99,20 +97,25 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         var iterations3 = 0;
         
         // Clear all forces
-        accumulator.Blit(new Forces { Value = Vector3.Zero });
+        accumulator.Blit(new Force { Value = Vector3.Zero });
         
         // Accumulate all forces (we have only 1 attractor stream, this will enumerate each sun 3 times)
-        accumulator.For((ref Forces forces, ref Position position, ref Body attractor, float dt) =>
+        accumulator.For((ref Force force, ref Position position, ref Body attractor) =>
         {
             iterations1++;
-            forces.Value += dt * (attractor.position - position.Value) * attractor.mass / Vector3.DistanceSquared(attractor.position, position.Value);
-        }, 0.01f);
+
+            var distanceSquared = Vector3.DistanceSquared(attractor.position, position.Value);
+            if (distanceSquared < float.Epsilon) return; // Skip ourselves (anything that's too close)
+            
+            var direction = Vector3.Normalize(attractor.position - position.Value);
+            force.Value += direction * attractor.mass / distanceSquared;
+        });
         
-        // NB! 3 bodies x 3 attractors
+        // NB! 3 bodies x 3 valid attractors
         Assert.Equal(bodyCount * bodyCount, iterations1);
 
         // Integrate forces, velocities, and positions
-        integrator.For((ref Forces forces, ref Velocity velocity, ref Position position, float dt) =>
+        integrator.For((ref Force forces, ref Velocity velocity, ref Position position, float dt) =>
         {
             iterations2++;
             velocity.Value += dt * forces.Value;
@@ -120,8 +123,9 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         }, 0.01f);
         
         Assert.Equal(bodyCount, iterations2);
+
         
-        // Copy the Position into the Body components of the same object
+        // Copy the Position back to the Body components of the same object
         // (the plain and relation components are backed by the same instances of Body!)
         consolidator.For((ref Position position, ref Body body) =>
         {
@@ -130,5 +134,17 @@ public class DocumentationNBodyTests(ITestOutputHelper output)
         });
 
         Assert.Equal(bodyCount, iterations3);
+        
+        var pos1 = sun1.Ref<Position>().Value;
+        Assert.Equal(body1.position, pos1);
+        Assert.NotEqual(p1, pos1);
+
+        var pos2 = sun2.Ref<Position>().Value;
+        Assert.Equal(body2.position, pos2);
+        Assert.NotEqual(p2, pos2);
+        
+        var pos3 = sun3.Ref<Position>().Value;
+        Assert.Equal(body3.position, pos3);
+        Assert.NotEqual(p3, pos3);
     }
 }
