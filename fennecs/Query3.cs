@@ -13,7 +13,8 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     #region Internals
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
-    {    }
+    {
+    }
 
     #endregion
 

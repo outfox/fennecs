@@ -89,7 +89,9 @@ public abstract class QueryBuilder : IDisposable
     }
     
     /// <inheritdoc cref="Compile"/>
+    [Obsolete("Use Compile() or Unique() instead.")]
     public abstract Query Build();
+    
     
     /// <summary>
     /// Builds (compiles) the Query from the current state of the QueryBuilder.
@@ -101,6 +103,7 @@ public abstract class QueryBuilder : IDisposable
     /// </remarks>
     /// <returns>compiled query (you can compile more than one query from the same builder)</returns>
     public abstract Query Compile();
+    
     
     /// <summary>
     /// Compiles the query, but does not add it to the internal cache.
