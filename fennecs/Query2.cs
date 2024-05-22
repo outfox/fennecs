@@ -30,7 +30,6 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
             using var join = table.CrossJoin<C0, C1>(StreamTypes);
             if (join.Empty) continue;
 
-            var count = table.Count;
             do
             {
                 var (s0, s1) = join.Select;
@@ -53,7 +52,6 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
             using var join = table.CrossJoin<C0, C1>(StreamTypes);
             if (join.Empty) continue;
 
-            var count = table.Count;
             do
             {
                 var (s0, s1) = join.Select;

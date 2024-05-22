@@ -28,7 +28,6 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
         {            using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
             if (join.Empty) continue;
 
-            var count = table.Count;
             do
             {                var (s0, s1, s2, s3, s4) = join.Select;
                 var span0 = s0.Span;
@@ -52,7 +51,6 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes);
             if (join.Empty) continue;
 
-            var count = table.Count;
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;

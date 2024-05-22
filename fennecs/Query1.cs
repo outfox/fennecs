@@ -45,7 +45,6 @@ public class Query<C0> : Query where C0 : notnull
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
-            var count = table.Count;
 
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;
@@ -74,7 +73,6 @@ public class Query<C0> : Query where C0 : notnull
 
         foreach (var table in Archetypes)
         {
-            var count = table.Count;
 
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;

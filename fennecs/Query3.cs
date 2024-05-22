@@ -28,8 +28,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
         foreach (var table in Archetypes)
         {            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
-            
-            var count = table.Count;
+
             do
             {                var (s0, s1, s2) = join.Select;
                 var span0 = s0.Span;
@@ -49,7 +48,6 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
         {            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
 
-            var count = table.Count;
             do
             {
                 var (s0, s1, s2) = join.Select;
