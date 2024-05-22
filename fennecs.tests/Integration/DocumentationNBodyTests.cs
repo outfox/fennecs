@@ -22,7 +22,7 @@ public class DocumentationNBodyTests
     private class Body
     {
         public Vector3 position;
-        public float mass = 1f;
+        public float mass { init; get; }
     }
     
 
