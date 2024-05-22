@@ -731,6 +731,14 @@ public class QueryTests
     public void For_On_Empty_Query()
     {
         using var world = new World();
+        var e = world.Spawn();
+        e.Add(Vector4.One);
+        e.Add(Vector3.One);
+        e.Add(Vector2.One);
+        e.Add(42);
+        e.Add("test");
+        e.Add(0.5f);
+        e.Despawn();
 
         using var query1 = world.Query<Vector4>().Compile();
         query1.For((ref Vector4 _) =>
@@ -767,6 +775,14 @@ public class QueryTests
     public void ForE_On_Empty_Query()
     {
         using var world = new World();
+        var e = world.Spawn();
+        e.Add(Vector4.One);
+        e.Add(Vector3.One);
+        e.Add(Vector2.One);
+        e.Add(42);
+        e.Add("test");
+        e.Add(0.5f);
+        e.Despawn();
 
         using var query1 = world.Query<Vector4>().Compile();
         query1.For((Entity _, ref Vector4 _) =>
@@ -803,6 +819,15 @@ public class QueryTests
     public void ForU_On_Empty_Query()
     {
         using var world = new World();
+        var e = world.Spawn();
+        e.Add(Vector4.One);
+        e.Add(Vector3.One);
+        e.Add(Vector2.One);
+        e.Add(42);
+        e.Add("test");
+        e.Add(0.5f);
+        e.Despawn();
+
 
         using var query1 = world.Query<Vector4>().Compile();
         query1.For((ref Vector4 _, float _) =>
@@ -839,6 +864,14 @@ public class QueryTests
     public void ForEU_On_Empty_Query()
     {
         using var world = new World();
+        var e = world.Spawn();
+        e.Add(Vector4.One);
+        e.Add(Vector3.One);
+        e.Add(Vector2.One);
+        e.Add(42);
+        e.Add("test");
+        e.Add(0.5f);
+        e.Despawn();
 
         using var query1 = world.Query<Vector4>().Compile();
         query1.For((Entity _, ref Vector4 _, float _) =>
