@@ -294,6 +294,13 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
     {
         base.Warmup();
         Job(NoOp);
+        Job(NoOp, 0);
+        
+        C0 c0 = default!;
+        C1 c1 = default!;
+        NoOp(ref c0, ref c1);
+        NoOp(ref c0, ref c1, 0);
+        
         return this;
     }
 
@@ -305,14 +312,6 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void NoOp(ref C0 c0, ref C1 c1, int uniform)
     {
-    }
-
-    /// <inheritdoc />
-    public override Query<C0, C1> Warmup<U>()
-    {
-        base.Warmup<U>();
-        Job(NoOp, 0);
-        return this;
     }
 
     private static void Unroll8(Span<C0> span0, Span<C1> span1, RefAction<C0, C1> action)

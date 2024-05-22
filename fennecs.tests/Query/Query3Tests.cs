@@ -120,6 +120,5 @@ public class Query3Tests
         using var world = new World();
         var query = world.Query<string, Vector3, int>().Build();
         query.Warmup();
-        query.Warmup<float>();
     }
 }

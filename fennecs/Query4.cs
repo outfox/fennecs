@@ -308,6 +308,15 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>  where C3 : notnull where
     {
         base.Warmup();
         Job(NoOp);
+        Job(NoOp, 0);
+        
+        C0 c0 = default!;
+        C1 c1 = default!;
+        C2 c2 = default!;
+        C3 c3 = default!;
+        NoOp(ref c0, ref c1, ref c2, ref c3);
+        NoOp(ref c0, ref c1, ref c2, ref c3, 0);
+        
         return this;
     }
 
@@ -321,14 +330,6 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>  where C3 : notnull where
     {
     }
 
-    /// <inheritdoc />
-    public override Query<C0, C1, C2, C3> Warmup<U>()
-    {
-        base.Warmup<U>();
-        Job(NoOp, 0);
-        return this;
-    }
-    
     private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, RefAction<C0, C1, C2, C3> action)
     {
         var c = span0.Length / 8 * 8;

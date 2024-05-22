@@ -1,7 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -151,7 +149,6 @@ public class Query<C0> : Query where C0 : notnull
     {
         AssertNotDisposed();
 
-
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -203,8 +200,7 @@ public class Query<C0> : Query where C0 : notnull
     public void Job<U>(RefActionU<C0, U> action, U uniform)
     {
         AssertNotDisposed();
-
-
+        
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -343,48 +339,20 @@ public class Query<C0> : Query where C0 : notnull
     
     #endregion
 
-#region Spawning
-
-/// <summary>
-/// Spawns a number of entities in this query, with the provided component values.
-/// </summary>
-/// <param name="count">how many to spawn</param>
-/// <param name="values">values for the components</param>
-public void Spawn(int count, params object[] values)
-{
-    if (World.Mode != World.WorldMode.Immediate)
-    {
-        throw new InvalidOperationException("Can only spawn into an unlocked world");
-    }
-    
-    if (values.Length != StreamTypes.Length)
-    {
-        throw new ArgumentException("Values count and order must match StreamTypes count and types.");
-    }
-
-    using var tuples = PooledList<(TypeExpression, object)>.Rent();
-    
-    for (var i = 0; i < values.Length; i++)
-    {
-        if (values[i].GetType() != StreamTypes[i].GetType())
-        {
-            throw new ArgumentException($"Value {i} type {values[i].GetType()} does not match StreamType {i} type {StreamTypes[i]}");
-        }
-        
-        tuples.Add((StreamTypes[i], values[i]));
-    }
-
-    World.Spawn(count, tuples.ToArray());
-}
-
-#endregion
     #region Warmup & Unroll
 
     /// <inheritdoc />
     public override Query<C0> Warmup()
     {
         base.Warmup();
+        
+        C0 c = default!;
+        NoOp(ref c);
+        NoOp(ref c,0);
+        
         Job(NoOp);
+        Job(NoOp, 0);
+        
         return this;
     }
 
@@ -398,13 +366,6 @@ public void Spawn(int count, params object[] values)
     {
     }
 
-    /// <inheritdoc />
-    public override Query<C0> Warmup<U>()
-    {
-        base.Warmup<U>();
-        Job(NoOp, 0);
-        return this;
-    }
     
     #endregion
 }

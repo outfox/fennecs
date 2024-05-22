@@ -105,16 +105,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// might otherwise be made happen lazily only as the actual workload starts.
     /// </remarks>
     public virtual Query Warmup() => this;
-
-    /// <summary>
-    /// Allocates and Pre-Initializes internal data structures for <see cref="UniformWork{C1,U}"/>
-    /// </summary>
-    /// <remarks>
-    /// This is only needed for benchmark situations and debugging where allocations
-    /// might otherwise be made happen lazily only as the actual workload starts.
-    /// </remarks>
-    public virtual Query Warmup<U>() => this;
-
     
     #region Internals
     /// <summary>

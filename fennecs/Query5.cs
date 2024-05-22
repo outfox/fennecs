@@ -317,6 +317,16 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
     {
         base.Warmup();
         Job(NoOp);
+        Job(NoOp, 0);
+
+        C0 c0 = default!;
+        C1 c1 = default!;
+        C2 c2 = default!;
+        C3 c3 = default!;
+        C4 c4 = default!;
+        NoOp(ref c0, ref c1, ref c2, ref c3, ref c4);
+        NoOp(ref c0, ref c1, ref c2, ref c3, ref c4, 0);
+        
         return this;
     }
 
@@ -328,14 +338,6 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void NoOp(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4, int uniform)
     {
-    }
-
-    /// <inheritdoc />
-    public override Query<C0, C1, C2, C3, C4> Warmup<U>()
-    {
-        base.Warmup<U>();
-        Job(NoOp, 0);
-        return this;
     }
     
     private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4, RefAction<C0, C1, C2, C3, C4> action)

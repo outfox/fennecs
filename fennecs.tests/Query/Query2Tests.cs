@@ -494,6 +494,5 @@ public class Query2Tests
         using var world = new World();
         var query = world.Query<int, byte>().Build();
         query.Warmup();
-        query.Warmup<float>();
     }
 }

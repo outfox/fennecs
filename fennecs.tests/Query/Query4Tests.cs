@@ -125,6 +125,5 @@ public class Query4Tests
         using var world = new World();
         var query = world.Query<string, Vector3, int, Matrix4x4>().Build();
         query.Warmup();
-        query.Warmup<float>();
     }
 }

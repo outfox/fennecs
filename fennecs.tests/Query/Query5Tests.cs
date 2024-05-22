@@ -128,7 +128,6 @@ public class Query5Tests
         using var world = new World();
         var query = world.Query<string, Vector3, int, Matrix4x4, object>().Build();
         query.Warmup();
-        query.Warmup<float>();
     }
 
     private struct TypeA
