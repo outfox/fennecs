@@ -57,6 +57,8 @@ public static class Match
     /// <remarks>
     /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for
     /// each matching component. While querying is efficient, this increases the number of operations per entity.</para>
+    /// <para>This is an intentional feature, and <c>Match.Any</c> is the default as usually the same backing types are not re-used across
+    /// relations or links; but if they are, the user likely wants their Query to enumerate all of them.</para>
     /// <para>This effect is more pronounced in large archetypes with many matching components, potentially
     /// multiplying the workload significantly. However, for smaller archetypes or simpler tasks, impacts are minimal.</para>
     /// <para>Risks and considerations include:</para>

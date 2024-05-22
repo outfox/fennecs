@@ -33,8 +33,7 @@ public class Query<C0> : Query where C0 : notnull
     /// <param name="mask">The mask for the query.</param>
     /// <param name="archetypes">The archetypes for the query.</param>
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
-    {
-    }
+    { }
 
     #endregion
 
@@ -43,8 +42,6 @@ public class Query<C0> : Query where C0 : notnull
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0> action)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
@@ -58,7 +55,7 @@ public class Query<C0> : Query where C0 : notnull
                 var s0 = join.Select;
                 var span0 = s0.Span;
                 // foreach is faster than for loop & unroll
-                foreach (ref var c0 in span0) action(ref c0); 
+                foreach (ref var c0 in span0) action(ref c0);
             } while (join.Iterate());
         }
     }
@@ -73,8 +70,6 @@ public class Query<C0> : Query where C0 : notnull
     // /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, U> action, U uniform)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
@@ -88,7 +83,7 @@ public class Query<C0> : Query where C0 : notnull
                 var s0 = join.Select;
                 var span0 = s0.Span;
                 // foreach is faster than for loop & unroll
-                foreach (ref var c0 in span0) action(ref c0, uniform); 
+                foreach (ref var c0 in span0) action(ref c0, uniform);
             } while (join.Iterate());
         }
     }
@@ -98,8 +93,6 @@ public class Query<C0> : Query where C0 : notnull
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0> action)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
@@ -111,7 +104,7 @@ public class Query<C0> : Query where C0 : notnull
             {
                 var s0 = join.Select;
                 var span0 = s0.Span;
-                
+
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i]);
             } while (join.Iterate());
         }
@@ -121,8 +114,6 @@ public class Query<C0> : Query where C0 : notnull
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(EntityActionU<C0, U> action, U uniform)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
@@ -134,7 +125,7 @@ public class Query<C0> : Query where C0 : notnull
             {
                 var s0 = join.Select;
                 var span0 = s0.Span;
-                
+
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], uniform);
             } while (join.Iterate());
         }
@@ -147,8 +138,6 @@ public class Query<C0> : Query where C0 : notnull
     /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     public void Job(RefAction<C0> action)
     {
-        AssertNotDisposed();
-
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -199,8 +188,6 @@ public class Query<C0> : Query where C0 : notnull
     /// <param name="uniform">The uniform data to pass to the action.</param>
     public void Job<U>(RefActionU<C0, U> action, U uniform)
     {
-        AssertNotDisposed();
-        
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -259,8 +246,6 @@ public class Query<C0> : Query where C0 : notnull
     /// <param name="action"><see cref="MemoryAction{C0}"/> action to execute.</param>
     public void Raw(MemoryAction<C0> action)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
@@ -272,7 +257,7 @@ public class Query<C0> : Query where C0 : notnull
             {
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
-                
+
                 action(mem0);
             } while (join.Iterate());
         }
@@ -294,8 +279,6 @@ public class Query<C0> : Query where C0 : notnull
     /// <param name="uniform">The uniform data to pass to the action.</param>
     public void Raw<U>(MemoryActionU<C0, U> action, U uniform)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
@@ -307,14 +290,14 @@ public class Query<C0> : Query where C0 : notnull
             {
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
-                
+
                 action(mem0, uniform);
             } while (join.Iterate());
         }
     }
 
     #endregion
-    
+
     #region Blitters
 
     /// <summary>
@@ -336,7 +319,7 @@ public class Query<C0> : Query where C0 : notnull
             table.Fill(typeExpression, value);
         }
     }
-    
+
     #endregion
 
     #region Warmup & Unroll
@@ -345,27 +328,24 @@ public class Query<C0> : Query where C0 : notnull
     public override Query<C0> Warmup()
     {
         base.Warmup();
-        
+
         C0 c = default!;
         NoOp(ref c);
-        NoOp(ref c,0);
-        
+        NoOp(ref c, 0);
+
         Job(NoOp);
         Job(NoOp, 0);
-        
+
         return this;
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void NoOp(ref C0 c0)
-    {
-    }
+    { }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void NoOp(ref C0 c0, int uniform)
-    {
-    }
+    { }
 
-    
     #endregion
 }

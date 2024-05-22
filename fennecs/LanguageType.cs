@@ -4,7 +4,7 @@ namespace fennecs;
 
 internal class LanguageType
 {
-    protected internal static Type Resolve(TypeID typeId) => Types[typeId];
+    internal protected static Type Resolve(TypeID typeId) => Types[typeId];
 
     // Shared ID counter
     protected static TypeID Counter;
@@ -15,7 +15,7 @@ internal class LanguageType
     protected static readonly object RegistryLock = new();
 
 
-    protected internal static TypeID Identify(Type type)
+    internal protected static TypeID Identify(Type type)
     {
         lock (RegistryLock)
         {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
-using System.Diagnostics;
+using static System.Diagnostics.Debug;
 
 namespace fennecs;
 
@@ -39,7 +39,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
     public ref C Ref<C>(Entity entity, Identity match = default)
     {
-        AssertNotDisposed();
 
         if (entity.World != World) throw new InvalidOperationException("Entity is not from this World.");
         World.AssertAlive(entity);
@@ -60,7 +59,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
-        AssertNotDisposed();
 
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
@@ -78,7 +76,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
     public bool Contains<T>(Identity match = default)
     {
-        AssertNotDisposed();
         var typeExpression = TypeExpression.Of<T>(match);
         return typeExpression.Matches(StreamTypes);
     }
@@ -236,7 +233,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </returns>
     public IEnumerator<Entity> GetEnumerator()
     {
-        AssertNotDisposed();
 
         foreach (var table in Archetypes)
         {
@@ -256,7 +252,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </returns>
     public IEnumerable<Entity> Filtered(params TypeExpression[] filterExpressions)
     {
-        AssertNotDisposed();
 
         foreach (var table in Archetypes)
         {
@@ -270,7 +265,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <inheritdoc cref="IEnumerable.GetEnumerator" />
     IEnumerator IEnumerable.GetEnumerator()
     {
-        AssertNotDisposed();
         return GetEnumerator();
     }
     #endregion
@@ -289,7 +283,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <exception cref="IndexOutOfRangeException">if the Query <see cref="IsEmpty" /></exception>
     public Entity Random()
     {
-        AssertNotDisposed();
         if (Count == 0) throw new IndexOutOfRangeException("Query is empty.");
         return this[System.Random.Shared.Next(Count)];
     }
@@ -320,7 +313,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         get
         {
-            AssertNotDisposed();
 
             if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
@@ -515,27 +507,22 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     public void Dispose()
     {
-        // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
-        GC.SuppressFinalize(this);
-
-        AssertNotDisposed();
-
+        if (disposed) return;
+        disposed = true;
+            
+        _trackedArchetypes.Clear();
+        Archetypes.Clear();
+            
         _streamExclusions.Clear();
         _streamFilters.Clear();
-        
-        Archetypes.Clear();
-        _trackedArchetypes.Clear();
-        disposed = true;
+
+
         World.RemoveQuery(this);
         Mask.Dispose();
+
+        // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
+        GC.SuppressFinalize(this);
     }
-
-
-    private protected void AssertNotDisposed()
-    {
-        Debug.Assert(!disposed, $"{nameof(Query)} is disposed.");
-    }
-
 
     private bool disposed { get; set; }
     #endregion

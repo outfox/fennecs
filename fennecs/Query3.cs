@@ -13,8 +13,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     #region Internals
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
-    {
-    }
+    {    }
 
     #endregion
 
@@ -24,19 +23,15 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0, C1, C2> action)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
-        {
-            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
+        {            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
             
             var count = table.Count;
             do
-            {
-                var (s0, s1, s2) = join.Select;
+            {                var (s0, s1, s2) = join.Select;
                 var span0 = s0.Span;
                 var span1 = s1.Span;
                 var span2 = s2.Span;
@@ -48,13 +43,10 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
-        {
-            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
+        {            using var join = table.CrossJoin<C0, C1, C2>(StreamTypes);
             if (join.Empty) continue;
 
             var count = table.Count;
@@ -73,8 +65,6 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0, C1, C2> action)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
@@ -98,8 +88,6 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(EntityActionU<C0, C1, C2, U> action, U uniform)
     {
-        AssertNotDisposed();
-
         using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
@@ -123,11 +111,9 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     /// <inheritdoc cref="Query{C0}.Job"/>
     public void Job(RefAction<C0, C1, C2> action)
     {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
+        using var worldLock = World.Lock();
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0, C1, C2>>.Rent();
@@ -173,8 +159,6 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
     public void Job<U>(RefActionU<C0, C1, C2, U> action, U uniform)
     {
-        AssertNotDisposed();
-
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -223,7 +207,6 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     /// <inheritdoc cref="Query{C0}.Raw"/>
     public void Raw(MemoryAction<C0, C1, C2> action)
     {
-        AssertNotDisposed();
 
         using var worldLock = World.Lock();
 
@@ -249,7 +232,6 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
     public void Raw<U>(MemoryActionU<C0, C1, C2, U> action, U uniform)
     {
-        AssertNotDisposed();
 
         using var worldLock = World.Lock();
 
