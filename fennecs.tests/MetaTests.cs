@@ -55,7 +55,7 @@ public class MetaTests
         var entity1 = world.Spawn();
         var entity2 = world.Spawn().Add("already there, too");
 
-        var queryStr = world.Query<string>().Build();
+        var queryStr = world.Query<string>().Compile();
 
         ref var meta0 = ref world.GetEntityMeta(entity0);
         ref var meta1 = ref world.GetEntityMeta(entity1);
@@ -83,8 +83,8 @@ public class MetaTests
         var entity2 = world.Spawn().Add("already there");
         var entity3 = world.Spawn().Add("already there, too");
 
-        var query = world.Query().Not<string>().Build();
-        var queryStr = world.Query<string>().Build();
+        var query = world.Query().Not<string>().Compile();
+        var queryStr = world.Query<string>().Compile();
 
         ref var meta0 = ref world.GetEntityMeta(entity0);
         ref var meta1 = ref world.GetEntityMeta(entity1);

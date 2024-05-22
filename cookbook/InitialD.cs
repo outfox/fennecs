@@ -28,7 +28,7 @@ var racers =
     world.Query<Driver, Model, Identity>() // "Stream Types", data to process
         .Has<Car>() // additional Filter Expression(s) to match in the Query 
         .Not<Vroom>() // additional Filter Expression(s) to exclude
-        .Build();
+        .Compile();
 
 
 Console.WriteLine($"Cars on the street: {racers.Count}");

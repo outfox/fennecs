@@ -104,13 +104,13 @@ public class AliasingBenchmarks
             _world.Spawn().Add<FoxVector4Simd>(new Vector4(RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle()));
         }
 
-        _queryV4 = _world.Query<Vector4>().Build();
+        _queryV4 = _world.Query<Vector4>().Compile();
         _queryV4.Warmup();
 
-        _queryF4 = _world.Query<FoxVector4>().Build();
+        _queryF4 = _world.Query<FoxVector4>().Compile();
         _queryF4.Warmup();
 
-        _query128 = _world.Query<FoxVector4Simd>().Build();
+        _query128 = _world.Query<FoxVector4Simd>().Compile();
         _query128.Warmup();
     }
 

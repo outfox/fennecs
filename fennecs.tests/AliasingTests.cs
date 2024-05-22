@@ -40,7 +40,7 @@
                 .Add<Weight>(50)
                 .Add<Size>(new(150));
             
-            var query = world.Query<Weight, Size>().Build();
+            var query = world.Query<Weight, Size>().Compile();
             
             query.For(static (ref Weight weight, ref Size size) =>
             {

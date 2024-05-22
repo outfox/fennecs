@@ -27,7 +27,7 @@ public class Match1Tests
     [Fact]
     public void Any_Enumerates_all_Components_Once()
     {
-        using var query = _world.Query<string>(Match.Any).Build();
+        using var query = _world.Query<string>(Match.Any).Compile();
 
         HashSet<string> seen = [];
         query.For((ref string str) =>
@@ -47,7 +47,7 @@ public class Match1Tests
     [Fact]
     public void Plain_Enumerates_Only_Plain_Components()
     {
-        using var query = _world.Query<string>(Match.Plain).Build();
+        using var query = _world.Query<string>(Match.Plain).Compile();
 
         HashSet<string> seen = [];
         query.For((ref string str) =>
@@ -63,7 +63,7 @@ public class Match1Tests
     [Fact]
     public void Target_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string>(Match.Target).Build();
+        using var query = _world.Query<string>(Match.Target).Compile();
 
         HashSet<string> seen = [];
 
@@ -82,7 +82,7 @@ public class Match1Tests
     [Fact]
     public void Relation_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string>(Match.Entity).Build();
+        using var query = _world.Query<string>(Match.Entity).Compile();
 
         HashSet<string> seen = [];
 
@@ -99,7 +99,7 @@ public class Match1Tests
     [Fact]
     public void Object_Enumerates_all_Object_Links()
     {
-        using var query = _world.Query<string>(Match.Object).Build();
+        using var query = _world.Query<string>(Match.Object).Compile();
 
         HashSet<string> seen = [];
 

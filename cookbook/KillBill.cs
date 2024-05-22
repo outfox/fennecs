@@ -29,7 +29,7 @@ for (var i = 0; i < 5; i++)
 // and their Entity Id. It's a surprise tool that will help us later!
 var betrayingVipers = world.Query<Location, Identity>()
     .Has<Betrayed>(us)
-    .Build();
+    .Compile();
 
 Console.WriteLine($"As we said, there were {betrayingVipers.Count} of them.");
 

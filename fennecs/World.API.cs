@@ -132,7 +132,7 @@ public partial class World : IDisposable
     /// </param>
     public void DespawnAllWith<T>(Identity match = default)
     {
-        using var query = Query<Identity>().Has<T>(match).Build();
+        using var query = Query<Identity>().Has<T>(match).Compile();
         query.Raw(delegate(Memory<Identity> entities)
         {
             foreach (var identity in entities.Span) DespawnImpl(identity);

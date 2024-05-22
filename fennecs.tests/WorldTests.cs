@@ -82,7 +82,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         world.Spawn(count, (TypeExpression.Of<int>(), 666), (TypeExpression.Of<string>(), "i'm a string"));
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int, string>().Compile();
         Assert.Equal(count, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -108,7 +108,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add("hallo")
             .Spawn(count);
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int, string>().Compile();
         Assert.Equal(count, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -138,7 +138,7 @@ public class WorldTests(ITestOutputHelper output)
         spawner.Add(420.0f);
         spawner.Spawn(count, false);
 
-        var query = world.Query<int, string>().Build();
+        var query = world.Query<int, string>().Compile();
         Assert.Equal(count * 2, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -182,7 +182,7 @@ public class WorldTests(ITestOutputHelper output)
             .AddLink("dieter")
             .Spawn(count);
 
-        var query = world.Query<int, string>(Match.Plain, Identity.Of("dieter")).Build();
+        var query = world.Query<int, string>(Match.Plain, Identity.Of("dieter")).Compile();
         Assert.Equal(count, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -210,7 +210,7 @@ public class WorldTests(ITestOutputHelper output)
             .AddRelation("relation", other)
             .Spawn(count);
 
-        var query = world.Query<int, string>(Match.Plain, other).Build();
+        var query = world.Query<int, string>(Match.Plain, other).Compile();
         Assert.Equal(count, query.Count);
         
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
@@ -234,7 +234,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         world.Entity().Spawn(count);
 
-        var query = world.Query().Build();
+        var query = world.Query().Compile();
         Assert.Equal(count, query.Count);
     }
 
@@ -249,7 +249,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Build();
+        var query = world.Query<Identity>().Compile();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -269,7 +269,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Build();
+        var query = world.Query<Identity>().Compile();
         query.Raw((_, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -296,7 +296,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Build();
+        var query = world.Query<Identity>().Compile();
         query.For((ref Identity _, World uniform) =>
         {
             var entity = uniform.Spawn();
@@ -364,8 +364,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().AddRelation(target2, 444);
         }
 
-        var query1 = world.Query<Identity>().Has<int>(target1.Id).Build();
-        var query2 = world.Query<Identity>().Has<int>(target2.Id).Build();
+        var query1 = world.Query<Identity>().Has<int>(target1.Id).Compile();
+        var query2 = world.Query<Identity>().Has<int>(target2.Id).Compile();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);
@@ -729,7 +729,7 @@ public class WorldTests(ITestOutputHelper output)
         var e = world.Spawn();
         e.AddRelation<float>(world.Spawn());
 
-        var query = world.Query<float>().Build();
+        var query = world.Query<float>().Compile();
         Assert.Single(query);
         e.Despawn();
         Assert.Single(query.TrackedArchetypes);

@@ -33,7 +33,7 @@ var world = new fennecs.World();
 var entity = world.Spawn().Add<Position>().Id();
 
 // Queries are cached, just build them right where you want to use them.
-var query = world.Query<Position>().Build();
+var query = world.Query<Position>().Compile();
 
 // Run code for all entities in the query. Need threads? Replace "For" with "Job"!
 query.For(static (ref Position position, float dt) => {

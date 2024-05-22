@@ -24,7 +24,7 @@ namespace fennecs;
 ///     .Any<Player>()
 ///     .Any<NPC>()
 ///     .Not<Disabled>()
-///     .Build();
+///     .Compile();
 ///
 /// 
 /// selectedHealthBars.For(
@@ -236,6 +236,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
     
     /// <inheritdoc />
+    [Obsolete("Use Compile() or Unique() instead.")]
     public override Query<C1> Build() => Compile();
 
 
@@ -317,6 +318,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
     
     /// <inheritdoc />
+    [Obsolete("Use Compile() or Unique() instead.")]
     public override Query<C1, C2> Build() => Compile();
 
 
@@ -399,6 +401,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
     
     /// <inheritdoc />
+    [Obsolete("Use Compile() or Unique() instead.")]
     public override Query<C1, C2, C3> Build() => Compile();
 
 
@@ -480,6 +483,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
     
     /// <inheritdoc />
+    [Obsolete("Use Compile() or Unique() instead.")]
     public override Query<C1, C2, C3, C4> Build() => Compile();
 
 
@@ -562,6 +566,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
     
     /// <inheritdoc />
+    [Obsolete("Use Compile() or Unique() instead.")]
     public override Query<C1, C2, C3, C4, C5> Build() => Compile();
 
 

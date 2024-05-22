@@ -88,7 +88,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -105,7 +105,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -122,7 +122,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -141,7 +141,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -231,7 +231,7 @@ public class QueryBuilderTests
         builder.Has<string>("I'm allowed");
         builder.Not<string>("Say that aloud?");
 
-        builder.Build();
+        builder.Compile();
     }
 
 

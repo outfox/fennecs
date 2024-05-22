@@ -12,7 +12,7 @@ public class Query5Tests
     {
         using var world = new World();
 
-        var query = world.Query<TypeA, double, int, string, char>().Build();
+        var query = world.Query<TypeA, double, int, string, char>().Compile();
 
         //Create an empty table by spawning and despawning a single entity
         //that matches our test Query (but is a larger Archetype)
@@ -126,7 +126,7 @@ public class Query5Tests
     private void Can_Warmup()
     {
         using var world = new World();
-        var query = world.Query<string, Vector3, int, Matrix4x4, object>().Build();
+        var query = world.Query<string, Vector3, int, Matrix4x4, object>().Compile();
         query.Warmup();
     }
 

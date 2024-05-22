@@ -100,8 +100,8 @@ public class ArchetypeTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var entityInt = world.Spawn().Add(123);
         
-        var queryAll = world.Query().Build();
-        var queryInt = world.Query().Has<int>().Build();
+        var queryAll = world.Query().Compile();
+        var queryInt = world.Query().Has<int>().Compile();
         
         Assert.Equal(2, queryAll.Count);
         Assert.Equal(1, queryInt.Count);

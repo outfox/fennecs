@@ -35,7 +35,7 @@ public class DorakuBenchmarks
         PooledList<UniformWork<Component1, Component2, Component3>>.Rent().Dispose();
 
         _world = new World();
-        _query = _world.Query<Component1, Component2, Component3>().Build();
+        _query = _world.Query<Component1, Component2, Component3>().Compile();
         for (var i = 0; i < entityCount; ++i)
         {
             for (var j = 0; j < entityPadding; ++j)

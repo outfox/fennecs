@@ -18,7 +18,7 @@ public class QueryTests
             entities.Add(entity);
         }
 
-        var query = world.Query<object>().Build();
+        var query = world.Query<object>().Compile();
         var plain = query as IEnumerable;
 
         foreach (var current in plain)
@@ -47,7 +47,7 @@ public class QueryTests
             entities.Add(identity);
         }
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
 
         Assert.True(entities.All(e => query.Contains(e)));
 
@@ -78,7 +78,7 @@ public class QueryTests
 
         var query = world.Query<Vector3>()
             .Has<int>()
-            .Build();
+            .Compile();
 
         query.Raw(memory =>
         {
@@ -101,7 +101,7 @@ public class QueryTests
 
         var query = world.Query<Vector3>()
             .Not<int>()
-            .Build();
+            .Compile();
 
         query.Raw(memory =>
         {
@@ -126,7 +126,7 @@ public class QueryTests
 
         var query = world.Query<Identity, Vector3>()
             .Any<int>(Match.Plain)
-            .Build();
+            .Compile();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -152,7 +152,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).AddRelation(alice, 111);
         var charlie = world.Spawn().Add(p3).AddRelation(eve, 222);
 
-        var query = world.Query<Identity, Vector3>().Any<int>(eve).Build();
+        var query = world.Query<Identity, Vector3>().Any<int>(eve).Compile();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -183,7 +183,7 @@ public class QueryTests
         var query = world.Query<Identity, Vector3>()
             .Any<int>(eve)
             .Any<int>(alice)
-            .Build();
+            .Compile();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -233,7 +233,7 @@ public class QueryTests
         var query = world.Query<Identity, Vector3>()
             .Not<int>(bob)
             .Any<int>(alice)
-            .Build();
+            .Compile();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -277,7 +277,7 @@ public class QueryTests
 
         var query = world.Query<Identity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
             .Not<int>(bob)
-            .Build();
+            .Compile();
 
         var count = 0;
         query.Raw((me, mp, mi) =>
@@ -319,20 +319,20 @@ public class QueryTests
 
         world.Spawn().Add(123);
 
-        var query1A = world.Query().Build();
-        var query1B = world.Query().Build();
+        var query1A = world.Query().Compile();
+        var query1B = world.Query().Compile();
 
-        var query2A = world.Query<Identity>().Build();
-        var query2B = world.Query<Identity>().Build();
+        var query2A = world.Query<Identity>().Compile();
+        var query2B = world.Query<Identity>().Compile();
 
-        var query3A = world.Query().Has<int>().Build();
-        var query3B = world.Query().Has<int>().Build();
+        var query3A = world.Query().Has<int>().Compile();
+        var query3B = world.Query().Has<int>().Compile();
 
-        var query4A = world.Query<Identity>().Not<int>().Build();
-        var query4B = world.Query<Identity>().Not<int>().Build();
+        var query4A = world.Query<Identity>().Not<int>().Compile();
+        var query4B = world.Query<Identity>().Not<int>().Compile();
 
-        var query5A = world.Query<Identity>().Any<int>().Any<float>().Build();
-        var query5B = world.Query<Identity>().Any<int>().Any<float>().Build();
+        var query5A = world.Query<Identity>().Any<int>().Any<float>().Compile();
+        var query5B = world.Query<Identity>().Any<int>().Any<float>().Compile();
 
         Assert.True(ReferenceEquals(query1A, query1B));
         Assert.True(ReferenceEquals(query2A, query2B));
@@ -347,7 +347,7 @@ public class QueryTests
     {
         using var world = new World();
 
-        var query = world.Query().Build();
+        var query = world.Query().Compile();
         query.Dispose();
         /*
          TODO: Re-enable this test when Query disposal repercussions redesigned :D
@@ -365,7 +365,7 @@ public class QueryTests
     {
         using var world = new World();
         var identity = world.Spawn();
-        var query = world.Query<Identity>().Build();
+        var query = world.Query<Identity>().Compile();
 
         Assert.Throws<TypeAccessException>(() => query.Ref<Identity>(identity));
     }
@@ -379,7 +379,7 @@ public class QueryTests
         world.Despawn(entity);
         Assert.False(world.IsAlive(entity));
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
     }
 
@@ -389,7 +389,7 @@ public class QueryTests
     {
         using var world = new World();
         var identity = world.Spawn().Add<int>();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
 
         Assert.Throws<TypeAccessException>(() => query.Ref<float>(identity));
     }
@@ -400,7 +400,7 @@ public class QueryTests
     {
         using var world = new World();
         var identity = world.Spawn().Add(23);
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
 
         ref var gotten = ref query.Ref<int>(identity);
         Assert.Equal(23, gotten);
@@ -418,7 +418,7 @@ public class QueryTests
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42);
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Contains(entity23, query);
         Assert.Contains(entity42, query);
     }
@@ -431,7 +431,7 @@ public class QueryTests
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42);
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Equal(entity23, query[0]);
         Assert.Equal(entity42, query[1]);
     }
@@ -444,7 +444,7 @@ public class QueryTests
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42).Add<string>("I'm in another table");
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Equal(entity23, query[0]);
         Assert.Equal(entity42, query[1]);
     }
@@ -454,7 +454,7 @@ public class QueryTests
     private void Indexer_Throws_When_Out_Of_Range()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Throws<IndexOutOfRangeException>(() => query[0]);
         Assert.Throws<IndexOutOfRangeException>(() => query[-1]);
         Assert.Throws<IndexOutOfRangeException>(() => query[1]);
@@ -470,7 +470,7 @@ public class QueryTests
     private void Random_Access_Is_Possible()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42);
         Assert.Contains(query.Random(), new []{entity23, entity42});
@@ -481,7 +481,7 @@ public class QueryTests
     private void Random_Access_with_One_Entity()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         var entity = world.Spawn().Add(23);
         Assert.Equal(entity, query.Random());
     }
@@ -491,7 +491,7 @@ public class QueryTests
     private void Random_Access_Throws_with_Empty_Query()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.True(query.IsEmpty);
         Assert.Throws<IndexOutOfRangeException>(() => query.Random());
     }
@@ -501,7 +501,7 @@ public class QueryTests
     private void Query_Contains_Type()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.True(query.Contains<int>());
         Assert.False(query.Contains<float>());
     }
@@ -511,7 +511,7 @@ public class QueryTests
     private void Query_Contains_Type_Subset()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Entity).Build();
+        var query = world.Query<int>(Match.Entity).Compile();
         Assert.True(query.Contains<int>(Match.Any));
         Assert.False(query.Contains<float>(Match.Any));
     }
@@ -521,7 +521,7 @@ public class QueryTests
     private void Query_Containss_Type_Superset()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
         Assert.True(query.Contains<int>(Match.Plain));
         Assert.False(query.Contains<float>(Match.Object));
     }
@@ -532,7 +532,7 @@ public class QueryTests
     {
         using var world = new World();
         var entity = world.Spawn().Add(23);
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.True(query.Contains(entity));
     }
 
@@ -542,7 +542,7 @@ public class QueryTests
     {
         using var world = new World();
         var entity = world.Spawn().Add(23);
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         world.Despawn(entity);
         Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
 
@@ -559,7 +559,7 @@ public class QueryTests
     public void Filtered_Enumerator_Filters()
     {
         using var world = new World();
-        var query = world.Query<Identity, int>(Match.Plain, Match.Any).Build();
+        var query = world.Query<Identity, int>(Match.Plain, Match.Any).Compile();
 
         var entity1 = world.Spawn().Add(444);
         var entity2 = world.Spawn().AddRelation(entity1, 555);
@@ -586,7 +586,7 @@ public class QueryTests
     {
         using var world = new World();
 
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
         var entity1 = world.Spawn().Add(444);
         world.Spawn().AddRelation(entity1, 555);
 
@@ -611,7 +611,7 @@ public class QueryTests
     public void Can_Truncate(int entityCount, int targetSize)
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
 
         for (var i = 0; i < entityCount; i++) world.Spawn().Add(i);
 
@@ -624,7 +624,7 @@ public class QueryTests
     public void Can_Clear()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
 
         for (var i = 0; i < 420; i++) world.Spawn().Add(i);
 
@@ -639,7 +639,7 @@ public class QueryTests
     public void Can_Despawn()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
 
         for (var i = 0; i < 420; i++) world.Spawn().Add(i);
 
