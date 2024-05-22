@@ -3,7 +3,7 @@
 public partial class World
 {
     #region CRUD
-    internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data)
+    internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data) where T : notnull
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
 
@@ -22,13 +22,10 @@ public partial class World
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
-        var newRow = Archetype.MoveEntry(identity, meta.Row, oldArchetype, newArchetype);
+        Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
 
         // Back-fill the new value
-        newArchetype.Set(typeExpression, data, newRow);
-
-        meta.Row = newRow;
-        meta.Archetype = newArchetype;
+        newArchetype.BackFill(typeExpression, data, 1);
     }
 
 
@@ -48,10 +45,7 @@ public partial class World
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
         var newArchetype = GetArchetype(newSignature);
-        var newRow = Archetype.MoveEntry(identity, meta.Row, oldArchetype, newArchetype);
-
-        meta.Row = newRow;
-        meta.Archetype = newArchetype;
+        Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
     }
 
 
@@ -71,7 +65,7 @@ public partial class World
         var meta = _meta[identity.Index];
         var table = meta.Archetype;
         var storage = table.GetStorage<T>(target);
-        return ref storage[meta.Row];
+        return ref storage.Span[meta.Row];
     }
 
 

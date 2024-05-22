@@ -27,7 +27,10 @@ public readonly struct Batch : IDisposable
     /// </summary>
     public void Submit()
     {
-        if (_world.Submit(this)) Dispose();
+        if (_world.Submit(this))
+        {
+            Dispose();
+        }
     }
 
 
@@ -110,7 +113,7 @@ public readonly struct Batch : IDisposable
     {
         var typeExpression = TypeExpression.Of<T>(target);
 
-        if (AddMode == AddConflict.Disallow && !_mask.SafeForAddition(typeExpression))
+        if (AddMode == AddConflict.Strict && !_mask.SafeForAddition(typeExpression))
             throw new InvalidOperationException(
                 $"TypeExpression {typeExpression} is not filtered out via Not<T> by this Query/Mask, additions could cause unintended runtime state. See QueryBuilder.Not<T>(). See AddConflict.Disallow, AddConflict.Skip, AddConflict.Replace.");
 
@@ -130,15 +133,15 @@ public readonly struct Batch : IDisposable
     {
         var typeExpression = TypeExpression.Of<T>(target);
 
-        if (RemoveMode == RemoveConflict.Disallow && !_mask.SafeForRemoval(typeExpression))
+        if (RemoveMode == RemoveConflict.Strict && !_mask.SafeForRemoval(typeExpression))
             throw new InvalidOperationException(
                 $"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals could cause unintended runtime state. See QueryBuilder.Has<T>(). See RemoveConflict.Disallow, RemoveConflict.Skip.");
 
         if (Additions.Contains(typeExpression))
-            throw new InvalidOperationException($"Removal {typeExpression} conflicts with addition in same batch!");
+            throw new InvalidOperationException($"Removal of {typeExpression} conflicts with addition in same batch!");
 
         if (Removals.Contains(typeExpression))
-            throw new InvalidOperationException($"Duplicate removal {typeExpression} in same batch!");
+            throw new InvalidOperationException($"Duplicate removal of {typeExpression} in same batch!");
 
         Removals.Add(typeExpression);
         return this;
@@ -165,9 +168,15 @@ public readonly struct Batch : IDisposable
     public enum AddConflict
     {
         /// <summary>
-        /// Disallows the addition of the component.
+        /// Disallows the addition of components that could already be present in a query.
         /// </summary>
-        Disallow = default,
+        /// <remarks>
+        /// Exclude the component from the query via <see cref="QueryBuilder{C1}.Not{T}(fennecs.Identity)"/> or similar
+        /// means. If you want to allow the addition of components that are already present, use <see cref="Preserve"/>
+        /// to keep any values already present, or use <see cref="Replace"/> if you'd like to overwrite the component
+        /// value everywhere it is already encountered in the query.
+        /// </remarks>
+        Strict = default,
 
         /// <summary>
         /// Ignores archetypes that already contain the component, leaving their data and state unchanged.
@@ -176,19 +185,21 @@ public readonly struct Batch : IDisposable
         /// </summary>
         /// <remarks>
         /// If an archetype already has the component that a batch tries to add, no entities of that archetype are affected. This is true regardless of whether or not they match the batch's EntityQuery.
-        /// </remarks> 
+        /// </remarks>
+        [Obsolete("Use Preserve instead.", true)]
         SkipEntirely,
 
         /// <summary>
-        /// Keeps the existing component data when trying to add a duplicate, but continues the remaining operations.
+        /// Keeps the existing component data whenever trying to add a duplicate.
         /// </summary>
-        [Obsolete("Not implemented.", true)] Preserve,
+        Preserve,
 
         /// <summary>
-        /// Overwrites an existing component with the new component if it is already present.
+        /// Overwrites existing component data with the addded component if it is already present.
         /// </summary>
         /// <remarks>
-        /// This is particularly useful when setting component data en masse. This includes the special case of sending information from a 'leader' entity to its 'followers' using a shared component to store the leader's last known position. Using the 'Replace' option makes updating the leader's position for all followers easier.
+        /// Alternatively, you can use the faster <see cref="Query{C0}.Blit(C0,fennecs.Identity)"/> if you
+        /// can ensure that the component is present on all entities in the query.
         /// </remarks>
         Replace,
     }
@@ -203,7 +214,7 @@ public readonly struct Batch : IDisposable
         /// Disallow remove operation if the Component to be removed is not guaranteed to be present
         /// on ALL matched Archetypes, see <see cref="QueryBuilder.Has{T}(fennecs.Identity)"/>.
         /// </summary>
-        Disallow = default,
+        Strict = default,
 
         /// <summary>
         /// Allow operating on Archetypes where the Component to be removed is not present.

@@ -6,7 +6,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
     public void Can_Link_Objects_via_Builder()
     {
         using var world = new World();
-        using var query = world.Query<string>(Match.Any).Build();
+        using var query = world.Query<string>(Match.Any).Compile();
 
         // string may be interned or not
         const string TARGET = "hello world";
@@ -28,7 +28,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
     public void Can_Link_Objects_via_World()
     {
         using var world = new World();
-        using var query = world.Query<string>(Match.Any).Build();
+        using var query = world.Query<string>(Match.Any).Compile();
 
         // string may be interned or not
         const string TARGET = "hello world";
@@ -52,7 +52,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
     public void Can_Unlink_Objects_via_Builder()
     {
         using var world = new World();
-        using var query = world.Query<string>(Match.Any).Build();
+        using var query = world.Query<string>(Match.Any).Compile();
 
         // string may be interned or not
         const string TARGET = "hello world";
@@ -70,7 +70,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
     public void Can_Unlink_Objects_via_World()
     {
         using var world = new World();
-        using var query = world.Query<string>(Match.Any).Build();
+        using var query = world.Query<string>(Match.Any).Compile();
 
         // string may be interned or not
         const string TARGET = "hello world";

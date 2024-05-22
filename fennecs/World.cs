@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -64,15 +65,17 @@ public partial class World
         {
             var identity = _identityPool.Spawn();
 
-            var row = _root.Add(identity);
-
+            // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
             while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
 
-            _meta[identity.Index] = new Meta(identity, _root, row);
-
-            var entityStorage = (Identity[]) _root.Storages.First();
-            entityStorage[row] = identity;
-
+            _meta[identity.Index] = new Meta();
+            
+            _root.IdentityStorage.Append(identity);
+            
+            var row = _root.Count - 1;
+            _root.PatchMetas(row);
+            _root.Invalidate();   
+            
             return identity;
         }
     }
@@ -131,14 +134,9 @@ public partial class World
 
 
     #region Queries
-    internal Query GetQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
-    {
-        if (_queries.TryGetValue(mask.GetHashCode(), out var query))
-        {
-            MaskPool.Return(mask);
-            return query;
-        }
 
+    internal Query CompileQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
+    {
         var type = mask.HasTypes[index: 0];
         if (!_tablesByType.TryGetValue(type, out var typeTables))
         {
@@ -148,12 +146,25 @@ public partial class World
 
         var matchingTables = PooledList<Archetype>.Rent();
         foreach (var table in _archetypes)
-            if (table.Matches(mask))
-                matchingTables.Add(table);
+        {
+            if (table.Matches(mask)) matchingTables.Add(table);
+        }
 
-        query = createQuery(this, streamTypes, mask, matchingTables);
-
-        _queries.Add(query.GetHashCode(), query);
+        var query = createQuery(this, streamTypes, mask, matchingTables);
+        return query;
+    }
+    
+    internal Query CacheQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
+    {
+        // Compile if not cached.
+        if (!_queries.TryGetValue(mask.GetHashCode(), out var query))
+        {
+            query = CompileQuery(streamTypes, mask, createQuery);
+            _queries.Add(query.GetHashCode(), query);
+            return query;
+        }
+        
+        MaskPool.Return(mask);
         return query;
     }
 
@@ -175,6 +186,17 @@ public partial class World
         _archetypes.Add(table);
         _typeGraph.Add(types, table);
 
+        // TODO: This is a suboptimal lookup (enumerate dictionary)
+        // IDEA: Maybe we can keep Queries in a Tree which
+        // identifies them just by their Signature root. (?) 
+        foreach (var query in _queries.Values)
+        {
+            if (table.Matches(query.Mask))
+            {
+                query.TrackArchetype(table);
+            }
+        }
+        
         foreach (var type in types)
         {
             if (!_tablesByType.TryGetValue(type, out var tableList))
@@ -194,14 +216,6 @@ public partial class World
             }
 
             typeList.Add(type);
-        }
-
-        foreach (var query in _queries.Values)
-        {
-            if (table.Matches(query.Mask))
-            {
-                query.TrackArchetype(table);
-            }
         }
 
         return table;

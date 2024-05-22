@@ -89,7 +89,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <param name="targetEntity">The entity with which to establish the relation.</param>
     /// <param name="data">The data associated with the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity AddRelation<T>(Entity targetEntity, T data)
+    public Entity AddRelation<T>(Entity targetEntity, T data) where T : notnull
     {
         var typeExpression = TypeExpression.Of<T>(targetEntity.Id);
         World.AddComponent(Id, typeExpression, data);
@@ -125,7 +125,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <typeparam name="T">The type of the Component to be added.</typeparam>
     /// <param name="data">The data associated with the Component.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Add<T>(T data)
+    public Entity Add<T>(T data) where T : notnull
     {
         var type = TypeExpression.Of<T>();
         World.AddComponent(Id, type, data);
@@ -138,7 +138,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// </summary>
     /// <typeparam name="T">The type of the Component to be added.</typeparam>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Add<T>() where T : new() => Add(new T());
+    public Entity Add<T>() where T : notnull, new() => Add(new T());
 
 
     /// <summary>

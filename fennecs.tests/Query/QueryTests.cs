@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Numerics;
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
 namespace fennecs.tests.Query;
 
@@ -17,7 +18,7 @@ public class QueryTests
             entities.Add(entity);
         }
 
-        var query = world.Query<object>().Build();
+        var query = world.Query<object>().Compile();
         var plain = query as IEnumerable;
 
         foreach (var current in plain)
@@ -46,7 +47,7 @@ public class QueryTests
             entities.Add(identity);
         }
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
 
         Assert.True(entities.All(e => query.Contains(e)));
 
@@ -77,7 +78,7 @@ public class QueryTests
 
         var query = world.Query<Vector3>()
             .Has<int>()
-            .Build();
+            .Compile();
 
         query.Raw(memory =>
         {
@@ -100,7 +101,7 @@ public class QueryTests
 
         var query = world.Query<Vector3>()
             .Not<int>()
-            .Build();
+            .Compile();
 
         query.Raw(memory =>
         {
@@ -125,7 +126,7 @@ public class QueryTests
 
         var query = world.Query<Identity, Vector3>()
             .Any<int>(Match.Plain)
-            .Build();
+            .Compile();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -151,7 +152,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).AddRelation(alice, 111);
         var charlie = world.Spawn().Add(p3).AddRelation(eve, 222);
 
-        var query = world.Query<Identity, Vector3>().Any<int>(eve).Build();
+        var query = world.Query<Identity, Vector3>().Any<int>(eve).Compile();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -182,7 +183,7 @@ public class QueryTests
         var query = world.Query<Identity, Vector3>()
             .Any<int>(eve)
             .Any<int>(alice)
-            .Build();
+            .Compile();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -232,7 +233,7 @@ public class QueryTests
         var query = world.Query<Identity, Vector3>()
             .Not<int>(bob)
             .Any<int>(alice)
-            .Build();
+            .Compile();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -276,7 +277,7 @@ public class QueryTests
 
         var query = world.Query<Identity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
             .Not<int>(bob)
-            .Build();
+            .Compile();
 
         var count = 0;
         query.Raw((me, mp, mi) =>
@@ -318,20 +319,20 @@ public class QueryTests
 
         world.Spawn().Add(123);
 
-        var query1A = world.Query().Build();
-        var query1B = world.Query().Build();
+        var query1A = world.Query().Compile();
+        var query1B = world.Query().Compile();
 
-        var query2A = world.Query<Identity>().Build();
-        var query2B = world.Query<Identity>().Build();
+        var query2A = world.Query<Identity>().Compile();
+        var query2B = world.Query<Identity>().Compile();
 
-        var query3A = world.Query().Has<int>().Build();
-        var query3B = world.Query().Has<int>().Build();
+        var query3A = world.Query().Has<int>().Compile();
+        var query3B = world.Query().Has<int>().Compile();
 
-        var query4A = world.Query<Identity>().Not<int>().Build();
-        var query4B = world.Query<Identity>().Not<int>().Build();
+        var query4A = world.Query<Identity>().Not<int>().Compile();
+        var query4B = world.Query<Identity>().Not<int>().Compile();
 
-        var query5A = world.Query<Identity>().Any<int>().Any<float>().Build();
-        var query5B = world.Query<Identity>().Any<int>().Any<float>().Build();
+        var query5A = world.Query<Identity>().Any<int>().Any<float>().Compile();
+        var query5B = world.Query<Identity>().Any<int>().Any<float>().Compile();
 
         Assert.True(ReferenceEquals(query1A, query1B));
         Assert.True(ReferenceEquals(query2A, query2B));
@@ -346,7 +347,7 @@ public class QueryTests
     {
         using var world = new World();
 
-        var query = world.Query().Build();
+        var query = world.Query().Compile();
         query.Dispose();
         /*
          TODO: Re-enable this test when Query disposal repercussions redesigned :D
@@ -364,7 +365,7 @@ public class QueryTests
     {
         using var world = new World();
         var identity = world.Spawn();
-        var query = world.Query<Identity>().Build();
+        var query = world.Query<Identity>().Compile();
 
         Assert.Throws<TypeAccessException>(() => query.Ref<Identity>(identity));
     }
@@ -378,7 +379,7 @@ public class QueryTests
         world.Despawn(entity);
         Assert.False(world.IsAlive(entity));
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
     }
 
@@ -388,7 +389,7 @@ public class QueryTests
     {
         using var world = new World();
         var identity = world.Spawn().Add<int>();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
 
         Assert.Throws<TypeAccessException>(() => query.Ref<float>(identity));
     }
@@ -399,7 +400,7 @@ public class QueryTests
     {
         using var world = new World();
         var identity = world.Spawn().Add(23);
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
 
         ref var gotten = ref query.Ref<int>(identity);
         Assert.Equal(23, gotten);
@@ -417,7 +418,7 @@ public class QueryTests
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42);
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Contains(entity23, query);
         Assert.Contains(entity42, query);
     }
@@ -430,7 +431,7 @@ public class QueryTests
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42);
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Equal(entity23, query[0]);
         Assert.Equal(entity42, query[1]);
     }
@@ -443,7 +444,7 @@ public class QueryTests
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42).Add<string>("I'm in another table");
 
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Equal(entity23, query[0]);
         Assert.Equal(entity42, query[1]);
     }
@@ -453,7 +454,7 @@ public class QueryTests
     private void Indexer_Throws_When_Out_Of_Range()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.Throws<IndexOutOfRangeException>(() => query[0]);
         Assert.Throws<IndexOutOfRangeException>(() => query[-1]);
         Assert.Throws<IndexOutOfRangeException>(() => query[1]);
@@ -469,7 +470,7 @@ public class QueryTests
     private void Random_Access_Is_Possible()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         var entity23 = world.Spawn().Add(23);
         var entity42 = world.Spawn().Add(42);
         Assert.Contains(query.Random(), new []{entity23, entity42});
@@ -480,7 +481,7 @@ public class QueryTests
     private void Random_Access_with_One_Entity()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         var entity = world.Spawn().Add(23);
         Assert.Equal(entity, query.Random());
     }
@@ -490,7 +491,7 @@ public class QueryTests
     private void Random_Access_Throws_with_Empty_Query()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.True(query.IsEmpty);
         Assert.Throws<IndexOutOfRangeException>(() => query.Random());
     }
@@ -500,7 +501,7 @@ public class QueryTests
     private void Query_Contains_Type()
     {
         using var world = new World();
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.True(query.Contains<int>());
         Assert.False(query.Contains<float>());
     }
@@ -510,7 +511,7 @@ public class QueryTests
     private void Query_Contains_Type_Subset()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Entity).Build();
+        var query = world.Query<int>(Match.Entity).Compile();
         Assert.True(query.Contains<int>(Match.Any));
         Assert.False(query.Contains<float>(Match.Any));
     }
@@ -520,7 +521,7 @@ public class QueryTests
     private void Query_Containss_Type_Superset()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
         Assert.True(query.Contains<int>(Match.Plain));
         Assert.False(query.Contains<float>(Match.Object));
     }
@@ -531,7 +532,7 @@ public class QueryTests
     {
         using var world = new World();
         var entity = world.Spawn().Add(23);
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         Assert.True(query.Contains(entity));
     }
 
@@ -541,7 +542,7 @@ public class QueryTests
     {
         using var world = new World();
         var entity = world.Spawn().Add(23);
-        var query = world.Query<int>().Build();
+        var query = world.Query<int>().Compile();
         world.Despawn(entity);
         Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
 
@@ -558,7 +559,7 @@ public class QueryTests
     public void Filtered_Enumerator_Filters()
     {
         using var world = new World();
-        var query = world.Query<Identity, int>(Match.Plain, Match.Any).Build();
+        var query = world.Query<Identity, int>(Match.Plain, Match.Any).Compile();
 
         var entity1 = world.Spawn().Add(444);
         var entity2 = world.Spawn().AddRelation(entity1, 555);
@@ -585,7 +586,7 @@ public class QueryTests
     {
         using var world = new World();
 
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
         var entity1 = world.Spawn().Add(444);
         world.Spawn().AddRelation(entity1, 555);
 
@@ -610,7 +611,7 @@ public class QueryTests
     public void Can_Truncate(int entityCount, int targetSize)
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
 
         for (var i = 0; i < entityCount; i++) world.Spawn().Add(i);
 
@@ -623,7 +624,7 @@ public class QueryTests
     public void Can_Clear()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
 
         for (var i = 0; i < 420; i++) world.Spawn().Add(i);
 
@@ -638,7 +639,7 @@ public class QueryTests
     public void Can_Despawn()
     {
         using var world = new World();
-        var query = world.Query<int>(Match.Any).Build();
+        var query = world.Query<int>(Match.Any).Compile();
 
         for (var i = 0; i < 420; i++) world.Spawn().Add(i);
 
@@ -651,7 +652,7 @@ public class QueryTests
     public void Can_Enumerate()
     {
         using var world = new World();
-        var query = world.Query().Build();
+        using var query = world.Query().Compile();
         
         var entity1 = world.Spawn().Add(444);
         var entity2 = world.Spawn().AddRelation(entity1, 555);
@@ -671,4 +672,250 @@ public class QueryTests
         }
         Assert.Empty(spawnedEntities);
     }
+
+    [Fact]
+    public void Can_Blit_Empty()
+    {
+        using var world = new World();
+        using var query = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
+        query.Blit(123);
+        query.Blit("test");
+        query.Blit(Vector2.One);
+        query.Blit(Vector3.One);
+        query.Blit(Vector4.One);
+    }
+    
+    [Fact]
+    public void Can_Blit_All_Components()
+    {
+        using var world = new World();
+        using var query = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
+        
+        world.Entity()
+            .Add(42)
+            .Add("replaceme")
+            .Add(Vector2.Zero)
+            .Add(Vector3.Zero)
+            .Add(Vector4.Zero)
+            .Spawn(100);
+        
+        query.Blit(69);
+        query.Blit("test");
+        query.Blit(Vector2.One);
+        query.Blit(Vector3.One);
+        query.Blit(Vector4.One);
+        
+        query.For((ref int i, ref string s, ref Vector2 v2, ref Vector3 v3, ref Vector4 v4) =>
+        {
+            Assert.Equal(69, i);
+            Assert.Equal("test", s);
+            Assert.Equal(Vector2.One, v2);
+            Assert.Equal(Vector3.One, v3);
+            Assert.Equal(Vector4.One, v4);
+        });
+        
+        Assert.Equal(100, query.Count);
+    }
+
+    [Fact]
+    public void Can_Double_Dispose_Safely()
+    {
+        using var world = new World();
+        var query = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
+        
+        query.Dispose();
+        query.Dispose();
+    }
+
+    [Fact]
+    public void For_On_Empty_Query()
+    {
+        using var world = new World();
+        var e = world.Spawn();
+        e.Add(Vector4.One);
+        e.Add(Vector3.One);
+        e.Add(Vector2.One);
+        e.Add(42);
+        e.Add("test");
+        e.Add(0.5f);
+        e.Despawn();
+
+        using var query1 = world.Query<Vector4>().Compile();
+        query1.For((ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+        
+        using var query2 = world.Query<Vector3, Vector4>().Compile();
+        query2.For((ref Vector3 _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+        
+        using var query3 = world.Query<Vector2, Vector3, Vector4>().Compile();
+        query3.For((ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+
+        using var query4 = world.Query<string, Vector2, Vector3, Vector4>().Compile();
+        query4.For((ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+
+        using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
+        query5.For((ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+    }
+    
+    [Fact]
+    public void ForE_On_Empty_Query()
+    {
+        using var world = new World();
+        var e = world.Spawn();
+        e.Add(Vector4.One);
+        e.Add(Vector3.One);
+        e.Add(Vector2.One);
+        e.Add(42);
+        e.Add("test");
+        e.Add(0.5f);
+        e.Despawn();
+
+        using var query1 = world.Query<Vector4>().Compile();
+        query1.For((Entity _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+        
+        using var query2 = world.Query<Vector3, Vector4>().Compile();
+        query2.For((Entity _, ref Vector3 _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+        
+        using var query3 = world.Query<Vector2, Vector3, Vector4>().Compile();
+        query3.For((Entity _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+
+        using var query4 = world.Query<string, Vector2, Vector3, Vector4>().Compile();
+        query4.For((Entity _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+
+        using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
+        query5.For((Entity _, ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
+        {
+            Assert.Fail("Should not be called");
+        });
+    }
+    
+    [Fact]
+    public void ForU_On_Empty_Query()
+    {
+        using var world = new World();
+        var e = world.Spawn();
+        e.Add(Vector4.One);
+        e.Add(Vector3.One);
+        e.Add(Vector2.One);
+        e.Add(42);
+        e.Add("test");
+        e.Add(0.5f);
+        e.Despawn();
+
+
+        using var query1 = world.Query<Vector4>().Compile();
+        query1.For((ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+        
+        using var query2 = world.Query<Vector3, Vector4>().Compile();
+        query2.For((ref Vector3 _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+        
+        using var query3 = world.Query<Vector2, Vector3, Vector4>().Compile();
+        query3.For((ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+
+        using var query4 = world.Query<string, Vector2, Vector3, Vector4>().Compile();
+        query4.For((ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+
+        using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
+        query5.For((ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+    }
+    
+    [Fact]
+    public void ForEU_On_Empty_Query()
+    {
+        using var world = new World();
+        var e = world.Spawn();
+        e.Add(Vector4.One);
+        e.Add(Vector3.One);
+        e.Add(Vector2.One);
+        e.Add(42);
+        e.Add("test");
+        e.Add(0.5f);
+        e.Despawn();
+
+        using var query1 = world.Query<Vector4>().Compile();
+        query1.For((Entity _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+        
+        using var query2 = world.Query<Vector3, Vector4>().Compile();
+        query2.For((Entity _, ref Vector3 _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+        
+        using var query3 = world.Query<Vector2, Vector3, Vector4>().Compile();
+        query3.For((Entity _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+
+        using var query4 = world.Query<string, Vector2, Vector3, Vector4>().Compile();
+        query4.For((Entity _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+
+        using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
+        query5.For((Entity _, ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        {
+            Assert.Fail("Should not be called");
+        }, 0.0f);
+    }
+    
+    
+    [Fact]
+    public void Obsolete_Coverage_Build()
+    {
+        using var world = new World();
+#pragma warning disable CS0618 // Type or member is obsolete
+        using var query1 = world.Query<Vector4>().Build();
+        using var query2 = world.Query<Vector3, Vector4>().Build();
+        using var query3 = world.Query<Vector2, Vector3, Vector4>().Build();
+        using var query4 = world.Query<string, Vector2, Vector3, Vector4>().Build();
+        using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Build();
+#pragma warning restore CS0618 // Type or member is obsolete
+    }
+    
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Text;
 using fennecs.pools;
 
 namespace fennecs;
@@ -16,35 +17,54 @@ public partial class World : IDisposable
     /// <returns>an Entity to operate on</returns>
     public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
 
+    
+    internal PooledList<Identity> SpawnBare(int count)
+    {
+        var identities = _identityPool.Spawn(count);
+        while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
+        return identities;
+    }
+
+    /// <summary>
+    /// Spawns a number of pre-configured Entities. 
+    /// </summary>
+    public EntitySpawner Entity()
+    {
+        return new EntitySpawner(this);
+    }
+
 
     /// <summary>
     /// Spawns a number of pre-configured Entities 
     /// </summary>
+    /// <remarks>
+    /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
+    /// </remarks>
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
-    public void Spawn(int count = 1, params object[] components)
+    /// <param name="values">component values</param>
+    internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature<TypeExpression>(components.Select(c => TypeExpression.Of(c.GetType())).ToArray());
+        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>());
         var archetype = GetArchetype(signature);
-        archetype.Spawn(count, components);
+        archetype.Spawn(count, components, values);
     }
 
 
     /// <summary>
     /// Spawns a number of pre-configured Entities 
     /// </summary>
+    /// <remarks>
+    /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
+    /// </remarks>
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
-    public void Spawn(ValueTuple<TypeExpression, object>[] components, int count = 1)
+    public void Spawn(int count = 1, params (TypeExpression, object)[] components)
     {
+        var signature = new Signature<TypeExpression>(components.Select(c => c.Item1).Append(TypeExpression.Of<Identity>()).ToImmutableSortedSet());
+        var archetype = GetArchetype(signature);
+        archetype.Spawn(count, components.Select(c => c.Item2).ToArray());
     }
-
-    /// <summary>
-    /// Creates <paramref name="count"/> new Identities in this World, and returns its <see cref="EntityBatch"/> struct.
-    /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
-    /// </summary>
-    /// <returns>an EntityBatch to operate on</returns>
-    //public EntityBatch Spawn(int count) => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
 
 
     /// <summary>
@@ -112,7 +132,7 @@ public partial class World : IDisposable
     /// </param>
     public void DespawnAllWith<T>(Identity match = default)
     {
-        using var query = Query<Identity>().Has<T>(match).Build();
+        using var query = Query<Identity>().Has<T>(match).Compile();
         query.Raw(delegate(Memory<Identity> entities)
         {
             foreach (var identity in entities.Span) DespawnImpl(identity);
@@ -138,12 +158,12 @@ public partial class World : IDisposable
     /// <summary>
     /// Create a new World.
     /// </summary>
-    /// <param name="capacity">initial Entity capacity to reserve. The world will grow automatically.</param>
-    public World(int capacity = 4096)
+    /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
+    public World(int initialCapacity = 4096)
     {
-        _identityPool = new IdentityPool(capacity);
+        _identityPool = new IdentityPool(initialCapacity);
 
-        _meta = new Meta[capacity];
+        _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
         _root = GetArchetype(new Signature<TypeExpression>(TypeExpression.Of<Identity>(Match.Plain)));
@@ -206,8 +226,8 @@ public partial class World : IDisposable
     /// and executed once the last Lock is released. 
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
-    public WorldLock Lock => new(this);
-    
+    public WorldLock Lock() => new(this);
+
     #endregion
     
     #region Debug Tools
@@ -231,27 +251,4 @@ public partial class World : IDisposable
     }
 
     #endregion
-
-public class EntityBatch : IDisposable
-{
-    private readonly World _world;
-    private PooledList<Identity> _identities = PooledList<Identity>.Rent();
-    private Signature<TypeExpression> _signature;
-    private Dictionary<TypeExpression, object> _components;
-
-    internal EntityBatch(World world, int count)
-    {
-        _world = world;
-        _identities.AddRange(_world._identityPool.Spawn(count));
-    }
-
-    public void Submit()
-    {
-        
-    }
-    public void Dispose()
-    {
-        _identities.Dispose();
-    }
-}
 }

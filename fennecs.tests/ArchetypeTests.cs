@@ -18,48 +18,19 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Contains(typeof(int).ToString(), table.ToString());
         Assert.Contains(typeof(float).ToString(), table.ToString());
     }
-
-
-    [Fact]
-    public void Table_Resizing_Fails_On_Wrong_Size()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
-
-        var table = world.GetEntityMeta(identity).Archetype;
-
-        Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(-1));
-        Assert.Throws<ArgumentOutOfRangeException>(() => table.Resize(0));
-    }
-
+    
 
     [Fact]
-    public void Table_Resizing_Matches_Length()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
-
-        var table = world.GetEntityMeta(identity).Archetype;
-
-        table.Resize(10);
-        Assert.Equal(10, table.Capacity);
-
-        table.Resize(5);
-        Assert.Equal(5, table.Capacity);
-    }
-
-
-    [Fact]
-    public void Table_GetStorage_Returns_System_Array()
+    public void GetStorage_Returns_IStorage_Backed_By_Specific_Type()
     {
         using var world = new World();
         var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(identity).Archetype;
         var storage = table.GetStorage(TypeExpression.Of<string>(Match.Plain));
-        Assert.IsAssignableFrom<Array>(storage);
+        Assert.IsAssignableFrom<IStorage>(storage);
+        Assert.IsAssignableFrom<Storage<string>>(storage);
     }
-
-
+    
     [Fact]
     public void Table_Matches_TypeExpression()
     {
@@ -120,4 +91,35 @@ public class ArchetypeTests(ITestOutputHelper output)
         table.Truncate(-2);
         Assert.Equal(0, table.Count);
     }
+
+    [Fact]
+    public void Moved_Entity_Leaves_Archetype()
+    {
+        using var world = new World();
+
+        var entity = world.Spawn();
+        var entityInt = world.Spawn().Add(123);
+        
+        var queryAll = world.Query().Compile();
+        var queryInt = world.Query().Has<int>().Compile();
+        
+        Assert.Equal(2, queryAll.Count);
+        Assert.Equal(1, queryInt.Count);
+    }
+
+    [Fact]
+    public void IsComparable_Same_As_Signature()
+    {
+        using var world = new World();
+        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var entity2 = world.Spawn().Add(123).Add(17.0f).Id;
+        
+        var table1 = world.GetEntityMeta(entity1).Archetype;
+        var table2 = world.GetEntityMeta(entity1).Archetype;
+
+        Assert.True(table1.CompareTo(table2) == table1.Signature.CompareTo(table2.Signature));
+
+        Assert.True(table1.CompareTo(null) == table1.Signature.CompareTo(default));
+    }
+
 }

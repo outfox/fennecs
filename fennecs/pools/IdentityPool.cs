@@ -1,16 +1,22 @@
 ﻿namespace fennecs.pools;
 
-internal class IdentityPool(int capacity = 4096)
+internal class IdentityPool
 {
     internal int Created { get; private set; }
     internal int Count => Created - _recycled.Count;
 
-    private readonly Queue<Identity> _recycled = new(capacity);
+    private readonly Queue<Identity> _recycled;
+    
+    public IdentityPool(int initialCapacity = 65536)
+    {
+        _recycled = new(initialCapacity * 2);
+        _recycled.Enqueue(new(++Created));
+    }
 
 
     internal Identity Spawn()
     {
-        return _recycled.TryDequeue(out var recycledIdentity) ? recycledIdentity : new Identity(++Created);
+        return _recycled.TryDequeue(out var recycledIdentity) ? recycledIdentity : new(++Created);
     }
 
 
@@ -18,18 +24,25 @@ internal class IdentityPool(int capacity = 4096)
     {
         var identities = PooledList<Identity>.Rent();
         var recycled = _recycled.Count;
-        if (recycled <= requested)
+        
+        if (recycled < requested)
         {
+            // If we don't have enough recycled Identities, create more.
             identities.AddRange(_recycled);
             _recycled.Clear();
+            
+            for (var i = 0; i < requested - recycled; i++)
+            {
+                identities.Add(new(++Created));
+            }
         }
-        else
+        else 
         {
-            identities.AddRange(Enumerable.Range(0, requested - recycled).Select(_ => new Identity(++Created)));
+            // Otherwise, take the requested amount from the recycled pool.
+            identities.AddRange(_recycled.Take(requested));
         }
 
         return identities;
-        //return _recycled.TryDequeue(out var recycledIdentity) ? recycledIdentity : new Identity(++Created);
     }
 
 

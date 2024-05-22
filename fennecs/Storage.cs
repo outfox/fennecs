@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -10,9 +11,20 @@ internal interface IStorage
     int Count { get; }
 
     /// <summary>
+    /// Stores a boxed value at the given index.
+    /// (use <c>Append</c> to add a new one)
+    /// </summary>
+    void Store(int index, object value);
+
+    /// <summary>
     /// Adds a boxed value (or number of identical values) to the storage.
     /// </summary>
     void Append(object value, int additions = 1);
+
+    /// <summary>
+    /// Removes a range of elements. 
+    /// </summary>
+    void Delete(int index, int removals = 1);
 
     /// <summary>
     /// Writes the given boxed value over all elements of the storage.
@@ -35,20 +47,69 @@ internal interface IStorage
     /// Tries to downsize the storage to the smallest power of 2 that can contain all elements.
     /// </summary>
     void Compact();
+
+    /// <summary>
+    /// Moves all elements from this storage into destination.
+    /// The destination must be the same or a derived type.
+    /// </summary>
+    /// <param name="destination">a storage of the type of this storage</param>
+    void Migrate(IStorage destination);
+
+    /// <summary>
+    /// Moves one element from this storage to the destination storage. 
+    /// </summary>
+    /// <param name="index">element index to move</param>
+    /// <param name="destination">a storage of the same type</param>
+    void Move(int index, IStorage destination);
+
+    /// <summary>
+    /// Instantiates the appropriate Storage for a <see cref="TypeExpression"/>.
+    /// </summary>
+    /// <param name="expression">a typeexpression</param>
+    /// <returns>generic IStorage reference backed by the specialized instance of the <see cref="Storage{T}"/></returns>
+    public static IStorage Instantiate(TypeExpression expression)
+    {
+        var storageType = typeof(Storage<>).MakeGenericType(expression.Type);
+        var instance = (IStorage) Activator.CreateInstance(storageType)!;
+        return instance;
+    }
 }
 
 /// <summary>
 /// A front-end to System.Array for fast storage write and blit operations.
 /// </summary>
 /// <typeparam name="T">the type of the array elements</typeparam>
-internal class Storage<T>(int initialCapacity = 16) : IStorage
+internal class Storage<T> : IStorage
 {
-    private T[] _data = new T[initialCapacity];
+    private const int InitialCapacity = 2;
+        
+    private T[] _data = new T[InitialCapacity];
+
+    /// <summary>
+    /// Replaces the value at the given index.
+    /// (use <c>Append</c> to add a new one)
+    /// </summary>
+    public void Store(int index, T value)
+    {
+        Span[index] = value;
+    }
+
+
+    /// <inheritdoc />
+    public void Store(int index, object value) => Store(index, (T)value);
+
 
     /// <summary>
     /// Number of Elements actually stored.
     /// </summary>
     public int Count { get; private set; }
+
+
+    /// <summary>
+    /// Number of Elements actually stored.
+    /// </summary>
+    public int Capacity => _data.Length;
+
 
     /// <summary>
     /// Adds a value (or number of identical values) to the storage.
@@ -57,14 +118,16 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     {
         if (additions <= 0) return;
         EnsureCapacity(Count + additions);
-        _data.AsSpan().Slice(Count, additions).Fill(value);
+        FullSpan.Slice(Count, additions).Fill(value);
         Count += additions;
     }
+
 
     /// <summary>
     /// Adds a boxed value (or number of identical values) to the storage.
     /// </summary>
     public void Append(object value, int additions = 1) => Append((T)value, additions);
+
 
 
     /// <summary>
@@ -75,12 +138,31 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     public void Delete(int index, int removals = 1)
     {
         if (removals <= 0) return;
-        Span[(index + removals)..].CopyTo(Span[index..]);
+
+        // Are there enough elements after the removal site to fill the gap created?
+        if (Count - removals > index + removals)
+        {
+            // Then copy just these elements to the site of removal!
+            FullSpan[(Count - removals)..Count].CopyTo(FullSpan[index..]);
+        }
+        else if (Count > index + removals)
+        {
+            // Else shift back all remaining elements (if any).
+            FullSpan[(index + removals)..Count].CopyTo(FullSpan[index..]);
+        }
+
+        // Clear the space at the end.
+        FullSpan[(Count - removals)..].Clear();
         
-        //Only clear subsection (this could be very large free space!)
-        Span[(Count - removals)..Count].Clear(); 
         Count -= removals;
+
+        /*
+        // Naive Wasteful: Shift EVERYTHING backwards.
+        FullSpan[(index + removals)..].CopyTo(FullSpan[index..]);
+        if (Count < _data.Length) FullSpan[Count..].Clear();
+        */        
     }
+
 
     /// <summary>
     /// Writes the given value over all elements of the storage.
@@ -90,6 +172,7 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     {
         Span[..Count].Fill(value);
     }
+
 
     /// <summary>
     /// Writes the given boxed value over all elements of the storage.
@@ -103,6 +186,8 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     /// </summary>
     public void Clear()
     {
+        if (Count <= 0) return;
+        
         Span.Clear();
         Count = 0;
     }
@@ -123,8 +208,88 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     /// </summary>
     public void Compact()
     {
-        var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Max(initialCapacity, Count));
+        var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Max(InitialCapacity, Count));
         Array.Resize(ref _data, newSize);
+    }
+
+
+    /// <summary>
+    /// Migrates all the entries in this storage to the destination storage.
+    /// </summary>
+    /// <param name="destination">a storage of the same type</param>
+    public void Migrate(Storage<T> destination)
+    {
+        destination.Append(Span);
+        Clear();
+
+        // TODO: This is a potentially huge optimization, but it struggles with backfill logic. 
+        // (i.e. what if there's nothing to migrate yet, but we are going to need to backfill?)
+        // (and what's the case for swap vs. copy?)
+        // (and despite saving CPU on the copy, Meta updates will be much more expensive)
+        // (meaning there's not a direct correlation between Storage size and efficiency)
+        /*
+        if (destination.Count >= Count)
+        {
+            destination.Append(Span);
+        }
+        else
+        {
+            // In many cases, we're migrating a much larger Archetype/Storage into a smaller
+            // or empty one. We then just perform the copy operation the other way around...
+            Append(destination.Span);
+
+            // ... and we just switch counts and data pointers for this storage.
+            (_data, destination._data) = (destination._data, _data);
+            (Count, destination.Count) = (destination.Count, Count);
+        }
+
+        // We are still the "source" archetype, so we are expected to be empty (and we do the emptying)
+        Clear();
+        */
+    }
+
+    /// <summary>
+    /// Moves one element from this storage to the destination storage.
+    /// </summary>
+    /// <param name="index">element index to move</param>
+    /// <param name="destination">a storage of the same type</param>
+    public void Move(int index, Storage<T> destination)
+    {
+        destination.Append(Span[index]);
+        Delete(index);
+    }
+
+    /// <inheritdoc/>
+    public void Move(int index, IStorage destination) => Move(index, (Storage<T>)destination);
+
+    /// <summary>
+    /// Boxed / General migration method.
+    /// </summary>
+    /// <param name="destination">a storage, must be of the same type</param>
+    public void Migrate(IStorage destination) => Migrate((Storage<T>)destination);
+
+
+    /// <summary>
+    /// Used for memory-efficient spawning
+    /// </summary>
+    /// <param name="values">PooledList as gotten from <see cref="World.SpawnBare"/></param>
+    internal void Append(PooledList<T> values)
+    {
+        EnsureCapacity(Count + values.Count);
+        values.CopyTo(FullSpan[Count..]);
+        Count += values.Count;    
+    }
+    
+    private void Append(Span<T> appendage)
+    {
+        EnsureCapacity(Count + appendage.Length);
+        appendage.CopyTo(FullSpan[Count..]);
+        Count += appendage.Length;
+    }
+
+    public Memory<T> AsMemory(int start, int length)
+    {
+        return _data.AsMemory(start, length);
     }
 
     /// <summary>
@@ -132,6 +297,7 @@ internal class Storage<T>(int initialCapacity = 16) : IStorage
     /// </summary>
     public Span<T> Span => _data.AsSpan(0, Count);
 
+    private Span<T> FullSpan => _data.AsSpan();
 
     /// <summary>
     /// Indexer (for debug purposes!)

@@ -24,7 +24,7 @@ public class SimpleEntityBenchmarks
     public void Setup()
     {
         _world = new World();
-        _queryV3 = _world.Query<Vector3>().Build();
+        _queryV3 = _world.Query<Vector3>().Compile();
         _vectorsRaw = new Vector3[entityCount];
 
         for (var i = 0; i < entityCount; i++)

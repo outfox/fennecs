@@ -1,5 +1,9 @@
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+
 namespace fennecs.tests;
 
+[SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
 public class WorldTests(ITestOutputHelper output)
 {
     [Fact]
@@ -56,6 +60,187 @@ public class WorldTests(ITestOutputHelper output)
 
 
     [Theory]
+    [InlineData(0)]
+    [InlineData(1_000)]
+    [InlineData(10_000)]
+    [InlineData(1_000_000)]
+    private void Can_Batch_Spawn_Bare(int count)
+    {
+        using var world = new World();
+        var identities = world.SpawnBare(count);
+        Assert.Equal(count, identities.Count);
+        Assert.Equal(count, identities.ToImmutableSortedSet().Count);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1_000)]
+    [InlineData(10_000)]
+    [InlineData(1_000_000)]
+    private void Can_Batch_Spawn_Raw(int count)
+    {
+        using var world = new World();
+        world.Spawn(count, (TypeExpression.Of<int>(), 666), (TypeExpression.Of<string>(), "i'm a string"));
+
+        var query = world.Query<int, string>().Compile();
+        Assert.Equal(count, query.Count);
+        
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(666, i);
+            Assert.Equal("i'm a string", s);
+            i++;
+            s = "yup.";
+        });
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    [InlineData(69_420)]
+    private void Can_Batch_Spawn(int count)
+    {
+        using var world = new World();
+        world.Entity()
+            .Add(555)
+            .Add("hallo")
+            .Spawn(count);
+
+        var query = world.Query<int, string>().Compile();
+        Assert.Equal(count, query.Count);
+        
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(555, i);
+            Assert.Equal("hallo", s);
+            i++;
+            s = "correct.";
+        });
+    }
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    private void Can_Batch_Spawn_Twice(int count)
+    {
+        using var world = new World();
+        using var spawner = world.Entity();
+            
+        spawner.Add(555)
+        .Add("hallo")
+        .Spawn(count, false);
+
+        spawner.Add(420.0f);
+        spawner.Spawn(count, false);
+
+        var query = world.Query<int, string>().Compile();
+        Assert.Equal(count * 2, query.Count);
+        
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(555, i);
+            Assert.Equal("hallo", s);
+            i++;
+            s = "correct.";
+        });
+    }
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(10)]
+    private void Cannot_Batch_Spawn_with_Duplicate(int count)
+    {
+        using var world = new World();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            world.Entity()
+                .Add(555)
+                .Add(666)
+                .Spawn(count);
+        });
+    }
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    [InlineData(69_420)]
+    private void Can_Batch_Spawn_Linked(int count)
+    {
+        using var world = new World();
+        world.Entity()
+            .Add(555)
+            .AddLink("dieter")
+            .Spawn(count);
+
+        var query = world.Query<int, string>(Match.Plain, Identity.Of("dieter")).Compile();
+        Assert.Equal(count, query.Count);
+        
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(555, i);
+            Assert.Equal("dieter", s);
+        });
+    }
+
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    [InlineData(69_420)]
+    private void Can_Batch_Spawn_Related(int count)
+    {
+        using var world = new World();
+        var other = world.Spawn();
+        
+        world.Entity()
+            .Add(555)
+            .AddRelation("relation", other)
+            .Spawn(count);
+
+        var query = world.Query<int, string>(Match.Plain, other).Compile();
+        Assert.Equal(count, query.Count);
+        
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
+        query.For((ref int i, ref string s) =>
+        {
+            Assert.Equal(555, i);
+            Assert.Equal("relation", s);
+        });
+    }
+
+
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(123)]
+    [InlineData(9_000)]
+    [InlineData(69_420)]
+    private void Can_Batch_Spawn_Entity_With_No_Components(int count)
+    {
+        using var world = new World();
+        world.Entity().Spawn(count);
+
+        var query = world.Query().Compile();
+        Assert.Equal(count, query.Count);
+    }
+
+
+
+    [Theory]
     [InlineData(1)]
     [InlineData(1_000)]
     [InlineData(10_000)]
@@ -64,7 +249,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Build();
+        var query = world.Query<Identity>().Compile();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -84,7 +269,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Build();
+        var query = world.Query<Identity>().Compile();
         query.Raw((_, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -111,7 +296,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Build();
+        var query = world.Query<Identity>().Compile();
         query.For((ref Identity _, World uniform) =>
         {
             var entity = uniform.Spawn();
@@ -179,8 +364,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().AddRelation(target2, 444);
         }
 
-        var query1 = world.Query<Identity>().Has<int>(target1.Id).Build();
-        var query2 = world.Query<Identity>().Has<int>(target2.Id).Build();
+        var query1 = world.Query<Identity>().Has<int>(target1.Id).Compile();
+        var query2 = world.Query<Identity>().Has<int>(target2.Id).Compile();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);
@@ -225,7 +410,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Id;
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
 
         world.On(identity).Add(666);
         Assert.False(world.HasComponent<int>(identity, default));
@@ -240,7 +425,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Can_Lock_and_Unlock_World()
     {
         using var world = new World();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
     }
 
 
@@ -248,7 +433,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Can_Lock_Locked_World()
     {
         using var world = new World();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
     }
 
 
@@ -256,7 +441,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Apply_Can_Spawn_while_Locked()
     {
         using var world = new World();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
         var entity = world.Spawn();
         Assert.True(world.IsAlive(entity));
     }
@@ -268,7 +453,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var identity = world.Spawn().Id;
 
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         world.On(identity).Add(666);
 
         Assert.False(world.HasComponent<int>(identity, default));
@@ -284,7 +469,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add(666).Id;
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         world.On(identity).Remove<int>();
 
         worldLock.Dispose();
@@ -297,7 +482,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entity = world.Spawn().Add(666).Add("hallo");
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         world.Despawn(entity);
         Assert.True(world.IsAlive(entity));
         worldLock.Dispose();
@@ -312,7 +497,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var target = world.Spawn();
 
-        var worldLock = world.Lock;
+        var worldLock = world.Lock();
         world.On(entity).AddRelation(target, 666);
         Assert.False(entity.HasRelation<int>(target));
         worldLock.Dispose();
@@ -326,7 +511,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var identity = world.Spawn();
         var target = world.Spawn();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
         world.On(identity).AddRelation(target, 666);
         world.On(identity).RemoveRelation<int>(target);
         Assert.False(world.HasComponent<int>(identity, default), default);
@@ -522,8 +707,8 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Take_Out_Multiple_Locks()
     {
         using var world = new World();
-        var lock1 = world.Lock;
-        var lock2 = world.Lock;
+        var lock1 = world.Lock();
+        var lock2 = world.Lock();
 
         var e = world.Spawn();
         e.Add<float>();
@@ -544,7 +729,7 @@ public class WorldTests(ITestOutputHelper output)
         var e = world.Spawn();
         e.AddRelation<float>(world.Spawn());
 
-        var query = world.Query<float>().Build();
+        var query = world.Query<float>().Compile();
         Assert.Single(query);
         e.Despawn();
         Assert.Single(query.TrackedArchetypes);
@@ -557,7 +742,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Cannot_Garbage_Collect_in_Locked_World()
     {
         using var world = new World();
-        using var worldLock = world.Lock;
+        using var worldLock = world.Lock();
         Assert.Throws<InvalidOperationException>(() => world.GC());
     }
 

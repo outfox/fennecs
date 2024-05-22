@@ -1,7 +1,5 @@
 ﻿// SPDX-License-Identifier: MIT
 
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -23,7 +21,7 @@ namespace fennecs;
 /// <remarks>
 /// 
 /// </remarks>
-public class Query<C0> : Query
+public class Query<C0> : Query where C0 : notnull
 {
     #region Internals
 
@@ -35,8 +33,7 @@ public class Query<C0> : Query
     /// <param name="mask">The mask for the query.</param>
     /// <param name="archetypes">The archetypes for the query.</param>
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, List<Archetype> archetypes) : base(world, streamTypes, mask, archetypes)
-    {
-    }
+    { }
 
     #endregion
 
@@ -45,12 +42,9 @@ public class Query<C0> : Query
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0> action)
     {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
-            var count = table.Count;
 
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;
@@ -58,9 +52,9 @@ public class Query<C0> : Query
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
+                var span0 = s0.Span;
                 // foreach is faster than for loop & unroll
-                foreach (ref var c0 in span0) action(ref c0); 
+                foreach (ref var c0 in span0) action(ref c0);
             } while (join.Iterate());
         }
     }
@@ -75,22 +69,19 @@ public class Query<C0> : Query
     // /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(RefActionU<C0, U> action, U uniform)
     {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
-            var count = table.Count;
 
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
+                var span0 = s0.Span;
                 // foreach is faster than for loop & unroll
-                foreach (ref var c0 in span0) action(ref c0, uniform); 
+                foreach (ref var c0 in span0) action(ref c0, uniform);
             } while (join.Iterate());
         }
     }
@@ -100,9 +91,7 @@ public class Query<C0> : Query
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityAction<C0> action)
     {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0>(StreamTypes);
@@ -112,8 +101,8 @@ public class Query<C0> : Query
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                
+                var span0 = s0.Span;
+
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i]);
             } while (join.Iterate());
         }
@@ -123,9 +112,7 @@ public class Query<C0> : Query
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(EntityActionU<C0, U> action, U uniform)
     {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
             using var join = table.CrossJoin<C0>(StreamTypes);
@@ -135,8 +122,8 @@ public class Query<C0> : Query
             do
             {
                 var s0 = join.Select;
-                var span0 = s0.AsSpan(0, count);
-                
+                var span0 = s0.Span;
+
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], uniform);
             } while (join.Iterate());
         }
@@ -149,12 +136,9 @@ public class Query<C0> : Query
     /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
     public void Job(RefAction<C0> action)
     {
-        AssertNotDisposed();
-
-
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         Countdown.Reset();
 
         using var jobs = PooledList<Work<C0>>.Rent();
@@ -202,12 +186,9 @@ public class Query<C0> : Query
     /// <param name="uniform">The uniform data to pass to the action.</param>
     public void Job<U>(RefActionU<C0, U> action, U uniform)
     {
-        AssertNotDisposed();
-
-
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
         Countdown.Reset();
 
         using var jobs = PooledList<UniformWork<C0, U>>.Rent();
@@ -263,9 +244,7 @@ public class Query<C0> : Query
     /// <param name="action"><see cref="MemoryAction{C0}"/> action to execute.</param>
     public void Raw(MemoryAction<C0> action)
     {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -276,7 +255,7 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
-                
+
                 action(mem0);
             } while (join.Iterate());
         }
@@ -298,9 +277,7 @@ public class Query<C0> : Query
     /// <param name="uniform">The uniform data to pass to the action.</param>
     public void Raw<U>(MemoryActionU<C0, U> action, U uniform)
     {
-        AssertNotDisposed();
-
-        using var worldLock = World.Lock;
+        using var worldLock = World.Lock();
 
         foreach (var table in Archetypes)
         {
@@ -311,25 +288,28 @@ public class Query<C0> : Query
             {
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
-                
+
                 action(mem0, uniform);
             } while (join.Iterate());
         }
     }
 
     #endregion
-    
+
     #region Blitters
 
     /// <summary>
-    /// Blit (write) a component value of a stream type to all entities matched by this query.
+    /// <para>Blit (write) a component value of a stream type to all entities matched by this query.</para>
+    /// <para>🚀 Very fast!</para>
     /// </summary>
+    /// <remarks>
+    /// Each entity in the Query must possess the component type.
+    /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
+    /// </remarks>
     /// <param name="value">a component value</param>
     /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
     public void Blit(C0 value, Identity target = default)
     {
-        //using var worldLock = World.Lock;
-
         var typeExpression = TypeExpression.Of<C0>(target);
 
         foreach (var table in Archetypes)
@@ -338,85 +318,32 @@ public class Query<C0> : Query
         }
     }
 
-    
-    
-    /// <summary>
-    /// Blit (write) component values of a stream type to all entities matched by this query.
-    /// The provided IList will be wrapped around (repeated) if there are fewer elements than Entities.
-    /// </summary>
-    /// <param name="values">a component value</param>
-    /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
-    public void Blit(IList<C0> values, Identity target = default)
-    {
-        Debug.Assert(World.Mode == World.WorldMode.Immediate, "Can only blit into an unlocked world");
-
-        var typeExpression = TypeExpression.Of<C0>(target);
-
-        foreach (var table in Archetypes)
-        {
-            table.Fill(typeExpression, values);
-        }
-    }
     #endregion
 
-#region Spawning
-
-/// <summary>
-/// Publishes all Private entities in this query
-/// </summary>
-/// <param name="target">an entity to publish, or default (and Match.Any, but don't use that) to publish all matched entities</param>
-/// <exception cref="ArgumentException"></exception>
-public void Publish(Identity target)
-{
-    if (target.IsEntity)
-    {
-        World.On(target).RemoveLink(this);
-    }
-    else if (target == default || target == Match.Any)
-    {
-        Batch().RemoveLink(this).Submit();
-    }
-    else
-    {
-        throw new ArgumentException("Can only Publish specific Entity, " +
-                                    "or default and Match.Any for all private entities " +
-                                    "of this query");
-    }
-}
-
-public void Clone(Entity entity, int count = 1)
-{
-    
-}
-
-#endregion
     #region Warmup & Unroll
 
     /// <inheritdoc />
     public override Query<C0> Warmup()
     {
         base.Warmup();
+
+        C0 c = default!;
+        NoOp(ref c);
+        NoOp(ref c, 0);
+
         Job(NoOp);
+        Job(NoOp, 0);
+
         return this;
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void NoOp(ref C0 c0)
-    {
-    }
+    { }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void NoOp(ref C0 c0, int uniform)
-    {
-    }
+    { }
 
-    /// <inheritdoc />
-    public override Query<C0> Warmup<U>()
-    {
-        base.Warmup<U>();
-        Job(NoOp, 0);
-        return this;
-    }
-    
     #endregion
 }

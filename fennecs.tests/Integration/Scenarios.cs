@@ -51,22 +51,22 @@ public class Scenarios
         }
 
         
-        var floatsActual = world.Query<float>().Build().Count;
+        var floatsActual = world.Query<float>().Compile().Count;
         Assert.Equal(floats, floatsActual);
         
-        var doublesActual = world.Query<double>().Build().Count;
+        var doublesActual = world.Query<double>().Compile().Count;
         Assert.Equal(doubles, doublesActual);
 
-        var stringsActual = world.Query<string>().Build().Count;
+        var stringsActual = world.Query<string>().Compile().Count;
         Assert.Equal(strings, stringsActual);
 
-        var stringsAndDoublesActual = world.Query<string, double>().Build().Count;
+        var stringsAndDoublesActual = world.Query<string, double>().Compile().Count;
         Assert.Equal(count / (stringRate * doubleRate), stringsAndDoublesActual);
 
-        var floatsAndShortsActual = world.Query().Any<float>().Has<ushort>(Match.Any).Build().Count;
+        var floatsAndShortsActual = world.Query().Any<float>().Has<ushort>(Match.Any).Compile().Count;
         Assert.Equal(count / (floatRate * shortRate), floatsAndShortsActual);
 
-        var shortsActual = world.Query().Has<ushort>(Match.Any).Build().Count;
+        var shortsActual = world.Query().Has<ushort>(Match.Any).Compile().Count;
         Assert.Equal(shorts, shortsActual);
     }
 }

@@ -16,4 +16,4 @@ if (!Sse3.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse3)));
 if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
-BenchmarkRunner.Run<AliasingBenchmarks>();
+BenchmarkRunner.Run<SpawnerBenchmarks>();

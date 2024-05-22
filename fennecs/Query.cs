@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
-using System.Diagnostics;
+using static System.Diagnostics.Debug;
 
 namespace fennecs;
 
@@ -39,7 +39,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
     public ref C Ref<C>(Entity entity, Identity match = default)
     {
-        AssertNotDisposed();
 
         if (entity.World != World) throw new InvalidOperationException("Entity is not from this World.");
         World.AssertAlive(entity);
@@ -60,7 +59,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
-        AssertNotDisposed();
 
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
@@ -78,7 +76,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
     public bool Contains<T>(Identity match = default)
     {
-        AssertNotDisposed();
         var typeExpression = TypeExpression.Of<T>(match);
         return typeExpression.Matches(StreamTypes);
     }
@@ -105,16 +102,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// might otherwise be made happen lazily only as the actual workload starts.
     /// </remarks>
     public virtual Query Warmup() => this;
-
-    /// <summary>
-    /// Allocates and Pre-Initializes internal data structures for <see cref="UniformWork{C1,U}"/>
-    /// </summary>
-    /// <remarks>
-    /// This is only needed for benchmark situations and debugging where allocations
-    /// might otherwise be made happen lazily only as the actual workload starts.
-    /// </remarks>
-    public virtual Query Warmup<U>() => this;
-
     
     #region Internals
     /// <summary>
@@ -186,7 +173,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
 
     #region Filtering
-    /// <inheritdoc cref="Subset{T}()"/>
+    /// <inheritdoc cref="Subset{T}"/>
     /// <param name="match">
     ///     a Match Expression that is narrower than the respective Stream Type's initial
     ///     Match Expression (e.g. if Query has Match.Any, Match.Plain or Match.Object would be useful here).
@@ -196,27 +183,8 @@ public class Query : IEnumerable<Entity>, IDisposable
         _streamFilters.Add(TypeExpression.Of<T>(match));
         FilterArchetypes();
     }
-
-    /// <summary>
-    ///    Applies a subset filter to this Query, reducing the matched entities to a subset of the initially matched ones.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         Used to finely narrow down a query with Wildcard Match Expressions in its Stream Types, e.g. to match only
-    ///         a specific Object Link in a Query that matches all Object Links of a given type.
-    ///     </para>
-    ///     <para>
-    ///         Call this method repeatedly to set multiple filters.
-    ///     </para>
-    ///     <para>
-    ///         Clear the filter with <see cref="ClearFilters" />.
-    ///     </para>
-    /// </remarks>
-    /// <typeparam name="T">component type</typeparam>
-    public void Subset<T>() => Subset<T>(Match.Any);
-
     
-    /// <inheritdoc cref="Subset{T}()"/>
+    /// <inheritdoc cref="Subset{T}"/>
     /// <summary>
     /// Specify a match expression to exclude certain relations.
     /// </summary>
@@ -229,24 +197,6 @@ public class Query : IEnumerable<Entity>, IDisposable
         _streamExclusions.Add(TypeExpression.Of<T>(match));
         FilterArchetypes();
     }
-
-    /// <summary>
-    ///    Applies an exclusion filter to this Query, excluding any entities that match the given Component Type.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         Used to broadly narrow down a query, selectively excluding entities with certain components
-    ///         or relations.
-    ///     </para>
-    ///     <para>
-    ///         Call this method repeatedly to set multiple filters.
-    ///     </para>
-    ///     <para>
-    ///         Clear the filter with <see cref="ClearFilters" />.
-    ///     </para>
-    /// </remarks>
-    /// <typeparam name="T"></typeparam>
-    public void Exclude<T>() => Exclude<T>(Match.Any);
 
     private void FilterArchetypes()
     {
@@ -275,7 +225,7 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     #region IEnumerable<Entity>
     /// <summary>
-    ///     Enumerator over all the Entities in the Query.
+    ///     Enumerator over all the Entities in the Query (dependent on filter state).
     ///     Do not make modifications to the world affecting the Query while enumerating.
     /// </summary>
     /// <returns>
@@ -283,14 +233,10 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </returns>
     public IEnumerator<Entity> GetEnumerator()
     {
-        AssertNotDisposed();
 
-        foreach (var table in _trackedArchetypes)
+        foreach (var table in Archetypes)
         {
-            if (!table.IsMatchSuperSet(_streamFilters)) continue;
-
-            foreach (var entity in table)
-                yield return entity;
+            foreach (var entity in table) yield return entity;
         }
     }
 
@@ -306,7 +252,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </returns>
     public IEnumerable<Entity> Filtered(params TypeExpression[] filterExpressions)
     {
-        AssertNotDisposed();
 
         foreach (var table in Archetypes)
         {
@@ -320,7 +265,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <inheritdoc cref="IEnumerable.GetEnumerator" />
     IEnumerator IEnumerable.GetEnumerator()
     {
-        AssertNotDisposed();
         return GetEnumerator();
     }
     #endregion
@@ -339,7 +283,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <exception cref="IndexOutOfRangeException">if the Query <see cref="IsEmpty" /></exception>
     public Entity Random()
     {
-        AssertNotDisposed();
         if (Count == 0) throw new IndexOutOfRangeException("Query is empty.");
         return this[System.Random.Shared.Next(Count)];
     }
@@ -370,11 +313,10 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         get
         {
-            AssertNotDisposed();
 
             if (index < 0 || index >= Count) throw new IndexOutOfRangeException();
 
-            using var worldLock = World.Lock;
+            using var worldLock = World.Lock();
             Entity result = default;
 
             foreach (var table in _trackedArchetypes)
@@ -409,7 +351,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <param name="data">the data to add</param>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     // ReSharper disable once MemberCanBePrivate.Global
-    public void Add<T>(T data) => Batch(fennecs.Batch.AddConflict.Disallow, fennecs.Batch.RemoveConflict.Disallow).Add(data).Submit();
+    public void Add<T>(T data) => Batch().Add(data).Submit();
 
 
     /// <summary>
@@ -417,7 +359,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     /// <typeparam name="T">any Component type matched by the query</typeparam>
-    public void Remove<T>() => Batch(fennecs.Batch.AddConflict.Disallow, fennecs.Batch.RemoveConflict.Disallow).Remove<T>().Submit();
+    public void Remove<T>() => Batch().Remove<T>().Submit();
 
 
     /// <summary>
@@ -481,7 +423,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         return new Batch(_trackedArchetypes, World, Mask.Clone(), addConflict, removeConflict);
     }
 
-
+    
     /// <inheritdoc cref="Despawn" />
     [Obsolete("Use Despawn() instead.")]
     public void Clear() => Despawn();
@@ -565,27 +507,22 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     public void Dispose()
     {
-        // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
-        GC.SuppressFinalize(this);
-
-        AssertNotDisposed();
-
+        if (disposed) return;
+        disposed = true;
+            
+        _trackedArchetypes.Clear();
+        Archetypes.Clear();
+            
         _streamExclusions.Clear();
         _streamFilters.Clear();
-        
-        Archetypes.Clear();
-        _trackedArchetypes.Clear();
-        disposed = true;
+
+
         World.RemoveQuery(this);
         Mask.Dispose();
+
+        // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
+        GC.SuppressFinalize(this);
     }
-
-
-    private protected void AssertNotDisposed()
-    {
-        Debug.Assert(!disposed, $"{nameof(Query)} is disposed.");
-    }
-
 
     private bool disposed { get; set; }
     #endregion

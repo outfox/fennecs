@@ -38,7 +38,7 @@ var ball = world.Spawn()
 var team = world
     .Query<Name, Position, Talent>()
     .Has<Player>()
-    .Build();
+    .Compile();
 
 
 //  Game on! This is our "Game" Loop.

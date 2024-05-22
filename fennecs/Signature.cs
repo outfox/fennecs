@@ -8,8 +8,8 @@ namespace fennecs;
 /// <summary>
 /// Generic IImmutableSortedSet whose hash code is a combination of its elements' hashes.
 /// </summary>
-public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>
-    where T : notnull
+public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>, IComparable<Signature<T>>
+    where T : IComparable<T>
 {
     private readonly ImmutableSortedSet<T> _set = ImmutableSortedSet<T>.Empty;
     private readonly int _hashCode;
@@ -40,7 +40,7 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>
         _hashCode = BakeHash(_set);
     }
 
-    
+
     /// <inheritdoc cref="ImmutableSortedSet{T}.Add"/>
     public Signature<T> Add(T value) => new(_set.Add(value));
 
@@ -111,6 +111,22 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>
 
 
     /// <inheritdoc />
+    public int CompareTo(Signature<T> other)
+    {
+        if (other._set == default!) return 1;
+        
+        var minCount = Math.Min(_set.Count, other._set.Count);
+
+        for (var i = 0; i < minCount; i++)
+        {
+            var cmp = _set.ElementAt(i).CompareTo(other._set.ElementAt(i));
+            if (cmp != 0) return cmp;
+        }
+        
+        return _set.Count.CompareTo(other._set.Count);
+    }
+
+    /// <inheritdoc />
     public override bool Equals(object? obj) => obj is Signature<T> other && Equals(other);
 
 
@@ -124,6 +140,9 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>
         foreach (var item in source) code.Add(item);
         return code.ToHashCode();
     }
+
+    /// <inheritdoc />
+    public override string ToString() => $"~{string.Join(",", _set)}~";
 
     /// <inheritdoc cref="SetEquals" />
     public static bool operator ==(Signature<T> left, Signature<T> right) => left.Equals(right);

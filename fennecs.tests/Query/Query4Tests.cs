@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests.Query;
+﻿using System.Numerics;
+
+namespace fennecs.tests.Query;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -10,7 +12,7 @@ public class Query4Tests
     {
         using var world = new World();
 
-        var query = world.Query<double, int, string, char>().Build();
+        var query = world.Query<double, int, string, char>().Compile();
 
         //Create an empty table by spawning and despawning a single entity
         //that matches our test Query (but is a larger Archetype)
@@ -114,5 +116,14 @@ public class Query4Tests
 
 
         query.For((ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(11.ToString(), str); });
+    }
+    
+        
+    [Fact]
+    private void Can_Warmup()
+    {
+        using var world = new World();
+        var query = world.Query<string, Vector3, int, Matrix4x4>().Compile();
+        query.Warmup();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Numerics;
+using System.Text;
 
 namespace fennecs.tests.Query;
 
@@ -87,7 +88,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -104,7 +105,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -121,7 +122,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -140,7 +141,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<byte>()
             .Any(new List<float>());
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -157,12 +158,12 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<long>()
             .Any(new List<float>());
-        
+
         Assert.Throws<InvalidOperationException>(() => builder.Has<float>());
         Assert.Throws<InvalidOperationException>(() => builder.Not<float>());
         Assert.Throws<InvalidOperationException>(() => builder.Any<float>());
     }
-    
+
     [Fact]
     private void Disallows_Repeat_Type_With_Match()
     {
@@ -177,7 +178,7 @@ public class QueryBuilderTests
             .Not(new List<int>())
             .Any<long>()
             .Any(new List<float>());
-        
+
         Assert.Throws<InvalidOperationException>(() => builder.Has<float>(Match.Any));
         Assert.Throws<InvalidOperationException>(() => builder.Not<List<int>>(Match.Object));
         Assert.Throws<InvalidOperationException>(() => builder.Any<float>(Match.Entity));
@@ -197,7 +198,7 @@ public class QueryBuilderTests
             .Not<int>()
             .Any<long>()
             .Any(new List<float>());
-        
+
         Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
         Assert.Throws<InvalidOperationException>(() => builder.Not<string>(Match.Object));
         Assert.Throws<InvalidOperationException>(() => builder.Any<double>());
@@ -212,7 +213,7 @@ public class QueryBuilderTests
     {
         using var world = new World();
         using var builder = world.Query().Unchecked();
-        
+
         builder
             .Has<float>()
             .Has<string>("123")
@@ -220,17 +221,17 @@ public class QueryBuilderTests
             .Not<int>()
             .Any<long>()
             .Any(new List<float>());
-        
+
         //Conflict
         builder.Has<int>().Not<string>(Match.Object).Any<double>();
-        
+
         //Repeat
         builder.Has<int>();
 
         builder.Has<string>("I'm allowed");
         builder.Not<string>("Say that aloud?");
 
-        builder.Build();
+        builder.Compile();
     }
 
 
@@ -241,5 +242,175 @@ public class QueryBuilderTests
         var builder = world.Query<int>();
         Assert.NotNull(builder);
         Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
+    }
+
+
+    [Fact]
+    private void Can_Create_Unique_Queries_1()
+    {
+        using var world = new World();
+        var builder = world.Query<int>();
+
+        var query1 = builder.Unique();
+        var query2 = builder.Unique();
+        Assert.False(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Cached_Queries_1()
+    {
+        using var world = new World();
+        var builder = world.Query<int>();
+
+        var query1 = builder.Compile();
+        var query2 = builder.Compile();
+        Assert.True(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Unique_Queries_2()
+    {
+        using var world = new World();
+        var builder = world.Query<float, string>();
+
+        var query1 = builder.Unique();
+        var query2 = builder.Unique();
+        Assert.False(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Cached_Queries_2()
+    {
+        using var world = new World();
+        var builder = world.Query<object, string>();
+
+        var query1 = builder.Compile();
+        var query2 = builder.Compile();
+        Assert.True(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Unique_Queries_3()
+    {
+        using var world = new World();
+        var builder = world.Query<Random, float, string>();
+
+        var query1 = builder.Unique();
+        var query2 = builder.Unique();
+        Assert.False(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Cached_Queries_3()
+    {
+        using var world = new World();
+        var builder = world.Query<Vector3, object, string>();
+
+        var query1 = builder.Compile();
+        var query2 = builder.Compile();
+        Assert.True(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Unique_Queries_4()
+    {
+        using var world = new World();
+        var builder = world.Query<byte, Random, float, string>();
+
+        var query1 = builder.Unique();
+        var query2 = builder.Unique();
+        Assert.False(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Cached_Queries_4()
+    {
+        using var world = new World();
+        var builder = world.Query<int, Vector3, object, string>();
+
+        var query1 = builder.Compile();
+        var query2 = builder.Compile();
+        Assert.True(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Unique_Queries_5()
+    {
+        using var world = new World();
+        var builder = world.Query<Query<int>, int, double, float, string>();
+
+        var query1 = builder.Unique();
+        var query2 = builder.Unique();
+        Assert.False(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Cached_Queries_5()
+    {
+        using var world = new World();
+        var builder = world.Query<Vector4, Vector3, Vector2, object, string>();
+
+        var query1 = builder.Compile();
+        var query2 = builder.Compile();
+        Assert.True(query1 == query2);
+    }
+
+
+    [Fact]
+    private void Can_Create_Unchecked_Queries()
+    {
+        using var world = new World();
+        world.Query().Unchecked().Has<Vector4>().Has<Vector4>().Compile();
+        world.Query<Vector4>().Unchecked().Has<Vector4>().Compile();
+        world.Query<Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
+        world.Query<Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
+        world.Query<float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
+        world.Query<int, float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
+    }
+
+    
+    [Fact]
+    private void Cannot_Create_Duplicate_Has()
+    {
+        using var world = new World();
+        
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            world.Query().Has<Vector4>().Has<Vector4>().Compile();
+        });
+
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            world.Query<Vector4>().Has<Vector4>().Compile();
+        });
+
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            world.Query<Vector3, Vector4>().Has<Vector4>().Compile();
+        });
+        
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            world.Query<Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+        });
+        
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            world.Query<float, Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+        });
+        
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            world.Query<int, float, Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+        });
     }
 }

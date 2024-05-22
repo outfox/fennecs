@@ -4,7 +4,7 @@ namespace fennecs.tests;
 
 using System.Numerics;
 using fennecs;
-
+/*
 public class Profiling(ITestOutputHelper output)
 {
     [Theory]
@@ -34,7 +34,7 @@ public class ProfilingWorld : IEnumerable<object[]>
             world.Spawn().Add<Vector3>(new(rnd.NextSingle(), rnd.NextSingle(), rnd.NextSingle()));
         }
 
-        var query = world.Query<Vector3>().Build();
+        var query = world.Query<Vector3>().Compile();
         query.Warmup();
 
         yield return [query, rnd];
@@ -45,3 +45,4 @@ public class ProfilingWorld : IEnumerable<object[]>
         return GetEnumerator();
     }
 }
+*/

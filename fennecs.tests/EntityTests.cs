@@ -265,10 +265,10 @@ public class EntityTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entity = world.Spawn();
-        const string HELLO_WORLD = "hello world";
-        entity.AddLink(HELLO_WORLD);
-        ref var component = ref entity.Ref<string>(Identity.Of(HELLO_WORLD));
-        Assert.Equal("hello world", component);
+        const string helloWorld = "hello world";
+        entity.AddLink(helloWorld);
+        ref var component = ref entity.Ref<string>(Identity.Of(helloWorld));
+        Assert.Equal(helloWorld, component);
     }
 
 
