@@ -58,7 +58,7 @@ var world = new fennecs.World();
 var entity = world.Spawn().Add<Velocity>();
 
 // Queries are cached, just build them right where you want to use them.
-var query = world.Query<Velocity>().Build();
+var query = world.Query<Velocity>().Compile();
 
 // Run code on all entities in the query. (exchange 'For' with 'Job' for parallel processing)
 query.For(static (ref Velocity velocity, float dt) => {
