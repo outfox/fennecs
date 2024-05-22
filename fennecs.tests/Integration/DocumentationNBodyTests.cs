@@ -1,9 +1,8 @@
-﻿using System.Data.SqlTypes;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace fennecs.tests.Integration;
 
-public class DocumentationNBodyTests(ITestOutputHelper output)
+public class DocumentationNBodyTests
 {
     private struct Velocity : Fox<Vector3>
     {
