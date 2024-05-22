@@ -903,4 +903,19 @@ public class QueryTests
             Assert.Fail("Should not be called");
         }, 0.0f);
     }
+    
+    
+    [Fact]
+    public void Obsolete_Coverage_Build()
+    {
+        using var world = new World();
+#pragma warning disable CS0618 // Type or member is obsolete
+        using var query1 = world.Query<Vector4>().Build();
+        using var query2 = world.Query<Vector3, Vector4>().Build();
+        using var query3 = world.Query<Vector2, Vector3, Vector4>().Build();
+        using var query4 = world.Query<string, Vector2, Vector3, Vector4>().Build();
+        using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Build();
+#pragma warning restore CS0618 // Type or member is obsolete
+    }
+    
 }
