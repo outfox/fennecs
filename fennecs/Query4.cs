@@ -80,8 +80,8 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>  where C3 : notnull where
                 var (s0, s1, s2, s3) = join.Select;
                 var span0 = s0.Span;
                 var span1 = s1.Span;
-                var span2 = s2.Span;;
-                var span3 = s3.Span;;
+                var span2 = s2.Span;
+                var span3 = s3.Span;
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
             } while (join.Iterate());
         }
@@ -101,10 +101,10 @@ public class Query<C0, C1, C2, C3> : Query<C0, C1, C2>  where C3 : notnull where
             do
             {
                 var (s0, s1, s2, s3) = join.Select;
-                var span0 = s0.Span;;
-                var span1 = s1.Span;;
-                var span2 = s2.Span;;
-                var span3 = s3.Span;;
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                var span2 = s2.Span;
+                var span3 = s3.Span;
 
                 for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], uniform);
             } while (join.Iterate());
