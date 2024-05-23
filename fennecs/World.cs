@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Immutable;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
