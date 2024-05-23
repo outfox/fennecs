@@ -61,6 +61,7 @@ public class DorakuBenchmarks
         }
 
         _query.Warmup();
+        _query.Job(Workload);
     }
 
     [GlobalCleanup]
