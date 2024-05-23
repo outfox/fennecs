@@ -4,6 +4,7 @@ using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using fennecs.pools;
 
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
@@ -56,7 +57,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// TODO: Buckets for Wildcard Joins (optional optimization for CrossJoin when complex archetypes get hit repeatedly in tight loops).
     /// </summary>
-    private readonly ImmutableDictionary<TypeID, IStorage[]> _buckets;
+    // private readonly ImmutableDictionary<TypeID, IStorage[]> _buckets;
 
     // Used by Queries to check if the table has been modified while enumerating.
     private int _version;
@@ -107,8 +108,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         // TypeExpression may have been created before the first TE of Identity.
         IdentityStorage = GetStorage<Identity>(default);
 
-        // Bake buckets dictionary
-        _buckets = Zip(finishedTypes, finishedBuckets);
+        // TODO: Bake buckets dictionary
+        // _buckets = Zip(finishedTypes, finishedBuckets);
 
         currentBucket.Dispose();
         finishedBuckets.Dispose();
@@ -136,7 +137,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         return result;
     }
 
-
+    
+    // TODO: This is a surprise tool that will help us later :)
+    // ReSharper disable once UnusedMember.Local
     private static ImmutableDictionary<T, U> Zip<T, U>(IReadOnlyList<T> finishedTypes, IReadOnlyList<U> finishedBuckets) where T : notnull
     {
         var result = finishedTypes
@@ -190,7 +193,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     
     internal void Delete(int entry, int count = 1)
     {
-        Interlocked.Increment(ref _version);
+        Invalidate();
 
         foreach (var storage in Storages)
         {
@@ -241,8 +244,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <param name="addMode"></param>
     internal void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills, Batch.AddConflict addMode)
     {
-        Interlocked.Increment(ref _version);
-        Interlocked.Increment(ref destination._version);
+        Invalidate();
+        destination.Invalidate();
 
         var addedCount = Count;
         var addedStart = destination.Count;
@@ -291,7 +294,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     /// <summary>
-    /// Moves all Entities from this Archetype to the destination Archetype, discarding any components not present in the destination.
+    /// Moves all Entities from this Archetype to the destination Archetype,
+    /// discarding any components not present in the destination.
     /// </summary>
     /// <param name="destination">the Archetype to move the entities to</param>
     internal void Migrate(Archetype destination)
@@ -299,10 +303,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         // Certain Add-modes permit operating on archetypes that themselves are in the query.
         // No more migrations are needed at this point (they would be semantically idempotent)
         if (destination == this) return;
-
-        Interlocked.Increment(ref _version);
-        Interlocked.Increment(ref destination._version);
-
+        
+        Invalidate();
+        destination.Invalidate();
+        
         var addedCount = Count;
         var addedStart = destination.Count;
 
@@ -374,8 +378,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     internal static void MoveEntry(int entry, Archetype source, Archetype destination)
     {
         // We do this at the start to flag down any running, possibly async enumerators.
-        Interlocked.Increment(ref source._version);
-        Interlocked.Increment(ref destination._version);
+        source.Invalidate();
+        destination.Invalidate();
 
         // Mark entity as moved in Meta.
         var identity = source.Identities[entry];
@@ -512,9 +516,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         IdentityStorage.Append(identities);
         PatchMetas(first, count);
     }
-
-    internal void Invalidate()
-    {
-        Interlocked.Increment(ref _version);
-    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal void Invalidate() => Interlocked.Increment(ref _version);
 }
