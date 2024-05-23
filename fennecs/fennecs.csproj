@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.4.0-beta</Version>
+        <Version>0.4.1-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -23,6 +23,7 @@
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Configurations>Debug;Release</Configurations>
+        <DebugType>embedded</DebugType>
         <Platforms>AnyCPU</Platforms>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

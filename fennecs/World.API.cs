@@ -10,6 +10,7 @@ namespace fennecs;
 public partial class World : IDisposable
 {
     #region Entity Spawn, Liveness, and Despawn
+
     /// <summary>
     /// Creates a new Identity in this World, and returns its Entity builder struct.
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
@@ -17,7 +18,7 @@ public partial class World : IDisposable
     /// <returns>an Entity to operate on</returns>
     public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
 
-    
+
     internal PooledList<Identity> SpawnBare(int count)
     {
         var identities = _identityPool.Spawn(count);
@@ -119,10 +120,12 @@ public partial class World : IDisposable
     /// The number of living entities in the World.
     /// </summary>
     public int Count => _identityPool.Count;
+
     #endregion
 
 
     #region Bulk Operations
+
     /// <summary>
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
@@ -146,15 +149,46 @@ public partial class World : IDisposable
     /// <param name="toDelete">the entities to despawn (remove)</param>
     public void Despawn(ReadOnlySpan<Identity> toDelete)
     {
-        foreach (var identity in toDelete)
+        lock (_spawnLock)
         {
-            DespawnImpl(identity);
+            for (var i = toDelete.Length - 1; i >= 0; i--)
+            {
+                DespawnImpl(toDelete[i]);
+            }
         }
     }
+
+    /// <summary>
+    /// Bulk Despawn Entities from a World.
+    /// </summary>
+    /// <param name="identities">the entities to despawn (remove)</param>
+    public void Recycle(ReadOnlySpan<Identity> identities)
+    {
+        lock (_spawnLock)
+        {
+            foreach (var identity in identities) DespawnDependencies(identity);
+            _identityPool.Recycle(identities);
+        }
+    }
+
+    /// <summary>
+    /// Despawn one Entity from a World.
+    /// </summary>
+    /// <param name="identity">the entity to despawn (remove)</param>
+    public void Recycle(Identity identity)
+    {
+        lock (_spawnLock)
+        {
+            DespawnDependencies(identity);
+            _identityPool.Recycle(identity);
+        }
+    }
+
     #endregion
 
 
     #region Lifecycle & Locking
+
     /// <summary>
     /// Create a new World.
     /// </summary>
@@ -197,10 +231,18 @@ public partial class World : IDisposable
         foreach (var type in archetype.Signature)
         {
             _tablesByType[type].Remove(archetype);
-            if (type.isRelation) _typesByRelationTarget[type.Target].Remove(type);
 
+            // This is still relevant if ONE relation component is eliminated, but NOT all of them.
+            // In the case where the target itself is Despawned, _typesByRelationTarget already
+            // had its entire entry for that Target removed.
+            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Target, out var stillInUse))
+            {
+                stillInUse.Remove(type);
+                if (stillInUse.Count == 0) _typesByRelationTarget.Remove(type.Target);
+            }
+
+            // Same here, if all Archetypes with a Type are gone, we can clear the entry.
             if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
-            if (type.isRelation && _typesByRelationTarget[type.Target].Count == 0) _typesByRelationTarget.Remove(type.Target);
         }
 
         foreach (var query in _queries.Values)
@@ -229,7 +271,7 @@ public partial class World : IDisposable
     public WorldLock Lock() => new(this);
 
     #endregion
-    
+
     #region Debug Tools
 
     /// <inheritdoc />

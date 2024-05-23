@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -68,7 +69,7 @@ public partial class World
             // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
             while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
 
-            _meta[identity.Index] = new Meta();
+            _meta[identity.Index] = Meta.Empty();
             
             _root.IdentityStorage.Append(identity);
             
@@ -92,8 +93,6 @@ public partial class World
 
     private void DespawnImpl(Identity identity)
     {
-        lock (_spawnLock)
-        {
             AssertAlive(identity);
 
             if (Mode == WorldMode.Deferred)
@@ -105,30 +104,38 @@ public partial class World
             ref var meta = ref _meta[identity.Index];
 
             var table = meta.Archetype;
-            table.Remove(meta.Row);
-            meta.Clear();
+            table.Delete(meta.Row);
 
             _identityPool.Recycle(identity);
 
+            DespawnDependencies(identity);
+    }
+
+    
+    private void DespawnDependencies(Identity identity)
+    {
+            // Patch Meta
+            _meta[identity.Index] = Meta.Empty();
+
             // Find identity-identity relation reverse lookup (if applicable)
-            if (!_typesByRelationTarget.TryGetValue(identity, out var list)) return;
+            if (!_typesByRelationTarget.Remove(identity, out var list)) return;
 
             //Remove Components from all Entities that had a relation
-            foreach (var type in list)
+            foreach (var type in list) //TODO: Benchmark sorted and reversed hashsets here.
             {
-                var tablesWithType = _tablesByType[type];
+                //Cloen the list.
+                var tablesWithType = new List<Archetype>(_tablesByType[type]);
 
-                //TODO: There should be a bulk remove method instead.
-                //TODO: Operation of this more efficient method could be:
-                // 1. find each table that matches the type, and the table without the removed component
-                // 2. determine signature of target type (with the removed component)
-                // 3. migrate to the new archetype
-                // 4. dispose or compact the old archetype (it is practically impossible that it will re-emerge) 
-                foreach (var tableWithType in tablesWithType)
-                    for (var i = tableWithType.Count - 1; i >= 0; i--)
-                        RemoveComponent(tableWithType.Identities[i], type);
+                foreach (var source in tablesWithType)
+                {
+                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != identity).ToImmutableSortedSet());
+                    var destination = GetArchetype(signatureWithoutTarget);
+                    source.Migrate(destination);
+                    
+                    //Because the dependency is now gone, we close down the whole archetype.
+                    ForgetArchetype(source);
+                }
             }
-        }
     }
     #endregion
 

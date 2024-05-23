@@ -9,7 +9,7 @@ public class DocumentationNBodyTests
         public Vector3 Value { get; set; }
     }
 
-    private struct Force : Fox<Vector3>
+    private struct Acceleration : Fox<Vector3>
     {
         public Vector3 Value { get; set; }
     }
@@ -42,17 +42,17 @@ public class DocumentationNBodyTests
         var body3 = new Body{position = p3, mass = 3.5f};
 
         var sun1 = world.Spawn();
-        sun1.Add<Force>();
+        sun1.Add<Acceleration>();
         sun1.Add(new Position {Value = body1.position});
         sun1.Add<Velocity>();
 
         var sun2 = world.Spawn();
-        sun2.Add<Force>();
+        sun2.Add<Acceleration>();
         sun2.Add(new Position {Value = body2.position});
         sun2.Add<Velocity>();
 
         var sun3 = world.Spawn();
-        sun3.Add<Force>();
+        sun3.Add<Acceleration>();
         sun3.Add(new Position {Value = body3.position});
         sun3.Add<Velocity>();
         
@@ -75,7 +75,10 @@ public class DocumentationNBodyTests
         // var accumulator = world.Query<Forces, Position, Body>().Compile();
         
         // Used to accumulate all forces acting on a body from the other bodies
-        using var accumulator = world.Query<Force, Position, Body>(Match.Plain, Match.Plain, Match.Entity).Compile();
+        // (the plain and relation Body Stream Components are backed by the same object!)
+        using var accumulator = world
+            .Query<Acceleration, Body, Body>(Match.Plain, Match.Plain, Match.Entity)
+            .Compile();
         
         Assert.Equal(3, accumulator.Count);
         Assert.Contains(sun1, accumulator);
@@ -83,7 +86,7 @@ public class DocumentationNBodyTests
         Assert.Contains(sun3, accumulator);
 
         // Used to calculate the the forces into the velocities and positions
-        using var integrator = world.Query<Force, Velocity, Position>().Compile();
+        using var integrator = world.Query<Acceleration, Velocity, Position>().Compile();
         
         // Used to copy the Position into the Body components of the same object (plain = non-relation component)
         using var consolidator = world.Query<Position, Body>(Match.Plain, Match.Plain).Compile();
@@ -96,28 +99,28 @@ public class DocumentationNBodyTests
         var iterations3 = 0;
         
         // Clear all forces
-        accumulator.Blit(new Force { Value = Vector3.Zero });
+        accumulator.Blit(new Acceleration { Value = Vector3.Zero });
         
         // Accumulate all forces (we have only 1 attractor stream, this will enumerate each sun 3 times)
-        accumulator.For((ref Force force, ref Position position, ref Body attractor) =>
+        accumulator.For((ref Acceleration acc, ref Body self, ref Body attractor) =>
         {
             iterations1++;
 
-            var distanceSquared = Vector3.DistanceSquared(attractor.position, position.Value);
-            if (distanceSquared < float.Epsilon) return; // Skip ourselves (anything that's too close)
+            if (self == attractor) return; // (we are not attracted to ourselves) 
             
-            var direction = Vector3.Normalize(attractor.position - position.Value);
-            force.Value += direction * attractor.mass / distanceSquared;
+            var distanceSquared = Vector3.DistanceSquared(attractor.position, self.position);
+            var direction = Vector3.Normalize(attractor.position - self.position);
+            acc.Value += direction * attractor.mass / distanceSquared / self.mass;
         });
         
         // NB! 3 bodies x 3 valid attractors
         Assert.Equal(bodyCount * bodyCount, iterations1);
 
         // Integrate forces, velocities, and positions
-        integrator.For((ref Force forces, ref Velocity velocity, ref Position position, float dt) =>
+        integrator.For((ref Acceleration accel, ref Velocity velocity, ref Position position, float dt) =>
         {
             iterations2++;
-            velocity.Value += dt * forces.Value;
+            velocity.Value += dt * accel.Value;
             position.Value += dt * velocity.Value;
         }, 0.01f);
         
@@ -145,16 +148,16 @@ public class DocumentationNBodyTests
         var pos3 = sun3.Ref<Position>().Value;
         Assert.Equal(body3.position, pos3);
 
-        var force1 = Vector3.Normalize(p2 - p1) * body2.mass / Vector3.DistanceSquared(p2, p1);
-        force1 += Vector3.Normalize(p3 - p1) * body3.mass / Vector3.DistanceSquared(p3, p1);
-        Assert.Equal(force1, sun1.Ref<Force>().Value);
+        var force1 = Vector3.Normalize(p2 - p1) * body2.mass / Vector3.DistanceSquared(p2, p1) / body1.mass;
+        force1 += Vector3.Normalize(p3 - p1) * body3.mass / Vector3.DistanceSquared(p3, p1) / body1.mass;
+        Assert.Equal(force1, sun1.Ref<Acceleration>().Value);
         
-        var force2 = Vector3.Normalize(p1 - p2) * body1.mass / Vector3.DistanceSquared(p1, p2);
-        force2 += Vector3.Normalize(p3 - p2) * body3.mass / Vector3.DistanceSquared(p3, p2);
-        Assert.Equal(force2, sun2.Ref<Force>().Value);
+        var force2 = Vector3.Normalize(p1 - p2) * body1.mass / Vector3.DistanceSquared(p1, p2) / body2.mass;
+        force2 += Vector3.Normalize(p3 - p2) * body3.mass / Vector3.DistanceSquared(p3, p2) / body2.mass;
+        Assert.Equal(force2, sun2.Ref<Acceleration>().Value);
         
-        var force3 = Vector3.Normalize(p1 - p3) * body1.mass / Vector3.DistanceSquared(p1, p3);
-        force3 += Vector3.Normalize(p2 - p3) * body2.mass / Vector3.DistanceSquared(p2, p3);
-        Assert.Equal(force3, sun3.Ref<Force>().Value);
+        var force3 = Vector3.Normalize(p1 - p3) * body1.mass / Vector3.DistanceSquared(p1, p3) / body3.mass;
+        force3 += Vector3.Normalize(p2 - p3) * body2.mass / Vector3.DistanceSquared(p2, p3) / body3.mass;
+        Assert.Equal(force3, sun3.Ref<Acceleration>().Value);
     }
 }

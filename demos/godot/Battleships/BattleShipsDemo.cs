@@ -20,7 +20,7 @@ public partial class BattleShipsDemo : Node2D
 
 		var dt = (float) delta;
 
-		var ships = World.Query<Ship, MotionState>().Build();
+		var ships = World.Query<Ship, MotionState>().Compile();
 		ships.For((ref Ship ship, ref MotionState motion) =>
 		{
 			var direction = System.Numerics.Vector2.UnitX;
@@ -32,7 +32,7 @@ public partial class BattleShipsDemo : Node2D
 		});
 
 
-		var guns = World.Query<Gun>().Build();
+		var guns = World.Query<Gun>().Compile();
 		var pos = GetGlobalMousePosition();
 		guns.For((ref Gun gun, Vector2 aim) =>
 		{

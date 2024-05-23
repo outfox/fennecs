@@ -42,7 +42,7 @@ public partial class DemoCubes : Node
 	private const float BaseTimeScale = 0.0005f;
 
 	// Fennecs: The World that will contain the Entities.
-	private readonly World _world = new();
+	private readonly World _world = new(MaxEntities);
 
 	// Calculation: Visible CubeCount (can be smoothed to be passed in as an uniform).
 	private float _cubeCount = 1;
@@ -59,7 +59,7 @@ public partial class DemoCubes : Node
 	private Query<Matrix4X3, Vector3, int> _query;
 
 	// ??Boilerplate: Array used to copy the Entity Transform data into Godot's MultiMesh.
-	private float[] _submissionArray = Array.Empty<float>();
+	private float[] _submissionArray = [];
 
 
 	// Calculation: Elapsed time value for the simulation.
@@ -111,7 +111,7 @@ public partial class DemoCubes : Node
 	public override void _Ready()
 	{
 		// Boilerplate: Prepare our Query that we'll use to interact with the Entities.
-		_query = _world.Query<Matrix4X3, Vector3, int>().Build();
+		_query = _world.Query<Matrix4X3, Vector3, int>().Compile();
 
 		// Boilerplate: Users can change the number of entities, so pre-warm the memory allocator a bit.
 		SetEntityCount(MaxEntities);

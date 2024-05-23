@@ -187,17 +187,16 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         return matches;
     }
 
-
-    internal void Remove(int entry)
+    
+    internal void Delete(int entry, int count = 1)
     {
         Interlocked.Increment(ref _version);
 
         foreach (var storage in Storages)
         {
-            storage.Delete(entry);
+            storage.Delete(entry, count);
         }
     }
-
 
     /// <summary>
     ///  Remove Entities from the Archetype that exceed a given count.
@@ -207,14 +206,20 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     {
         var excess = Math.Clamp(Count - maxEntityCount, 0, Count);
         if (excess <= 0) return;
-
-        // TODO: Build bulk deletion?
-        // IDEA: Just return a chunk from IdentityStorage back to the pool?
+        
         var toDelete = Identities.Slice(Count - excess, excess);
-        for (var i = toDelete.Length - 1; i >= 0; i--)
+        foreach (var storage in Storages)
         {
-            _world.Despawn(new Entity(_world, toDelete[i]));
+            // HACK... 
+            if (storage == IdentityStorage) continue;
+            
+            //Must call before World removes Dependencies (can have dependencies in same archetype!)
+            //TODO: Urgently needs unit test to rule out dangerous conflicts!
+            storage.Delete(Count-excess, excess);
         }
+
+        _world.Recycle(toDelete);
+        IdentityStorage.Delete(Count - excess, excess);
     }
 
     internal void PatchMetas(int entry, int count = 1)
@@ -237,6 +242,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     internal void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills, Batch.AddConflict addMode)
     {
         Interlocked.Increment(ref _version);
+        Interlocked.Increment(ref destination._version);
 
         var addedCount = Count;
         var addedStart = destination.Count;
@@ -277,6 +283,44 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         {
             var value = backFills[additions.IndexOf(type)];
             destination.BackFill(type, value, addedCount);
+        }
+        
+        // Update all Meta info to mark entities as moved.
+        destination.PatchMetas(addedStart, addedCount);
+    }
+
+
+    /// <summary>
+    /// Moves all Entities from this Archetype to the destination Archetype, discarding any components not present in the destination.
+    /// </summary>
+    /// <param name="destination">the Archetype to move the entities to</param>
+    internal void Migrate(Archetype destination)
+    {
+        // Certain Add-modes permit operating on archetypes that themselves are in the query.
+        // No more migrations are needed at this point (they would be semantically idempotent)
+        if (destination == this) return;
+
+        Interlocked.Increment(ref _version);
+        Interlocked.Increment(ref destination._version);
+
+        var addedCount = Count;
+        var addedStart = destination.Count;
+
+
+        // Migration (and subtractive copy)
+        foreach (var type in Signature)
+        {
+            var srcStorage = GetStorage(type);
+            if (destination.Signature.Contains(type))
+            {
+                var destStorage = destination.GetStorage(type);
+                srcStorage.Migrate(destStorage);
+            }
+            else
+            {
+                // Discard values not in the destination (subtract components)
+                srcStorage.Clear();
+            }
         }
         
         // Update all Meta info to mark entities as moved.

@@ -152,7 +152,7 @@ internal class Storage<T> : IStorage
         }
 
         // Clear the space at the end.
-        FullSpan[(Count - removals)..].Clear();
+        FullSpan[(Count - removals)..Count].Clear();
         
         Count -= removals;
 

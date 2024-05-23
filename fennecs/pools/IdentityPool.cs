@@ -9,14 +9,14 @@ internal class IdentityPool
     
     public IdentityPool(int initialCapacity = 65536)
     {
-        _recycled = new(initialCapacity * 2);
-        _recycled.Enqueue(new(++Created));
+        _recycled = new Queue<Identity>(initialCapacity * 2);
+        _recycled.Enqueue(new Identity(++Created));
     }
 
 
     internal Identity Spawn()
     {
-        return _recycled.TryDequeue(out var recycledIdentity) ? recycledIdentity : new(++Created);
+        return _recycled.TryDequeue(out var recycledIdentity) ? recycledIdentity : new Identity(++Created);
     }
 
 
@@ -33,7 +33,7 @@ internal class IdentityPool
             
             for (var i = 0; i < requested - recycled; i++)
             {
-                identities.Add(new(++Created));
+                identities.Add(new Identity(++Created));
             }
         }
         else 
@@ -49,5 +49,10 @@ internal class IdentityPool
     internal void Recycle(Identity identity)
     {
         _recycled.Enqueue(identity.Successor);
+    }
+
+    internal void Recycle(ReadOnlySpan<Identity> toDelete)
+    {
+        foreach (var identity in toDelete) Recycle(identity);
     }
 }
