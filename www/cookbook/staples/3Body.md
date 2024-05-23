@@ -79,7 +79,7 @@ sun3.Add<Velocity>();
 
 // By adding all attractor relations to all bodies,
 // they all end up in the same Archetype
-// (not strictly necessary, but gains performance)
+// (not strictly necessary, but limits fragmentation)
 sun1.Add(body1);
 sun1.AddRelation(sun1, body1);
 sun1.AddRelation(sun2, body2);
@@ -97,7 +97,7 @@ sun3.AddRelation(sun3, body3);
 ```
 
 ```csharp [Queries]
-// Used to accumulate all forces acting on a body from the other bodies
+// Used to accumulate all forces acting on a body (from the other bodies)
 var accumulator = world
     .Query<Force, Position, Body>(Match.Plain, Match.Plain, Match.Entity)
     .Compile();
@@ -108,7 +108,7 @@ var integrator = world
     .Compile();
 
 // Used to copy the Position into the Body components of the same object
-// (Match.plain = a plain, non-relation component)
+// (Match.plain = only the plain, non-relation components)
 var consolidator = world
     .Query<Position, Body>(Match.Plain, Match.Plain)
     .Compile();        
@@ -132,9 +132,6 @@ accumulator.For(static
         var direction = Vector3.Normalize(attractor.position - position.Value);
         force.Value += direction * attractor.mass / distanceSquared;
     });
-
-// NB! 3 bodies x 3 valid attractors
-Assert.Equal(bodyCount * bodyCount, iterations1);
 
 // Integrate forces, velocities, and positions
 integrator.For(static 

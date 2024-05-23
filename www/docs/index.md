@@ -13,7 +13,7 @@ head:
 ::: info :neofox_knives: THE COOKBOOK - Tutorials and Tricks
 Feeling snackish? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. Snack on easily digestible code samples, and come back whenever you need to to jog your memory.
 
-🍴👇 *Here! Grab a fork and have an amüse-gueueu... horse-œuf... treat!* 
+🍴👇👇 *Here! Grab a fork and have an amüse-gueueu... horse-œuf... treat!* 
 :::
 
 ::: code-group
@@ -22,7 +22,7 @@ var world = new fennecs.World();
 var entity = world.Spawn().Add<Vector3>();
 var query = world.Query<Vector3>().Compile();
 
-query.Job(static (ref Vector3 velocity, float dt) => {
+query.For(static (ref Vector3 velocity, float dt) => {
     velocity.Y -= 9.81f * dt;
 }, uniform: Time.Delta);
 ```

@@ -1,42 +1,33 @@
 ---
 title: Match Expressions
 layout: doc
-outline: [2, 3]
+outline: [1, 3]
 ---
 
 # Match Expressions
 
-From the start, a Query includes only entities that match all of its [Stream Types](Query.1-5.md).
+Perk up your ears! This is a complex topic, shaped by two intertwined ideas: 
 
-In ECS, the presence of another component often carries a meaning in itself, and Queries expose powerful, performant matching of Entities based on such presence.
+1. the `Match Type`, a commonplace concept in ECS
+2. the `Match Target` (or `Match Identity`), a feature unique to **fenn**ecs
 
-# `Query<>.Has<C>()`
-# `Query<>.Has<C>(Identity)`
-Query includes only Entities that have the given component or relation.
+Together, they enable Entity interactions natively in **fenn**ecs in elegant, expressive ways that in other ECS might seem like pure science fiction. 
 
-# `Query<>.Not<C>()`
-# `Query<>.Not<C>(Identity)`
-Query excludes all Entities that have the given component.
+![a fennec wearing a futuristic VR headset](https://fennecs.tech/img/fennec-3body.png)
 
-# `Query<>.Any<C>()`
-# `Query<>.Any<C>(Identity)`
-Query matches Entities that match at least one the Any statements.
+The [3-Body-Problem](/cookbook/staples/3Body.md) and [N-Body-Problem](/cookbook/staples/NBody.md) recipes illustrate how to use Match Expressions to simulate complex systems of mutually interacting Entities.
 
+## Sneak Dive / Deep Peek
+A match expression is split into a `Match Type` and a `Target` (or `Identity`), and they can be combined in any way to create complex Queries that match (and enumerate!) exactly the Entities and Components you need.
 
-::: details :neofox_magnify: Behind the Scenes
-Technically, all of these are actually methods on `QueryBuilder<>` instances, but in practice you almost never type the word `QueryBuilder`. Instead, you acquire them via `World.Query<>`. The builders expose a fluent interface to configure and then compile the query right away.
-:::
-
-## Mix & Match!
-
-When building a Query with Match Expressions, any number of Match Expressions can be passed to the QueryBuilder.
+When building a Query with Match Expressions, any number of Match Expressions can be passed to the QueryBuilder to specify what this Query should include and exclude. Here's a quick example to give an overview over what's available
 
 ::: info ~~INVITE~~ QUERY YOUR FRIENDS!
 
 ```cs
 // includes each entity with a Name component and a music PlayList
 // (Name and PlayList become the output Stream Types of the query)
-var partyGoers = world.Query<Name, PlayList>() 
+var partyGoers = world.Query<Name, PlayList>() // "()" means Match.Any
 //... who is also a fox
     .Has<Fox>()
 //... and has a Friendship relation to entity "me"
@@ -60,11 +51,59 @@ partyGoers.For((ref name, ref playlist) =>
   ```
 :::
 
-::: info :neofox_magnify: BEHIND THE SCENES
-Each Query object maintains a collection of all Archetypes it matches, and when iterating Components or enumerating Entities, the Query does so *for each Archetype*, in deterministic order.
+## Match Types
+
+From the start, a Query includes only Entities that match all of its [Stream Types](Query.1-5.md).
+It does so regardless of whether it's a Plain Component, a Entity-Entity Relation, or an Object Link - unless expressly specified for each stream type in the QueryBuilder factory method. (see: [Match Targets](#match-targets)
+
+::: details :neofox_magnify: BEHIND THE SCENES: What does a Query even DO?
+Each compiled Query object maintains a collection of all Archetypes it matches (and a [filtered subset](Filters.md)), and when iterating Components or enumerating Entities, the Query does so *for each Archetype*, in deterministic order.
 
 Whenever a new Archetype materializes, the World will notify _all matching Queries_ of its existence.
+
+The Query feeds the Storages corresponding to its Stream Types of each matched Archetype to its [Runner Delegates](Delegates.md).
 :::
+
+-----
+
+### The three main `Match Type` Expressions are:
+
+> ### `Query<>.Has<C>()` and `Query<>.Has<C>(Identity)`
+> `includes only` Entities that have the given component or relation.
+
+> ### `Query<>.Not<C>()` and `Query<>.Not<C>(Identity)`
+> `excludes` any Entities that have the given component.
+
+> ### `Query<>.Any<C>()` and `Query<>.Any<C>(Identity)`
+> matches Entities that match `at least one` of the Any statements.
+
+ 
+A Query being built is then further refined through Match Expressions passed to the builder's methods. These expressions are the building blocks of the query, and they can be combined in any way to create complex queries that match exactly the Entities you need.
+
+::: details :neofox_magnify: BEHIND THE SCENES: Huh, Builders, Queries, confused yet?!
+Technically, all of these are actually methods on `QueryBuilder<>` instances, but in practice you almost never type the word `QueryBuilder`. Instead, you acquire them via `World.Query<>`. The builders expose a fluent interface to configure and then compile the query right away.
+:::
+
+## Match Targets
+
+Not only the Stream Types can match specific or wildcarded targets. `world.Query<ST1, ST2>()` is the same as `world.Query<ST1, ST2>(Match.Any, Match.Any)`, but these targets can be other Wildcards, or the IdEntities of specific Objects and Entities.
+
+The same is true for any other `Match Type` expression, like `Has`, `Not`, or `Any`.
+
+::: tip :neofox_solder: THIS IS OUR MAIN TOOL
+In ECS, the presence of another component often carries a meaning in itself, and Queries expose powerful, performant matching of Entities based on such presence.
+:::
+
+The `default` Identity, also known as `Match.Plain`, matches only components that have no targets, i.e. that are just pure data without any relational meaning.
+
+In addition to specific idEntities, there are five virtual wildcard IdEntities:
+- `Match.Any` matches any target, including the default. 
+  - *this is the silent default for all Stream Types, unless otherwise specified*
+- `Match.Target` matches any actual targets (both Object and Entity, but not Plain)
+- `Match.Object` matches only Object targets (so called Object Links)
+- `Match.Entity` matches only Entity targets (so called Entity-Entity Relations)
+- `Match.Plain` matches only components without a targets
+
 
 
 ## Cleaning up unused Queries
@@ -148,3 +187,6 @@ If needed, the filter state can stick around forever (at a minimal cost per quer
 
 :::
 
+This mechanism is great when the number of different relations stays relatively constant during the lifetime of the query; if each frame or tick several different `Owes => Entity` relations are added or removed, then the broader query will get updated under the hood each time that happens.
+
+It's also great if there are many Entities that have the same relation, because it makes iterating the query faster than having a query that spans various fragmented, tiny archetypes. However, if there are only very few Entities (let's say in the dozens), then the performance impact would be negligible.
