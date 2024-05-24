@@ -6,7 +6,7 @@ title: Roadmap
 
 # The future of **fenn**ecs
 
-Here's a vague list of planned and speculative features coming in the future.
+Here's a list of planned and speculative features coming in the future.
 
 Feedback and questions are always appreciated, please submit them on GitHub:
 | What? | Where? |
@@ -17,12 +17,12 @@ Feedback and questions are always appreciated, please submit them on GitHub:
 Pull Requests especially welcome (please open an issue first to discuss the feature or bugfix you're planning to work on so your work gets the appreciation and attention it deserves).
 
 ### Q4 2024
-::: details `1.0.0` First Stable Release 
-- End of Beta
-- Documentation "feature complete" (every aspect explained)
-- continue Short-Term Roadmapping (until 1.5.0)
-- beginning Long-Term Roadmapping (for 2.0.0)
-- (maybe) code signed package
+::: details `1.0.0` Stable Release 
+- 🎉 End of Beta
+- *(maybe)* Code-Signed NuGet Package
+- Documentation "feature complete" (every API feature explained)
+- Short-Term Roadmap (until 1.5.0)
+- Long-Term Roadmap (for 2.0.0)
 :::
 
 ::: details `0.8.0+` Demos & Publicity (🦊help wanted)
@@ -35,12 +35,12 @@ Pull Requests especially welcome (please open an issue first to discuss the feat
   - Flax
   - MonoGame
   - Unigine
-  - (more?)
+  - (more? others?)
 :::
 
 ::: details `0.7.0+` Benchmark Suite (🦊help wanted)
 - internal set of benchmarks to ensure performance and memory usage are in line with expectations, and to prove good practices
-- comparisons of **fenn**ecs with some other ECS libraries (possibly as PR to [Doraku's Ecs.CSharp.Benchmark]https://github.com/Doraku/Ecs.CSharp.Benchmark))
+- comparisons of **fenn**ecs with some other ECS libraries, likely as extended PR to [Doraku's Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark)
 :::
 
 
@@ -54,7 +54,8 @@ A set of specific or user-defined Interfaces that Component Types can "implement
 - `World.SetGarbageCollectionStrategy<I>` to set the strategy for a given Interface.
 :::
 
-::: details `0.5.0+` Dog Fooding & Enhanced Beta Phase
+::: details `0.5.0+` Dog Fooding Phase + Enhanced Beta
+- systematic internal and external beta testing
 - using the library in a [real-world project](https://jupiter.blue)
 - additional 1st party demos
 - iteration on examples and tutorials
@@ -65,16 +66,16 @@ A set of specific or user-defined Interfaces that Component Types can "implement
 
 
 ### Q2 2024
-::: details `0.1.0` ... `0.4.x` Fundamental Beta & Feedback Phase
+::: details `0.1.x` ... `0.4.x` Fundamental Beta & Feedback Phase
 - feedback acquisition & experimentation
 - API stabilization
 - submission to various game dev communities for feedback
 - documentation and tutorials
 - performance testing and optimization
-- 3rd party benchmarking (e.g. [Doraku's Ecs.CSharp.Benchmark]https://github.com/Doraku/Ecs.CSharp.Benchmark))
+- 3rd party benchmarking (e.g. [Doraku's Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark))
 :::
 
 ### ~~Q1 2024~~
-::: details `0.1.0` ~~Prerelease and subsequent first Betas~~
+::: details `0.1.0` ~~Prerelease and First Beta~~
 **Done!**
 :::

@@ -2,7 +2,11 @@
 title: Acknowledgements
 ---
 
+![stylized fennec fox in front of a sky full of hearts](https://fennecs.tech/img/fennec-acknowledgements.png)
+
+
 # Acknowledgements
+Thank you for the influences and inspirations you shared to shape **fenn**ecs!
 
 ## Byteron
 Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating [HypEcs](https://github.com/Byteron/HypEcs) and [RelEcs](https://github.com/Byteron/RelEcs), the inspiring libraries that **fenn**ecs evolved from. (refined with a dash of [LitEcs](https://github.com/Byteron/LitEcs) after his own suggestion)

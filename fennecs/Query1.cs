@@ -318,27 +318,6 @@ public class Query<C0> : Query where C0 : notnull
         }
     }
     
-    /// <summary>
-    /// Returns all the components of one Stream Type as a List.
-    /// </summary>
-    public IReadOnlyList<C> Dump<C>() where C : C0
-    {
-        var list = new List<C0>(Count);
-        
-        foreach (var table in Archetypes)
-        {
-            using var join = table.CrossJoin<C0>(StreamTypes);
-            if (join.Empty) continue;
-
-            do
-            {
-                var s0 = join.Select;
-                list.AddRange(s0.Span);
-            } while (join.Iterate());
-        }
-
-        return list;
-    }
     #endregion
 
     #region Warmup & Unroll

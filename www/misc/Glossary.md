@@ -2,8 +2,14 @@
 title: Glossary
 ---
 
+![a stylized fennec fox in a huge archive with of stacks of papers](https://fennecs.tech/img/fennec-glossary.png)
+
+
 # Glossary of Terms
-These are terms that are often casually used, explaine a little more in depth.
+Feeling a little whelmed by all those new and weird terms that **fenn**ecs casually uses (and often makes up out of thin air)?
+
+Here we hope to explain some of them a little more in depth, without creating a whole documentation chapter for each.
+
 
 ## Contains
 We contextually sometimes say:

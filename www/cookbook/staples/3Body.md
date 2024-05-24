@@ -3,9 +3,23 @@ title: 3-Body Problem
 outline: [2, 3]
 ---
 
-# Trisolarians, Trishmolarians
+# 3-Body Problem
 
-**fenn**ecs's relation features allow us you to simulate the 3-Body Problem with ease.
+> *Trisolarians, Trishmolarians ...* 
+
+`1:N` and `N:M` relations where Entities continuously influence each other in complex ways have always been a challenge in Entity Component Systems. Usually, these require expensive additional or reverse lookups that do not scale well with the rest of the ECS design.
+
+This includes typical gameplay scenarios such as many troops following a few leaders, flocking, gravitational simulations, threat assessments, and more.
+
+**fenn**ecs's relation features allow us you to model such relations with ease - reaping the full benefits of ECS iteration. In this recipe, we'll show you how to simulate a simple 3-Body stellar system, where each body exerts a gravitational pull on all others.
+
+::: details :neofox_hyper: SEE ALSO: [N-BODY DEMO](NBody.md)
+The setup for the 3-Body Problem is hard-coded to fully illustrate its three-by-three relationship.
+
+If you're a generalization nerd, [this demo](NBody.md) is a concrete example that uses the <u>same simulation loop</u>, but focuses on a more generic setup step (with batched setup of Entities and Relations).
+
+It demonstrates how to procedurally set up and simulate not only an arbitrary number of bodies, but also coexisting simulations without changing any of the simulation code.
+:::
 
 ::: code-group
 
@@ -151,4 +165,11 @@ consolidator.For(static
         body.position = position.Value;
     });
 ```
+:::
+
+
+::: warning :neofox_science: DON'T MISTAKE SCIENCE FOR MAGIC!
+Even though **fenn**ecs gives tangible speed benefits when iterating over Entities due to cache coherent data layout and loop structure, an `N:N` relation still implies runtime complexity `o(n²)` - and thus, an elegant real-time approximation to simulate the *1-Million-Body-Problem* remains elusive.
+
+Also, (if it even has to be said), the above code is a simple simulation and not even remotely scientifically accurate. The "Problem" in "3-Body-Problem" means that for these simulations, small changes in initial conditions quickly lead to vastly different and unpredictable outcomes.
 :::
