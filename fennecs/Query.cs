@@ -59,7 +59,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
-
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
         return _trackedArchetypes.Contains(table);
@@ -252,7 +251,6 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// </returns>
     public IEnumerable<Entity> Filtered(params TypeExpression[] filterExpressions)
     {
-
         foreach (var table in Archetypes)
         {
             if (!table.IsMatchSuperSet(filterExpressions)) continue;

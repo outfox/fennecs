@@ -24,7 +24,7 @@ public partial class StellarBody : EntityNode2D
 		entity.Add(_body);
 
 		entity.Add(position);
-		entity.Add(new Velocity { Value = new(Random.Shared.NextSingle() * 20f, Random.Shared.NextSingle() * 20f) });
+		entity.Add(new Velocity { Value = new((Random.Shared.NextSingle()-0.5f) * 50f, (Random.Shared.NextSingle()-0.5f) * 50f) });
 		entity.Add(new Acceleration { Value = new(0, 0) });
 	}
 

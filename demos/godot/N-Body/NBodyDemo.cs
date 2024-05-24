@@ -32,14 +32,14 @@ public partial class NBodyDemo : Node2D
 	public override void _Process(double delta)
 	{
 		// Clear all forces
-		_accumulator.Blit(new Acceleration { Value = Vector2.Zero });
+		_accumulator.Blit(new Acceleration());
 
 		// Accumulate all forces (we have only 1 attractor stream, this will enumerate each sun 3 times)
 		_accumulator.For((ref Acceleration acc, ref Body self, ref Body attractor) =>
 		{
 			if (self == attractor) return; // (we are not attracted to ourselves)
 
-			var distanceSquared = Mathf.Max(0.0005f, Vector2.DistanceSquared(attractor.position, self.position) / 1000000f);
+			var distanceSquared = Mathf.Max(0.001f, Mathf.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.8f) / 300000f);
 			var direction = Vector2.Normalize(attractor.position - self.position);
 			acc.Value += direction * attractor.mass / distanceSquared / self.mass;
 		});

@@ -1,11 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://emad7rj0o8ch"]
+[gd_scene load_steps=9 format=3 uid="uid://emad7rj0o8ch"]
 
 [ext_resource type="Script" path="res://N-Body/NBodyDemo.cs" id="1_tuufh"]
-[ext_resource type="Texture2D" uid="uid://cr670xn4s50ox" path="res://N-Body/Sprites/star_blue01.png" id="3_dtjjr"]
-[ext_resource type="Texture2D" uid="uid://b0ah8isv0x7fe" path="res://N-Body/Sprites/star_yellow01.png" id="4_fpu3s"]
-[ext_resource type="Script" path="res://N-Body/StellarBody.cs" id="5_s8o5q"]
-[ext_resource type="Texture2D" uid="uid://b32rdwe5ky2eg" path="res://N-Body/Sprites/star_red03.png" id="6_x5x72"]
-[ext_resource type="Texture2D" uid="uid://fdi0lnp5gfwf" path="res://N-Body/Sprites/star_white03.png" id="7_s7bkq"]
+[ext_resource type="Texture2D" uid="uid://bap7dcwh0ydyj" path="res://N-Body/Sprites/grid.png" id="4_bxpee"]
+[ext_resource type="Script" path="res://N-Body/SimulationCell.gd" id="4_v8het"]
+[ext_resource type="PackedScene" uid="uid://5jx5gqeanxar" path="res://N-Body/StellarBody.tscn" id="5_aynob"]
 [ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="13_l1cii"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="14_tqoky"]
 
@@ -22,7 +20,6 @@ script = ExtResource("1_tuufh")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 top_level = true
-position = Vector2(695, 505)
 script = ExtResource("13_l1cii")
 useFallbackButtons = "Never"
 panSmoothing = 0.1
@@ -44,56 +41,234 @@ label_settings = SubResource("LabelSettings_80l2o")
 horizontal_alignment = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="QuadraSolaris" type="Node2D" parent="."]
+[node name="Simulation Cell" type="Control" parent="."]
 material = SubResource("CanvasItemMaterial_p4org")
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("4_v8het")
 
-[node name="StarBlue01" type="Sprite2D" parent="QuadraSolaris"]
-use_parent_material = true
-position = Vector2(393, 632)
-texture = ExtResource("3_dtjjr")
-script = ExtResource("5_s8o5q")
-mass = 2.0
+[node name="TextureRect" type="TextureRect" parent="Simulation Cell"]
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+texture = ExtResource("4_bxpee")
+stretch_mode = 1
 
-[node name="StarYellow01" type="Sprite2D" parent="QuadraSolaris"]
-use_parent_material = true
-position = Vector2(947, 359)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("4_fpu3s")
-script = ExtResource("5_s8o5q")
+[node name="StellarBody" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+mass = 0.9
 
-[node name="StarYellow02" type="Sprite2D" parent="QuadraSolaris"]
-use_parent_material = true
-position = Vector2(962, 609)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("4_fpu3s")
-script = ExtResource("5_s8o5q")
-
-[node name="StarYellow03" type="Sprite2D" parent="QuadraSolaris"]
-use_parent_material = true
-position = Vector2(419, 455)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("4_fpu3s")
-script = ExtResource("5_s8o5q")
-
-[node name="StarYellow04" type="Sprite2D" parent="QuadraSolaris"]
-use_parent_material = true
-position = Vector2(694, 317)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("4_fpu3s")
-script = ExtResource("5_s8o5q")
-
-[node name="StarRed03" type="Sprite2D" parent="QuadraSolaris"]
-use_parent_material = true
-position = Vector2(660, 607)
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("6_x5x72")
-script = ExtResource("5_s8o5q")
+[node name="StellarBody2" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+position = Vector2(96, 242)
 mass = 0.7
 
-[node name="StarWhite03" type="Sprite2D" parent="QuadraSolaris"]
-use_parent_material = true
-position = Vector2(510, 311)
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("7_s7bkq")
-script = ExtResource("5_s8o5q")
-mass = 0.5
+[node name="StellarBody3" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+position = Vector2(106, 11)
+
+[node name="Simulation Cell2" type="Control" parent="."]
+material = SubResource("CanvasItemMaterial_p4org")
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -169.0
+offset_top = -1.0
+offset_right = -41.0
+offset_bottom = 127.0
+mouse_filter = 2
+script = ExtResource("4_v8het")
+
+[node name="TextureRect" type="TextureRect" parent="Simulation Cell2"]
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_bxpee")
+stretch_mode = 1
+
+[node name="StellarBody" parent="Simulation Cell2" instance=ExtResource("5_aynob")]
+position = Vector2(34, 50)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell2" instance=ExtResource("5_aynob")]
+position = Vector2(106, 11)
+
+[node name="Simulation Cell3" type="Control" parent="."]
+material = SubResource("CanvasItemMaterial_p4org")
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -349.0
+offset_top = -4.0
+offset_right = -221.0
+offset_bottom = 124.0
+mouse_filter = 2
+script = ExtResource("4_v8het")
+
+[node name="TextureRect" type="TextureRect" parent="Simulation Cell3"]
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_bxpee")
+stretch_mode = 1
+
+[node name="StellarBody" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+mass = 0.9
+
+[node name="StellarBody4" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+position = Vector2(48, 30)
+mass = 0.9
+
+[node name="StellarBody2" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+position = Vector2(52, 78)
+mass = 0.7
+
+[node name="StellarBody3" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+position = Vector2(94, 55)
+mass = 0.7
+
+[node name="Simulation Cell4" type="Control" parent="."]
+material = SubResource("CanvasItemMaterial_p4org")
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -355.0
+offset_top = 171.0
+offset_right = -227.0
+offset_bottom = 299.0
+mouse_filter = 2
+script = ExtResource("4_v8het")
+
+[node name="TextureRect" type="TextureRect" parent="Simulation Cell4"]
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_bxpee")
+stretch_mode = 1
+
+[node name="StellarBody" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+mass = 0.9
+
+[node name="StellarBody4" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+position = Vector2(48, 30)
+mass = 0.9
+
+[node name="StellarBody2" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+position = Vector2(52, 78)
+mass = 0.7
+
+[node name="StellarBody3" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+position = Vector2(-77, 97)
+mass = 0.7
+
+[node name="Simulation Cell5" type="Control" parent="."]
+material = SubResource("CanvasItemMaterial_p4org")
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -137.0
+offset_top = 303.0
+offset_right = -9.0
+offset_bottom = 431.0
+mouse_filter = 2
+script = ExtResource("4_v8het")
+
+[node name="TextureRect" type="TextureRect" parent="Simulation Cell5"]
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_bxpee")
+stretch_mode = 1
+
+[node name="StellarBody" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
+mass = 0.9
+
+[node name="StellarBody2" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
+position = Vector2(52, 78)
+mass = 0.7
+
+[node name="StellarBody3" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
+position = Vector2(94, 55)
+mass = 0.7
+
+[node name="Simulation Cell6" type="Control" parent="."]
+material = SubResource("CanvasItemMaterial_p4org")
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 51.0
+offset_top = 314.0
+offset_right = 179.0
+offset_bottom = 442.0
+mouse_filter = 2
+script = ExtResource("4_v8het")
+
+[node name="TextureRect" type="TextureRect" parent="Simulation Cell6"]
+modulate = Color(1, 1, 1, 0.25098)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_bxpee")
+stretch_mode = 1
+
+[node name="StellarBody" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
+mass = 0.9
+
+[node name="StellarBody4" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
+position = Vector2(42, 98)
+mass = 0.9
+
+[node name="StellarBody2" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
+position = Vector2(4, 161)
+mass = 0.7
+
+[node name="StellarBody3" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
+position = Vector2(94, 55)
+mass = 0.7
