@@ -39,7 +39,7 @@ public partial class NBodyDemo : Node2D
 		{
 			if (self == attractor) return; // (we are not attracted to ourselves)
 
-			var distanceSquared = Mathf.Max(0.001f, Mathf.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.8f) / 300000f);
+			var distanceSquared = Mathf.Max(0.0005f, Mathf.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.75f) / 100000f);
 			var direction = Vector2.Normalize(attractor.position - self.position);
 			acc.Value += direction * attractor.mass / distanceSquared / self.mass;
 		});

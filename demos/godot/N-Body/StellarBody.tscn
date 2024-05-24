@@ -17,7 +17,6 @@ texture = ExtResource("1_dvduc")
 script = ExtResource("2_neflf")
 
 [node name="Line2D" type="Line2D" parent="."]
-visible = false
 show_behind_parent = true
 top_level = true
 width = 5.0

@@ -1,6 +1,6 @@
 extends Line2D
 
-var max_points : int = 500
+var max_points : int = 250
 
 func _physics_process(delta: float) -> void:
 	while get_point_count() > max_points:
