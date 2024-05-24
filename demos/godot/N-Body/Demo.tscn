@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3 uid="uid://emad7rj0o8ch"]
+
+[ext_resource type="Script" path="res://N-Body/NBodyDemo.cs" id="1_tuufh"]
+[ext_resource type="Texture2D" uid="uid://cr670xn4s50ox" path="res://N-Body/Sprites/star_blue01.png" id="3_dtjjr"]
+[ext_resource type="Texture2D" uid="uid://b0ah8isv0x7fe" path="res://N-Body/Sprites/star_yellow01.png" id="4_fpu3s"]
+[ext_resource type="Texture2D" uid="uid://b32rdwe5ky2eg" path="res://N-Body/Sprites/star_red03.png" id="6_x5x72"]
+[ext_resource type="Texture2D" uid="uid://fdi0lnp5gfwf" path="res://N-Body/Sprites/star_white03.png" id="7_s7bkq"]
+[ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="13_l1cii"]
+[ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="14_tqoky"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_80l2o"]
+font = ExtResource("14_tqoky")
+font_size = 24
+
+[sub_resource type="Curve" id="Curve_rqhcx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="N-Body Demo" type="Node2D"]
+texture_filter = 3
+script = ExtResource("1_tuufh")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+top_level = true
+position = Vector2(695, 505)
+script = ExtResource("13_l1cii")
+useFallbackButtons = "Never"
+panSmoothing = 0.1
+zoomSmoothing = 0.1
+
+[node name="Ui Layer" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="Label" type="Label" parent="Ui Layer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -39.5
+offset_right = 39.5
+offset_bottom = 30.0
+grow_horizontal = 2
+text = "N-Body-Problem"
+label_settings = SubResource("LabelSettings_80l2o")
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="StarBlue01" type="Sprite2D" parent="."]
+position = Vector2(234, 601)
+texture = ExtResource("3_dtjjr")
+
+[node name="StarYellow01" type="Sprite2D" parent="."]
+position = Vector2(947, 359)
+texture = ExtResource("4_fpu3s")
+
+[node name="StarRed03" type="Sprite2D" parent="."]
+position = Vector2(660, 607)
+texture = ExtResource("6_x5x72")
+
+[node name="Line2D2" type="Line2D" parent="StarRed03"]
+position = Vector2(-289, -338)
+width_curve = SubResource("Curve_rqhcx")
+default_color = Color(1, 1, 1, 0.627451)
+joint_mode = 2
+
+[node name="StarWhite03" type="Sprite2D" parent="."]
+position = Vector2(371, 269)
+texture = ExtResource("7_s7bkq")
+
+[node name="Line2D" type="Line2D" parent="StarWhite03"]
+width_curve = SubResource("Curve_rqhcx")
+default_color = Color(1, 1, 1, 0.627451)
+joint_mode = 2
+end_cap_mode = 2

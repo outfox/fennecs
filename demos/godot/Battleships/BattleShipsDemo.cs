@@ -9,11 +9,11 @@ public partial class BattleShipsDemo : Node2D
 	[Export] public int FactionCount = 4;
 
 	public readonly World World = new();
-	
+
 	private double _fps = 120;
-	
+
 	internal Dictionary<int, HashSet<SpatialClient>> SpatialHash = new();
-	
+
 	public override void _Process(double delta)
 	{
 		_fps = _fps * 0.99 + 0.01 * (1.0/delta);

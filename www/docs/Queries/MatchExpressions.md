@@ -41,7 +41,7 @@ var partyGoers = world.Query<Name, PlayList>() // "()" means Match.Any
     .Has<Pizza>()
 //... but only if they specifically don't like (the string) pineapple
     .Not<Likes>(Identity.Of("pineapple"));
-// compile query to register it with the world (alternative: .Cache())
+// compile query to register it with the world
     .Compile();
 
 partyGoers.For((ref name, ref playlist) =>
