@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://emad7rj0o8ch"]
+[gd_scene load_steps=11 format=3 uid="uid://emad7rj0o8ch"]
 
 [ext_resource type="Script" path="res://N-Body/NBodyDemo.cs" id="1_tuufh"]
 [ext_resource type="Texture2D" uid="uid://cr670xn4s50ox" path="res://N-Body/Sprites/star_blue01.png" id="3_dtjjr"]
 [ext_resource type="Texture2D" uid="uid://b0ah8isv0x7fe" path="res://N-Body/Sprites/star_yellow01.png" id="4_fpu3s"]
+[ext_resource type="Script" path="res://N-Body/StellarBody.cs" id="5_s8o5q"]
 [ext_resource type="Texture2D" uid="uid://b32rdwe5ky2eg" path="res://N-Body/Sprites/star_red03.png" id="6_x5x72"]
 [ext_resource type="Texture2D" uid="uid://fdi0lnp5gfwf" path="res://N-Body/Sprites/star_white03.png" id="7_s7bkq"]
 [ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="13_l1cii"]
@@ -12,9 +13,8 @@
 font = ExtResource("14_tqoky")
 font_size = 24
 
-[sub_resource type="Curve" id="Curve_rqhcx"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_p4org"]
+blend_mode = 1
 
 [node name="N-Body Demo" type="Node2D"]
 texture_filter = 3
@@ -44,30 +44,56 @@ label_settings = SubResource("LabelSettings_80l2o")
 horizontal_alignment = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="StarBlue01" type="Sprite2D" parent="."]
-position = Vector2(234, 601)
+[node name="QuadraSolaris" type="Node2D" parent="."]
+material = SubResource("CanvasItemMaterial_p4org")
+
+[node name="StarBlue01" type="Sprite2D" parent="QuadraSolaris"]
+use_parent_material = true
+position = Vector2(393, 632)
 texture = ExtResource("3_dtjjr")
+script = ExtResource("5_s8o5q")
+mass = 2.0
 
-[node name="StarYellow01" type="Sprite2D" parent="."]
+[node name="StarYellow01" type="Sprite2D" parent="QuadraSolaris"]
+use_parent_material = true
 position = Vector2(947, 359)
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("4_fpu3s")
+script = ExtResource("5_s8o5q")
 
-[node name="StarRed03" type="Sprite2D" parent="."]
+[node name="StarYellow02" type="Sprite2D" parent="QuadraSolaris"]
+use_parent_material = true
+position = Vector2(962, 609)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("4_fpu3s")
+script = ExtResource("5_s8o5q")
+
+[node name="StarYellow03" type="Sprite2D" parent="QuadraSolaris"]
+use_parent_material = true
+position = Vector2(419, 455)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("4_fpu3s")
+script = ExtResource("5_s8o5q")
+
+[node name="StarYellow04" type="Sprite2D" parent="QuadraSolaris"]
+use_parent_material = true
+position = Vector2(694, 317)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("4_fpu3s")
+script = ExtResource("5_s8o5q")
+
+[node name="StarRed03" type="Sprite2D" parent="QuadraSolaris"]
+use_parent_material = true
 position = Vector2(660, 607)
+scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_x5x72")
+script = ExtResource("5_s8o5q")
+mass = 0.7
 
-[node name="Line2D2" type="Line2D" parent="StarRed03"]
-position = Vector2(-289, -338)
-width_curve = SubResource("Curve_rqhcx")
-default_color = Color(1, 1, 1, 0.627451)
-joint_mode = 2
-
-[node name="StarWhite03" type="Sprite2D" parent="."]
-position = Vector2(371, 269)
+[node name="StarWhite03" type="Sprite2D" parent="QuadraSolaris"]
+use_parent_material = true
+position = Vector2(510, 311)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("7_s7bkq")
-
-[node name="Line2D" type="Line2D" parent="StarWhite03"]
-width_curve = SubResource("Curve_rqhcx")
-default_color = Color(1, 1, 1, 0.627451)
-joint_mode = 2
-end_cap_mode = 2
+script = ExtResource("5_s8o5q")
+mass = 0.5
