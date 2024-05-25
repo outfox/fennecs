@@ -21,7 +21,6 @@ config/icon="res://zzzShared/icon.svg"
 window/size/viewport_width=1280
 window/size/viewport_height=960
 window/stretch/aspect="keep_height"
-window/vsync/vsync_mode=3
 
 [dotnet]
 

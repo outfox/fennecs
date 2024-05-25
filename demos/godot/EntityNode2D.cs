@@ -38,4 +38,6 @@ public partial class EntityNode2D : Node2D
 		if (disposing) entity.Despawn();
 		base.Dispose(disposing);
 	}
+
+	public static string DebugInfo() => World.ToString();
 }

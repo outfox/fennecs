@@ -9,6 +9,7 @@ font = ExtResource("3_8haj3")
 font_size = 24
 
 [node name="User Interface" type="Control"]
+use_parent_material = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,6 +22,7 @@ theme = ExtResource("1_v1386")
 
 [node name="Fennecs Logo" type="TextureRect" parent="."]
 modulate = Color(1, 1, 1, 0.501961)
+use_parent_material = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -40,6 +42,7 @@ stretch_mode = 3
 [node name="Hyperlink" type="Label" parent="."]
 modulate = Color(1, 1, 1, 0.501961)
 show_behind_parent = true
+use_parent_material = true
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0

@@ -1,14 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://emad7rj0o8ch"]
+[gd_scene load_steps=13 format=3 uid="uid://emad7rj0o8ch"]
 
 [ext_resource type="Script" path="res://N-Body/NBodyDemo.cs" id="1_tuufh"]
+[ext_resource type="PackedScene" uid="uid://bdfvsd3p00icf" path="res://zzzShared/user_interface.tscn" id="2_ofaxe"]
 [ext_resource type="Script" path="res://N-Body/SimulationCell.gd" id="4_v8het"]
 [ext_resource type="PackedScene" uid="uid://5jx5gqeanxar" path="res://N-Body/StellarBody.tscn" id="5_aynob"]
+[ext_resource type="Script" path="res://N-Body/FPSWorldLabel.gd" id="5_bcu85"]
+[ext_resource type="Theme" uid="uid://xobxg8yxjsmu" path="res://zzzShared/fennecs_theme.tres" id="5_qhynq"]
 [ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="13_l1cii"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="14_tqoky"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_80l2o"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fsph6"]
+blend_mode = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_my0fj"]
 font = ExtResource("14_tqoky")
-font_size = 24
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_jfduk"]
+font = ExtResource("14_tqoky")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_c7dhv"]
 blend_mode = 1
@@ -16,7 +25,11 @@ blend_mode = 1
 [node name="N-Body Demo" type="Control"]
 texture_filter = 3
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_tuufh")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -30,18 +43,138 @@ zoomSmoothing = 0.1
 [node name="Ui Layer" type="CanvasLayer" parent="."]
 layer = 3
 
-[node name="Label" type="Label" parent="Ui Layer"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -39.5
-offset_right = 39.5
-offset_bottom = 30.0
-grow_horizontal = 2
-text = "N-Body-Problem"
-label_settings = SubResource("LabelSettings_80l2o")
+[node name="User Interface" parent="Ui Layer" instance=ExtResource("2_ofaxe")]
+material = SubResource("CanvasItemMaterial_fsph6")
+offset_left = 0.0
+offset_right = 0.0
+mouse_filter = 1
+
+[node name="Info Text" type="RichTextLabel" parent="Ui Layer/User Interface"]
+modulate = Color(1, 1, 1, 0.501961)
+show_behind_parent = true
+use_parent_material = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 362.0
+offset_bottom = 466.0
+size_flags_horizontal = 8
+mouse_filter = 2
+bbcode_enabled = true
+text = "N-Body Problem  (Godot version)
+
+This demo shows how to use Entity-Entity relations to great effect, solving a typical ECS problem of N:N relationships.
+
+fennecs lets us have multiple Entities interacting with each other, e.g. true flocking behaviour, but also typical game situations such as  following a leader, grouping by spheres of influence, etc. It does so with good cache coherence and memory locality, as well as near-optimal iteration order - assuming the naive o(n²) case.
+
+Each coloured cluster is a small \"parallel\" clique that doesn't interact with others. 
+
+All simulations seamlessly coexist and are driven through the same runner passed to the same Query - and exactly once."
+
+[node name="Spawn Controls" type="VBoxContainer" parent="Ui Layer/User Interface"]
+modulate = Color(1, 1, 1, 0.501961)
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -194.0
+offset_top = -636.0
+offset_right = -17.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="FPS Label" type="Label" parent="Ui Layer/User Interface/Spawn Controls"]
+modulate = Color(1, 1, 1, 0.501961)
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 40
+text = "0 fps
+0 entities
+"
+label_settings = SubResource("LabelSettings_my0fj")
 horizontal_alignment = 2
-metadata/_edit_use_anchors_ = true
+script = ExtResource("5_bcu85")
+
+[node name="Sliders" type="HBoxContainer" parent="Ui Layer/User Interface/Spawn Controls"]
+visible = false
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="VisibleSlider" type="VSlider" parent="Ui Layer/User Interface/Spawn Controls/Sliders"]
+unique_name_in_owner = true
+use_parent_material = true
+custom_minimum_size = Vector2(60, 500)
+layout_mode = 2
+theme = ExtResource("5_qhynq")
+min_value = 0.01
+max_value = 1.0
+step = 0.03
+value = 0.31
+tick_count = 20
+ticks_on_borders = true
+
+[node name="SimulatedSlider" type="VSlider" parent="Ui Layer/User Interface/Spawn Controls/Sliders"]
+use_parent_material = true
+custom_minimum_size = Vector2(60, 500)
+layout_mode = 2
+theme = ExtResource("5_qhynq")
+min_value = 0.05
+max_value = 1.0
+step = 0.05
+value = 0.4
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Panel" type="Panel" parent="Ui Layer/User Interface/Spawn Controls"]
+visible = false
+show_behind_parent = true
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="Ui Layer/User Interface/Spawn Controls/Panel"]
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -43.0
+offset_top = -140.0
+offset_right = 92.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5708
+mouse_filter = 2
+
+[node name="SimulatedLabel" type="Label" parent="Ui Layer/User Interface/Spawn Controls/Panel/HBoxContainer2"]
+show_behind_parent = true
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Entities Simulated"
+label_settings = SubResource("LabelSettings_jfduk")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RenderedLabel" type="Label" parent="Ui Layer/User Interface/Spawn Controls/Panel/HBoxContainer2"]
+show_behind_parent = true
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Entities Visible"
+label_settings = SubResource("LabelSettings_jfduk")
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Simulation Cell4" type="Node2D" parent="."]
 modulate = Color(0.347011, 0.715762, 1, 1)
