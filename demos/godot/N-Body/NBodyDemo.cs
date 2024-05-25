@@ -40,9 +40,12 @@ public partial class NBodyDemo : Control
 		{
 			if (self == attractor) return; // (we are not attracted to ourselves)
 
-			var distanceSquared = Mathf.Max(0.0001f, Mathf.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.75f) / 200000f);
+			var distanceSquared = Mathf.Max(0.001f, Mathf.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.75f) / 200000f);
 			var direction = Vector2.Normalize(attractor.position - self.position);
-			acc.Value += direction * attractor.mass / distanceSquared / self.mass;
+			acc.Value += direction * attractor.mass / distanceSquared;
+
+			// Just a pinch of dark matter to keep things together a bit more
+			acc.Value -= self.position * 0.001f / self.mass;
 		});
 
 		// Integrate accelerations, velocities, and positions

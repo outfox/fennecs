@@ -7,7 +7,6 @@ namespace fennecs.demos.godot;
 [GlobalClass]
 public partial class StellarBody : EntityNode2D
 {
-	[Export]
 	public float mass = 1.0f;
 
 	private Body _body;
@@ -16,6 +15,7 @@ public partial class StellarBody : EntityNode2D
 	{
 		base._EnterTree();
 
+		mass = Random.Shared.NextSingle() * 0.5f + 0.75f;
 		Scale *= mass*mass;
 
 		entity.Add(this);

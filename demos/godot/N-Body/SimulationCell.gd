@@ -8,7 +8,7 @@ func _ready() -> void:
 			children.append(child)
 
 
-func _physics_process(delta : float) -> void:
+func _xphysics_process(delta : float) -> void:
 	var average := Vector2.ZERO
 
 	for child in children:
