@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmxrpg865t8wt"]
+
+[ext_resource type="Script" path="res://N-Body/SimulationCell.gd" id="1_gsr88"]
+[ext_resource type="PackedScene" uid="uid://5jx5gqeanxar" path="res://N-Body/StellarBody.tscn" id="1_olciv"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_c7dhv"]
+blend_mode = 1
+
+[node name="Cell" type="Node2D"]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+script = ExtResource("1_gsr88")
+
+[node name="StellarBody2" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(-84, 80)
+
+[node name="StellarBody3" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(21, 75)
+
+[node name="StellarBody4" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(-32, -39)

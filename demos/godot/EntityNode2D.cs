@@ -29,7 +29,10 @@ public partial class EntityNode2D : Node2D
 
 	public override void _ExitTree()
 	{
-		entity.Remove<EntityNode2D>();
+		//entity.Remove<EntityNode2D>();
+		//entity.Despawn();
+		World.GC();
+		base._ExitTree();
 	}
 
 	// This is an ok place to handle the final deletion of the entity.

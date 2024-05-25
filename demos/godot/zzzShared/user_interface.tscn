@@ -21,7 +21,7 @@ grow_vertical = 2
 theme = ExtResource("1_v1386")
 
 [node name="Fennecs Logo" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.501961)
+modulate = Color(1, 1, 1, 0.25098)
 use_parent_material = true
 layout_mode = 1
 anchors_preset = 8

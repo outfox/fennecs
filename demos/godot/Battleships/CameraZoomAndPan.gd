@@ -13,6 +13,7 @@ class_name CameraZoomAndPan
 @onready var camera : Camera2D = $".." if ($".." is Camera2D) else self
 
 #region exported Parameters
+@export_range(100, 10000, 100) var maxPanDistance : float = 10000
 @export_range(1, 20, 0.01) var maxZoom : float = 5.0
 @export_range(0.01, 1, 0.01) var minZoom : float = 0.1
 @export_range(0.01, 0.2, 0.01) var zoomStepRatio : float = 0.1
@@ -101,6 +102,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if Input.is_action_pressed(panAction) or (fallback_mouse_pan and Input.is_mouse_button_pressed(panButton)):
 		position_goal += (last_mouse - current_mouse)
+		position_goal = position_goal.clamp(-Vector2(maxPanDistance,maxPanDistance), Vector2(maxPanDistance,maxPanDistance))
+
 
 	if Input.is_action_just_pressed(zoomInAction) or (fallback_mouse_zoom_in and Input.is_mouse_button_pressed(zoomInButton)):
 		zoom_goal *= 1.0 / (1.0-zoomStepRatio)

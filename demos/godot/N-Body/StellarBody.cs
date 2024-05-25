@@ -21,13 +21,12 @@ public partial class StellarBody : EntityNode2D
 		entity.Add(this);
 
 		var position = new Position { Value = new(Position.X, Position.Y) };
+		entity.Add(position);
 
 		_body = new() { position = position.Value, mass = mass };
 		entity.Add(_body);
 
-		entity.Add(position);
-		var velocity = new System.Numerics.Vector2((Random.Shared.NextSingle()-0.5f) * 100f, (Random.Shared.NextSingle()-0.5f) * 100f);
-		entity.Add(new Velocity { Value = velocity });
+		entity.Add(new Velocity { Value = new((Random.Shared.NextSingle()-0.5f) * 100f, (Random.Shared.NextSingle()-0.5f) * 100f) });
 		entity.Add(new Acceleration { Value = new(0, 0) });
 	}
 

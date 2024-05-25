@@ -13,7 +13,7 @@ config_version=5
 config/name="fennecs-demos-godot"
 config/description="A set of examples using the fennecs Entity Component System"
 run/main_scene="res://N-Body/Demo.tscn"
-config/features=PackedStringArray("4.2", "C#", "Forward Plus")
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://zzzShared/icon.svg"
 
 [display]
@@ -21,6 +21,7 @@ config/icon="res://zzzShared/icon.svg"
 window/size/viewport_width=1280
 window/size/viewport_height=960
 window/stretch/aspect="keep_height"
+window/vsync/vsync_mode=3
 
 [dotnet]
 
@@ -53,6 +54,10 @@ camera>zoom-={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":16,"position":Vector2(170, 18),"global_position":Vector2(176, 80),"factor":1.0,"button_index":5,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
+
+[physics]
+
+common/enable_object_picking=false
 
 [rendering]
 

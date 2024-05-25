@@ -1,7 +1,7 @@
 extends Line2D
 
 var max_points : int = 50
-const skip := 4
+const skip := 3
 var frame := 0
 
 func _physics_process(delta: float) -> void:
