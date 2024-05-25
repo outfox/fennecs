@@ -16,6 +16,8 @@ public partial class StellarBody : EntityNode2D
 	{
 		base._EnterTree();
 
+		Scale *= mass*mass;
+
 		entity.Add(this);
 
 		var position = new Position { Value = new(Position.X, Position.Y) };

@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://emad7rj0o8ch"]
+[gd_scene load_steps=8 format=3 uid="uid://emad7rj0o8ch"]
 
 [ext_resource type="Script" path="res://N-Body/NBodyDemo.cs" id="1_tuufh"]
-[ext_resource type="Texture2D" uid="uid://bap7dcwh0ydyj" path="res://N-Body/Sprites/grid.png" id="4_bxpee"]
 [ext_resource type="Script" path="res://N-Body/SimulationCell.gd" id="4_v8het"]
 [ext_resource type="PackedScene" uid="uid://5jx5gqeanxar" path="res://N-Body/StellarBody.tscn" id="5_aynob"]
 [ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="13_l1cii"]
@@ -11,16 +10,19 @@
 font = ExtResource("14_tqoky")
 font_size = 24
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_p4org"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_c7dhv"]
 blend_mode = 1
 
-[node name="N-Body Demo" type="Node2D"]
+[node name="N-Body Demo" type="Control"]
 texture_filter = 3
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_tuufh")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 top_level = true
 script = ExtResource("13_l1cii")
+minZoom = 0.3
 useFallbackButtons = "Never"
 panSmoothing = 0.1
 zoomSmoothing = 0.1
@@ -41,234 +43,1602 @@ label_settings = SubResource("LabelSettings_80l2o")
 horizontal_alignment = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Simulation Cell" type="Control" parent="."]
-material = SubResource("CanvasItemMaterial_p4org")
-custom_minimum_size = Vector2(128, 128)
-layout_mode = 3
-anchors_preset = 0
-mouse_filter = 2
+[node name="Simulation Cell4" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(993, 82)
 script = ExtResource("4_v8het")
 
-[node name="TextureRect" type="TextureRect" parent="Simulation Cell"]
-modulate = Color(1, 1, 1, 0.25098)
-layout_mode = 0
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
-mouse_filter = 2
-texture = ExtResource("4_bxpee")
-stretch_mode = 1
-
-[node name="StellarBody" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+[node name="StellarBody2" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
 mass = 0.9
 
-[node name="StellarBody2" parent="Simulation Cell" instance=ExtResource("5_aynob")]
-position = Vector2(96, 242)
-mass = 0.7
+[node name="StellarBody3" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
 
-[node name="StellarBody3" parent="Simulation Cell" instance=ExtResource("5_aynob")]
-position = Vector2(106, 11)
+[node name="StellarBody4" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
 
-[node name="Simulation Cell2" type="Control" parent="."]
-material = SubResource("CanvasItemMaterial_p4org")
-custom_minimum_size = Vector2(128, 128)
-layout_mode = 3
-anchors_preset = 0
-offset_left = -169.0
-offset_top = -1.0
-offset_right = -41.0
-offset_bottom = 127.0
-mouse_filter = 2
+[node name="StellarBody5" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell3" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(946, 652)
 script = ExtResource("4_v8het")
 
-[node name="TextureRect" type="TextureRect" parent="Simulation Cell2"]
-modulate = Color(1, 1, 1, 0.25098)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -64.0
-offset_right = -64.0
-offset_bottom = -64.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("4_bxpee")
-stretch_mode = 1
+[node name="StellarBody2" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
 
-[node name="StellarBody" parent="Simulation Cell2" instance=ExtResource("5_aynob")]
-position = Vector2(34, 50)
+[node name="StellarBody3" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell2" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(252, 784)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell2" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
 mass = 0.9
 
 [node name="StellarBody3" parent="Simulation Cell2" instance=ExtResource("5_aynob")]
-position = Vector2(106, 11)
+position = Vector2(-38, -36)
 
-[node name="Simulation Cell3" type="Control" parent="."]
-material = SubResource("CanvasItemMaterial_p4org")
-custom_minimum_size = Vector2(128, 128)
-layout_mode = 3
-anchors_preset = 0
-offset_left = -349.0
-offset_top = -4.0
-offset_right = -221.0
-offset_bottom = 124.0
-mouse_filter = 2
+[node name="StellarBody4" parent="Simulation Cell2" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell2" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell2" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(256, 256)
 script = ExtResource("4_v8het")
 
-[node name="TextureRect" type="TextureRect" parent="Simulation Cell3"]
-modulate = Color(1, 1, 1, 0.25098)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -64.0
-offset_right = -64.0
-offset_bottom = -64.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("4_bxpee")
-stretch_mode = 1
-
-[node name="StellarBody" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
+[node name="StellarBody2" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
 mass = 0.9
 
-[node name="StellarBody4" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
-position = Vector2(48, 30)
+[node name="StellarBody3" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
 mass = 0.9
 
-[node name="StellarBody2" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
-position = Vector2(52, 78)
-mass = 0.7
+[node name="StellarBody5" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
 
-[node name="StellarBody3" parent="Simulation Cell3" instance=ExtResource("5_aynob")]
-position = Vector2(94, 55)
-mass = 0.7
+[node name="StellarBody6" parent="Simulation Cell" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
 
-[node name="Simulation Cell4" type="Control" parent="."]
-material = SubResource("CanvasItemMaterial_p4org")
-custom_minimum_size = Vector2(128, 128)
-layout_mode = 3
-anchors_preset = 0
-offset_left = -355.0
-offset_top = 171.0
-offset_right = -227.0
-offset_bottom = 299.0
-mouse_filter = 2
+[node name="Simulation Cell5" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-236, 154)
 script = ExtResource("4_v8het")
-
-[node name="TextureRect" type="TextureRect" parent="Simulation Cell4"]
-modulate = Color(1, 1, 1, 0.25098)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -64.0
-offset_right = -64.0
-offset_bottom = -64.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("4_bxpee")
-stretch_mode = 1
-
-[node name="StellarBody" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
-mass = 0.9
-
-[node name="StellarBody4" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
-position = Vector2(48, 30)
-mass = 0.9
-
-[node name="StellarBody2" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
-position = Vector2(52, 78)
-mass = 0.7
-
-[node name="StellarBody3" parent="Simulation Cell4" instance=ExtResource("5_aynob")]
-position = Vector2(-77, 97)
-mass = 0.7
-
-[node name="Simulation Cell5" type="Control" parent="."]
-material = SubResource("CanvasItemMaterial_p4org")
-custom_minimum_size = Vector2(128, 128)
-layout_mode = 3
-anchors_preset = 0
-offset_left = -137.0
-offset_top = 303.0
-offset_right = -9.0
-offset_bottom = 431.0
-mouse_filter = 2
-script = ExtResource("4_v8het")
-
-[node name="TextureRect" type="TextureRect" parent="Simulation Cell5"]
-modulate = Color(1, 1, 1, 0.25098)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -64.0
-offset_right = -64.0
-offset_bottom = -64.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("4_bxpee")
-stretch_mode = 1
-
-[node name="StellarBody" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
-mass = 0.9
 
 [node name="StellarBody2" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
-position = Vector2(52, 78)
-mass = 0.7
+position = Vector2(-84, 80)
+mass = 0.9
 
 [node name="StellarBody3" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
-position = Vector2(94, 55)
-mass = 0.7
+position = Vector2(-38, -36)
 
-[node name="Simulation Cell6" type="Control" parent="."]
-material = SubResource("CanvasItemMaterial_p4org")
-custom_minimum_size = Vector2(128, 128)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 51.0
-offset_top = 314.0
-offset_right = 179.0
-offset_bottom = 442.0
-mouse_filter = 2
+[node name="StellarBody4" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell5" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell6" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-283, 724)
 script = ExtResource("4_v8het")
 
-[node name="TextureRect" type="TextureRect" parent="Simulation Cell6"]
-modulate = Color(1, 1, 1, 0.25098)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -64.0
-offset_right = -64.0
-offset_bottom = -64.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("4_bxpee")
-stretch_mode = 1
-
-[node name="StellarBody" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
-mass = 0.9
-
-[node name="StellarBody4" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
-position = Vector2(42, 98)
-mass = 0.9
-
 [node name="StellarBody2" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
-position = Vector2(4, 161)
-mass = 0.7
+position = Vector2(-84, 80)
+mass = 0.9
 
 [node name="StellarBody3" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
-position = Vector2(94, 55)
-mass = 0.7
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell6" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell9" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(972, 1137)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell9" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell9" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell9" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell9" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell9" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell12" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(235, 1311)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell12" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell12" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell12" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell12" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell12" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell15" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1532, 746)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell15" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell15" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell15" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell15" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell15" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell16" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1536, 218)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell16" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell16" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell16" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell16" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell16" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell18" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(972, -416)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell18" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell18" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell18" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell18" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell18" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell19" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(278, -284)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell19" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell19" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell19" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell19" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell19" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell23" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1545, -390)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell23" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell23" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell23" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell23" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell23" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell26" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-253, -425)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell26" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell26" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell26" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell26" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell26" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell29" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-236, 1230)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell29" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell29" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell29" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell29" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell29" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell36" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1616, 1264)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell36" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell36" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell36" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell36" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell36" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell7" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-1330, 114)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell7" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell7" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell7" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell7" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell7" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell8" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-1377, 684)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell8" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell8" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell8" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell8" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell8" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell10" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2692, 762)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell10" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell10" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell10" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell10" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell10" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell11" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2696, 234)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell11" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell11" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell11" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell11" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell11" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell13" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2204, 132)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell13" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell13" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell13" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell13" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell13" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell14" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2157, 702)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell14" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell14" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell14" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell14" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell14" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell17" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-1351, 1169)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell17" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell17" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell17" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell17" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell17" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell20" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2675, 1289)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell20" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell20" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell20" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell20" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell20" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell21" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-791, 778)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell21" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell21" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell21" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell21" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell21" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell22" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-787, 250)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell22" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell22" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell22" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell22" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell22" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell24" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-1351, -384)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell24" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell24" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell24" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell24" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell24" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell25" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2718, -306)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell25" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell25" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell25" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell25" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell25" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell27" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-778, -358)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell27" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell27" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell27" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell27" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell27" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell28" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2187, -447)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell28" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell28" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell28" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell28" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell28" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell30" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2204, 1208)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell30" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell30" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell30" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell30" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell30" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell37" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-707, 1296)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell37" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell37" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell37" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell37" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell37" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell31" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1000, -1963)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell31" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell31" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell31" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell31" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell31" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell32" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(953, -1393)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell32" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell32" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell32" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell32" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell32" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell33" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(259, -1261)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell33" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell33" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell33" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell33" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell33" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell34" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(263, -1789)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell34" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell34" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell34" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell34" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell34" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell35" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-229, -1891)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell35" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell35" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell35" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell35" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell35" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell38" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-276, -1321)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell38" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell38" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell38" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell38" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell38" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell39" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(979, -908)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell39" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell39" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell39" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell39" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell39" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell40" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(242, -734)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell40" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell40" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell40" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell40" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell40" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell41" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1539, -1299)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell41" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell41" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell41" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell41" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell41" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell42" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1543, -1827)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell42" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell42" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell42" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell42" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell42" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell43" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(979, -2461)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell43" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell43" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell43" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell43" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell43" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell44" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(285, -2329)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell44" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell44" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell44" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell44" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell44" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell45" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1552, -2435)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell45" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell45" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell45" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell45" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell45" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell46" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-246, -2470)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell46" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell46" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell46" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell46" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell46" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell47" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-229, -815)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell47" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell47" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell47" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell47" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell47" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell48" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(1623, -781)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell48" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell48" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell48" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell48" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell48" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell49" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-1323, -1931)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell49" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell49" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell49" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell49" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell49" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell50" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-1370, -1361)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell50" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell50" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell50" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell50" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell50" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell51" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2699, -1283)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell51" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell51" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell51" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell51" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell51" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell52" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2703, -1811)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell52" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell52" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell52" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell52" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell52" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell53" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2211, -1913)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell53" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell53" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell53" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell53" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell53" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell54" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2164, -1343)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell54" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell54" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell54" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell54" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell54" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell55" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-1344, -876)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell55" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell55" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell55" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell55" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell55" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell56" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2682, -756)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell56" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell56" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell56" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell56" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell56" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell57" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-784, -1267)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell57" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell57" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell57" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell57" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell57" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell58" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-780, -1795)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell58" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell58" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell58" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell58" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell58" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell59" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-1344, -2429)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell59" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell59" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell59" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell59" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell59" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell60" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2725, -2351)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell60" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell60" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell60" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell60" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell60" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell61" type="Node2D" parent="."]
+modulate = Color(1, 0.425433, 0.896923, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-771, -2403)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell61" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell61" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell61" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell61" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell61" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell62" type="Node2D" parent="."]
+modulate = Color(0, 0.811193, 0.494487, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2194, -2492)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell62" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell62" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell62" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell62" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell62" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell63" type="Node2D" parent="."]
+modulate = Color(0.347011, 0.715762, 1, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(2211, -837)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell63" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell63" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell63" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell63" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell63" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9
+
+[node name="Simulation Cell64" type="Node2D" parent="."]
+modulate = Color(0.721354, 0.710729, 3.85046e-07, 1)
+material = SubResource("CanvasItemMaterial_c7dhv")
+position = Vector2(-700, -749)
+script = ExtResource("4_v8het")
+
+[node name="StellarBody2" parent="Simulation Cell64" instance=ExtResource("5_aynob")]
+position = Vector2(-84, 80)
+mass = 0.9
+
+[node name="StellarBody3" parent="Simulation Cell64" instance=ExtResource("5_aynob")]
+position = Vector2(-38, -36)
+
+[node name="StellarBody4" parent="Simulation Cell64" instance=ExtResource("5_aynob")]
+position = Vector2(34, -23)
+mass = 0.9
+
+[node name="StellarBody5" parent="Simulation Cell64" instance=ExtResource("5_aynob")]
+position = Vector2(94, 10)
+mass = 0.9
+
+[node name="StellarBody6" parent="Simulation Cell64" instance=ExtResource("5_aynob")]
+position = Vector2(94, -63)
+mass = 0.9

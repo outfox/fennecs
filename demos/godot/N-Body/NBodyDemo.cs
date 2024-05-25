@@ -1,10 +1,11 @@
+using System;
 using Godot;
 using Vector2 = System.Numerics.Vector2;
 
 namespace fennecs.demos.godot;
 
 [GlobalClass]
-public partial class NBodyDemo : Node2D
+public partial class NBodyDemo : Control
 {
 	// We just use a shared singleton here for ease of use.
 	private static World world => EntityNode2D.World;
@@ -29,7 +30,7 @@ public partial class NBodyDemo : Node2D
 	}
 
 	// Main simulation "Loop"
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
 		// Clear all forces
 		_accumulator.Blit(new Acceleration());
@@ -39,7 +40,7 @@ public partial class NBodyDemo : Node2D
 		{
 			if (self == attractor) return; // (we are not attracted to ourselves)
 
-			var distanceSquared = Mathf.Max(0.0005f, Mathf.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.75f) / 100000f);
+			var distanceSquared = Mathf.Max(0.0001f, Mathf.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.75f) / 200000f);
 			var direction = Vector2.Normalize(attractor.position - self.position);
 			acc.Value += direction * attractor.mass / distanceSquared / self.mass;
 		});
