@@ -1,0 +1,80 @@
+[gd_scene load_steps=8 format=3 uid="uid://brkkcdmjbkvok"]
+
+[ext_resource type="Script" path="res://addons/trail_2d/trail_2d.gd" id="1_4d7r7"]
+
+[sub_resource type="GDScript" id="GDScript_62opy"]
+resource_name = "Test scene"
+script/source = "extends Node2D
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	%LengthDisplay.text = 'Length = %s' % %Slider.value
+	%Trail2D.length = %Slider.value
+
+func _physics_process(delta: float) -> void:
+	$Marker2D.global_position = get_global_mouse_position()
+
+
+func _on_slider_value_changed(value: float) -> void:
+	%Trail2D.clear_points()
+"
+
+[sub_resource type="Curve" id="Curve_ni00x"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0766667, 1), 0.0, -1.08303, 0, 1, Vector2(1, 0), -1.08303, 0.0, 1, 0]
+point_count = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vou4f"]
+bg_color = Color(0.552941, 0.647059, 0.952941, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cjyak"]
+bg_color = Color(0.333333, 0.478431, 0.94902, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Theme" id="Theme_vniel"]
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_vou4f")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_cjyak")
+
+[sub_resource type="LabelSettings" id="LabelSettings_g5i13"]
+font_size = 32
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.611765)
+shadow_offset = Vector2(2, 2)
+
+[node name="Test" type="Node2D"]
+script = SubResource("GDScript_62opy")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="Trail2D" type="Line2D" parent="Marker2D"]
+unique_name_in_owner = true
+width_curve = SubResource("Curve_ni00x")
+script = ExtResource("1_4d7r7")
+
+[node name="Slider" type="HSlider" parent="."]
+unique_name_in_owner = true
+offset_left = 184.0
+offset_top = 19.0
+offset_right = 519.0
+offset_bottom = 35.0
+theme = SubResource("Theme_vniel")
+min_value = 1.0
+value = 10.0
+
+[node name="LengthDisplay" type="Label" parent="Slider"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 19.0
+offset_right = 40.0
+offset_bottom = 42.0
+text = "Trail length:"
+label_settings = SubResource("LabelSettings_g5i13")
+
+[connection signal="value_changed" from="Slider" to="." method="_on_slider_value_changed"]

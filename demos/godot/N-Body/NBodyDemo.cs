@@ -5,7 +5,7 @@ using Vector2 = System.Numerics.Vector2;
 namespace fennecs.demos.godot;
 
 [GlobalClass]
-public partial class NBodyDemo : Control
+public partial class NBodyDemo : Node2D
 {
 	// We just use a shared singleton here for ease of use.
 	private static World world => EntityNode2D.World;
@@ -23,7 +23,7 @@ public partial class NBodyDemo : Control
 			.Compile();
 
 		// Used to calculate the the forces into the velocities and positions
-		_integrator = world.Query<Acceleration, Velocity, Position>().Compile();
+		_integrator = world.Query<Acceleration, Velocity, Position>(Match.Plain, Match.Plain, Match.Plain).Compile();
 
 		// Used to copy the Position into the Body components of the same object (plain = non-relation component)
 		_consolidator = world.Query<Position, Body, StellarBody>(Match.Plain, Match.Plain, Match.Plain).Compile();
@@ -34,6 +34,8 @@ public partial class NBodyDemo : Control
 	// Main simulation "Loop"
 	public override void _PhysicsProcess(double delta)
 	{
+		delta *= 0.5f;
+
 		// Clear all forces
 		_accumulator.Blit(new Acceleration());
 
@@ -42,12 +44,12 @@ public partial class NBodyDemo : Control
 		{
 			if (self == attractor) return; // (we are not attracted to ourselves)
 
-			var distanceSquared = Mathf.Max(0.001f, MathF.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.7f) / 250000f);
+			var distanceSquared = Mathf.Max(0.001f, MathF.Pow(Vector2.DistanceSquared(attractor.position, self.position), 0.75f) / 100000f);
 			var direction = Vector2.Normalize(attractor.position - self.position);
 			acc.Value += direction * attractor.mass / distanceSquared / self.mass;
 
 			// Just a pinch of dark matter to keep things together a bit more
-			acc.Value -= self.position * 0.001f / self.mass;
+			acc.Value -= self.position * 0.005f / self.mass;
 		});
 
 		// Integrate accelerations, velocities, and positions

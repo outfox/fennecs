@@ -1,29 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://5jx5gqeanxar"]
+[gd_scene load_steps=5 format=3 uid="uid://5jx5gqeanxar"]
 
 [ext_resource type="Texture2D" uid="uid://bef00ap5tn0g6" path="res://N-Body/Sprites/star_white01.png" id="1_dvduc"]
 [ext_resource type="Script" path="res://N-Body/StellarBody.cs" id="2_neflf"]
-[ext_resource type="Script" path="res://N-Body/LineRenderer.gd" id="3_ya4nt"]
+[ext_resource type="Script" path="res://addons/trail_2d/trail_2d.gd" id="4_gkdrt"]
 
-[sub_resource type="Curve" id="Curve_w5grm"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.194805, 0.831169), 0.0, 0.0, 0, 0, Vector2(1, 0.957792), 0.0, -2.68966, 0, 0]
-point_count = 3
-
-[sub_resource type="Gradient" id="Gradient_1hved"]
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.25098)
+[sub_resource type="Gradient" id="Gradient_qihq8"]
+colors = PackedColorArray(1, 1, 1, 0.8, 1, 1, 1, 0)
 
 [node name="StellarBody" type="Sprite2D"]
 use_parent_material = true
 texture = ExtResource("1_dvduc")
 script = ExtResource("2_neflf")
 
-[node name="Line2D" type="Line2D" parent="."]
-show_behind_parent = true
-top_level = true
-width = 5.0
-width_curve = SubResource("Curve_w5grm")
-default_color = Color(1, 1, 1, 0.392157)
-gradient = SubResource("Gradient_1hved")
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
-script = ExtResource("3_ya4nt")
+[node name="Trail2D" type="Line2D" parent="."]
+width = 8.0
+gradient = SubResource("Gradient_qihq8")
+script = ExtResource("4_gkdrt")
+length = 80
+skip = 2

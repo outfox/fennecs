@@ -13,8 +13,10 @@ config_version=5
 config/name="fennecs-demos-godot"
 config/description="A set of examples using the fennecs Entity Component System"
 run/main_scene="res://N-Body/Demo.tscn"
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
-config/icon="res://zzzShared/icon.svg"
+boot_splash/image="res://zzzShared/fennecs-logo.png"
+config/icon="res://icon.svg"
 
 [display]
 
@@ -31,6 +33,10 @@ project/assembly_name="fennecs-demos-godot"
 
 movie_writer/movie_file="D:/Capture/godot.avi"
 movie_writer/fps=120
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/trail_2d/plugin.cfg")
 
 [gui]
 

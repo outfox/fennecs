@@ -1,12 +1,21 @@
-[gd_scene load_steps=12 format=3 uid="uid://emad7rj0o8ch"]
+[gd_scene load_steps=18 format=3 uid="uid://emad7rj0o8ch"]
 
 [ext_resource type="Script" path="res://N-Body/NBodyDemo.cs" id="1_tuufh"]
 [ext_resource type="PackedScene" uid="uid://bdfvsd3p00icf" path="res://zzzShared/user_interface.tscn" id="2_ofaxe"]
+[ext_resource type="Texture2D" uid="uid://dqil6jxojmowe" path="res://N-Body/Sprites/Starfield 8 - 1024x1024.png" id="3_u72se"]
 [ext_resource type="Script" path="res://N-Body/FPSWorldLabel.gd" id="5_bcu85"]
 [ext_resource type="Theme" uid="uid://xobxg8yxjsmu" path="res://zzzShared/fennecs_theme.tres" id="5_qhynq"]
 [ext_resource type="PackedScene" uid="uid://dmxrpg865t8wt" path="res://N-Body/SimCell.tscn" id="7_kkm5p"]
+[ext_resource type="Texture2D" uid="uid://bap7dcwh0ydyj" path="res://N-Body/Sprites/grid.png" id="7_vit3s"]
+[ext_resource type="Script" path="res://N-Body/ArrangeAsGrid.gd" id="9_5fppv"]
+[ext_resource type="Environment" uid="uid://djl06ugqg0ey1" path="res://N-Body/Environment-NBody.tres" id="11_n8ksy"]
 [ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="13_l1cii"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="14_tqoky"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_faipt"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7q33j"]
+blend_mode = 1
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fsph6"]
 blend_mode = 1
@@ -22,24 +31,74 @@ font_size = 32
 [sub_resource type="LabelSettings" id="LabelSettings_jfduk"]
 font = ExtResource("14_tqoky")
 
-[node name="N-Body Demo" type="Control"]
-texture_filter = 3
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="N-Body Demo" type="Node2D"]
+texture_filter = 4
 script = ExtResource("1_tuufh")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 top_level = true
 zoom = Vector2(0.5, 0.5)
 script = ExtResource("13_l1cii")
-maxPanDistance = 1500.0
 maxZoom = 4.0
 minZoom = 0.5
 useFallbackButtons = "Never"
+
+[node name="Stars (ParallaxBackground)" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Stars (ParallaxBackground)"]
+modulate = Color(0.671514, 0.671514, 0.671514, 1)
+material = SubResource("CanvasItemMaterial_faipt")
+motion_scale = Vector2(0.05, 0.05)
+motion_mirroring = Vector2(1024, 1024)
+
+[node name="Sprite2D" type="Sprite2D" parent="Stars (ParallaxBackground)/ParallaxLayer"]
+use_parent_material = true
+texture = ExtResource("3_u72se")
+centered = false
+
+[node name="Sprite2D2" type="Sprite2D" parent="Stars (ParallaxBackground)/ParallaxLayer"]
+use_parent_material = true
+texture = ExtResource("3_u72se")
+centered = false
+offset = Vector2(2048, 0)
+
+[node name="Sprite2D3" type="Sprite2D" parent="Stars (ParallaxBackground)/ParallaxLayer"]
+use_parent_material = true
+texture = ExtResource("3_u72se")
+centered = false
+offset = Vector2(0, 2048)
+
+[node name="Sprite2D4" type="Sprite2D" parent="Stars (ParallaxBackground)/ParallaxLayer"]
+use_parent_material = true
+texture = ExtResource("3_u72se")
+centered = false
+offset = Vector2(2048, 2048)
+
+[node name="Grid (Parallax2D)" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.85, 0.85)
+repeat_size = Vector2(1024, 1024)
+repeat_times = 8
+
+[node name="Sprite2D" type="Sprite2D" parent="Grid (Parallax2D)"]
+modulate = Color(0.234491, 0.25045, 1, 0.313726)
+show_behind_parent = true
+texture_filter = 3
+material = SubResource("CanvasItemMaterial_7q33j")
+texture = ExtResource("7_vit3s")
+centered = false
+
+[node name="Stars (Parallax2D)" type="Parallax2D" parent="."]
+visible = false
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(1024, 1024)
+repeat_times = 8
+
+[node name="Sprite2D" type="Sprite2D" parent="Stars (Parallax2D)"]
+modulate = Color(0.671514, 0.671514, 0.671514, 1)
+show_behind_parent = true
+texture = ExtResource("3_u72se")
+centered = false
 
 [node name="Ui Layer" type="CanvasLayer" parent="."]
 layer = 3
@@ -70,7 +129,7 @@ With fennecs, multiple Entities can interact with each other seamlessly, enablin
 
 Each colored cluster represents a small, self-contained clique where Entities have relationships with all other Entities within the same group, forming a distinct Archetype.
 
-All simulations coexist harmoniously and are driven by the same runner passed to a single Query, ensuring each Entity is processed exactly once."
+All simulations coexist harmoniously and interactions are driven by the same runner passed to a single Query, ensuring each Entity is processed exactly once for each other Entity it interacts with. The two other Queries then simply integrate the calculated forces into movement and position."
 
 [node name="Info Text3" type="Label" parent="Ui Layer/User Interface"]
 modulate = Color(1, 1, 1, 0.501961)
@@ -213,241 +272,310 @@ label_settings = SubResource("LabelSettings_jfduk")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Cell" parent="." instance=ExtResource("7_kkm5p")]
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+visible = false
+scroll_ignore_camera_zoom = true
 
-[node name="Cell2" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Simulations" type="Node2D" parent="."]
+script = ExtResource("9_5fppv")
+
+[node name="Cell0" parent="Simulations" instance=ExtResource("7_kkm5p")]
+
+[node name="Cell1" parent="Simulations" instance=ExtResource("7_kkm5p")]
+
+[node name="Cell2" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-276, 176)
 
-[node name="Cell3" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell3" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-333, -254)
 
-[node name="Cell4" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell4" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(273, -176)
 
-[node name="Cell5" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell5" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(478, 331)
 
-[node name="Cell6" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell6" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-597, 631)
 
-[node name="Cell7" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell7" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1135, 10)
 
-[node name="Cell8" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell8" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-902, -734)
 
-[node name="Cell9" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell9" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(475, -917)
 
-[node name="Cell10" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell10" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1224, -403)
 
-[node name="Cell11" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell11" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1224, 391)
 
-[node name="Cell12" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell12" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(644, 986)
 
-[node name="Cell13" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell13" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-115, 705)
 
-[node name="Cell14" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell14" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(784, -154)
 
-[node name="Cell15" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell15" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-98, -722)
 
-[node name="Cell16" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell16" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-771, 103)
 
-[node name="Cell17" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell17" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(306, 845)
 
-[node name="Cell18" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell18" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-498, -753)
 
-[node name="Cell19" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell19" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-826, -325)
 
-[node name="Cell20" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell20" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-324, 635)
 
-[node name="Cell21" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell21" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-600, 811)
 
-[node name="Cell22" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell22" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-657, 381)
 
-[node name="Cell23" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell23" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-51, 459)
 
-[node name="Cell24" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell24" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(154, 966)
 
-[node name="Cell25" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell25" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-921, 1266)
 
-[node name="Cell26" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell26" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1459, 645)
 
-[node name="Cell27" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell27" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1226, -99)
 
-[node name="Cell28" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell28" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(151, -282)
 
-[node name="Cell29" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell29" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(900, 232)
 
-[node name="Cell30" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell30" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(900, 1026)
 
-[node name="Cell31" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell31" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(320, 1621)
 
-[node name="Cell32" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell32" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-439, 1340)
 
-[node name="Cell33" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell33" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(460, 481)
 
-[node name="Cell34" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell34" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-422, -87)
 
-[node name="Cell35" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell35" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1095, 738)
 
-[node name="Cell36" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell36" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-18, 1480)
 
-[node name="Cell37" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell37" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-822, -118)
 
-[node name="Cell38" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell38" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1150, 310)
 
-[node name="Cell39" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell39" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(949, -483)
 
-[node name="Cell40" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell40" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(673, -307)
 
-[node name="Cell41" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell41" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(616, -737)
 
-[node name="Cell42" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell42" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1222, -659)
 
-[node name="Cell43" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell43" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1427, -152)
 
-[node name="Cell44" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell44" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(352, 148)
 
-[node name="Cell45" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell45" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-186, -473)
 
-[node name="Cell46" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell46" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(47, -1217)
 
-[node name="Cell47" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell47" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1424, -1400)
 
-[node name="Cell48" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell48" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(2173, -886)
 
-[node name="Cell49" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell49" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(2173, -92)
 
-[node name="Cell50" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell50" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1593, 503)
 
-[node name="Cell51" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell51" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(834, 222)
 
-[node name="Cell52" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell52" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1733, -637)
 
-[node name="Cell53" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell53" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(851, -1205)
 
-[node name="Cell54" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell54" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(178, -380)
 
-[node name="Cell55" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell55" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1255, 362)
 
-[node name="Cell56" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell56" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(451, -1236)
 
-[node name="Cell57" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell57" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(123, -808)
 
-[node name="Cell58" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell58" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2000, -658)
 
-[node name="Cell59" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell59" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2276, -482)
 
-[node name="Cell60" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell60" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2333, -912)
 
-[node name="Cell61" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell61" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1727, -834)
 
-[node name="Cell62" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell62" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1522, -327)
 
-[node name="Cell63" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell63" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2597, -27)
 
-[node name="Cell64" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell64" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-3135, -648)
 
-[node name="Cell65" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell65" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2902, -1392)
 
-[node name="Cell66" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell66" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1525, -1575)
 
-[node name="Cell67" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell67" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-776, -1061)
 
-[node name="Cell68" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell68" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-776, -267)
 
-[node name="Cell69" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell69" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1356, 328)
 
-[node name="Cell70" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell70" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2115, 47)
 
-[node name="Cell71" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell71" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1216, -812)
 
-[node name="Cell72" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell72" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2098, -1380)
 
-[node name="Cell73" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell73" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2771, -555)
 
-[node name="Cell74" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell74" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-1694, 187)
 
-[node name="Cell75" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell75" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2498, -1411)
 
-[node name="Cell76" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell76" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(-2826, -983)
 
-[node name="Cell77" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell77" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(2009, 1464)
 
-[node name="Cell78" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell78" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1733, 1640)
 
-[node name="Cell79" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell79" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(1676, 1210)
 
-[node name="Cell80" parent="." instance=ExtResource("7_kkm5p")]
+[node name="Cell80" parent="Simulations" instance=ExtResource("7_kkm5p")]
 position = Vector2(2282, 1288)
+
+[node name="Cell81" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell82" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell83" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell84" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell85" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell86" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell87" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell88" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell89" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell90" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell91" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell92" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell93" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell94" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell95" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell96" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell97" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell98" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="Cell99" parent="Simulations" instance=ExtResource("7_kkm5p")]
+position = Vector2(2282, 1288)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("11_n8ksy")

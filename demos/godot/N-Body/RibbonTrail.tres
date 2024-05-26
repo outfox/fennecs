@@ -1,0 +1,14 @@
+[gd_resource type="RibbonTrailMesh" load_steps=3 format=3 uid="uid://bt0mh6p6u4bb3"]
+
+[sub_resource type="Curve" id="Curve_5l4kd"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.72093, 0.675182), -0.398985, -0.398985, 0, 0, Vector2(1, 0), -2.35401, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_70kb7"]
+cull_mode = 2
+
+[resource]
+material = SubResource("StandardMaterial3D_70kb7")
+shape = 0
+sections = 10
+curve = SubResource("Curve_5l4kd")

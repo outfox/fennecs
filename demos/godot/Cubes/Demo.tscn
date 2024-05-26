@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://Cubes/UI/Rotate.gd" id="8_cipfs"]
 [ext_resource type="Material" uid="uid://vjeh1fpt4xak" path="res://Cubes/Materials/orange_light.tres" id="9_t1ajc"]
 [ext_resource type="Material" uid="uid://db1pq7ldj0yi6" path="res://Cubes/Materials/blue_light.tres" id="10_vph3x"]
+[ext_resource type="Environment" uid="uid://cobxhviqf06rg" path="res://Cubes/Environment-Cubes.tres" id="11_jg0sh"]
 
 [sub_resource type="MultiMesh" id="MultiMesh_fdhkq"]
 transform_format = 1
@@ -31,19 +32,6 @@ height = 14.0
 material = ExtResource("10_vph3x")
 radius = 7.0
 height = 14.0
-
-[sub_resource type="Environment" id="Environment_q01bs"]
-background_mode = 1
-ambient_light_source = 2
-ambient_light_color = Color(0.137255, 0.172549, 0.25098, 1)
-tonemap_mode = 2
-glow_enabled = true
-glow_intensity = 2.0
-glow_bloom = 0.5
-glow_blend_mode = 1
-fog_enabled = true
-fog_light_color = Color(0, 0, 0.0156863, 1)
-fog_density = 0.003
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_py15u"]
 albedo_color = Color(0, 0.584314, 0.74902, 1)
@@ -218,9 +206,6 @@ omni_attenuation = 0.233258
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Light Pivot/Blue Light"]
 mesh = SubResource("SphereMesh_s2td0")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_q01bs")
-
 [node name="Floor" type="StaticBody3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
@@ -229,6 +214,9 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
 shape = SubResource("BoxShape3D_smlxl")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("11_jg0sh")
 
 [connection signal="value_changed" from="User Interface/Spawn Controls/Sliders/VisibleSlider" to="Demo" method="_on_rendered_slider_value_changed"]
 [connection signal="drag_ended" from="User Interface/Spawn Controls/Sliders/SimulatedSlider" to="Demo" method="_on_simulated_slider_drag_ended"]

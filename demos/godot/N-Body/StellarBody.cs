@@ -48,4 +48,9 @@ public partial class StellarBody : EntityNode2D
 			entity.AddRelation(sibling.entity, sibling._body);
 		}
 	}
+
+	public override void _Process(double delta)
+	{
+
+	}
 }
