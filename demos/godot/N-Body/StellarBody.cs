@@ -48,7 +48,11 @@ public partial class StellarBody : EntityNode2D
 		// pointer per entity.
 		foreach (var sibling in siblings)
 		{
-			entity.AddRelation(sibling.entity, sibling._body);
+			// Slight hack, we have a despawn chance on these
+			if (sibling.entity)
+			{
+				entity.AddRelation(sibling.entity, sibling._body);
+			}
 		}
 	}
 }

@@ -4,7 +4,8 @@ var children : Array[StellarBody]
 
 
 func _ready() -> void:
-	scale = Vector2.ONE * (randf() + 0.5)
+	# Additional scaling to make it look more organic
+	scale = Vector2.ONE * (randf() + 0.3)
 
 	var hue := fposmod((global_position.x/1300.0 + global_position.y/700.0), 1.0)
 	var color := Color.from_ok_hsl(hue, 0.9, 0.6)
