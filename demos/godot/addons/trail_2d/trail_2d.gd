@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func late_ready() -> void:
 	width = width * parent.scale.x
-	modulate = parent.modulate
+	modulate = parent.get_parent().modulate
 	material = parent.material
 
 func _physics_process(_delta: float) -> void:

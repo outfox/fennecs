@@ -2,7 +2,7 @@ extends Node2D
 
 @export var spacing := 400.0
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	var children := get_children()
 	var dimension : int = ceil(sqrt(len(children)))
 	for i in range(len(children)):
