@@ -125,7 +125,7 @@ text = "This demo showcases the power of fennecs Entity-Entity relations in solv
 
 The renowned 3-Body-Problem demonstrates that even slight variations in initial conditions can lead to dramatically different and chaotic outcomes in systems with three or more interacting bodies.
 
-With fennecs, multiple Entities can interact with each other seamlessly, enabling complex behaviors such as flocking, leader-following, and grouping by spheres of influence. The framework achieves this while maintaining good cache coherence, memory locality, and optimal iteration order.
+With fennecs, multiple Entities can interact with each other seamlessly, enabling complex behaviors such as flocking, leader-following, and grouping by spheres of influence. The framework achieves this while maintaining good cache coherence, memory locality, and favorable iteration order.
 
 Each colored cluster represents a small, self-contained clique where 2, 3, 4, or 5 stars (Entities) have relationships with all other Entities within the same group, forming a distinct Archetype.
 

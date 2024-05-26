@@ -38,7 +38,12 @@ public partial class StellarBody : EntityNode2D
 		if (!entity) return;
 
 		// Get all sibling bodies (these were all set up in _EnterTree)
-		var siblings = GetParent().GetChildren().OfType<StellarBody>();
+		// (we need to check if they got an entity assigned because of the
+		// slightly hacky spawn chance mechanic, my bad. :o)
+		var siblings = GetParent()
+			.GetChildren()
+			.OfType<StellarBody>()
+			.Where(body => body.entity);
 
 		// Add all attractor relations to our own entity;
 		// we include ourselves - this means that all entities in
@@ -48,7 +53,6 @@ public partial class StellarBody : EntityNode2D
 		// pointer per entity.
 		foreach (var sibling in siblings)
 		{
-			// Slight hack, we have a despawn chance on these
 			if (sibling.entity)
 			{
 				entity.AddRelation(sibling.entity, sibling._body);
