@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var spacing := 512.0
+@export var spacing := 400.0
 
 func _ready() -> void:
 	var children := get_children()

@@ -37,7 +37,7 @@ script = ExtResource("1_tuufh")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 top_level = true
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.8, 0.8)
 script = ExtResource("13_l1cii")
 maxZoom = 4.0
 minZoom = 0.5
@@ -127,7 +127,7 @@ The renowned 3-Body-Problem demonstrates that even slight variations in initial 
 
 With fennecs, multiple Entities can interact with each other seamlessly, enabling complex behaviors such as flocking, leader-following, and grouping by spheres of influence. The framework achieves this while maintaining good cache coherence, memory locality, and optimal iteration order.
 
-Each colored cluster represents a small, self-contained clique where Entities have relationships with all other Entities within the same group, forming a distinct Archetype.
+Each colored cluster represents a small, self-contained clique where 2, 3, 4, or 5 stars (Entities) have relationships with all other Entities within the same group, forming a distinct Archetype.
 
 All simulations coexist harmoniously and interactions are driven by the same runner passed to a single Query, ensuring each Entity is processed exactly once for each other Entity it interacts with. The two other Queries then simply integrate the calculated forces into movement and position."
 

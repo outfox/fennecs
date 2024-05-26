@@ -15,6 +15,8 @@ public partial class StellarBody : EntityNode2D
 	{
 		base._EnterTree();
 
+		if (!entity) return;
+
 		mass = Random.Shared.NextSingle() * 0.5f + 0.75f;
 		Scale *= mass*mass;
 
@@ -33,6 +35,7 @@ public partial class StellarBody : EntityNode2D
 	public override void _Ready()
 	{
 		base._Ready();
+		if (!entity) return;
 
 		// Get all sibling bodies (these were all set up in _EnterTree)
 		var siblings = GetParent().GetChildren().OfType<StellarBody>();
@@ -47,10 +50,5 @@ public partial class StellarBody : EntityNode2D
 		{
 			entity.AddRelation(sibling.entity, sibling._body);
 		}
-	}
-
-	public override void _Process(double delta)
-	{
-
 	}
 }

@@ -34,8 +34,6 @@ public partial class NBodyDemo : Node2D
 	// Main simulation "Loop"
 	public override void _PhysicsProcess(double delta)
 	{
-		delta *= 0.5f;
-
 		// Clear all forces
 		_accumulator.Blit(new Acceleration());
 

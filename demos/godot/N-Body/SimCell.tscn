@@ -14,3 +14,12 @@ position = Vector2(21, 75)
 
 [node name="StellarBody4" parent="." instance=ExtResource("1_olciv")]
 position = Vector2(-32, -39)
+spawnChance = 0.5
+
+[node name="StellarBody5" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(-34, 117)
+spawnChance = 0.3
+
+[node name="StellarBody6" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(36, -34)
+spawnChance = 0.2

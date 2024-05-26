@@ -5,6 +5,9 @@ namespace fennecs.demos.godot;
 [GlobalClass]
 public partial class EntityNode2D : Node2D
 {
+	[Export]
+	public float spawnChance = 1.0f;
+	
 	// If you want multiple worlds, create an Autoload and get the World from there.
 	internal protected static readonly World World = new(1_000_000);
 
@@ -16,6 +19,12 @@ public partial class EntityNode2D : Node2D
 	// Easy route: only make new entity if not alive.
 	public override void _EnterTree()
 	{
+		if (GD.Randf() > spawnChance)
+		{
+			QueueFree();
+			return;
+		}
+		
 		// Entity structs are truthy if alive / falsy otherwise
 		if (entity) return;
 
@@ -27,18 +36,10 @@ public partial class EntityNode2D : Node2D
 		entity.Add(this);
 	}
 
-	public override void _ExitTree()
-	{
-		//entity.Remove<EntityNode2D>();
-		//entity.Despawn();
-		World.GC();
-		base._ExitTree();
-	}
-
 	// This is an ok place to handle the final deletion of the entity.
 	protected override void Dispose(bool disposing)
 	{
-		if (disposing) entity.Despawn();
+		//if (disposing) entity.Despawn();
 		base.Dispose(disposing);
 	}
 
