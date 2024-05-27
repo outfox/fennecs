@@ -1,6 +1,8 @@
 ---
 title: 4. Kill Bill (Relations)
 outline: [2, 3]
+order: 4
+
 ---
 
 # Paying a Visit to Old Friends

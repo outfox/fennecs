@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using fennecs.demos.godot.Battleships;
 using Godot;
 
-namespace fennecs.demos.godot.Battleships;
+namespace fennecs.demos.godot;
 
 [GlobalClass]
 public partial class BattleShipsDemo : Node2D
@@ -14,6 +15,7 @@ public partial class BattleShipsDemo : Node2D
 
 	internal Dictionary<int, HashSet<SpatialClient>> SpatialHash = new();
 
+	
 	public override void _Process(double delta)
 	{
 		_fps = _fps * 0.99 + 0.01 * (1.0/delta);

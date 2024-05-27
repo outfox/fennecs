@@ -1,5 +1,6 @@
 --- 
 title: WIP Archetype
+order: 4
 ---
 
 # Archetype

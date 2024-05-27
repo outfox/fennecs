@@ -1,6 +1,6 @@
 ---
 layout: doc
-title: Demos
+title: Examples
 
 head:
   - - meta
@@ -9,7 +9,7 @@ head:
 
 ---
 
-# In-Engine Demos
+# In-Engine Examples
  
  Here's a list of examples made with **fenn**ecs integrated into various game engines. The ECS code is the same, merely the transfer and interaction with the engine or framework differs.
 
@@ -28,18 +28,17 @@ Work in progress, more examples will get added over time! Want to contribute or 
     </tr>
     <tr>
         <td style="width: 50%">
-            <h4>Demo: Cubes</h4>
+            <h4>Demo: 313370 Cubes</h4>
             <ul>
             <li>spawning and despawning many Entities</li>        
             <li>using simple Job & Raw Queries</li>
-            <li>mutating Components as sim state</li>
             <li>transfer data in bulk into game engine</li>
             </ul>
         </td>
         <td style>
             <a href="Cubes.html">
             <video muted autoplay loop width=320px>
-            <source src="https://fennecs.tech/video/fennecs-godot-democubes-thumb.mp4" type="video/mp4"/>
+            <source src="https://fennecs.tech/video/fennecs-godot-cubes-thumb.mp4" type="video/mp4"/>
             Your browser does not support the video tag.
             </video>
             View Demo Details</a>
@@ -47,20 +46,20 @@ Work in progress, more examples will get added over time! Want to contribute or 
     </tr>
     <tr>
         <td>
-        <h4>Demo: Battleships</h4>
+        <h4>Demo: N-Body Problem</h4>
             <ul>
-            <li>Entity-Entity Relations</li>        
-            <li>filtering Query streams</li>
-            <li>spatial & random Query output</li>
-            <li>building a simple game loop</li>
+            <li>Entity-Entity Relations</li>
+            <li>efficient and scalable Query use</li>
+            <li>writing simulation loops</li>
             </ul>
         </td>
         <td>
-            <video muted autoplay loop width=250px>
-            <source src="https://fennecs.tech/video/fennecs-comingsoon.mp4" type="video/mp4"/>
+            <a href="NBody.html">
+            <video muted autoplay loop width=320px>
+            <source src="https://fennecs.tech/video/fennecs-godot-nbody-thumb.mp4" type="video/mp4"/>
             Your browser does not support the video tag.
             </video>
-            Coming Soon
+            View Demo Details</a>
         </td>
     </tr>
 </table>

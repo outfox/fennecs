@@ -37,7 +37,7 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Documentation', link: '/docs/index' },
-      { text: 'Examples', link: '/demos/index' },
+      { text: 'Examples', link: '/examples/index' },
     ],
 
     footer: {
@@ -47,7 +47,7 @@ export default defineConfig({
 
     sidebar: generateSidebar([
       {
-        sortMenusByName: true,
+        sortMenusByFrontmatterOrder: true,
         useFolderLinkFromIndexFile: true,
         useTitleFromFrontmatter: true,
         useFolderTitleFromIndexFile: true,

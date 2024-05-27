@@ -29,12 +29,16 @@ Pull Requests especially welcome (please open an issue first to discuss the feat
 - 3rd party demos and examples
 - 3rd party exposition & tutorials (e.g. YouTube, blog posts)
 - 1st party exposition (e.g. YouTube shorts)
+- Web support
+  - Godot (?) (depends on Godot 4.4+)
+  - others
 - each Demo runs on at least two of these engines, and each engine has at least two demos:
   - Godot
   - Stride
   - Flax
   - MonoGame
   - Unigine
+  - Web? (WebGL, WebAssembly)
   - (more? others?)
 :::
 

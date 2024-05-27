@@ -1,6 +1,7 @@
 ---
 title: 3. Tsubasa (Runners)
 outline: [2, 3]
+order: 3
 ---
 
 # Nankatsu High School Team's first Practice

@@ -1,5 +1,6 @@
 ---
 title: Concepts
+order: 0
 
 head:
   - - meta
@@ -7,17 +8,43 @@ head:
       content: Conceptual overview over the fennecs Entity-Component System
 ---
 
-# Conceptual Overview
+# Typical ECS Concepts 
 
-In **fenn**ecs, you spawn and despawn Entities from a World, and attach Components to them.
+::: tip <sub>*(also found in **fenn**ecs)*</sub>
+### [Entities](Entities/) are spawned in a [World](World.md). 
+They can be spawned solo, or in bulk with pre-configured components.
 
-::: details BEHIND THE SCENES
-Entites and their data are grouped into Archetypes, contiguous storages in Memory that contain all Entities with a certain costellation of Components on them. Adding or Removing components always moves an Entity from one Archetype to another.
+### [Components](Components/) can be added to / removed from Entities.
+They can be backed by any type; Value or Reference, including empty `structs`.
+
+### [Queries](Queries/) filter Entities using [Match Expressions](Queries/MatchExpressions.md).
+This matching is done by Component types and targets (presence or absence).
+
+### Queries [Run Code](Queries/Query.For.md) on the components to process them.
+You provide [Runner Delegates](Queries/Delegates.md) which are executed on a [single](Queries/Query.For.md) or [multiple](Queries/Query.Job.md) threads.
+
+### Component Data is always kept contiguous* in Memory.
+Structurally similar Entities are packed into [Archetypes](Archetype.md) for improved [cache locality](https://en.wikipedia.org/wiki/Locality_of_reference).
+
+<sub>\* per Archetype</sub>
+
 :::
 
+----------------------
 
-You create Queries that match certain subsets of all Entities.
+# Unique Concepts 
 
-You process this component data in Query runners, as well as attach or unattach more components.
+::: warning <sub>*(specific to **fenn**ecs)*</sub>
+### There are no formalized Systems.
+You have a higher degree of freedom when and how to interact with Queries.
 
-Specific components can be used to further group Entities, called Relations and Object Links.
+### Queries expose Bulk Operations on matched Entities.
+You can efficiently [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk.
+
+### [Relations](Relation.md) are Components with an [Entity Target](Queries/MatchExpressions.md#match-targets).
+These add expressive and powerful grouping semantics. Relations can be backed by any component.
+
+### [Object Links](Link.md) are Components with a [Shared Object Target](Queries/MatchExpressions.md#match-targets).
+These add a way to group & link Entities to shared data, like a a physics world.
+:::
+

@@ -1,5 +1,6 @@
 ---
 title: Components
+order: 1
 ---
 
 # Component

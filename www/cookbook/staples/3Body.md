@@ -13,10 +13,10 @@ This includes typical gameplay scenarios such as many troops following a few lea
 
 **fenn**ecs's relation features allow us you to model such relations with ease - reaping the full benefits of ECS iteration. In this recipe, we'll show you how to simulate a simple 3-Body stellar system, where each body exerts a gravitational pull on all others.
 
-::: details :neofox_hyper: SEE ALSO: [N-BODY DEMO](NBody.md)
+::: details :neofox_hyper: SEE ALSO: [N-BODY DEMO](/examples/NBody.md)
 The setup for the 3-Body Problem is hard-coded to fully illustrate its three-by-three relationship.
 
-If you're a generalization nerd, [this demo](NBody.md) is a concrete example that uses the <u>same simulation loop</u>, but focuses on a more generic setup step (with batched setup of Entities and Relations).
+If you're a generalization nerd, [this demo](/examples/NBody.md) is a concrete example that uses the <u>same simulation loop</u>, but focuses on a more generic setup step (with batched setup of Entities and Relations).
 
 It demonstrates how to procedurally set up and simulate not only an arbitrary number of bodies, but also coexisting simulations without changing any of the simulation code.
 :::

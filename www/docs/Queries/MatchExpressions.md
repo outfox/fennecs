@@ -15,7 +15,7 @@ Together, they enable Entity interactions natively in **fenn**ecs in elegant, ex
 
 ![a fennec wearing a futuristic VR headset](https://fennecs.tech/img/fennec-3body.png)
 
-The [3-Body-Problem](/cookbook/staples/3Body.md) and [N-Body-Problem](/cookbook/staples/NBody.md) recipes illustrate how to use Match Expressions to simulate complex systems of mutually interacting Entities.
+The [3-Body-Problem](/cookbook/staples/3Body.md) recipe and [N-Body-Problem](/examples/NBody.md) demo illustrate how to use Match Expressions to simulate complex systems of mutually interacting Entities.
 
 ## Sneak Dive / Deep Peek
 A match expression is split into a `Match Type` and a `Target` (or `Identity`), and they can be combined in any way to create complex Queries that match (and enumerate!) exactly the Entities and Components you need.

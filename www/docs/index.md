@@ -39,8 +39,8 @@ The **Documentation** section (you're in it now!) describes the core principles 
 :::
 
 
-::: info :neofox_vr: THE DEMOS - Smol but Shiny Examples
-The **[Demos](/demos/index)** category has concrete examples for a growing list of renderers and game engines! Something useful and something pretty to look at at the same time? It cannot be possible, *and yet!*
+::: info :neofox_vr: THE EXAMPLES - Smol, Shiny Demos
+The **[Demos](/examples/index)** category has concrete examples for a growing list of renderers and game engines! Something useful and something pretty to look at at the same time? It cannot be possible, *and yet!*
 :::
 
 

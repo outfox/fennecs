@@ -16,7 +16,7 @@ Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers 
 Your code controls how and where. Maximum power, maximum responsibility.  
 _(in reality, `Memory<T>` is quite easy to use in C#, but can be more difficult to debug!)_
 
-Especially for [blittable Component types](https://learn.microsoft.com/en-us/dotnet/framework/interop/default-marshalling-behavior#default-marshalling-for-value-types), being able to refer to all of them as a single memory region can be a powerful utility when interacting with GPU drivers, networks, disk I/O, and of course game engines [(see Demo: Cubes)](/demos/Cubes.md).
+Especially for [blittable Component types](https://learn.microsoft.com/en-us/dotnet/framework/interop/default-marshalling-behavior#default-marshalling-for-value-types), being able to refer to all of them as a single memory region can be a powerful utility when interacting with GPU drivers, networks, disk I/O, and of course game engines [(see Demo: Cubes)](/examples/Cubes.md).
 
 ::: danger :neofox_solder_googly: DANGER! Memory marshaling and multithreading are POWER TOOLS!
 

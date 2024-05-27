@@ -12,7 +12,7 @@ hero:
   tagline: <em>... a tiny, tiny, high-energy ECS!</em>
   actions:
     - theme: brand
-      text: Quickstart!
+      text: What's fennecs?
       link: /docs/index.md
     - theme: alt
       text: Cookbook

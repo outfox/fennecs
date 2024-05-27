@@ -1,6 +1,7 @@
 ---
 title: 2. Initial D (Components)
 outline: [2, 3]
+order: 2
 ---
 
 # Revving up a Sleeper

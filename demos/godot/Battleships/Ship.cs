@@ -24,7 +24,7 @@ public partial class Ship : Sprite2D
 	{
 		base._Ready();
 
-		var demo = GetParent<BattleShipsDemo>();
+		var demo = GetParent<godot.BattleShipsDemo>();
 
 		var hull = GetNode<Sprite2D>("Hull");
 
