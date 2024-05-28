@@ -20,7 +20,7 @@ Components can be backed by any type; Value or Reference, even empty `structs`.
 ### [Queries](Queries/) filter Entities using [Match Expressions](Queries/MatchExpressions.md).
 This matching is done by Component types and targets (presence or absence).
 
-### Queries [Run Code](Queries/Query.For.md) on data streams of Components.
+### Queries let your code [Act](Queries/Query.For.md) on streams of Component data.
 You provide logic in [Runner Delegates](Queries/Delegates.md) which are executed on a [single](Queries/Query.For.md) or [multiple](Queries/Query.Job.md) threads.
 
 ### Component data is always kept contiguous* in Memory.
@@ -41,11 +41,11 @@ These add expressive, powerful grouping semantics. Relations can be backed by an
 ### [Object Links](Link.md) are Components backed by a [Shared Object Target](Queries/MatchExpressions.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
 
-### Queries expose *fast* SIMD & Structural Ops on matched Entities.
-You can efficiently [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk.
+### Queries provide *fast & safe* SIMD, Structural, and Raw Memory Ops
+You can efficiently [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk - and even entire [memory blocks](Queries/Query.Raw.md).
 
 ### Worlds and Queries are `IEnumerable<Entity>`.
-It's amazing to be able to once in a while just LINQ it up and <u>*be done*</u> somewhere.
+Isn't it amazing to be able to once in a while just LINQ it up and <u>*be done*</u> somewhere.
 
 ### There are no formalized Systems.
 You have a higher degree of freedom when and how to interact with Queries.

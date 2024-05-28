@@ -4,8 +4,8 @@ order: 1
 
 ---
 # Custom Query Workloads
-# `Query<>.Raw(RefAction)`
-# `Query<>.Raw<U>(RefAction,U)`
+# `Query<>.Raw(MemoryAction)`
+# `Query<>.Raw<U>(MemoryAction,U)`
 
 ::: danger ARCHETYPE BY ARCHETYPE
 Entire Archetypes, delivered as contiguous memory. Here's your truckload of stuff - dig in!

@@ -31,11 +31,8 @@ query.For(static (ref Vector3 velocity, float dt) => {
 ::: tip :neofox_book: THE DOCS - all the Deets and Don'ts
 The **Documentation** section (you're in it now!) describes the core principles of **fenn**ecs C# API. The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
 
-#### Great first picks?
-- [Entities](Entities/)
-- [Components](Components/)
-- [Queries](Queries/)
-- [Query.For](Queries/Query.For.md)
+#### Great first pick?
+- [Concepts of ECS & **fenn**ecs](Concepts.md)
 :::
 
 
