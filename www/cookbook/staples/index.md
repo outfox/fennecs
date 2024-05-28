@@ -9,7 +9,7 @@ head:
 ---
 
 # TV Dinner won't cut it?
-All right, that was certainly a bit ~~cringe~~ weird, but now that you know about the concepts of **fenn**ecs, how would you go and apply them to your game / simulation / best software project ever?
+All right, those [Appetizers](../appetizers/) were certainly a bit ~~cringe~~ weird, but now that you know about the concepts of **fenn**ecs, how would you go and apply them to your game / simulation / best software project ever?
 
 ### Delicious. Finally, some good foxing food!
 

@@ -1,24 +1,31 @@
 ---
 title: SIMD
 order: 4
+content: SIMD Query Interface
 ---
 
-# Query SIMD Interface
-Queries expose a set of SIMD operations that allow you to perform bulk operations on the matched entities. These operations can perform simple operations at blazing speeds, and are a great complement to Runners for more complex logic.
+# SIMD Query Interface
+Queries expose a set of SIMD operations that allow you to perform bulk operations on the matched entities.
 
-The operations make use of `System.Intrinsics`, especailly the AVX2, SSE2 and ARM AdvSIMD vector instructions where available.
+![fennec, translucent and glowy blue](https://fennecs.tech/img/fennec-vectorized-256.png)
+*"Eight Entities at the same time. f'ing A!"*
 
-::: tip :neofox_glasses: QUADWORD :neofox_glasses: SUPERNERD :neofox_glasses: QUADALERT :neofox_glasses:
-You can also implement your own arbitrary SIMD operations by using [Query.Raw](Query.Raw.md#examples).  
-And since we like to live fast, use the amazing new implicit extension types in C# 13!
+They perform simple writes and arithmetic operations at blazing speeds, and are a great complement to your [Runners](Query.For.md) for more complex logic.
+
+The operations make use of `System.Intrinsics`, especailly the AVX2, SSE2 and ARM AdvSIMD vector instructions where available. 
+
+
+::: tip QUAD :neofox_glasses: WORD :neofox_glasses: QUAD :neofox_glasses: NERD :neofox_glasses: HACK
+Psst... you can implement your own arbitrary SIMD operations as seen in the  [Query.Raw Example](Query.Raw.md#examples).  
+And since we like to live fast and foxy, try the new implicit extension types in C# 13 for that!
 :::
 
 
 ## `Query<C>.Blit`
-The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Query. `C` must be one of the Query's [Stream Types](index.md#stream-types).
+The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Query. `C` must be one of the Query's [Stream Types](index.md#stream-types). It requires no additional setup and is always safe.
 
 ```csharp
-using var myQuery = new Query<Velocity, Position>().Compile();
+var myQuery = new Query<Velocity, Position>().Compile();
 
 myQuery.Blit(default(Position));
 myQuery.Blit(new Velocity(c, 0, 0));
@@ -37,7 +44,22 @@ Fast Vectorization techniques are used to write Component Types that are [Blitta
 :::
 
 ------
+## Limitations
+::: danger 🔏 ALIASING
+SIMD Operations can lead to aliasing, where multiple process write the same memory location. 
 
+This can happen with:
+- nested query runs
+- jobs
+
+For simplicity's sake, if a world is not in `WorldMode.Immediate`, i.e. when any `WorldLock` is active, SIMD operations will throw before executing.
+
+(this restriction will be lifted change soon!)
+
+But because Jobs execute in non-deterministic order, you will not be able to Blit during a Job/from inside a job for the foreseeable time. But fret not - future versions of fennecs will have an aliasing system to allow for safe writes (especially to other queries/archetypes!)
+:::
+
+## Future SIMD Operations
 ::: details MORE COMING SOON - (click to preview)
 
 ### Index (writes a running, contiguous index to the component)

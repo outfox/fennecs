@@ -11,7 +11,7 @@ Thank you for the influences and inspirations you shared to shape **fenn**ecs!
 ## Byteron
 Many thanks to [Byteron (Aaron Winter)](https://github.com/Byteron) for creating [HypEcs](https://github.com/Byteron/HypEcs) and [RelEcs](https://github.com/Byteron/RelEcs), the inspiring libraries that **fenn**ecs evolved from. (refined with a dash of [LitEcs](https://github.com/Byteron/LitEcs) after his own suggestion)
 
-**fenn**ecs started as a friendly fork, and gradually devolved into a respectful rewrite. It proudly inherits the original project's MIT license, hoping to spawn more forks and friendships.
+**fenn**ecs started as a friendly fork, and has gradually matured into a thing of its own. Together with this inspiration, it proudly inherits the original project's MIT license, hoping to spawn more forks and friendships.
 
 
 ## María Angélica

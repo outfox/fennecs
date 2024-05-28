@@ -150,7 +150,7 @@ For example:
 - perform an action on all followers of a specific character
 - pre-fetch a certain piece of data and then pass it in as a Uniform to a [Query Runner](Query.1-5.md#passing-workloads-to-stream-queries)
 
-::: warning :neofox_think: Paws for Thought: SUBSETs and EXCLUSIONs
+::: warning :neofox_think: PAWS FOR THOUGHT: When does the matching / filtering happen?
 Exclusion criteria like those below are hard-baked into the query. This is *slightly more performant*, but semantically inflexible. 
 
 ```cs

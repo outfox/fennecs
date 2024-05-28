@@ -1,9 +1,19 @@
 ---
-title: EntityNode3D
+title: EntityNode
 outline: [2, 3]
 ---
 
 # Associating an Entity with a Node
+One approach of using **fenn**ecs with Godot is to create a system that is orthogonal to Godot's hierarchical composition. Only a fraction of what lives in Godot usually matters to the ECS side of your project, and vice versa.
+
+An easy and intuitive workflow is to associate Entities with Nodes as you set them up. This way, you can use the ECS to manage the game state and the Godot scene tree to manage the visuals and interactions.
+
+### Principles
+- as a Node enters the tree for the first, it creates an Entity for itself
+- as it later enters or exits the tree, it can flag its Entity as unused if needed
+- as it is freed, it can Despawn the Entity
+
+
 
 ```csharp
 using fennecs;
@@ -53,3 +63,12 @@ public partial class EntityNode3D : Node3D
 	}
 }
 ```
+
+::: warning :neofox_sad: SORRY: DIAMOND INHERITANCE
+Since our component type structure would form a parallel type chain next to Godot's, you likely have to implement this sort of class for each node you wish to associate with an Entity.
+
+> e.g., you couldn't derive from a `EntityNode3D` if you also wanted to inherit from a `CollisionShape3D`, so you'd need to write an `EntityCollisionShape3D` under some circumstances.
+
+This can be mitigated using C# 13's extension types.
+:::
+

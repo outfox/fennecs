@@ -38,8 +38,11 @@ Structurally similar Entities are packed into [Archetypes](Archetype.md) for imp
 ### [Relations](Relation.md) are Components with an [Entity Target](Queries/MatchExpressions.md#match-targets).
 These add expressive, powerful grouping semantics. Relations can be backed by any type.
 
-### [Object Links](Link.md) are Components backed by a [Shared Object Target](Queries/MatchExpressions.md#match-targets).
+### [Links](Link.md) are Components backed by an [Object Target](Queries/MatchExpressions.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
+
+### Runners let you pass [uniform](Queries/Query.For.md#uniforms-shmuniforms) data to your Workloads.
+A tiny tidbit that streamlines the process of passing data into a job or run.
 
 ### Queries expose *fast* Structural Change, SIMD, and Memory Ops
 Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk - even entire [memory blocks](Queries/Query.Raw.md).
@@ -53,9 +56,9 @@ You have a higher degree of freedom when and how to interact with Queries.
 ### There is no formalized Scheduler.
 Parallel Jobs execute synchronously, as fast as possible. Runners are invokable anytime, anywhere.  
 
-### Structural Changes can be *submitted at any time.*
-The World will process them immediately, or at the end of the current Runner's scope.  
-<sub>\* *srsly WTAF even is* `EndInitializationEntityCommandBufferSystem.AddJobHandleForProducer(JobHandle)`, *smh...*</sub>
+### Structural Changes may be submitted\* *at any time.*
+Worlds process them at the end of a Query Runner's scope, otherwise immediately.  
+<sub>\* *never type* [`EndInitializationEntityCommandBufferSystem`](https://docs.unity3d.com/Packages/com.unity.entities@1.0/api/Unity.Entities.EndInitializationEntityCommandBufferSystem.html) *nor* [`AddJobHandleForProducer(JobHandle)`](https://docs.unity.cn/Packages/com.unity.entities@1.0/api/Unity.Entities.EntityCommandBufferSystem.AddJobHandleForProducer.html) *again!* 🦊</sub>
 
 :::
 
