@@ -35,7 +35,7 @@ The **Documentation** section (you're in it now!) describes the core principles 
 - [Entities](Entities/)
 - [Components](Components/)
 - [Queries](Queries/)
-- [Query.For](Queries/StreamQueries/Query.For.md)
+- [Query.For](Queries/Query.For.md)
 :::
 
 

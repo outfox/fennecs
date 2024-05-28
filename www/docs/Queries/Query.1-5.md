@@ -46,7 +46,7 @@ All work items at once, as contiguous memory. Using a [`MemoryAction`](Delegates
 
 ## Prefix Inheritance
 
-Queries with more than one [Stream Type](StreamTypes.md) inherit access to all Runners of lesser parametrized Queries, albeit only in the same order, and always starting from `C0`. 
+Queries with more than one [Stream Type](#stream-types) inherit access to all Runners of lesser parametrized Queries, albeit only in the same order, and always starting from `C0`. 
 
 ::: info Example
 `Query<int, float, Vector3>` has its parent class's methods `Query<int, float>.For(...)`

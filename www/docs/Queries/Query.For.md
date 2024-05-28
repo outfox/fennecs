@@ -16,7 +16,7 @@ Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each En
 "**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  Chances are you can ship your entire game with just this one. Let us know how it went!
 
 ### Description
-Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](StreamTypes.md).
+Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](Query.1-5.md#stream-types).
 
 Each `For`-Runner takes a [`RefAction`](Delegates.md#refaction-and-refactionu) or [`RefActionU<>`](Delegates.md#refaction-and-refactionu) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Query.1-5.md#prefix-subsets).
 
