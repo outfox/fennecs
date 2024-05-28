@@ -42,13 +42,15 @@ query.For((ref SharedData data) =>
 
 ## Considerations
 
-1. Shared components introduce weak coupling between entities. Be cautious when modifying shared instances.
+1. Shared components can positively impact performance by reducing memory usage and allowing trivial updates of shared state.
 
-2. Shared components can positively impact performance by reducing memory usage and allowing batch updates.
+2. However, accessing shared components involves an indirection. The data on the heap isn't acked as tightly in memory. Iterating over many entities and components can be slower.
 
-3. However, accessing shared components involves an indirection, which may impact performance with large numbers of entities and components.
+3. Fortunately, Queries that don't include reference Components in their Stream Types will not suffer from this indirection at all!
 
-4. Be mindful of the lifecycle of shared components to avoid memory leaks.
+4. Shared components introduce some weak coupling between entities. Be cautious when modifying shared instances.
+
+5. Be mindful of the lifecycle of shared components to avoid memory leaks.
 
 ## Conclusion
 

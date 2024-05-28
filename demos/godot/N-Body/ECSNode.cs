@@ -24,6 +24,6 @@ public class MyNode<T> where T : Node
     // Additional properties and methods specific to MyNode<T>
     public void MyNodeMethod()
     {
-        // Implementation specific to MyNode
+        
     }
 }

@@ -28,11 +28,11 @@ using fennecs;
 
 :neofox_surprised_pika:
 
-
 ----------------
 
 
-::: details Need everything but the kitchen sink?
+
+::: details What about the kitchen sink?
 Good old git. Nothing beats that!  
 *(repo includes the Appetizers and Demos, ready to run!)*
 

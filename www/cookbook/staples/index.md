@@ -4,7 +4,7 @@ title: Staples
 head:
   - - meta
     - name: description
-      content: Generic
+      content: Beginner Cookbook for fennecs, the tiny, tiny, high-energy Entity-Component System
 
 ---
 
