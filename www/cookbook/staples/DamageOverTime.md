@@ -5,29 +5,22 @@ outline: [2, 3]
 
 # Turns out, Vampires aren't Survivors?!
 
-In this recipe, we'll explore how to implement a simple "Damage over Time" (DoT) system using fennecs ECS. We'll create entities that represent characters, some of which are "vampires" that take damage from a "Sunlight" component over time.
+In this recipe, we'll explore how to implement a simple "Damage over Time" (DoT) system using fennecs ECS. We'll create entities that represent characters, some of which are "vampires" that take damage from a global `sunIntensity` value over time.
 
 ## Ingredients
 
 First, let's define the components we'll need:
 
 ```csharp
+// Represents the current health of a character
 public struct Health
 {
     public float Value;
 }
 
-public struct Vampire { }
-
-public struct Sunlight
-{
-    public float Intensity;
-}
+// A tag component indicating that a character is a vampire
+public struct Vampire;
 ```
-
-- `Health`: Represents the current health of a character
-- `Vampire`: A tag component indicating that a character is a vampire
-- `Sunlight`: Represents the intensity of sunlight in the environment
 
 ## Preparation
 
@@ -36,23 +29,14 @@ Now, let's create some entities representing characters, both vampires and non-v
 ```csharp
 var world = new World();
 
-var human = world.Spawn()
-    .Add(new Health { Value = 100 });
-
-var vampire1 = world.Spawn()
+var human = world.Entity()
     .Add(new Health { Value = 100 })
-    .Add<Vampire>();
+    .Spawn(4); // Left 4 Undead?!
 
-var vampire2 = world.Spawn()
+var vampires = world.Entity()
     .Add(new Health { Value = 100 })
-    .Add<Vampire>();
-```
-
-We also need to create a `Sunlight` component and add it to the world:
-
-```csharp
-var sunlight = world.Spawn()
-    .Add(new Sunlight { Intensity = 10 });
+    .Add<Vampire>()
+    .spawn(100_000); // Not looking good for the humans!
 ```
 
 ## Applying the Damage
@@ -60,34 +44,33 @@ var sunlight = world.Spawn()
 Now, let's create a query that applies damage to all vampires based on the sunlight intensity:
 
 ```csharp
-var damageQuery = world.Query<Health>().Has<Vampire>().Compile();
-var sunlightQuery = world.Query<Sunlight>().Compile();
+var sunIntensity = 10.0f;
+var vampireHealth = world.Query<Health>().Has<Vampire>().Compile();
 
-// In your game loop:
-sunlightQuery.ForEach((ref Sunlight sunlight) =>
+// We use an EntityAction to apply the damage and also queue the
+// structural change - in this case, full despawn of the Vampire
+vampireHealth.For((Entity vampire, ref Health health, float sunBurn) =>
 {
-    damageQuery.ForEach((ref Health health) =>
-    {
-        health.Value -= sunlight.Intensity * Time.deltaTime;
-    });
-});
+    // give it ~10 seconds and your humans will be safe
+    health.Value -= sunBurn;
+
+    // the despawn is a deferred operation, and will be
+    // applied at the end of the query runner's scope
+    if (health.Value <= 0) vampire.Despawn();
+}, uniform: Time.deltaTime * sunIntensity);
 ```
 
-This query finds all entities that have both a `Vampire` and a `Health` component, and applies damage to their health based on the intensity of the `Sunlight` component.
+This query finds all entities that have both a `Vampire` and a `Health` component, and applies damage to their health based on the intensity of the sun.
+
+The damage to be dealt is integrated (scaled with deltaTime) outside the tight loop, and passed in as a simple uniform float.
+
 
 ## Serving Suggestions
 
 You can extend this example in various ways:
 
 - Add a `Heal` component that restores health over time for non-vampire entities
-- Introduce a `Shade` component that reduces the intensity of sunlight for entities that are under cover
-- Spawn and despawn `Sunlight` entities based on the time of day in your game world
+- Introduce a `Shade` component that reduces the intensity of sunlight for entities that are under cover, or make the sunlight a vector and calculate the local intensity based on the position of the entity.
 
-And there you have it - a simple but effective example of how to implement damage over time using fennecs ECS! :neofox_knife:
-```
+And there you have it - a simple but effective example of how to implement damage over time using fennecs! 
 
-This example demonstrates how to use components to represent character attributes and environmental factors, and how to use queries to apply changes to entities based on those components.
-
-The code samples show how to define the necessary components, create entities with those components, and use a query to apply damage to vampire entities based on the sunlight intensity.
-
-Let me know if you have any further questions or if you'd like me to elaborate on any part of the example!
