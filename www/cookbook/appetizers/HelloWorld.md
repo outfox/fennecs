@@ -18,7 +18,7 @@ Let's start with a simple "Hello, World!" example to get you familiar with the b
 
 ## Defining Components
 
-First, we define a simple `Name` component to store a string value. We make it 💫*slightly fancy*💫 with implicit conversion operators. This struct uses a [Primary Constructor](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/primary-constructors), but you can also write an old-style explicit one and an auto-property for `value`.
+First, we define a simple `Name` component to store a string value. And let's sprinkle on a little 💫*raffinésse*💫 with implicit conversion operators! 
 
 ```csharp
 internal readonly struct Name(string value)
@@ -28,7 +28,9 @@ internal readonly struct Name(string value)
 }
 ```
 
-and also two empty `Tag` components, `Human` and `Fennec`, to label Entities semantically:
+The struct uses a [Primary Constructor](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/primary-constructors), but you can also write an old-style explicit one and an auto-property for `value`.
+
+Next, we declate two empty `Tag` components, `Human` and `Fennec`, to label Entities semantically:
 
 ```csharp
 internal readonly struct Human;
@@ -59,8 +61,6 @@ var human2 = world.Spawn()
 
 Now, let's create two kinds of query to find all entities with a `Name` and run it to print a greeting for each entity. We also want to only match entities with a `Fennec` - in our case we can do it by inclusion or exclusion.
 
-After all, this is **fenn**ecs, not, ***human ecs***.
-
 ```csharp
 var noHumans = world.Query<Name>()
     .Not<Human>()
@@ -84,6 +84,9 @@ onlyFennecs.For(static (ref Name name) =>
 });
 
 ```
+
+After all, this is **fenn**ecs, not, ***human ecs***.
+
 
 ## Expected Output
 
