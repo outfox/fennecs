@@ -30,7 +30,7 @@ internal readonly struct Name(string value)
 
 The struct uses a [Primary Constructor](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/primary-constructors), but you can also write an old-style explicit one and an auto-property for `value`.
 
-Next, we declate two empty `Tag` components, `Human` and `Fennec`, to label Entities semantically:
+Next, we declare two empty `Tag` components, `Human` and `Fennec`, to label Entities semantically:
 
 ```csharp
 internal readonly struct Human;
@@ -85,7 +85,7 @@ onlyFennecs.For(static (ref Name name) =>
 
 ```
 
-After all, this is **fenn**ecs, not, ***human ecs***.
+### :neofox_floof_mug_reverse: *"After all, this is **fenn**ecs, not, ***human ecs***!"*
 
 
 ## Expected Output
@@ -98,4 +98,4 @@ Hello, Erwin!
 ```
 ----------
 
-*"Huh, **human ecs**! I like it."* :neofox_googly: 
+### *"Huh, **human ecs**?! ... I like it."* :neofox_uwu_nod.gif: 
