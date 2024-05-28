@@ -5,7 +5,7 @@ outline: [2, 3]
 
 # Turns out, Vampires aren't Survivors?!
 
-In this recipe, we'll explore how to implement a simple "Damage over Time" (DoT) system using fennecs ECS. We'll create entities that represent characters, some of which are "vampires" that take damage from a global `sunIntensity` value over time.
+In this recipe, we'll explore how to implement a simple "Damage over Time" (DoT) system using **fenn**ecs. We'll create entities that represent characters, some of which are "vampires" that take damage from a global `sunIntensity` value over time.
 
 ## Ingredients
 
@@ -19,7 +19,7 @@ public struct Health
 }
 
 // A tag component indicating that a character is a vampire
-public struct Vampire;
+public struct Vampirism;
 ```
 
 ## Preparation
@@ -35,7 +35,7 @@ var human = world.Entity()
 
 var vampires = world.Entity()
     .Add(new Health { Value = 100 })
-    .Add<Vampire>()
+    .Add<Vampirism>()
     .spawn(100_000); // Not looking good for the humans!
 ```
 
@@ -45,7 +45,7 @@ Now, let's create a query that applies damage to all vampires based on the sunli
 
 ```csharp
 var sunIntensity = 10.0f;
-var vampireHealth = world.Query<Health>().Has<Vampire>().Compile();
+var vampireHealth = world.Query<Health>().Has<Vampirism>().Compile();
 
 // We use an EntityAction to apply the damage and also queue the
 // structural change - in this case, full despawn of the Vampire

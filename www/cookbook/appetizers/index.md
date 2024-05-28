@@ -4,7 +4,7 @@ title: Appetizers
 head:
   - - meta
     - name: description
-      content: Appetizers, goofy recipes to get new developers an overview over the features of the fennecs ECS!
+      content: Appetizers, goofy recipes to get new developers an overview over the features of the **fenn**ecs!
 ---
 
 # How to cook a fox.

@@ -1,5 +1,6 @@
 ---
 title: per-Entity CRUD
+order: 2
 ---
 
 # per-Entity Create, Read, Update, Delete

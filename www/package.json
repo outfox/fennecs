@@ -1,7 +1,7 @@
 {
   "name": "fennecs.tech",
   "version": "0.1.0",
-  "description": "fennecs ECS Documentation",
+  "description": "fennecs Documentation",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
