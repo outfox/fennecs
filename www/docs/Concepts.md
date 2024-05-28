@@ -39,7 +39,7 @@ Structurally similar Entities are packed into [Archetypes](Archetype.md) for imp
 These add expressive, powerful grouping semantics. Relations can be backed by any type.
 
 ### [Object Links](Link.md) are Components backed by a [Shared Object Target](Queries/MatchExpressions.md#match-targets).
-These add a way to group Entities by linking them to shared data, like a a physics world.
+Group Entities logically and in memory by linking them to shared data, like a physics world.
 
 ### Queries expose *fast* SIMD & Structural Ops on matched Entities.
 You can efficiently [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk.

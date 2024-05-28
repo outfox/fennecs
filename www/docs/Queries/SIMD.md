@@ -24,7 +24,7 @@ myQuery.Blit(default(Position));
 myQuery.Blit(new Velocity(c, 0, 0));
 ```
 
-`Blit` is incapable of adding new Components, and is also unable to modify Relation Targets. Use the [CRUD](../CRUD.md) `Add...` functions for that, which internally uses Blit to write the new components.
+`Blit` is incapable of adding new Components, and is also unable to modify Relation Targets. Use the [CRUD](CRUD.md) `Add...` functions for that, which internally uses Blit to write the new components.
 
 ::: warning :neofox_confused: INCONSISTENCY or (IN)CONVENIENCE?
 Unlike the other SIMD operations, the `Blit` methods are declared in each `Query<>` class, where the others are in the `Query.SIMD` sub-interface. This may change in the future.
