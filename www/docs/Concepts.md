@@ -41,11 +41,11 @@ These add expressive, powerful grouping semantics. Relations can be backed by an
 ### [Object Links](Link.md) are Components backed by a [Shared Object Target](Queries/MatchExpressions.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
 
-### Queries provide *fast & safe* SIMD, Structural, and Raw Memory Ops
-You can efficiently [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk - and even entire [memory blocks](Queries/Query.Raw.md).
+### Queries expose *fast* Structural Change, SIMD, and Memory Ops
+Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk - even entire [memory blocks](Queries/Query.Raw.md).
 
 ### Worlds and Queries are `IEnumerable<Entity>`.
-Isn't it amazing to be able to once in a while just LINQ it up and <u>*be done*</u> somewhere.
+It's amazing to be able to every now and then just LINQ it up and <u>*be done*</u> somewhere.
 
 ### There are no formalized Systems.
 You have a higher degree of freedom when and how to interact with Queries.
