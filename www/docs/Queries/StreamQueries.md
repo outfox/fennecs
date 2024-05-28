@@ -1,5 +1,7 @@
 ---
-title: Query&lt;&gt; (Stream Queries)
+title: Query&lt;&gt;
+outline: [2, 3]
+order: 2
 ---
 
 # Stream Queries
@@ -13,11 +15,10 @@ Queries with Type Parameters are called **Stream Queries**, and they provide sup
 
 When it comes to processing data, Stream Queries are <ins>practically always</ins> your go-to solution in **fenn**ecs. You can get so much work done with these bad bois! *(slaps roof)*
 
-### Stream Types
+## Stream Types
 The Type parameters, `C0, C1, C2, C3, C4` are also known as the Query's **Stream Types**. These are the types of Components that a specific Query's Runners (e.g. `For`, `Job` and `Raw`) can supply to your code. 
 
-
-# Passing Workloads to Stream Queries
+## Executing Workloads
 
 Each Stream Query offers a set of ==Runners== to execute code in batches or parallelized on all Entities in the Query - `For`, `Job`, and `Raw`.
 
@@ -43,7 +44,7 @@ All work items at once, as contiguous memory. Using a [`MemoryAction`](Delegates
 :neofox_waffle_long_blurry::neofox_scream_stare:
 :::
 
-## Prefix Subsets
+## Prefix Inheritance
 
 Queries with more than one [Stream Type](StreamTypes.md) inherit access to all Runners of lesser parametrized Queries, albeit only in the same order, and always starting from `C0`. 
 

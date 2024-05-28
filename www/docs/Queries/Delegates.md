@@ -1,8 +1,9 @@
 ---
-title: Runner Delegates
+title: Delegates 
+order: 3
 ---
-# Runner Delegates
-The delegate signatures mirror the count and order of the Query's Stream Types.
+# Delegates
+Runner methods on Steam Queries expect delegates (Actions) to call. The delegate signatures mirror the count and order of the Query's Stream Types.
 
 ## `RefAction<>` and `RefActionU<>`
 These are invoked by [`Query<>.For`](Query.For.md) and [`Query<>.Job`](Query.Job.md). The Uniforms are contravariant, which helps with code reuse when you refactor your anonymous, named, or static method signatures to take broader data types.

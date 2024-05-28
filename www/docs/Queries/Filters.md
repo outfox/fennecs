@@ -1,7 +1,8 @@
 ---
-title: Filters
+title: Filtering
 layout: doc
 outline: [2, 3]
+order: 2
 ---
 
 # Filters

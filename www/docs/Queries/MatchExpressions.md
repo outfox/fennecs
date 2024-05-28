@@ -1,10 +1,11 @@
 ---
-title: Match Expressions
+title: Matching
 layout: doc
 outline: [1, 3]
+order: 1
 ---
 
-# Match Expressions
+# Matching & Match Expressions
 
 Perk up your ears! This is a complex topic, shaped by two intertwined ideas: 
 

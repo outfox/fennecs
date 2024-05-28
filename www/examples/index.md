@@ -28,7 +28,7 @@ Work in progress, more examples will get added over time! Want to contribute or 
     </tr>
     <tr>
         <td style="width: 50%">
-            <h4>Demo: 313370 Cubes</h4>
+            <h4>Demo: Lots of Cubes</h4>
             <ul>
             <li>spawning and despawning many Entities</li>        
             <li>using simple Job & Raw Queries</li>

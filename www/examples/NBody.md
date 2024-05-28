@@ -21,16 +21,10 @@ This demo is available for the following:
 Your browser does not support the video tag.
 </video>
 
-State is stored in the `Body` Component on the Entities:
+State and Structure are stored in the Components on the Entities:
 
 - 1x `Body` as Plain Component (contains mass and last position)
-- Nx `Body` as Entity-EntityRelation (once for each other body)
+- Nx `Body` as Entity-Entity Relation (once for each other body)
 - 1x `Position, Velocity, Acceleration` (for physics sim)
 
 The state is transferred into the Game Engine directly talking to the Nodes.
-
-### Video (Stride Version)
-<video controls autoplay muted loop>
-<source src="https://fennecs.tech/video/fennecs-stride-democubes.mp4" type="video/mp4"/>
-Your browser does not support the video tag.
-</video>

@@ -1,5 +1,7 @@
 ---
-title: Query<>.Job
+title: Job
+order: 1
+
 ---
 # Parallel Query Workloads
 # `Query<>.Job(MemoryAction)`

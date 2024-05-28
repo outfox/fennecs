@@ -1,5 +1,6 @@
 ---
-title: Query<>.For
+title: For
+order: 1
 ---
 
 # Classic Query Workloads

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene load_steps=21 format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" path="res://Cubes/DemoCubes.cs" id="1_1jicl"]
 [ext_resource type="BoxMesh" uid="uid://dqwvifxnefio3" path="res://Cubes/Materials/box-mesh.tres" id="2_e3y7g"]
@@ -41,6 +41,10 @@ material = SubResource("StandardMaterial3D_py15u")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_smlxl"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_plas6"]
+font = ExtResource("4_plwtk")
+font_size = 32
+
 [node name="fennecs Cube Demo" type="Node3D"]
 
 [node name="Demo" type="Node" parent="." node_paths=PackedStringArray("Camera", "MeshInstance", "RenderedSlider", "SimulatedSlider")]
@@ -68,9 +72,7 @@ offset_right = 362.0
 offset_bottom = 429.0
 size_flags_horizontal = 8
 bbcode_enabled = true
-text = "DemoCubes (Godot version)
-
-All motion  is 100% CPU simulation (no GPU). Here, we demonstrate a simple case how to update the positions of a large number of Entities.
+text = "All motion  is 100% CPU simulation (no GPU). Here, we demonstrate a simple case how to update the positions of a large number of Entities.
 
 State is stored in Components on the Entities:
 [ul]
@@ -217,6 +219,23 @@ shape = SubResource("BoxShape3D_smlxl")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("11_jg0sh")
+
+[node name="Info Text2" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+show_behind_parent = true
+use_parent_material = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -176.0
+offset_right = 176.0
+offset_bottom = 247.0
+grow_horizontal = 2
+size_flags_horizontal = 8
+text = "LOTS OF CUBES
+(Godot Version)"
+label_settings = SubResource("LabelSettings_plas6")
+horizontal_alignment = 1
 
 [connection signal="value_changed" from="User Interface/Spawn Controls/Sliders/VisibleSlider" to="Demo" method="_on_rendered_slider_value_changed"]
 [connection signal="drag_ended" from="User Interface/Spawn Controls/Sliders/SimulatedSlider" to="Demo" method="_on_simulated_slider_drag_ended"]

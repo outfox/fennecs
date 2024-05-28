@@ -1,9 +1,9 @@
 ---
 layout: doc
-title: "Demo: 313370 Cubes"
+title: "Demo: Lots of Cubes"
 ---
 
-# Demo: 313370 Cubes
+# Demo: Lots of Cubes
  
 This demo demonstrates a simple case how to update the state of a large number of Entities, and how to bring this data into a Game Engine.
 

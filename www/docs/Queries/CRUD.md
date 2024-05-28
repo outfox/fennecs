@@ -1,5 +1,6 @@
 ---
 title: Bulk CRUD
+order: 3
 ---
 
 # Bulk Create, Read, Update, Delete
@@ -89,13 +90,6 @@ These could be used to great effect, e.g. to set a new Component value for all E
 ### Batch.AddConflict
 `Disallow = default`  
 Throw an exception if attempting to add a component that is not explicitly excluded from the query.
-
-`SkipEntirely`  
-Skip each Archetype (group of Entities tracked by the Query) that already has the Component, not adding or changing the existing one. 
-
-::: danger CAUTION - FOOT GUN
-This will skip all operations of the batch on that archetype, including removals and other additions. This will also "retroactively" affect other operations, as a batch is treated as a set of atomic operations all rolled into one.
-:::
 
 `Preserve`  
 Preserve the Values of already present Components, and adds the new ones where not present. *(currently not implemented)*
