@@ -10,6 +10,7 @@ using var entities = world.Entity()
 
 // Life. Unchecked, it will cease to exist. It needs correcting.
 var thanosQuery = world.Query<Alive>().Compile();  
+Console.WriteLine($"Entities before Thanos snap: {thanosQuery.Count}");
 
 // The hardest choices require the strongest wills. 
 var random = new Random();
@@ -25,7 +26,7 @@ thanosQuery.Exclude<Survive>(Match.Plain);
 thanosQuery.Despawn();
 
 // I call that... mercy.
-var remainingCount = world.Query<Alive>().Compile().Count;
+thanosQuery.ClearFilters();
 Console.WriteLine($"Entities remaining after Thanos snap: {thanosQuery.Count}");
 
 // Component tags
