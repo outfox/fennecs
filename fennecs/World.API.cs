@@ -29,10 +29,7 @@ public partial class World : IDisposable
     /// <summary>
     /// Spawns a number of pre-configured Entities. 
     /// </summary>
-    public EntitySpawner Entity()
-    {
-        return new EntitySpawner(this);
-    }
+    public EntitySpawner Entity() => new(this);
 
 
     /// <summary>
@@ -195,7 +192,7 @@ public partial class World : IDisposable
     /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
     public World(int initialCapacity = 4096)
     {
-        _identityPool = new IdentityPool(initialCapacity);
+        _identityPool = new(initialCapacity);
 
         _meta = new Meta[initialCapacity];
 

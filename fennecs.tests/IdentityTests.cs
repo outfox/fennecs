@@ -269,7 +269,7 @@ public class IdentityTests(ITestOutputHelper output)
     [ClassData(typeof(ComponentDataSource))]
     private void Entity_cannot_Get_Component_from_Successor<T>(T t1) where T : struct
     {
-        using var world = new World();
+        using var world = new World(0);
         var entity1 = world.Spawn().Add(t1);
         world.Despawn(entity1);
         var entity2 = world.Spawn().Add(t1);

@@ -626,22 +626,52 @@ public class QueryTests
     [InlineData(2)]
     [InlineData(69)]
     [InlineData(1_000)]
-    public void Truncate_Honors_Filters(int entityCount)
+    public void Truncate_Honors_Filter_Exclude(int entityCount)
     {
-        using var world = new World();
+        using var world = new World(entityCount * 2 + 2);
         world.Entity().Add<int>().SpawnOnce(entityCount);
         world.Entity().Add<int>().Add<string>("don't truncate me, senpai").SpawnOnce(entityCount);
         
         var query = world.Query<int>().Compile();
-
         Assert.Equal(entityCount * 2, query.Count);
+        
         query.Exclude<string>(Match.Any);
         Assert.Equal(entityCount, query.Count);
         
         query.Truncate(0);
         Assert.Equal(0, query.Count);
+        
         query.ClearFilters();
         Assert.Equal(entityCount, query.Count);
+
+        Assert.All(query, e => Assert.True(e.Has<string>()));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(69)]
+    [InlineData(1_000)]
+    public void Truncate_Honors_Filter_Subset(int entityCount)
+    {
+        using var world = new World();
+        world.Entity().Add<int>().SpawnOnce(entityCount);
+        world.Entity().Add<int>().Add<string>("PLEASE TRUNCATE ME!").SpawnOnce(entityCount);
+        
+        var query = world.Query<int>().Compile();
+        Assert.Equal(entityCount * 2, query.Count);
+        
+        query.Subset<string>(Match.Any);
+        Assert.Equal(entityCount, query.Count);
+        
+        query.Truncate(0);
+        Assert.Equal(0, query.Count);
+        
+        query.ClearFilters();
+        Assert.Equal(entityCount, query.Count);
+        
+        Assert.All(query, e => Assert.False(e.Has<string>()));
     }
 
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Immutable;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -66,7 +67,7 @@ public partial class World
             var identity = _identityPool.Spawn();
 
             // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
-            while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
+            Array.Resize(ref _meta, (int) BitOperations.RoundUpToPowerOf2((uint)(_identityPool.Created + 1)));
 
             _meta[identity.Index] = Meta.Empty();
             

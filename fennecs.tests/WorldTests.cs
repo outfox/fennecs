@@ -747,6 +747,23 @@ public class WorldTests(ITestOutputHelper output)
     }
 
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(69)]
+    [InlineData(420)]
+    [InlineData(1_000_000)]
+
+    private void Can_Create_World_With_Capacity(int capacity)
+    {
+        using var world = new World(capacity);
+        Assert.NotNull(world);
+
+        var entity = world.Spawn();
+        Assert.True(world.IsAlive(entity));
+    }
+    
     private class NewableClass;
 
     private struct NewableStruct;
