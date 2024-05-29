@@ -28,12 +28,13 @@ internal class IdentityPool
         var identities = PooledList<Identity>.Rent();
         var recycled = _recycled.Count;
 
-        if (recycled < requested)
+        if (recycled <= requested)
         {
-            // If we don't have enough recycled Identities, create more.
+            // Reuse all entities in the recycler.
             identities.AddRange(_recycled);
             _recycled.Clear();
 
+            // If we don't have enough recycled Identities, create more.
             for (var i = 0; i < requested - recycled; i++)
             {
                 identities.Add(new(++Created));

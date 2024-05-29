@@ -6,7 +6,7 @@ Console.OutputEncoding = System.Text.Encoding.UTF8;
 if (!Console.IsOutputRedirected) Console.Clear();
 Console.WriteLine("Directed by Renard Nimoy.");
 
-var world = new World();
+var world = new World(1);
 
 var kirk = world.Spawn();
 Console.WriteLine($"James Tiberius Kirk, StarFleet identification\n{kirk}");
@@ -19,9 +19,3 @@ Console.WriteLine($"Jean-Luc Picard, (The Next Generation!) StarFleet identifica
 
 var janeway = world.Spawn();
 Console.WriteLine($"Kathryn Janeway, (New Series!) StarFleet identification\n{janeway}");
-
-Console.WriteLine("Picard despawned.");
-world.Despawn(picard);
-
-var georgiou = world.Spawn();
-Console.WriteLine($"Philippa Georgiou, (The Third Generation?) StarFleet identification\n{georgiou}");

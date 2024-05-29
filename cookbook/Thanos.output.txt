@@ -1,0 +1,8 @@
+Entities before Thanos Snap: 1000000
+Lucky Entities: 500096 (50%)
+Unlucky Entities: 500396 (50%)
+Unlucky Entities that AREN'T ALSO Lucky: 250046 (25%)
+Targeted by Thanos: 250046 (seen this number before?)
+OH SNAP!
+Entities surviving after Thanos Snap: 749954 (75%)
+Directed by Robert B. Weide.

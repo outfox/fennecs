@@ -34,8 +34,6 @@ using fennecs;
 
 ::: details What about the kitchen sink?
 Good old git. Nothing beats that!  
-*(repo includes the Appetizers and Demos, ready to run!)*
-
 ::: code-group
 
 ```shell [ssh...]
@@ -49,5 +47,7 @@ git clone https://github.com/thygrrr/fennecs.git
 ```shell [wait... you... you... GitHub CLI unironically?]
 gh repo clone thygrrr/fennecs
 ```
+
+*(repo includes the Appetizers and Example Demos, ready to run!)*
 
 :::

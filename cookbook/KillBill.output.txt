@@ -1,57 +1,61 @@
 Directed by: Trentin Quarantino
 As we said, there were 5 of them.
-One hides in hideout 0x669d3d82.
-One hides in hideout 0x679b96bc.
-One hides in hideout 0x03ed09e6.
-One hides in hideout 0x0d987cab.
-One hides in hideout 0x751b52dd.
+One hides in hideout 0x6608afa0.
+One hides in hideout 0x43ae96da.
+One hides in hideout 0x2f30dbcd.
+One hides in hideout 0x08f680dc.
+One hides in hideout 0x79f83907.
 
 We are still here, though.
 
 Do we hold grudges? True.
 This is us (and our grudges):
-E-00000001:00001 <fennecs.Identity>
-  |-<Location>
-  |-<Grudge> >> E-00000002:00001
-  |-<Grudge> >> E-00000003:00001
-  |-<Grudge> >> E-00000004:00001
+E-00000001:00001 <Grudge> >> E-00000006:00001
   |-<Grudge> >> E-00000005:00001
-  |-<Grudge> >> E-00000006:00001
+  |-<Grudge> >> E-00000004:00001
+  |-<Grudge> >> E-00000003:00001
+  |-<Grudge> >> E-00000002:00001
+  |-<Location>
+  |-<fennecs.Identity>
 
 Oh, hello E-00000002:00001! Remember us (E-00000001:00001)?
 They do. They remember everything. They are:
-E-00000002:00001 <fennecs.Identity>
+E-00000002:00001 <Betrayed> >> E-00000001:00001
   |-<Location>
-  |-<Betrayed> >> E-00000001:00001
+  |-<fennecs.Identity>
 
 Oh, hello E-00000003:00001! Remember us (E-00000001:00001)?
 They do. They remember everything. They are:
-E-00000003:00001 <fennecs.Identity>
+E-00000003:00001 <Betrayed> >> E-00000001:00001
   |-<Location>
-  |-<Betrayed> >> E-00000001:00001
+  |-<fennecs.Identity>
 
 Oh, hello E-00000004:00001! Remember us (E-00000001:00001)?
 They do. They remember everything. They are:
-E-00000004:00001 <fennecs.Identity>
+E-00000004:00001 <Betrayed> >> E-00000001:00001
   |-<Location>
-  |-<Betrayed> >> E-00000001:00001
+  |-<fennecs.Identity>
 
 Oh, hello E-00000005:00001! Remember us (E-00000001:00001)?
 They do. They remember everything. They are:
-E-00000005:00001 <fennecs.Identity>
+E-00000005:00001 <Betrayed> >> E-00000001:00001
   |-<Location>
-  |-<Betrayed> >> E-00000001:00001
+  |-<fennecs.Identity>
 
 Oh, hello E-00000006:00001! Remember us (E-00000001:00001)?
 They do. They remember everything. They are:
-E-00000006:00001 <fennecs.Identity>
+E-00000006:00001 <Betrayed> >> E-00000001:00001
   |-<Location>
-  |-<Betrayed> >> E-00000001:00001
+  |-<fennecs.Identity>
 
 Now, there are 0 of them.
-Let's get out of hideout 0x751b52dd.
-Any more grudges? False.
+Let's get out of hideout 0x79f83907.
+Any more grudges? True.
 This is us now:
-E-00000001:00001 <fennecs.Identity>
+E-00000001:00001 <Grudge> >> E-00000006:00001
+  |-<Grudge> >> E-00000005:00001
+  |-<Grudge> >> E-00000004:00001
+  |-<Grudge> >> E-00000003:00001
   |-<Location>
+  |-<fennecs.Identity>
 We'll be traveling for a while.
