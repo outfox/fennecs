@@ -34,6 +34,13 @@ public sealed class EntitySpawner : IDisposable
         return AddComponent(type, component);
     }
 
+    /// <inheritdoc cref="Entity.Add{T}()"/>
+    public EntitySpawner Add<T>() where T : new()
+    {
+        var type = TypeExpression.Of<T>();
+        return AddComponent(type, new T());
+    }
+
     /// <inheritdoc cref="Entity.AddRelation{T}(fennecs.Entity,T)"/>
     public EntitySpawner AddRelation<T>(T component, Identity target) where T : class
     {
@@ -52,13 +59,22 @@ public sealed class EntitySpawner : IDisposable
     /// Spawns <c>count</c> entities with the configured components.
     /// </summary>
     /// <param name="count">number of entities to spawn</param>
-    /// <param name="dispose">dispose the spawner after use</param>
-    public void Spawn(int count = 1, bool dispose = true)
+    public EntitySpawner Spawn(int count = 1)
     {
         _world.Spawn(count, _components, _values);
-        if (dispose) Dispose();
+        return this;
     }
 
+    /// <summary>
+    ///  Spawns <c>count</c> entities with the configured components and disposes the spawner.
+    /// </summary>
+    /// <param name="count">number of entities to spawn</param>
+    public void SpawnOnce(int count = 1)
+    {
+        Spawn(count);
+        Dispose();        
+    }
+    
     /// <inheritdoc />
     public void Dispose()
     {

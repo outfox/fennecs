@@ -458,7 +458,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         var count = Count;
         if (count <= maxEntityCount) return;
 
-        foreach (var archetype in _trackedArchetypes)
+        foreach (var archetype in Archetypes)
             switch (mode)
             {
                 case TruncateMode.PerArchetype:

@@ -133,10 +133,10 @@ public class WorldTests(ITestOutputHelper output)
             
         spawner.Add(555)
         .Add("hallo")
-        .Spawn(count, false);
+        .Spawn(count);
 
         spawner.Add(420.0f);
-        spawner.Spawn(count, false);
+        spawner.Spawn(count);
 
         var query = world.Query<int, string>().Compile();
         Assert.Equal(count * 2, query.Count);

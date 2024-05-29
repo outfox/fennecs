@@ -620,6 +620,31 @@ public class QueryTests
     }
 
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(69)]
+    [InlineData(1_000)]
+    public void Truncate_Honors_Filters(int entityCount)
+    {
+        using var world = new World();
+        world.Entity().Add<int>().SpawnOnce(entityCount);
+        world.Entity().Add<int>().Add<string>("don't truncate me, senpai").SpawnOnce(entityCount);
+        
+        var query = world.Query<int>().Compile();
+
+        Assert.Equal(entityCount * 2, query.Count);
+        query.Exclude<string>(Match.Any);
+        Assert.Equal(entityCount, query.Count);
+        
+        query.Truncate(0);
+        Assert.Equal(0, query.Count);
+        query.ClearFilters();
+        Assert.Equal(entityCount, query.Count);
+    }
+
+
     [Fact]
     public void Can_Clear()
     {
