@@ -488,18 +488,8 @@ public class Query : IEnumerable<Entity>, IDisposable
         PerArchetype,
     }
     #endregion
-
-    #region Hashing
-
-    /// <inheritdoc />
-    /*public override int GetHashCode()
-    {
-        return Mask.GetHashCode();
-    }
-    */
-
-    #endregion
-
+    
+    
     #region IDisposable Implementation
     /// <summary>
     ///     Dispose the Query.

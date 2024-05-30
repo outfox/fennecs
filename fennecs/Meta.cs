@@ -6,7 +6,7 @@ namespace fennecs;
 /// Meta Table that holds the Archetype, Row, and Identity of an "Entity"
 /// (the semantic concept, not the <see cref="Entity"/> builder struct).
 /// </summary>
-internal readonly struct Meta(Identity identity = default, Archetype archetype = null!, int row = -1)
+internal readonly struct Meta(Identity identity, Archetype archetype, int row)
 {
     /// <summary>
     /// Archetype the Entity lives in.
@@ -22,11 +22,4 @@ internal readonly struct Meta(Identity identity = default, Archetype archetype =
     /// Entity Identity
     /// </summary>
     internal readonly Identity Identity = identity;
-
-
-    /// <summary>
-    /// Empty Meta is not exactly "default" (row is -1)
-    /// TODO: Might change this, as it makes little difference.
-    /// </summary>
-    internal static Meta Empty() => new();
 }

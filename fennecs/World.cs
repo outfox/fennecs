@@ -71,7 +71,7 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
             // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
             Array.Resize(ref _meta, (int) BitOperations.RoundUpToPowerOf2((uint)(_identityPool.Created + 1)));
 
-            _meta[identity.Index] = Meta.Empty();
+            _meta[identity.Index] = default;
             
             _root.IdentityStorage.Append(identity);
             
@@ -117,7 +117,7 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
     private void DespawnDependencies(Identity identity)
     {
             // Patch Meta
-            _meta[identity.Index] = Meta.Empty();
+            _meta[identity.Index] = default;
 
             // Find identity-identity relation reverse lookup (if applicable)
             if (!_typesByRelationTarget.Remove(identity, out var list)) return;
