@@ -5,9 +5,9 @@ outline: [1, 3]
 order: 1
 ---
 
-# Matching & Match Expressions
+# Matching
 
-Perk up your ears! This is a complex topic, shaped by two intertwined ideas: 
+Perk up your ears! Match Expressions ware what makes **fenn**ecs so cool and powerful, and it is a complex topic, shaped by two intertwined ideas: 
 
 1. the `Match Type`, a commonplace concept in ECS
 2. the `Match Target` (or `Match Identity`), a feature unique to **fenn**ecs
@@ -23,15 +23,18 @@ A match expression is split into a `Match Type` and a `Target` (or `Identity`), 
 
 When building a Query with Match Expressions, any number of Match Expressions can be passed to the QueryBuilder to specify what this Query should include and exclude. Here's a quick example to give an overview over what's available
 
-::: info ~~INVITE~~ QUERY YOUR FRIENDS!
 
+::: details :neofox_peek_owo: DARE TO PEEK: What an expressive smörgåsbord !
+#### ~~INVITE~~ QUERY YOUR FRIENDS!
+This query is a bit of a party invitation! It includes each entity with a Name component and a music PlayList (Name and PlayList become the output Stream Types of the query)
+
+ ... but then it gets picky!
 ```cs
-// includes each entity with a Name component and a music PlayList
-// (Name and PlayList become the output Stream Types of the query)
 var partyGoers = world.Query<Name, PlayList>() // "()" means Match.Any
 //... who is also a fox
     .Has<Fox>()
-//... and has a Friendship relation to entity "me"
+//... and has a Friendship entity relation to both "you" & "me"
+    .Has<Friendship>(you)
     .Has<Friendship>(me)
 //... and who's not asleep
     .Not<Sleeping>()
@@ -45,11 +48,17 @@ var partyGoers = world.Query<Name, PlayList>() // "()" means Match.Any
 // compile query to register it with the world
     .Compile();
 
+
+// WAIT! It's the 2020s. We need two last minute additions!
+partyGoers.Subset<Vaccinated>(Match.Plain); // party is a safe space!
+partyGoers.Exclude<Sick>(); // if that even needs saying
+
+
 partyGoers.For((ref name, ref playlist) =>
 {
     DeeJay.Instruct($"{name} is coming, please play something from {playlist.entries}");
 });
-  ```
+```
 :::
 
 ## Match Types
@@ -70,13 +79,13 @@ The Query feeds the Storages corresponding to its Stream Types of each matched A
 ### The three main `Match Type` Expressions are:
 
 > ### `Query<>.Has<C>()` and `Query<>.Has<C>(Identity)`
-> `includes only` Entities that have the given component or relation.
+> `includes only` Entities that have the given component or relation. Multiple `Has` statements can be compared to a logical `A AND B AND C`.
 
 > ### `Query<>.Not<C>()` and `Query<>.Not<C>(Identity)`
-> `excludes` any Entities that have the given component.
+> `excludes` any Entities that have the given component. Multiple `Not` statements can be compared to a logical `NOT (A OR B OR C)`, aka. `(NOT A) AND (NOT B) AND (NOT C)`.
 
 > ### `Query<>.Any<C>()` and `Query<>.Any<C>(Identity)`
-> matches Entities that match `at least one` of the Any statements.
+> matches Entities that match `at least one` of the Any statements. Multiple `Any` statements can be compared to a logical `A OR B OR C`.
 
  
 A Query being built is then further refined through Match Expressions passed to the builder's methods. These expressions are the building blocks of the query, and they can be combined in any way to create complex queries that match exactly the Entities you need.
@@ -103,7 +112,7 @@ In addition to specific idEntities, there are five virtual wildcard IdEntities:
 - `Match.Target` matches any actual targets (both Object and Entity, but not Plain)
 - `Match.Object` matches only Object targets (so called Object Links)
 - `Match.Entity` matches only Entity targets (so called Entity-Entity Relations)
-- `Match.Plain` matches only components without a targets
+- `Match.Plain` matches only components without a targets. This is great for [Tags](../Components/Tags.md) (like `Dead` or `Invisible`)
 
 
 
@@ -127,7 +136,8 @@ var enemies = world.Query<Enemy>()
     .Has<Position>().Not<Position>()` 
 // Match.Target already includes Object, but Object excludes Entity.  
     .Has<Objective>(Match.Object).Has<Objective>(Match.Target) 
-    .Build();
+    .Compile();
+
   ```
 :::
 
@@ -169,7 +179,7 @@ What if bob despawns?  In that case, a whole new query needs to be compiled (thi
 
 As a rule of paw, consider [Filters](Filters.md) first for these cases. A Filter has similar performance characteristics to a compiled (and thus immutable) query, and can be dynamically reconfigured!
 
-::: tip :neofox_thumbsup: PROTIP: SUBSET and EXCLUSION via [Stream Filters](Filters.md)
+::: tip :neofox_thumbsup: PROTIP: SUBSET and EXCLUDE via [Stream Filters](Filters.md)
 Our Query is always valid as compiled, and we can dynamically narrow down its matched archetypes whenever our criteria change. 
 ```cs
 var friendsInNeed = world.Query<Friend>()

@@ -990,6 +990,6 @@ public class QueryTests
 
         fennecs.Query query = world.Query<int>().Compile();
         query.Dispose();
-        Assert.Throws<ObjectDisposedException>(() => query.Dispose());
+        Assert.Throws<ObjectDisposedException>(query.Dispose);
     }
 }

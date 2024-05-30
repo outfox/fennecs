@@ -9,7 +9,7 @@
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
         <Company>tiger.blue</Company>
-        <Description>The lightweight entity-component system with an effective feature set for making games.</Description>
+        <Description>The tiny ECS that could!</Description>
         <Copyright>2024 Moritz Voss, 2022 Aaron Winter</Copyright>
         <PackageProjectUrl>https://github.com/thygrrr/fennecs</PackageProjectUrl>
         <RepositoryUrl>https://github.com/thygrrr/fennecs</RepositoryUrl>

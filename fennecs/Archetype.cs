@@ -231,7 +231,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         {
             var identity = IdentityStorage[entry + i];
             ref var meta = ref _world.GetEntityMeta(identity);
-            meta = new Meta(identity, this, entry + i);
+            meta = new(identity, this, entry + i);
         }
     }
 
@@ -381,10 +381,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         source.Invalidate();
         destination.Invalidate();
 
-        // Mark entity as moved in Meta.
-        var identity = source.Identities[entry];
-        source._world.GetEntityMeta(identity).Archetype = destination;
-        
         foreach (var (type, oldIndex) in source._storageIndices)
         {
             if (!destination._storageIndices.TryGetValue(type, out var newIndex))
