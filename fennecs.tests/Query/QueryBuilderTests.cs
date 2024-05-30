@@ -253,7 +253,44 @@ public class QueryBuilderTests
 
         var query1 = builder.Unique();
         var query2 = builder.Unique();
+        var query3 = builder.Compile();
         Assert.False(query1 == query2);
+        Assert.False(query1 == query3);
+        Assert.False(query2 == query3);
+    }
+
+
+    [Fact]
+    private void Unique_Queries_Receive_Updated_Archetypes()
+    {
+        using var world = new World();
+        using var builder = world.Query<int>();
+
+        var query1 = builder.Unique();
+
+        world.Spawn().Add(123);
+        Assert.Single(query1);
+
+        world.Spawn().Add(555).Add("fennecs");
+        Assert.Equal(2, query1.Count);
+    }
+
+    [Fact]
+    private void Unique_Queries_Match_Same()
+    {
+        using var world = new World();
+        using var builder = world.Query<int>();
+
+        var entity = world.Spawn().Add(123);
+
+        var query1 = builder.Unique();
+        var query2 = builder.Compile();
+
+        Assert.Single(query1);
+        Assert.Single(query2);
+
+        Assert.Contains(entity, query1);
+        Assert.Contains(entity, query2);
     }
 
 

@@ -160,8 +160,8 @@ public class Query : IEnumerable<Entity>, IDisposable
 
     internal Query(World world, List<TypeExpression> streamTypes, Mask mask, IReadOnlyCollection<Archetype> archetypes)
     {
-        _streamFilters = new List<TypeExpression>();
-        _streamExclusions = new List<TypeExpression>();
+        _streamFilters = [];
+        _streamExclusions = [];
         StreamTypes = streamTypes.ToArray();
         _trackedArchetypes = archetypes.ToList();
         Archetypes = archetypes.ToList();
@@ -492,10 +492,11 @@ public class Query : IEnumerable<Entity>, IDisposable
     #region Hashing
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    /*public override int GetHashCode()
     {
         return Mask.GetHashCode();
     }
+    */
 
     #endregion
 

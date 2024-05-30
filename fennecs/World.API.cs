@@ -242,7 +242,7 @@ public partial class World : IDisposable
             if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
         }
 
-        foreach (var query in _queries.Values)
+        foreach (var query in _queries)
         {
             // TODO: Will require some optimization later.
             query.ForgetArchetype(archetype);

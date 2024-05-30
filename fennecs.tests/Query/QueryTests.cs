@@ -334,6 +334,7 @@ public class QueryTests
         var query5A = world.Query<Identity>().Any<int>().Any<float>().Compile();
         var query5B = world.Query<Identity>().Any<int>().Any<float>().Compile();
 
+        Assert.Equal(query1A, query1B);
         Assert.True(ReferenceEquals(query1A, query1B));
         Assert.True(ReferenceEquals(query2A, query2B));
         Assert.True(ReferenceEquals(query3A, query3B));

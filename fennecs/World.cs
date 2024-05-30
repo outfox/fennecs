@@ -18,7 +18,8 @@ public partial class World
     // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
     private readonly Archetype _root;
 
-    private readonly Dictionary<int, Query> _queries = new();
+    private readonly HashSet<Query> _queries = [];
+    private readonly Dictionary<int, Query> _queryCache = new();
 
     // The new Type Graph that replaces the old Table Edge system.
     private readonly Dictionary<Signature<TypeExpression>, Archetype> _typeGraph = new();
@@ -147,7 +148,7 @@ public partial class World
         var type = mask.HasTypes[index: 0];
         if (!_tablesByType.TryGetValue(type, out var typeTables))
         {
-            typeTables = new List<Archetype>(capacity: 16);
+            typeTables = new(capacity: 16);
             _tablesByType[type] = typeTables;
         }
 
@@ -158,16 +159,20 @@ public partial class World
         }
 
         var query = createQuery(this, streamTypes, mask, matchingTables);
+        if (!_queries.Add(query))
+        {
+            throw new InvalidOperationException("Query was already added to World. File a bug report!");
+        }
         return query;
     }
     
     internal Query CacheQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
         // Compile if not cached.
-        if (!_queries.TryGetValue(mask.GetHashCode(), out var query))
+        if (!_queryCache.TryGetValue(mask.GetHashCode(), out var query))
         {
             query = CompileQuery(streamTypes, mask, createQuery);
-            _queries.Add(query.GetHashCode(), query);
+            _queryCache.Add(query.Mask.GetHashCode(), query);
             return query;
         }
         
@@ -178,7 +183,12 @@ public partial class World
 
     internal void RemoveQuery(Query query)
     {
-        _queries.Remove(query.GetHashCode());
+        if (!_queries.Remove(query))
+        {
+            throw new InvalidOperationException("Query was not found in World.");
+        }
+        
+        _queryCache.Remove(query.Mask.GetHashCode());
     }
 
 
@@ -189,14 +199,14 @@ public partial class World
     {
         if (_typeGraph.TryGetValue(types, out var table)) return table;
 
-        table = new Archetype(this, types);
+        table = new(this, types);
         _archetypes.Add(table);
         _typeGraph.Add(types, table);
 
         // TODO: This is a suboptimal lookup (enumerate dictionary)
         // IDEA: Maybe we can keep Queries in a Tree which
         // identifies them just by their Signature root. (?) 
-        foreach (var query in _queries.Values)
+        foreach (var query in _queries)
         {
             if (table.Matches(query.Mask))
             {
