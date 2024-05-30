@@ -132,9 +132,13 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
-    protected private readonly List<Archetype> Archetypes;
+    internal protected readonly List<Archetype> Archetypes;
 
-    protected private readonly World World;
+    /// <summary>
+    /// The World this Query is associated with.
+    /// The World will notify the Query of new matched Archetypes, or Archetypes to forget.
+    /// </summary>
+    internal protected readonly World World;
     
     /// <summary>
     ///  Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
