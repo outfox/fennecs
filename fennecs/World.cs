@@ -71,12 +71,8 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
             // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
             Array.Resize(ref _meta, (int) BitOperations.RoundUpToPowerOf2((uint)(_identityPool.Created + 1)));
 
-            _meta[identity.Index] = default;
-            
+            _meta[identity.Index] = new(_root, _root.Count, identity);
             _root.IdentityStorage.Append(identity);
-            
-            var row = _root.Count - 1;
-            _root.PatchMetas(row);
             _root.Invalidate();   
             
             return identity;

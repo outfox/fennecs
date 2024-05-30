@@ -231,7 +231,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         {
             var identity = IdentityStorage[entry + i];
             ref var meta = ref _world.GetEntityMeta(identity);
-            meta = new(identity, this, entry + i);
+            meta = new() { Identity = identity, Archetype = this, Row = entry + i };
         }
     }
 

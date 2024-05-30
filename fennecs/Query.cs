@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
-using static System.Diagnostics.Debug;
 
 namespace fennecs;
 
@@ -55,7 +54,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// <summary>
     ///     Does this Query match ("contain") the Entity, and would enumerate it?
     /// </summary>
-    /// <param name="entity"></param>
+    /// <param name="entity">an entity</param>
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
