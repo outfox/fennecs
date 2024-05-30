@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.Collections.Immutable;
 
 namespace fennecs;
 
@@ -106,7 +107,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     ///     Array of TypeExpressions for the Output Stream of this Query.
     ///     Mutated by Filter Expressions.
     /// </summary>
-    internal readonly TypeExpression[] StreamTypes;
+    internal readonly ImmutableArray<TypeExpression> StreamTypes;
 
     /// <summary>
     ///  Filters for the Archetypes matched by the StreamTypes (must match)
@@ -165,7 +166,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     {
         _streamFilters = [];
         _streamExclusions = [];
-        StreamTypes = streamTypes.ToArray();
+        StreamTypes = [..streamTypes];
         _trackedArchetypes = archetypes.ToList();
         Archetypes = archetypes.ToList();
         World = world;

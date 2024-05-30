@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Collections.Immutable;
 using fennecs.pools;
 
 namespace fennecs;
@@ -125,7 +126,7 @@ public static class Match
         /// <summary>
         /// Cross-Joins the Archetype with a list of StreamTypes.
         /// </summary>
-        internal Join(Archetype archetype, TypeExpression[] streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
         {
             _allocated = true;
 
@@ -188,7 +189,7 @@ public static class Match
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, TypeExpression[] streamTypes)
+        internal Join(Archetype archetype, ImmutableArray<TypeExpression> streamTypes)
         {
             _allocated = true;
 
@@ -240,7 +241,7 @@ public static class Match
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, TypeExpression[] streamTypes)
+        internal Join(Archetype archetype, ImmutableArray<TypeExpression> streamTypes)
         {
             _allocated = true;
 
@@ -296,7 +297,7 @@ public static class Match
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, TypeExpression[] streamTypes)
+        internal Join(Archetype archetype, ImmutableArray<TypeExpression> streamTypes)
         {
             _allocated = true;
 
@@ -356,7 +357,7 @@ public static class Match
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, TypeExpression[] streamTypes)
+        internal Join(Archetype archetype, ImmutableArray<TypeExpression> streamTypes)
         {
             _allocated = true;
 

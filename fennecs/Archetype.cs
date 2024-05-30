@@ -447,31 +447,31 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     #region Cross Joins
-    internal Match.Join<C0> CrossJoin<C0>(TypeExpression[] streamTypes)
+    internal Match.Join<C0> CrossJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Match.Join<C0>(this, streamTypes);
+        return IsEmpty ? default : new Match.Join<C0>(this, streamTypes.AsSpan());
     }
 
 
-    internal Match.Join<C0, C1> CrossJoin<C0, C1>(TypeExpression[] streamTypes)
+    internal Match.Join<C0, C1> CrossJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Match.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal Match.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(TypeExpression[] streamTypes)
+    internal Match.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Match.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal Match.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(TypeExpression[] streamTypes)
+    internal Match.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Match.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal Match.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(TypeExpression[] streamTypes)
+    internal Match.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Match.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }

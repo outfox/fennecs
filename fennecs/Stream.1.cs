@@ -1,36 +1,45 @@
 ﻿using System.Collections;
+using System.Collections.Immutable;
 
 namespace fennecs;
 
 
 /// <summary>
 /// A Stream is an accessor that allows for iteration over a Query's contents.
+/// It exposes both the Runners as well as IEnumerable over a value tuple of the
+/// Query's contents.
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
-public readonly record struct Stream<C0> : IEnumerable<(Entity, C0)>
+public record Stream<C0>(Query Query, Identity Match1) : IEnumerable<(Entity, C0)> where C0 : notnull
 {
+    private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match1)];
+
     /// <summary>
-    /// A Stream is an accessor that allows for iteration over a Query's contents.
+    /// The Archetypes that this Stream is iterating over.
     /// </summary>
-    public Stream(Query Query, Identity match) 
-    {
-        this.Query = Query;
-        _streamTypes = [ TypeExpression.Of<C0>(match)];
-    }
+    protected IReadOnlyList<Archetype> Archetypes => Query.Archetypes;
     
-    private readonly TypeExpression[] _streamTypes;
-    
-    private World World => Query.World;
     /// <summary>
-    /// 
+    /// The World this Stream is associated with.
     /// </summary>
-    private Query Query { get; init; }
+    protected World World => Query.World;
     
+    /// <summary>
+    /// The Query this Stream is associated with.
+    /// Can be re-inited via the with keyword.
+    /// </summary>
+    public Query Query { get; init; } = Query;
+
+    /// <summary>
+    /// The Match Target for the first Stream Type
+    /// </summary>
+    public Identity Match1 { get; init; } = Match1;
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0> action)
     {
         using var worldLock = World.Lock();
-        foreach (var table in Query.Archetypes)
+        foreach (var table in Archetypes)
         {
 
             using var join = table.CrossJoin<C0>(_streamTypes);
@@ -46,6 +55,32 @@ public readonly record struct Stream<C0> : IEnumerable<(Entity, C0)>
         }
     }
 
+    #region Blitters
+
+    /// <summary>
+    /// <para>Blit (write) a component value of a stream type to all entities matched by this query.</para>
+    /// <para>🚀 Very fast!</para>
+    /// </summary>
+    /// <remarks>
+    /// Each entity in the Query must possess the component type.
+    /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
+    /// </remarks>
+    /// <param name="value">a component value</param>
+    /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
+    public void Blit(C0 value, Identity target = default)
+    {
+        var typeExpression = TypeExpression.Of<C0>(target);
+
+        foreach (var table in Archetypes)
+        {
+            table.Fill(typeExpression, value);
+        }
+    }
+    
+    #endregion
+
+
+    #region IEnumerable
 
     /// <inheritdoc />
     public IEnumerator<(Entity, C0)> GetEnumerator()
@@ -73,4 +108,6 @@ public readonly record struct Stream<C0> : IEnumerable<(Entity, C0)>
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    
+    #endregion
 }
