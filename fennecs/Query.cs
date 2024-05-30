@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Immutable;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -25,7 +26,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     ///     The sum of all distinct Entities currently matched by this Query.
     ///     Affected by Filters.
     /// </summary>
-    public int Count => Archetypes.Sum(t => t.Count);
+    public virtual int Count => Archetypes.Sum(t => t.Count);
 
     #region Accessors
     /// <summary>
@@ -51,6 +52,25 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
     #endregion
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="match"></param>
+    /// <typeparam name="C"></typeparam>
+    /// <returns></returns>
+    public Stream<C> Stream<C>(Identity match = default) where C : notnull => new(this, match);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="C0"></typeparam>
+    /// <typeparam name="C1"></typeparam>
+    /// <returns></returns>
+    public Stream<C0, C1> Stream<C0, C1>(Identity match0 = default, Identity match1 = default) where C0 : notnull where C1 : notnull
+    {
+        return new(this, match0, match1);
+    }
+    
 
     /// <summary>
     ///     Does this Query match ("contain") the Entity, and would enumerate it?
@@ -133,13 +153,13 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
-    internal protected readonly List<Archetype> Archetypes;
+    internal protected readonly List<Archetype> Archetypes = PooledList<Archetype>.Rent();
 
     /// <summary>
     /// The World this Query is associated with.
     /// The World will notify the Query of new matched Archetypes, or Archetypes to forget.
     /// </summary>
-    internal protected readonly World World;
+    internal protected World World { get; init; }
     
     /// <summary>
     ///  Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
@@ -172,6 +192,10 @@ public class Query : IEnumerable<Entity>, IDisposable
         World = world;
         Mask = mask;
     }
+    protected Query()
+    {
+    }
+
     #endregion
 
 
@@ -504,7 +528,7 @@ public class Query : IEnumerable<Entity>, IDisposable
         
         disposed = true;
             
-        _trackedArchetypes.Clear();
+        _trackedArchetypes?.Clear();
         Archetypes.Clear();
             
         _streamExclusions.Clear();

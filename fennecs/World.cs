@@ -8,13 +8,13 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
+public partial class World : Query, IEnumerable<Query>, IEnumerable<Archetype>
 {
     #region State & Storage
     private readonly IdentityPool _identityPool;
 
     private Meta[] _meta;
-    private readonly List<Archetype> _archetypes = [];
+    private List<Archetype> _archetypes => Archetypes;
 
     // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
     private readonly Archetype _root;
@@ -131,7 +131,7 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
                     source.Migrate(destination);
                     
                     //Because the dependency is now gone, we close down the whole archetype.
-                    ForgetArchetype(source);
+                    DisposeArchetype(source);
                 }
             }
     }

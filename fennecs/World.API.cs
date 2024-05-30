@@ -116,7 +116,7 @@ public partial class World : IDisposable
     /// <summary>
     /// The number of living entities in the World.
     /// </summary>
-    public int Count => _identityPool.Count;
+    public override int Count => _identityPool.Count;
 
     #endregion
 
@@ -192,6 +192,8 @@ public partial class World : IDisposable
     /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
     public World(int initialCapacity = 4096)
     {
+        World = this;
+        
         _identityPool = new(initialCapacity);
 
         _meta = new Meta[initialCapacity];
@@ -212,7 +214,7 @@ public partial class World : IDisposable
 
             foreach (var archetype in _archetypes)
             {
-                if (archetype.Count == 0) ForgetArchetype(archetype);
+                if (archetype.Count == 0) DisposeArchetype(archetype);
             }
 
             _archetypes.Clear();
@@ -221,7 +223,7 @@ public partial class World : IDisposable
     }
 
 
-    private void ForgetArchetype(Archetype archetype)
+    private void DisposeArchetype(Archetype archetype)
     {
         _typeGraph.Remove(archetype.Signature);
 
@@ -253,7 +255,7 @@ public partial class World : IDisposable
     /// <summary>
     /// Disposes of the World. Currently, a no-op.
     /// </summary>
-    public void Dispose()
+    public new void Dispose()
     {
         //TODO: Release all Object Links?
     }
