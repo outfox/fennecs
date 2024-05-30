@@ -396,7 +396,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             oldStorage.Move(entry, newStorage);
         }
 
-        // Only if we cycled an entity from the end of the storages back (its row changed).
+        // If we cycled an entity from the end of the storages, need Row update.
         if (source.Count > entry) source.PatchMetas(entry);
         
         // Entity was moved, needs both Archetype and Row update.
