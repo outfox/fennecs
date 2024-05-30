@@ -24,5 +24,9 @@ internal readonly struct Meta(Identity identity = default, Archetype archetype =
     internal readonly Identity Identity = identity;
 
 
+    /// <summary>
+    /// Empty Meta is not exactly "default" (row is -1)
+    /// TODO: Might change this, as it makes little difference.
+    /// </summary>
     internal static Meta Empty() => new();
 }
