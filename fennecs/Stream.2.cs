@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -10,19 +11,21 @@ namespace fennecs;
 /// </summary>
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
-public record Stream<C0, C1> : Stream<C0>, IEnumerable<(Entity, C0, C1)> where C0 : notnull where C1 : notnull
+public record Stream<C0, C1>(Query Query, Identity Match0, Identity Match1) : Stream<C0>(Query, Match0), IEnumerable<(Entity, C0, C1)> where C0 : notnull where C1 : notnull
 {
     /// <summary>
     /// A Stream is an accessor that allows for iteration over a Query's contents.
     /// </summary>
-    public Stream(Query Query, Identity match1, Identity match2) : base(Query, match1)
-    {
-        _streamTypes = [TypeExpression.Of<C0>(match1), TypeExpression.Of<C1>(match2)];
-    } 
-    
-    private readonly ImmutableArray<TypeExpression> _streamTypes;
+    private readonly ImmutableArray<TypeExpression> StreamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
 
-    
+    /// <summary>
+    /// The Match Target for the second Stream Type 
+    /// </summary>
+    protected Identity Match1 { get; init; } = Match1;
+
+
+    #region Stream.For
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(RefAction<C0, C1> action)
     {
@@ -30,7 +33,25 @@ public record Stream<C0, C1> : Stream<C0>, IEnumerable<(Entity, C0, C1)> where C
 
         foreach (var table in Archetypes)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
+            if (join.Empty) continue;
+            do
+            {
+                var (s0, s1) = join.Select;
+                Unroll8(s0, s1, action);
+            } while (join.Iterate());
+        }
+    }
+
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+    public void For<U>(RefActionU<C0, C1, U> action, U uniform)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
             if (join.Empty) continue;
 
             do
@@ -39,33 +60,240 @@ public record Stream<C0, C1> : Stream<C0>, IEnumerable<(Entity, C0, C1)> where C
                 var span0 = s0.Span;
                 var span1 = s1.Span;
 
-                Unroll8(span0, span1, action);
+                Unroll8U(span0, span1, action, uniform);
             } while (join.Iterate());
         }
     }
 
-    
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+    public void For(EntityAction<C0, C1> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
+            if (join.Empty) continue;
+
+            var count = table.Count;
+            do
+            {
+                var (s0, s1) = join.Select;
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i]);
+            } while (join.Iterate());
+        }
+    }
+
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+    public void For<U>(EntityActionU<C0, C1, U> action, U uniform)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
+            if (join.Empty) continue;
+
+            var count = table.Count;
+            do
+            {
+                var (s0, s1) = join.Select;
+                var span0 = s0.Span;
+                var span1 = s1.Span;
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], uniform);
+            } while (join.Iterate());
+        }
+    }
+
+    #endregion
+
+    #region Stream.Job
+
+    /// <inheritdoc cref="Query{C0}.Job"/>
+    public void Job(RefAction<C0, C1> action)
+    {
+        using var worldLock = World.Lock();
+        var chunkSize = Math.Max(1, Count / Concurrency);
+
+        Countdown.Reset();
+
+        using var jobs = PooledList<Work<C0, C1>>.Rent();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
+            if (join.Empty) continue;
+
+            var count = table.Count; // storage.Length is the capacity, not the count.
+            var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+            do
+            {
+                for (var chunk = 0; chunk < partitions; chunk++)
+                {
+                    Countdown.AddCount();
+
+                    var start = chunk * chunkSize;
+                    var length = Math.Min(chunkSize, count - start);
+
+                    var (s0, s1) = join.Select;
+
+                    var job = JobPool<Work<C0, C1>>.Rent();
+                    job.Memory1 = s0.AsMemory(start, length);
+                    job.Memory2 = s1.AsMemory(start, length);
+                    job.Action = action;
+                    job.CountDown = Countdown;
+                    jobs.Add(job);
+
+                    ThreadPool.UnsafeQueueUserWorkItem(job, true);
+                }
+            } while (join.Iterate());
+        }
+
+        Countdown.Signal();
+        Countdown.Wait();
+
+        JobPool<Work<C0, C1>>.Return(jobs);
+    }
+
+
+    /// <inheritdoc cref="Query{C0}.Job{U}"/>
+    public void Job<U>(RefActionU<C0, C1, U> action, U uniform)
+    {
+        var chunkSize = Math.Max(1, Count / Concurrency);
+
+        using var worldLock = World.Lock();
+        Countdown.Reset();
+
+        using var jobs = PooledList<UniformWork<C0, C1, U>>.Rent();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
+            if (join.Empty) continue;
+
+            var count = table.Count; // storage.Length is the capacity, not the count.
+            var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+            do
+            {
+                for (var chunk = 0; chunk < partitions; chunk++)
+                {
+                    Countdown.AddCount();
+
+                    var start = chunk * chunkSize;
+                    var length = Math.Min(chunkSize, count - start);
+
+                    var (s0, s1) = join.Select;
+
+                    var job = JobPool<UniformWork<C0, C1, U>>.Rent();
+                    job.Memory1 = s0.AsMemory(start, length);
+                    job.Memory2 = s1.AsMemory(start, length);
+                    job.Action = action;
+                    job.Uniform = uniform;
+                    job.CountDown = Countdown;
+                    jobs.Add(job);
+
+                    ThreadPool.UnsafeQueueUserWorkItem(job, true);
+                }
+            } while (join.Iterate());
+        }
+
+        Countdown.Signal();
+        Countdown.Wait();
+
+        JobPool<UniformWork<C0, C1, U>>.Return(jobs);
+    }
+
+    #endregion
+
+
+    #region Stream.Raw
+
+    /// <inheritdoc cref="Query{C0}.Raw"/>
+    public void Raw(MemoryAction<C0, C1> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
+            if (join.Empty) continue;
+
+            var count = table.Count;
+            do
+            {
+                var (s0, s1) = join.Select;
+                var mem0 = s0.AsMemory(0, count);
+                var mem1 = s1.AsMemory(0, count);
+
+                action(mem0, mem1);
+            } while (join.Iterate());
+        }
+    }
+
+
+    /// <inheritdoc cref="Query{C0}.Raw{U}"/>
+    public void Raw<U>(MemoryActionU<C0, C1, U> action, U uniform)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
+            if (join.Empty) continue;
+
+            var count = table.Count;
+            do
+            {
+                var (s0, s1) = join.Select;
+                var mem0 = s0.AsMemory(0, count);
+                var mem1 = s1.AsMemory(0, count);
+
+                action(mem0, mem1, uniform);
+            } while (join.Iterate());
+        }
+    }
+
+    #endregion
+
+
+    #region Blitters
+
+    /// <inheritdoc cref="Query{C0}.Blit"/>
+    public void Blit(C1 value, Identity target = default)
+    {
+        using var worldLock = World.Lock();
+
+        var typeExpression = TypeExpression.Of<C1>(target);
+
+        foreach (var table in Archetypes)
+        {
+            table.Fill(typeExpression, value);
+        }
+    }
+
+    #endregion
+
+
     #region IEnumerable
-    
+
     /// <inheritdoc />
     public new IEnumerator<(Entity, C0, C1)> GetEnumerator()
     {
         using var worldLock = World.Lock();
-        foreach (var table in Query.Archetypes)
+        foreach (var table in Archetypes)
         {
-
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(StreamTypes);
             if (join.Empty) continue;
-
-            var identities = table.IdentityStorage;
-
             do
             {
                 var (s0, s1) = join.Select;
-                for (var index = 0; index < s0.Count; index++)
+                for (var index = 0; index < table.Count; index++)
                 {
-                    var identity = identities[index];
-                    yield return (new(World, identity), s0.Span[index], s1.Span[index]);
+                    yield return (table[index], s0[index], s1[index]);
                 }
             } while (join.Iterate());
         }
@@ -73,10 +301,10 @@ public record Stream<C0, C1> : Stream<C0>, IEnumerable<(Entity, C0, C1)> where C
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    
+
     #endregion
-    
-    
+
+
     private static void Unroll8(Span<C0> span0, Span<C1> span1, RefAction<C0, C1> action)
     {
         var c = span0.Length / 8 * 8;
@@ -97,6 +325,29 @@ public record Stream<C0, C1> : Stream<C0>, IEnumerable<(Entity, C0, C1)> where C
         for (var i = c; i < d; i++)
         {
             action(ref span0[i], ref span1[i]);
+        }
+    }
+
+    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, RefActionU<C0, C1, U> action, U uniform)
+    {
+        var c = span0.Length / 8 * 8;
+        for (var i = 0; i < c; i += 8)
+        {
+            action(ref span0[i], ref span1[i], uniform);
+            action(ref span0[i + 1], ref span1[i + 1], uniform);
+            action(ref span0[i + 2], ref span1[i + 2], uniform);
+            action(ref span0[i + 3], ref span1[i + 3], uniform);
+
+            action(ref span0[i + 4], ref span1[i + 4], uniform);
+            action(ref span0[i + 5], ref span1[i + 5], uniform);
+            action(ref span0[i + 6], ref span1[i + 6], uniform);
+            action(ref span0[i + 7], ref span1[i + 7], uniform);
+        }
+
+        var d = span0.Length;
+        for (var i = c; i < d; i++)
+        {
+            action(ref span0[i], ref span1[i], uniform);
         }
     }
 }

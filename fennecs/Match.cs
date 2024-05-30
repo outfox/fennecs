@@ -161,6 +161,11 @@ public static class Match
         /// Returns <c>true</c> if the Join is empty, i.e. no permutations are available.
         /// </summary>
         internal bool Empty => !_populated;
+        
+        /// <summary>
+        /// Returns <c>true</c> if the Join has been populated with at least one permutation.
+        /// </summary>
+        internal bool Populated => _populated;
 
 
         public void Dispose()

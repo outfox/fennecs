@@ -306,4 +306,9 @@ internal class Storage<T> : IStorage
     /// Allows inspection of the entire array, not just the used elements.
     /// </remarks>
     internal T this[int index] => _data[index];
+
+    /// <summary>
+    /// Cast to <see cref="Span{T}"/> implicitly.
+    /// </summary>
+    public static implicit operator Span<T>(Storage<T> self) => self.Span;
 }
