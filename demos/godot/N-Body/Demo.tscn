@@ -76,17 +76,9 @@ centered = false
 offset = Vector2(2048, 2048)
 
 [node name="Grid (Parallax2D)" type="Parallax2D" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-editor_description = ""
 scroll_scale = Vector2(0.85, 0.85)
 repeat_size = Vector2(1024, 1024)
 repeat_times = 8
-script = null
 
 [node name="Sprite2D" type="Sprite2D" parent="Grid (Parallax2D)"]
 modulate = Color(0.234491, 0.25045, 1, 0.313726)
@@ -97,18 +89,10 @@ texture = ExtResource("7_vit3s")
 centered = false
 
 [node name="Stars (Parallax2D)" type="Parallax2D" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-editor_description = ""
 visible = false
 scroll_scale = Vector2(0.1, 0.1)
 repeat_size = Vector2(1024, 1024)
 repeat_times = 8
-script = null
 
 [node name="Sprite2D" type="Sprite2D" parent="Stars (Parallax2D)"]
 modulate = Color(0.671514, 0.671514, 0.671514, 1)
