@@ -773,15 +773,6 @@ public class QueryTests
         Assert.Equal(100, query.Count);
     }
 
-    [Fact]
-    public void Can_Double_Dispose_Safely()
-    {
-        using var world = new World();
-        var query = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
-        
-        query.Dispose();
-        query.Dispose();
-    }
 
     [Fact]
     public void For_On_Empty_Query()
@@ -973,5 +964,32 @@ public class QueryTests
         using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Build();
 #pragma warning restore CS0618 // Type or member is obsolete
     }
+
+    [Fact]
+    public void Queries_Are_In_World()
+    {
+        using var world = new World();
+        fennecs.Query query = world.Query<int>().Compile();
+
+        Assert.Contains(query, world);
+    }
+
+    [Fact]
+    public void Dispose_Removes_Query_From_World()
+    {
+        using var world = new World();
+        fennecs.Query query = world.Query<int>().Compile();
+        query.Dispose();
+        Assert.DoesNotContain(query, world);
+    }
     
+    [Fact]
+    public void Cannot_Repeatedly_Dispose_Query()
+    {
+        using var world = new World();
+
+        fennecs.Query query = world.Query<int>().Compile();
+        query.Dispose();
+        Assert.Throws<ObjectDisposedException>(() => query.Dispose());
+    }
 }

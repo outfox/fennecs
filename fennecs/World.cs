@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -7,7 +8,7 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public partial class World
+public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
 {
     #region State & Storage
     private readonly IdentityPool _identityPool;
@@ -258,6 +259,26 @@ public partial class World
         if (IsAlive(identity)) return;
 
         throw new ObjectDisposedException($"Identity {identity} is no longer alive.");
+    }
+    #endregion
+
+    #region IEnumerable
+    /// <inheritdoc />
+    IEnumerator<Archetype> IEnumerable<Archetype>.GetEnumerator()
+    {
+        return _archetypes.GetEnumerator();
+    }
+
+    /// <inheritdoc />
+    public IEnumerator<Query> GetEnumerator()
+    {
+        return _queries.GetEnumerator();
+    }
+
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return _archetypes.GetEnumerator();
     }
     #endregion
 }
