@@ -58,19 +58,21 @@ public class Query2Tests
             str = "five";
         });
 
-        query.Job((ref int index, ref string str, int uniform) =>
+        query.Job(6,
+        (int uniform, ref int index, ref string str) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
             str = uniform.ToString();
-        }, 6);
+        });
 
 
-        query.For((ref int _, ref string str, int uniform) =>
+        query.For(7,
+        (int uniform, ref int _, ref string str) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
-        }, 7);
+        });
 
         query.Raw((_, strings, uniform) =>
         {

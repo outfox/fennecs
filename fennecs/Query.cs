@@ -2,6 +2,8 @@
 
 using System.Collections;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -194,9 +196,10 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         World = world;
         Mask = mask;
     }
+    
     protected Query()
     {
-        Archetypes = [];
+        Archetypes = PooledList<Archetype>.Rent();
         World = default!;
         Mask = default!;
     }

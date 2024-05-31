@@ -49,14 +49,11 @@ var vampireHealth = world.Query<Health>().Has<Vampirism>().Compile();
 
 // We use an EntityAction to apply the damage and also queue the
 // structural change - in this case, full despawn of the Vampire
-vampireHealth.For((Entity vampire, ref Health health, float sunBurn) =>
-{
-    // give it ~10 seconds and your humans will be safe
+vampireHealth.For(static (Entity vampire, ref Health health, float sunBurn) => 
+{   
     health.Value -= sunBurn;
-
-    // the despawn is a deferred operation, and will be
-    // applied at the end of the query runner's scope
     if (health.Value <= 0) vampire.Despawn();
+    // give it ~10 seconds and your humans will be safe    
 }, uniform: Time.deltaTime * sunIntensity);
 ```
 

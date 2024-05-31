@@ -62,9 +62,9 @@ var human2 = world.Spawn()
 
 Now, let's create two kinds of query to find all entities with a `Name` and run it to print a greeting for each entity. We also want to only match entities with a `Fennec` - in our case we can do it by inclusion or exclusion.
 
-### :neofox_floof_mug_reverse: *"Indeed! This is **fenn**ecs, not ***human ecs***!"*
+### :neofox_floof_mug_reverse: *"Aww! This is **fenn**ecs, not ***human ecs***!"*
 
-```csharp
+```csharp{2}
 var noHumans = world.Query<Name>()
     .Not<Human>()
     .Compile();
@@ -77,7 +77,7 @@ noHumans.For(static (ref Name name) =>
 
 ### *"Hmm, **human ecs**?! ... I like it."* :neofox_uwu_nod.gif: 
 
-```csharp
+```csharp{2}
 var onlyFennecs = world.Query<Name>()
     .Has<Fennec>()
     .Compile();

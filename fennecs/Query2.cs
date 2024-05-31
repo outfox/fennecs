@@ -43,7 +43,7 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(ComponentUniformAction<C0, C1, U> action, U uniform)
+    public void For<U>(U uniform, UniformComponentAction<C0, C1, U> action)
     {
         using var worldLock = World.Lock();
 
@@ -156,7 +156,7 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(ComponentUniformAction<C0, C1, U> action, U uniform)
+    public void Job<U>(U uniform, UniformComponentAction<C0, C1, U> action)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -278,12 +278,12 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
     {
         base.Warmup();
         Job(NoOp);
-        Job(NoOp, 0);
+        Job(0, NoOp);
         
         C0 c0 = default!;
         C1 c1 = default!;
         NoOp(ref c0, ref c1);
-        NoOp(ref c0, ref c1, 0);
+        NoOp(0, ref c0, ref c1);
         
         return this;
     }
@@ -294,7 +294,7 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static void NoOp(ref C0 c0, ref C1 c1, int uniform)
+    private static void NoOp(int uniform, ref C0 c0, ref C1 c1)
     {
     }
 
@@ -321,26 +321,26 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
         }
     }
 
-    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, ComponentUniformAction<C0, C1, U> action, U uniform)
+    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<C0, C1, U> action, U uniform)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
         {
-            action(ref span0[i], ref span1[i], uniform);
-            action(ref span0[i + 1], ref span1[i + 1], uniform);
-            action(ref span0[i + 2], ref span1[i + 2], uniform);
-            action(ref span0[i + 3], ref span1[i + 3], uniform);
+            action(uniform, ref span0[i], ref span1[i]);
+            action(uniform, ref span0[i + 1], ref span1[i + 1]);
+            action(uniform, ref span0[i + 2], ref span1[i + 2]);
+            action(uniform, ref span0[i + 3], ref span1[i + 3]);
 
-            action(ref span0[i + 4], ref span1[i + 4], uniform);
-            action(ref span0[i + 5], ref span1[i + 5], uniform);
-            action(ref span0[i + 6], ref span1[i + 6], uniform);
-            action(ref span0[i + 7], ref span1[i + 7], uniform);
+            action(uniform, ref span0[i + 4], ref span1[i + 4]);
+            action(uniform, ref span0[i + 5], ref span1[i + 5]);
+            action(uniform, ref span0[i + 6], ref span1[i + 6]);
+            action(uniform, ref span0[i + 7], ref span1[i + 7]);
         }
 
         var d = span0.Length;
         for (var i = c; i < d; i++)
         {
-            action(ref span0[i], ref span1[i], uniform);
+            action(uniform, ref span0[i], ref span1[i]);
         }
     }
 

@@ -64,10 +64,10 @@ public class Query<C0> : Query where C0 : notnull
     /// <summary>
     /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
     /// </summary>
-    /// <param name="action"><see cref="ComponentUniformAction{C0,U}"/> taking references to Component Types.</param>
+    /// <param name="action"><see cref="UniformComponentAction{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
     // /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(ComponentUniformAction<C0, U> action, U uniform)
+    public void For<U>(UniformComponentAction<C0, U> action, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -184,7 +184,7 @@ public class Query<C0> : Query where C0 : notnull
     /// </summary>
     /// <param name="action"><see cref="ComponentAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void Job<U>(ComponentUniformAction<C0, U> action, U uniform)
+    public void Job<U>(UniformComponentAction<C0, U> action, U uniform)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 

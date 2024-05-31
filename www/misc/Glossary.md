@@ -54,7 +54,7 @@ Console.WriteLine(myWorld.DebugString());
 An Identity is a 64-bit number. When associated with a World, the majority of Identities are called Entities. Identities can represent multiple things:
 - a specific Entity (as itself or for targeting)
 - a specific Object's Identity (for Link targeting)
-- a Wildcard for a Query Filter (see [Match Expressions](/docs/Queries/MatchExpressions.md))
+- a Wildcard for a Query Filter (see [Match Expressions](/docs/Queries/Matching.md))
 
 ## Structural Changes
 

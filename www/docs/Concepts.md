@@ -20,7 +20,7 @@ Entities can be spawned solo, or in bulk with pre-configured components.
 ### [Components](Components/) can be added to / removed from Entities.
 Components can be backed by any type; Value or Reference, even empty `structs`.
 
-### [Queries](Queries/) filter Entities using [Match Expressions](Queries/MatchExpressions.md).
+### [Queries](Queries/) filter Entities using [Match Expressions](Queries/Matching.md).
 This matching is done by Component types and targets (presence or absence).
 
 ### Queries let your code [Act](Queries/Query.For.md) on streams of Component data.
@@ -38,10 +38,10 @@ Structurally similar Entities are packed into [Archetypes](Archetype.md) for imp
 # Unique Concepts 
 
 ::: warning <sub>*(~~weird~~ cool stuff specific to **fenn**ecs)*</sub>
-### [Relations](Relation.md) are Components with an [Entity Target](Queries/MatchExpressions.md#match-targets).
+### [Relations](Relation.md) are Components with an [Entity Target](Queries/Matching.md#match-targets).
 These add expressive, powerful grouping semantics. Relations can be backed by any type.
 
-### [Links](Link.md) are Components backed by an [Object Target](Queries/MatchExpressions.md#match-targets).
+### [Links](Link.md) are Components backed by an [Object Target](Queries/Matching.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
 
 ### Runners let you pass [uniform](Queries/Query.For.md#uniforms-shmuniforms) data to your Workloads.

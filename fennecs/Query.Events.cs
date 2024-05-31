@@ -1,27 +1,22 @@
-﻿#if EXPERIMENTAL
-namespace fennecs;
+﻿namespace fennecs;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-public delegate void EntitySpanAction(Span<Entity> entities);
 public delegate void ArchetypeAction(Archetype archetype);
 
 public class QueryEntityEvent
 {
     public event EntitySpanAction? Event;
-
     public void Invoke(Span<Entity> entities) => Event?.Invoke(entities);
 }
 
 public partial class Query
 {
-    [Obsolete("Under Construction", true)]
     private event ArchetypeAction ArchetypeTracked;
-    [Obsolete("Under Construction", true)]
     private event ArchetypeAction ArchetypeForgotten;
 
     private readonly Dictionary<TypeExpression, QueryEntityEvent> _entityEntered = new();
     private readonly Dictionary<TypeExpression, QueryEntityEvent> _entityLeft = new();
     
-    [Obsolete("Under Construction", true)]
     public QueryEntityEvent EntitiesEntered<T>(Identity match = default)
     {
         var type = TypeExpression.Of<T>(match);
@@ -32,7 +27,6 @@ public partial class Query
         return queryEvent;
     }
 
-    [Obsolete("Under Construction", true)]
     public QueryEntityEvent EntitiesExited<T>(Identity match = default)
     {
         var type = TypeExpression.Of<T>(match);
@@ -42,15 +36,6 @@ public partial class Query
 
         return queryEvent;
     }
-
-    /*
-    private void Test()
-    {
-        var query = new Query();
-
-        query.EntitiesEntered<int>(Match.Any).Event += entities => { };
-        ArchetypeForgotten += archetype => { };
-    }
-    */
 }
-#endif
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

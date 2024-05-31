@@ -54,7 +54,8 @@ public class BlitterBenchmarks
     [Benchmark(Description = "non-blittable job")]
     public int NonBlittableJob()
     {
-        _query.Job((ref int _, ref string str, string uniform) => { str = uniform;}, "not blittable");
+        _query.Job("not blittable",
+            (string uniform, ref int _, ref string str) => { str = uniform;});
         return _world.Count;
     }
 
@@ -70,7 +71,8 @@ public class BlitterBenchmarks
     [Benchmark(Description = "blittable job")]
     public int BlittableJob()
     {
-        _query.Job((ref int val, ref string _, int uniform) => { val = uniform;}, 123456);
+        _query.Job(123456,
+            (int uniform, ref int val, ref string _) => { val = uniform;});
         return _world.Count;
     }
 }

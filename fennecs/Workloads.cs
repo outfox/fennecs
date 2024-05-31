@@ -17,7 +17,7 @@ internal class Work<C1> : IThreadPoolWorkItem
 internal class UniformWork<C1, U> : IThreadPoolWorkItem
 {
     public Memory<C1> Memory1 = null!;
-    public ComponentUniformAction<C1, U> Action = null!;
+    public UniformComponentAction<C1, U> Action = null!;
     public CountdownEvent CountDown = null!;
     public U Uniform = default!;
 
@@ -48,14 +48,14 @@ internal class UniformWork<C1, C2, U> : IThreadPoolWorkItem
 {
     public Memory<C1> Memory1 = null!;
     public Memory<C2> Memory2 = null!;
-    public ComponentUniformAction<C1, C2, U> Action = null!;
+    public UniformComponentAction<C1, C2, U> Action = null!;
     public CountdownEvent CountDown = null!;
     public U Uniform = default!;
 
 
     public void Execute()
     {
-        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i], Uniform);
+        for (var i = 0; i < Memory1.Length; i++) Action(Uniform, ref Memory1.Span[i], ref Memory2.Span[i]);
         CountDown.Signal();
     }
 }
@@ -81,7 +81,7 @@ internal class UniformWork<C1, C2, C3, U> : IThreadPoolWorkItem
     public Memory<C1> Memory1 = null!;
     public Memory<C2> Memory2 = null!;
     public Memory<C3> Memory3 = null!;
-    public ComponentUniformAction<C1, C2, C3, U> Action = null!;
+    public UniformComponentAction<C1, C2, C3, U> Action = null!;
     public CountdownEvent CountDown = null!;
     public U Uniform = default!;
 
@@ -116,7 +116,7 @@ internal class UniformWork<C1, C2, C3, C4, U> : IThreadPoolWorkItem
     public Memory<C2> Memory2 = null!;
     public Memory<C3> Memory3 = null!;
     public Memory<C4> Memory4 = null!;
-    public ComponentUniformAction<C1, C2, C3, C4, U> Action = null!;
+    public UniformComponentAction<C1, C2, C3, C4, U> Action = null!;
     public CountdownEvent CountDown = null!;
     public U Uniform = default!;
 
@@ -153,7 +153,7 @@ internal class UniformWork<C1, C2, C3, C4, C5, U> : IThreadPoolWorkItem
     public Memory<C3> Memory3 = null!;
     public Memory<C4> Memory4 = null!;
     public Memory<C5> Memory5 = null!;
-    public ComponentUniformAction<C1, C2, C3, C4, C5, U> Action = null!;
+    public UniformComponentAction<C1, C2, C3, C4, C5, U> Action = null!;
     public CountdownEvent CountDown = null!;
     public U Uniform = default!;
 

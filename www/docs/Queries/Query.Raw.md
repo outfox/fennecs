@@ -64,7 +64,7 @@ myQuery.Raw((Memory<Vector3> velocities, (float dt, Vector3 g) uniform) =>
 
 All the `Memory<T>` structs are the same length, because each Entity in the Archetype has exactly one of the Archetype's components.
 
-[Match Expressions](MatchExpressions.md) work the same as for other Runners, meaning Entities will get enumerated for each matching Stream Type in the Archetype when applicable.
+[Match Expressions](Matching.md) work the same as for other Runners, meaning Entities will get enumerated for each matching Stream Type in the Archetype when applicable.
 
 
 

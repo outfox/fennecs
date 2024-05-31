@@ -1,51 +1,49 @@
 ﻿#if EXPERIMENTAL
 namespace fennecs;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 public delegate void EntityComponentSpanAction<T>(Span<Entity> entities, Span<T> components);
 
-
-public class EntityComponentEvent<T>
+public abstract class EntityComponentEvent;
+public class EntityComponentEvent<T> : EntityComponentEvent
 {
     public event EntityComponentSpanAction<T>? Event;
 
     public void Invoke(Span<Entity> entities, Span<T> components) => Event?.Invoke(entities, components);
 }
 
+public class EntityEvent
+{
+    public event EntitySpanAction? Event;
+
+    public void Invoke(Span<Entity> entities) => Event?.Invoke(entities);
+
+}
+
 public partial class World
 {
-    private readonly Dictionary<TypeExpression, EntityComponentEvent> _entityEntered = new();
-    private readonly Dictionary<TypeExpression, EntityComponentEvent> _entityLeft = new();
+    private readonly Dictionary<TypeExpression, EntityComponentEvent> _componentAdded = new();
+    private readonly Dictionary<TypeExpression, EntityEvent> _componentRemoved = new();
     
-    [Obsolete("Under Construction", true)]
-    public EntityComponentEvent<T> ComponentAdded<T>(Identity match = default)
+    public EntityComponentEvent<T> ComponentAdded<T>(Identity match)
     {
         var type = TypeExpression.Of<T>(match);
-        if (_entityEntered.TryGetValue(type, out var queryEvent)) return queryEvent;
-
-        _entityEntered[type] = queryEvent = new();
-
-        return (EntityComponentEvent<T>) queryEvent;
+        if (!_componentAdded.TryGetValue(type, out var worldEvent))
+        {
+            _componentAdded[type] = worldEvent = new EntityComponentEvent<T>();
+        }
+        return (EntityComponentEvent<T>) worldEvent;
     }
 
-    [Obsolete("Under Construction", true)]
-    public EntityComponentEvent<T> ComponentRemoved<T>(Identity match = default)
+    public EntityEvent ComponentRemoved<T>(Identity match = default)
     {
         var type = TypeExpression.Of<T>(match);
-        if (_entityLeft.TryGetValue(type, out var queryEvent)) return queryEvent;
+        if (_componentRemoved.TryGetValue(type, out var worldEvent)) return worldEvent;
 
-        _entityLeft[type] = queryEvent = new();
+        _componentRemoved[type] = worldEvent = new();
 
-        return (EntityComponentEvent<T>) queryEvent;
+        return worldEvent;
     }
-
-    /*
-    private void Test()
-    {
-        var query = new Query();
-
-        query.EntitiesEntered<int>(Match.Any).Event += entities => { };
-        ArchetypeForgotten += archetype => { };
-    }
-    */
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 #endif

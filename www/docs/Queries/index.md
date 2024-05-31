@@ -23,7 +23,7 @@ A World contains Entities and their Components, as well as their structure and R
 
 
 ## 1. Matching & Filtering Entities
-It remains associated with this specific World, and Queries can not bridge multiple Worlds. Queries use [Match Expressions](MatchExpressions.md) to define the subset of Entities they ==contain== ("match").
+It remains associated with this specific World, and Queries can not bridge multiple Worlds. Queries use [Match Expressions](Matching.md) to define the subset of Entities they ==contain== ("match").
 
 ## 2. Processing Data (via [Stream Queries](Query.1-5.md))
 

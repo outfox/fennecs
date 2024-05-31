@@ -20,4 +20,6 @@ These are small snippets of good practices how to approach certain problems. The
 They are generally engine-agnostic (for engine-specific chapters, look no further than the ~~secret menu~~ navigation bar)
 :::
 
+![a fennec lifting a hood off some plated food](https://fennecs.tech/img/fennec-staples-csharp.png)
 
+### *Dig in!*

@@ -1,5 +1,15 @@
 ﻿namespace fennecs;
 
+/// <summary>
+/// Basic delegate to notify about something concerning an Entity.
+/// </summary>
+public delegate void EntityAction(Entity e);
+
+/// <summary>
+/// Delegate to notify about something concerning a sequence of Entities.
+/// </summary>
+public delegate void EntitySpanAction(Span<Entity> e);
+
 /// <include file='XMLdoc.xml' path='members/member[@name="T:RefAction"]'/>
 public delegate void ComponentAction<C0>(ref C0 c0);
 
@@ -16,19 +26,19 @@ public delegate void ComponentAction<C0, C1, C2, C3>(ref C0 c0, ref C1 c1, ref C
 public delegate void ComponentAction<C0, C1, C2, C3, C4>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4);
 
 /// <include file='XMLdoc.xml' path='members/member[@name="T:RefActionU"]'/>
-public delegate void ComponentUniformAction<C0, in U>(ref C0 c0, U uniform);
+public delegate void UniformComponentAction<C0, in U>(ref C0 c0, U uniform);
 
 /// <include file='XMLdoc.xml' path='members/member[@name="T:RefActionU"]'/>
-public delegate void ComponentUniformAction<C0, C1, in U>(ref C0 c0, ref C1 c1, U uniform);
+public delegate void UniformComponentAction<C0, C1, in U>(U uniform, ref C0 c0, ref C1 c1);
 
 /// <include file='XMLdoc.xml' path='members/member[@name="T:RefActionU"]'/>
-public delegate void ComponentUniformAction<C0, C1, C2, in U>(ref C0 c0, ref C1 c1, ref C2 c2, U uniform);
+public delegate void UniformComponentAction<C0, C1, C2, in U>(ref C0 c0, ref C1 c1, ref C2 c2, U uniform);
 
 /// <include file='XMLdoc.xml' path='members/member[@name="T:RefActionU"]'/>
-public delegate void ComponentUniformAction<C0, C1, C2, C3, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, U uniform);
+public delegate void UniformComponentAction<C0, C1, C2, C3, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, U uniform);
 
 /// <include file='XMLdoc.xml' path='members/member[@name="T:RefActionU"]'/>
-public delegate void ComponentUniformAction<C0, C1, C2, C3, C4, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4, U uniform);
+public delegate void UniformComponentAction<C0, C1, C2, C3, C4, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4, U uniform);
 
 /// <include file='XMLdoc.xml' path='members/member[@name="T:EntityAction"]'/>
 public delegate void EntityComponentAction<C0>(Entity e, ref C0 c0);

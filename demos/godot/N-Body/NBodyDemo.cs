@@ -31,9 +31,9 @@ public partial class NBodyDemo : Node2D
 		world.GC();
 	}
 
-	// Main simulation "Loop"
 	public override void _PhysicsProcess(double delta)
 	{
+		// #region Showcase
 		// Clear all forces
 		_accumulator.Blit(new Acceleration());
 
@@ -56,6 +56,7 @@ public partial class NBodyDemo : Node2D
 			velocity.Value += dt * accel.Value;
 			position.Value += dt * velocity.Value;
 		}, (float) delta);
+		// #endregion Showcase
 
 		// Copy the Position back to the Body components of the same object
 		// (the plain and relation components are backed by the same instances of Body!)

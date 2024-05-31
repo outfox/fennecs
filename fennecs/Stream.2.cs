@@ -44,7 +44,7 @@ public record Stream<C0, C1>(Query Query, Identity Match0, Identity Match1)
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(ComponentUniformAction<C0, C1, U> action, U uniform)
+    public void For<U>(UniformComponentAction<C0, C1, U> action, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -160,7 +160,7 @@ public record Stream<C0, C1>(Query Query, Identity Match0, Identity Match1)
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(ComponentUniformAction<C0, C1, U> action, U uniform)
+    public void Job<U>(UniformComponentAction<C0, C1, U> action, U uniform)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -329,26 +329,26 @@ public record Stream<C0, C1>(Query Query, Identity Match0, Identity Match1)
         }
     }
 
-    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, ComponentUniformAction<C0, C1, U> action, U uniform)
+    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<C0, C1, U> action, U uniform)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
         {
-            action(ref span0[i], ref span1[i], uniform);
-            action(ref span0[i + 1], ref span1[i + 1], uniform);
-            action(ref span0[i + 2], ref span1[i + 2], uniform);
-            action(ref span0[i + 3], ref span1[i + 3], uniform);
+            action(uniform, ref span0[i], ref span1[i]);
+            action(uniform, ref span0[i + 1], ref span1[i + 1]);
+            action(uniform, ref span0[i + 2], ref span1[i + 2]);
+            action(uniform, ref span0[i + 3], ref span1[i + 3]);
 
-            action(ref span0[i + 4], ref span1[i + 4], uniform);
-            action(ref span0[i + 5], ref span1[i + 5], uniform);
-            action(ref span0[i + 6], ref span1[i + 6], uniform);
-            action(ref span0[i + 7], ref span1[i + 7], uniform);
+            action(uniform, ref span0[i + 4], ref span1[i + 4]);
+            action(uniform, ref span0[i + 5], ref span1[i + 5]);
+            action(uniform, ref span0[i + 6], ref span1[i + 6]);
+            action(uniform, ref span0[i + 7], ref span1[i + 7]);
         }
 
         var d = span0.Length;
         for (var i = c; i < d; i++)
         {
-            action(ref span0[i], ref span1[i], uniform);
+            action(uniform, ref span0[i], ref span1[i]);
         }
     }
     

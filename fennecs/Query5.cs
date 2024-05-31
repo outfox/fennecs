@@ -43,7 +43,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(ComponentUniformAction<C0, C1, C2, C3, C4, U> action, U uniform)
+    public void For<U>(UniformComponentAction<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -166,7 +166,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(ComponentUniformAction<C0, C1, C2, C3, C4, U> action, U uniform)
+    public void Job<U>(UniformComponentAction<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -347,7 +347,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
         }
     }
 
-    private  static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4, ComponentUniformAction<C0, C1, C2, C3, C4, U> action, U uniform)
+    private  static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4, UniformComponentAction<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)

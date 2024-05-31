@@ -7,6 +7,11 @@ order: 2
 
 In **fenn**ecs, components are typically value types unique to each entity. However, you can easily share the same instance of a component among multiple entities using reference types.
 
+This is especially useful for heavyweight objects that are expensive to create or update, such as large data structures.
+
+![two fennecs happily holding a huge cardboard box together](https://fennecs.tech/img/fennec-shareable.png)
+
+
 ::: info :neofox_thumbsup: SHARING MADE SIMPLE
 To share a component, define it as a [reference type](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) (e.g., a class) and add the same instance to multiple entities. Each entity will hold a reference to the shared component instance.
 :::
