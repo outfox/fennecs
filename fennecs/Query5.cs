@@ -273,8 +273,8 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
     
     #region Blitters
 
-    /// <inheritdoc cref="Query{C0}.Blit"/>
-    public void Blit(C4 value, Identity target = default)
+    /// <inheritdoc cref="Query{C0}.Blit(C0,fennecs.Identity)"/>
+    public void Blit(C4 value, Identity target)
     {
         using var worldLock = World.Lock();
 
@@ -286,6 +286,11 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
         }
     }
     
+    
+    /// <inheritdoc cref="Blit(C4,fennecs.Identity)"/>
+    public void Blit(C4 value) => Blit(value, Match.Plain);
+
+
     #endregion
 
 

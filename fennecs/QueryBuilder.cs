@@ -54,7 +54,7 @@ public abstract class QueryBuilder : IDisposable
         World = world;
     }
 
-    protected private void Outputs<T>(Identity target = default)
+    protected private void Outputs<T>(Identity target)
     {
         var typeExpression = TypeExpression.Of<T>(target);
         StreamTypes.Add(typeExpression);
@@ -123,14 +123,13 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Has<T>(Identity target = default)
+    public virtual QueryBuilder Has<T>(Identity target)
     {
         var typeExpression = TypeExpression.Of<T>(target);
         
         Mask.Has(typeExpression);
         return this;
     }
-
 
     /// <summary>
     /// Include only Entities that have the given ObjectLink.
@@ -153,11 +152,20 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Not<T>(Identity target = default)
+    public virtual QueryBuilder Not<T>(Identity target)
     {
         Mask.Not(TypeExpression.Of<T>(target));
         return this;
     }
+
+    /// <inheritdoc cref="Not{T}(fennecs.Identity)"/>
+    public virtual QueryBuilder Not<T>() => Not<T>(Match.Plain);
+
+    /// <inheritdoc cref="Has{T}(fennecs.Identity)"/>
+    public virtual QueryBuilder Has<T>() => Has<T>(Match.Plain);
+
+    /// <inheritdoc cref="Any{T}(fennecs.Identity)"/>
+    public virtual QueryBuilder Any<T>() => Any<T>(Match.Plain);
 
 
     /// <summary>
@@ -184,7 +192,7 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Any<T>(Identity target = default)
+    public virtual QueryBuilder Any<T>(Identity target)
     {
         Mask.Any(TypeExpression.Of<T>(target));
         return this;
@@ -206,6 +214,7 @@ public abstract class QueryBuilder : IDisposable
     }
 
     #endregion
+
 }
 
 /// <inheritdoc />
@@ -215,7 +224,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
         (world, streamTypes, mask, matchingTables) => new Query<C1>(world, streamTypes, mask, matchingTables);
 
 
-    internal QueryBuilder(World world, Identity match = default) : base(world)
+    internal QueryBuilder(World world, Identity match) : base(world)
     {
         Outputs<C1>(match);
     }
@@ -248,7 +257,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
     
 
     /// <inheritdoc />
-    public QueryBuilder<C1> Has<T>()
+    public override QueryBuilder<C1> Has<T>()
     {
         return (QueryBuilder<C1>) base.Has<T>(Match.Plain);
     }
@@ -268,7 +277,10 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Not<T>(Identity target = default)
+    public override QueryBuilder<C1> Not<T>() => Not<T>(Match.Plain);
+
+    /// <inheritdoc />
+    public override QueryBuilder<C1> Not<T>(Identity target)
     {
         return (QueryBuilder<C1>) base.Not<T>(target);
     }
@@ -282,7 +294,10 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Any<T>(Identity target = default)
+    public override QueryBuilder<C1> Any<T>() => Any<T>(Match.Plain);
+
+    /// <inheritdoc />
+    public override QueryBuilder<C1> Any<T>(Identity target)
     {
         return (QueryBuilder<C1>) base.Any<T>(target);
     }
@@ -335,7 +350,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Has<T>(Identity target = default)
+    public override QueryBuilder<C1, C2> Has<T>(Identity target)
     {
         return (QueryBuilder<C1, C2>) base.Has<T>(target);
     }
@@ -349,7 +364,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Not<T>(Identity target = default)
+    public override QueryBuilder<C1, C2> Not<T>(Identity target)
     {
         return (QueryBuilder<C1, C2>) base.Not<T>(target);
     }
@@ -363,7 +378,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Any<T>(Identity target = default)
+    public override QueryBuilder<C1, C2> Any<T>(Identity target)
     {
         return (QueryBuilder<C1, C2>) base.Any<T>(target);
     }
@@ -418,7 +433,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Has<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3> Has<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3>) base.Has<T>(target);
     }
@@ -432,7 +447,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Not<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3> Not<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3>) base.Not<T>(target);
     }
@@ -446,7 +461,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Any<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3> Any<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3>) base.Any<T>(target);
     }
@@ -500,7 +515,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Has<T>(target);
     }
@@ -514,7 +529,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Not<T>(target);
     }
@@ -528,7 +543,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Any<T>(target);
     }
@@ -584,7 +599,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has<T>(target);
     }
@@ -598,7 +613,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Not<T>(target);
     }
@@ -612,7 +627,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Identity target = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Identity target)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any<T>(target);
     }

@@ -11,7 +11,7 @@ public partial class World
     /// <returns><see cref="QueryBuilder{Identity}"/></returns>
     public QueryBuilder<Identity> Query()
     {
-        return new QueryBuilder<Identity>(this);
+        return new QueryBuilder<Identity>(this, Match.Any);
     }
 
 

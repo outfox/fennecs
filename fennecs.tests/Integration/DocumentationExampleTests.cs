@@ -16,11 +16,11 @@ public class DocumentationExampleTests
 
         query.Job((ref Position pos, float uniform) => { pos *= uniform; }, MULTIPLIER);
 
-        var pos1 = world.GetComponent<Position>(entity1, default);
+        var pos1 = world.GetComponent<Position>(entity1, Match.Plain);
         var expected = new Position() * MULTIPLIER;
         Assert.Equal(expected, pos1);
 
-        var pos2 = world.GetComponent<Position>(entity2, default);
+        var pos2 = world.GetComponent<Position>(entity2, Match.Plain);
         expected = new Position(1, 2, 3) * MULTIPLIER;
         Assert.Equal(expected, pos2);
     }

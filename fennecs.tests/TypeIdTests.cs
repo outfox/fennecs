@@ -69,18 +69,15 @@ public class TypeIdTests
 
 
     [Fact]
-    public void TypeAssigner_None_Matches_Default()
+    public void TypeAssigner_Any_Matches_Default()
     {
-        var id1 = TypeExpression.Of<int>();
         // Keeping the default case to ensure it remains at default
         // ReSharper disable once RedundantArgumentDefaultValue
-        var id2 = TypeExpression.Of<int>(default);
-        var id3 = TypeExpression.Of<int>(Match.Plain);
+        var id1 = TypeExpression.Of<int>(default);
+        var id2 = TypeExpression.Of<int>(Match.Any);
 
         Assert.True(id1.Matches(id2));
-        Assert.True(id1.Matches(id3));
-        Assert.True(id2.Matches(id3));
-        Assert.True(id3.Matches(id2));
+        Assert.True(id2.Matches(id1));
     }
 
 

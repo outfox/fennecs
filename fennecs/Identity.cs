@@ -49,7 +49,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// Falsy if it is an actual Entity or a tracked object.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>
-    public bool IsWildcard => Decoration == 0 && Index < 0;
+    public bool IsWildcard => Decoration == 0 && Index is <= 0 and > int.MinValue;
 
 
     #region IComparable/IEquatable Implementation

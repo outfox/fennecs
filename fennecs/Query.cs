@@ -37,7 +37,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
-    public ref C Ref<C>(Entity entity, Identity match = default)
+    public ref C Ref<C>(Entity entity, Identity match)
     {
 
         if (entity.World != World) throw new InvalidOperationException("Entity is not from this World.");
@@ -49,6 +49,9 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         //TODO: Maybe it's possible to lock the World for the lifetime of the ref?
         return ref World.GetComponent<C>(entity, match);
     }
+    
+    /// <inheritdoc cref="Ref{C}(fennecs.Entity,fennecs.Identity)"/>
+    public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Match.Plain);
     #endregion
 
     /// <summary>

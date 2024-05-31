@@ -380,8 +380,8 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add<NewableClass>().Id;
-        Assert.True(world.HasComponent<NewableClass>(identity, default));
-        Assert.NotNull(world.GetComponent<NewableClass>(identity, default));
+        Assert.True(world.HasComponent<NewableClass>(identity, Match.Plain));
+        Assert.NotNull(world.GetComponent<NewableClass>(identity, Match.Plain));
     }
 
 
@@ -390,8 +390,8 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add<NewableStruct>().Id;
-        Assert.True(world.HasComponent<NewableStruct>(identity, default));
-        Assert.Equal(default, world.GetComponent<NewableStruct>(identity, default));
+        Assert.True(world.HasComponent<NewableStruct>(identity, Match.Plain));
+        Assert.Equal(default, world.GetComponent<NewableStruct>(identity, Match.Plain));
     }
 
 
@@ -400,8 +400,8 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add<string>("12").Id;
-        Assert.True(world.HasComponent<string>(identity, default));
-        Assert.NotNull(world.GetComponent<string>(identity, default));
+        Assert.True(world.HasComponent<string>(identity, Match.Plain));
+        Assert.NotNull(world.GetComponent<string>(identity, Match.Plain));
     }
 
 
@@ -413,11 +413,11 @@ public class WorldTests(ITestOutputHelper output)
         var worldLock = world.Lock();
 
         world.On(identity).Add(666);
-        Assert.False(world.HasComponent<int>(identity, default));
-        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(identity, default));
+        Assert.False(world.HasComponent<int>(identity, Match.Plain));
+        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(identity, Match.Plain));
         worldLock.Dispose();
-        Assert.True(world.HasComponent<int>(identity, default));
-        Assert.Equal(666, world.GetComponent<int>(identity, default));
+        Assert.True(world.HasComponent<int>(identity, Match.Plain));
+        Assert.Equal(666, world.GetComponent<int>(identity, Match.Plain));
     }
 
 
@@ -456,11 +456,11 @@ public class WorldTests(ITestOutputHelper output)
         var worldLock = world.Lock();
         world.On(identity).Add(666);
 
-        Assert.False(world.HasComponent<int>(identity, default));
+        Assert.False(world.HasComponent<int>(identity, Match.Plain));
         worldLock.Dispose();
 
-        Assert.True(world.HasComponent<int>(identity, default));
-        Assert.Equal(666, world.GetComponent<int>(identity, default));
+        Assert.True(world.HasComponent<int>(identity, Match.Plain));
+        Assert.Equal(666, world.GetComponent<int>(identity, Match.Plain));
     }
 
 
@@ -473,7 +473,7 @@ public class WorldTests(ITestOutputHelper output)
         world.On(identity).Remove<int>();
 
         worldLock.Dispose();
-        Assert.False(world.HasComponent<int>(identity, default));
+        Assert.False(world.HasComponent<int>(identity, Match.Plain));
     }
 
 

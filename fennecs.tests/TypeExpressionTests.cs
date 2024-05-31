@@ -185,7 +185,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var rel = TypeExpression.Of<TypeA>(Match.Target);
 
         var typ = TypeExpression.Of<TypeA>();
-        var ent = TypeExpression.Of<TypeA>(new Identity(123));
+        var ent = TypeExpression.Of<TypeA>(new(123));
         var lnk = TypeExpression.Of<TypeA>(Identity.Of("hello world"));
 
         Assert.False(rel.Matches(typ));

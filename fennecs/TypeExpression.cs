@@ -167,10 +167,11 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <typeparam name="T">The backing type for which to generate the expression.</typeparam>
     /// <param name="target">The target entity, with a default of <see cref="Match.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of<T>(Identity target = default)
-    {
-        return new TypeExpression(target, LanguageType<T>.Id);
-    }
+    public static TypeExpression Of<T>(Identity target) => new(target, LanguageType<T>.Id);
+    
+    /// <inheritdoc cref="Of{T}(fennecs.Identity)"/>
+    public static TypeExpression Of<T>() => new(Match.Plain, LanguageType<T>.Id);
+
 
 
     /// <summary>
@@ -195,9 +196,15 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <param name="type">The Component type.</param>
     /// <param name="target">The target entity, with a default of <see cref="Match.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of(Type type, Identity target = default)
+    public static TypeExpression Of(Type type, Identity target)
     {
         return new TypeExpression(target, LanguageType.Identify(type));
+    }
+
+    /// <inheritdoc cref="Of(System.Type,fennecs.Identity)"/>
+    public static TypeExpression Of(Type type)
+    {
+        return new(Match.Plain, LanguageType.Identify(type));
     }
 
     

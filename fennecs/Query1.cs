@@ -308,7 +308,7 @@ public class Query<C0> : Query where C0 : notnull
     /// </remarks>
     /// <param name="value">a component value</param>
     /// <param name="target">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
-    public void Blit(C0 value, Identity target = default)
+    public void Blit(C0 value, Identity target)
     {
         var typeExpression = TypeExpression.Of<C0>(target);
 
@@ -317,7 +317,10 @@ public class Query<C0> : Query where C0 : notnull
             table.Fill(typeExpression, value);
         }
     }
-    
+
+    /// <inheritdoc cref="Blit(C0,fennecs.Identity)"/>
+    public void Blit(C0 value) => Blit(value, Match.Plain);
+
     #endregion
 
     #region Warmup & Unroll

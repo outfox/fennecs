@@ -25,7 +25,7 @@ public static class Match
     /// Not a wildcard. Formerly known as "None", as plain components without a target
     /// can only exist once per Entity (same as components with a particular target).
     /// </remarks>
-    public static readonly Identity Plain = new(-1, 0); // was default
+    public static readonly Identity Plain = new(int.MinValue, 0); // was default
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.

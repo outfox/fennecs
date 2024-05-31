@@ -82,7 +82,7 @@ public partial class World : Query
     private bool HasComponent(Identity identity, TypeExpression typeExpression)
     {
         var meta = _meta[identity.Index];
-        return meta.Identity != Match.Plain
+        return meta.Identity != default
                && meta.Identity == identity
                && typeExpression.Matches(meta.Archetype.Signature);
     }
