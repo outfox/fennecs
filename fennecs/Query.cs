@@ -39,7 +39,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
     public ref C Ref<C>(Entity entity, Identity match)
     {
-
+        if (match.IsWildcard) throw new ("Match expression must not be a wildcard.");
         if (entity.World != World) throw new InvalidOperationException("Entity is not from this World.");
         World.AssertAlive(entity);
 
