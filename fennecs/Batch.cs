@@ -51,7 +51,7 @@ public readonly struct Batch : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <param name="data">component data</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>(T data) => AddComponent(data, target: default);
+    public Batch Add<T>(T data) => AddComponent(data, target: Match.Plain);
 
     /// <summary>
     /// Append an AddComponent operation to the batch.
@@ -90,7 +90,7 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>() => RemoveComponent<T>();
+    public Batch Remove<T>() => RemoveComponent<T>(Match.Plain);
 
     /// <summary>
     /// Append an RemoveLink operation to the batch.

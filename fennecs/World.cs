@@ -8,13 +8,12 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public partial class World : Query, IEnumerable<Query>, IEnumerable<Archetype>
+public partial class World : Query
 {
-    #region State & Storage
+    #region World State & Storage
     private readonly IdentityPool _identityPool;
 
     private Meta[] _meta;
-    private List<Archetype> _archetypes => Archetypes;
 
     // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
     private readonly Archetype _root;
@@ -150,7 +149,7 @@ public partial class World : Query, IEnumerable<Query>, IEnumerable<Archetype>
         }
 
         var matchingTables = PooledList<Archetype>.Rent();
-        foreach (var table in _archetypes)
+        foreach (var table in Archetypes)
         {
             if (table.Matches(mask)) matchingTables.Add(table);
         }
@@ -197,8 +196,10 @@ public partial class World : Query, IEnumerable<Query>, IEnumerable<Archetype>
         if (_typeGraph.TryGetValue(types, out var table)) return table;
 
         table = new(this, types);
-        _archetypes.Add(table);
         _typeGraph.Add(types, table);
+
+        //This could be given to us by the next query update?
+        Archetypes.Add(table);
 
         // TODO: This is a suboptimal lookup (enumerate dictionary)
         // IDEA: Maybe we can keep Queries in a Tree which
@@ -255,26 +256,6 @@ public partial class World : Query, IEnumerable<Query>, IEnumerable<Archetype>
         if (IsAlive(identity)) return;
 
         throw new ObjectDisposedException($"Identity {identity} is no longer alive.");
-    }
-    #endregion
-
-    #region IEnumerable
-    /// <inheritdoc />
-    IEnumerator<Archetype> IEnumerable<Archetype>.GetEnumerator()
-    {
-        return _archetypes.GetEnumerator();
-    }
-
-    /// <inheritdoc />
-    public IEnumerator<Query> GetEnumerator()
-    {
-        return _queries.GetEnumerator();
-    }
-
-    /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return _archetypes.GetEnumerator();
     }
     #endregion
 }

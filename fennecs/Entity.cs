@@ -15,7 +15,7 @@ namespace fennecs;
 /// <remarks>
 /// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
 /// </remarks>
-public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDisposable
+public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entity>, IDisposable
 {
     #region Internal State
     /// <summary>
@@ -52,7 +52,11 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Identity target = default) => ref World.GetComponent<C>(this, target);
+    public ref C Ref<C>(Identity target) => ref World.GetComponent<C>(this, target);
+
+    
+    /// <inheritdoc cref="Ref{C}(fennecs.Identity)"/>
+    public ref C Ref<C>() => ref World.GetComponent<C>(this, Match.Plain);
 
 
     /// <summary>
@@ -127,7 +131,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Add<T>(T data) where T : notnull
     {
-        var type = TypeExpression.Of<T>();
+        var type = TypeExpression.Of<T>(Match.Plain);
         World.AddComponent(Id, type, data);
         return this;
     }
@@ -148,7 +152,7 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Remove<T>()
     {
-        World.RemoveComponent(Id, TypeExpression.Of<T>());
+        World.RemoveComponent(Id, TypeExpression.Of<T>(Match.Plain));
         return this;
     }
 
@@ -249,20 +253,9 @@ public readonly struct Entity : IEquatable<Entity>, IComparable<Entity>, IDispos
     /// <returns></returns>
     public static implicit operator bool(Entity entity) => entity.Id && entity.World.IsAlive(entity.Id);
 
-    /// <inheritdoc />
-    public override bool Equals(object? obj) => obj is Entity other && Equals(other);
-
 
     /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(World, Id);
-
-
-    /// <inheritdoc cref="Equals(fennecs.Entity)"/>
-    public static bool operator ==(Entity left, Entity right) => left.Equals(right);
-
-
-    /// <inheritdoc cref="Equals(fennecs.Entity)"/>
-    public static bool operator !=(Entity left, Entity right) => !(left == right);
 
 
     /// <inheritdoc/>

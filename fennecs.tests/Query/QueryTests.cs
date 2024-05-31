@@ -965,13 +965,15 @@ public class QueryTests
 #pragma warning restore CS0618 // Type or member is obsolete
     }
 
+    
+    
     [Fact]
     public void Queries_Are_In_World()
     {
         using var world = new World();
         fennecs.Query query = world.Query<int>().Compile();
 
-        Assert.Contains(query, world);
+        Assert.Contains(query, world.Queries);
     }
 
     [Fact]
@@ -980,7 +982,7 @@ public class QueryTests
         using var world = new World();
         fennecs.Query query = world.Query<int>().Compile();
         query.Dispose();
-        Assert.DoesNotContain(query, world);
+        Assert.DoesNotContain(query, world.Queries);
     }
     
     [Fact]

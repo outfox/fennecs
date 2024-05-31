@@ -248,7 +248,13 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
     
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Has<T>(Identity target = default)
+    public QueryBuilder<C1> Has<T>()
+    {
+        return (QueryBuilder<C1>) base.Has<T>(Match.Plain);
+    }
+
+    /// <inheritdoc />
+    public override QueryBuilder<C1> Has<T>(Identity target)
     {
         return (QueryBuilder<C1>) base.Has<T>(target);
     }

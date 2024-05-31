@@ -26,9 +26,9 @@ public class IdentityTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void Identity_None_is_default()
+    public void Identity_Any_is_default()
     {
-        var none = Match.Plain;
+        var none = Match.Any;
         Assert.Equal(default, none.Generation);
         output.WriteLine(none.Generation.ToString());
         output.WriteLine(none.ToString());
@@ -285,7 +285,7 @@ public class IdentityTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add(t1).Id;
-        var x = world.GetComponent<T>(identity, default);
+        var x = world.GetComponent<T>(identity);
         Assert.Equal(t1, x);
     }
 

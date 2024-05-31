@@ -90,7 +90,7 @@ public partial class World : IDisposable
     public Entity On(Identity identity)
     {
         AssertAlive(identity);
-        return new Entity(this, identity);
+        return new(this, identity);
     }
 
 
@@ -117,6 +117,11 @@ public partial class World : IDisposable
     /// The number of living entities in the World.
     /// </summary>
     public override int Count => _identityPool.Count;
+
+    /// <summary>
+    /// All Queries that exist in this World.
+    /// </summary>
+    public IReadOnlySet<Query> Queries => _queries;
 
     #endregion
 
@@ -193,6 +198,7 @@ public partial class World : IDisposable
     public World(int initialCapacity = 4096)
     {
         World = this;
+       
         
         _identityPool = new(initialCapacity);
 
@@ -212,13 +218,13 @@ public partial class World : IDisposable
         {
             if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
 
-            foreach (var archetype in _archetypes)
+            foreach (var archetype in Archetypes)
             {
                 if (archetype.Count == 0) DisposeArchetype(archetype);
             }
 
-            _archetypes.Clear();
-            _archetypes.AddRange(_typeGraph.Values);
+            Archetypes.Clear();
+            Archetypes.AddRange(_typeGraph.Values);
         }
     }
 
@@ -284,7 +290,7 @@ public partial class World : IDisposable
     {
         var sb = new StringBuilder("World:");
         sb.AppendLine();
-        sb.AppendLine($" {_archetypes.Count} Archetypes");
+        sb.AppendLine($" {Archetypes.Count} Archetypes");
         sb.AppendLine($" {Count} Entities");
         sb.AppendLine($" {_queries.Count} Queries");
         sb.AppendLine($"{nameof(WorldMode)}.{Mode}");

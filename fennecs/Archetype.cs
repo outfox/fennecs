@@ -103,10 +103,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             currentBucket.Add(Storages[index]);
         }
 
-        // Get quick lookup for Identity component
+        // Get quick lookup for Identity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(default);
+        IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
 
         // TODO: Bake buckets dictionary
         // _buckets = Zip(finishedTypes, finishedBuckets);

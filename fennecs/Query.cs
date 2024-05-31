@@ -2,7 +2,6 @@
 
 using System.Collections;
 using System.Collections.Immutable;
-using fennecs.pools;
 
 namespace fennecs;
 
@@ -18,7 +17,7 @@ namespace fennecs;
 ///         output Stream Types for fast iteration.
 ///     </para>
 /// </summary>
-public class Query : IEnumerable<Entity>, IDisposable
+public partial class Query : IEnumerable<Entity>, IDisposable
 {
     internal static int Concurrency => Math.Max(1, Environment.ProcessorCount-2);
     
@@ -153,7 +152,7 @@ public class Query : IEnumerable<Entity>, IDisposable
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
-    internal protected readonly List<Archetype> Archetypes = PooledList<Archetype>.Rent();
+    internal protected readonly List<Archetype> Archetypes;
 
     /// <summary>
     /// The World this Query is associated with.
@@ -194,6 +193,9 @@ public class Query : IEnumerable<Entity>, IDisposable
     }
     protected Query()
     {
+        Archetypes = [];
+        World = default!;
+        Mask = default!;
     }
 
     #endregion
@@ -528,9 +530,9 @@ public class Query : IEnumerable<Entity>, IDisposable
         
         disposed = true;
             
-        _trackedArchetypes?.Clear();
-        Archetypes.Clear();
-            
+        _trackedArchetypes.Clear();
+        Archetypes.Clear();            
+        
         _streamExclusions.Clear();
         _streamFilters.Clear();
 
