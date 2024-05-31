@@ -10,7 +10,8 @@ namespace fennecs;
 /// Query's contents.
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
-public record Stream<C0>(Query Query, Identity Match0) : IEnumerable<(Entity, C0)> where C0 : notnull
+public record Stream<C0>(Query Query, Identity Match0) : IEnumerable<(Entity, C0)> 
+    where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> StreamTypes = [TypeExpression.Of<C0>(Match0)];
 
