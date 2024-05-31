@@ -212,7 +212,7 @@ public abstract class QueryBuilder : IDisposable
         Mask.Any(TypeExpression.Of<T>(Identity.Of(target)));
         return this;
     }
-
+    
     #endregion
 
 }
@@ -255,29 +255,20 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
         return (Query<C1>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
     }
     
-
-    /// <inheritdoc />
-    public override QueryBuilder<C1> Has<T>()
-    {
-        return (QueryBuilder<C1>) base.Has<T>(Match.Plain);
-    }
-
+    
     /// <inheritdoc />
     public override QueryBuilder<C1> Has<T>(Identity target)
     {
         return (QueryBuilder<C1>) base.Has<T>(target);
     }
 
-
+    
     /// <inheritdoc />
     public override QueryBuilder<C1> Has<T>(T target) where T : class
     {
         return (QueryBuilder<C1>) base.Has(target);
     }
 
-
-    /// <inheritdoc />
-    public override QueryBuilder<C1> Not<T>() => Not<T>(Match.Plain);
 
     /// <inheritdoc />
     public override QueryBuilder<C1> Not<T>(Identity target)
@@ -294,9 +285,6 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Any<T>() => Any<T>(Match.Plain);
-
-    /// <inheritdoc />
     public override QueryBuilder<C1> Any<T>(Identity target)
     {
         return (QueryBuilder<C1>) base.Any<T>(target);
@@ -308,6 +296,15 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
     {
         return (QueryBuilder<C1>) base.Any(target);
     }
+    
+    
+    /// <inheritdoc />
+    public override QueryBuilder<C1> Has<T>() => Has<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1> Not<T>() => Not<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1> Any<T>() => Any<T>(Match.Plain);
+    
 }
 
 /// <inheritdoc />
@@ -355,7 +352,6 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
         return (QueryBuilder<C1, C2>) base.Has<T>(target);
     }
 
-
     /// <inheritdoc />
     public override QueryBuilder<C1, C2> Has<T>(T target) where T : class
     {
@@ -389,6 +385,15 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
     {
         return (QueryBuilder<C1, C2>) base.Any(target);
     }
+    
+    
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2> Has<T>() => Has<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2> Not<T>() => Not<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2> Any<T>() => Any<T>(Match.Plain);
+    
 }
 
 /// <inheritdoc />
@@ -445,7 +450,6 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
         return (QueryBuilder<C1, C2, C3>) base.Has(target);
     }
 
-
     /// <inheritdoc />
     public override QueryBuilder<C1, C2, C3> Not<T>(Identity target)
     {
@@ -472,6 +476,14 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
     {
         return (QueryBuilder<C1, C2, C3>) base.Any(target);
     }
+    
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3> Has<T>() => Has<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3> Not<T>() => Not<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3> Any<T>() => Any<T>(Match.Plain);
+    
 }
 
 /// <inheritdoc />
@@ -554,6 +566,15 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Any(target);
     }
+    
+    
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3, C4> Has<T>() => Has<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3, C4> Not<T>() => Not<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3, C4> Any<T>() => Any<T>(Match.Plain);
+    
 }
 
 /// <inheritdoc />
@@ -638,4 +659,12 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any(target);
     }
+    
+    
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>() => Has<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>() => Not<T>(Match.Plain);
+    /// <inheritdoc />
+    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>() => Any<T>(Match.Plain);
 }
