@@ -30,7 +30,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
     #region Stream.For
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    public void For(RefAction<C0, C1, C2, C3> action)
+    public void For(ComponentAction<C0, C1, C2, C3> action)
     {
         using var worldLock = World.Lock();
 
@@ -48,7 +48,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(RefActionU<C0, C1, C2, C3, U> action, U uniform)
+    public void For<U>(ComponentUniformAction<C0, C1, C2, C3, U> action, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -72,7 +72,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityAction<C0, C1, C2, C3> action)
+    public void For(EntityComponentAction<C0, C1, C2, C3> componentAction)
     {
         using var worldLock = World.Lock();
 
@@ -89,14 +89,14 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
                 var span1 = s1.Span;
                 var span2 = s2.Span;
                 var span3 = s3.Span;
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
+                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
             } while (join.Iterate());
         }
     }
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(EntityActionU<C0, C1, C2, C3, U> action, U uniform)
+    public void For<U>(EntityComponentUniformAction<C0, C1, C2, C3, U> componentUniformAction, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -113,7 +113,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
                 var span1 = s1.Span;
                 var span2 = s2.Span;
                 var span3 = s3.Span;
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], uniform);
+                for (var i = 0; i < count; i++) componentUniformAction(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -123,7 +123,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
     #region Stream.Job
 
     /// <inheritdoc cref="Query{C0}.Job"/>
-    public void Job(RefAction<C0, C1, C2, C3> action)
+    public void Job(ComponentAction<C0, C1, C2, C3> action)
     {
         using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
@@ -172,7 +172,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(RefActionU<C0, C1, C2, C3, U> action, U uniform)
+    public void Job<U>(ComponentUniformAction<C0, C1, C2, C3, U> action, U uniform)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -321,7 +321,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
 
     #endregion
 
-    private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, RefAction<C0, C1, C2, C3> action)
+    private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, ComponentAction<C0, C1, C2, C3> action)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
@@ -344,7 +344,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
         }
     }
 
-    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, RefActionU<C0, C1, C2, C3, U> action, U uniform)
+    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, ComponentUniformAction<C0, C1, C2, C3, U> action, U uniform)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)

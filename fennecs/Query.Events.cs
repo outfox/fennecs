@@ -1,4 +1,5 @@
-﻿namespace fennecs;
+﻿#if EXPERIMENTAL
+namespace fennecs;
 
 public delegate void EntitySpanAction(Span<Entity> entities);
 public delegate void ArchetypeAction(Archetype archetype);
@@ -52,3 +53,4 @@ public partial class Query
     }
     */
 }
+#endif

@@ -22,7 +22,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     #region Runners
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    public void For(RefAction<C0, C1, C2> action)
+    public void For(ComponentAction<C0, C1, C2> action)
     {
         using var worldLock = World.Lock();
 
@@ -41,7 +41,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
         }
     }
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(RefActionU<C0, C1, C2, U> action, U uniform)
+    public void For<U>(ComponentUniformAction<C0, C1, C2, U> action, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -62,7 +62,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityAction<C0, C1, C2> action)
+    public void For(EntityComponentAction<C0, C1, C2> componentAction)
     {
         using var worldLock = World.Lock();
 
@@ -78,14 +78,14 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
                 var span0 = s0.Span;
                 var span1 = s1.Span;
                 var span2 = s2.Span;
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i]);
+                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i]);
             } while (join.Iterate());
         }
     }
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(EntityActionU<C0, C1, C2, U> action, U uniform)
+    public void For<U>(EntityComponentUniformAction<C0, C1, C2, U> componentUniformAction, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -101,14 +101,14 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
                 var span0 = s0.Span;
                 var span1 = s1.Span;
                 var span2 = s2.Span;
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
+                for (var i = 0; i < count; i++) componentUniformAction(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
             } while (join.Iterate());
         }
     }
 
 
     /// <inheritdoc cref="Query{C0}.Job"/>
-    public void Job(RefAction<C0, C1, C2> action)
+    public void Job(ComponentAction<C0, C1, C2> action)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -156,7 +156,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(RefActionU<C0, C1, C2, U> action, U uniform)
+    public void Job<U>(ComponentUniformAction<C0, C1, C2, U> action, U uniform)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -302,7 +302,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     {
     }
 
-    private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, RefAction<C0, C1, C2> action)
+    private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, ComponentAction<C0, C1, C2> action)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
@@ -325,7 +325,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
         }
     }
 
-    private  static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, RefActionU<C0, C1, C2, U> action, U uniform)
+    private  static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, ComponentUniformAction<C0, C1, C2, U> action, U uniform)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)

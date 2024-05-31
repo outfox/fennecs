@@ -13,8 +13,8 @@ namespace fennecs;
 /// Queries expose methods to rapidly iterate all Entities that match their Mask and Stream Types.
 /// </para>
 /// <ul>
-/// <li><c>ForEach(...)</c> - call a delegate <see cref="RefAction{C0}"/> for each Entity.</li>
-/// <li><c>Job(...)</c> - parallel process, calling a delegate <see cref="RefAction{C0}"/> for each Entity.</li>
+/// <li><c>ForEach(...)</c> - call a delegate <see cref="ComponentAction{C0}"/> for each Entity.</li>
+/// <li><c>Job(...)</c> - parallel process, calling a delegate <see cref="ComponentAction{C0}"/> for each Entity.</li>
 /// <li><c>Raw(...)</c> - pass Memory regions / Spans to a delegate <see cref="MemoryAction{C0}"/> per matched Archetype (× matched Wildcards) of entities.</li>
 /// </ul>
 /// </summary>
@@ -40,7 +40,7 @@ public class Query<C0> : Query where C0 : notnull
     #region Runners
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    public void For(RefAction<C0> action)
+    public void For(ComponentAction<C0> action)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -64,10 +64,10 @@ public class Query<C0> : Query where C0 : notnull
     /// <summary>
     /// Executes an action for each entity that matches the query, passing an additional uniform parameter to the action.
     /// </summary>
-    /// <param name="action"><see cref="RefActionU{C0,U}"/> taking references to Component Types.</param>
+    /// <param name="action"><see cref="ComponentUniformAction{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
     // /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(RefActionU<C0, U> action, U uniform)
+    public void For<U>(ComponentUniformAction<C0, U> action, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -89,7 +89,7 @@ public class Query<C0> : Query where C0 : notnull
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityAction<C0> action)
+    public void For(EntityComponentAction<C0> componentAction)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -103,14 +103,14 @@ public class Query<C0> : Query where C0 : notnull
                 var s0 = join.Select;
                 var span0 = s0.Span;
 
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i]);
+                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i]);
             } while (join.Iterate());
         }
     }
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(EntityActionU<C0, U> action, U uniform)
+    public void For<U>(EntityComponentUniformAction<C0, U> componentUniformAction, U uniform)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -124,7 +124,7 @@ public class Query<C0> : Query where C0 : notnull
                 var s0 = join.Select;
                 var span0 = s0.Span;
 
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i], uniform);
+                for (var i = 0; i < count; i++) componentUniformAction(table[i], ref span0[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -133,8 +133,8 @@ public class Query<C0> : Query where C0 : notnull
     /// <summary>
     /// Executes an action <em>in parallel chunks</em> for each entity that matches the query.
     /// </summary>
-    /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
-    public void Job(RefAction<C0> action)
+    /// <param name="action"><see cref="ComponentAction{C0}"/> taking references to Component Types.</param>
+    public void Job(ComponentAction<C0> action)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -182,9 +182,9 @@ public class Query<C0> : Query where C0 : notnull
     /// <summary>
     /// Executes an action <em>in parallel chunks</em> for each entity that matches the query, passing an additional uniform parameter to the action.
     /// </summary>
-    /// <param name="action"><see cref="RefAction{C0}"/> taking references to Component Types.</param>
+    /// <param name="action"><see cref="ComponentAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void Job<U>(RefActionU<C0, U> action, U uniform)
+    public void Job<U>(ComponentUniformAction<C0, U> action, U uniform)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
