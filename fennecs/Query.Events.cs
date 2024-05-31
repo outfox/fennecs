@@ -1,40 +1,54 @@
 ﻿namespace fennecs;
 
-public delegate void EntitySpanAction(Span<Entity> obj);
+public delegate void EntitySpanAction(Span<Entity> entities);
+public delegate void ArchetypeAction(Archetype archetype);
 
-public class QueryEvent
+public class QueryEntityEvent
 {
     public event EntitySpanAction? Event;
-    
-    public void Invoke(Span<Entity> entities)
-    {
-        Event?.Invoke(entities);
-    }
+
+    public void Invoke(Span<Entity> entities) => Event?.Invoke(entities);
 }
 
 public partial class Query
 {
-    private readonly Dictionary<TypeExpression, QueryEvent> _entityEntered = new();
-    private readonly Dictionary<TypeExpression, QueryEvent> _entityLeft = new();
+    [Obsolete("Under Construction", true)]
+    private event ArchetypeAction ArchetypeTracked;
+    [Obsolete("Under Construction", true)]
+    private event ArchetypeAction ArchetypeForgotten;
+
+    private readonly Dictionary<TypeExpression, QueryEntityEvent> _entityEntered = new();
+    private readonly Dictionary<TypeExpression, QueryEntityEvent> _entityLeft = new();
     
-    public QueryEvent ComponentAdded<T>(Identity match = default)
+    [Obsolete("Under Construction", true)]
+    public QueryEntityEvent EntitiesEntered<T>(Identity match = default)
     {
         var type = TypeExpression.Of<T>(match);
         if (_entityEntered.TryGetValue(type, out var queryEvent)) return queryEvent;
 
-        queryEvent = new QueryEvent();
-        _entityEntered[type] = queryEvent;
+        _entityEntered[type] = queryEvent = new();
 
         return queryEvent;
     }
 
-    public void Test()
+    [Obsolete("Under Construction", true)]
+    public QueryEntityEvent EntitiesExited<T>(Identity match = default)
+    {
+        var type = TypeExpression.Of<T>(match);
+        if (_entityLeft.TryGetValue(type, out var queryEvent)) return queryEvent;
+
+        _entityLeft[type] = queryEvent = new();
+
+        return queryEvent;
+    }
+
+    /*
+    private void Test()
     {
         var query = new Query();
 
-        query.ComponentAdded<int>(Match.Any).Event += entities =>
-        {
-        };
-        
+        query.EntitiesEntered<int>(Match.Any).Event += entities => { };
+        ArchetypeForgotten += archetype => { };
     }
+    */
 }
