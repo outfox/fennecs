@@ -235,7 +235,7 @@ public record Stream<C0, C1>(Query Query, Identity Match0, Identity Match1)
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(MemoryActionU<C0, C1, U> action, U uniform)
+    public void Raw<U>(MemoryUniformAction<C0, C1, U> uniformAction, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -251,7 +251,7 @@ public record Stream<C0, C1>(Query Query, Identity Match0, Identity Match1)
                 var mem0 = s0.AsMemory(0, count);
                 var mem1 = s1.AsMemory(0, count);
 
-                action(mem0, mem1, uniform);
+                uniformAction(mem0, mem1, uniform);
             } while (join.Iterate());
         }
     }

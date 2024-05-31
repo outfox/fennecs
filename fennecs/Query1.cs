@@ -273,9 +273,9 @@ public class Query<C0> : Query where C0 : notnull
     /// <see cref="Memory{T}"/> contains a <c>Span</c> that can be used to access the data in a contiguous block of memory.
     /// </para>
     /// </remarks>
-    /// <param name="action"><see cref="MemoryAction{C0}"/> action to execute.</param>
+    /// <param name="uniformAction"><see cref="MemoryAction{C0}"/> action to execute.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void Raw<U>(MemoryActionU<C0, U> action, U uniform)
+    public void Raw<U>(MemoryUniformAction<C0, U> uniformAction, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -289,7 +289,7 @@ public class Query<C0> : Query where C0 : notnull
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
 
-                action(mem0, uniform);
+                uniformAction(mem0, uniform);
             } while (join.Iterate());
         }
     }

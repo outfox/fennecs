@@ -260,7 +260,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Identity Match0, Identity 
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(MemoryActionU<C0, C1, C2, C3, C4, U> action, U uniform)
+    public void Raw<U>(MemoryUniformAction<C0, C1, C2, C3, C4, U> uniformAction, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -279,7 +279,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Identity Match0, Identity 
                 var mem3 = s3.AsMemory(0, count);
                 var mem4 = s4.AsMemory(0, count);
 
-                action(mem0, mem1, mem2, mem3, mem4, uniform);
+                uniformAction(mem0, mem1, mem2, mem3, mem4, uniform);
             } while (join.Iterate());
         }
     }

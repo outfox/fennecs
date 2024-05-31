@@ -229,7 +229,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(MemoryActionU<C0, C1, C2, U> action, U uniform)
+    public void Raw<U>(MemoryUniformAction<C0, C1, C2, U> uniformAction, U uniform)
     {
 
         using var worldLock = World.Lock();
@@ -247,7 +247,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
                 var mem1 = s1.AsMemory(0, count);
                 var mem2 = s2.AsMemory(0, count);
                 
-                action(mem0, mem1, mem2, uniform);
+                uniformAction(mem0, mem1, mem2, uniform);
             } while (join.Iterate());
         }
     }
