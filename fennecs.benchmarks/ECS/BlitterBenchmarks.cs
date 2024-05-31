@@ -20,7 +20,8 @@ public class BlitterBenchmarks
     private Query<int, string> _query = null!;
 
     // ReSharper disable once MemberCanBePrivate.Global
-    [Params(100_000, 1_000_000, 10_000_000, 100_000_000)] public int entityCount { get; set; } = 1_000_000;
+    [Params(100_000, 1_000_000, 10_000_000, 100_000_000)]
+    public int entityCount { get; set; } = 1_000_000;
 
     [GlobalSetup]
     public void Setup()
@@ -55,7 +56,7 @@ public class BlitterBenchmarks
     public int NonBlittableJob()
     {
         _query.Job("not blittable",
-            (string uniform, ref int _, ref string str) => { str = uniform;});
+            (string uniform, ref int _, ref string str) => { str = uniform; });
         return _world.Count;
     }
 
@@ -71,8 +72,13 @@ public class BlitterBenchmarks
     [Benchmark(Description = "blittable job")]
     public int BlittableJob()
     {
-        _query.Job(123456,
-            (int uniform, ref int val, ref string _) => { val = uniform;});
+        _query.Job(
+            uniform: 123456,
+            action: (int uniform, ref int val, ref string _) =>
+            {
+                val = uniform;
+            }
+        );
         return _world.Count;
     }
 }

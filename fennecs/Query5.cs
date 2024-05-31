@@ -91,7 +91,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(EntityComponentUniformAction<C0, C1, C2, C3, C4, U> componentUniformAction, U uniform)
+    public void For<U>(UniformEntityComponentAction<C0, C1, C2, C3, C4, U> componentAction, U uniform)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -109,7 +109,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
                 var span3 = s3.Span;
                 var span4 = s4.Span;
 
-                for (var i = 0; i < count; i++) componentUniformAction(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
+                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
             } while (join.Iterate());
         }
     }

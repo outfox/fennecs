@@ -87,7 +87,7 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(EntityComponentUniformAction<C0, C1, U> componentUniformAction, U uniform)
+    public void For<U>(UniformEntityComponentAction<C0, C1, U> componentAction, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -102,7 +102,7 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
                 var (s0, s1) = join.Select;
                 var span0 = s0.Span;
                 var span1 = s1.Span;
-                for (var i = 0; i < count; i++) componentUniformAction(table[i], ref span0[i], ref span1[i], uniform);
+                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], uniform);
             } while (join.Iterate());
         }
     }

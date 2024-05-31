@@ -21,9 +21,24 @@ public sealed class EntitySpawner : IDisposable
 
     private EntitySpawner AddComponent(TypeExpression type, object value)
     {
-        if (_components.Contains(type)) throw new InvalidOperationException($"Component of Type {type} already added.");
-        _components.Add(type);
-        _values.Add(value);
+        if (_components.Contains(type))
+        {
+            // add new value
+            _components.Add(type);
+            _values.Add(value);
+        }
+        else
+        {
+            // replace existing value
+            _values[_components.IndexOf(type)] = value;
+        }
+        return this;
+    }
+    
+    private EntitySpawner RemoveComponent(TypeExpression type)
+    {
+        _values.RemoveAt(_components.IndexOf(type));
+        _components.Remove(type);
         return this;
     }
     
@@ -69,6 +84,7 @@ public sealed class EntitySpawner : IDisposable
     ///  Spawns <c>count</c> entities with the configured components and disposes the spawner.
     /// </summary>
     /// <param name="count">number of entities to spawn</param>
+    [Obsolete("ue .Spawn() and .Dispose() instead.]")]
     public void SpawnOnce(int count = 1)
     {
         Spawn(count);
