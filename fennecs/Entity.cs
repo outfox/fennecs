@@ -210,13 +210,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type and specific target.
     /// </summary>
-    public bool HasLink<T>(T targetObject) where T : class => World.HasComponent<T>(Id, Link<T>.With(targetObject));
-
-
-    /// <summary>
-    /// Checks if the Entity has an Object Link of a specific type.
-    /// </summary>
-    public bool HasLink<T>() where T : class => World.HasComponent<T>(Id, Match.Object);
+    public bool Has<T>(T targetObject) where T : class => World.HasComponent<T>(Id, Link<T>.With(targetObject));
 
 
     /// <summary>

@@ -194,26 +194,26 @@ public class EntityTests(ITestOutputHelper output)
         world.Spawn();
         entity.Add(Link.With("hello world"));
 
-        Assert.True(entity.HasLink<string>("hello world"));
+        Assert.True(entity.Has<string>("hello world"));
         Assert.True(entity.Has<string>(Match.Any));
         Assert.True(entity.Has<string>(Match.Object));
         Assert.True(entity.Has<string>(Match.Target));
 
-        Assert.False(entity.HasLink<string>("goodbye world"));
+        Assert.False(entity.Has<string>("goodbye world"));
         Assert.False(entity.Has<int>(Match.Entity));
     }
 
 
     [Fact]
-    public void Entity_provides_HasLink_overload_With_Implied_MatchExpression()
+    public void Entity_provides_Has_overload_With_Implied_MatchExpression()
     {
         using var world = new World();
         var entity = world.Spawn();
         world.Spawn();
         entity.Add(Link.With("hello world"));
 
-        Assert.True(entity.HasLink<string>());
-        Assert.False(entity.HasLink<EntityTests>());
+        Assert.True(entity.Has<string>());
+        Assert.False(entity.Has<EntityTests>());
     }
 
 
