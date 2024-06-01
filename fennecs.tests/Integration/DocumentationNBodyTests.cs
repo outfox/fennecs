@@ -77,7 +77,7 @@ public class DocumentationNBodyTests
         // Used to accumulate all forces acting on a body from the other bodies
         // (the plain and relation Body Stream Components are backed by the same object!)
         using var accumulator = world
-            .Query<Acceleration, Body, Body>(Match.Plain, Match.Plain, Match.Entity)
+            .Query<Acceleration, Body, Body>(MatchOld.Plain, MatchOld.Plain, MatchOld.Entity)
             .Compile();
         
         Assert.Equal(3, accumulator.Count);
@@ -89,7 +89,7 @@ public class DocumentationNBodyTests
         using var integrator = world.Query<Acceleration, Velocity, Position>().Compile();
         
         // Used to copy the Position into the Body components of the same object (plain = non-relation component)
-        using var consolidator = world.Query<Position, Body>(Match.Plain, Match.Plain).Compile();
+        using var consolidator = world.Query<Position, Body>(MatchOld.Plain, MatchOld.Plain).Compile();
         
         const int bodyCount = 3;
         

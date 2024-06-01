@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests;
 
-public class MatchTests
+public class MatchOldTests
 {
     [Theory]
     [InlineData(new[] {1, 1, 1})]
@@ -18,7 +18,7 @@ public class MatchTests
         do
         {
             count++;
-        } while (Match.CrossJoin(counter, limiter));
+        } while (MatchOld.CrossJoin(counter, limiter));
 
         var product = limiter.Aggregate(1, (current, i) => current * i);
         Assert.Equal(product, count);

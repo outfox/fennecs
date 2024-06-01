@@ -267,7 +267,7 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
     }
     
     /// <inheritdoc cref="Blit(C1,fennecs.Identity)"/>
-    public void Blit(C1 value) => Blit(value, Match.Plain);
+    public void Blit(C1 value) => Blit(value, MatchOld.Plain);
     #endregion
 
     

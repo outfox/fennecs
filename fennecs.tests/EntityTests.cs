@@ -175,14 +175,14 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(123);
 
         Assert.True(entity.Has<int>());
-        Assert.True(entity.Has<int>(Match.Plain));
-        Assert.True(entity.Has<int>(Match.Any));
+        Assert.True(entity.Has<int>(MatchOld.Plain));
+        Assert.True(entity.Has<int>(MatchOld.Any));
 
-        Assert.False(entity.Has<int>(Match.Entity));
-        Assert.False(entity.Has<int>(Match.Object));
-        Assert.False(entity.Has<int>(Match.Target));
+        Assert.False(entity.Has<int>(MatchOld.Entity));
+        Assert.False(entity.Has<int>(MatchOld.Object));
+        Assert.False(entity.Has<int>(MatchOld.Target));
 
-        Assert.False(entity.Has<float>(Match.Any));
+        Assert.False(entity.Has<float>(MatchOld.Any));
     }
 
 
@@ -195,12 +195,12 @@ public class EntityTests(ITestOutputHelper output)
         entity.AddLink("hello world");
 
         Assert.True(entity.HasLink<string>("hello world"));
-        Assert.True(entity.Has<string>(Match.Any));
-        Assert.True(entity.Has<string>(Match.Object));
-        Assert.True(entity.Has<string>(Match.Target));
+        Assert.True(entity.Has<string>(MatchOld.Any));
+        Assert.True(entity.Has<string>(MatchOld.Object));
+        Assert.True(entity.Has<string>(MatchOld.Target));
 
         Assert.False(entity.HasLink<string>("goodbye world"));
-        Assert.False(entity.Has<int>(Match.Entity));
+        Assert.False(entity.Has<int>(MatchOld.Entity));
     }
 
 
@@ -226,11 +226,11 @@ public class EntityTests(ITestOutputHelper output)
         entity.AddRelation<int>(target);
 
         Assert.True(entity.HasRelation<int>(target));
-        Assert.True(entity.Has<int>(Match.Target));
-        Assert.True(entity.Has<int>(Match.Any));
+        Assert.True(entity.Has<int>(MatchOld.Target));
+        Assert.True(entity.Has<int>(MatchOld.Any));
 
         Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
-        Assert.False(entity.Has<int>(Match.Object));
+        Assert.False(entity.Has<int>(MatchOld.Object));
     }
 
 

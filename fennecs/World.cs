@@ -224,10 +224,10 @@ public partial class World : Query
 
             if (!type.isRelation) continue;
 
-            if (!_typesByRelationTarget.TryGetValue(type.Target, out var typeList))
+            if (!_typesByRelationTarget.TryGetValue(type.Identity, out var typeList))
             {
                 typeList = [];
-                _typesByRelationTarget[type.Target] = typeList;
+                _typesByRelationTarget[type.Identity] = typeList;
             }
 
             typeList.Add(type);
@@ -239,12 +239,12 @@ public partial class World : Query
 
     internal void CollectTargets<T>(List<Identity> entities)
     {
-        var type = TypeExpression.Of<T>(Match.Any);
+        var type = TypeExpression.Of<T>(MatchOld.Any);
 
         // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
         foreach (var candidate in _tablesByType.Keys)
             if (type.Matches(candidate))
-                entities.Add(candidate.Target);
+                entities.Add(candidate.Identity);
     }
     #endregion
 

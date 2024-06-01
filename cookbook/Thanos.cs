@@ -33,10 +33,10 @@ using (var _ = world.Lock())
 }
 
 // I'm the only one who knows that. The Unlucky must go! (mkay...)
-thanosQuery.Subset<Unlucky>(Match.Plain);
+thanosQuery.Subset<Unlucky>(MatchOld.Plain);
 
 // And I guess that means the Lucky will stay! (uh oh!)
-thanosQuery.Exclude<Lucky>(Match.Plain);
+thanosQuery.Exclude<Lucky>(MatchOld.Plain);
 
 // (Aside: Thanos flunked probabilistics. Here's what's truly going on!)
 var unluckyQuery = world.Query().Has<Unlucky>().Compile();  

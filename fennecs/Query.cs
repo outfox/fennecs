@@ -35,7 +35,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     Gets a reference to the Component of type <typeparamref name="C" /> for the entity.
     /// </summary>
     /// <param name="entity">the entity to get the component from</param>
-    /// <param name="match">Match Expression for the component type <see cref="Match" /></param>
+    /// <param name="match">Match Expression for the component type <see cref="MatchOld" /></param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
@@ -54,7 +54,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     }
 
     /// <inheritdoc cref="Ref{C}(fennecs.Entity,fennecs.Identity)"/>
-    public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Match.Plain);
+    public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, MatchOld.Plain);
 
     #endregion
 
@@ -75,8 +75,8 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?
     /// </summary>
     /// <param name="match">
-    ///     Match Expression for the component type <see cref="Match" />.
-    ///     The default is <see cref="Match.Plain" />
+    ///     Match Expression for the component type <see cref="MatchOld" />.
+    ///     The default is <see cref="MatchOld.Plain" />
     /// </param>
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
     public bool Contains<T>(Identity match = default)

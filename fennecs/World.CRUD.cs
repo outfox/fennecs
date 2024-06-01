@@ -68,7 +68,7 @@ public partial class World
         return ref storage.Span[meta.Row];
     }
 
-    internal ref T GetComponent<T>(Identity identity) => ref GetComponent<T>(identity, Match.Plain);
+    internal ref T GetComponent<T>(Identity identity) => ref GetComponent<T>(identity, MatchOld.Plain);
 
     internal Signature<TypeExpression> GetSignature(Identity identity)
     {

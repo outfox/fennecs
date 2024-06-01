@@ -56,7 +56,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
 
     
     /// <inheritdoc cref="Ref{C}(fennecs.Identity)"/>
-    public ref C Ref<C>() => ref World.GetComponent<C>(this, Match.Plain);
+    public ref C Ref<C>() => ref World.GetComponent<C>(this, MatchOld.Plain);
 
 
     /// <summary>
@@ -131,7 +131,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Add<T>(T data) where T : notnull
     {
-        var type = TypeExpression.Of<T>(Match.Plain);
+        var type = TypeExpression.Of<T>(MatchOld.Plain);
         World.AddComponent(Id, type, data);
         return this;
     }
@@ -152,7 +152,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Remove<T>()
     {
-        World.RemoveComponent(Id, TypeExpression.Of<T>(Match.Plain));
+        World.RemoveComponent(Id, TypeExpression.Of<T>(MatchOld.Plain));
         return this;
     }
 
@@ -196,14 +196,14 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
 
     /// <summary>
     /// Checks if the Entity has a Plain Component.
-    /// Same as calling <see cref="Has{T}(Identity)"/> with <see cref="Match.Plain"/>
+    /// Same as calling <see cref="Has{T}(Identity)"/> with <see cref="MatchOld.Plain"/>
     /// </summary>
     public bool Has<T>() => World.HasComponent<T>(Id, default);
 
 
     /// <summary>
     /// Checks if the Entity has a Component of a specific type.
-    /// Allows for a <see cref="Match"/> Expression to be specified.
+    /// Allows for a <see cref="MatchOld"/> Expression to be specified.
     /// </summary>
     public bool Has<T>(Identity match) => World.HasComponent<T>(Id, match);
 
@@ -217,7 +217,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type.
     /// </summary>
-    public bool HasLink<T>() where T : class => World.HasComponent<T>(Id, Match.Object);
+    public bool HasLink<T>() where T : class => World.HasComponent<T>(Id, MatchOld.Object);
 
 
     /// <summary>
@@ -229,7 +229,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <summary>
     /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
     /// </summary>
-    public bool HasRelation<T>() => World.HasComponent<T>(Id, Match.Entity);
+    public bool HasRelation<T>() => World.HasComponent<T>(Id, MatchOld.Entity);
     #endregion
 
 

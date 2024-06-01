@@ -11,7 +11,7 @@ public partial class Query
     /// <param name="match">Match Target for the Component (defaults to Any)</param>
     /// <typeparam name="C">component stream type</typeparam>
     /// <returns>Stream View</returns>
-    public Stream<C> Stream<C>(Identity match = default)
+    public Stream<C> Stream<C>(Match match = default)
         where C : notnull
         => new(this, match);
 
@@ -23,7 +23,7 @@ public partial class Query
     /// <typeparam name="C0">1st component stream type</typeparam>
     /// <typeparam name="C1">2nd component stream type</typeparam>
     /// <returns>Stream View</returns>
-    public Stream<C0, C1> Stream<C0, C1>(Identity match0, Identity match1)
+    public Stream<C0, C1> Stream<C0, C1>(Match match0, Match match1)
         where C0 : notnull
         where C1 : notnull
         => new(this, match0, match1);
@@ -49,7 +49,7 @@ public partial class Query
     /// <inheritdoc cref="Stream{C0,C1}(Identity, Identity)"/>
     /// <param name="match2">3nd Component Match Target</param>
     /// <typeparam name="C2">3rd component stream type</typeparam>
-    public Stream<C0, C1, C2> Stream<C0, C1, C2>(Identity match0, Identity match1, Identity match2)
+    public Stream<C0, C1, C2> Stream<C0, C1, C2>(Match match0, Match match1, Match match2)
         where C0 : notnull
         where C1 : notnull
         where C2 : notnull

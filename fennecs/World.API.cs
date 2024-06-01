@@ -132,8 +132,8 @@ public partial class World : IDisposable
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
-    /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
-    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/> or <see cref="Match.Target"/>
+    /// <param name="match">default <see cref="MatchOld.Plain"/>.<br/>Can alternatively be one
+    /// of <see cref="MatchOld.Any"/>, <see cref="MatchOld.Object"/> or <see cref="MatchOld.Target"/>
     /// </param>
     public void DespawnAllWith<T>(Identity match = default)
     {
@@ -205,7 +205,7 @@ public partial class World : IDisposable
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new Signature<TypeExpression>(TypeExpression.Of<Identity>(Match.Plain)));
+        _root = GetArchetype(new Signature<TypeExpression>(TypeExpression.Of<Identity>(MatchOld.Plain)));
     }
 
 
@@ -240,10 +240,10 @@ public partial class World : IDisposable
             // This is still relevant if ONE relation component is eliminated, but NOT all of them.
             // In the case where the target itself is Despawned, _typesByRelationTarget already
             // had its entire entry for that Target removed.
-            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Target, out var stillInUse))
+            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Identity, out var stillInUse))
             {
                 stillInUse.Remove(type);
-                if (stillInUse.Count == 0) _typesByRelationTarget.Remove(type.Target);
+                if (stillInUse.Count == 0) _typesByRelationTarget.Remove(type.Identity);
             }
 
             // Same here, if all Archetypes with a Type are gone, we can clear the entry.

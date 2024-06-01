@@ -45,7 +45,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
     // Wildcard Entities, such as Any, Object, Entity, or Relation.
     /// <summary>
-    /// Truthy if the Identity represents a virtual concept (see <see cref="Match"/>).
+    /// Truthy if the Identity represents a virtual concept (see <see cref="MatchOld"/>).
     /// Falsy if it is an actual Entity or a tracked object.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>
@@ -149,19 +149,19 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <inheritdoc />
     public override string ToString()
     {
-        if (Equals(Match.Plain))
+        if (Equals(MatchOld.Plain))
             return "[None]";
 
-        if (Equals(Match.Any))
+        if (Equals(MatchOld.Any))
             return "wildcard[Any]";
 
-        if (Equals(Match.Target))
+        if (Equals(MatchOld.Target))
             return "wildcard[Target]";
 
-        if (Equals(Match.Entity))
+        if (Equals(MatchOld.Entity))
             return "wildcard[Entity]";
 
-        if (Equals(Match.Object))
+        if (Equals(MatchOld.Object))
             return "wildcard[Object]";
 
         if (IsObject)

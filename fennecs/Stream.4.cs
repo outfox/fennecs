@@ -9,7 +9,7 @@ namespace fennecs;
 /// <typeparam name="C1">stream type</typeparam>
 /// <typeparam name="C2">stream type</typeparam>
 /// <typeparam name="C3">stream type</typeparam>
-public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Match1, Identity Match2, Identity Match3)
+public record Stream<C0, C1, C2, C3>(Query Query, Match Match0, Match Match1, Match Match2, Match Match3)
     : Stream<C0, C1, C2>(Query, Match0, Match1, Match2), IEnumerable<(Entity, C0, C1, C2, C3)> 
     where C0 : notnull 
     where C1 : notnull 
@@ -24,7 +24,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
     /// <summary>
     /// The Match Target for the fourth Stream Type 
     /// </summary>
-    protected Identity Match3 { get; init; } = Match3;
+    protected Match Match3 { get; init; } = Match3;
 
 
     #region Stream.For
@@ -279,8 +279,8 @@ public record Stream<C0, C1, C2, C3>(Query Query, Identity Match0, Identity Matc
 
     #region Blitters
 
-    /// <inheritdoc cref="Query{C0}.Blit(C0,fennecs.Identity)"/>
-    public void Blit(C3 value, Identity target = default)
+    /// <inheritdoc cref="Query{C0}.Blit(C0,fennecs.Match)"/>
+    public void Blit(C3 value, Match target = default)
     {
         using var worldLock = World.Lock();
 

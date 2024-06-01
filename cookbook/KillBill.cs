@@ -45,7 +45,7 @@ Console.WriteLine($"We are still {us.Ref<Location>()}, though.");
 
 // Has<>(Match.Entity) is the same as saying HasRelation<>()
 Console.WriteLine();
-Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
+Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(MatchOld.Entity)}.");
 Console.WriteLine("This is us (and our grudges):\n" + us);
 
 // Choose your weapon:
@@ -79,7 +79,7 @@ Console.WriteLine($"Let's get out of {us.Ref<Location>()}.");
 us.Ref<Location>() = "traveling";
 
 // We satisfied our grudges.
-Console.WriteLine($"Any more grudges? {us.Has<Grudge>(Match.Entity)}.");
+Console.WriteLine($"Any more grudges? {us.Has<Grudge>(MatchOld.Entity)}.");
 Console.WriteLine("This is us now:\n" + us);
 Console.WriteLine($"We'll be {us.Ref<Location>()} for a while.");
 
