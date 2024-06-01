@@ -551,8 +551,8 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         object target = new { };
-        world.On(entity).Add(Link.With(target));
-        var typeExpression = TypeExpression.Of<object>(Identity.Of(target));
+        entity.Add(Link.With(target));
+        var typeExpression = TypeExpression.Of<object>(Link.With(target));
         world.RemoveComponent(entity, typeExpression);
         Assert.False(entity.Has(target));
     }

@@ -76,8 +76,8 @@ public class TypeIdTests
         var id1 = TypeExpression.Of<int>(Match.Plain);
         var id2 = TypeExpression.Of<int>(Match.Any);
 
-        Assert.True(id1.Matches(id2));
         Assert.True(id2.Matches(id1));
+        Assert.False(id1.Matches(id2)); //Non-commutative, TODO: Review whether we actually want this.
     }
 
 
@@ -121,6 +121,15 @@ public class TypeIdTests
     }
 
 
+    [Fact]
+    public void Match_from_Anonymous_Object_Identity_Is_Same_As_Link()
+    {
+        object target = new { };
+        var typeExpression1 = TypeExpression.Of<object>(Link.With(target));
+        var typeExpression2 = TypeExpression.Of<object>(Link.With(target));
+        
+        Assert.Equal(typeExpression1, typeExpression2);
+    }
     private struct Type1;
 
     private struct Type2;

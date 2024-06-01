@@ -73,9 +73,9 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
-    /// <param name="relation">The entity with which to establish the relation.</param>
+    /// <param name="relate">The entity with which to establish the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Add<B>(Relation relation) where B : notnull, new() => Add(new B(), relation);
+    public Entity Add<B>(Relate relate) where B : notnull, new() => Add(new B(), relate);
 
 
     /// <summary>
@@ -91,11 +91,11 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
     /// <param name="data">The data associated with the relation.</param>
-    /// <param name="relation">The entity with which to establish the relation.</param>
+    /// <param name="relate">The entity with which to establish the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Add<T>(T data, Relation relation = default) where T : notnull
+    public Entity Add<T>(T data, Relate relate = default) where T : notnull
     {
-        var typeExpression = TypeExpression.Of<T>(relation);
+        var typeExpression = TypeExpression.Of<T>(relate);
         World.AddComponent(Id, typeExpression, data);
         return this;
     }
@@ -180,7 +180,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
     public Entity Remove<T>(Link<T> link) where T : class
     {
-        World.RemoveComponent(Id, link);
+        World.RemoveComponent(Id, link.TypeExpression);
         return this;
     }
 

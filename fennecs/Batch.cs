@@ -52,7 +52,7 @@ public readonly struct Batch : IDisposable
     /// <param name="data">component data</param>
     /// <param name="target">relation target (default = no relation, plain component)</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>(T data, Relation target = default) => AddComponent(data, target);
+    public Batch Add<T>(T data, Relate target = default) => AddComponent(data, target);
     
     public Batch Add<T>(Link<T> link) where T : class => AddComponent(link.Target, link);
 
@@ -70,7 +70,7 @@ public readonly struct Batch : IDisposable
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
     [Obsolete("Use Add(T, target) instead.")]
-    public Batch Add<T>(Entity target) where T : new() => AddComponent<T>(new(), Relation.To(target));
+    public Batch Add<T>(Entity target) where T : new() => AddComponent<T>(new(), Relate.To(target));
 
     /// <summary>
     /// Append an Add operation to the batch.
@@ -102,7 +102,7 @@ public readonly struct Batch : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <param name="target">target of the relation</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>(Relation target) => RemoveComponent<T>(target);
+    public Batch Remove<T>(Relate target) => RemoveComponent<T>(target);
 
 
     private Batch AddComponent<T>(T data, Match target)
