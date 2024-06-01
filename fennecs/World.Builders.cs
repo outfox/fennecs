@@ -54,7 +54,7 @@ public partial class World
     /// </remarks>
     /// <typeparam name="C1">component Stream Type 1</typeparam>
     /// <typeparam name="C2">component Stream Type 2</typeparam>
-    /// <returns><see cref="QueryBuilder{C1, C2}"/></returns>
+    /// <returns><see cref="QueryBuilder{C1,C2}"/></returns>
     public QueryBuilder<C1, C2> Query<C1, C2>() where C1 : notnull where C2 : notnull
     {
         return new QueryBuilder<C1, C2>(this, Match.Any, Match.Any);
@@ -73,7 +73,7 @@ public partial class World
     /// <param name="match2">Match Expression for Stream Type 2</param>
     /// <typeparam name="C1">component Stream Type 1</typeparam>
     /// <typeparam name="C2">component Stream Type 2</typeparam>
-    /// <returns><see cref="QueryBuilder{C1, C2}"/></returns>
+    /// <returns><see cref="QueryBuilder{C1,C2}"/></returns>
     public QueryBuilder<C1, C2> Query<C1, C2>(Match match1, Match match2) where C1 : notnull where C2 : notnull
     {
         return new QueryBuilder<C1, C2>(this, match1, match2);

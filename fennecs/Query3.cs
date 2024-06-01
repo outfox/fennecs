@@ -62,7 +62,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityComponentAction<C0, C1, C2> componentAction)
+    public void For(EntityComponentAction<C0, C1, C2> action)
     {
         using var worldLock = World.Lock();
 
@@ -78,14 +78,14 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
                 var span0 = s0.Span;
                 var span1 = s1.Span;
                 var span2 = s2.Span;
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i]);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i]);
             } while (join.Iterate());
         }
     }
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(UniformEntityComponentAction<C0, C1, C2, U> componentAction, U uniform)
+    public void For<U>(UniformEntityComponentAction<C0, C1, C2, U> action, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -101,7 +101,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
                 var span0 = s0.Span;
                 var span1 = s1.Span;
                 var span2 = s2.Span;
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -229,7 +229,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(MemoryUniformAction<C0, C1, C2, U> uniformAction, U uniform)
+    public void Raw<U>(MemoryUniformAction<C0, C1, C2, U> action, U uniform)
     {
 
         using var worldLock = World.Lock();
@@ -247,7 +247,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
                 var mem1 = s1.AsMemory(0, count);
                 var mem2 = s2.AsMemory(0, count);
                 
-                uniformAction(mem0, mem1, mem2, uniform);
+                action(mem0, mem1, mem2, uniform);
             } while (join.Iterate());
         }
     }
@@ -256,7 +256,7 @@ public class Query<C0, C1, C2> : Query<C0, C1> where C2 : notnull where C1 : not
 
     #region Blitters
 
-    /// <inheritdoc cref="Query{C0}.Blit(C0,fennecs.Identity)"/>
+    /// <inheritdoc cref="Query{C0}.Blit"/>
     public void Blit(C2 value, Match target = default)
     {
         using var worldLock = World.Lock();

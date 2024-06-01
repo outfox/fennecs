@@ -54,7 +54,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         return ref World.GetComponent<C>(entity, match);
     }
 
-    /// <inheritdoc cref="Ref{C}(fennecs.Entity,fennecs.Identity)"/>
+    /// <inheritdoc cref="Ref{C}(fennecs.Entity,fennecs.Match)"/>
     public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Match.Plain);
 
     #endregion
@@ -181,6 +181,9 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         Mask = mask;
     }
 
+    /// <summary>
+    /// Base constructor (TODO: Fix up required fields / refactor out stream filters)
+    /// </summary>
     protected Query()
     {
         Archetypes = PooledList<Archetype>.Rent();
@@ -231,7 +234,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     }
 
     /// <summary>
-    ///     Clears all <see cref="Subset{T}(fennecs.Identity)"/> and <see cref="Exclude{T}(fennecs.Identity)"/> filters on this Query, returning it to its initial state. See <see cref="Subset{T}(fennecs.Identity)" />.
+    ///     Clears all <see cref="Subset{T}(fennecs.Match)"/> and <see cref="Exclude{T}(fennecs.Match)"/> filters on this Query, returning it to its initial state. See <see cref="Subset{T}(fennecs.Match)" />.
     /// </summary>
     public void ClearFilters()
     {
@@ -376,7 +379,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <param name="data">the data to add</param>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     // ReSharper disable once MemberCanBePrivate.Global
-    public void Add<T>(T data) => Batch().Add<T>(data).Submit();
+    public void Add<T>(T data) => Batch().Add(data).Submit();
 
 
     /// <summary>

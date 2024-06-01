@@ -89,7 +89,7 @@ public class Query<C0> : Query where C0 : notnull
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityComponentAction<C0> componentAction)
+    public void For(EntityComponentAction<C0> action)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -103,14 +103,14 @@ public class Query<C0> : Query where C0 : notnull
                 var s0 = join.Select;
                 var span0 = s0.Span;
 
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i]);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i]);
             } while (join.Iterate());
         }
     }
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(UniformEntityComponentAction<C0, U> componentAction, U uniform)
+    public void For<U>(UniformEntityComponentAction<C0, U> action, U uniform)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -124,7 +124,7 @@ public class Query<C0> : Query where C0 : notnull
                 var s0 = join.Select;
                 var span0 = s0.Span;
 
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], uniform);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -273,9 +273,9 @@ public class Query<C0> : Query where C0 : notnull
     /// <see cref="Memory{T}"/> contains a <c>Span</c> that can be used to access the data in a contiguous block of memory.
     /// </para>
     /// </remarks>
-    /// <param name="uniformAction"><see cref="MemoryAction{C0}"/> action to execute.</param>
+    /// <param name="action"><see cref="MemoryAction{C0}"/> action to execute.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void Raw<U>(MemoryUniformAction<C0, U> uniformAction, U uniform)
+    public void Raw<U>(MemoryUniformAction<C0, U> action, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -289,7 +289,7 @@ public class Query<C0> : Query where C0 : notnull
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
 
-                uniformAction(mem0, uniform);
+                action(mem0, uniform);
             } while (join.Iterate());
         }
     }

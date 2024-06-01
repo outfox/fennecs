@@ -523,7 +523,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         foreach (var component in components)
         {
-            var type = TypeExpression.Of(component.GetType());
+            var type = TypeExpression.Of(component.GetType(), fennecs.Match.Plain);
             var storage = GetStorage(type);
             storage.Append(component, count);
         }

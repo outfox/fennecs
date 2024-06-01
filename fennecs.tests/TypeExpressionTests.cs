@@ -104,7 +104,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Can_Create_For_Type()
     {
-        var tx1 = TypeExpression.Of(typeof(TypeA));
+        var tx1 = TypeExpression.Of(typeof(TypeA), Match.Plain);
         var tx2 = TypeExpression.Of(typeof(TypeA), Match.Any);
         var tx3 = TypeExpression.Of(typeof(TypeA), new Entity(null!, new(123)));
 

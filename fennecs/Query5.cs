@@ -67,7 +67,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityComponentAction<C0, C1, C2, C3, C4> componentAction)
+    public void For(EntityComponentAction<C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -85,13 +85,13 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
                 var span3 = s3.Span;
                 var span4 = s4.Span;
 
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
             } while (join.Iterate());
         }
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(UniformEntityComponentAction<C0, C1, C2, C3, C4, U> componentAction, U uniform)
+    public void For<U>(UniformEntityComponentAction<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -109,7 +109,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
                 var span3 = s3.Span;
                 var span4 = s4.Span;
 
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
             } while (join.Iterate());
         }
     }
@@ -244,7 +244,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(MemoryUniformAction<C0, C1, C2, C3, C4, U> uniformAction, U uniform)
+    public void Raw<U>(MemoryUniformAction<C0, C1, C2, C3, C4, U> action, U uniform)
     {
         using var worldLock = World.Lock();
 
@@ -263,7 +263,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
                 var mem3 = s3.AsMemory(0, count);
                 var mem4 = s4.AsMemory(0, count);
 
-                uniformAction(mem0, mem1, mem2, mem3, mem4, uniform);
+                action(mem0, mem1, mem2, mem3, mem4, uniform);
             } while (join.Iterate());
         }
     }
@@ -273,7 +273,7 @@ public class Query<C0, C1, C2, C3, C4> : Query<C0, C1, C2, C3> where C0 : notnul
     
     #region Blitters
 
-    /// <inheritdoc cref="Query{C0}.Blit(C0,fennecs.Identity)"/>
+    /// <inheritdoc cref="Query{C0}.Blit"/>
     public void Blit(C4 value, Match target = default)
     {
         using var worldLock = World.Lock();

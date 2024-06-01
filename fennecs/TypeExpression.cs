@@ -223,16 +223,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <param name="type">The Component type.</param>
     /// <param name="target">The target entity, with a default of <see cref="Match.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of(Type type, Match target)
-    {
-        return new TypeExpression(target, LanguageType.Identify(type));
-    }
-
-    /// <inheritdoc cref="Of(System.Type,fennecs.Identity)"/>
-    public static TypeExpression Of(Type type)
-    {
-        return new(Match.Plain, LanguageType.Identify(type));
-    }
+    public static TypeExpression Of(Type type, Match target) => new(target, LanguageType.Identify(type));
 
 
     /// <summary>
