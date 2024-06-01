@@ -9,7 +9,7 @@ namespace fennecs;
 /// Entity-Entity relations, Entity-object relations, and Wildcard expressions matching multiple.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
+internal readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
     #region Struct Data Layout
 
@@ -193,9 +193,10 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
     public static TypeExpression Of<T>(Match target) => new(target, LanguageType<T>.Id);
 
+    /// <inheritdoc cref="Of{T}(fennecs.Match)"/>
     public static TypeExpression Of<T>(Entity entity) => new(entity.Id, LanguageType<T>.Id);    
 
-    /// <inheritdoc cref="Of{T}(fennecs.Identity)"/>
+    /// <inheritdoc cref="Of{T}(fennecs.Match)"/>
     public static TypeExpression Of<T>() => new(Match.Plain, LanguageType<T>.Id);
 
 

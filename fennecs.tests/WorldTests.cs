@@ -74,28 +74,6 @@ public class WorldTests(ITestOutputHelper output)
 
     [Theory]
     [InlineData(0)]
-    [InlineData(1_000)]
-    [InlineData(10_000)]
-    [InlineData(1_000_000)]
-    private void Can_Batch_Spawn_Raw(int count)
-    {
-        using var world = new World();
-        world.Spawn(count, (TypeExpression.Of<int>(), 666), (TypeExpression.Of<string>(), "i'm a string"));
-
-        var query = world.Query<int, string>().Compile();
-        Assert.Equal(count, query.Count);
-        
-        query.For((ref int i, ref string s) =>
-        {
-            Assert.Equal(666, i);
-            Assert.Equal("i'm a string", s);
-            i++;
-            s = "yup.";
-        });
-    }
-
-    [Theory]
-    [InlineData(0)]
     [InlineData(1)]
     [InlineData(123)]
     [InlineData(9_000)]

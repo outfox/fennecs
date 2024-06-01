@@ -60,7 +60,7 @@ public class SignatureTests
 
     [Theory]
     [MemberData(nameof(EqualCases))]
-    public void Signature_Hash_Identical(ImmutableSortedSet<TypeExpression> a, ImmutableSortedSet<TypeExpression> b)
+    internal void Signature_Hash_Identical(ImmutableSortedSet<TypeExpression> a, ImmutableSortedSet<TypeExpression> b)
     {
         var signatureA = new Signature<TypeExpression>(a);
         var signatureB = new Signature<TypeExpression>(b);
@@ -72,7 +72,7 @@ public class SignatureTests
 
     [Theory]
     [MemberData(nameof(NotEqualCases))]
-    public void Signature_Hash_Different(ImmutableSortedSet<TypeExpression> a, ImmutableSortedSet<TypeExpression> b)
+    internal void Signature_Hash_Different(ImmutableSortedSet<TypeExpression> a, ImmutableSortedSet<TypeExpression> b)
     {
         var signatureA = new Signature<TypeExpression>(a);
         var signatureB = new Signature<TypeExpression>(b);
@@ -84,7 +84,7 @@ public class SignatureTests
 
     [Theory]
     [MemberData(nameof(AddCases))]
-    public void Signature_Add_Remove_Changes_and_Restores_Equality(TypeExpression type)
+    internal void Signature_Add_Remove_Changes_and_Restores_Equality(TypeExpression type)
     {
         var signature = new Signature<TypeExpression>(Array.Empty<TypeExpression>());
         var changedSignature = signature.Add(type);

@@ -272,7 +272,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <returns>
     ///     An enumerator over the Entities in the Query that match all provided <see cref="TypeExpression">TypeExpressions</see>.
     /// </returns>
-    public IEnumerable<Entity> Filtered(params TypeExpression[] filterExpressions)
+    internal IEnumerable<Entity> Filtered(params TypeExpression[] filterExpressions)
     {
         foreach (var table in Archetypes)
         {

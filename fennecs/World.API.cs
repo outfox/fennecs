@@ -48,23 +48,6 @@ public partial class World : IDisposable
         archetype.Spawn(count, components, values);
     }
 
-
-    /// <summary>
-    /// Spawns a number of pre-configured Entities 
-    /// </summary>
-    /// <remarks>
-    /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
-    /// </remarks>
-    /// <param name="components">TypeExpressions and boxed objects to spawn</param>
-    /// <param name="count"></param>
-    public void Spawn(int count = 1, params (TypeExpression, object)[] components)
-    {
-        var signature = new Signature<TypeExpression>(components.Select(c => c.Item1).Append(TypeExpression.Of<Identity>()).ToImmutableSortedSet());
-        var archetype = GetArchetype(signature);
-        archetype.Spawn(count, components.Select(c => c.Item2).ToArray());
-    }
-
-
     /// <summary>
     /// Despawn (destroy) an Entity from this World.
     /// </summary>

@@ -19,7 +19,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// The TypeExpressions that define this Archetype.
     /// </summary>
-    public readonly Signature<TypeExpression> Signature;
+    internal readonly Signature<TypeExpression> Signature;
 
     /// <summary>
     /// Get a Span of all Identities contained in this Archetype.
