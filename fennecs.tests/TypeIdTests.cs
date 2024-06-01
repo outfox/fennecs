@@ -122,14 +122,35 @@ public class TypeIdTests
 
 
     [Fact]
-    public void Match_from_Anonymous_Object_Identity_Is_Same_As_Link()
+    public void Match_from_Anonymous_Object_Identity_Is_Differentiable()
     {
-        object target = new { };
-        var typeExpression1 = TypeExpression.Of<object>(Link.With(target));
-        var typeExpression2 = TypeExpression.Of<object>(Link.With(target));
+        var target1 = new { doot = "foo" };
+        var typeExpression1 = TypeExpression.Of<object>(Link.With(target1));
+        var typeExpression2 = TypeExpression.Of<object>(Link.With(target1));
         
         Assert.Equal(typeExpression1, typeExpression2);
+        
+        var target2 = new { doot = "bar"};
+        var typeExpression3 = TypeExpression.Of<object>(Link.With(target2));
+        var typeExpression4 = TypeExpression.Of<object>(Link.With(target2));
+        
+        Assert.False(ReferenceEquals(target1, target2));
+        Assert.NotEqual(target1, target2);
+        
+        Assert.Equal(typeExpression1, typeExpression2);
+        Assert.Equal(typeExpression3, typeExpression4);
+        Assert.NotEqual(typeExpression1, typeExpression3);
+        Assert.NotEqual(typeExpression2, typeExpression4);
+
+        var obj1 = new object();
+        var obj2 = new object();
+        
+        Assert.NotEqual(obj1, obj2);
+        Assert.NotEqual(obj1.GetHashCode(), obj2.GetHashCode());
+        Assert.False(ReferenceEquals(obj1, obj2));
     }
+    
+    
     private struct Type1;
 
     private struct Type2;
