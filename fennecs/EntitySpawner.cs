@@ -92,7 +92,7 @@ public sealed class EntitySpawner : IDisposable
     ///  Spawns <c>count</c> entities with the configured components and disposes the spawner.
     /// </summary>
     /// <param name="count">number of entities to spawn</param>
-    [Obsolete("ue .Spawn() and .Dispose() instead.]")]
+    [Obsolete("use .Spawn() and .Dispose()]")]
     public void SpawnOnce(int count = 1)
     {
         Spawn(count);

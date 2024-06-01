@@ -45,7 +45,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
     // Wildcard Entities, such as Any, Object, Entity, or Relation.
     /// <summary>
-    /// Truthy if the Identity represents a virtual concept (see <see cref="Joins"/>).
+    /// Truthy if the Identity represents a virtual concept (see <see cref="Cross"/>).
     /// Falsy if it is an actual Entity or a tracked object.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>

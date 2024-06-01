@@ -452,65 +452,65 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     #region Cross Joins
-    internal Joins.Cross<C0> CrossJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0> CrossJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Cross<C0>(this, streamTypes.AsSpan());
+        return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes.AsSpan());
     }
 
 
-    internal Joins.Join<C0, C1> CrossJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1> CrossJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Join<C0, C1>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal Joins.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Join<C0, C1, C2>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal Joins.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Join<C0, C1, C2, C3>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal Joins.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Join<C0, C1, C2, C3, C4>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
     #endregion
 
 
     #region Inner Joins
-    internal Joins.Cross<C0> InnerJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0> InnerJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Cross<C0>(this, streamTypes.AsSpan());
+        return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes.AsSpan());
     }
 
 
-    internal Joins.Join<C0, C1> InnerJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1> InnerJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Join<C0, C1>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal Joins.Join<C0, C1, C2> InnerJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2> InnerJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Join<C0, C1, C2>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal Joins.Join<C0, C1, C2, C3> InnerJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3> InnerJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Join<C0, C1, C2, C3>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal Joins.Join<C0, C1, C2, C3, C4> InnerJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3, C4> InnerJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Joins.Join<C0, C1, C2, C3, C4>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
     #endregion
 

@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests;
 
-public class JoinsTests
+public class CrossTests
 {
     [Theory]
     [InlineData(new[] {1, 1, 1})]
@@ -18,7 +18,7 @@ public class JoinsTests
         do
         {
             count++;
-        } while (Joins.FullPermutation(counter, limiter));
+        } while (Cross.FullPermutation(counter, limiter));
 
         var product = limiter.Aggregate(1, (current, i) => current * i);
         Assert.Equal(product, count);

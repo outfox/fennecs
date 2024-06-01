@@ -31,7 +31,7 @@ public partial class World
 
     /// <summary>
     /// Creates a fluent Builder for a query with one output Stream Type.
-    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// A <see cref="Cross"/> expression can be specified to limit the components matched to Stream Types, for instance:
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
@@ -63,7 +63,7 @@ public partial class World
 
     /// <summary>
     /// Creates a fluent Builder for a query with two output Stream Types.
-    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// A <see cref="Cross"/> expression can be specified to limit the components matched to Stream Types, for instance:
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
@@ -98,7 +98,7 @@ public partial class World
 
     /// <summary>
     /// Creates a fluent Builder for a query with three output Stream Types.
-    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// A <see cref="Cross"/> expression can be specified to limit the components matched to Stream Types, for instance:
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
@@ -136,7 +136,7 @@ public partial class World
 
     /// <summary>
     /// Creates a fluent Builder for a query with four output Stream Types.
-    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// A <see cref="Cross"/> expression can be specified to limit the components matched to Stream Types, for instance:
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
@@ -177,7 +177,7 @@ public partial class World
 
     /// <summary>
     /// Creates a fluent Builder for a query with five output Stream Types.
-    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// A <see cref="Cross"/> expression can be specified to limit the components matched to Stream Types, for instance:
     /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>

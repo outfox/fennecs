@@ -203,7 +203,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
 
     /// <summary>
     /// Checks if the Entity has a Component of a specific type.
-    /// Allows for a <see cref="Joins"/> Expression to be specified.
+    /// Allows for a <see cref="Cross"/> Expression to be specified.
     /// </summary>
     public bool Has<T>(Match match) => World.HasComponent<T>(Id, match);
 

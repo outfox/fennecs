@@ -5,9 +5,9 @@ using fennecs.pools;
 namespace fennecs;
 
 /// <summary>
-/// Cross Join external Enumerator for Archetype Storages.
+/// External Enumerator / Permutate for Archetype Storages.
 /// </summary>
-public static class Joins
+public static class Cross
 {
     #region Cross Join
     internal static bool FullPermutation(Span<int> counter, Span<int> limiter)
@@ -38,7 +38,7 @@ public static class Joins
     /// <summary>
     /// Cross-Joins the Archetype with a list of StreamTypes.
     /// </summary>
-    internal readonly struct Cross<C0> : IDisposable
+    internal readonly struct Join<C0> : IDisposable
     {
         private readonly int[] _counter;
         private readonly int[] _limiter;
@@ -52,7 +52,7 @@ public static class Joins
         /// <summary>
         /// Cross-Joins the Archetype with a list of StreamTypes.
         /// </summary>
-        internal Cross(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
         {
             _allocated = true;
 

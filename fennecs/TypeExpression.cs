@@ -72,7 +72,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
 
     /// <summary>
-    ///  Is this TypeExpression a Wildcard expression? See <see cref="Joins"/>.
+    ///  Is this TypeExpression a Wildcard expression? See <see cref="Cross"/>.
     /// </summary>
     public bool isWildcard => Target.IsWildcard;
 
