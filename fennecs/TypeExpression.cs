@@ -200,14 +200,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
     public static TypeExpression Of<T>(Match target) => new(target, LanguageType<T>.Id);
 
-    //public static TypeExpression Of<T>(T data) where T : class => new(Link.With<T>(data), LanguageType<T>.Id);
-
-    /// <inheritdoc cref="Of{T}(fennecs.Match)"/>
-    //public static TypeExpression Of<T>(Entity entity) => new(entity, LanguageType<T>.Id);    
-
-    /// <inheritdoc cref="Of{T}(fennecs.Match)"/>
-    public static TypeExpression Of<T>() => new(Match.Plain, LanguageType<T>.Id);
-
 
     /// <summary>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and target entity.

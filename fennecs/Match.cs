@@ -111,11 +111,11 @@ public readonly record struct Match
     //public static implicit operator Match(Identity value) => new(value);
     
     //TODO Maybe not even needed...
-    public bool IsWildcard => Value.IsWildcard;
-    public bool IsEntity => Value.IsEntity;
-    public bool IsObject => Value.IsObject;
-    public bool IsTarget => Value == idTarget;
-    public bool IsPlain => Value == idPlain;
+    internal bool IsWildcard => Value.IsWildcard;
+    internal bool IsEntity => Value.IsEntity;
+    internal bool IsObject => Value.IsObject;
+    internal bool IsTarget => Value == idTarget;
+    internal bool IsPlain => Value == idPlain;
     
     [Obsolete("Maybe find a way to remove me.")]
     internal ulong Raw => Value.Value;

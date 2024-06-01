@@ -43,7 +43,7 @@ public partial class World : IDisposable
     /// <param name="values">component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>());
+        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>(Match.Plain));
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components, values);
     }

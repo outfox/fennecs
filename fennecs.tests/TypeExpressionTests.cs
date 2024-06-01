@@ -7,7 +7,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void To_String()
     {
-        output.WriteLine(TypeExpression.Of<TypeA>().ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(Match.Plain).ToString());
         output.WriteLine(TypeExpression.Of<TypeA>(Match.Any).ToString());
         output.WriteLine(TypeExpression.Of<TypeA>(Match.Object).ToString());
         output.WriteLine(TypeExpression.Of<TypeA>(Match.Entity).ToString());
@@ -18,8 +18,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Id_is_Comparable()
     {
-        var t1 = TypeExpression.Of<TypeA>();
-        var t2 = TypeExpression.Of<TypeA>();
+        var t1 = TypeExpression.Of<TypeA>(Match.Plain);
+        var t2 = TypeExpression.Of<TypeA>(Match.Plain);
         Assert.Equal(t1, t2);
     }
 
@@ -27,8 +27,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Id_is_Comparable_for_BaseTypes()
     {
-        var t1 = TypeExpression.Of<double>();
-        var t2 = TypeExpression.Of<double>();
+        var t1 = TypeExpression.Of<double>(Match.Plain);
+        var t2 = TypeExpression.Of<double>(Match.Plain);
         Assert.Equal(t1, t2);
     }
 
@@ -36,8 +36,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Is_Distinct()
     {
-        var t1 = TypeExpression.Of<int>();
-        var t2 = TypeExpression.Of<ushort>();
+        var t1 = TypeExpression.Of<int>(Match.Plain);
+        var t2 = TypeExpression.Of<ushort>(Match.Plain);
         Assert.NotEqual(t1, t2);
     }
 
@@ -63,7 +63,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Implicitly_decays_to_Type()
     {
-        var t1 = TypeExpression.Of<TypeA>().Type;
+        var t1 = TypeExpression.Of<TypeA>(Match.Plain).Type;
         var t2 = typeof(TypeA);
         Assert.Equal(t2, t1);
         Assert.Equal(t1, t2);
@@ -73,9 +73,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Has_Equality_Operator()
     {
-        var t1 = TypeExpression.Of<TypeA>();
-        var t2 = TypeExpression.Of<TypeA>();
-        var t3 = TypeExpression.Of<string>();
+        var t1 = TypeExpression.Of<TypeA>(Match.Plain);
+        var t2 = TypeExpression.Of<TypeA>(Match.Plain);
+        var t3 = TypeExpression.Of<string>(Match.Plain);
         Assert.True(t1 == t2);
         Assert.False(t1 == t3);
     }
@@ -84,9 +84,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Has_Inequality_Operator()
     {
-        var t1 = TypeExpression.Of<TypeA>();
-        var t2 = TypeExpression.Of<int>();
-        var t3 = TypeExpression.Of<int>();
+        var t1 = TypeExpression.Of<TypeA>(Match.Plain);
+        var t2 = TypeExpression.Of<int>(Match.Plain);
+        var t3 = TypeExpression.Of<int>(Match.Plain);
         Assert.True(t1 != t2);
         Assert.False(t3 != t2);
     }
@@ -96,7 +96,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void Prevents_Boxing_Equality()
     {
         object o = "don't @ me";
-        var id = TypeExpression.Of<TypeA>();
+        var id = TypeExpression.Of<TypeA>(Match.Plain);
         Assert.Throws<InvalidCastException>(() => id.Equals(o));
     }
 
@@ -139,7 +139,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var any = TypeExpression.Of<TypeA>(Match.Any);
 
-        var typ = TypeExpression.Of<TypeA>();
+        var typ = TypeExpression.Of<TypeA>(Match.Plain);
         var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
@@ -154,7 +154,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var obj = TypeExpression.Of<TypeA>(Match.Object);
 
-        var typ = TypeExpression.Of<TypeA>();
+        var typ = TypeExpression.Of<TypeA>(Match.Plain);
         var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
@@ -169,7 +169,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var rel = TypeExpression.Of<TypeA>(Match.Entity);
 
-        var typ = TypeExpression.Of<TypeA>();
+        var typ = TypeExpression.Of<TypeA>(Match.Plain);
         var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
@@ -184,7 +184,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var rel = TypeExpression.Of<TypeA>(Match.Target);
 
-        var typ = TypeExpression.Of<TypeA>();
+        var typ = TypeExpression.Of<TypeA>(Match.Plain);
         var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
@@ -197,7 +197,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Entity_only_matches_Entity()
     {
-        var typ = TypeExpression.Of<TypeA>();
+        var typ = TypeExpression.Of<TypeA>(Match.Plain);
         var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 

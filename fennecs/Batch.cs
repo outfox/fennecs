@@ -54,6 +54,12 @@ public readonly struct Batch : IDisposable
     /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch Add<T>(T data, Relate target = default) => AddComponent(data, target);
     
+    /// <summary>
+    /// Append an AddComponent operation to the batch.
+    /// </summary>
+    /// <typeparam name="T">component type</typeparam>
+    /// <param name="link">an object link</param>
+    /// <returns>the Batch itself (fluent syntax)</returns>
     public Batch Add<T>(Link<T> link) where T : class => AddComponent(link.Target, link);
 
     /// <summary>
@@ -71,16 +77,8 @@ public readonly struct Batch : IDisposable
     /// <returns>the Batch itself (fluent syntax)</returns>
     [Obsolete("Use Add(T, target) instead.")]
     public Batch Add<T>(Entity target) where T : new() => AddComponent<T>(new(), Relate.To(target));
-
-    /// <summary>
-    /// Append an Add operation to the batch.
-    /// </summary>
-    /// <param name="data">backing component data</param>
-    /// <param name="target">target of the relation</param>
-    /// <typeparam name="T">component type (newable)</typeparam>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>(T data, Entity target) where T : notnull => AddComponent(data, target);
-
+    
+    
     /// <summary>
     /// Append an RemoveComponent operation to the batch.
     /// </summary>
@@ -166,7 +164,7 @@ public readonly struct Batch : IDisposable
         /// Disallows the addition of components that could already be present in a query.
         /// </summary>
         /// <remarks>
-        /// Exclude the component from the query via <see cref="QueryBuilder{C1}.Not{T}(fennecs.Identity)"/> or similar
+        /// Exclude the component from the query via <see cref="QueryBuilder{C1}.Not{T}(fennecs.Match)"/> or similar
         /// means. If you want to allow the addition of components that are already present, use <see cref="Preserve"/>
         /// to keep any values already present, or use <see cref="Replace"/> if you'd like to overwrite the component
         /// value everywhere it is already encountered in the query.
@@ -193,7 +191,7 @@ public readonly struct Batch : IDisposable
         /// Overwrites existing component data with the addded component if it is already present.
         /// </summary>
         /// <remarks>
-        /// Alternatively, you can use the faster <see cref="Query{C0}.Blit(C0,fennecs.Identity)"/> if you
+        /// Alternatively, you can use the faster <see cref="Query{C0}.Blit"/> if you
         /// can ensure that the component is present on all entities in the query.
         /// </remarks>
         Replace,
@@ -207,7 +205,7 @@ public readonly struct Batch : IDisposable
     {
         /// <summary>
         /// Disallow remove operation if the Component to be removed is not guaranteed to be present
-        /// on ALL matched Archetypes, see <see cref="QueryBuilder.Has{T}(fennecs.Identity)"/>.
+        /// on ALL matched Archetypes, see <see cref="QueryBuilder.Has{T}(fennecs.Match)"/>.
         /// </summary>
         Strict = default,
 

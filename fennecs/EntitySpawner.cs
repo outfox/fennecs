@@ -49,7 +49,7 @@ public sealed class EntitySpawner : IDisposable
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>(T component) where T : notnull
     {
-        var type = TypeExpression.Of<T>();
+        var type = TypeExpression.Of<T>(Match.Plain);
         return AddComponent(type, component);
     }
 
@@ -60,18 +60,18 @@ public sealed class EntitySpawner : IDisposable
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>() where T : new()
     {
-        var type = TypeExpression.Of<T>();
+        var type = TypeExpression.Of<T>(Match.Plain);
         return AddComponent(type, new T());
     }
 
-    /// <inheritdoc cref="Entity.Add{T}(fennecs.Entity,T)"/>
-    public EntitySpawner Add<T>(T component, Match target) where T : class
+    /// <inheritdoc cref="Entity.Add{T}(T, fennecs.Relate)"/>
+    public EntitySpawner Add<T>(T component, Relate target) where T : class
     {
         var type = TypeExpression.Of<T>(target);
         return AddComponent(type, component);
     }
 
-    /// <inheritdoc cref="Entity.Add{T}"/>
+    /// <inheritdoc cref="Entity.Add{T}(Link{T})"/>
     public EntitySpawner Add<T>(Link<T> target) where T : class
     {
         var type = TypeExpression.Of<T>(target);

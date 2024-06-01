@@ -18,6 +18,7 @@ namespace fennecs;
 public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entity>, IDisposable
 {
     #region Internal State
+
     /// <summary>
     /// Provides a fluent interface for constructing and modifying Entities within a world.
     /// The Entity's Identity is managed internally.
@@ -39,10 +40,12 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// The Identity of the Entity.
     /// </summary>
     internal readonly Identity Id;
+
     #endregion
 
 
     #region CRUD
+
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
@@ -54,8 +57,8 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
     public ref C Ref<C>(Match target) => ref World.GetComponent<C>(this, target);
 
-    
-    /// <inheritdoc cref="Ref{C}(fennecs.Identity)"/>
+
+    /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
     public ref C Ref<C>() => ref World.GetComponent<C>(this, Match.Plain);
 
 
@@ -74,7 +77,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
     /// <param name="relate">The entity with which to establish the relation.</param>
-    /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<B>(Relate relate) where B : notnull, new() => Add(new B(), relate);
 
 
@@ -83,7 +86,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
     /// in the same Archetype for faster enumeration and processing as a group.
     /// </summary>
-    /// <typeparam name="T">Any value or reference type. The type of the relation to be added.</typeparam>
+    /// <typeparam name="T">The backing type of the relation to be added, can be any value or reference component type.</typeparam>
     /// <remarks>
     /// Beware of Archetype fragmentation! 
     /// You can end up with a large number of Archetypes with few Entities in them,
@@ -92,8 +95,8 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// </remarks>
     /// <param name="data">The data associated with the relation.</param>
     /// <param name="relate">The entity with which to establish the relation.</param>
-    /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Add<T>(T data, Relate relate = default) where T : notnull
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
+    public Entity Add<T>(T data, Relate relate) where T : notnull
     {
         var typeExpression = TypeExpression.Of<T>(relate);
         World.AddComponent(Id, typeExpression, data);
@@ -115,34 +118,27 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// </remarks>
     /// <typeparam name="T">Any reference type. The type the object to be linked with the entity.</typeparam>
     /// <param name="link">The target of the link.</param>
-    /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(Link<T> link) where T : class
     {
         World.AddComponent(Id, TypeExpression.Of<T>(link), link.Target);
         return this;
     }
 
-
-    /*
     /// <summary>
-    /// Adds a Component of a specific type, with specific data, to the current entity.
+    /// Adds a Plain Component of a specific type, with specific data, to the current entity. 
     /// </summary>
-    /// <typeparam name="T">The type of the Component to be added.</typeparam>
-    /// <param name="data">The data associated with the Component.</param>
-    /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Add<T>(T data) where T : notnull
-    {
-        var type = TypeExpression.Of<T>(Match.Plain);
-        World.AddComponent(Id, type, data);
-        return this;
-    }
-    */
+    /// <param name="data">The data associated with the relation.</param>
+    /// <typeparam name="T">Any value or reference component type.</typeparam>
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
+    public Entity Add<T>(T data) where T : notnull => Add(data, default);
+
 
     /// <summary>
-    /// Adds a Component of a specific type to the current entity.
+    /// Adds a newable Component of a specific type to the current entity.
     /// </summary>
     /// <typeparam name="T">The type of the Component to be added.</typeparam>
-    /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>() where T : notnull, new() => Add(new T());
 
 
@@ -150,7 +146,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// Removes a Component of a specific type from the current entity.
     /// </summary>
     /// <typeparam name="T">The type of the Component to be removed.</typeparam>
-    /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<T>()
     {
         World.RemoveComponent(Id, TypeExpression.Of<T>(Match.Plain));
@@ -162,11 +158,11 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// Removes a relation of a specific type between the current entity and the target entity.
     /// </summary>
     /// <typeparam name="T">The type of the relation to be removed.</typeparam>
-    /// <param name="targetEntity">The entity from which the relation will be removed.</param>
-    /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Remove<T>(Entity targetEntity)
+    /// <param name="relation">The entity from which the relation will be removed.</param>
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
+    public Entity Remove<T>(Relate relation)
     {
-        var typeExpression = TypeExpression.Of<T>(targetEntity);
+        var typeExpression = TypeExpression.Of<T>(relation);
         World.RemoveComponent(Id, typeExpression);
         return this;
     }
@@ -177,7 +173,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// </summary>
     /// <typeparam name="T">The type of the link to be removed.</typeparam>
     /// <param name="link">The target object from which the link will be removed.</param>
-    /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<T>(Link<T> link) where T : class
     {
         World.RemoveComponent(Id, link.TypeExpression);
@@ -196,7 +192,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
 
     /// <summary>
     /// Checks if the Entity has a Plain Component.
-    /// Same as calling <see cref="Has{T}(Identity)"/> with <see cref="Match.Plain"/>
+    /// Same as calling <see cref="Has{T}()"/> with <see cref="Match.Plain"/>
     /// </summary>
     public bool Has<T>() => World.HasComponent<T>(Id, default);
 
@@ -211,13 +207,13 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type and specific target.
     /// </summary>
-    public bool Has<T>(T targetObject) where T : class => World.HasComponent<T>(Id, Link<T>.With(targetObject));
+    public bool Has<T>(Link<T> link) where T : class => World.HasComponent<T>(Id, link);
 
 
     /// <summary>
-    /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
+    /// Checks if the Entity has a specifc Entity-Entity Relation backed by a specific type.
     /// </summary>
-    public bool Has<T>(Entity targetEntity) => World.HasComponent<T>(Id, targetEntity);
+    public bool Has<T>(Relate relation) => World.HasComponent<T>(Id, relation);
 
     #endregion
 
@@ -226,8 +222,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// Disposes of the Entity builder, releasing any pooled resources.
     /// </summary>
     public void Dispose()
-    {
-    }
+    { }
 
 
     #region Cast Operators and IEquatable<Entity>
@@ -267,5 +262,6 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
 
         return sb.ToString();
     }
+
     #endregion
 }

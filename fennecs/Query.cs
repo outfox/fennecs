@@ -77,7 +77,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     /// <param name="match">
     ///     Match Expression for the component type <see cref="Cross" />.
-    ///     The default is <see cref="MatMatch.Plain>
+    ///     The default is <see cref="Match.Plain"/>
     /// </param>
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
     public bool Contains<T>(Match match = default)

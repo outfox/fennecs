@@ -530,8 +530,8 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         object target = new { };
-        world.On(entity).Add(Link.With(target));
-        Assert.True(entity.Has(target));
+        entity.Add(Link.With(target));
+        Assert.True(entity.Has(Link.With(target)));
     }
 
 
@@ -554,7 +554,7 @@ public class WorldTests(ITestOutputHelper output)
         entity.Add(Link.With(target));
         var typeExpression = TypeExpression.Of<object>(Link.With(target));
         world.RemoveComponent(entity, typeExpression);
-        Assert.False(entity.Has(target));
+        Assert.False(entity.Has(Link.With(target)));
     }
 
 
