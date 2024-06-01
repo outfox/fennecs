@@ -285,7 +285,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <param name="typeId">literal TypeID value</param>
     internal TypeExpression(Match target, TypeID typeId)
     {
-        Value = target.Raw;
+        target.Deconstruct(out var id);
+        Value = id.Value;
         TypeId = typeId;
     }
 }

@@ -37,10 +37,9 @@ public readonly record struct Match
     [Obsolete("Maybe find a way to remove me.")]
     internal ulong Raw => Value.Value;
     
-    
-    public void Deconstruct(out Identity Value)
+    internal void Deconstruct(out Identity identity)
     {
-        Value = this.Value;
+        identity = Value;
     }
     
     
