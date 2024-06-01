@@ -89,12 +89,12 @@ public readonly struct Batch : IDisposable
     public Batch Remove<T>() => RemoveComponent<T>(Match.Plain);
 
     /// <summary>
-    /// Append an RemoveLink operation to the batch.
+    /// Append an Remove operation to the batch.
     /// </summary>
     /// <typeparam name="T">component type</typeparam>
     /// <param name="link">target of the link</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch RemoveLink<T>(Link<T> link) where T : class => RemoveComponent<T>(link);
+    public Batch Remove<T>(Link<T> link) where T : class => RemoveComponent<T>(link);
 
     /// <summary>
     /// Append a RemoveRelation operation to the batch.

@@ -271,7 +271,7 @@ public class QueryBatchTests
 
 
     [Fact]
-    public void Can_RemoveLink_Batched()
+    public void Can_Remove_Batched()
     {
         using var world = new World();
         const string doom = "doom";
@@ -282,7 +282,7 @@ public class QueryBatchTests
         Assert.Single(linkQuery);
         Assert.Contains(e1, linkQuery);
         
-        linkQuery.Batch().RemoveLink(Link.With(doom)).Submit();
+        linkQuery.Batch().Remove(Link.With(doom)).Submit();
         
         Assert.Empty(linkQuery);
     }

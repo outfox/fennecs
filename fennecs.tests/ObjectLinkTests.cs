@@ -60,7 +60,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         const string TARGET = "hello world";
 
         var entity = world.Spawn().Add(Link.With(TARGET));
-        entity.RemoveLink<string>(TARGET);
+        entity.Remove<string>(TARGET);
 
         var runs = 0;
         query.For((ref string _) => { runs++; });

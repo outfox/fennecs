@@ -177,7 +177,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <typeparam name="T">The type of the link to be removed.</typeparam>
     /// <param name="link">The target object from which the link will be removed.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity RemoveLink<T>(Link<T> link) where T : class
+    public Entity Remove<T>(Link<T> link) where T : class
     {
         World.RemoveComponent(Id, link);
         return this;
