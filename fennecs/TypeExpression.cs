@@ -9,7 +9,7 @@ namespace fennecs;
 /// Entity-Entity relations, Entity-object relations, and Wildcard expressions matching multiple.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-internal readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
+public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
     #region Struct Data Layout
 
@@ -60,7 +60,7 @@ internal readonly struct TypeExpression : IEquatable<TypeExpression>, IComparabl
     /// <para> If <see cref="Match.Object"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>
-    public Match Target => new Identity(Id, Decoration);
+    public Match Target => new(new(Id, Decoration));
     
     [Obsolete("Needs refactoring out...")]
     internal Identity Identity => new(Id, Decoration);
@@ -126,6 +126,13 @@ internal readonly struct TypeExpression : IEquatable<TypeExpression>, IComparabl
     /// </para>
     /// </example>
     /// <param name="other">another type expression</param>
+    /// <seealso cref="Match.Plain"/>
+    /// <seealso cref="Match.Target"/>
+    /// <seealso cref="Match.Entity"/>
+    /// <seealso cref="Match.Object"/>
+    /// <seealso cref="Match.Any"/>
+    /// <seealso cref="Match.Relation"/>
+    /// <seealso cref="Match.Link{T}"/>
     /// <returns>true if the other expression is matched by this expression</returns>
     public bool Matches(TypeExpression other)
     {
@@ -194,7 +201,7 @@ internal readonly struct TypeExpression : IEquatable<TypeExpression>, IComparabl
     public static TypeExpression Of<T>(Match target) => new(target, LanguageType<T>.Id);
 
     /// <inheritdoc cref="Of{T}(fennecs.Match)"/>
-    public static TypeExpression Of<T>(Entity entity) => new(entity.Id, LanguageType<T>.Id);    
+    //public static TypeExpression Of<T>(Entity entity) => new(entity, LanguageType<T>.Id);    
 
     /// <inheritdoc cref="Of{T}(fennecs.Match)"/>
     public static TypeExpression Of<T>() => new(Match.Plain, LanguageType<T>.Id);
@@ -233,17 +240,6 @@ internal readonly struct TypeExpression : IEquatable<TypeExpression>, IComparabl
         return new(Match.Plain, LanguageType.Identify(type));
     }
 
-
-    /// <summary>
-    /// Creates a TypeExpression that embodies an Object Link.
-    /// </summary>
-    /// <param name="target">the target object</param>
-    /// <typeparam name="T">type (or supertype) of this object</typeparam>
-    /// <returns>a TypeExpression representing the link</returns>
-    public static TypeExpression Link<T>(T target) where T : class
-    {
-        return new TypeExpression(Identity.Of(target), LanguageType<T>.Id);
-    }
 
     /// <summary>
     /// Implements a hash function that aims for a low collision rate.

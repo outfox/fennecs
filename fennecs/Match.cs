@@ -9,72 +9,26 @@
 /// </para>
 public readonly record struct Match 
 {
-    internal Identity Value { get; init; }
+    private Identity Value { get; }
     
     internal Match(Identity Value) => this.Value = Value;
 
+    /// <summary>
+    /// <para>
+    /// Match Expression to match only a specific Relation (Entity-Entity).
+    /// </para>
+    /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
+    /// </summary>
     public static Match Relation(Entity other) => new(other.Id);
+    
+    /// <summary>
+    /// <para>
+    /// Match Expression to match only a specific Object Link (Entity-Object).
+    /// </para>
+    /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
+    /// </summary>
     public static Match Link<T>(T link) where T : class => new(Identity.Of<T>(link));
 
-    public static Match Any => new(idAny); // or prefer default ?
-    public static Match Target => new(idTarget);
-    public static Match Object => new(idObject);
-    public static Match Entity => new(idEntity);
-    public static Match Plain => new(idPlain);
-    
-    public bool Matches(Match other) => Value == other.Value;
-    
-    public static implicit operator Match(Identity value) => new(value);
-    public static implicit operator Match(Entity value) => new(value);
-    
-    //TODO Maybe not even needed...
-    public bool IsWildcard => Value.IsWildcard;
-    public bool IsEntity => Value.IsEntity;
-    public bool IsObject => Value.IsObject;
-    public bool IsTarget => Value == idTarget;
-    public bool IsPlain => Value == idPlain;
-    
-    [Obsolete("Maybe find a way to remove me.")]
-    internal ulong Raw => Value.Value;
-    
-    internal void Deconstruct(out Identity identity)
-    {
-        identity = Value;
-    }
-    
-    
-    /// <summary>
-    /// <para>
-    /// <c>default</c><br/>In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
-    /// </para>
-    /// <para>
-    /// Since it's specific, this Match Expression is always free and has no enumeration cost.
-    /// </para>
-    /// </summary>
-    /// <remarks>
-    /// Not a wildcard. Formerly known as "None", as plain components without a target
-    /// can only exist once per Entity (same as components with a particular target).
-    /// </remarks>
-    internal static readonly Identity idPlain = new(int.MinValue, 0); // was default
-    /// <summary>
-    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
-    /// </para>
-    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
-    /// </para>
-    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
-    /// </summary>
-    /// <inheritdoc cref="Any"/>
-    internal static readonly Identity idEntity = new(-3, 0);
-    /// <summary>
-    /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
-    /// </para>
-    /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
-    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
-    /// </para>
-    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
-    /// </summary>
-    /// <inheritdoc cref="Any"/>
-    internal static readonly Identity idObject = new(-4, 0);
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
     /// </para>
@@ -98,7 +52,8 @@ public readonly record struct Match
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    internal static readonly Identity idAny = default; //was: new(-1, 0);
+    public static Match Any => new(idAny); // or prefer default ?
+
     /// <summary>
     /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Target"/>.
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
@@ -106,5 +61,74 @@ public readonly record struct Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
+    public static Match Target => new(idTarget);
+    /// <summary>
+    /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
+    /// </para>
+    /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
+    /// </para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// </summary>
+    /// <inheritdoc cref="Any"/>
+    public static Match Object => new(idObject);
+
+    /// <summary>
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
+    /// </para>
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
+    /// </para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// </summary>
+    /// <inheritdoc cref="Any"/>
+    public static Match Entity => new(idEntity);
+    
+    /// <summary>
+    /// <para>
+    /// <c>default</c><br/>In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
+    /// </para>
+    /// <para>
+    /// Since it's specific, this Match Expression is always free and has no enumeration cost.
+    /// </para>
+    /// </summary>
+    /// <remarks>
+    /// Not a wildcard. Formerly known as "None", as plain components without a target
+    /// can only exist once per Entity (same as components with a particular target).
+    /// </remarks>
+    public static Match Plain => new(idPlain);
+    
+    
+    internal bool Matches(Match other) => Value == other.Value;
+    
+    /// <summary>
+    /// <para>Implicitly convert an <see cref="Identity"/> to a <see cref="Match"/> for use in filter expressions.</para>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    //public static implicit operator Match(Identity value) => new(value);
+    public static implicit operator Match(Entity value) => new(value);
+
+    public static implicit operator Match(Identity value) => new(value);
+    
+    //TODO Maybe not even needed...
+    public bool IsWildcard => Value.IsWildcard;
+    public bool IsEntity => Value.IsEntity;
+    public bool IsObject => Value.IsObject;
+    public bool IsTarget => Value == idTarget;
+    public bool IsPlain => Value == idPlain;
+    
+    [Obsolete("Maybe find a way to remove me.")]
+    internal ulong Raw => Value.Value;
+    
+    internal void Deconstruct(out Identity identity)
+    {
+        identity = Value;
+    }
+    
+    
+    internal static readonly Identity idPlain = new(int.MinValue, 0); // was default
+    internal static readonly Identity idEntity = new(-3, 0);
+    internal static readonly Identity idObject = new(-4, 0);
+    internal static readonly Identity idAny = default; //was: new(-1, 0);
     internal static readonly Identity idTarget = new(-2, 0);
 }

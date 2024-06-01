@@ -138,9 +138,9 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Has<T>(T link) where T : class
+    public virtual QueryBuilder Has<T>(Link<T> link) where T : class
     {
-        Mask.Has(TypeExpression.Of<T>(Identity.Of(link)));
+        Mask.Has(TypeExpression.Of<T>(link));
         return this;
     }
 
@@ -165,9 +165,9 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Not<T>(T target) where T : class
+    public virtual QueryBuilder Not<T>(Link<T> link) where T : class
     {
-        var typeExpression = TypeExpression.Of<T>(Identity.Of(target));
+        var typeExpression = TypeExpression.Of<T>(link);
 
         Mask.Not(typeExpression);
         return this;
@@ -197,9 +197,9 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Any<T>(T link) where T : class
+    public virtual QueryBuilder Any<T>(Link<T> link) where T : class
     {
-        Mask.Any(TypeExpression.Of<T>(Identity.Of(link)));
+        Mask.Any(TypeExpression.Of<T>(link));
         return this;
     }
     
@@ -264,7 +264,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
     
     /// <inheritdoc />
-    public override QueryBuilder<C1> Has<T>(T link) where T : class
+    public override QueryBuilder<C1> Has<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1>) base.Has(link);
     }
@@ -278,9 +278,9 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Not<T>(T target) where T : class
+    public override QueryBuilder<C1> Not<T>(Link<T> link) where T : class
     {
-        return (QueryBuilder<C1>) base.Not(target);
+        return (QueryBuilder<C1>) base.Not(link);
     }
 
 
@@ -292,7 +292,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Any<T>(T link) where T : class
+    public override QueryBuilder<C1> Any<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1>) base.Any(link);
     }
@@ -354,7 +354,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Has<T>(T link) where T : class
+    public override QueryBuilder<C1, C2> Has<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1, C2>) base.Has(link);
     }
@@ -368,9 +368,9 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Not<T>(T target) where T : class
+    public override QueryBuilder<C1, C2> Not<T>(Link<T> link) where T : class
     {
-        return (QueryBuilder<C1, C2>) base.Not(target);
+        return (QueryBuilder<C1, C2>) base.Not(link);
     }
 
 
@@ -382,7 +382,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Any<T>(T link) where T : class
+    public override QueryBuilder<C1, C2> Any<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1, C2>) base.Any(link);
     }
@@ -448,7 +448,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Has<T>(T link) where T : class
+    public override QueryBuilder<C1, C2, C3> Has<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1, C2, C3>) base.Has(link);
     }
@@ -461,9 +461,9 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Not<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3> Not<T>(Link<T> link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3>) base.Not(target);
+        return (QueryBuilder<C1, C2, C3>) base.Not(link);
     }
 
 
@@ -475,7 +475,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Any<T>(T link) where T : class
+    public override QueryBuilder<C1, C2, C3> Any<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1, C2, C3>) base.Any(link);
     }
@@ -530,7 +530,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Has<T>(T link) where T : class
+    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Has(link);
     }
@@ -544,9 +544,9 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Not<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Link<T> link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3, C4>) base.Not(target);
+        return (QueryBuilder<C1, C2, C3, C4>) base.Not(link);
     }
 
 
@@ -558,7 +558,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Any<T>(T link) where T : class
+    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Any(link);
     }
@@ -615,7 +615,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(T link) where T : class
+    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has(link);
     }
@@ -629,9 +629,9 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Link<T> link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Not(target);
+        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Not(link);
     }
 
 
@@ -643,7 +643,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(T link) where T : class
+    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Link<T> link) where T : class
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any(link);
     }

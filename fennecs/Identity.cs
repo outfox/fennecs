@@ -121,7 +121,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <returns></returns>
     public static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
     
-
+    
     internal Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)
     {
     }

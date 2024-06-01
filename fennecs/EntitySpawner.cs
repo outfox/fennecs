@@ -65,16 +65,16 @@ public sealed class EntitySpawner : IDisposable
     }
 
     /// <inheritdoc cref="Entity.AddRelation{T}(fennecs.Entity,T)"/>
-    public EntitySpawner AddRelation<T>(T component, Identity target) where T : class
+    public EntitySpawner AddRelation<T>(T component, Match target) where T : class
     {
         var type = TypeExpression.Of<T>(target);
         return AddComponent(type, component);
     }
 
     /// <inheritdoc cref="Entity.AddLink{T}"/>
-    public EntitySpawner AddLink<T>(T target) where T : class
+    public EntitySpawner AddLink<T>(Link<T> target) where T : class
     {
-        var type = TypeExpression.Link(target);
+        var type = TypeExpression.Of<T>(target);
         return AddComponent(type, target);
     }
 

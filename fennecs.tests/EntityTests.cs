@@ -38,7 +38,7 @@ public class EntityTests(ITestOutputHelper output)
 
         entity.Add(123);
         entity.AddRelation(world.Spawn(), 7.0f);
-        entity.AddLink("hello");
+        entity.AddLink(Link.With("hello"));
         output.WriteLine(entity.ToString());
         
         world.Despawn(entity);
@@ -53,7 +53,7 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         entity.Add(123);
         entity.AddRelation(world.Spawn(), 7.0f);
-        entity.AddLink("hello");
+        entity.AddLink(Link.With("hello"));
         entity.Despawn();
         Assert.False(world.IsAlive(entity));
     }
@@ -192,7 +192,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         world.Spawn();
-        entity.AddLink("hello world");
+        entity.AddLink(Link.With("hello world"));
 
         Assert.True(entity.HasLink<string>("hello world"));
         Assert.True(entity.Has<string>(Match.Any));
@@ -210,7 +210,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         world.Spawn();
-        entity.AddLink("hello world");
+        entity.AddLink(Link.With("hello world"));
 
         Assert.True(entity.HasLink<string>());
         Assert.False(entity.HasLink<EntityTests>());
@@ -266,7 +266,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         const string helloWorld = "hello world";
-        entity.AddLink(helloWorld);
+        entity.AddLink(Link.With(helloWorld));
         ref var component = ref entity.Ref<string>(Identity.Of(helloWorld));
         Assert.Equal(helloWorld, component);
     }

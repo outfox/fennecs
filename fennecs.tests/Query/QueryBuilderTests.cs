@@ -53,9 +53,9 @@ public class QueryBuilderTests
             .Has<float>()
             .Has<string>("123")
             .Not<double>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
     }
 
 
@@ -69,9 +69,9 @@ public class QueryBuilderTests
             .Has<float>()
             .Has<string>("123")
             .Not<double>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
     }
 
 
@@ -81,13 +81,13 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string>();
         Assert.NotNull(builder);
-        builder.Has(new StringBuilder("123"));
+        builder.Has(Link.With(new StringBuilder("123")));
         builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<byte>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
         builder.Compile();
     }
 
@@ -98,13 +98,13 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string, double>();
         Assert.NotNull(builder);
-        builder.Has(new StringBuilder("123"));
+        builder.Has(Link.With(new StringBuilder("123")));
         builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<byte>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
         builder.Compile();
     }
 
@@ -115,13 +115,13 @@ public class QueryBuilderTests
         using var world = new World();
         var builder = world.Query<int, string, double, float>();
         Assert.NotNull(builder);
-        builder.Has(new StringBuilder("123"));
+        builder.Has(Link.With(new StringBuilder("123")));
         builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<byte>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
         builder.Compile();
     }
 
@@ -134,13 +134,13 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string, double, float, long>();
         Assert.NotNull(builder);
-        builder.Has(new StringBuilder("123"));
+        builder.Has(Link.With(new StringBuilder("123")));
         builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<byte>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
         builder.Compile();
     }
 
@@ -155,9 +155,9 @@ public class QueryBuilderTests
             .Has<float>()
             .Has<string>("123")
             .Not<double>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
 
         Assert.Throws<InvalidOperationException>(() => builder.Has<float>());
         Assert.Throws<InvalidOperationException>(() => builder.Not<float>());
@@ -175,9 +175,9 @@ public class QueryBuilderTests
             .Has<float>(entity)
             .Has<string>("123")
             .Not<double>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
 
         Assert.Throws<InvalidOperationException>(() => builder.Has<float>(Match.Any));
         Assert.Throws<InvalidOperationException>(() => builder.Not<List<int>>(Match.Object));
@@ -197,7 +197,7 @@ public class QueryBuilderTests
             .Not<double>()
             .Not<int>()
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
 
         Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
         Assert.Throws<InvalidOperationException>(() => builder.Not<string>(Match.Object));
@@ -220,7 +220,7 @@ public class QueryBuilderTests
             .Not<double>()
             .Not<int>()
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
 
         //Conflict
         builder.Has<int>().Not<string>(Match.Object).Any<double>();

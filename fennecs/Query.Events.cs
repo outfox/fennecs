@@ -1,4 +1,5 @@
-﻿namespace fennecs;
+﻿#if EXPERIMENTAL
+namespace fennecs;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 public delegate void ArchetypeAction(Archetype archetype);
@@ -17,9 +18,9 @@ public partial class Query
     private readonly Dictionary<TypeExpression, QueryEntityEvent> _entityEntered = new();
     private readonly Dictionary<TypeExpression, QueryEntityEvent> _entityLeft = new();
     
-    public QueryEntityEvent EntitiesEntered<T>(Identity match = default)
+    public QueryEntityEvent EntitiesEntered<T>(Match match = default)
     {
-        var type = TypeExpression.Of<T>(match);
+        var type = TypeExpression.Of<T>(Match);
         if (_entityEntered.TryGetValue(type, out var queryEvent)) return queryEvent;
 
         _entityEntered[type] = queryEvent = new();
@@ -39,3 +40,4 @@ public partial class Query
 }
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+#endif

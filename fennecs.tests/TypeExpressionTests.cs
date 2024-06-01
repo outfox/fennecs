@@ -11,7 +11,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         output.WriteLine(TypeExpression.Of<TypeA>(Match.Any).ToString());
         output.WriteLine(TypeExpression.Of<TypeA>(Match.Object).ToString());
         output.WriteLine(TypeExpression.Of<TypeA>(Match.Entity).ToString());
-        output.WriteLine(TypeExpression.Of<TypeA>(new Identity(123)).ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(new(new(123))).ToString());
     }
 
 

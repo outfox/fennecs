@@ -125,7 +125,8 @@ public partial class World : Query
 
                 foreach (var source in tablesWithType)
                 {
-                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != identity).ToImmutableSortedSet());
+                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != new Match(identity)).ToImmutableSortedSet());
+                    
                     var destination = GetArchetype(signatureWithoutTarget);
                     source.Migrate(destination);
                     

@@ -24,8 +24,8 @@ public class SignatureTests
         ];
         yield return
         [
-            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>(Identity.Of("Hello World")) }.ToImmutableSortedSet(),
-            new[] { TypeExpression.Of<string>(Identity.Of("Hello World")), TypeExpression.Of<int>() }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>(Link.With("Hello World")) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<string>(Link.With("Hello World")), TypeExpression.Of<int>() }.ToImmutableSortedSet(),
         ];
         yield return
         [
@@ -45,7 +45,7 @@ public class SignatureTests
         yield return
         [
             new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>() }.ToImmutableSortedSet(),
-            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>(Identity.Of("Hello World")) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(), TypeExpression.Of<string>(Link.With("Hello World")) }.ToImmutableSortedSet(),
         ];
     }
 
@@ -53,7 +53,7 @@ public class SignatureTests
     public static IEnumerable<object[]> AddCases()
     {
         yield return [TypeExpression.Of<int>()];
-        yield return [TypeExpression.Of<float>(new Identity(id: 123))];
+        yield return [TypeExpression.Of<float>(new(new(id: 123)))];
         yield return [TypeExpression.Of<Thread>()];
     }
 

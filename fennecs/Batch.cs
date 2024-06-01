@@ -50,8 +50,11 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type</typeparam>
     /// <param name="data">component data</param>
+    /// <param name="target">relation target (default = no relation, plain component)</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>(T data) => AddComponent(data, target: Match.Plain);
+    public Batch Add<T>(T data, Relation target = default) => AddComponent(data, target);
+    
+    public Batch Add<T>(Link<T> link) where T : class => AddComponent(link.Target, link);
 
     /// <summary>
     /// Append an AddComponent operation to the batch.
@@ -66,7 +69,8 @@ public readonly struct Batch : IDisposable
     /// <param name="target">target of the link</param>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch AddLink<T>(T target) where T : class => AddComponent(target, Identity.Of(target));
+    [Obsolete("Use Add(Link<T>) instead.")]
+    public Batch AddLink<T>(T target) where T : class => AddComponent(target, Link<T>.With(target));
 
     /// <summary>
     /// Append an AddRelation operation to the batch.
@@ -74,7 +78,8 @@ public readonly struct Batch : IDisposable
     /// <param name="target">target of the relation</param>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch AddRelation<T>(Entity target) where T : new() => AddComponent<T>(new T(), target.Id);
+    [Obsolete("Use Add(T, target) instead.")]
+    public Batch AddRelation<T>(Entity target) where T : new() => AddComponent<T>(new(), Relation.To(target));
 
     /// <summary>
     /// Append an AddRelation operation to the batch.
@@ -83,7 +88,7 @@ public readonly struct Batch : IDisposable
     /// <param name="target">target of the relation</param>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch AddRelation<T>(T data, Entity target) where T : notnull => AddComponent(data, target.Id);
+    public Batch AddRelation<T>(T data, Entity target) where T : notnull => AddComponent(data, target);
 
     /// <summary>
     /// Append an RemoveComponent operation to the batch.
@@ -96,9 +101,9 @@ public readonly struct Batch : IDisposable
     /// Append an RemoveLink operation to the batch.
     /// </summary>
     /// <typeparam name="T">component type</typeparam>
-    /// <param name="target">target of the link</param>
+    /// <param name="link">target of the link</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch RemoveLink<T>(T target) where T : class => RemoveComponent<T>(Identity.Of(target));
+    public Batch RemoveLink<T>(Link<T> link) where T : class => RemoveComponent<T>(link);
 
     /// <summary>
     /// Append a RemoveRelation operation to the batch.
@@ -106,7 +111,7 @@ public readonly struct Batch : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <param name="target">target of the relation</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch RemoveRelation<T>(Entity target) => RemoveComponent<T>(target.Id);
+    public Batch RemoveRelation<T>(Relation target) => RemoveComponent<T>(target);
 
 
     private Batch AddComponent<T>(T data, Match target)
@@ -128,9 +133,7 @@ public readonly struct Batch : IDisposable
         return this;
     }
 
-    private Batch RemoveComponent<T>() => RemoveComponent<T>(Match.Plain);
-
-    private Batch RemoveComponent<T>(Match target)
+    private Batch RemoveComponent<T>(Match target = default)
     {
         var typeExpression = TypeExpression.Of<T>(target);
 
