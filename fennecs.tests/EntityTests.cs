@@ -10,8 +10,8 @@ public class EntityTests(ITestOutputHelper output)
         var target = world.Spawn();
         var builder = new Entity(world, entity);
         builder.Add<int>(target);
-        Assert.True(entity.HasRelation<int>(target));
-        Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
+        Assert.True(entity.Has<int>(target));
+        Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
     }
 
 
@@ -23,8 +23,8 @@ public class EntityTests(ITestOutputHelper output)
         var target = world.Spawn();
         var builder = new Entity(world, entity);
         builder.Add(target, 123);
-        Assert.True(entity.HasRelation<int>(target));
-        Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
+        Assert.True(entity.Has<int>(target));
+        Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
     }
 
 
@@ -225,11 +225,11 @@ public class EntityTests(ITestOutputHelper output)
         var target = world.Spawn();
         entity.Add<int>(target);
 
-        Assert.True(entity.HasRelation<int>(target));
+        Assert.True(entity.Has<int>(target));
         Assert.True(entity.Has<int>(Match.Target));
         Assert.True(entity.Has<int>(Match.Any));
 
-        Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
+        Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
         Assert.False(entity.Has<int>(Match.Object));
     }
 
@@ -242,8 +242,8 @@ public class EntityTests(ITestOutputHelper output)
         var target = world.Spawn();
         entity.Add<int>(target);
 
-        Assert.True(entity.HasRelation<int>());
-        Assert.False(entity.HasRelation<float>());
+        Assert.True(entity.Has<int>());
+        Assert.False(entity.Has<float>());
     }
 
 

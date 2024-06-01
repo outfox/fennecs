@@ -478,9 +478,9 @@ public class WorldTests(ITestOutputHelper output)
 
         var worldLock = world.Lock();
         world.On(entity).Add(target, 666);
-        Assert.False(entity.HasRelation<int>(target));
+        Assert.False(entity.Has<int>(target));
         worldLock.Dispose();
-        Assert.True(entity.HasRelation<int>(target));
+        Assert.True(entity.Has<int>(target));
     }
 
 
@@ -520,7 +520,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var target = world.Spawn();
         world.On(entity).Add(target, 666);
-        Assert.True(entity.HasRelation<int>(target));
+        Assert.True(entity.Has<int>(target));
     }
 
 
@@ -566,7 +566,7 @@ public class WorldTests(ITestOutputHelper output)
         var other = world.Spawn();
         var data = new Identity(123);
         world.On(entity).Add(other, data);
-        Assert.True(entity.HasRelation<Identity>(other));
+        Assert.True(entity.Has<Identity>(other));
     }
 
 

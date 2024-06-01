@@ -216,13 +216,8 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <summary>
     /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
     /// </summary>
-    public bool HasRelation<T>(Entity targetEntity) => World.HasComponent<T>(Id, targetEntity);
+    public bool Has<T>(Entity targetEntity) => World.HasComponent<T>(Id, targetEntity);
 
-
-    /// <summary>
-    /// Checks if the Entity has an Entity-Entity Relation backed by a specific type.
-    /// </summary>
-    public bool HasRelation<T>() => World.HasComponent<T>(Id, Match.Entity);
     #endregion
 
 

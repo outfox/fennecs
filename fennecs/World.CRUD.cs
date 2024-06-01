@@ -49,9 +49,9 @@ public partial class World
     }
 
 
-    internal bool HasComponent<T>(Identity identity, Match target)
+    internal bool HasComponent<T>(Identity identity, Match match)
     {
-        var type = TypeExpression.Of<T>(target);
+        var type = TypeExpression.Of<T>(match);
         return HasComponent(identity, type);
     }
 

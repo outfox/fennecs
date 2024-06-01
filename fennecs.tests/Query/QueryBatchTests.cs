@@ -294,10 +294,10 @@ public class QueryBatchTests
         var target = world.Spawn();
         var e1 = world.Spawn().Add(target, 123);
 
-        Assert.True(e1.HasRelation<int>(target));
+        Assert.True(e1.Has<int>(target));
         var intQuery = world.Query<int>(Match.Relation(target)).Compile();
         intQuery.Batch().RemoveRelation<int>(target).Submit();
-        Assert.False(e1.HasRelation<int>(target));
+        Assert.False(e1.Has<int>(target));
     }
     
 
