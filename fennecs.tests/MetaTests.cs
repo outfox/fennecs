@@ -76,7 +76,7 @@ public class MetaTests
     [Fact]
     private void Meta_Integrity_Preserved_On_Migrate_with_Swap()
     {
-        using var world = new World();
+        using var world = new World(0);
 
         var entity0 = world.Spawn();
         var entity1 = world.Spawn();

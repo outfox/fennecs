@@ -376,7 +376,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <param name="data">the data to add</param>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     // ReSharper disable once MemberCanBePrivate.Global
-    public void Add<T>(T data) => Batch().Add(data).Submit();
+    public void Add<T>(T data) => Batch().Add<T>(data).Submit();
 
 
     /// <summary>

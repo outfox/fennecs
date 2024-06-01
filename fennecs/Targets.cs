@@ -18,9 +18,8 @@ public readonly record struct Relation
     public static implicit operator Match(Relation self)
     {
         // Unfortunately, plain is not default here, but it helps a lot with the other match
-        // Expressions. But actually this TODO: may be refactored back somewhat easily now
-        // That we have strong ID types.
-        if (self.Value == default) return default;
+        // Expressions. But actually this. That we have strong ID types.
+        if (self.Value == default) return Match.Plain;
         return new(self.Value);
     }
 }

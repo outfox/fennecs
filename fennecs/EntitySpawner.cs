@@ -75,7 +75,7 @@ public sealed class EntitySpawner : IDisposable
     public EntitySpawner AddLink<T>(Link<T> target) where T : class
     {
         var type = TypeExpression.Of<T>(target);
-        return AddComponent(type, target);
+        return AddComponent(type, target.Object);
     }
 
     /// <summary>
