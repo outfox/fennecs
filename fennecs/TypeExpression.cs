@@ -12,6 +12,7 @@ namespace fennecs;
 public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
     #region Struct Data Layout
+
     //             This is a 64 bit union struct.
     //                 Layout: (little endian)
     //   | LSB                                   MSB |
@@ -39,6 +40,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
+
     #endregion
 
 
@@ -98,29 +100,48 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
 
     /// <summary>
-    /// Match against another TypeExpression; used for Query Matching, and is Non-Commutative.
-    /// Examines the Target field and decides whether the other TypeExpression is a match.
+    /// Match against another TypeExpression; used for Query Matching.
+    /// Examines the Type and Target fields of either and decides whether the other TypeExpression is a match.
+    /// <para>
+    /// See also: <see cref="Match.Plain"/>, <see cref="Match.Target"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Any"/>
+    /// </para>
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// ⚠️ This comparison is non-commutative; the order of the operands matters!
+    /// </para>
+    /// <para>
+    /// You must handle matching the commuted case(s) in your code if needed.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <para>
+    /// Non-Commutative: <br/><c>Match.Plain</c> doesn't match wildcard <c>Match.Any</c>, but <c>Match.Any</c> <i><b>does</b> match</i> <c>Match.Plain</c>.
+    /// </para>
+    /// <para>
+    /// Pseudo-Commutative: <br/><see cref="Identity"/> <c>E-0000007b:00456</c> matches itself, as well as the three wildcards <c>Match.Target</c>, <c>Match.Entity</c>, and <c>Match.Any</c>. Vice versa, it is also matched by all of them! 
+    /// </para>
+    /// </example>
     /// <param name="other">another type expression</param>
-    /// <returns>true if matched</returns>
+    /// <returns>true if the other expression is matched by this expression</returns>
     public bool Matches(TypeExpression other)
     {
         // Reject if Types are incompatible. 
         if (TypeId != other.TypeId) return false;
 
-        // Entity.None matches only None. (plain Components)
+        // Match.None matches only None. (plain Components)
         if (Target == Match.Plain) return other.Target == Match.Plain;
 
-        // Entity.Any matches everything; relations and pure Components (target == none).
+        // Match.Any matches everything; relations and pure Components (target == none).
         if (Target == Match.Any) return true;
 
-        // Entity.Target matches all Entity-Target Relations.
+        // Match.Target matches all Entity-Target Relations.
         if (Target == Match.Target) return other.Target != Match.Plain;
 
-        // Entity.Relation matches only Entity-Entity relations.
+        // Match.Relation matches only Entity-Entity relations.
         if (Target == Match.Entity) return other.Target.IsEntity;
 
-        // Entity.Object matches only Entity-Object relations.
+        // Match.Object matches only Entity-Object relations.
         if (Target == Match.Object) return other.Target.IsObject;
 
         // Direct match?
@@ -130,8 +151,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     /// <inheritdoc cref="System.IEquatable{T}"/>
     public bool Equals(TypeExpression other) => Value == other.Value;
-    
-    
+
+
     /// <inheritdoc cref="System.IComparable{T}"/>
     public int CompareTo(TypeExpression other) => -Value.CompareTo(other.Value);
 
@@ -168,10 +189,9 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <param name="target">The target entity, with a default of <see cref="Match.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
     public static TypeExpression Of<T>(Identity target) => new(target, LanguageType<T>.Id);
-    
+
     /// <inheritdoc cref="Of{T}(fennecs.Identity)"/>
     public static TypeExpression Of<T>() => new(Match.Plain, LanguageType<T>.Id);
-
 
 
     /// <summary>
@@ -207,7 +227,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         return new(Match.Plain, LanguageType.Identify(type));
     }
 
-    
+
     /// <summary>
     /// Creates a TypeExpression that embodies an Object Link.
     /// </summary>
@@ -226,7 +246,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         unchecked
         {
-            return (int) (0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
+            return (int)(0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
         }
     }
 

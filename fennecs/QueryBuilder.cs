@@ -113,34 +113,35 @@ public abstract class QueryBuilder : IDisposable
     /// other queries operating on the same sets of entities should not inherit this state.
     /// </remarks>
     /// <returns>compiled query (you can compile more than one query from the same builder)</returns>
+    [Obsolete("Unique Queries are Deprecated. (Use Compile() instead; and create a Stream for custom filter state)")]
     public abstract Query Unique();
     
     
     /// <summary>
     /// Include only Entities that have the given Component or Relation.
     /// </summary>
-    /// <param name="target">relation target (defaults to no target = Plain Component)</param>
+    /// <param name="relation">relation target (defaults to no target = Plain Component)</param>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Has<T>(Identity target)
+    public virtual QueryBuilder Has<T>(Identity relation = default)
     {
-        var typeExpression = TypeExpression.Of<T>(target);
+        var typeExpression = TypeExpression.Of<T>(relation);
         
         Mask.Has(typeExpression);
         return this;
     }
 
     /// <summary>
-    /// Include only Entities that have the given ObjectLink.
+    /// Include only Entities that are Linked by the given Object.
     /// </summary>
-    /// <param name="target">relation target</param>
+    /// <param name="link">relation target</param>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Has<T>(T target) where T : class
+    public virtual QueryBuilder Has<T>(T link) where T : class
     {
-        Mask.Has(TypeExpression.Of<T>(Identity.Of(target)));
+        Mask.Has(TypeExpression.Of<T>(Identity.Of(link)));
         return this;
     }
 
@@ -148,25 +149,15 @@ public abstract class QueryBuilder : IDisposable
     /// <summary>
     /// Exclude all Entities that have the given Component or Relation.
     /// </summary>
-    /// <param name="target">relation target (defaults to no target = Plain Component)</param>
+    /// <param name="relation">relation target (defaults to no target = Plain Component)</param>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Not<T>(Identity target)
+    public virtual QueryBuilder Not<T>(Identity relation = default)
     {
-        Mask.Not(TypeExpression.Of<T>(target));
+        Mask.Not(TypeExpression.Of<T>(relation));
         return this;
     }
-
-    /// <inheritdoc cref="Not{T}(fennecs.Identity)"/>
-    public virtual QueryBuilder Not<T>() => Not<T>(Match.Plain);
-
-    /// <inheritdoc cref="Has{T}(fennecs.Identity)"/>
-    public virtual QueryBuilder Has<T>() => Has<T>(Match.Plain);
-
-    /// <inheritdoc cref="Any{T}(fennecs.Identity)"/>
-    public virtual QueryBuilder Any<T>() => Any<T>(Match.Plain);
-
 
     /// <summary>
     /// Exclude all Entities that have the given ObjectLink.
@@ -188,13 +179,13 @@ public abstract class QueryBuilder : IDisposable
     /// Include Entities that have the given Component or Relation, or any other Relation that is
     /// givein in other <see cref="Any{T}(fennecs.Identity)"/> calls.
     /// </summary>
-    /// <param name="target">relation target (defaults to no target = Plain Component)</param>
+    /// <param name="relation">relation target (defaults to no target = Plain Component)</param>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Any<T>(Identity target)
+    public virtual QueryBuilder Any<T>(Identity relation = default)
     {
-        Mask.Any(TypeExpression.Of<T>(target));
+        Mask.Any(TypeExpression.Of<T>(relation));
         return this;
     }
 
@@ -203,13 +194,13 @@ public abstract class QueryBuilder : IDisposable
     /// Include Entities that have the given Object Link, or any other Object Link that is
     /// given in other <see cref="Any{T}(T)"/> calls.
     /// </summary>
-    /// <param name="target">link target</param>
+    /// <param name="link">link target</param>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Any<T>(T target) where T : class
+    public virtual QueryBuilder Any<T>(T link) where T : class
     {
-        Mask.Any(TypeExpression.Of<T>(Identity.Of(target)));
+        Mask.Any(TypeExpression.Of<T>(Identity.Of(link)));
         return this;
     }
     
@@ -267,23 +258,23 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
     
     
     /// <inheritdoc />
-    public override QueryBuilder<C1> Has<T>(Identity target)
+    public override QueryBuilder<C1> Has<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1>) base.Has<T>(target);
+        return (QueryBuilder<C1>) base.Has<T>(relation);
     }
 
     
     /// <inheritdoc />
-    public override QueryBuilder<C1> Has<T>(T target) where T : class
+    public override QueryBuilder<C1> Has<T>(T link) where T : class
     {
-        return (QueryBuilder<C1>) base.Has(target);
+        return (QueryBuilder<C1>) base.Has(link);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Not<T>(Identity target)
+    public override QueryBuilder<C1> Not<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1>) base.Not<T>(target);
+        return (QueryBuilder<C1>) base.Not<T>(relation);
     }
 
 
@@ -295,26 +286,17 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Any<T>(Identity target)
+    public override QueryBuilder<C1> Any<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1>) base.Any<T>(target);
+        return (QueryBuilder<C1>) base.Any<T>(relation);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Any<T>(T target) where T : class
+    public override QueryBuilder<C1> Any<T>(T link) where T : class
     {
-        return (QueryBuilder<C1>) base.Any(target);
+        return (QueryBuilder<C1>) base.Any(link);
     }
-    
-    
-    /// <inheritdoc />
-    public override QueryBuilder<C1> Has<T>() => Has<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1> Not<T>() => Not<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1> Any<T>() => Any<T>(Match.Plain);
-    
 }
 
 /// <inheritdoc />
@@ -360,28 +342,29 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
 
     /// <inheritdoc />
+    [Obsolete("Unique Queries are Deprecated. (Use Compile() instead; and create a Stream for custom filter state)")]
     public override Query<C1, C2> Unique()
     {
         return (Query<C1, C2>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Has<T>(Identity target)
+    public override QueryBuilder<C1, C2> Has<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2>) base.Has<T>(target);
+        return (QueryBuilder<C1, C2>) base.Has<T>(relation);
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Has<T>(T target) where T : class
+    public override QueryBuilder<C1, C2> Has<T>(T link) where T : class
     {
-        return (QueryBuilder<C1, C2>) base.Has(target);
+        return (QueryBuilder<C1, C2>) base.Has(link);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Not<T>(Identity target)
+    public override QueryBuilder<C1, C2> Not<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2>) base.Not<T>(target);
+        return (QueryBuilder<C1, C2>) base.Not<T>(relation);
     }
 
 
@@ -393,26 +376,17 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Any<T>(Identity target)
+    public override QueryBuilder<C1, C2> Any<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2>) base.Any<T>(target);
+        return (QueryBuilder<C1, C2>) base.Any<T>(relation);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Any<T>(T target) where T : class
+    public override QueryBuilder<C1, C2> Any<T>(T link) where T : class
     {
-        return (QueryBuilder<C1, C2>) base.Any(target);
+        return (QueryBuilder<C1, C2>) base.Any(link);
     }
-    
-    
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Has<T>() => Has<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Not<T>() => Not<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Any<T>() => Any<T>(Match.Plain);
-    
 }
 
 /// <inheritdoc />
@@ -461,28 +435,29 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
 
     /// <inheritdoc />
+    [Obsolete("Unique Queries are Deprecated. (Use Compile() instead; and create a Stream for custom filter state)")]
     public override Query<C1, C2, C3> Unique()
     {
         return (Query<C1, C2, C3>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Has<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3> Has<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3>) base.Has<T>(target);
+        return (QueryBuilder<C1, C2, C3>) base.Has<T>(relation);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Has<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3> Has<T>(T link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3>) base.Has(target);
+        return (QueryBuilder<C1, C2, C3>) base.Has(link);
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Not<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3> Not<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3>) base.Not<T>(target);
+        return (QueryBuilder<C1, C2, C3>) base.Not<T>(relation);
     }
 
 
@@ -494,25 +469,17 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Any<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3> Any<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3>) base.Any<T>(target);
+        return (QueryBuilder<C1, C2, C3>) base.Any<T>(relation);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Any<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3> Any<T>(T link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3>) base.Any(target);
+        return (QueryBuilder<C1, C2, C3>) base.Any(link);
     }
-    
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Has<T>() => Has<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Not<T>() => Not<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Any<T>() => Any<T>(Match.Plain);
-    
 }
 
 /// <inheritdoc />
@@ -550,29 +517,30 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
+    [Obsolete("Unique Queries are Deprecated. (Use Compile() instead; and create a Stream for custom filter state)")]
     public override Query<C1, C2, C3, C4> Unique()
     {
         return (Query<C1, C2, C3, C4>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3, C4>) base.Has<T>(target);
+        return (QueryBuilder<C1, C2, C3, C4>) base.Has<T>(relation);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Has<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3, C4> Has<T>(T link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3, C4>) base.Has(target);
+        return (QueryBuilder<C1, C2, C3, C4>) base.Has(link);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3, C4>) base.Not<T>(target);
+        return (QueryBuilder<C1, C2, C3, C4>) base.Not<T>(relation);
     }
 
 
@@ -584,26 +552,17 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3, C4>) base.Any<T>(target);
+        return (QueryBuilder<C1, C2, C3, C4>) base.Any<T>(relation);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Any<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3, C4> Any<T>(T link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3, C4>) base.Any(target);
+        return (QueryBuilder<C1, C2, C3, C4>) base.Any(link);
     }
-    
-    
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Has<T>() => Has<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Not<T>() => Not<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Any<T>() => Any<T>(Match.Plain);
-    
 }
 
 /// <inheritdoc />
@@ -642,6 +601,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
+    [Obsolete("Unique Queries are Deprecated. (Use Compile() instead; and create a Stream for custom filter state)")]
     public override Query<C1, C2, C3, C4, C5> Unique()
     {
         return (Query<C1, C2, C3, C4, C5>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
@@ -649,23 +609,23 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has<T>(target);
+        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has<T>(relation);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(T link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has(target);
+        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has(link);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Not<T>(target);
+        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Not<T>(relation);
     }
 
 
@@ -677,23 +637,15 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Identity target)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Identity relation = default)
     {
-        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any<T>(target);
+        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any<T>(relation);
     }
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(T target) where T : class
+    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(T link) where T : class
     {
-        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any(target);
+        return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any(link);
     }
-    
-    
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>() => Has<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>() => Not<T>(Match.Plain);
-    /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>() => Any<T>(Match.Plain);
 }

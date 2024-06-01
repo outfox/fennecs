@@ -13,7 +13,7 @@ internal sealed class Mask : IDisposable
     internal bool safety = true;
     
     
-    public bool SafeForAddition(TypeExpression typeExpression) => NotTypes.Contains(typeExpression);
+    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
 
