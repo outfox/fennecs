@@ -230,7 +230,7 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var relationQuery = world.Query<float>(MatchOld.Entity).Compile();
+        var relationQuery = world.Query<float>(Match.Entity).Compile();
         Assert.Empty(relationQuery);
 
         var intQuery = world.Query<int>().Compile();
@@ -257,7 +257,7 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var relationQuery = world.Query<string>(MatchOld.Entity).Compile();
+        var relationQuery = world.Query<string>(Match.Entity).Compile();
         Assert.Empty(relationQuery);
 
         var intQuery = world.Query<int>().Compile();
@@ -295,7 +295,7 @@ public class QueryBatchTests
         var e1 = world.Spawn().AddRelation(target, 123);
 
         Assert.True(e1.HasRelation<int>(target));
-        var intQuery = world.Query<int>(target).Compile();
+        var intQuery = world.Query<int>(Match.Relation(target)).Compile();
         intQuery.Batch().RemoveRelation<int>(target).Submit();
         Assert.False(e1.HasRelation<int>(target));
     }
@@ -315,7 +315,7 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var linkQuery = world.Query<string>(MatchOld.Object).Compile();
+        var linkQuery = world.Query<string>(Match.Object).Compile();
         Assert.Empty(linkQuery);
 
         var intQuery = world.Query<int>().Compile();

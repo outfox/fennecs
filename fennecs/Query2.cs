@@ -254,7 +254,7 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
     #region Blitters
 
     /// <inheritdoc cref="Query{C0}.Blit(C0,fennecs.Identity)"/>
-    public void Blit(C1 value, Identity target)
+    public void Blit(C1 value, Match target = default)
     {
         using var worldLock = World.Lock();
 
@@ -265,9 +265,6 @@ public class Query<C0, C1> : Query<C0>  where C1 : notnull where C0 : notnull
             table.Fill(typeExpression, value);
         }
     }
-    
-    /// <inheritdoc cref="Blit(C1,fennecs.Identity)"/>
-    public void Blit(C1 value) => Blit(value, MatchOld.Plain);
     #endregion
 
     

@@ -132,10 +132,10 @@ public partial class World : IDisposable
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
-    /// <param name="match">default <see cref="MatchOld.Plain"/>.<br/>Can alternatively be one
-    /// of <see cref="MatchOld.Any"/>, <see cref="MatchOld.Object"/> or <see cref="MatchOld.Target"/>
+    /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
+    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/> or <see cref="Match.Target"/>
     /// </param>
-    public void DespawnAllWith<T>(Identity match = default)
+    public void DespawnAllWith<T>(Match match = default)
     {
         using var query = Query<Identity>().Has<T>(match).Compile();
         query.Raw(delegate(Memory<Identity> entities)
@@ -205,7 +205,7 @@ public partial class World : IDisposable
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new Signature<TypeExpression>(TypeExpression.Of<Identity>(MatchOld.Plain)));
+        _root = GetArchetype(new Signature<TypeExpression>(TypeExpression.Of<Identity>(Match.Plain)));
     }
 
 

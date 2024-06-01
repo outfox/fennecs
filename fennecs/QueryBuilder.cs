@@ -54,7 +54,7 @@ public abstract class QueryBuilder : IDisposable
         World = world;
     }
 
-    protected private void Outputs<T>(Identity target)
+    protected private void Outputs<T>(Match target)
     {
         var typeExpression = TypeExpression.Of<T>(target);
         StreamTypes.Add(typeExpression);
@@ -124,10 +124,9 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Has<T>(Identity relation = default)
+    public virtual QueryBuilder Has<T>(Match match = default)
     {
-        var typeExpression = TypeExpression.Of<T>(relation);
-        
+        var typeExpression = TypeExpression.Of<T>(match);
         Mask.Has(typeExpression);
         return this;
     }
@@ -153,7 +152,7 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Not<T>(Identity relation = default)
+    public virtual QueryBuilder Not<T>(Match relation = default)
     {
         Mask.Not(TypeExpression.Of<T>(relation));
         return this;
@@ -183,7 +182,7 @@ public abstract class QueryBuilder : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
-    public virtual QueryBuilder Any<T>(Identity relation = default)
+    public virtual QueryBuilder Any<T>(Match relation = default)
     {
         Mask.Any(TypeExpression.Of<T>(relation));
         return this;
@@ -224,7 +223,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
         return Compile().Stream<C1>(StreamTypes[0].Target);
     }
 
-    internal QueryBuilder(World world, Identity match) : base(world)
+    internal QueryBuilder(World world, Match match) : base(world)
     {
         Outputs<C1>(match);
     }
@@ -258,7 +257,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
     
     
     /// <inheritdoc />
-    public override QueryBuilder<C1> Has<T>(Identity relation = default)
+    public override QueryBuilder<C1> Has<T>(Match relation = default)
     {
         return (QueryBuilder<C1>) base.Has<T>(relation);
     }
@@ -272,7 +271,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Not<T>(Identity relation = default)
+    public override QueryBuilder<C1> Not<T>(Match relation = default)
     {
         return (QueryBuilder<C1>) base.Not<T>(relation);
     }
@@ -286,7 +285,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1> Any<T>(Identity relation = default)
+    public override QueryBuilder<C1> Any<T>(Match relation = default)
     {
         return (QueryBuilder<C1>) base.Any<T>(relation);
     }
@@ -315,7 +314,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
     }
 
     
-    internal QueryBuilder(World world, Identity match1, Identity match2) : base(world)
+    internal QueryBuilder(World world, Match match1, Match match2) : base(world)
     {
         Outputs<C1>(match1);
         Outputs<C2>(match2);
@@ -349,7 +348,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Has<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2> Has<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2>) base.Has<T>(relation);
     }
@@ -362,7 +361,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Not<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2> Not<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2>) base.Not<T>(relation);
     }
@@ -376,7 +375,7 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2> Any<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2> Any<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2>) base.Any<T>(relation);
     }
@@ -406,7 +405,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
     }
 
 
-    internal QueryBuilder(World world, Identity match1, Identity match2, Identity match3) : base(world)
+    internal QueryBuilder(World world, Match match1, Match match2, Match match3) : base(world)
     {
         Outputs<C1>(match1);
         Outputs<C2>(match2);
@@ -442,7 +441,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Has<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3> Has<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3>) base.Has<T>(relation);
     }
@@ -455,7 +454,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Not<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3> Not<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3>) base.Not<T>(relation);
     }
@@ -469,7 +468,7 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3> Any<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3> Any<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3>) base.Any<T>(relation);
     }
@@ -489,7 +488,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
         (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3, C4>(world, streamTypes, mask, matchingTables);
 
 
-    internal QueryBuilder(World world, Identity match1, Identity match2, Identity match3, Identity match4) : base(world)
+    internal QueryBuilder(World world, Match match1, Match match2, Match match3, Match match4) : base(world)
     {
         Outputs<C1>(match1);
         Outputs<C2>(match2);
@@ -524,7 +523,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
     }
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3, C4> Has<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Has<T>(relation);
     }
@@ -538,7 +537,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3, C4> Not<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Not<T>(relation);
     }
@@ -552,7 +551,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4> : QueryBuilder where C4 : notnu
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3, C4> Any<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3, C4>) base.Any<T>(relation);
     }
@@ -572,7 +571,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
         (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3, C4, C5>(world, streamTypes, mask, matchingTables);
 
 
-    internal QueryBuilder(World world, Identity match1, Identity match2, Identity match3, Identity match4, Identity match5) : base(world)
+    internal QueryBuilder(World world, Match match1, Match match2, Match match3, Match match4, Match match5) : base(world)
     {
         Outputs<C1>(match1);
         Outputs<C2>(match2);
@@ -609,7 +608,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Has<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Has<T>(relation);
     }
@@ -623,7 +622,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Not<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Not<T>(relation);
     }
@@ -637,7 +636,7 @@ public sealed class QueryBuilder<C1, C2, C3, C4, C5> : QueryBuilder where C5 : n
 
 
     /// <inheritdoc />
-    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Identity relation = default)
+    public override QueryBuilder<C1, C2, C3, C4, C5> Any<T>(Match relation = default)
     {
         return (QueryBuilder<C1, C2, C3, C4, C5>) base.Any<T>(relation);
     }

@@ -35,13 +35,14 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     Gets a reference to the Component of type <typeparamref name="C" /> for the entity.
     /// </summary>
     /// <param name="entity">the entity to get the component from</param>
-    /// <param name="match">Match Expression for the component type <see cref="MatchOld" /></param>
+    /// <param name="match">Match Expression for the component type <see cref="Joins" /></param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
-    public ref C Ref<C>(Entity entity, Identity match)
+    public ref C Ref<C>(Entity entity, Match match)
     {
+        //TODO: We should be able to do that with another intermediate type component.
         if (match.IsWildcard) throw new("Match expression must not be a wildcard.");
         if (entity.World != World) throw new InvalidOperationException("Entity is not from this World.");
         World.AssertAlive(entity);
@@ -54,7 +55,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     }
 
     /// <inheritdoc cref="Ref{C}(fennecs.Entity,fennecs.Identity)"/>
-    public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, MatchOld.Plain);
+    public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Match.Plain);
 
     #endregion
 
@@ -75,11 +76,11 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?
     /// </summary>
     /// <param name="match">
-    ///     Match Expression for the component type <see cref="MatchOld" />.
-    ///     The default is <see cref="MatchOld.Plain" />
+    ///     Match Expression for the component type <see cref="Joins" />.
+    ///     The default is <see cref="MatMatch.Plain>
     /// </param>
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
-    public bool Contains<T>(Identity match = default)
+    public bool Contains<T>(Match match = default)
     {
         var typeExpression = TypeExpression.Of<T>(match);
         return typeExpression.Matches(StreamTypes);
@@ -197,7 +198,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     a Match Expression that is narrower than the respective Stream Type's initial
     ///     Match Expression (e.g. if Query has Match.Any, Match.Plain or Match.Object would be useful here).
     /// </param>
-    public void Subset<T>(Identity match)
+    public void Subset<T>(Match match)
     {
         _streamFilters.Add(TypeExpression.Of<T>(match));
         FilterArchetypes();
@@ -211,7 +212,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     a Match Expression that is narrower than the respective Stream Type's initial
     ///     Match Expression. If it is wider, the matched set will be empty. 
     /// </param>
-    public void Exclude<T>(Identity match)
+    public void Exclude<T>(Match match)
     {
         _streamExclusions.Add(TypeExpression.Of<T>(match));
         FilterArchetypes();

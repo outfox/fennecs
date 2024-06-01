@@ -106,7 +106,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         // Get quick lookup for Identity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(fennecs.MatchOld.Plain);
+        IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
 
         // TODO: Bake buckets dictionary
         // _buckets = Zip(finishedTypes, finishedBuckets);
@@ -345,12 +345,17 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             return;
         }
 
-        var storage = (Storage<T>) GetStorage(type);
-        storage.Blit(value);
+        var join = CrossJoin<T>([type]);
+        if (join.Empty) return;
+        do
+        {
+            var storage = join.Select;
+            storage.Blit(value);
+        } while (join.Iterate());
     }
 
 
-    internal Storage<T> GetStorage<T>(Identity target)
+    internal Storage<T> GetStorage<T>(Match target)
     {
         var type = TypeExpression.Of<T>(target);
         return (Storage<T>) GetStorage(type);
@@ -447,33 +452,65 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     #region Cross Joins
-    internal MatchOld.Join<C0> CrossJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
+    internal Joins.Cross<C0> CrossJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new MatchOld.Join<C0>(this, streamTypes.AsSpan());
+        return IsEmpty ? default : new Joins.Cross<C0>(this, streamTypes.AsSpan());
     }
 
 
-    internal MatchOld.Join<C0, C1> CrossJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
+    internal Joins.Join<C0, C1> CrossJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new MatchOld.Join<C0, C1>(this, streamTypes);
+        return IsEmpty ? default : new Joins.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal MatchOld.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
+    internal Joins.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new MatchOld.Join<C0, C1, C2>(this, streamTypes);
+        return IsEmpty ? default : new Joins.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal MatchOld.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
+    internal Joins.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new MatchOld.Join<C0, C1, C2, C3>(this, streamTypes);
+        return IsEmpty ? default : new Joins.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal MatchOld.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
+    internal Joins.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new MatchOld.Join<C0, C1, C2, C3, C4>(this, streamTypes);
+        return IsEmpty ? default : new Joins.Join<C0, C1, C2, C3, C4>(this, streamTypes);
+    }
+    #endregion
+
+
+    #region Inner Joins
+    internal Joins.Cross<C0> InnerJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Joins.Cross<C0>(this, streamTypes.AsSpan());
+    }
+
+
+    internal Joins.Join<C0, C1> InnerJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Joins.Join<C0, C1>(this, streamTypes);
+    }
+
+
+    internal Joins.Join<C0, C1, C2> InnerJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Joins.Join<C0, C1, C2>(this, streamTypes);
+    }
+
+
+    internal Joins.Join<C0, C1, C2, C3> InnerJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Joins.Join<C0, C1, C2, C3>(this, streamTypes);
+    }
+
+
+    internal Joins.Join<C0, C1, C2, C3, C4> InnerJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Joins.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
     #endregion
 

@@ -51,14 +51,14 @@ public readonly struct Batch : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <param name="data">component data</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>(T data) => AddComponent(data, target: MatchOld.Plain);
+    public Batch Add<T>(T data) => AddComponent(data, target: Match.Plain);
 
     /// <summary>
     /// Append an AddComponent operation to the batch.
     /// </summary>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>() where T : new() => AddComponent(new T(), target: MatchOld.Plain);
+    public Batch Add<T>() where T : new() => AddComponent(new T(), target: Match.Plain);
 
     /// <summary>
     /// Append an AddLink operation to the batch.
@@ -90,7 +90,7 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>() => RemoveComponent<T>(MatchOld.Plain);
+    public Batch Remove<T>() => RemoveComponent<T>(Match.Plain);
 
     /// <summary>
     /// Append an RemoveLink operation to the batch.
@@ -109,7 +109,7 @@ public readonly struct Batch : IDisposable
     public Batch RemoveRelation<T>(Entity target) => RemoveComponent<T>(target.Id);
 
 
-    private Batch AddComponent<T>(T data, Identity target)
+    private Batch AddComponent<T>(T data, Match target)
     {
         var typeExpression = TypeExpression.Of<T>(target);
 
@@ -128,9 +128,9 @@ public readonly struct Batch : IDisposable
         return this;
     }
 
-    private Batch RemoveComponent<T>() => RemoveComponent<T>(MatchOld.Plain);
+    private Batch RemoveComponent<T>() => RemoveComponent<T>(Match.Plain);
 
-    private Batch RemoveComponent<T>(Identity target)
+    private Batch RemoveComponent<T>(Match target)
     {
         var typeExpression = TypeExpression.Of<T>(target);
 

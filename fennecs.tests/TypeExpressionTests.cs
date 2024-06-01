@@ -8,9 +8,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void To_String()
     {
         output.WriteLine(TypeExpression.Of<TypeA>().ToString());
-        output.WriteLine(TypeExpression.Of<TypeA>(MatchOld.Any).ToString());
-        output.WriteLine(TypeExpression.Of<TypeA>(MatchOld.Object).ToString());
-        output.WriteLine(TypeExpression.Of<TypeA>(MatchOld.Entity).ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(Match.Any).ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(Match.Object).ToString());
+        output.WriteLine(TypeExpression.Of<TypeA>(Match.Entity).ToString());
         output.WriteLine(TypeExpression.Of<TypeA>(new Identity(123)).ToString());
     }
 
@@ -105,7 +105,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void Can_Create_For_Type()
     {
         var tx1 = TypeExpression.Of(typeof(TypeA));
-        var tx2 = TypeExpression.Of(typeof(TypeA), MatchOld.Any);
+        var tx2 = TypeExpression.Of(typeof(TypeA), Match.Any);
         var tx3 = TypeExpression.Of(typeof(TypeA), new Identity(123));
 
         Assert.False(tx1.isRelation);
@@ -117,10 +117,10 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void None_Matches_only_None()
     {
-        var none = TypeExpression.Of<TypeA>(MatchOld.Plain);
-        var any = TypeExpression.Of<TypeA>(MatchOld.Any);
-        var obj = TypeExpression.Of<TypeA>(MatchOld.Object);
-        var rel = TypeExpression.Of<TypeA>(MatchOld.Entity);
+        var none = TypeExpression.Of<TypeA>(Match.Plain);
+        var any = TypeExpression.Of<TypeA>(Match.Any);
+        var obj = TypeExpression.Of<TypeA>(Match.Object);
+        var rel = TypeExpression.Of<TypeA>(Match.Entity);
 
         var ent = TypeExpression.Of<TypeA>(new Identity(123));
         var lnk = TypeExpression.Of<TypeA>(Identity.Of("hello world"));
@@ -137,7 +137,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Any_Matches_only_All()
     {
-        var any = TypeExpression.Of<TypeA>(MatchOld.Any);
+        var any = TypeExpression.Of<TypeA>(Match.Any);
 
         var typ = TypeExpression.Of<TypeA>();
         var ent = TypeExpression.Of<TypeA>(new Identity(123));
@@ -152,7 +152,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Object_Matches_only_Objects()
     {
-        var obj = TypeExpression.Of<TypeA>(MatchOld.Object);
+        var obj = TypeExpression.Of<TypeA>(Match.Object);
 
         var typ = TypeExpression.Of<TypeA>();
         var ent = TypeExpression.Of<TypeA>(new Identity(123));
@@ -167,7 +167,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Relation_Matches_only_Relations()
     {
-        var rel = TypeExpression.Of<TypeA>(MatchOld.Entity);
+        var rel = TypeExpression.Of<TypeA>(Match.Entity);
 
         var typ = TypeExpression.Of<TypeA>();
         var ent = TypeExpression.Of<TypeA>(new Identity(123));
@@ -182,7 +182,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Target_Matches_all_Entity_Target_Relations()
     {
-        var rel = TypeExpression.Of<TypeA>(MatchOld.Target);
+        var rel = TypeExpression.Of<TypeA>(Match.Target);
 
         var typ = TypeExpression.Of<TypeA>();
         var ent = TypeExpression.Of<TypeA>(new Identity(123));

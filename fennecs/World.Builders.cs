@@ -11,7 +11,7 @@ public partial class World
     /// <returns><see cref="QueryBuilder{Identity}"/></returns>
     public QueryBuilder<Identity> Query()
     {
-        return new QueryBuilder<Identity>(this, MatchOld.Any);
+        return new QueryBuilder<Identity>(this, Match.Any);
     }
 
 
@@ -25,14 +25,14 @@ public partial class World
     /// <returns><see cref="QueryBuilder{C1}"/></returns>
     public QueryBuilder<C1> Query<C1>() where C1 : notnull
     {
-        return new QueryBuilder<C1>(this, MatchOld.Any);
+        return new QueryBuilder<C1>(this, Match.Any);
     }
 
 
     /// <summary>
     /// Creates a fluent Builder for a query with one output Stream Type.
-    /// A <see cref="MatchOld"/> expression can be specified to limit the components matched to Stream Types, for instance:
-    /// <see cref="MatchOld.Any"/>, <see cref="MatchOld.Entity"/>, <see cref="MatchOld.Object"/>, <see cref="MatchOld.Plain"/> or <see cref="MatchOld.Target"/>.
+    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
     /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Subset{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
@@ -40,7 +40,7 @@ public partial class World
     /// <param name="match">Match Expression</param>
     /// <typeparam name="C1">component type that runners of this query will have access to</typeparam>
     /// <returns><see cref="QueryBuilder{C1}"/></returns>
-    public QueryBuilder<C1> Query<C1>(Identity match) where C1 : notnull
+    public QueryBuilder<C1> Query<C1>(Match match) where C1 : notnull
     {
         return new QueryBuilder<C1>(this, match);
     }
@@ -57,14 +57,14 @@ public partial class World
     /// <returns><see cref="QueryBuilder{C1, C2}"/></returns>
     public QueryBuilder<C1, C2> Query<C1, C2>() where C1 : notnull where C2 : notnull
     {
-        return new QueryBuilder<C1, C2>(this, MatchOld.Any, MatchOld.Any);
+        return new QueryBuilder<C1, C2>(this, Match.Any, Match.Any);
     }
 
 
     /// <summary>
     /// Creates a fluent Builder for a query with two output Stream Types.
-    /// A <see cref="MatchOld"/> expression can be specified to limit the components matched to Stream Types, for instance:
-    /// <see cref="MatchOld.Any"/>, <see cref="MatchOld.Entity"/>, <see cref="MatchOld.Object"/>, <see cref="MatchOld.Plain"/> or <see cref="MatchOld.Target"/>.
+    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
     /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Subset{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
@@ -74,7 +74,7 @@ public partial class World
     /// <typeparam name="C1">component Stream Type 1</typeparam>
     /// <typeparam name="C2">component Stream Type 2</typeparam>
     /// <returns><see cref="QueryBuilder{C1, C2}"/></returns>
-    public QueryBuilder<C1, C2> Query<C1, C2>(Identity match1, Identity match2) where C1 : notnull where C2 : notnull
+    public QueryBuilder<C1, C2> Query<C1, C2>(Match match1, Match match2) where C1 : notnull where C2 : notnull
     {
         return new QueryBuilder<C1, C2>(this, match1, match2);
     }
@@ -92,14 +92,14 @@ public partial class World
     /// <returns><see cref="QueryBuilder{C1, C2, C3}"/></returns>
     public QueryBuilder<C1, C2, C3> Query<C1, C2, C3>() where C1 : notnull where C2 : notnull where C3 : notnull
     {
-        return new QueryBuilder<C1, C2, C3>(this, MatchOld.Any, MatchOld.Any, MatchOld.Any);
+        return new QueryBuilder<C1, C2, C3>(this, Match.Any, Match.Any, Match.Any);
     }
 
 
     /// <summary>
     /// Creates a fluent Builder for a query with three output Stream Types.
-    /// A <see cref="MatchOld"/> expression can be specified to limit the components matched to Stream Types, for instance:
-    /// <see cref="MatchOld.Any"/>, <see cref="MatchOld.Entity"/>, <see cref="MatchOld.Object"/>, <see cref="MatchOld.Plain"/> or <see cref="MatchOld.Target"/>.
+    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
     /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Subset{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
@@ -111,7 +111,7 @@ public partial class World
     /// <typeparam name="C2">component Stream Type 2</typeparam>
     /// <typeparam name="C3">component Stream Type 3</typeparam>
     /// <returns><see cref="QueryBuilder{C1, C2, C3}"/></returns>
-    public QueryBuilder<C1, C2, C3> Query<C1, C2, C3>(Identity match1, Identity match2, Identity match3) where C1 : notnull where C2 : notnull where C3 : notnull
+    public QueryBuilder<C1, C2, C3> Query<C1, C2, C3>(Match match1, Match match2, Match match3) where C1 : notnull where C2 : notnull where C3 : notnull
     {
         return new QueryBuilder<C1, C2, C3>(this, match1, match2, match3);
     }
@@ -130,14 +130,14 @@ public partial class World
     /// <returns><see cref="QueryBuilder{C1, C2, C3, C4}"/></returns>
     public QueryBuilder<C1, C2, C3, C4> Query<C1, C2, C3, C4>() where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
     {
-        return new QueryBuilder<C1, C2, C3, C4>(this, MatchOld.Any, MatchOld.Any, MatchOld.Any, MatchOld.Any);
+        return new QueryBuilder<C1, C2, C3, C4>(this, Match.Any, Match.Any, Match.Any, Match.Any);
     }
 
 
     /// <summary>
     /// Creates a fluent Builder for a query with four output Stream Types.
-    /// A <see cref="MatchOld"/> expression can be specified to limit the components matched to Stream Types, for instance:
-    /// <see cref="MatchOld.Any"/>, <see cref="MatchOld.Entity"/>, <see cref="MatchOld.Object"/>, <see cref="MatchOld.Plain"/> or <see cref="MatchOld.Target"/>.
+    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
     /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Subset{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
@@ -151,7 +151,7 @@ public partial class World
     ///  <typeparam name="C3">component Stream Type 3</typeparam>
     ///  <typeparam name="C4">component Stream Type 4</typeparam>
     /// <returns><see cref="QueryBuilder{C1, C2, C3, C4}"/></returns>
-    public QueryBuilder<C1, C2, C3, C4> Query<C1, C2, C3, C4>(Identity match1, Identity match2, Identity match3, Identity match4) where C2 : notnull where C1 : notnull where C3 : notnull where C4 : notnull
+    public QueryBuilder<C1, C2, C3, C4> Query<C1, C2, C3, C4>(Match match1, Match match2, Match match3, Match match4) where C2 : notnull where C1 : notnull where C3 : notnull where C4 : notnull
     {
         return new QueryBuilder<C1, C2, C3, C4>(this, match1, match2, match3, match4);
     }
@@ -171,14 +171,14 @@ public partial class World
     /// <returns><see cref="QueryBuilder{C1, C2, C3, C4, C5}"/></returns>
     public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>() where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull where C5 : notnull
     {
-        return new QueryBuilder<C1, C2, C3, C4, C5>(this, MatchOld.Any, MatchOld.Any, MatchOld.Any, MatchOld.Any, MatchOld.Any);
+        return new QueryBuilder<C1, C2, C3, C4, C5>(this, Match.Any, Match.Any, Match.Any, Match.Any, Match.Any);
     }
 
 
     /// <summary>
     /// Creates a fluent Builder for a query with five output Stream Types.
-    /// A <see cref="MatchOld"/> expression can be specified to limit the components matched to Stream Types, for instance:
-    /// <see cref="MatchOld.Any"/>, <see cref="MatchOld.Entity"/>, <see cref="MatchOld.Object"/>, <see cref="MatchOld.Plain"/> or <see cref="MatchOld.Target"/>.
+    /// A <see cref="Joins"/> expression can be specified to limit the components matched to Stream Types, for instance:
+    /// <see cref="Match.Any"/>, <see cref="Match.Entity"/>, <see cref="Match.Object"/>, <see cref="Match.Plain"/> or <see cref="Match.Target"/>.
     /// </summary>
     /// <remarks>
     /// This bakes the Match Expression into the compiled Query, which is slightly more performant than using Query.<see cref="fennecs.Query.Subset{T}"/> and much more performant than using Query.<see cref="fennecs.Query.Filtered"/>.
@@ -194,7 +194,7 @@ public partial class World
     /// <typeparam name="C4">component Stream Type 4</typeparam>
     /// <typeparam name="C5">component Stream Type 5</typeparam>
     /// <returns><see cref="QueryBuilder{C1, C2, C3, C4, C5}"/></returns>
-    public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>(Identity match1, Identity match2, Identity match3, Identity match4, Identity match5) where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull where C5 : notnull
+    public QueryBuilder<C1, C2, C3, C4, C5> Query<C1, C2, C3, C4, C5>(Match match1, Match match2, Match match3, Match match4, Match match5) where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull where C5 : notnull
     {
         return new QueryBuilder<C1, C2, C3, C4, C5>(this, match1, match2, match3, match4, match5);
     }

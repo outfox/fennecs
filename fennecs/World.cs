@@ -239,7 +239,7 @@ public partial class World : Query
 
     internal void CollectTargets<T>(List<Identity> entities)
     {
-        var type = TypeExpression.Of<T>(MatchOld.Any);
+        var type = TypeExpression.Of<T>(Match.Any);
 
         // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
         foreach (var candidate in _tablesByType.Keys)
