@@ -314,8 +314,8 @@ public class WorldTests(ITestOutputHelper output)
         var target1 = world.Spawn();
         var target2 = world.Spawn().Add("hallo dieter");
 
-        world.Spawn().Add(target1, 666);
-        world.Spawn().Add(target2, 1.0f);
+        world.Spawn().Add(666, target1);
+        world.Spawn().Add(1.0f, target2);
         world.Spawn().Add<string>("123");
 
         var targets = new List<Identity>();
@@ -339,8 +339,8 @@ public class WorldTests(ITestOutputHelper output)
 
         for (var i = 0; i < 1000; i++)
         {
-            world.Spawn().Add(target1, 666);
-            world.Spawn().Add(target2, 444);
+            world.Spawn().Add(666, target1);
+            world.Spawn().Add(444, target2);
         }
 
         var query1 = world.Query<Identity>().Has<int>(target1.Id).Compile();
@@ -477,7 +477,7 @@ public class WorldTests(ITestOutputHelper output)
         var target = world.Spawn();
 
         var worldLock = world.Lock();
-        world.On(entity).Add(target, 666);
+        world.On(entity).Add(666, target);
         Assert.False(entity.Has<int>(target));
         worldLock.Dispose();
         Assert.True(entity.Has<int>(target));
@@ -491,8 +491,8 @@ public class WorldTests(ITestOutputHelper output)
         var identity = world.Spawn();
         var target = world.Spawn();
         using var worldLock = world.Lock();
-        world.On(identity).Add(target, 666);
-        world.On(identity).RemoveRelation<int>(target);
+        world.On(identity).Add(666, target);
+        world.On(identity).Remove<int>(target);
         Assert.False(world.HasComponent<int>(identity, default), default);
         Assert.False(world.HasComponent<int>(target, default));
 
@@ -519,7 +519,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        world.On(entity).Add(target, 666);
+        world.On(entity).Add(666, target);
         Assert.True(entity.Has<int>(target));
     }
 
@@ -565,7 +565,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var other = world.Spawn();
         var data = new Identity(123);
-        world.On(entity).Add(other, data);
+        world.On(entity).Add(data, other);
         Assert.True(entity.Has<Identity>(other));
     }
 
@@ -621,7 +621,7 @@ public class WorldTests(ITestOutputHelper output)
         var target = world.Spawn();
         var entity1 = world.Spawn().Add("hallo");
         var entity2 = world.Spawn().Add(Link.With("to the past"));
-        var entity3 = world.Spawn().Add<string>(target, "to the future");
+        var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
         world.DespawnAllWith<string>(Match.Plain);
         Assert.False(world.IsAlive(entity1));
@@ -638,7 +638,7 @@ public class WorldTests(ITestOutputHelper output)
         var target = world.Spawn();
         var entity1 = world.Spawn().Add("hallo");
         var entity2 = world.Spawn().Add(Link.With("to the past"));
-        var entity3 = world.Spawn().Add<string>(target, "to the future");
+        var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
         world.DespawnAllWith<string>(Match.Any);
         Assert.False(world.IsAlive(entity1));
@@ -655,7 +655,7 @@ public class WorldTests(ITestOutputHelper output)
         var target = world.Spawn();
         var entity1 = world.Spawn().Add("hallo");
         var entity2 = world.Spawn().Add(Link.With("to the past"));
-        var entity3 = world.Spawn().Add<string>(target, "to the future");
+        var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
         world.DespawnAllWith<string>(Match.Object);
         Assert.True(world.IsAlive(entity1));
@@ -672,7 +672,7 @@ public class WorldTests(ITestOutputHelper output)
         var target = world.Spawn();
         var entity1 = world.Spawn().Add("hallo");
         var entity2 = world.Spawn().Add(Link.With("to the past"));
-        var entity3 = world.Spawn().Add<string>(target, "to the future");
+        var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
         world.DespawnAllWith<string>(Match.Target);
         Assert.True(world.IsAlive(entity1));

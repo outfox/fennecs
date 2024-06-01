@@ -57,19 +57,19 @@ public class DocumentationNBodyTests
         sun3.Add<Velocity>();
         
         sun1.Add(body1);
-        sun1.Add(sun1, body1);
-        sun1.Add(sun2, body2);
-        sun1.Add(sun3, body3);
+        sun1.Add(body1, sun1);
+        sun1.Add(body2, sun2);
+        sun1.Add(body3, sun3);
         
         sun2.Add(body2);
-        sun2.Add(sun1, body1);
-        sun2.Add(sun2, body2);
-        sun2.Add(sun3, body3);
+        sun2.Add(body1, sun1);
+        sun2.Add(body2, sun2);
+        sun2.Add(body3, sun3);
         
         sun3.Add(body3);
-        sun3.Add(sun1, body1);
-        sun3.Add(sun2, body2);
-        sun3.Add(sun3, body3);
+        sun3.Add(body1, sun1);
+        sun3.Add(body2, sun2);
+        sun3.Add(body3, sun3);
 
         // The match specifiers can be omitted, as there are no "Position" and "Forces" relations, only "Body"
         // var accumulator = world.Query<Forces, Position, Body>().Compile();

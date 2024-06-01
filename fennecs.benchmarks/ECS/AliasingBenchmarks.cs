@@ -99,7 +99,7 @@ public class AliasingBenchmarks
 
         for (var i = 0; i < entityCount; i++)
         {
-            _world.Spawn().Add<Vector4>(new(RandomV.NextSingle(), RandomV.NextSingle(), RandomV.NextSingle(), RandomV.NextSingle()));
+            _world.Spawn().Add(new Vector4(RandomV.NextSingle(), RandomV.NextSingle(), RandomV.NextSingle(), RandomV.NextSingle()));
             _world.Spawn().Add<FoxVector4>(new Vector4(RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle()));
             _world.Spawn().Add<FoxVector4Simd>(new Vector4(RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle()));
         }

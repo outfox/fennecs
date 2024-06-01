@@ -102,7 +102,7 @@ public readonly struct Batch : IDisposable
     /// <typeparam name="T">component type</typeparam>
     /// <param name="target">target of the relation</param>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch RemoveRelation<T>(Relation target) => RemoveComponent<T>(target);
+    public Batch Remove<T>(Relation target) => RemoveComponent<T>(target);
 
 
     private Batch AddComponent<T>(T data, Match target)

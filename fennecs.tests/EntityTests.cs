@@ -22,7 +22,7 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var target = world.Spawn();
         var builder = new Entity(world, entity);
-        builder.Add(target, 123);
+        builder.Add(123, target);
         Assert.True(entity.Has<int>(target));
         Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
     }
@@ -37,7 +37,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(entity.ToString(), builder.ToString());
 
         entity.Add(123);
-        entity.Add(world.Spawn(), 7.0f);
+        entity.Add(7.0f, world.Spawn());
         entity.Add(Link.With("hello"));
         output.WriteLine(entity.ToString());
         
@@ -52,7 +52,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         entity.Add(123);
-        entity.Add(world.Spawn(), 7.0f);
+        entity.Add(7.0f, world.Spawn());
         entity.Add(Link.With("hello"));
         entity.Despawn();
         Assert.False(world.IsAlive(entity));

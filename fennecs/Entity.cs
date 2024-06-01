@@ -73,9 +73,9 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
-    /// <param name="targetEntity">The entity with which to establish the relation.</param>
+    /// <param name="relation">The entity with which to establish the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Add<B>(Entity targetEntity) where B : notnull, new() => Add(targetEntity, new B());
+    public Entity Add<B>(Relation relation) where B : notnull, new() => Add(new B(), relation);
 
 
     /// <summary>
@@ -90,10 +90,10 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
-    /// <param name="relateTarget">The entity with which to establish the relation.</param>
     /// <param name="data">The data associated with the relation.</param>
+    /// <param name="relation">The entity with which to establish the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity Add<T>(Relation relation, T data) where T : notnull
+    public Entity Add<T>(T data, Relation relation = default) where T : notnull
     {
         var typeExpression = TypeExpression.Of<T>(relation);
         World.AddComponent(Id, typeExpression, data);
@@ -123,6 +123,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     }
 
 
+    /*
     /// <summary>
     /// Adds a Component of a specific type, with specific data, to the current entity.
     /// </summary>
@@ -135,7 +136,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
         World.AddComponent(Id, type, data);
         return this;
     }
-
+    */
 
     /// <summary>
     /// Adds a Component of a specific type to the current entity.
@@ -163,7 +164,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <typeparam name="T">The type of the relation to be removed.</typeparam>
     /// <param name="targetEntity">The entity from which the relation will be removed.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity RemoveRelation<T>(Entity targetEntity)
+    public Entity Remove<T>(Entity targetEntity)
     {
         var typeExpression = TypeExpression.Of<T>(targetEntity);
         World.RemoveComponent(Id, typeExpression);
