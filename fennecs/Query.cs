@@ -21,8 +21,8 @@ namespace fennecs;
 /// </summary>
 public partial class Query : IEnumerable<Entity>, IDisposable
 {
-    internal static int Concurrency => Math.Max(1, Environment.ProcessorCount-2);
-    
+    internal static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
+
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
     ///     Affected by Filters.
@@ -30,6 +30,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     public virtual int Count => Archetypes.Sum(t => t.Count);
 
     #region Accessors
+
     /// <summary>
     ///     Gets a reference to the Component of type <typeparamref name="C" /> for the entity.
     /// </summary>
@@ -41,7 +42,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
     public ref C Ref<C>(Entity entity, Identity match)
     {
-        if (match.IsWildcard) throw new ("Match expression must not be a wildcard.");
+        if (match.IsWildcard) throw new("Match expression must not be a wildcard.");
         if (entity.World != World) throw new InvalidOperationException("Entity is not from this World.");
         World.AssertAlive(entity);
 
@@ -51,31 +52,13 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         //TODO: Maybe it's possible to lock the World for the lifetime of the ref?
         return ref World.GetComponent<C>(entity, match);
     }
-    
+
     /// <inheritdoc cref="Ref{C}(fennecs.Entity,fennecs.Identity)"/>
     public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Match.Plain);
+
     #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="match"></param>
-    /// <typeparam name="C"></typeparam>
-    /// <returns></returns>
-    public Stream<C> Stream<C>(Identity match = default) where C : notnull => new(this, match);
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="C0"></typeparam>
-    /// <typeparam name="C1"></typeparam>
-    /// <returns></returns>
-    public Stream<C0, C1> Stream<C0, C1>(Identity match0 = default, Identity match1 = default) where C0 : notnull where C1 : notnull
-    {
-        return new(this, match0, match1);
-    }
     
-
     /// <summary>
     ///     Does this Query match ("contain") the Entity, and would enumerate it?
     /// </summary>
@@ -87,7 +70,6 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         var table = meta.Archetype;
         return _trackedArchetypes.Contains(table);
     }
-
 
     /// <summary>
     ///     Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?
@@ -125,8 +107,9 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// might otherwise be made happen lazily only as the actual workload starts.
     /// </remarks>
     public virtual Query Warmup() => this;
-    
+
     #region Internals
+
     /// <summary>
     ///     Array of TypeExpressions for the Output Stream of this Query.
     ///     Mutated by Filter Expressions.
@@ -152,7 +135,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// All the archetypes that this query can potentially match.
     /// </summary>
     private readonly List<Archetype> _trackedArchetypes;
-    
+
     /// <summary>
     /// This query's currently matched Archetypes.
     /// (affected by filters)
@@ -164,7 +147,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// The World will notify the Query of new matched Archetypes, or Archetypes to forget.
     /// </summary>
     internal protected World World { get; init; }
-    
+
     /// <summary>
     ///  Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
     /// </summary>
@@ -196,7 +179,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         World = world;
         Mask = mask;
     }
-    
+
     protected Query()
     {
         Archetypes = PooledList<Archetype>.Rent();
@@ -208,6 +191,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
 
 
     #region Filtering
+
     /// <inheritdoc cref="Subset{T}"/>
     /// <param name="match">
     ///     a Match Expression that is narrower than the respective Stream Type's initial
@@ -218,7 +202,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         _streamFilters.Add(TypeExpression.Of<T>(match));
         FilterArchetypes();
     }
-    
+
     /// <inheritdoc cref="Subset{T}"/>
     /// <summary>
     /// Specify a match expression to exclude certain relations.
@@ -255,10 +239,12 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         Archetypes.Clear();
         Archetypes.AddRange(_trackedArchetypes);
     }
+
     #endregion
 
 
     #region IEnumerable<Entity>
+
     /// <summary>
     ///     Enumerator over all the Entities in the Query (dependent on filter state).
     ///     Do not make modifications to the world affecting the Query while enumerating.
@@ -290,7 +276,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         foreach (var table in Archetypes)
         {
             if (!table.IsMatchSuperSet(filterExpressions)) continue;
-            
+
             foreach (var entity in table) yield return entity;
         }
     }
@@ -301,10 +287,12 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     {
         return GetEnumerator();
     }
+
     #endregion
 
 
     #region Random Access
+
     /// <summary>
     ///     Does this query match any entities?
     /// </summary>
@@ -367,10 +355,12 @@ public partial class Query : IEnumerable<Entity>, IDisposable
             return result;
         }
     }
+
     #endregion
 
 
     #region Bulk Operations
+
     /// <summary>
     ///     Adds a Component (using default constructor) to all Entities matched by this query.
     /// </summary>
@@ -454,10 +444,10 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.AddConflict addConflict, Batch.RemoveConflict removeConflict)
     {
-        return new Batch(_trackedArchetypes, World, Mask.Clone(), addConflict, removeConflict);
+        return new(_trackedArchetypes, World, Mask.Clone(), addConflict, removeConflict);
     }
 
-    
+
     /// <inheritdoc cref="Despawn" />
     [Obsolete("Use Despawn() instead.")]
     public void Clear() => Despawn();
@@ -502,8 +492,8 @@ public partial class Query : IEnumerable<Entity>, IDisposable
                     break;
                 case TruncateMode.Proportional:
                 default:
-                    var ratio = (float) maxEntityCount / count;
-                    archetype.Truncate((int) Math.Round(ratio * archetype.Count));
+                    var ratio = (float)maxEntityCount / count;
+                    archetype.Truncate((int)Math.Round(ratio * archetype.Count));
                     break;
             }
     }
@@ -523,22 +513,24 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         /// </summary>
         PerArchetype,
     }
+
     #endregion
-    
-    
+
+
     #region IDisposable Implementation
+
     /// <summary>
     ///     Dispose the Query.
     /// </summary>
     public void Dispose()
     {
         ObjectDisposedException.ThrowIf(disposed, this);
-        
+
         disposed = true;
-            
+
         _trackedArchetypes.Clear();
-        Archetypes.Clear();            
-        
+        Archetypes.Clear();
+
         _streamExclusions.Clear();
         _streamFilters.Clear();
 
@@ -551,6 +543,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     }
 
     private bool disposed { get; set; }
+
     #endregion
 }
 

@@ -23,26 +23,30 @@ public sealed class EntitySpawner : IDisposable
     {
         if (_components.Contains(type))
         {
+            // replace existing value
+            _values[_components.IndexOf(type)] = value;
+        }
+        else
+        {
             // add new value
             _components.Add(type);
             _values.Add(value);
         }
-        else
-        {
-            // replace existing value
-            _values[_components.IndexOf(type)] = value;
-        }
         return this;
     }
-    
+
     private EntitySpawner RemoveComponent(TypeExpression type)
     {
         _values.RemoveAt(_components.IndexOf(type));
         _components.Remove(type);
         return this;
     }
-    
+
     /// <inheritdoc cref="Entity.Add{T}()"/>
+    /// <summary> Adds a component of the given type to the Spawner's configuration state.
+    /// If the EntitySpawner already contains a component of the same type, it will be replaced.
+    /// </summary>
+    /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>(T component) where T : notnull
     {
         var type = TypeExpression.Of<T>();
@@ -50,6 +54,10 @@ public sealed class EntitySpawner : IDisposable
     }
 
     /// <inheritdoc cref="Entity.Add{T}()"/>
+    /// <summary> Adds a component of the given type to the Spawner's configuration state.
+    /// If the EntitySpawner already contains a component of the same type, it will be replaced.
+    /// </summary>
+    /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>() where T : new()
     {
         var type = TypeExpression.Of<T>();
@@ -88,9 +96,9 @@ public sealed class EntitySpawner : IDisposable
     public void SpawnOnce(int count = 1)
     {
         Spawn(count);
-        Dispose();        
+        Dispose();
     }
-    
+
     /// <inheritdoc />
     public void Dispose()
     {

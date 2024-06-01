@@ -223,6 +223,15 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1>(world, streamTypes, mask, matchingTables);
 
+    
+    /// <summary>
+    /// Compiles the Query and returns a Stream of the specified type.
+    /// </summary>
+    /// <returns>Stream to use for runners.</returns>
+    public Stream<C1> Stream()
+    {
+        return Compile().Stream<C1>(StreamTypes[0].Target);
+    }
 
     internal QueryBuilder(World world, Identity match) : base(world)
     {
@@ -250,6 +259,7 @@ public sealed class QueryBuilder<C1> : QueryBuilder where C1 : notnull
 
 
     /// <inheritdoc />
+    [Obsolete("Unique Queries are Deprecated. (Use Compile() instead; and create a Stream for custom filter state)")]
     public override Query<C1> Unique()
     {
         return (Query<C1>) World.CompileQuery(StreamTypes, Mask, CreateQuery);
@@ -313,7 +323,16 @@ public sealed class QueryBuilder<C1, C2> : QueryBuilder where C2 : notnull where
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1, C2>(world, streamTypes, mask, matchingTables);
 
+    /// <summary>
+    /// Compiles the Query and returns a Stream of the specified type.
+    /// </summary>
+    /// <returns>Stream to use for runners.</returns>
+    public Stream<C1, C2> Stream()
+    {
+        return Compile().Stream<C1, C2>(StreamTypes[0].Target, StreamTypes[1].Target);
+    }
 
+    
     internal QueryBuilder(World world, Identity match1, Identity match2) : base(world)
     {
         Outputs<C1>(match1);
@@ -401,6 +420,16 @@ public sealed class QueryBuilder<C1, C2, C3> : QueryBuilder where C2 : notnull w
 {
     private static readonly Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> CreateQuery =
         (world, streamTypes, mask, matchingTables) => new Query<C1, C2, C3>(world, streamTypes, mask, matchingTables);
+
+
+    /// <summary>
+    /// Compiles the Query and returns a Stream of the specified type.
+    /// </summary>
+    /// <returns>Stream to use for runners.</returns>
+    public Stream<C1, C2, C3> Stream()
+    {
+        return Compile().Stream<C1, C2, C3>(StreamTypes[0].Target, StreamTypes[1].Target, StreamTypes[2].Target);
+    }
 
 
     internal QueryBuilder(World world, Identity match1, Identity match2, Identity match3) : base(world)

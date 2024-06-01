@@ -120,7 +120,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <typeparam name="T">type of the item (becomes the backing type of the object link)</typeparam>
     /// <returns></returns>
     public static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
-
+    
 
     internal Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)
     {
