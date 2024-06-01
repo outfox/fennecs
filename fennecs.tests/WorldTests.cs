@@ -343,8 +343,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().Add(444, target2);
         }
 
-        var query1 = world.Query<Identity>().Has<int>(target1.Id).Compile();
-        var query2 = world.Query<Identity>().Has<int>(target2.Id).Compile();
+        var query1 = world.Query<Identity>().Has<int>(target1).Compile();
+        var query2 = world.Query<Identity>().Has<int>(target2).Compile();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);

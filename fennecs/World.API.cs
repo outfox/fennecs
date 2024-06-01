@@ -59,7 +59,7 @@ public partial class World : IDisposable
     /// Despawn (destroy) an Entity from this World by its Identity.
     /// </summary>
     /// <param name="identity">the entity to despawn.</param>
-    public void Despawn(Identity identity) => DespawnImpl(identity);
+    internal void Despawn(Identity identity) => DespawnImpl(identity);
 
 
     /// <summary>
@@ -70,7 +70,8 @@ public partial class World : IDisposable
     /// <code>world.On(identity).Add(123).Add("string").Remove&lt;int&gt;();</code>
     /// </example>
     /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
-    public Entity On(Identity identity)
+    [Obsolete("Use Entities instead.")]
+    internal Entity On(Identity identity)
     {
         AssertAlive(identity);
         return new(this, identity);
@@ -85,7 +86,9 @@ public partial class World : IDisposable
     /// <code>var bob = world.GetEntity(bobsIdentity);</code>
     /// </example>
     /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
-    public Entity GetEntity(Identity identity) => On(identity);
+    [Obsolete("Use entities instead.")]
+    internal Entity GetEntity(Identity identity) => On(identity);
+    
 
 
     /// <summary>
@@ -93,7 +96,7 @@ public partial class World : IDisposable
     /// </summary>
     /// <param name="identity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    public bool IsAlive(Identity identity) => identity.IsEntity && identity == _meta[identity.Index].Identity;
+    internal bool IsAlive(Identity identity) => identity.IsEntity && identity == _meta[identity.Index].Identity;
 
 
     /// <summary>
@@ -132,7 +135,7 @@ public partial class World : IDisposable
     /// Bulk Despawn Entities from a World.
     /// </summary>
     /// <param name="toDelete">the entities to despawn (remove)</param>
-    public void Despawn(ReadOnlySpan<Identity> toDelete)
+    internal void Despawn(ReadOnlySpan<Identity> toDelete)
     {
         lock (_spawnLock)
         {
@@ -147,7 +150,7 @@ public partial class World : IDisposable
     /// Bulk Despawn Entities from a World.
     /// </summary>
     /// <param name="identities">the entities to despawn (remove)</param>
-    public void Recycle(ReadOnlySpan<Identity> identities)
+    internal void Recycle(ReadOnlySpan<Identity> identities)
     {
         lock (_spawnLock)
         {
@@ -160,7 +163,7 @@ public partial class World : IDisposable
     /// Despawn one Entity from a World.
     /// </summary>
     /// <param name="identity">the entity to despawn (remove)</param>
-    public void Recycle(Identity identity)
+    internal void Recycle(Identity identity)
     {
         lock (_spawnLock)
         {

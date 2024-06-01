@@ -43,9 +43,6 @@ public class ArchetypeTests(ITestOutputHelper output)
 
         var typeExpressionAny = TypeExpression.Of<string>(Match.Any);
         Assert.True(table.Matches(typeExpressionAny));
-
-        var typeExpressionTarget = TypeExpression.Of<string>(new Identity(99999));
-        Assert.False(table.Matches(typeExpressionTarget));
     }
 
 

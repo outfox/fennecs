@@ -22,7 +22,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// Provides a fluent interface for constructing and modifying Entities within a world.
     /// The Entity's Identity is managed internally.
     /// </summary>
-    public Entity(World world, Identity identity)
+    internal Entity(World world, Identity identity)
     {
         World = world;
         Id = identity;
@@ -38,7 +38,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <summary>
     /// The Identity of the Entity.
     /// </summary>
-    public readonly Identity Id;
+    internal readonly Identity Id;
     #endregion
 
 

@@ -50,8 +50,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         {
             var id = random.Next();
             var deco = (TypeID) (random.Next() % TypeID.MaxValue);
-            var t1 = new TypeExpression(new Identity(id, deco), (TypeID) i);
-            var t2 = new TypeExpression(new Identity(id, deco), (TypeID) (i + 1));
+            var t1 = new TypeExpression(new Match(new Identity(id, deco)), (TypeID) i);
+            var t2 = new TypeExpression(new Match(new Identity(id, deco)), (TypeID) (i + 1));
 
             //  If this test fails, Archetypes will not be able to build immutable buckets for Wildcards.
             Assert.True(t1.CompareTo(t2) > 0);
@@ -106,7 +106,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var tx1 = TypeExpression.Of(typeof(TypeA));
         var tx2 = TypeExpression.Of(typeof(TypeA), Match.Any);
-        var tx3 = TypeExpression.Of(typeof(TypeA), new Identity(123));
+        var tx3 = TypeExpression.Of(typeof(TypeA), new Entity(null!, new(123)));
 
         Assert.False(tx1.isRelation);
         Assert.True(tx2.isWildcard);
@@ -122,8 +122,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var obj = TypeExpression.Of<TypeA>(Match.Object);
         var rel = TypeExpression.Of<TypeA>(Match.Entity);
 
-        var ent = TypeExpression.Of<TypeA>(new Identity(123));
-        var lnk = TypeExpression.Of<TypeA>(Identity.Of("hello world"));
+        var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
+        var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
         Assert.True(none.Matches(none));
         Assert.False(none.Matches(any));
@@ -140,8 +140,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var any = TypeExpression.Of<TypeA>(Match.Any);
 
         var typ = TypeExpression.Of<TypeA>();
-        var ent = TypeExpression.Of<TypeA>(new Identity(123));
-        var lnk = TypeExpression.Of<TypeA>(Identity.Of("hello world"));
+        var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
+        var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
         Assert.True(any.Matches(typ));
         Assert.True(any.Matches(ent));
@@ -155,8 +155,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var obj = TypeExpression.Of<TypeA>(Match.Object);
 
         var typ = TypeExpression.Of<TypeA>();
-        var ent = TypeExpression.Of<TypeA>(new Identity(123));
-        var lnk = TypeExpression.Of<TypeA>(Identity.Of("hello world"));
+        var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
+        var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
         Assert.False(obj.Matches(typ));
         Assert.False(obj.Matches(ent));
@@ -170,8 +170,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var rel = TypeExpression.Of<TypeA>(Match.Entity);
 
         var typ = TypeExpression.Of<TypeA>();
-        var ent = TypeExpression.Of<TypeA>(new Identity(123));
-        var lnk = TypeExpression.Of<TypeA>(Identity.Of("hello world"));
+        var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
+        var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
         Assert.False(rel.Matches(typ));
         Assert.True(rel.Matches(ent));
@@ -185,8 +185,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var rel = TypeExpression.Of<TypeA>(Match.Target);
 
         var typ = TypeExpression.Of<TypeA>();
-        var ent = TypeExpression.Of<TypeA>(new Identity(123));
-        var lnk = TypeExpression.Of<TypeA>(Identity.Of("hello world"));
+        var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
+        var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
         Assert.False(rel.Matches(typ));
         Assert.True(rel.Matches(ent));
@@ -197,10 +197,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Entity_only_matches_Entity()
     {
-        var ent = TypeExpression.Of<TypeA>(new Identity(123));
-
         var typ = TypeExpression.Of<TypeA>();
-        var lnk = TypeExpression.Of<TypeA>(Identity.Of("hello world"));
+        var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));
+        var lnk = TypeExpression.Of<TypeA>(Link.With("hello world"));
 
         Assert.False(ent.Matches(typ));
         Assert.True(ent.Matches(ent));

@@ -27,7 +27,7 @@ for (var i = 0; i < 5; i++)
 
 // We query for their Locations; to pay them a visit;
 // and their Entity Id. It's a surprise tool that will help us later!
-var betrayingVipers = world.Query<Location, Identity>()
+var betrayingVipers = world.Query<Location>()
     .Has<Betrayed>(us)
     .Compile();
 
@@ -52,7 +52,7 @@ Console.WriteLine("This is us (and our grudges):\n" + us);
 //    query.Despawn();
 //    query.Truncate(0);
 // -> visiting each entity personally
-betrayingVipers.For((ref Location theirLocation, ref Identity theirIdentity) =>
+betrayingVipers.For((Entity them, ref Location theirLocation) =>
 {
     Console.WriteLine();
     
@@ -60,16 +60,11 @@ betrayingVipers.For((ref Location theirLocation, ref Identity theirIdentity) =>
     ourLocation = theirLocation;
 
     // Knock knock.
-    Console.WriteLine($"Oh, hello {theirIdentity}! Remember us ({us.Id})?");
+    Console.WriteLine($"Oh, hello {them}! Remember us ({us})?");
+    Console.WriteLine("They do. They remember everything");
     
-    // We only have an identity, so we fudge one in the world. We could also
-    // use world.ListComponents(theirIdentity). (and more API coming soon)
-    var they = world.GetEntity(theirIdentity);
-    Console.WriteLine("They do. They remember everything. They are:\n" + they);
-
-    // Get our revenge.
-    world.Despawn(theirIdentity);
-
+    // Get our revenge. (could also them.Despawn()) 
+    world.Despawn(them);
 });
 
 // Survey the aftermath.

@@ -108,7 +108,7 @@ public readonly record struct Match
     //public static implicit operator Match(Identity value) => new(value);
     public static implicit operator Match(Entity value) => new(value);
 
-    public static implicit operator Match(Identity value) => new(value);
+    //public static implicit operator Match(Identity value) => new(value);
     
     //TODO Maybe not even needed...
     public bool IsWildcard => Value.IsWildcard;

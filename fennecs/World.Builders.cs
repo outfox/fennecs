@@ -9,7 +9,7 @@ public partial class World
     /// A query with zero stream types seemed nonsensical. 💌 Feedback is welcome, what's your use case?
     /// </remarks>
     /// <returns><see cref="QueryBuilder{Identity}"/></returns>
-    public QueryBuilder<Identity> Query()
+    public QueryBuilder Query()
     {
         return new QueryBuilder<Identity>(this, Match.Any);
     }

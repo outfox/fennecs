@@ -267,7 +267,7 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         const string helloWorld = "hello world";
         entity.Add(Link.With(helloWorld));
-        ref var component = ref entity.Ref<string>(Identity.Of(helloWorld));
+        ref var component = ref entity.Ref<string>(Link.With(helloWorld));
         Assert.Equal(helloWorld, component);
     }
 

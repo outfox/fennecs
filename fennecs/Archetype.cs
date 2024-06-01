@@ -24,7 +24,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// Get a Span of all Identities contained in this Archetype.
     /// </summary>
-    public ReadOnlySpan<Identity> Identities => IdentityStorage.Span;
+    internal ReadOnlySpan<Identity> Identities => IdentityStorage.Span;
 
     /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.

@@ -66,10 +66,10 @@ public class IdentityTests(ITestOutputHelper output)
     public void Identity_None_cannot_Match_One()
     {
         var zero = new Identity(0);
-        Assert.NotEqual(Match.Plain, zero);
+        Assert.NotEqual(Match.Plain, new(zero));
 
         var one = new Identity(1);
-        Assert.NotEqual(Match.Plain, one);
+        Assert.NotEqual(Match.Plain, new(one));
     }
 
 
@@ -100,8 +100,8 @@ public class IdentityTests(ITestOutputHelper output)
         {
             var identity = new Identity(i, g);
 
-            Assert.NotEqual(identity, Match.Any);
-            Assert.NotEqual(identity, Match.Plain);
+            Assert.NotEqual(new(identity), Match.Any);
+            Assert.NotEqual(new(identity), Match.Plain);
 
             if (ids.ContainsKey(identity.GetHashCode()))
                 Assert.Fail($"Collision of {identity} with {ids[identity.GetHashCode()]}, {identity.GetHashCode()}#==#{ids[identity.GetHashCode()].GetHashCode()}");

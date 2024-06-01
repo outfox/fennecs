@@ -73,7 +73,7 @@ public class TypeIdTests
     {
         // Keeping the default case to ensure it remains at default
         // ReSharper disable once RedundantArgumentDefaultValue
-        var id1 = TypeExpression.Of<int>(default(Identity));
+        var id1 = TypeExpression.Of<int>(Match.Plain);
         var id2 = TypeExpression.Of<int>(Match.Any);
 
         Assert.True(id1.Matches(id2));
@@ -95,7 +95,7 @@ public class TypeIdTests
     public void TypeAssigner_None_does_not_match_Any()
     {
         var id1 = TypeExpression.Of<int>();
-        var id2 = TypeExpression.Of<int>(new Identity(123));
+        var id2 = TypeExpression.Of<int>(new(new Identity(123)));
         var id3 = TypeExpression.Of<int>(Match.Any);
 
         Assert.False(id1.Matches(id2));
