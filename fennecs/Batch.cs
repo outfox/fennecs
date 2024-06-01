@@ -64,15 +64,6 @@ public readonly struct Batch : IDisposable
     public Batch Add<T>() where T : new() => AddComponent(new T(), target: Match.Plain);
 
     /// <summary>
-    /// Append an AddLink operation to the batch.
-    /// </summary>
-    /// <param name="target">target of the link</param>
-    /// <typeparam name="T">component type (newable)</typeparam>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    [Obsolete("Use Add(Link<T>) instead.")]
-    public Batch AddLink<T>(T target) where T : class => AddComponent(target, Link<T>.With(target));
-
-    /// <summary>
     /// Append an AddRelation operation to the batch.
     /// </summary>
     /// <param name="target">target of the relation</param>

@@ -71,8 +71,8 @@ public sealed class EntitySpawner : IDisposable
         return AddComponent(type, component);
     }
 
-    /// <inheritdoc cref="Entity.AddLink{T}"/>
-    public EntitySpawner AddLink<T>(Link<T> target) where T : class
+    /// <inheritdoc cref="Entity.Add{T}"/>
+    public EntitySpawner Add<T>(Link<T> target) where T : class
     {
         var type = TypeExpression.Of<T>(target);
         return AddComponent(type, target.Object);

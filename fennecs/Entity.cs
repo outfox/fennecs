@@ -116,7 +116,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <typeparam name="T">Any reference type. The type the object to be linked with the entity.</typeparam>
     /// <param name="link">The target of the link.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity AddLink<T>(Link<T> link) where T : class
+    public Entity Add<T>(Link<T> link) where T : class
     {
         World.AddComponent(Id, TypeExpression.Of<T>(link), link.Target);
         return this;

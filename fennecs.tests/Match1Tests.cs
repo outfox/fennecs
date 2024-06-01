@@ -17,8 +17,8 @@ public class Match1Tests
         var bob = _world.Spawn();
 
         _world.Spawn()
-            .AddLink(Link.With(OBJECT1))
-            .AddLink(Link.With(OBJECT2))
+            .Add(Link.With(OBJECT1))
+            .Add(Link.With(OBJECT2))
             .Add(NONE1)
             .AddRelation(bob, RELATION1);
     }

@@ -274,15 +274,15 @@ public class QueryBatchTests
     public void Can_RemoveLink_Batched()
     {
         using var world = new World();
-        const string link = "doom";
+        const string doom = "doom";
         
-        var e1 = world.Spawn().AddLink<string>(link);
+        var e1 = world.Spawn().Add(Link.With(doom));
 
-        var linkQuery = world.Query<string>(Identity.Of(link)).Compile();
+        var linkQuery = world.Query<string>(Link.With(doom)).Compile();
         Assert.Single(linkQuery);
         Assert.Contains(e1, linkQuery);
         
-        linkQuery.Batch().RemoveLink<string>(link).Submit();
+        linkQuery.Batch().RemoveLink(Link.With(doom)).Submit();
         
         Assert.Empty(linkQuery);
     }
@@ -319,7 +319,7 @@ public class QueryBatchTests
         Assert.Empty(linkQuery);
 
         var intQuery = world.Query<int>().Compile();
-        intQuery.Batch(Batch.AddConflict.Preserve).AddLink<string>("doom").Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add(Link.With("doom")).Submit();
 
         Assert.Equal(2, linkQuery.Count);
         Assert.Contains(e1, linkQuery);
