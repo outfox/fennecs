@@ -9,7 +9,7 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var target = world.Spawn();
         var builder = new Entity(world, entity);
-        builder.AddRelation<int>(target);
+        builder.Add<int>(target);
         Assert.True(entity.HasRelation<int>(target));
         Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
     }
@@ -22,7 +22,7 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var target = world.Spawn();
         var builder = new Entity(world, entity);
-        builder.AddRelation(target, 123);
+        builder.Add(target, 123);
         Assert.True(entity.HasRelation<int>(target));
         Assert.False(entity.HasRelation<int>(new Entity(world, new Identity(9001))));
     }
@@ -37,7 +37,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(entity.ToString(), builder.ToString());
 
         entity.Add(123);
-        entity.AddRelation(world.Spawn(), 7.0f);
+        entity.Add(world.Spawn(), 7.0f);
         entity.Add(Link.With("hello"));
         output.WriteLine(entity.ToString());
         
@@ -52,7 +52,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         entity.Add(123);
-        entity.AddRelation(world.Spawn(), 7.0f);
+        entity.Add(world.Spawn(), 7.0f);
         entity.Add(Link.With("hello"));
         entity.Despawn();
         Assert.False(world.IsAlive(entity));
@@ -223,7 +223,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        entity.AddRelation<int>(target);
+        entity.Add<int>(target);
 
         Assert.True(entity.HasRelation<int>(target));
         Assert.True(entity.Has<int>(Match.Target));
@@ -240,7 +240,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        entity.AddRelation<int>(target);
+        entity.Add<int>(target);
 
         Assert.True(entity.HasRelation<int>());
         Assert.False(entity.HasRelation<float>());
@@ -278,7 +278,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        entity.AddRelation<int>(target);
+        entity.Add<int>(target);
         ref var component = ref entity.Ref<int>(target);
         Assert.Equal(0, component);
         component = 123;

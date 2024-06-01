@@ -19,10 +19,10 @@ for (var i = 0; i < 5; i++)
 {
     var them = world.Spawn()
         .Add<Location>("wedding chapel")
-        .AddRelation<Betrayed>(us);
+        .Add<Betrayed>(us);
 
     // And just in case, we will never forget.
-    us.AddRelation<Grudge>(them);
+    us.Add<Grudge>(them);
 }
 
 // We query for their Locations; to pay them a visit;

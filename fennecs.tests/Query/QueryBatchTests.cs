@@ -234,7 +234,7 @@ public class QueryBatchTests
         Assert.Empty(relationQuery);
 
         var intQuery = world.Query<int>().Compile();
-        intQuery.Batch(Batch.AddConflict.Preserve).AddRelation<float>(e3).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add<float>(e3).Submit();
 
         Assert.Equal(2, relationQuery.Count);
         Assert.Contains(e1, relationQuery);
@@ -261,7 +261,7 @@ public class QueryBatchTests
         Assert.Empty(relationQuery);
 
         var intQuery = world.Query<int>().Compile();
-        intQuery.Batch(Batch.AddConflict.Preserve).AddRelation<string>("object backed, buddy!", e3).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add<string>("object backed, buddy!", e3).Submit();
 
         Assert.Equal(2, relationQuery.Count);
         Assert.Contains(e1, relationQuery);
@@ -292,7 +292,7 @@ public class QueryBatchTests
     {
         using var world = new World();
         var target = world.Spawn();
-        var e1 = world.Spawn().AddRelation(target, 123);
+        var e1 = world.Spawn().Add(target, 123);
 
         Assert.True(e1.HasRelation<int>(target));
         var intQuery = world.Query<int>(Match.Relation(target)).Compile();

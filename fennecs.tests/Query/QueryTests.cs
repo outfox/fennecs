@@ -121,9 +121,9 @@ public class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0);
-        var bob = world.Spawn().Add(p2).AddRelation(alice, 111);
+        var bob = world.Spawn().Add(p2).Add(alice, 111);
         /*var charlie = */
-        world.Spawn().Add(p3).AddRelation(bob, 222);
+        world.Spawn().Add(p3).Add(bob, 222);
 
         var query = world.Query<Identity, Vector3>()
             .Any<int>(Match.Plain)
@@ -150,8 +150,8 @@ public class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0);
-        var eve = world.Spawn().Add(p2).AddRelation(alice, 111);
-        var charlie = world.Spawn().Add(p3).AddRelation(eve, 222);
+        var eve = world.Spawn().Add(p2).Add(alice, 111);
+        var charlie = world.Spawn().Add(p3).Add(eve, 222);
 
         var query = world.Query<Identity, Vector3>().Any<int>(eve).Compile();
 
@@ -178,8 +178,8 @@ public class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0);
-        var eve = world.Spawn().Add(p2).AddRelation(alice, 111);
-        var charlie = world.Spawn().Add(p3).AddRelation(eve, 222);
+        var eve = world.Spawn().Add(p2).Add(alice, 111);
+        var charlie = world.Spawn().Add(p3).Add(eve, 222);
 
         var query = world.Query<Identity, Vector3>()
             .Any<int>(eve)
@@ -223,13 +223,13 @@ public class QueryTests
 
         using var world = new World();
         var alice = world.Spawn().Add(p1).Add(0);
-        var bob = world.Spawn().Add(p2).AddRelation(alice, 111);
+        var bob = world.Spawn().Add(p2).Add(alice, 111);
         var eve = world.Spawn().Add(p1).Add(888);
 
         /*var charlie = */
-        world.Spawn().Add(p3).AddRelation(bob, 222);
+        world.Spawn().Add(p3).Add(bob, 222);
         /*var charlie = */
-        world.Spawn().Add(p3).AddRelation(eve, 222);
+        world.Spawn().Add(p3).Add(eve, 222);
 
         var query = world.Query<Identity, Vector3>()
             .Not<int>(bob)
@@ -271,10 +271,10 @@ public class QueryTests
         var alice = world.Spawn().Add(p1).Add(0);
         var eve = world.Spawn().Add(p1).Add(888);
 
-        var bob = world.Spawn().Add(p2).AddRelation(alice, 111);
+        var bob = world.Spawn().Add(p2).Add(alice, 111);
 
-        world.Spawn().Add(p3).AddRelation(bob, 555);
-        world.Spawn().Add(p3).AddRelation(eve, 666);
+        world.Spawn().Add(p3).Add(bob, 555);
+        world.Spawn().Add(p3).Add(eve, 666);
 
         var query = world.Query<Identity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
             .Not<int>(bob)
@@ -564,7 +564,7 @@ public class QueryTests
         var query = world.Query<Identity, int>(Match.Plain, Match.Any).Compile();
 
         var entity1 = world.Spawn().Add(444);
-        var entity2 = world.Spawn().AddRelation(entity1, 555);
+        var entity2 = world.Spawn().Add(entity1, 555);
 
         //Partial miss
         var tx = TypeExpression.Of<int>(Match.Plain);
@@ -590,7 +590,7 @@ public class QueryTests
 
         var query = world.Query<int>(Match.Any).Compile();
         var entity1 = world.Spawn().Add(444);
-        world.Spawn().AddRelation(entity1, 555);
+        world.Spawn().Add(entity1, 555);
 
         Assert.Equal(2, query.TrackedArchetypes.Count);
     }
@@ -712,7 +712,7 @@ public class QueryTests
         using var query = world.Query().Compile();
 
         var entity1 = world.Spawn().Add(444);
-        var entity2 = world.Spawn().AddRelation(entity1, 555);
+        var entity2 = world.Spawn().Add(entity1, 555);
 
         var spawnedEntities = new List<Entity>
         {

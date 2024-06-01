@@ -64,22 +64,22 @@ public readonly struct Batch : IDisposable
     public Batch Add<T>() where T : new() => AddComponent(new T(), target: Match.Plain);
 
     /// <summary>
-    /// Append an AddRelation operation to the batch.
+    /// Append an Add operation to the batch.
     /// </summary>
     /// <param name="target">target of the relation</param>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
     [Obsolete("Use Add(T, target) instead.")]
-    public Batch AddRelation<T>(Entity target) where T : new() => AddComponent<T>(new(), Relation.To(target));
+    public Batch Add<T>(Entity target) where T : new() => AddComponent<T>(new(), Relation.To(target));
 
     /// <summary>
-    /// Append an AddRelation operation to the batch.
+    /// Append an Add operation to the batch.
     /// </summary>
     /// <param name="data">backing component data</param>
     /// <param name="target">target of the relation</param>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch AddRelation<T>(T data, Entity target) where T : notnull => AddComponent(data, target);
+    public Batch Add<T>(T data, Entity target) where T : notnull => AddComponent(data, target);
 
     /// <summary>
     /// Append an RemoveComponent operation to the batch.

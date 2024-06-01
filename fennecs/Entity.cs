@@ -75,7 +75,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// </remarks>
     /// <param name="targetEntity">The entity with which to establish the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity AddRelation<B>(Entity targetEntity) where B : notnull, new() => AddRelation(targetEntity, new B());
+    public Entity Add<B>(Entity targetEntity) where B : notnull, new() => Add(targetEntity, new B());
 
 
     /// <summary>
@@ -93,7 +93,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <param name="relateTarget">The entity with which to establish the relation.</param>
     /// <param name="data">The data associated with the relation.</param>
     /// <returns>The current instance of EntityBuilder, allowing for method chaining.</returns>
-    public Entity AddRelation<T>(Relation relation, T data) where T : notnull
+    public Entity Add<T>(Relation relation, T data) where T : notnull
     {
         var typeExpression = TypeExpression.Of<T>(relation);
         World.AddComponent(Id, typeExpression, data);
