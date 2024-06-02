@@ -19,7 +19,7 @@ public class QueryTests
             entities.Add(entity);
         }
 
-        var query = world.Query<object>().Stream();
+        var query = world.Query<object>().Compile();
         var plain = query as IEnumerable;
 
         foreach (var current in plain)
