@@ -56,12 +56,27 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <param name="match">defaults th Plain Components. Can be a match wildcard or specific relation target / or object link</param>
     /// <typeparam name="T">component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
-    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Has<T>(Match match = default)
     {
         _mask.Has(TypeExpression.Of<T>(match));
         return (QB)this;
     }
+
+    
+    /// <summary>
+    /// Include only Entities that have the given Component, Relation, or Object Link.
+    /// </summary>
+    /// <param name="link">an object link</param>
+    /// <typeparam name="T">component's backing type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
+    public QB Has<T>(Link<T> link) where T : class
+    {
+        _mask.Has(TypeExpression.Of<T>(link));
+        return (QB)this;
+    }
+
 
 
     /// <summary>
@@ -70,10 +85,23 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <param name="match">defaults th Plain Components. Can be a match wildcard or specific relation target / or object link</param>
     /// <typeparam name="T">component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
-    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Not<T>(Match match = default)
     {
         _mask.Not(TypeExpression.Of<T>(match));
+        return (QB)this;
+    }
+
+    /// <summary>
+    /// Exclude all Entities that have the given Component or Relation.
+    /// </summary>
+    /// <param name="link">an object link</param>
+    /// <typeparam name="T">component's backing type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
+    public QB Not<T>(Link<T> link) where T : class
+    {
+        _mask.Not(TypeExpression.Of<T>(link));
         return (QB)this;
     }
 
@@ -84,12 +112,27 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <param name="match">defaults th Plain Components. Can be a match wildcard or specific relation target / or object link</param>
     /// <typeparam name="T">component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
-    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Any<T>(Match match = default)
     {
         _mask.Any(TypeExpression.Of<T>(match));
         return (QB)this;
     }
+
+    /// <summary>
+    /// Include Entities that have the given Component or Relation, or any other Relation that is
+    /// given in other <see cref="Any{T}(fennecs.Match)"/> calls.
+    /// </summary>
+    /// <param name="link">an object link</param>
+    /// <typeparam name="T">component's backing type</typeparam>
+    /// <returns>itself (fluent pattern)</returns>
+    /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
+    public QB Any<T>(Link<T> link) where T : class
+    {
+        _mask.Any(TypeExpression.Of<T>(link));
+        return (QB)this;
+    }
+
 
     /// <summary>
     /// Disable conflict checks for subsequent Query Expressions.

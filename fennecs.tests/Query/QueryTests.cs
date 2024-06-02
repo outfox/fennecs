@@ -658,8 +658,8 @@ public class QueryTests
     public void Truncate_Honors_Filter_Subset(int entityCount)
     {
         using var world = new World();
-        world.Entity().Add<int>().SpawnOnce(entityCount);
-        world.Entity().Add<int>().Add<string>("PLEASE TRUNCATE ME!").SpawnOnce(entityCount);
+        world.Entity().Add<int>().Spawn(entityCount).Dispose();
+        world.Entity().Add<int>().Add<string>("PLEASE TRUNCATE ME!").Spawn(entityCount).Dispose();
 
         var query = world.Query<int>().Compile();
         Assert.Equal(entityCount * 2, query.Count);
@@ -709,7 +709,7 @@ public class QueryTests
     public void Can_Enumerate()
     {
         using var world = new World();
-        var query = world.Query().Stream();
+        var query = world.Query().Compile();
 
         var entity1 = world.Spawn().Add(444);
         var entity2 = world.Spawn().Add(555, entity1);
@@ -878,10 +878,10 @@ public class QueryTests
 
 
         var query1 = world.Query<Vector4>().Stream();
-        query1.For((ref Vector4 _, float _) =>
+        query1.For(0.0f, (ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
 
         var query2 = world.Query<Vector3, Vector4>().Stream();
         query2.For(0.0f,
@@ -892,22 +892,22 @@ public class QueryTests
         );
 
         var query3 = world.Query<Vector2, Vector3, Vector4>().Stream();
-        query3.For((ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query3.For(0.0f, (ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
 
         var query4 = world.Query<string, Vector2, Vector3, Vector4>().Stream();
-        query4.For((ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query4.For(0.0f, (ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
 
         var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Stream();
-        query5.For((ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query5.For(0.0f, (ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
     }
 
     [Fact]
@@ -924,34 +924,34 @@ public class QueryTests
         e.Despawn();
 
         var query1 = world.Query<Vector4>().Stream();
-        query1.For((Entity _, ref Vector4 _, float _) =>
+        query1.For(0.0f, (Entity _, ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
 
         var query2 = world.Query<Vector3, Vector4>().Stream();
-        query2.For((Entity _, ref Vector3 _, ref Vector4 _, float _) =>
+        query2.For(0.0f, (Entity _, ref Vector3 _, ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
 
         var query3 = world.Query<Vector2, Vector3, Vector4>().Stream();
-        query3.For((Entity _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query3.For(0.0f, (Entity _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
 
         var query4 = world.Query<string, Vector2, Vector3, Vector4>().Stream();
-        query4.For((Entity _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query4.For(0.0f, (Entity _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
 
         var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Stream();
-        query5.For((Entity _, ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query5.For(0.0f, (Entity _, ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
         {
             Assert.Fail("Should not be called");
-        }, 0.0f);
+        });
     }
 
 
@@ -960,11 +960,11 @@ public class QueryTests
     {
         using var world = new World();
 #pragma warning disable CS0618 // Type or member is obsolete
-        var query1 = world.Query<Vector4>().Build();
-        var query2 = world.Query<Vector3, Vector4>().Build();
-        var query3 = world.Query<Vector2, Vector3, Vector4>().Build();
-        var query4 = world.Query<string, Vector2, Vector3, Vector4>().Build();
-        var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Build();
+        using var query1 = world.Query<Vector4>().Compile();
+        using var query2 = world.Query<Vector3, Vector4>().Compile();
+        using var query3 = world.Query<Vector2, Vector3, Vector4>().Compile();
+        using var query4 = world.Query<string, Vector2, Vector3, Vector4>().Compile();
+        using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
 #pragma warning restore CS0618 // Type or member is obsolete
     }
 
@@ -973,7 +973,7 @@ public class QueryTests
     public void Queries_Are_In_World()
     {
         using var world = new World();
-        fennecs.Query query = world.Query<int>().Stream();
+        var query = world.Query<int>().Compile();
 
         Assert.Contains(query, world.Queries);
     }
@@ -982,7 +982,7 @@ public class QueryTests
     public void Dispose_Removes_Query_From_World()
     {
         using var world = new World();
-        fennecs.Query query = world.Query<int>().Stream();
+        var query = world.Query<int>().Compile();
         query.Dispose();
         Assert.DoesNotContain(query, world.Queries);
     }
@@ -992,7 +992,7 @@ public class QueryTests
     {
         using var world = new World();
 
-        fennecs.Query query = world.Query<int>().Stream();
+        var query = world.Query<int>().Compile();
         query.Dispose();
         Assert.Throws<ObjectDisposedException>(query.Dispose);
     }

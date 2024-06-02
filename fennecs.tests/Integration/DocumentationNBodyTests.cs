@@ -117,12 +117,12 @@ public class DocumentationNBodyTests
         Assert.Equal(bodyCount * bodyCount, iterations1);
 
         // Integrate forces, velocities, and positions
-        integrator.For((ref Acceleration accel, ref Velocity velocity, ref Position position, float dt) =>
+        integrator.For(0.01f, (ref Acceleration accel, ref Velocity velocity, ref Position position, float dt) =>
         {
             iterations2++;
             velocity.Value += dt * accel.Value;
             position.Value += dt * velocity.Value;
-        }, 0.01f);
+        });
         
         Assert.Equal(bodyCount, iterations2);
 

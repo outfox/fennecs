@@ -213,7 +213,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         world.Entity().Spawn(count);
 
-        var query = world.Query().Stream();
+        var query = world.Query().Compile();
         Assert.Equal(count, query.Count);
     }
 
@@ -249,7 +249,7 @@ public class WorldTests(ITestOutputHelper output)
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>().Stream();
-        query.Raw((_, uniform) =>
+        query.Raw(world, (_, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -258,7 +258,7 @@ public class WorldTests(ITestOutputHelper output)
                 Assert.False(entity.Id.IsWildcard);
                 Assert.False(entity.Id.IsObject);
             }
-        }, world);
+        });
 
         world.Dispose();
     }
@@ -276,14 +276,14 @@ public class WorldTests(ITestOutputHelper output)
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>().Stream();
-        query.For((ref Identity _, World uniform) =>
+        query.For(world, (ref Identity _, World uniform) =>
         {
             var entity = uniform.Spawn();
             Assert.True(entity.Id.IsEntity);
             Assert.False(entity.Id.IsWildcard);
             Assert.False(entity.Id.IsObject);
             Thread.Yield();
-        }, world);
+        });
 
         world.Dispose();
     }
@@ -298,11 +298,11 @@ public class WorldTests(ITestOutputHelper output)
         var e1 = world.Spawn();
         Assert.Equal(1, world.Count);
 
-        world.On(e1.Id).Add(new { });
+        e1.Add(new { });
         Assert.Equal(1, world.Count);
 
         var e2 = world.Spawn();
-        world.On(e2.Id).Add(new { });
+        e2.Add(new { });
         Assert.Equal(2, world.Count);
     }
 
@@ -388,15 +388,15 @@ public class WorldTests(ITestOutputHelper output)
     public void Adding_Component_in_Deferred_Mode_Is_Deferred()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
+        var entity = world.Spawn();
         var worldLock = world.Lock();
 
-        world.On(identity).Add(666);
-        Assert.False(world.HasComponent<int>(identity, Match.Plain));
-        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(identity, Match.Plain));
+        entity.Add(666);
+        Assert.False(world.HasComponent<int>(entity, Match.Plain));
+        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(entity, Match.Plain));
         worldLock.Dispose();
-        Assert.True(world.HasComponent<int>(identity, Match.Plain));
-        Assert.Equal(666, world.GetComponent<int>(identity, Match.Plain));
+        Assert.True(world.HasComponent<int>(entity, Match.Plain));
+        Assert.Equal(666, world.GetComponent<int>(entity, Match.Plain));
     }
 
 
@@ -430,16 +430,16 @@ public class WorldTests(ITestOutputHelper output)
     public void Apply_Deferred_Add()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
+        var entity = world.Spawn();
 
         var worldLock = world.Lock();
-        world.On(identity).Add(666);
+        entity.Add(666);
 
-        Assert.False(world.HasComponent<int>(identity, Match.Plain));
+        Assert.False(world.HasComponent<int>(entity, Match.Plain));
         worldLock.Dispose();
 
-        Assert.True(world.HasComponent<int>(identity, Match.Plain));
-        Assert.Equal(666, world.GetComponent<int>(identity, Match.Plain));
+        Assert.True(world.HasComponent<int>(entity, Match.Plain));
+        Assert.Equal(666, world.GetComponent<int>(entity, Match.Plain));
     }
 
 
@@ -447,12 +447,12 @@ public class WorldTests(ITestOutputHelper output)
     public void Apply_Deferred_Remove()
     {
         using var world = new World();
-        var identity = world.Spawn().Add(666).Id;
+        var entity = world.Spawn().Add(666);
         var worldLock = world.Lock();
-        world.On(identity).Remove<int>();
+        entity.Remove<int>();
 
         worldLock.Dispose();
-        Assert.False(world.HasComponent<int>(identity, Match.Plain));
+        Assert.False(world.HasComponent<int>(entity, Match.Plain));
     }
 
 
@@ -477,7 +477,7 @@ public class WorldTests(ITestOutputHelper output)
         var target = world.Spawn();
 
         var worldLock = world.Lock();
-        world.On(entity).Add(666, target);
+        entity.Add(666, target);
         Assert.False(entity.Has<int>(target));
         worldLock.Dispose();
         Assert.True(entity.Has<int>(target));
@@ -488,15 +488,15 @@ public class WorldTests(ITestOutputHelper output)
     public void Apply_Deferred_Relation_Remove()
     {
         using var world = new World();
-        var identity = world.Spawn();
+        var entity = world.Spawn();
         var target = world.Spawn();
         using var worldLock = world.Lock();
-        world.On(identity).Add(666, target);
-        world.On(identity).Remove<int>(target);
-        Assert.False(world.HasComponent<int>(identity, default), default);
+        entity.Add(666, target);
+        entity.Remove<int>(target);
+        Assert.False(world.HasComponent<int>(entity, default), default);
         Assert.False(world.HasComponent<int>(target, default));
 
-        Assert.False(world.HasComponent<int>(identity, default));
+        Assert.False(world.HasComponent<int>(entity, default));
         Assert.False(world.HasComponent<int>(target, default));
     }
 
@@ -505,11 +505,11 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Remove_Components_in_Reverse_Order()
     {
         using var world = new World();
-        var identity = world.Spawn().Add(666).Add("hallo");
-        world.On(identity).Remove<int>();
-        Assert.False(world.HasComponent<int>(identity, default));
-        world.On(identity).Remove<string>();
-        Assert.False(world.HasComponent<string>(identity, default));
+        var entity = world.Spawn().Add(666).Add("hallo");
+        entity.Remove<int>();
+        Assert.False(world.HasComponent<int>(entity, default));
+        entity.Remove<string>();
+        Assert.False(world.HasComponent<string>(entity, default));
     }
 
 
@@ -519,7 +519,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        world.On(entity).Add(666, target);
+        entity.Add(666, target);
         Assert.True(entity.Has<int>(target));
     }
 
@@ -565,7 +565,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var other = world.Spawn();
         var data = new Identity(123);
-        world.On(entity).Add(data, other);
+        entity.Add(data, other);
         Assert.True(entity.Has<Identity>(other));
     }
 
@@ -574,18 +574,20 @@ public class WorldTests(ITestOutputHelper output)
     private void Cannot_Add_null_Component_Data()
     {
         using var world = new World();
-        var identity = world.Spawn();
-        Assert.Throws<ArgumentNullException>(() => world.On(identity).Add<string>(null!));
+        var entity = world.Spawn();
+        Assert.Throws<ArgumentNullException>(() => entity.Add<string>(null!));
     }
 
 
     [Fact]
     private void GetEntity_and_On_return_same_Identity()
     {
+#pragma warning disable CS0618 // Type or member is obsolete
         using var world = new World();
         var entity = world.Spawn();
         Assert.Equal(entity, world.GetEntity(entity.Id));
         Assert.Equal(entity, world.On(entity.Id));
+#pragma warning enable CS0618 // Type or member is obsolete
     }
 
 
@@ -594,6 +596,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entity = world.Spawn();
+#pragma warning restore CS0618 // Type or member is obsolete
         world.Despawn(entity.Id);
         Assert.False(world.IsAlive(entity));
     }
@@ -708,12 +711,12 @@ public class WorldTests(ITestOutputHelper output)
         var e = world.Spawn();
         e.Add<float>(world.Spawn());
 
-        var query = world.Query<float>().Stream();
-        Assert.Single(query);
+        var stream = world.Query<float>().Stream();
+        Assert.Single(stream);
         e.Despawn();
-        Assert.Single(query.TrackedArchetypes);
+        Assert.Single(stream.Query.TrackedArchetypes);
         world.GC();
-        Assert.Empty(query.TrackedArchetypes);
+        Assert.Empty(stream.Query.TrackedArchetypes);
     }
 
 

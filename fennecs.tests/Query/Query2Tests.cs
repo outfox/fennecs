@@ -74,23 +74,23 @@ public class Query2Tests
             str = uniform.ToString();
         });
 
-        query.Raw((_, strings, uniform) =>
+        query.Raw(8, (_, strings, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(7.ToString(), strings.Span[i]);
                 strings.Span[i] = uniform.ToString();
             }
-        }, 8);
+        });
 
-        query.Raw((_, c1, uniform) =>
+        query.Raw(9, (_, c1, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(8.ToString(), c1.Span[i]);
                 c1.Span[i] = uniform.ToString();
             }
-        }, 9);
+        });
 
         query.For((ref int _, ref string str) => { Assert.Equal(9.ToString(), str); });
     }
@@ -479,11 +479,11 @@ public class Query2Tests
 
         var found = new List<Entity>();
         
-        query.For((Entity e, ref int _, ref string _, float uniform) =>
+        query.For( 3.1415f, (Entity e, ref int _, ref string _, float uniform) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
-        }, 3.1415f);
+        });
 
         Assert.Equal(2, found.Count);
         Assert.Contains(e1, found);
@@ -494,7 +494,7 @@ public class Query2Tests
     private void Can_Warmup()
     {
         using var world = new World();
-        var query = world.Query<int, byte>().Stream();
-        query.Warmup();
+        var stream = world.Query<int, byte>().Stream();
+        stream.Query.Warmup();
     }
 }

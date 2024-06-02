@@ -66,38 +66,38 @@ public class Query4Tests
             str = "five";
         });
 
-        query.Job((ref double _, ref int index, ref string str, ref char _, int uniform) =>
+        query.Job(6, (ref double _, ref int index, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
             str = uniform.ToString();
-        }, 6);
+        });
 
 
-        query.For((ref double _, ref int _, ref string str, ref char _, int uniform) =>
+        query.For(7, (ref double _, ref int _, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
-        }, 7);
+        });
 
 
-        query.Raw((_, _, strings, _, uniform) =>
+        query.Raw(8, (_, _, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(7.ToString(), strings.Span[i]);
                 strings.Span[i] = uniform.ToString();
             }
-        }, 8);
+        });
 
-        query.Raw((_, _, strings, _, uniform) =>
+        query.Raw(9, (_, _, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(8.ToString(), strings.Span[i]);
                 strings.Span[i] = uniform.ToString();
             }
-        }, 9);
+        });
 
 
         query.For((Entity e, ref double _, ref int _, ref string str, ref char _) =>
@@ -108,11 +108,11 @@ public class Query4Tests
         });
 
         
-        query.For((Entity _, ref double _, ref int _, ref string str, ref char _, int uniform) =>
+        query.For(11, (Entity _, ref double _, ref int _, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(10.ToString(), str);
             str = uniform.ToString();
-        }, 11);
+        });
 
 
         query.For((ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(11.ToString(), str); });
@@ -123,7 +123,7 @@ public class Query4Tests
     private void Can_Warmup()
     {
         using var world = new World();
-        var query = world.Query<string, Vector3, int, Matrix4x4>().Stream();
-        query.Warmup();
+        var stream = world.Query<string, Vector3, int, Matrix4x4>().Stream();
+        stream.Query.Warmup();
     }
 }

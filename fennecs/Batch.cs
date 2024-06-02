@@ -75,7 +75,6 @@ public readonly struct Batch : IDisposable
     /// <param name="target">target of the relation</param>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    [Obsolete("Use Add(T, target) instead.")]
     public Batch Add<T>(Entity target) where T : new() => AddComponent<T>(new(), Relate.To(target));
     
     

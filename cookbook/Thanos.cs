@@ -15,7 +15,7 @@ using var entities = world.Entity()
     .Spawn(initialPopulation);
 
 // Life. Unchecked, it will cease to exist. It needs correcting.
-var thanosQuery = world.Query().Has<Alive>().Stream();  
+var thanosQuery = world.Query().Has<Alive>().Compile();  
 Console.WriteLine($"Entities before Thanos Snap: {thanosQuery.Count}");
 
 // The hardest choices require the strongest wills. (and two dumb coin flips) 
@@ -39,9 +39,9 @@ thanosQuery.Subset<Unlucky>(Match.Plain);
 thanosQuery.Exclude<Lucky>(Match.Plain);
 
 // (Aside: Thanos flunked probabilistics. Here's what's truly going on!)
-var unluckyQuery = world.Query().Has<Unlucky>().Stream();  
-var luckyQuery = world.Query().Has<Lucky>().Stream();
-var bothQuery = world.Query().Has<Unlucky>().Not<Lucky>().Stream();
+var unluckyQuery = world.Query().Has<Unlucky>().Compile();  
+var luckyQuery = world.Query().Has<Lucky>().Compile();
+var bothQuery = world.Query().Has<Unlucky>().Not<Lucky>().Compile();
 
 Console.WriteLine($"Lucky Entities: {luckyQuery.Count} ({Math.Round(luckyQuery.Count * 100f / initialPopulation)}%)");
 Console.WriteLine($"Unlucky Entities: {unluckyQuery.Count} ({Math.Round(unluckyQuery.Count * 100f / initialPopulation)}%)");

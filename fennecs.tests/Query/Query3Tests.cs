@@ -32,11 +32,11 @@ public class Query3Tests
                 .Add('Q');
         }
 
-        query.For((Entity x, ref int _, ref string str, ref char _, float uniform ) =>
+        query.For(12f, (Entity x, ref int _, ref string str, ref char _, float uniform) =>
         {
             Assert.Equal("one", str);
             str = "two";
-        }, 12f);
+        });
 
         query.Raw((integers, strings, _) =>
         {
@@ -65,37 +65,37 @@ public class Query3Tests
             str = "five";
         });
 
-        query.Job((ref int index, ref string str, ref char _, int uniform) =>
+        query.Job(6, (ref int index, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
             str = uniform.ToString();
-        }, 6);
+        });
 
 
-        query.For((ref int _, ref string str, ref char _, int uniform) =>
+        query.For(7, (ref int _, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
-        }, 7);
-
-        query.Raw((_, strings, _, uniform) =>
+        });
+        
+        query.Raw(8, (_, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(7.ToString(), strings.Span[i]);
                 strings.Span[i] = uniform.ToString();
             }
-        }, 8);
+        });
 
-        query.Raw((_, strings, _, uniform) =>
+        query.Raw(9, (_, strings, _, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(8.ToString(), strings.Span[i]);
                 strings.Span[i] = uniform.ToString();
             }
-        }, 9);
+        });
 
         query.For((Entity e, ref int _, ref string str, ref char _) =>
         {
@@ -103,22 +103,21 @@ public class Query3Tests
             str = "10";
         });
 
-        
-        query.For((Entity e, ref int _, ref string str, ref char _, int uniform) =>
+
+        query.For(11, (Entity e, ref int _, ref string str, ref char _, int uniform) =>
         {
             Assert.Equal(10.ToString(), str);
             str = uniform.ToString();
-        }, 11);
+        });
 
-        
         query.For((ref int _, ref string str, ref char _) => { Assert.Equal(11.ToString(), str); });
     }
-    
+
     [Fact]
     private void Can_Warmup()
     {
         using var world = new World();
-        var query = world.Query<string, Vector3, int>().Stream();
-        query.Warmup();
+        var stream = world.Query<string, Vector3, int>().Stream();
+        stream.Query.Warmup();
     }
 }

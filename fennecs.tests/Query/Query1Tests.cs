@@ -60,6 +60,7 @@ public class Query1Tests
     {
         // Return a value for the component based on the index
         // You can use your own logic to generate test data
+        return null!;
     }
 
     private int GetQueryCount(object stream)

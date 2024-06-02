@@ -12,7 +12,7 @@ public class QueryFilterTests
         _world = new World();
         // Assuming that the World class has a method to create queries.
         // Replace with the actual method to create a Query instance.
-        _query = _world.Query().Stream();
+        _query = _world.Query().Compile();
     }
 
     [Fact]
@@ -65,13 +65,13 @@ public class QueryFilterTests
         // ... add more components as needed for the test
 
         // Act
-        query1.Subset<ComponentA>(Match.Plain);
-        query2.Subset<ComponentB>(Match.Plain);
+        query1.Query.Subset<ComponentA>(Match.Plain);
+        query2.Query.Subset<ComponentB>(Match.Plain);
         // ... apply filters to other queries
 
         // Assert
-        Assert.Single(query1.ToList());
-        Assert.Single(query2.ToList());
+        Assert.Single(query1.Query.ToList());
+        Assert.Single(query2.Query.ToList());
         // ... assert other queries
     }
 
@@ -87,13 +87,13 @@ public class QueryFilterTests
         // ... add more components as needed for the test
 
         // Act
-        query1.Exclude<ComponentA>(Match.Plain);
-        query2.Exclude<ComponentB>(Match.Plain);
+        query1.Query.Exclude<ComponentA>(Match.Plain);
+        query2.Query.Exclude<ComponentB>(Match.Plain);
         // ... apply filters to other queries
 
         // Assert
-        Assert.Empty(query1.ToList());
-        Assert.Empty(query2.ToList());
+        Assert.Empty(query1.Query.ToList());
+        Assert.Empty(query2.Query.ToList());
         // ... assert other queries
     }
 

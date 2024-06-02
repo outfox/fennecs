@@ -127,7 +127,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(UniformEntityComponentAction<C0, U> componentAction, U uniform)
+    public void For<U>(U uniform, UniformEntityComponentAction<C0, U> componentAction)
     {
         using var worldLock = World.Lock();
 
