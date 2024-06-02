@@ -9,16 +9,16 @@ public class ObjectLinkTests(ITestOutputHelper output)
         var query = world.Query<string>(Match.Any).Stream();
 
         // string may be interned or not
-        const string TARGET = "hello world";
-        world.Spawn().Add(Link.With(TARGET));
+        const string target = "hello world";
+        world.Spawn().Add(Link.With(target));
 
         var runs = 0;
         query.For((ref string str) =>
         {
             runs++;
             output.WriteLine(str);
-            Assert.Equal(TARGET, str);
-            Assert.True(ReferenceEquals(TARGET, str));
+            Assert.Equal(target, str);
+            Assert.True(ReferenceEquals(target, str));
         });
         Assert.Equal(1, runs);
     }
@@ -31,18 +31,18 @@ public class ObjectLinkTests(ITestOutputHelper output)
         var query = world.Query<string>(Match.Any).Stream();
 
         // string may be interned or not
-        const string TARGET = "hello world";
+        const string link = "hello world";
 
         var entity = world.Spawn();
-        world.On(entity).Add(Link.With(TARGET));
+        entity.Add(Link.With(link));
 
         var runs = 0;
         query.For((ref string str) =>
         {
             runs++;
             output.WriteLine(str);
-            Assert.Equal(TARGET, str);
-            Assert.True(ReferenceEquals(TARGET, str));
+            Assert.Equal(link, str);
+            Assert.True(ReferenceEquals(link, str));
         });
         Assert.Equal(1, runs);
     }
@@ -57,10 +57,10 @@ public class ObjectLinkTests(ITestOutputHelper output)
         var query = world.Query<string>(Match.Any).Stream();
 
         // string may be interned or not
-        const string TARGET = "hello world";
+        const string target = "hello world";
 
-        var entity = world.Spawn().Add(Link.With(TARGET));
-        entity.Remove<string>(TARGET);
+        var entity = world.Spawn().Add(Link.With(target));
+        entity.Remove<string>(target);
 
         var runs = 0;
         query.For((ref string _) => { runs++; });
@@ -75,9 +75,9 @@ public class ObjectLinkTests(ITestOutputHelper output)
         var query = world.Query<string>(Match.Any).Stream();
 
         // string may be interned or not
-        const string TARGET = "hello world";
+        const string target = "hello world";
 
-        var entity = world.Spawn().Add(Link.With(TARGET));
+        var entity = world.Spawn().Add(Link.With(target));
         var typeExpression = TypeExpression.Of<string>(Link.With("hello world"));
         world.RemoveComponent(entity, typeExpression);
 

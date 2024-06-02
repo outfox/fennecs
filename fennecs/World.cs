@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Collections;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -25,7 +24,7 @@ public partial class World : Query
     private readonly Dictionary<Signature<TypeExpression>, Archetype> _typeGraph = new();
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
-    private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
+    private readonly Dictionary<Relate, HashSet<TypeExpression>> _typesByRelationTarget = new();
     #endregion
 
 
@@ -88,34 +87,34 @@ public partial class World : Query
     }
 
 
-    private void DespawnImpl(Identity identity)
+    private void DespawnImpl(Entity entity)
     {
-            AssertAlive(identity);
+            AssertAlive(entity);
 
             if (Mode == WorldMode.Deferred)
             {
-                _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Despawn, Identity = identity});
+                _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Despawn, Identity = entity});
                 return;
             }
 
-            ref var meta = ref _meta[identity.Index];
+            ref var meta = ref _meta[entity.Id.Index];
 
             var table = meta.Archetype;
             table.Delete(meta.Row);
 
-            _identityPool.Recycle(identity);
+            _identityPool.Recycle(entity);
 
-            DespawnDependencies(identity);
+            DespawnDependencies(entity);
     }
 
     
-    private void DespawnDependencies(Identity identity)
+    private void DespawnDependencies(Entity entity)
     {
             // Patch Meta
-            _meta[identity.Index] = default;
+            _meta[entity.Id.Index] = default;
 
             // Find identity-identity relation reverse lookup (if applicable)
-            if (!_typesByRelationTarget.Remove(identity, out var list)) return;
+            if (!_typesByRelationTarget.Remove(Relate.To(entity), out var list)) return;
 
             //Remove Components from all Entities that had a relation
             foreach (var type in list) //TODO: Benchmark sorted and reversed hashsets here.
@@ -125,7 +124,7 @@ public partial class World : Query
 
                 foreach (var source in tablesWithType)
                 {
-                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != new Match(identity)).ToImmutableSortedSet());
+                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != new Match(entity)).ToImmutableSortedSet());
                     
                     var destination = GetArchetype(signatureWithoutTarget);
                     source.Migrate(destination);
@@ -253,10 +252,10 @@ public partial class World : Query
 
             if (!type.isRelation) continue;
 
-            if (!_typesByRelationTarget.TryGetValue(type.Identity, out var typeList))
+            if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeList))
             {
                 typeList = [];
-                _typesByRelationTarget[type.Identity] = typeList;
+                _typesByRelationTarget[type.Relation] = typeList;
             }
 
             typeList.Add(type);
@@ -266,14 +265,26 @@ public partial class World : Query
     }
 
 
-    internal void CollectTargets<T>(List<Identity> entities)
+    internal void CollectTargets<T>(List<Relate> entities)
     {
-        var type = TypeExpression.Of<T>(Match.Any);
+        var type = TypeExpression.Of<T>(Match.Entity);
 
+        // Modern LINQ version.
+        entities.AddRange(
+            from candidate in _tablesByType.Keys 
+            where type.Matches(candidate) 
+            select candidate.Relation);
+        
         // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
+        /*
         foreach (var candidate in _tablesByType.Keys)
+        {
             if (type.Matches(candidate))
-                entities.Add(candidate.Identity);
+            {
+                entities.Add(candidate.Relation);
+            }
+        }
+        */
     }
     #endregion
 

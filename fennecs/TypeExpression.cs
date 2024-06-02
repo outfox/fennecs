@@ -60,9 +60,11 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <para> If <see cref="Match.Object"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>
-    public Match Target => new(new(Id, Decoration));
+    internal Match Target => new(new(Id, Decoration));
+
+    internal Relate Relation => new(new(Id, Decoration));
     
-    [Obsolete("Needs refactoring out...")]
+    [Obsolete("Needs refactoring out... replace with Target and Match type.")]
     internal Identity Identity => new(Id, Decoration);
 
     /// <summary>

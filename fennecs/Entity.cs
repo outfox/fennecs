@@ -187,7 +187,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <remarks>
     /// The entity builder struct still exists afterwards, but the entity is no longer alive and subsequent CRUD operations will throw.
     /// </remarks>
-    public void Despawn() => World.Despawn(Id);
+    public void Despawn() => World.Despawn(this);
 
 
     /// <summary>

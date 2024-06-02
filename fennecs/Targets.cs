@@ -9,8 +9,8 @@ public readonly record struct Relate
 {
     private Identity Value { get; init; }
     
-    private Relate(Identity identity) => Value = identity;
-
+    internal Relate(Identity identity) => Value = identity;
+    
     public static Relate To(Entity entity) => new(entity.Id);
 
     public static implicit operator Relate(Entity entity) => new(entity.Id);

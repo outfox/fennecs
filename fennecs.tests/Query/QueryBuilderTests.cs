@@ -397,6 +397,7 @@ public class QueryBuilderTests
             world.Query<float, Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
         });
         
+        //TODO: This test failed once for "no" reason?.
         Assert.Throws<InvalidOperationException>(() =>
         {
             world.Query<int, float, Vector2, Vector3, Vector4>().Has<Vector4>().Stream();

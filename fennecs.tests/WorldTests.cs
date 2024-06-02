@@ -318,10 +318,10 @@ public class WorldTests(ITestOutputHelper output)
         world.Spawn().Add(1.0f, target2);
         world.Spawn().Add<string>("123");
 
-        var targets = new List<Identity>();
+        var targets = new List<Relate>();
         world.CollectTargets<int>(targets);
         Assert.Single(targets);
-        Assert.Contains(target1.Id, targets);
+        Assert.Contains(target1, targets);
         targets.Clear();
 
         world.CollectTargets<float>(targets);
@@ -578,26 +578,14 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Throws<ArgumentNullException>(() => entity.Add<string>(null!));
     }
 
-
-    [Fact]
-    private void GetEntity_and_On_return_same_Identity()
-    {
-#pragma warning disable CS0618 // Type or member is obsolete
-        using var world = new World();
-        var entity = world.Spawn();
-        Assert.Equal(entity, world.GetEntity(entity.Id));
-        Assert.Equal(entity, world.On(entity.Id));
-#pragma warning enable CS0618 // Type or member is obsolete
-    }
-
-
+    
     [Fact]
     private void Can_Despawn_With_Identity()
     {
         using var world = new World();
         var entity = world.Spawn();
 #pragma warning restore CS0618 // Type or member is obsolete
-        world.Despawn(entity.Id);
+        world.Despawn(entity);
         Assert.False(world.IsAlive(entity));
     }
 
@@ -610,7 +598,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Despawn_With_Identity_Span(int entityCount)
     {
         using var world = new World();
-        var entities = new Identity[entityCount];
+        var entities = new Entity[entityCount];
         for (var i = 0; i < entityCount; i++) entities[i] = world.Spawn();
         world.Despawn(entities.AsSpan());
         for (var i = 0; i < entityCount; i++) Assert.False(world.IsAlive(entities[i]));

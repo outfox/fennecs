@@ -52,14 +52,7 @@ public partial class World : IDisposable
     /// Despawn (destroy) an Entity from this World.
     /// </summary>
     /// <param name="entity">the entity to despawn.</param>
-    public void Despawn(Entity entity) => DespawnImpl(entity.Id);
-
-
-    /// <summary>
-    /// Despawn (destroy) an Entity from this World by its Identity.
-    /// </summary>
-    /// <param name="identity">the entity to despawn.</param>
-    internal void Despawn(Identity identity) => DespawnImpl(identity);
+    public void Despawn(Entity entity) => DespawnImpl(entity);
 
     
     /// <summary>
@@ -67,7 +60,7 @@ public partial class World : IDisposable
     /// </summary>
     /// <param name="identity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    internal bool IsAlive(Identity identity) => identity.IsEntity && identity == _meta[identity.Index].Identity;
+    internal bool IsAlive(Identity identity) => identity == _meta[identity.Index].Identity;
 
 
     /// <summary>
@@ -97,7 +90,8 @@ public partial class World : IDisposable
         var query = Query<Identity>(Match.Plain).Has<T>(match).Stream();
         query.Raw(delegate(Memory<Identity> entities)
         {
-            foreach (var identity in entities.Span) DespawnImpl(identity);
+            //TODO: This is not good. Need to untangle the types here.
+            foreach (var identity in entities.Span) DespawnImpl(new(this, identity));
         });
     }
 
@@ -106,7 +100,7 @@ public partial class World : IDisposable
     /// Bulk Despawn Entities from a World.
     /// </summary>
     /// <param name="toDelete">the entities to despawn (remove)</param>
-    internal void Despawn(ReadOnlySpan<Identity> toDelete)
+    internal void Despawn(ReadOnlySpan<Entity> toDelete)
     {
         lock (_spawnLock)
         {
@@ -125,7 +119,8 @@ public partial class World : IDisposable
     {
         lock (_spawnLock)
         {
-            foreach (var identity in identities) DespawnDependencies(identity);
+            //TODO: Not good to assemble the Entity like that. Types need to be untangled.
+            foreach (var identity in identities) DespawnDependencies(new(this, identity));
             _identityPool.Recycle(identities);
         }
     }
@@ -133,13 +128,13 @@ public partial class World : IDisposable
     /// <summary>
     /// Despawn one Entity from a World.
     /// </summary>
-    /// <param name="identity">the entity to despawn (remove)</param>
-    internal void Recycle(Identity identity)
+    /// <param name="entity">the entity to despawn (remove)</param>
+    internal void Recycle(Entity entity)
     {
         lock (_spawnLock)
         {
-            DespawnDependencies(identity);
-            _identityPool.Recycle(identity);
+            DespawnDependencies(entity);
+            _identityPool.Recycle(entity);
         }
     }
 
@@ -197,10 +192,10 @@ public partial class World : IDisposable
             // This is still relevant if ONE relation component is eliminated, but NOT all of them.
             // In the case where the target itself is Despawned, _typesByRelationTarget already
             // had its entire entry for that Target removed.
-            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Identity, out var stillInUse))
+            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Relation, out var stillInUse))
             {
                 stillInUse.Remove(type);
-                if (stillInUse.Count == 0) _typesByRelationTarget.Remove(type.Identity);
+                if (stillInUse.Count == 0) _typesByRelationTarget.Remove(type.Relation);
             }
 
             // Same here, if all Archetypes with a Type are gone, we can clear the entry.
