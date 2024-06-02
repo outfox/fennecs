@@ -205,13 +205,15 @@ public class EntityTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void Entity_provides_Has_overload_With_Implied_MatchExpression()
+    public void Entity_provides_Has_overload_With_Plain_MatchExpression()
     {
         using var world = new World();
         var entity = world.Spawn();
         world.Spawn();
         entity.Add(Link.With("hello world"));
+        entity.Add("bellum gallicum");
 
+        Assert.True(entity.Has<string>("hello world"));
         Assert.True(entity.Has<string>());
         Assert.False(entity.Has<EntityTests>());
     }
@@ -235,15 +237,16 @@ public class EntityTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void Entity_provides_HasRelation_overload_With_Implied_MatchExpression()
+    public void Entity_provides_HasRelation_overload_With_Plain_MatchExpression()
     {
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
         entity.Add<int>(target);
 
-        Assert.True(entity.Has<int>());
-        Assert.False(entity.Has<float>());
+        Assert.False(entity.Has<int>());
+        Assert.True(entity.Has<int>(Match.Entity));
+        Assert.False(entity.Has<float>(Match.Entity));
     }
 
 

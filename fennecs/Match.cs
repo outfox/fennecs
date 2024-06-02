@@ -124,11 +124,12 @@ public readonly record struct Match
     {
         identity = Value;
     }
-    
-    
-    internal static readonly Identity idPlain = new(int.MinValue, 0); // was default
+
+
+    // TODO: decide encoding whether new(-1/*int.MinValue*/, 0); etc...
+    internal static readonly Identity idPlain = default;
     internal static readonly Identity idEntity = new(-3, 0);
     internal static readonly Identity idObject = new(-4, 0);
-    internal static readonly Identity idAny = default; //was: new(-1, 0);
+    internal static readonly Identity idAny = new(-1, 0);
     internal static readonly Identity idTarget = new(-2, 0);
 }

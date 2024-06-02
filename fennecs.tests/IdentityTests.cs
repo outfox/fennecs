@@ -29,9 +29,9 @@ public class IdentityTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void Identity_Any_is_default()
+    public void Identity_Plain_is_default()
     {
-        var none = Match.idAny;
+        var none = Match.idPlain;
         Assert.Equal(default, none.Generation);
         output.WriteLine(none.Generation.ToString());
         output.WriteLine(none.ToString());
