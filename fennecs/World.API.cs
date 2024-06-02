@@ -67,7 +67,7 @@ public partial class World : IDisposable
     /// Perform operations on the given identity in this world, via fluid API.
     /// </summary>
     /// <example>
-    /// <code>world.On(identity).Add(123).Add("string").Remove&lt;int&gt;();</code>
+    /// <code>identity.Add(123).Add("string").Remove&lt;int&gt;();</code>
     /// </example>
     /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
     [Obsolete("Use Entities instead.")]

@@ -611,7 +611,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entities = new Identity[entityCount];
-        for (var i = 0; i < entityCount; i++) entities[i] = world.Spawn().Id;
+        for (var i = 0; i < entityCount; i++) entities[i] = world.Spawn();
         world.Despawn(entities.AsSpan());
         for (var i = 0; i < entityCount; i++) Assert.False(world.IsAlive(entities[i]));
     }
