@@ -140,6 +140,30 @@ public partial class World : Query
 
     #region Queries
 
+    internal Query CompileQueryNew(Mask mask)
+    {
+        var type = mask.HasTypes[index: 0];
+        if (!_tablesByType.TryGetValue(type, out var typeTables))
+        {
+            typeTables = new(capacity: 16);
+            _tablesByType[type] = typeTables;
+        }
+
+        var matchingTables = PooledList<Archetype>.Rent();
+        foreach (var table in Archetypes)
+        {
+            if (table.Matches(mask)) matchingTables.Add(table);
+        }
+
+        var query = new Query(this, mask, matchingTables);
+        if (!_queries.Add(query))
+        {
+            throw new InvalidOperationException("Query was already added to World. File a bug report!");
+        }
+        return query;
+    }
+
+
     internal Query CompileQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
         var type = mask.HasTypes[index: 0];

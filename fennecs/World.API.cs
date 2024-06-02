@@ -5,7 +5,7 @@ using fennecs.pools;
 namespace fennecs;
 
 /// <summary>
-/// A fennecs.World contains Entities, their Components, and manages their lifecycles.
+/// A fennecs.World contains Entities, their Components, compiled Queries, and manages the lifecycles of these objects.
 /// </summary>
 public partial class World : IDisposable
 {

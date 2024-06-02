@@ -184,11 +184,19 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <summary>
     /// Base constructor (TODO: Fix up required fields / refactor out stream filters)
     /// </summary>
-    protected Query()
+    internal protected Query()
     {
         Archetypes = PooledList<Archetype>.Rent();
         World = default!;
         Mask = default!;
+    }
+    
+    
+    internal Query(World world, Mask mask, PooledList<Archetype> matchingTables)
+    {
+        Archetypes = matchingTables;
+        World = world;
+        Mask = mask;
     }
 
     #endregion
