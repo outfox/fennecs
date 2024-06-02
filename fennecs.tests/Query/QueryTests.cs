@@ -592,7 +592,7 @@ public class QueryTests
         var entity1 = world.Spawn().Add(444);
         world.Spawn().Add(555, entity1);
 
-        Assert.Equal(2, query.TrackedArchetypes.Count);
+        Assert.Equal(2, query.Archetypes.Count);
     }
 
 
@@ -621,7 +621,7 @@ public class QueryTests
         Assert.True(query.Count <= targetSize);
     }
 
-
+/*
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
@@ -648,7 +648,6 @@ public class QueryTests
 
         Assert.All(query, e => Assert.True(e.Has<string>()));
     }
-
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
@@ -675,6 +674,7 @@ public class QueryTests
 
         Assert.All(query, e => Assert.False(e.Has<string>()));
     }
+*/
 
 
     [Fact]

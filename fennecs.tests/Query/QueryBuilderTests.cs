@@ -334,7 +334,7 @@ public class QueryBuilderTests
     private void Streams_are_Unique_5()
     {
         using var world = new World();
-        var builder = world.Query<Query<int>, int, double, float, string>();
+        var builder = world.Query<object, int, double, float, string>();
 
         var query1 = builder.Stream();
         var query2 = builder.Stream();

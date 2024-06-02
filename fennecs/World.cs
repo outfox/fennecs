@@ -142,6 +142,12 @@ public partial class World : Query
 
     internal Query CompileQuery(Mask mask)
     {
+        // Return cached query if available.
+        if (!mask.HasTypes.Contains(TypeExpression.Of<Identity>(Match.Plain)))
+        {
+            mask.Has(TypeExpression.Of<Identity>(Match.Plain));
+        }
+        
         if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
         // Compile if not cached.

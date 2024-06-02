@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using fennecs.pools;
 
@@ -69,7 +68,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     {
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
-        return _trackedArchetypes.Contains(table);
+        return Archetypes.Contains(table);
     }
 
     /// <summary>
@@ -83,20 +82,18 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     public bool Contains<T>(Match match = default)
     {
         var typeExpression = TypeExpression.Of<T>(match);
-        return typeExpression.Matches(StreamTypes);
+        return Archetypes.Any(a => typeExpression.Matches(a.Signature));
     }
 
 
     internal void TrackArchetype(Archetype archetype)
     {
-        _trackedArchetypes.Add(archetype);
-        if (!archetype.Matches(_streamExclusions) && archetype.IsMatchSuperSet(_streamFilters)) Archetypes.Add(archetype);
+        Archetypes.Add(archetype);
     }
 
 
     internal void ForgetArchetype(Archetype archetype)
     {
-        _trackedArchetypes.Remove(archetype);
         Archetypes.Remove(archetype);
     }
 
@@ -111,6 +108,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
 
     #region Internals
 
+    /*
     /// <summary>
     ///     Array of TypeExpressions for the Output Stream of this Query.
     ///     Mutated by Filter Expressions.
@@ -121,27 +119,18 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///  Filters for the Archetypes matched by the StreamTypes (must match)
     /// </summary>
     private readonly List<TypeExpression> _streamFilters;
-
-    /// <summary>
-    ///  Additional exclusions for the Archetypes matched by the StreamTypes (must not match)
-    /// </summary>
-    private readonly List<TypeExpression> _streamExclusions;
-
+    */
+    
     /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
     protected readonly CountdownEvent Countdown = new(initialCount: 1);
 
     /// <summary>
-    /// All the archetypes that this query can potentially match.
-    /// </summary>
-    private readonly List<Archetype> _trackedArchetypes;
-
-    /// <summary>
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
-    internal protected readonly List<Archetype> Archetypes;
+    internal readonly PooledList<Archetype> Archetypes = PooledList<Archetype>.Rent();
 
     /// <summary>
     /// The World this Query is associated with.
@@ -154,54 +143,32 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     internal readonly Mask Mask;
 
-    /// <summary>
-    /// A Read Only View of the Archetypes that this query "tracks", meaning:
-    /// <ul>
-    /// <li>it will match (enumerate) entities in them</li>
-    /// <li>it can perform batch operations on them</li>
-    /// <li>filters will only be applied to these archetypes (filters are subtractive)</li>
-    /// </ul>
-    /// </summary>
-    /// <remarks>
-    /// Does not exclude unmatched Archetypes (through Filter expressions), as Filters are applied on top.
-    /// This is primarily debug information, left available as a public property, because it can be useful to understand the "weight" and range of a query.
-    /// The world it will update this list when they are added or removed.
-    /// </remarks>
-    public IReadOnlyList<Archetype> TrackedArchetypes => _trackedArchetypes;
-
-
-    internal Query(World world, List<TypeExpression> streamTypes, Mask mask, IReadOnlyCollection<Archetype> archetypes)
+    internal Query(World world, Mask mask, IReadOnlyCollection<Archetype> archetypes)
     {
-        _streamFilters = [];
-        _streamExclusions = [];
-        StreamTypes = [..streamTypes];
-        _trackedArchetypes = archetypes.ToList();
-        Archetypes = archetypes.ToList();
+        Archetypes.AddRange(archetypes);
         World = world;
         Mask = mask;
     }
 
-    /// <summary>
-    /// Base constructor (TODO: Fix up required fields / refactor out stream filters)
-    /// </summary>
-    internal protected Query()
-    {
-        Archetypes = PooledList<Archetype>.Rent();
-        World = default!;
-        Mask = default!;
-    }
-    
-    
     internal Query(World world, Mask mask, PooledList<Archetype> matchingTables)
     {
         Archetypes = matchingTables;
         World = world;
         Mask = mask;
     }
+    
+    internal Query()
+    {
+        // Mild hack - needs testing.
+        World ??= (World) this;
+        
+        // Global Query (if we don't have a mask)
+        Mask ??= MaskPool.Rent().Has(TypeExpression.Of<Identity>(Match.Plain));
+    }
 
     #endregion
 
-
+/*
     #region Filtering
 
     /// <inheritdoc cref="Subset{T}"/>
@@ -232,7 +199,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     private void FilterArchetypes()
     {
         Archetypes.Clear();
-        foreach (var archetype in _trackedArchetypes)
+        foreach (var archetype in Archetypes)
         {
             if (!archetype.Matches(_streamExclusions) && archetype.IsMatchSuperSet(_streamFilters))
             {
@@ -249,11 +216,11 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         _streamFilters.Clear();
         _streamExclusions.Clear();
         Archetypes.Clear();
-        Archetypes.AddRange(_trackedArchetypes);
+        Archetypes.AddRange(Archetypes);
     }
 
     #endregion
-
+*/
 
     #region IEnumerable<Entity>
 
@@ -353,7 +320,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
             using var worldLock = World.Lock();
             Entity result = default;
 
-            foreach (var table in _trackedArchetypes)
+            foreach (var table in Archetypes)
             {
                 if (index < table.Count)
                 {
@@ -402,14 +369,11 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
     /// </summary>
     /// <remarks>
-    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
-    /// after the first operation, and thus lead to undesired results.
+    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities in many cases to no longer
+    /// be matched after the first operation, and thus lead to undesired no-ops.
     /// </remarks> 
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
-    public Batch Batch()
-    {
-        return new Batch(_trackedArchetypes, World, Mask.Clone(), default, default);
-    }
+    public Batch Batch() => new(Archetypes, World, Mask.Clone(), default, default);
 
 
     /// <summary>
@@ -424,7 +388,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.AddConflict addConflict)
     {
-        return new Batch(_trackedArchetypes, World, Mask.Clone(), addConflict, default);
+        return new Batch(Archetypes, World, Mask.Clone(), addConflict, default);
     }
 
 
@@ -440,7 +404,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.RemoveConflict removeConflict)
     {
-        return new Batch(_trackedArchetypes, World, Mask.Clone(), default, removeConflict);
+        return new Batch(Archetypes, World, Mask.Clone(), default, removeConflict);
     }
 
 
@@ -456,7 +420,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.AddConflict addConflict, Batch.RemoveConflict removeConflict)
     {
-        return new(_trackedArchetypes, World, Mask.Clone(), addConflict, removeConflict);
+        return new(Archetypes, World, Mask.Clone(), addConflict, removeConflict);
     }
 
 
@@ -540,12 +504,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
 
         disposed = true;
 
-        _trackedArchetypes.Clear();
-        Archetypes.Clear();
-
-        _streamExclusions.Clear();
-        _streamFilters.Clear();
-
+        Archetypes.Dispose();
 
         World.RemoveQuery(this);
         Mask.Dispose();

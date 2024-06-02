@@ -714,9 +714,9 @@ public class WorldTests(ITestOutputHelper output)
         var stream = world.Query<float>().Stream();
         Assert.Single(stream);
         e.Despawn();
-        Assert.Single(stream.Query.TrackedArchetypes);
+        Assert.Single(stream.Query.Archetypes);
         world.GC();
-        Assert.Empty(stream.Query.TrackedArchetypes);
+        Assert.Empty(stream.Query.Archetypes);
     }
 
 

@@ -15,6 +15,7 @@ public class QueryFilterTests
         _query = _world.Query().Compile();
     }
 
+    /*
     [Fact]
     public void AddFilter_ShouldNarrowDownResults()
     {
@@ -96,7 +97,7 @@ public class QueryFilterTests
         Assert.Empty(query2.Query.ToList());
         // ... assert other queries
     }
-
+*/
 }
 
 
