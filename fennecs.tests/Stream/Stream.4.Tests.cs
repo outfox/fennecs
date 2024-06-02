@@ -1,10 +1,10 @@
 ﻿using System.Numerics;
 
-namespace fennecs.tests.Query;
+namespace fennecs.tests.Stream;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
-public class Query4Tests
+public class Stream4Tests
 {
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
