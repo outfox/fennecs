@@ -61,36 +61,7 @@ public partial class World : IDisposable
     /// <param name="identity">the entity to despawn.</param>
     internal void Despawn(Identity identity) => DespawnImpl(identity);
 
-
-    /// <summary>
-    /// Interact with an Identity as an Entity.
-    /// Perform operations on the given identity in this world, via fluid API.
-    /// </summary>
-    /// <example>
-    /// <code>identity.Add(123).Add("string").Remove&lt;int&gt;();</code>
-    /// </example>
-    /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
-    [Obsolete("Use Entities instead.")]
-    internal Entity On(Identity identity)
-    {
-        AssertAlive(identity);
-        return new(this, identity);
-    }
-
-
-    /// <summary>
-    /// Alias for <see cref="On(Identity)"/>, returning an Entity builder struct to operate on. Included to
-    /// provide a more intuitive verb to "get" an Entity to assign to a variable.
-    /// </summary>
-    /// <example>
-    /// <code>var bob = world.GetEntity(bobsIdentity);</code>
-    /// </example>
-    /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
-    [Obsolete("Use entities instead.")]
-    internal Entity GetEntity(Identity identity) => On(identity);
     
-
-
     /// <summary>
     /// Checks if the entity is alive (was not despawned).
     /// </summary>
