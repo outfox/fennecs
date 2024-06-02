@@ -142,6 +142,9 @@ public partial class World : Query
 
     internal Query CompileQueryNew(Mask mask)
     {
+        if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
+
+        // Compile if not cached.
         var type = mask.HasTypes[index: 0];
         if (!_tablesByType.TryGetValue(type, out var typeTables))
         {
@@ -155,7 +158,7 @@ public partial class World : Query
             if (table.Matches(mask)) matchingTables.Add(table);
         }
 
-        var query = new Query(this, mask, matchingTables);
+        query = new(this, mask.Clone(), matchingTables);
         if (!_queries.Add(query))
         {
             throw new InvalidOperationException("Query was already added to World. File a bug report!");

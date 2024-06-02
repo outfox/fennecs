@@ -22,7 +22,7 @@ public abstract class QueryBuilderBase<QB>(World world) : IDisposable where QB :
     /// or any of its overloads.
     /// </remarks>
     /// <returns>compiled query (you can compile more than one query from the same builder)</returns>
-    public Query Compile() => world.CompileQueryNew(_mask.Clone());
+    public Query Compile() => world.CompileQueryNew(_mask);
 
     #endregion
 
@@ -115,11 +115,8 @@ public class NewQueryBuilder<C1>(World world)
     /// <summary>
     /// Get a Stream View of the Query to iterate its entities.
     /// </summary>
-    public Stream<C1> Stream()
-    {
-        var query = Compile();
-        return query.Stream<C1>(_match1);
-    }
+    public Stream<C1> Stream() => Compile().Stream<C1>(_match1);
+    
 }
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
@@ -144,11 +141,7 @@ public class NewQueryBuilder<C1, C2>(World world)
     /// <summary>
     /// Get a Stream View of the Query to iterate its entities.
     /// </summary>
-    public Stream<C1, C2> Stream()
-    {
-        var query = Compile();
-        return query.Stream<C1, C2>(_match1, _match2);
-    }
+    public Stream<C1, C2> Stream() => Compile().Stream<C1, C2>(_match1, _match2);
 }
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
@@ -176,11 +169,7 @@ public class NewQueryBuilder<C1, C2, C3>(World world)
     /// <summary>
     /// Get a Stream View of the Query to iterate its entities.
     /// </summary>
-    public Stream<C1, C2, C3> Stream()
-    {
-        var query = Compile();
-        return query.Stream<C1, C2, C3>(_match1, _match2, _match3);
-    }
+    public Stream<C1, C2, C3> Stream() => Compile().Stream<C1, C2, C3>(_match1, _match2, _match3);
 }
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
@@ -211,11 +200,7 @@ public class NewQueryBuilder<C1, C2, C3, C4>(World world)
     /// <summary>
     /// Get a Stream View of the Query to iterate its entities.
     /// </summary>
-    public Stream<C1, C2, C3, C4> Stream()
-    {
-        var query = Compile();
-        return query.Stream<C1, C2, C3, C4>(_match1, _match2, _match3, _match4);
-    }
+    public Stream<C1, C2, C3, C4> Stream() => Compile().Stream<C1, C2, C3, C4>(_match1, _match2, _match3, _match4);
 }
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
@@ -249,9 +234,5 @@ public class NewQueryBuilder<C1, C2, C3, C4, C5>(World world)
     /// <summary>
     /// Get a Stream View of the Query to iterate its entities.
     /// </summary>
-    public Stream<C1, C2, C3, C4, C5> Stream()
-    {
-        var query = Compile();
-        return query.Stream<C1, C2, C3, C4, C5>(_match1, _match2, _match3, _match4, _match5);
-    }
+    public Stream<C1, C2, C3, C4, C5> Stream() => Compile().Stream<C1, C2, C3, C4, C5>(_match1, _match2, _match3, _match4, _match5);
 }
