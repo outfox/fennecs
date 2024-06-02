@@ -500,6 +500,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     public void Dispose()
     {
+        //if (disposed) return;
         ObjectDisposedException.ThrowIf(disposed, this);
 
         disposed = true;

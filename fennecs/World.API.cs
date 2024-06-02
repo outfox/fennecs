@@ -41,7 +41,7 @@ public partial class World : IDisposable
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
     /// <param name="values">component values</param>
-    internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    internal protected void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
         var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>(Match.Plain));
         var archetype = GetArchetype(signature);

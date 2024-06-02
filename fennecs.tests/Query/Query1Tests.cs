@@ -4,6 +4,8 @@
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Query1Tests
 {
+#if REMOVEME
+
     [Theory]
     [InlineData(1, 10, false)]
     [InlineData(2, 20, true)]
@@ -72,9 +74,9 @@ public class Query1Tests
     // Add more helper methods as needed for assertions and operations
 }
 
+#endif
 
 
-#if REMOVEME
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)
@@ -126,20 +128,20 @@ public class Query1Tests
             str = "five";
         });
 
-        query.Job((ref string str, int uniform) =>
+        query.Job(6, (ref string str, int uniform) =>
         {
             Assert.Equal("five", str);
             str = uniform.ToString();
-        }, 6);
+        });
 
 
-        query.For(7,(ref string str, int uniform) =>
+        query.For(7, (ref string str, int uniform) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         });
 
-        query.Raw(8,(strings, uniform) =>
+        query.Raw(8, (strings, uniform) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -496,8 +498,7 @@ public class Query1Tests
         query.For((ref long value) => { Assert.Equal(index++, value); });
 
         var index2 = 0;
-        query.For((ref long value, int _) => { Assert.Equal(index2++, value); },
-            1337);
+        query.For(1337, (ref long value, int _) => { Assert.Equal(index2++, value); });
     }
 
     [Fact]
@@ -507,11 +508,11 @@ public class Query1Tests
 
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(555);
-        
+
         var query = world.Query<int>().Stream();
 
         var found = new List<Entity>();
-        
+
         query.For((Entity e, ref int _) =>
         {
             found.Add(e);
@@ -522,7 +523,7 @@ public class Query1Tests
         Assert.Contains(e2, found);
     }
 
-    
+
     [Fact]
     private void Can_Loop_With_Entity_and_Uniform()
     {
@@ -530,16 +531,16 @@ public class Query1Tests
 
         var e1 = world.Spawn().Add(123);
         var e2 = world.Spawn().Add(555);
-        
+
         var query = world.Query<int>().Stream();
 
         var found = new List<Entity>();
-        
-        query.For((Entity e, ref int _, float uniform) =>
+
+        query.For(3.1415f, (Entity e, ref int _, float uniform) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
-        }, 3.1415f);
+        });
 
         Assert.Equal(2, found.Count);
         Assert.Contains(e1, found);
@@ -550,7 +551,7 @@ public class Query1Tests
     private void Can_Warmup()
     {
         using var world = new World();
-        var query = world.Query<int>().Stream();
-        query.Warmup();
+        var stream = world.Query<int>().Stream();
+        stream.Query.Warmup();
     }
-    #endif
+}

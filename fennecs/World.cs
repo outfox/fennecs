@@ -143,11 +143,6 @@ public partial class World : Query
     internal Query CompileQuery(Mask mask)
     {
         // Return cached query if available.
-        if (!mask.HasTypes.Contains(TypeExpression.Of<Identity>(Match.Plain)))
-        {
-            mask.Has(TypeExpression.Of<Identity>(Match.Plain));
-        }
-        
         if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
         // Compile if not cached.
@@ -165,7 +160,7 @@ public partial class World : Query
         }
 
         query = new(this, mask.Clone(), matchingTables);
-        if (!_queries.Add(query))
+        if (!_queries.Add(query) || !_queryCache.TryAdd(query.Mask.GetHashCode(), query))
         {
             throw new InvalidOperationException("Query was already added to World. File a bug report!");
         }

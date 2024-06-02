@@ -153,7 +153,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).Add(111, alice);
         var charlie = world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>().Any<int>(eve).Stream();
+        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain).Any<int>(eve).Stream();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -181,7 +181,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).Add(111, alice);
         var charlie = world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>()
+        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain)
             .Any<int>(eve)
             .Any<int>(alice)
             .Stream();
@@ -231,7 +231,7 @@ public class QueryTests
         /*var charlie = */
         world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>()
+        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain)
             .Not<int>(bob)
             .Any<int>(alice)
             .Stream();
@@ -323,17 +323,17 @@ public class QueryTests
         var query1A = world.Query().Compile();
         var query1B = world.Query().Compile();
 
-        var query2A = world.Query<Identity>(Match.Plain).Stream();
-        var query2B = world.Query<Identity>(Match.Plain).Stream();
+        var query2A = world.Query<Identity>(Match.Plain).Compile();
+        var query2B = world.Query<Identity>(Match.Plain).Compile();
 
         var query3A = world.Query().Has<int>().Compile();
         var query3B = world.Query().Has<int>().Compile();
 
-        var query4A = world.Query<Identity>(Match.Plain).Not<int>().Stream();
-        var query4B = world.Query<Identity>(Match.Plain).Not<int>().Stream();
+        var query4A = world.Query<Identity>(Match.Plain).Not<int>().Compile();
+        var query4B = world.Query<Identity>(Match.Plain).Not<int>().Compile();
 
-        var query5A = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Stream();
-        var query5B = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Stream();
+        var query5A = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Compile();
+        var query5B = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Compile();
 
         Assert.Equal(query1A, query1B);
         Assert.True(ReferenceEquals(query1A, query1B));
@@ -504,6 +504,7 @@ public class QueryTests
     {
         using var world = new World();
         var query = world.Query<int>().Compile();
+        world.Spawn().Add<int>();
         Assert.True(query.Contains<int>());
         Assert.False(query.Contains<float>());
     }
@@ -514,6 +515,8 @@ public class QueryTests
     {
         using var world = new World();
         var query = world.Query<int>(Match.Entity).Compile();
+        var entity = world.Spawn();
+        world.Spawn().Add<int>(entity);
         Assert.True(query.Contains<int>(Match.Any));
         Assert.False(query.Contains<float>(Match.Any));
     }
@@ -524,6 +527,7 @@ public class QueryTests
     {
         using var world = new World();
         var query = world.Query<int>(Match.Any).Compile();
+        world.Spawn().Add<int>();
         Assert.True(query.Contains<int>(Match.Plain));
         Assert.False(query.Contains<float>(Match.Object));
     }
@@ -959,13 +963,11 @@ public class QueryTests
     public void Obsolete_Coverage_Build()
     {
         using var world = new World();
-#pragma warning disable CS0618 // Type or member is obsolete
-        using var query1 = world.Query<Vector4>().Compile();
-        using var query2 = world.Query<Vector3, Vector4>().Compile();
-        using var query3 = world.Query<Vector2, Vector3, Vector4>().Compile();
-        using var query4 = world.Query<string, Vector2, Vector3, Vector4>().Compile();
-        using var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
-#pragma warning restore CS0618 // Type or member is obsolete
+        world.Query<Vector4>().Compile();
+        world.Query<Vector3, Vector4>().Compile();
+        world.Query<Vector2, Vector3, Vector4>().Compile();
+        world.Query<string, Vector2, Vector3, Vector4>().Compile();
+        world.Query<int, string, Vector2, Vector3, Vector4>().Compile();
     }
 
 
