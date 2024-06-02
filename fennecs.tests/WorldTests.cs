@@ -228,7 +228,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Stream();
+        var query = world.Query<Identity>(Match.Plain).Stream();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -248,7 +248,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Stream();
+        var query = world.Query<Identity>(Match.Plain).Stream();
         query.Raw(world, (_, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -275,7 +275,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Stream();
+        var query = world.Query<Identity>(Match.Plain).Stream();
         query.For(world, (ref Identity _, World uniform) =>
         {
             var entity = uniform.Spawn();
@@ -343,8 +343,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().Add(444, target2);
         }
 
-        var query1 = world.Query<Identity>().Has<int>(target1).Stream();
-        var query2 = world.Query<Identity>().Has<int>(target2).Stream();
+        var query1 = world.Query<Identity>(Match.Plain).Has<int>(target1).Stream();
+        var query2 = world.Query<Identity>(Match.Plain).Has<int>(target2).Stream();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);

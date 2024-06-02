@@ -60,7 +60,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     // private readonly ImmutableDictionary<TypeID, IStorage[]> _buckets;
 
     // Used by Queries to check if the table has been modified while enumerating.
-    private int _version;
+    internal int Version;
 
 
     internal Archetype(World world, Signature<TypeExpression> signature)
@@ -427,10 +427,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <inheritdoc />
     public IEnumerator<Entity> GetEnumerator()
     {
-        var snapshot = Volatile.Read(ref _version);
+        var snapshot = Volatile.Read(ref Version);
         for (var i = 0; i < Count; i++)
         {
-            if (snapshot != Volatile.Read(ref _version)) throw new InvalidOperationException("Collection modified while enumerating.");
+            if (snapshot != Volatile.Read(ref Version)) throw new InvalidOperationException("Collection modified while enumerating.");
             yield return new Entity(_world, IdentityStorage[i]);
         }
     }
@@ -551,5 +551,5 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal void Invalidate() => Interlocked.Increment(ref _version);
+    internal void Invalidate() => Interlocked.Increment(ref Version);
 }

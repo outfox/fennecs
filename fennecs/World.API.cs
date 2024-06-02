@@ -123,7 +123,7 @@ public partial class World : IDisposable
     /// </param>
     public void DespawnAllWith<T>(Match match = default)
     {
-        var query = Query<Identity>(match).Has<T>(match).Stream();
+        var query = Query<Identity>(Match.Plain).Has<T>(match).Stream();
         query.Raw(delegate(Memory<Identity> entities)
         {
             foreach (var identity in entities.Span) DespawnImpl(identity);

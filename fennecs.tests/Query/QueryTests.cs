@@ -125,7 +125,7 @@ public class QueryTests
         /*var charlie = */
         world.Spawn().Add(p3).Add(222, bob);
 
-        var query = world.Query<Identity, Vector3>()
+        var query = world.Query<Identity, Vector3>(Match.Plain, default)
             .Any<int>(Match.Plain)
             .Stream();
 
@@ -323,17 +323,17 @@ public class QueryTests
         var query1A = world.Query().Compile();
         var query1B = world.Query().Compile();
 
-        var query2A = world.Query<Identity>().Stream();
-        var query2B = world.Query<Identity>().Stream();
+        var query2A = world.Query<Identity>(Match.Plain).Stream();
+        var query2B = world.Query<Identity>(Match.Plain).Stream();
 
         var query3A = world.Query().Has<int>().Compile();
         var query3B = world.Query().Has<int>().Compile();
 
-        var query4A = world.Query<Identity>().Not<int>().Stream();
-        var query4B = world.Query<Identity>().Not<int>().Stream();
+        var query4A = world.Query<Identity>(Match.Plain).Not<int>().Stream();
+        var query4B = world.Query<Identity>(Match.Plain).Not<int>().Stream();
 
-        var query5A = world.Query<Identity>().Any<int>().Any<float>().Stream();
-        var query5B = world.Query<Identity>().Any<int>().Any<float>().Stream();
+        var query5A = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Stream();
+        var query5B = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Stream();
 
         Assert.Equal(query1A, query1B);
         Assert.True(ReferenceEquals(query1A, query1B));
@@ -367,7 +367,7 @@ public class QueryTests
     {
         using var world = new World();
         var identity = world.Spawn();
-        var query = world.Query<Identity>().Compile();
+        var query = world.Query<Identity>(Match.Plain).Compile();
 
         Assert.Throws<TypeAccessException>(() => query.Ref<Identity>(identity));
     }

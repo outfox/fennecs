@@ -359,11 +359,13 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
         {
             using var join = table.CrossJoin<C0>(StreamTypes);
             if (join.Empty) continue;
+            var snapshot = table.Version;
             do
             {
                 var s0 = join.Select;
                 for (var index = 0; index < table.Count; index++)
                 {
+                    if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
                     yield return (table[index], s0.Span[index]);
                 }
             } while (join.Iterate());
