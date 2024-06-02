@@ -59,8 +59,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this</exception>
     public QB Has<T>(Match match = default)
     {
-        var typeExpression = TypeExpression.Of<T>(match);
-        _mask.Has(typeExpression);
+        _mask.Has(TypeExpression.Of<T>(match));
         return (QB)this;
     }
 
