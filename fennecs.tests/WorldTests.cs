@@ -711,7 +711,7 @@ public class WorldTests(ITestOutputHelper output)
         var e = world.Spawn();
         e.Add<float>(world.Spawn());
 
-        var stream = world.Query<float>().Stream();
+        var stream = world.Query<float>(Match.Any).Stream();
         Assert.Single(stream);
         e.Despawn();
         Assert.Single(stream.Query.Archetypes);

@@ -10,7 +10,7 @@ public class DocumentationExampleTests
         var entity1 = world.Spawn().Add<Position>();
         var entity2 = world.Spawn().Add(new Position(1, 2, 3)).Add<int>();
 
-        var query = world.Query<Position>().Stream();
+        var query = world.Query<Position>(Match.Plain).Stream();
 
         const float MULTIPLIER = 10f;
 

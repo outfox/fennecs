@@ -13,7 +13,7 @@ namespace fennecs;
 public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)> 
     where C0 : notnull
 {
-    private readonly ImmutableArray<TypeExpression> StreamTypes = [TypeExpression.Of<C0>(Match0)];
+    private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
 
     /// <summary>
     /// Creates a builder for a Batch Operation on the Stream's underyling Query.
@@ -68,7 +68,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
         foreach (var table in Archetypes)
         {
 
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
             do
             {
@@ -91,7 +91,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
             do
             {
@@ -112,7 +112,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
         foreach (var table in Archetypes)
         {
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
 
             var count = table.Count;
@@ -133,7 +133,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
         foreach (var table in Archetypes)
         {
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
 
             var count = table.Count;
@@ -158,6 +158,8 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// <param name="action"><see cref="ComponentAction{C0}"/> taking references to Component Types.</param>
     public void Job(ComponentAction<C0> action)
     {
+        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
+            
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -167,7 +169,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
         foreach (var table in Archetypes)
         {
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
@@ -207,6 +209,8 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// <param name="uniform">The uniform data to pass to the action.</param>
     public void Job<U>(U uniform, UniformComponentAction<C0, U> action)
     {
+        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
+        
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -216,7 +220,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
         foreach (var table in Archetypes)
         {
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
 
 
             var count = table.Count; // storage.Length is the capacity, not the count.
@@ -272,7 +276,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
         foreach (var table in Archetypes)
         {
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
 
             do
@@ -304,7 +308,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
         foreach (var table in Archetypes)
         {
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
             do
             {
@@ -357,7 +361,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
         using var worldLock = World.Lock();
         foreach (var table in Query.Archetypes)
         {
-            using var join = table.CrossJoin<C0>(StreamTypes);
+            using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
             var snapshot = table.Version;
             do
