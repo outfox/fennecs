@@ -51,7 +51,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(UniformComponentAction<C0, C1, C2, C3, C4, U> action, U uniform)
+    public void For<U>(U uniform, UniformComponentAction<C0, C1, C2, C3, C4, U> action)
     {
         using var worldLock = World.Lock();
 
@@ -101,7 +101,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(UniformEntityComponentAction<C0, C1, C2, C3, C4, U> componentAction, U uniform)
+    public void For<U>(U uniform, UniformEntityComponentAction<C0, C1, C2, C3, C4, U> componentAction)
     {
         using var worldLock = World.Lock();
 
@@ -179,7 +179,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(UniformComponentAction<C0, C1, C2, C3, C4, U> action, U uniform)
+    public void Job<U>(U uniform, UniformComponentAction<C0, C1, C2, C3, C4, U> action)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -260,7 +260,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(MemoryUniformAction<C0, C1, C2, C3, C4, U> uniformAction, U uniform)
+    public void Raw<U>(U uniform, MemoryUniformAction<C0, C1, C2, C3, C4, U> uniformAction)
     {
         using var worldLock = World.Lock();
 

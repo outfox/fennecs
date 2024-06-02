@@ -28,7 +28,7 @@ public class QueryBatchTests
 
         var intQuery = world.Query<int>().Compile();
         intQuery.Batch(Batch.AddConflict.Preserve).Add(123456.0f).Submit();
-        intQuery.Batch(Batch.AddConflict.Preserve).Add<float>(default).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add<float>().Submit();
     }
 
 
@@ -53,7 +53,7 @@ public class QueryBatchTests
 
         var intQuery = world.Query<int>().Compile();
         intQuery.Batch(Batch.AddConflict.Preserve).Add(new TypeA(55)).Submit();
-        intQuery.Batch(Batch.AddConflict.Preserve).Add<TypeA>(default).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add<TypeA>().Submit();
     }
 
 
@@ -92,14 +92,14 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234).Add("I must go, my people need me");
         var e3 = world.Spawn().Add("lala!").Add<float>();
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Contains(e1, stringQuery);
         Assert.Contains(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
         Assert.Equal(3, stringQuery.Count);
 
 
-        var intQuery = world.Query<int>().Not<string>().Compile();
+        var intQuery = world.Query<int>().Not<string>().Stream();
         Assert.DoesNotContain(e1, intQuery);
         Assert.DoesNotContain(e2, intQuery);
         Assert.DoesNotContain(e3, intQuery);
@@ -117,7 +117,7 @@ public class QueryBatchTests
         Assert.Contains(e2, intQuery);
         Assert.DoesNotContain(e3, intQuery);
 
-        var floatQuery = world.Query<float>().Compile();
+        var floatQuery = world.Query<float>().Stream();
         Assert.Contains(e3, floatQuery);
     }
 
@@ -130,14 +130,14 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234).Add("I must go, my people need me");
         var e3 = world.Spawn().Add("lala!").Add<float>();
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Contains(e1, stringQuery);
         Assert.Contains(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
         Assert.Equal(3, stringQuery.Count);
 
 
-        var intQuery = world.Query<int>().Not<string>().Compile();
+        var intQuery = world.Query<int>().Not<string>().Stream();
         Assert.DoesNotContain(e1, intQuery);
         Assert.DoesNotContain(e2, intQuery);
         Assert.DoesNotContain(e3, intQuery);
@@ -162,7 +162,7 @@ public class QueryBatchTests
         Assert.Contains(e2, intQuery);
         Assert.DoesNotContain(e3, intQuery);
 
-        var floatQuery = world.Query<float>().Compile();
+        var floatQuery = world.Query<float>().Stream();
         Assert.Contains(e3, floatQuery);
     }
 
@@ -176,10 +176,10 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Equal(1, stringQuery.Count);
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
 
         var worldLock = world.Lock();
         intQuery.Batch(Batch.AddConflict.Preserve).Add("batched").Submit();
@@ -207,11 +207,11 @@ public class QueryBatchTests
         world.Spawn().Add(234).Add("I must go, my people need me");
         world.Spawn().Add("lala!").Add<float>();
 
-        var floatQuery = world.Query<float>().Not<string>().Compile();
+        var floatQuery = world.Query<float>().Not<string>().Stream();
 
         Assert.Empty(floatQuery);
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         stringQuery.Batch(Batch.AddConflict.Preserve).Add(123f).Submit();
     }
 
@@ -224,16 +224,16 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Equal(1, stringQuery.Count);
         Assert.DoesNotContain(e1, stringQuery);
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var relationQuery = world.Query<float>(Match.Entity).Compile();
+        var relationQuery = world.Query<float>(Match.Entity).Stream();
         Assert.Empty(relationQuery);
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         intQuery.Batch(Batch.AddConflict.Preserve).Add<float>(e3).Submit();
 
         Assert.Equal(2, relationQuery.Count);
@@ -251,16 +251,16 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Equal(1, stringQuery.Count);
         Assert.DoesNotContain(e1, stringQuery);
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var relationQuery = world.Query<string>(Match.Entity).Compile();
+        var relationQuery = world.Query<string>(Match.Entity).Stream();
         Assert.Empty(relationQuery);
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         intQuery.Batch(Batch.AddConflict.Preserve).Add<string>("object backed, buddy!", e3).Submit();
 
         Assert.Equal(2, relationQuery.Count);
@@ -278,7 +278,7 @@ public class QueryBatchTests
         
         var e1 = world.Spawn().Add(Link.With(doom));
 
-        var linkQuery = world.Query<string>(Link.With(doom)).Compile();
+        var linkQuery = world.Query<string>(Link.With(doom)).Stream();
         Assert.Single(linkQuery);
         Assert.Contains(e1, linkQuery);
         
@@ -295,7 +295,7 @@ public class QueryBatchTests
         var e1 = world.Spawn().Add(123, target);
 
         Assert.True(e1.Has<int>(target));
-        var intQuery = world.Query<int>(Match.Relation(target)).Compile();
+        var intQuery = world.Query<int>(Match.Relation(target)).Stream();
         intQuery.Batch().Remove<int>(target).Submit();
         Assert.False(e1.Has<int>(target));
     }
@@ -309,16 +309,16 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Equal(1, stringQuery.Count);
         Assert.DoesNotContain(e1, stringQuery);
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var linkQuery = world.Query<string>(Match.Object).Compile();
+        var linkQuery = world.Query<string>(Match.Object).Stream();
         Assert.Empty(linkQuery);
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         intQuery.Batch(Batch.AddConflict.Preserve).Add(Link.With("doom")).Submit();
 
         Assert.Equal(2, linkQuery.Count);
@@ -337,8 +337,8 @@ public class QueryBatchTests
         world.Spawn().Add(123).Add("Archetype 2");
         world.Spawn().Add(234).Add("Archetype 2");
 
-        var intQuery = world.Query<int>().Compile();
-        var stringQuery = world.Query<string>().Compile();
+        var intQuery = world.Query<int>().Stream();
+        var stringQuery = world.Query<string>().Stream();
 
         Assert.Equal(4, intQuery.Count);
         Assert.Equal(2, stringQuery.Count);
@@ -362,7 +362,7 @@ public class QueryBatchTests
         world.Spawn().Add(123).Add("Archetype 2");
         world.Spawn().Add(234).Add("Archetype 2");
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
 
         Assert.Throws<InvalidOperationException>(() => intQuery.Truncate(1, fennecs.Query.TruncateMode.PerArchetype));
     }
@@ -377,7 +377,7 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add(567).Add("pre-existing");
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         
         intQuery.Blit(314);
         
@@ -400,7 +400,7 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234).Add("goofy");
         var e3 = world.Spawn().Add(567).Add("pre-existing");
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
         
         query.Blit(314);
         query.Blit("works");
@@ -428,7 +428,7 @@ public class QueryBatchTests
 
         world.Spawn().Add(123.5f);
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
         
         query.Blit(314);
         query.Blit("works");
@@ -450,7 +450,7 @@ public class QueryBatchTests
         // and needed to ruled that out as a precondition.
         Assert.Equal("pre-existing", e3.Ref<string>());
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         Assert.Equal(3, intQuery.Count);
 
         // ! no lock !
@@ -480,7 +480,7 @@ public class QueryBatchTests
         // and needed to ruled that out as a precondition.
         Assert.Equal("pre-existing", e3.Ref<string>());
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         Assert.Equal(3, intQuery.Count);
 
         // ! no lock !
@@ -506,7 +506,7 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add(567).Add("lala!");
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         Assert.Equal(3, intQuery.Count);
 
         var worldLock = world.Lock();
@@ -531,13 +531,13 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234).Add("I must go, my people need me");
         var e3 = world.Spawn().Add("lala!").Add<float>();
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Contains(e1, stringQuery);
         Assert.Contains(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
         Assert.Equal(3, stringQuery.Count);
 
-        var notStringQuery = world.Query().Not<string>().Compile();
+        var notStringQuery = world.Query().Not<string>().Stream();
         Assert.DoesNotContain(e1, notStringQuery);
         Assert.DoesNotContain(e2, notStringQuery);
         Assert.DoesNotContain(e3, notStringQuery);
@@ -559,7 +559,7 @@ public class QueryBatchTests
     public void Cannot_Remove_Add_Conflict_with_Disallow()
     {
         using var world = new World();
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Throws<InvalidOperationException>(() =>
         {
             stringQuery.Batch(Batch.AddConflict.Strict)
@@ -573,7 +573,7 @@ public class QueryBatchTests
     public void Cannot_Duplicate_Remove()
     {
         using var world = new World();
-        var stringQuery = world.Query<string>().Has<float>().Compile();
+        var stringQuery = world.Query<string>().Has<float>().Stream();
         Assert.Throws<InvalidOperationException>(() =>
         {
             stringQuery.Batch(Batch.RemoveConflict.Strict)
@@ -595,7 +595,7 @@ public class QueryBatchTests
     public void Cannot_Duplicate_Add()
     {
         using var world = new World();
-        var stringQuery = world.Query<string>().Not<float>().Compile();
+        var stringQuery = world.Query<string>().Not<float>().Stream();
         Assert.Throws<InvalidOperationException>(() =>
         {
             stringQuery.Batch(Batch.AddConflict.Strict)
@@ -624,7 +624,7 @@ public class QueryBatchTests
     public void Cannot_Remove_and_Add()
     {
         using var world = new World();
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Throws<InvalidOperationException>(() =>
         {
             stringQuery.Batch(Batch.AddConflict.Strict)
@@ -653,7 +653,7 @@ public class QueryBatchTests
     public void Cannot_Add_and_Remove()
     {
         using var world = new World();
-        var stringQuery = world.Query<string>().Not<float>().Compile();
+        var stringQuery = world.Query<string>().Not<float>().Stream();
         Assert.Throws<InvalidOperationException>(() =>
         {
             stringQuery.Batch(Batch.AddConflict.Strict, Batch.RemoveConflict.Allow)
@@ -682,7 +682,7 @@ public class QueryBatchTests
     public void Cannot_Remove_Conflict_with_Disallow()
     {
         using var world = new World();
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Throws<InvalidOperationException>(() =>
         {
             stringQuery.Batch(Batch.RemoveConflict.Strict)
@@ -697,7 +697,7 @@ public class QueryBatchTests
     {
         using var world = new World();
         world.Spawn().Add(123).Add("I must go, my people need me");
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
 
         stringQuery
             .Batch(Batch.RemoveConflict.Allow)
@@ -712,7 +712,7 @@ public class QueryBatchTests
     {
         using var world = new World();
         world.Spawn().Add(123).Add("I must go, my people need me");
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
 
         stringQuery
             .Batch(Batch.AddConflict.Preserve, Batch.RemoveConflict.Allow)
@@ -730,7 +730,7 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add("lala!");
 
-        var stringQuery = world.Query<string>().Compile();
+        var stringQuery = world.Query<string>().Stream();
         Assert.Equal(1, stringQuery.Count);
         Assert.DoesNotContain(e1, stringQuery);
         Assert.DoesNotContain(e2, stringQuery);
@@ -741,7 +741,7 @@ public class QueryBatchTests
         Assert.Equal(1, stringQuery.Count);
         Assert.Contains(e3, stringQuery);
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         Assert.Equal(3, intQuery.Count);
         Assert.Contains(e1, intQuery);
         Assert.Contains(e2, intQuery);

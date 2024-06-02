@@ -46,7 +46,7 @@ public static class QueryEnumeration
             world.Spawn().Add(2);
             world.Spawn().Add(3);
 
-            var query = world.Query().Has<int>().Compile();
+            var query = world.Query().Has<int>().Stream();
 
             Assert.Throws<InvalidOperationException>(() =>
             {
@@ -71,7 +71,7 @@ public static class QueryEnumeration
             world.Spawn().Add(2);
             world.Spawn().Add(3);
 
-            var query = world.Query().Has<int>().Compile();
+            var query = world.Query().Has<int>().Stream();
 
             foreach (var _ in query) world.Spawn().Add(random.NextSingle());
             foreach (var _ in query) world.DespawnAllWith<float>();
@@ -83,7 +83,7 @@ public static class QueryEnumeration
         {
             using var world = SetupWorld(out var intEntities, out _, out _, out _, out _);
 
-            var intQuery = world.Query().Has<int>().Compile();
+            var intQuery = world.Query().Has<int>().Stream();
             var intArray = intQuery.ToArray();
             Array.Sort(intArray);
             intEntities.Sort();
@@ -96,7 +96,7 @@ public static class QueryEnumeration
         {
             using var world = SetupWorld(out _, out _, out var floatEntities, out _, out _);
 
-            var floatQuery = world.Query().Has<float>().Compile();
+            var floatQuery = world.Query().Has<float>().Stream();
             var floatArray = floatQuery.ToArray();
             Array.Sort(floatArray);
             floatEntities.Sort();
@@ -109,7 +109,7 @@ public static class QueryEnumeration
         {
             using var world = SetupWorld(out _, out _, out _, out var bothEntities, out _);
 
-            var bothQuery = world.Query().Has<int>().Has<float>().Compile();
+            var bothQuery = world.Query().Has<int>().Has<float>().Stream();
             var bothArray = bothQuery.ToArray();
             Array.Sort(bothArray);
             bothEntities.Sort();
@@ -122,7 +122,7 @@ public static class QueryEnumeration
         {
             using var world = SetupWorld(out _, out _, out _, out _, out var anyEntities);
 
-            var anyQuery = world.Query().Any<int>().Any<float>().Compile();
+            var anyQuery = world.Query().Any<int>().Any<float>().Stream();
             var anyArray = anyQuery.ToArray();
             Array.Sort(anyArray);
             anyEntities.Sort();
@@ -135,7 +135,7 @@ public static class QueryEnumeration
         {
             using var world = SetupWorld(out _, out var notIntEntities, out _, out _, out _);
 
-            var notIntQuery = world.Query().Not<int>().Compile();
+            var notIntQuery = world.Query().Not<int>().Stream();
             var notIntArray = notIntQuery.ToArray();
             Array.Sort(notIntArray);
             notIntEntities.Sort();

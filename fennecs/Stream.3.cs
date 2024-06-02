@@ -162,7 +162,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
 
 
     /// <inheritdoc cref="Query{C0}.Job{U}"/>
-    public void Job<U>(UniformComponentAction<C0, C1, C2, U> action, U uniform)
+    public void Job<U>(U uniform, UniformComponentAction<C0, C1, C2, U> action)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -239,7 +239,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(MemoryUniformAction<C0, C1, C2, U> uniformAction, U uniform)
+    public void Raw<U>(U uniform, MemoryUniformAction<C0, C1, C2, U> uniformAction)
     {
         using var worldLock = World.Lock();
 

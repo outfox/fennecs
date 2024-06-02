@@ -12,7 +12,7 @@ public class QueryFilterTests
         _world = new World();
         // Assuming that the World class has a method to create queries.
         // Replace with the actual method to create a Query instance.
-        _query = _world.Query().Compile();
+        _query = _world.Query().Stream();
     }
 
     [Fact]
@@ -57,8 +57,8 @@ public class QueryFilterTests
     public void Subset_WithInheritors_ShouldWorkCorrectly()
     {
         // Arrange
-        var query1 = _world.Query<ComponentA>().Compile();
-        var query2 = _world.Query<ComponentA, ComponentB>().Compile();
+        var query1 = _world.Query<ComponentA>().Stream();
+        var query2 = _world.Query<ComponentA, ComponentB>().Stream();
         // ... up to query5 for Query<ComponentA, ComponentB, ComponentC, ComponentD, ComponentE>
 
         var entity = _world.Spawn().Add(new ComponentA()).Add(new ComponentB());
@@ -79,8 +79,8 @@ public class QueryFilterTests
     public void Exclude_WithInheritors_ShouldWorkCorrectly()
     {
         // Arrange
-        var query1 = _world.Query<ComponentA>().Compile();
-        var query2 = _world.Query<ComponentA, ComponentB>().Compile();
+        var query1 = _world.Query<ComponentA>().Stream();
+        var query2 = _world.Query<ComponentA, ComponentB>().Stream();
         // ... up to query5 for Query<ComponentA, ComponentB, ComponentC, ComponentD, ComponentE>
 
         var entity = _world.Spawn().Add(new ComponentA()).Add(new ComponentB());

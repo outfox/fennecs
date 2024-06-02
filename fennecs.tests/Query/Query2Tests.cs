@@ -10,7 +10,7 @@ public class Query2Tests
     {
         using var world = new World();
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
 
         //Create an empty table by spawning and despawning a single entity
         //that matches our test Query (but is a larger Archetype)
@@ -110,7 +110,7 @@ public class Query2Tests
 
         List<Entity> entities = new(count);
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
         Assert.Equal(0, query.Count);
 
         for (var index = 0; index < count; index++)
@@ -155,7 +155,7 @@ public class Query2Tests
 
         List<Entity> entities = new(count);
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
 
         query.Raw((integers, strings) =>
         {
@@ -215,7 +215,7 @@ public class Query2Tests
 
         List<Entity> entities = new(count);
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
 
         query.Raw((integers, _) => { Assert.Equal(0, integers.Length); });
 
@@ -272,7 +272,7 @@ public class Query2Tests
 
         List<Entity> entities = new(count);
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
 
         query.Raw((integers, strings) =>
         {
@@ -344,7 +344,7 @@ public class Query2Tests
                 .Add(index)
                 .Add("I'll stay");
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
 
         var processed = 0;
         query.Job((ref int index, ref string str) =>
@@ -383,7 +383,7 @@ public class Query2Tests
                 .Add(index)
                 .Add("I'll stay");
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
 
         var processed = 0;
         query.Job((ref int index, ref string str) =>
@@ -422,7 +422,7 @@ public class Query2Tests
                 .Add(c)
                 .Add(0.1f);
 
-        var query = world.Query<int, float>().Compile();
+        var query = world.Query<int, float>().Stream();
 
         query.Raw((integers, floats) =>
         {
@@ -452,7 +452,7 @@ public class Query2Tests
         var e1 = world.Spawn().Add(123).Add<string>("123");
         var e2 = world.Spawn().Add(555).Add<string>("ralf");
         
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
 
         var found = new List<Entity>();
         
@@ -475,7 +475,7 @@ public class Query2Tests
         var e1 = world.Spawn().Add(123).Add<string>("123");
         var e2 = world.Spawn().Add(555).Add<string>("ralf");
         
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
 
         var found = new List<Entity>();
         
@@ -494,7 +494,7 @@ public class Query2Tests
     private void Can_Warmup()
     {
         using var world = new World();
-        var query = world.Query<int, byte>().Compile();
+        var query = world.Query<int, byte>().Stream();
         query.Warmup();
     }
 }

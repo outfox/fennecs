@@ -20,7 +20,7 @@ namespace Benchmark.ECS;
 // ReSharper disable once IdentifierTypo
 public class DorakuBenchmarks
 {
-    private Query<Component1, Component2, Component3> _query = null!;
+    private Stream<Component1, Component2, Component3> _query = null!;
     private World _world = null!;
 
     // ReSharper disable once MemberCanBePrivate.Global
@@ -35,7 +35,7 @@ public class DorakuBenchmarks
         PooledList<UniformWork<Component1, Component2, Component3>>.Rent().Dispose();
 
         _world = new World();
-        _query = _world.Query<Component1, Component2, Component3>().Compile();
+        _query = _world.Query<Component1, Component2, Component3>().Stream();
         for (var i = 0; i < entityCount; ++i)
         {
             for (var j = 0; j < entityPadding; ++j)
@@ -60,7 +60,7 @@ public class DorakuBenchmarks
                 .Add(new Component3 {Value = 1});
         }
 
-        _query.Warmup();
+        _query.Query.Warmup();
         _query.Job(Workload);
     }
 

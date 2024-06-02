@@ -123,7 +123,7 @@ public partial class World : IDisposable
     /// </param>
     public void DespawnAllWith<T>(Match match = default)
     {
-        using var query = Query<Identity>().Has<T>(match).Compile();
+        var query = Query<Identity>(match).Has<T>(match).Stream();
         query.Raw(delegate(Memory<Identity> entities)
         {
             foreach (var identity in entities.Span) DespawnImpl(identity);
@@ -249,7 +249,7 @@ public partial class World : IDisposable
     /// </summary>
     public new void Dispose()
     {
-        //TODO: Release all Object Links?
+        //TODO: Dispose all Object Links, Queries, etc.?
     }
 
 

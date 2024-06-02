@@ -48,7 +48,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Match Match0, Match Match1, Ma
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(UniformComponentAction<C0, C1, C2, C3, U> action, U uniform)
+    public void For<U>(U uniform, UniformComponentAction<C0, C1, C2, C3, U> action)
     {
         using var worldLock = World.Lock();
 
@@ -96,7 +96,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Match Match0, Match Match1, Ma
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(UniformEntityComponentAction<C0, C1, C2, C3, U> componentAction, U uniform)
+    public void For<U>(U uniform, UniformEntityComponentAction<C0, C1, C2, C3, U> componentAction)
     {
         using var worldLock = World.Lock();
 

@@ -86,7 +86,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add("hallo")
             .Spawn(count);
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
         Assert.Equal(count, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -116,7 +116,7 @@ public class WorldTests(ITestOutputHelper output)
         spawner.Add(420.0f);
         spawner.Spawn(count);
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
         Assert.Equal(count * 2, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -141,7 +141,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add(666)
             .Spawn(count);
         
-        var query = world.Query<int>().Compile();
+        var query = world.Query<int>().Stream();
         Assert.Equal(count, query.Count);
         query.For((ref int i) => Assert.Equal(666, i));
     }
@@ -161,7 +161,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add(Link.With("dieter"))
             .Spawn(count);
 
-        var query = world.Query<int, string>(Match.Plain, Match.Link("dieter")).Compile();
+        var query = world.Query<int, string>(Match.Plain, Match.Link("dieter")).Stream();
         Assert.Equal(count, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -189,7 +189,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add("relation", other)
             .Spawn(count);
 
-        var query = world.Query<int, string>(Match.Plain, other).Compile();
+        var query = world.Query<int, string>(Match.Plain, other).Stream();
         Assert.Equal(count, query.Count);
         
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
@@ -213,7 +213,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         world.Entity().Spawn(count);
 
-        var query = world.Query().Compile();
+        var query = world.Query().Stream();
         Assert.Equal(count, query.Count);
     }
 
@@ -228,7 +228,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Compile();
+        var query = world.Query<Identity>().Stream();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -248,7 +248,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Compile();
+        var query = world.Query<Identity>().Stream();
         query.Raw((_, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -275,7 +275,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>().Compile();
+        var query = world.Query<Identity>().Stream();
         query.For((ref Identity _, World uniform) =>
         {
             var entity = uniform.Spawn();
@@ -343,8 +343,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().Add(444, target2);
         }
 
-        var query1 = world.Query<Identity>().Has<int>(target1).Compile();
-        var query2 = world.Query<Identity>().Has<int>(target2).Compile();
+        var query1 = world.Query<Identity>().Has<int>(target1).Stream();
+        var query2 = world.Query<Identity>().Has<int>(target2).Stream();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);
@@ -708,7 +708,7 @@ public class WorldTests(ITestOutputHelper output)
         var e = world.Spawn();
         e.Add<float>(world.Spawn());
 
-        var query = world.Query<float>().Compile();
+        var query = world.Query<float>().Stream();
         Assert.Single(query);
         e.Despawn();
         Assert.Single(query.TrackedArchetypes);

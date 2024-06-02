@@ -28,7 +28,7 @@ var racers =
     world.Query<Driver, Model>() // "Stream Types", data to process
         .Has<Car>() // additional Filter Expression(s) to match in the Query 
         .Not<Vroom>() // additional Filter Expression(s) to exclude
-        .Compile();
+        .Stream();
 
 
 Console.WriteLine($"Cars on the street: {racers.Count}");
@@ -45,7 +45,7 @@ racers.For((Entity raceCar, ref Driver driver, ref Model name) =>
 if (ae86.Has<Ready>()) ae86.Add<Steady>();
 
 // Or do bulk operations on the Query!
-racers.Add<Vroom>();
+racers.Query.Add<Vroom>();
 
 Console.WriteLine("Got 60 seconds to spare?");
 Console.WriteLine("--> https://behance.net/gallery/101574771/D-CG-Animation");

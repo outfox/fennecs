@@ -25,7 +25,7 @@ public class Stream1Tests
     public void Can_Create_Stream_From_Query()
     {
         using var world = new World();
-        using var query = world.Query<string>().Compile();
+        var query = world.Query<string>().Compile();
         
         var stream = query.Stream<string>();
 
@@ -46,7 +46,6 @@ public class Stream1Tests
     public void Can_Create_Reference_Stream_From_World()
     {
         using var world = new World();
-        using var query = world.Query<string>().Compile();
         
         var stream = world.Stream<string>();
 
@@ -93,7 +92,7 @@ public class Stream1Tests
     public void World_Stream_Backed_by_Cached_Query()
     {
         using var world = new World();
-        using var query = world.Query<string>().Compile();
+        var query = world.Query<string>().Compile();
         
         var stream1 = world.Stream<string>();
         var stream2 = world.Stream<string>();

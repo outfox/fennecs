@@ -31,9 +31,9 @@ public class AliasingBenchmarks
 
     private World _world = null!;
 
-    private Query<Vector4> _queryV4 = null!;
-    private Query<FoxVector4> _queryF4 = null!;
-    private Query<FoxVector4Simd> _query128 = null!;
+    private Stream<Vector4> _queryV4 = null!;
+    private Stream<FoxVector4> _queryF4 = null!;
+    private Stream<FoxVector4Simd> _query128 = null!;
 
     private struct FoxVector4(Vector4 v) : Fox<Vector4>
     {
@@ -104,14 +104,14 @@ public class AliasingBenchmarks
             _world.Spawn().Add<FoxVector4Simd>(new Vector4(RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle()));
         }
 
-        _queryV4 = _world.Query<Vector4>().Compile();
-        _queryV4.Warmup();
+        _queryV4 = _world.Query<Vector4>().Stream();
+        _queryV4.Query.Warmup();
 
-        _queryF4 = _world.Query<FoxVector4>().Compile();
-        _queryF4.Warmup();
+        _queryF4 = _world.Query<FoxVector4>().Stream();
+        _queryF4.Query.Warmup();
 
-        _query128 = _world.Query<FoxVector4Simd>().Compile();
-        _query128.Warmup();
+        _query128 = _world.Query<FoxVector4Simd>().Stream();
+        _query128.Query.Warmup();
     }
 
 

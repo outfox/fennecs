@@ -140,7 +140,7 @@ public partial class World : Query
 
     #region Queries
 
-    internal Query CompileQueryNew(Mask mask)
+    internal Query CompileQuery(Mask mask)
     {
         if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 

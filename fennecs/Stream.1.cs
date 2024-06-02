@@ -16,6 +16,12 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     private readonly ImmutableArray<TypeExpression> StreamTypes = [TypeExpression.Of<C0>(Match0)];
 
     /// <summary>
+    /// Creates a builder for a Batch Operation on the Stream's underyling Query.
+    /// </summary>
+    /// <returns>fluent builder</returns>
+    public Batch Batch() => Query.Batch();
+    
+    /// <summary>
     /// The number of entities that match the underlying Query.
     /// </summary>
     public int Count => Query.Count;
@@ -80,7 +86,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// <param name="action"><see cref="UniformComponentAction{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
     // /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(UniformComponentAction<C0, U> action, U uniform)
+    public void For<U>(U uniform, UniformComponentAction<C0, U> action)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -96,6 +102,50 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
             } while (join.Iterate());
         }
     }
+    
+    
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+    public void For(EntityComponentAction<C0> componentAction)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0>(StreamTypes);
+            if (join.Empty) continue;
+
+            var count = table.Count;
+            do
+            {
+                var s0 = join.Select;
+                var span0 = s0.Span;
+                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i]);
+            } while (join.Iterate());
+        }
+    }
+
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+    public void For<U>(UniformEntityComponentAction<C0, U> componentAction, U uniform)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Archetypes)
+        {
+            using var join = table.CrossJoin<C0>(StreamTypes);
+            if (join.Empty) continue;
+
+            var count = table.Count;
+            do
+            {
+                var s0 = join.Select;
+                var span0 = s0.Span;
+                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], uniform);
+            } while (join.Iterate());
+        }
+    }
+    
     // #endregion Showcase
 
     #endregion
@@ -155,7 +205,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// </summary>
     /// <param name="action"><see cref="ComponentAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void Job<U>(UniformComponentAction<C0, U> action, U uniform)
+    public void Job<U>(U uniform, UniformComponentAction<C0, U> action)
     {
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -248,7 +298,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// </remarks>
     /// <param name="uniformAction"><see cref="MemoryAction{C0}"/> action to execute.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void Raw<U>(MemoryUniformAction<C0, U> uniformAction, U uniform)
+    public void Raw<U>(U uniform, MemoryUniformAction<C0, U> uniformAction)
     {
         using var worldLock = World.Lock();
 
@@ -288,6 +338,16 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
     #endregion
 
+    #region Query Forwarding
+    /// <inheritdoc cref="fennecs.Query.Truncate"/>
+    public void Truncate(int targetSize, Query.TruncateMode mode = default)
+    {
+        Query.Truncate(targetSize, mode);
+    }
+    
+    /// <inheritdoc cref="fennecs.Query.Despawn"/>
+    public void Despawn() => Query.Despawn();
+    #endregion
 
     #region IEnumerable
 
@@ -314,4 +374,5 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion
+
 }

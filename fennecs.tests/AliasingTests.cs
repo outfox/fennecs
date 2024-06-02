@@ -41,7 +41,7 @@
                 .Add<Weight>(50)
                 .Add<Size>(150);
             
-            var query = world.Query<Weight, Size>().Compile();
+            var query = world.Query<Weight, Size>().Stream();
             
             query.For(static (ref Weight weight, ref Size size) =>
             {

@@ -18,7 +18,7 @@ var world = new fennecs.World();
 var entity = world.Spawn().Add<Vector3>();
 
 // Create a query to update positions
-var query = world.Query<Vector3>().Compile();
+var query = world.Query<Vector3>().Stream();
 
 // Run the query
 query.For(static (ref Vector3 position, float dt) => {

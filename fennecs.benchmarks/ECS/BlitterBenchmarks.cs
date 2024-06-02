@@ -17,7 +17,7 @@ namespace Benchmark.ECS;
 public class BlitterBenchmarks
 {
     private World _world = null!;
-    private Query<int, string> _query = null!;
+    private Stream<int, string> _stream = null!;
 
     // ReSharper disable once MemberCanBePrivate.Global
     [Params(100_000, 1_000_000, 10_000_000, 100_000_000)]
@@ -27,7 +27,7 @@ public class BlitterBenchmarks
     public void Setup()
     {
         _world = new World(entityCount);
-        _query = _world.Query<int, string>().Compile();
+        _stream = _world.Query<int, string>().Stream();
 
         _world.Entity()
             .Add(1337)
@@ -40,14 +40,13 @@ public class BlitterBenchmarks
     public void Cleanup()
     {
         _world.Dispose();
-        _query.Dispose();
     }
 
     [BenchmarkCategory("blit")]
     [Benchmark(Description = "non-blittable blit")]
     public int NonBlittable()
     {
-        _query.Blit("not blittable");
+        _stream.Blit("not blittable");
         return _world.Count;
     }
 
@@ -55,7 +54,7 @@ public class BlitterBenchmarks
     [Benchmark(Description = "non-blittable job")]
     public int NonBlittableJob()
     {
-        _query.Job("not blittable",
+        _stream.Job("not blittable",
             (string uniform, ref int _, ref string str) => { str = uniform; });
         return _world.Count;
     }
@@ -64,7 +63,7 @@ public class BlitterBenchmarks
     [Benchmark(Description = "blittable blit")]
     public int Blittable()
     {
-        _query.Blit(123456);
+        _stream.Blit(123456);
         return _world.Count;
     }
 
@@ -72,7 +71,7 @@ public class BlitterBenchmarks
     [Benchmark(Description = "blittable job")]
     public int BlittableJob()
     {
-        _query.Job(
+        _stream.Job(
             uniform: 123456,
             action: (int uniform, ref int val, ref string _) =>
             {

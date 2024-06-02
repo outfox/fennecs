@@ -31,6 +31,11 @@ internal sealed class Mask : IDisposable
         }
     }
 
+    public void Has(IEnumerable<TypeExpression> typeExpression)
+    {
+        foreach (var type in typeExpression) Has(type);        
+    }
+
 
     public void Not(TypeExpression typeExpression)
     {

@@ -406,12 +406,12 @@ public class QueryBuilderTests
     private void Can_Create_Unchecked_Queries()
     {
         using var world = new World();
-        world.Query().Unchecked().Has<Vector4>().Has<Vector4>().Compile();
-        world.Query<Vector4>().Unchecked().Has<Vector4>().Compile();
-        world.Query<Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
-        world.Query<Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
-        world.Query<float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
-        world.Query<int, float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
+        world.Query().Unchecked().Has<Vector4>().Has<Vector4>().Stream();
+        world.Query<Vector4>().Unchecked().Has<Vector4>().Stream();
+        world.Query<Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
+        world.Query<Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
+        world.Query<float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
+        world.Query<int, float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
     }
 
     
@@ -422,32 +422,32 @@ public class QueryBuilderTests
         
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query().Has<Vector4>().Has<Vector4>().Compile();
+            world.Query().Has<Vector4>().Has<Vector4>().Stream();
         });
 
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<Vector4>().Has<Vector4>().Compile();
+            world.Query<Vector4>().Has<Vector4>().Stream();
         });
 
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<Vector3, Vector4>().Has<Vector4>().Compile();
+            world.Query<Vector3, Vector4>().Has<Vector4>().Stream();
         });
         
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+            world.Query<Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
         });
         
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<float, Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+            world.Query<float, Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
         });
         
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<int, float, Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+            world.Query<int, float, Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
         });
     }
 }
