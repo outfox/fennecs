@@ -41,9 +41,9 @@ public partial class World : IDisposable
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
     /// <param name="values">component values</param>
-    internal protected void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>(Match.Plain));
+        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>(MatchOld.Plain));
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components, values);
     }
@@ -82,12 +82,12 @@ public partial class World : IDisposable
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
-    /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
-    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/> or <see cref="Match.Target"/>
+    /// <param name="match">default <see cref="MatchOld.Plain"/>.<br/>Can alternatively be one
+    /// of <see cref="MatchOld.Any"/>, <see cref="MatchOld.Object"/> or <see cref="MatchOld.Target"/>
     /// </param>
-    public void DespawnAllWith<T>(Match match = default)
+    public void DespawnAllWith<T>(MatchOld match = default)
     {
-        var query = Query<Identity>(Match.Plain).Has<T>(match).Stream();
+        var query = Query<Identity>(MatchOld.Plain).Has<T>(match).Stream();
         query.Raw(delegate(Memory<Identity> entities)
         {
             //TODO: This is not good. Need to untangle the types here.
@@ -157,7 +157,7 @@ public partial class World : IDisposable
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new(TypeExpression.Of<Identity>(Match.Plain)));
+        _root = GetArchetype(new(TypeExpression.Of<Identity>(MatchOld.Plain)));
     }
 
 

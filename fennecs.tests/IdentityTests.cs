@@ -9,11 +9,11 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Virtual_Entities_have_no_Successors()
     {
-        Assert.Throws<InvalidCastException>(() => Match.idAny.Successor);
-        Assert.Throws<InvalidCastException>(() => Match.idObject.Successor);
-        Assert.Throws<InvalidCastException>(() => Match.idTarget.Successor);
-        Assert.Throws<InvalidCastException>(() => Match.idEntity.Successor);
-        Assert.Throws<InvalidCastException>(() => Match.idPlain.Successor);
+        Assert.Throws<InvalidCastException>(() => MatchOld.idAny.Successor);
+        Assert.Throws<InvalidCastException>(() => MatchOld.idObject.Successor);
+        Assert.Throws<InvalidCastException>(() => MatchOld.idTarget.Successor);
+        Assert.Throws<InvalidCastException>(() => MatchOld.idEntity.Successor);
+        Assert.Throws<InvalidCastException>(() => MatchOld.idPlain.Successor);
     }
 
 
@@ -31,7 +31,7 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_Plain_is_default()
     {
-        var none = Match.idPlain;
+        var none = MatchOld.idPlain;
         Assert.Equal(default, none.Generation);
         output.WriteLine(none.Generation.ToString());
         output.WriteLine(none.ToString());
@@ -42,20 +42,20 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_ToString()
     {
-        _ = Match.Any.ToString();
-        _ = Match.Entity.ToString();
-        _ = Match.Target.ToString();
-        _ = Match.Object.ToString();
-        _ = Match.Plain.ToString();
+        _ = MatchOld.Any.ToString();
+        _ = MatchOld.Entity.ToString();
+        _ = MatchOld.Target.ToString();
+        _ = MatchOld.Object.ToString();
+        _ = MatchOld.Plain.ToString();
         _ = Identity.Of("hello world").ToString();
         _ = new Identity(123, 456).ToString();
         _ = new Identity(-1, 2).ToString();
 
-        output.WriteLine(Match.Any.ToString());
-        output.WriteLine(Match.Entity.ToString());
-        output.WriteLine(Match.Target.ToString());
-        output.WriteLine(Match.Object.ToString());
-        output.WriteLine(Match.Plain.ToString());
+        output.WriteLine(MatchOld.Any.ToString());
+        output.WriteLine(MatchOld.Entity.ToString());
+        output.WriteLine(MatchOld.Target.ToString());
+        output.WriteLine(MatchOld.Object.ToString());
+        output.WriteLine(MatchOld.Plain.ToString());
         output.WriteLine(Identity.Of("hello world").ToString());
         output.WriteLine(new Identity(123, 456).ToString());
         output.WriteLine(new Identity(-1, 2).ToString());
@@ -66,10 +66,10 @@ public class IdentityTests(ITestOutputHelper output)
     public void Identity_None_cannot_Match_One()
     {
         var zero = new Identity(0);
-        Assert.NotEqual(Match.Plain, new(zero));
+        Assert.NotEqual(MatchOld.Plain, new(zero));
 
         var one = new Identity(1);
-        Assert.NotEqual(Match.Plain, new(one));
+        Assert.NotEqual(MatchOld.Plain, new(one));
     }
 
 
@@ -100,8 +100,8 @@ public class IdentityTests(ITestOutputHelper output)
         {
             var identity = new Identity(i, g);
 
-            Assert.NotEqual(new(identity), Match.Any);
-            Assert.NotEqual(new(identity), Match.Plain);
+            Assert.NotEqual(new(identity), MatchOld.Any);
+            Assert.NotEqual(new(identity), MatchOld.Plain);
 
             if (ids.ContainsKey(identity.GetHashCode()))
                 Assert.Fail($"Collision of {identity} with {ids[identity.GetHashCode()]}, {identity.GetHashCode()}#==#{ids[identity.GetHashCode()].GetHashCode()}");
@@ -123,8 +123,8 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Any_and_None_are_Distinct()
     {
-        Assert.NotEqual(Match.Any, Match.Plain);
-        Assert.NotEqual(Match.Any.GetHashCode(), Match.Plain.GetHashCode());
+        Assert.NotEqual(MatchOld.Any, MatchOld.Plain);
+        Assert.NotEqual(MatchOld.Any.GetHashCode(), MatchOld.Plain.GetHashCode());
     }
 
 

@@ -106,7 +106,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         // Get quick lookup for Identity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
+        IdentityStorage = GetStorage<Identity>(fennecs.MatchOld.Plain);
 
         // TODO: Bake buckets dictionary
         // _buckets = Zip(finishedTypes, finishedBuckets);
@@ -355,7 +355,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal Storage<T> GetStorage<T>(Match target)
+    internal Storage<T> GetStorage<T>(MatchOld target)
     {
         var type = TypeExpression.Of<T>(target);
         return (Storage<T>) GetStorage(type);
@@ -523,7 +523,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         foreach (var component in components)
         {
-            var type = TypeExpression.Of(component.GetType(), fennecs.Match.Plain);
+            var type = TypeExpression.Of(component.GetType(), fennecs.MatchOld.Plain);
             var storage = GetStorage(type);
             storage.Append(component, count);
         }

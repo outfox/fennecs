@@ -148,19 +148,19 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <inheritdoc />
     public override string ToString()
     {
-        if (Equals(Match.idPlain))
+        if (Equals(MatchOld.idPlain))
             return "[None]";
 
-        if (Equals(Match.idAny))
+        if (Equals(MatchOld.idAny))
             return "wildcard[Any]";
 
-        if (Equals(Match.idTarget))
+        if (Equals(MatchOld.idTarget))
             return "wildcard[Target]";
 
-        if (Equals(Match.idEntity))
+        if (Equals(MatchOld.idEntity))
             return "wildcard[Entity]";
 
-        if (Equals(Match.idObject))
+        if (Equals(MatchOld.idObject))
             return "wildcard[Object]";
 
         if (IsObject)

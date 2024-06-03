@@ -55,11 +55,11 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Match target) => ref World.GetComponent<C>(this, target);
+    public ref C Ref<C>(MatchOld target) => ref World.GetComponent<C>(this, target);
 
 
-    /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
-    public ref C Ref<C>() => ref World.GetComponent<C>(this, Match.Plain);
+    /// <inheritdoc cref="Ref{C}(MatchOld)"/>
+    public ref C Ref<C>() => ref World.GetComponent<C>(this, MatchOld.Plain);
 
 
     /// <summary>
@@ -149,7 +149,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<T>()
     {
-        World.RemoveComponent(Id, TypeExpression.Of<T>(Match.Plain));
+        World.RemoveComponent(Id, TypeExpression.Of<T>(MatchOld.Plain));
         return this;
     }
 
@@ -192,7 +192,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
 
     /// <summary>
     /// Checks if the Entity has a Plain Component.
-    /// Same as calling <see cref="Has{T}()"/> with <see cref="Match.Plain"/>
+    /// Same as calling <see cref="Has{T}()"/> with <see cref="MatchOld.Plain"/>
     /// </summary>
     public bool Has<T>() => World.HasComponent<T>(Id, default);
 
@@ -201,7 +201,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// Checks if the Entity has a Component of a specific type.
     /// Allows for a <see cref="Cross"/> Expression to be specified.
     /// </summary>
-    public bool Has<T>(Match match) => World.HasComponent<T>(Id, match);
+    public bool Has<T>(MatchOld match) => World.HasComponent<T>(Id, match);
 
 
     /// <summary>

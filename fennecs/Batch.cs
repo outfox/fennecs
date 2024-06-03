@@ -67,7 +67,7 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>() where T : new() => AddComponent(new T(), target: Match.Plain);
+    public Batch Add<T>() where T : new() => AddComponent(new T(), target: MatchOld.Plain);
 
     /// <summary>
     /// Append an Add operation to the batch.
@@ -83,7 +83,7 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>() => RemoveComponent<T>(Match.Plain);
+    public Batch Remove<T>() => RemoveComponent<T>(MatchOld.Plain);
 
     /// <summary>
     /// Append an Remove operation to the batch.
@@ -102,7 +102,7 @@ public readonly struct Batch : IDisposable
     public Batch Remove<T>(Relate target) => RemoveComponent<T>(target);
 
 
-    private Batch AddComponent<T>(T data, Match target)
+    private Batch AddComponent<T>(T data, MatchOld target)
     {
         var typeExpression = TypeExpression.Of<T>(target);
 
@@ -121,7 +121,7 @@ public readonly struct Batch : IDisposable
         return this;
     }
 
-    private Batch RemoveComponent<T>(Match target = default)
+    private Batch RemoveComponent<T>(MatchOld target = default)
     {
         var typeExpression = TypeExpression.Of<T>(target);
 
@@ -163,7 +163,7 @@ public readonly struct Batch : IDisposable
         /// Disallows the addition of components that could already be present in a query.
         /// </summary>
         /// <remarks>
-        /// Exclude the component from the query via <see cref="QueryBuilder{C1}.Not{T}(fennecs.Match)"/> or similar
+        /// Exclude the component from the query via <see cref="QueryBuilder{C1}.Not{T}(MatchOld)"/> or similar
         /// means. If you want to allow the addition of components that are already present, use <see cref="Preserve"/>
         /// to keep any values already present, or use <see cref="Replace"/> if you'd like to overwrite the component
         /// value everywhere it is already encountered in the query.
@@ -204,7 +204,7 @@ public readonly struct Batch : IDisposable
     {
         /// <summary>
         /// Disallow remove operation if the Component to be removed is not guaranteed to be present
-        /// on ALL matched Archetypes, see <see cref="QueryBuilder.Has{T}(fennecs.Match)"/>.
+        /// on ALL matched Archetypes, see <see cref="QueryBuilder.Has{T}(MatchOld)"/>.
         /// </summary>
         Strict = default,
 

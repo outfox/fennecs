@@ -11,7 +11,7 @@ public partial class Query
     /// <param name="match">Match Target for the Component (defaults to Any)</param>
     /// <typeparam name="C">component stream type</typeparam>
     /// <returns>Stream View</returns>
-    public Stream<C> Stream<C>(Match match = default)
+    public Stream<C> Stream<C>(MatchOld match = default)
         where C : notnull
         => new(this, match);
 
@@ -23,7 +23,7 @@ public partial class Query
     /// <typeparam name="C0">1st component stream type</typeparam>
     /// <typeparam name="C1">2nd component stream type</typeparam>
     /// <returns>Stream View</returns>
-    public Stream<C0, C1> Stream<C0, C1>(Match match0, Match match1)
+    public Stream<C0, C1> Stream<C0, C1>(MatchOld match0, MatchOld match1)
         where C0 : notnull
         where C1 : notnull
         => new(this, match0, match1);
@@ -36,7 +36,7 @@ public partial class Query
     /// <typeparam name="C0">1st component stream type</typeparam>
     /// <typeparam name="C1">2nd component stream type</typeparam>
     /// <returns>Stream View</returns>
-    public Stream<C0, C1> Stream<C0, C1>(Match matchAll = default)
+    public Stream<C0, C1> Stream<C0, C1>(MatchOld matchAll = default)
         where C0 : notnull
         where C1 : notnull
         => new(this, matchAll, matchAll);
@@ -46,47 +46,47 @@ public partial class Query
 #pragma warning disable CS1712 // Type parameter has no matching typeparam tag in the XML comment (but other type parameters do)
 #pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
-    /// <inheritdoc cref="Stream{C0,C1}(Match, Match)"/>
+    /// <inheritdoc cref="Stream{C0,C1}(MatchOld, MatchOld)"/>
     /// <param name="match2">3nd Component Match Target</param>
     /// <typeparam name="C2">3rd component stream type</typeparam>
-    public Stream<C0, C1, C2> Stream<C0, C1, C2>(Match match0, Match match1, Match match2)
+    public Stream<C0, C1, C2> Stream<C0, C1, C2>(MatchOld match0, MatchOld match1, MatchOld match2)
         where C0 : notnull
         where C1 : notnull
         where C2 : notnull
         => new(this, match0, match1, match2);
 
-    /// <inheritdoc cref="Stream{C0,C1}(Match)"/>
+    /// <inheritdoc cref="Stream{C0,C1}(MatchOld)"/>
     /// <typeparam name="C2">3rd component stream type</typeparam>
-    public Stream<C0, C1, C2> Stream<C0, C1, C2>(Match matchAll = default)
+    public Stream<C0, C1, C2> Stream<C0, C1, C2>(MatchOld matchAll = default)
         where C0 : notnull
         where C1 : notnull
         where C2 : notnull
         => new(this, matchAll, matchAll, matchAll);
 
 
-    /// <inheritdoc cref="Stream{C0,C1,C2}(Match,Match,Match)"/>
+    /// <inheritdoc cref="Stream{C0,C1,C2}(MatchOld,MatchOld,MatchOld)"/>
     /// <param name="match3">4nd Component Match Target</param>
     /// <typeparam name="C3">4th component stream type</typeparam>
-    public Stream<C0, C1, C2, C3> Stream<C0, C1, C2, C3>(Match match0, Match match1, Match match2, Match match3)
+    public Stream<C0, C1, C2, C3> Stream<C0, C1, C2, C3>(MatchOld match0, MatchOld match1, MatchOld match2, MatchOld match3)
         where C0 : notnull
         where C1 : notnull
         where C2 : notnull
         where C3 : notnull
         => new(this, match0, match1, match2, match3);
 
-    /// <inheritdoc cref="Stream{C0,C1,C2}(Match)"/>
+    /// <inheritdoc cref="Stream{C0,C1,C2}(MatchOld)"/>
     /// <typeparam name="C3">4th component stream type</typeparam>
-    public Stream<C0, C1, C2, C3> Stream<C0, C1, C2, C3>(Match matchAll = default)
+    public Stream<C0, C1, C2, C3> Stream<C0, C1, C2, C3>(MatchOld matchAll = default)
         where C0 : notnull
         where C1 : notnull
         where C2 : notnull
         where C3 : notnull
         => new(this, matchAll, matchAll, matchAll, matchAll);
 
-    /// <inheritdoc cref="Stream{C0,C1,C2, C3}(Match,Match,Match,Match)"/>
+    /// <inheritdoc cref="Stream{C0,C1,C2, C3}(MatchOld,MatchOld,MatchOld,MatchOld)"/>
     /// <param name="match4">5th Component Match Target</param>
     /// <typeparam name="C4">5th component stream type</typeparam>
-    public Stream<C0, C1, C2, C3, C4> Stream<C0, C1, C2, C3, C4>(Match match0, Match match1, Match match2, Match match3, Match match4)
+    public Stream<C0, C1, C2, C3, C4> Stream<C0, C1, C2, C3, C4>(MatchOld match0, MatchOld match1, MatchOld match2, MatchOld match3, MatchOld match4)
         where C0 : notnull
         where C1 : notnull
         where C2 : notnull
@@ -95,9 +95,9 @@ public partial class Query
         => new(this, match0, match1, match2, match3, match4);
 
     
-    /// <inheritdoc cref="Stream{C0,C1,C2, C3}(Match)"/>
+    /// <inheritdoc cref="Stream{C0,C1,C2, C3}(MatchOld)"/>
     /// <typeparam name="C4">5th component stream type</typeparam>
-    public Stream<C0, C1, C2, C3, C4> Stream<C0, C1, C2, C3, C4>(Match matchAll = default)
+    public Stream<C0, C1, C2, C3, C4> Stream<C0, C1, C2, C3, C4>(MatchOld matchAll = default)
         where C0 : notnull
         where C1 : notnull
         where C2 : notnull

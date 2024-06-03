@@ -14,23 +14,23 @@ public class SignatureTests
         ];
         yield return
         [
-            new[] { TypeExpression.Of<int>(Match.Plain) }.ToImmutableSortedSet(),
-            new[] { TypeExpression.Of<int>(Match.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain) }.ToImmutableSortedSet(),
         ];
         yield return
         [
-            new[] { TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain) }.ToImmutableSortedSet(),
-            new[] { TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain) }.ToImmutableSortedSet(),
         ];
         yield return
         [
-            new[] { TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Link.With("Hello World")) }.ToImmutableSortedSet(),
-            new[] { TypeExpression.Of<string>(Link.With("Hello World")), TypeExpression.Of<int>(Match.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(Link.With("Hello World")) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<string>(Link.With("Hello World")), TypeExpression.Of<int>(MatchOld.Plain) }.ToImmutableSortedSet(),
         ];
         yield return
         [
-            new[] { TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain) }.ToImmutableSortedSet(),
-            new[] { TypeExpression.Of<string>(Match.Plain), TypeExpression.Of<int>(Match.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<string>(MatchOld.Plain), TypeExpression.Of<int>(MatchOld.Plain) }.ToImmutableSortedSet(),
         ];
     }
 
@@ -39,22 +39,22 @@ public class SignatureTests
     {
         yield return
         [
-            new[] { TypeExpression.Of<int>(Match.Plain) }.ToImmutableSortedSet(),
-            new[] { TypeExpression.Of<string>(Match.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<string>(MatchOld.Plain) }.ToImmutableSortedSet(),
         ];
         yield return
         [
-            new[] { TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain) }.ToImmutableSortedSet(),
-            new[] { TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Link.With("Hello World")) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain) }.ToImmutableSortedSet(),
+            new[] { TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(Link.With("Hello World")) }.ToImmutableSortedSet(),
         ];
     }
 
 
     public static IEnumerable<object[]> AddCases()
     {
-        yield return [TypeExpression.Of<int>(Match.Plain)];
+        yield return [TypeExpression.Of<int>(MatchOld.Plain)];
         yield return [TypeExpression.Of<float>(new(new(id: 123)))];
-        yield return [TypeExpression.Of<Thread>(Match.Plain)];
+        yield return [TypeExpression.Of<Thread>(MatchOld.Plain)];
     }
 
 
@@ -100,10 +100,10 @@ public class SignatureTests
     [Fact]
     public void Signature_Determines_Set_Comparisons()
     {
-        var signatureA = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        var signatureEqual = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        var signatureSubset = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain));
-        var signatureSuperset = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain), TypeExpression.Of<float>(Match.Plain));
+        var signatureA = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        var signatureEqual = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        var signatureSubset = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain));
+        var signatureSuperset = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain), TypeExpression.Of<float>(MatchOld.Plain));
 
 
         Assert.True(signatureA.SetEquals(signatureEqual));
@@ -119,10 +119,10 @@ public class SignatureTests
     [Fact]
     public void Signature_Union_Intersect_SymmetricExcept()
     {
-        var signatureA = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        var signatureB = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<float>(Match.Plain));
-        var signatureC = new Signature<TypeExpression>(TypeExpression.Of<string>(Match.Plain), TypeExpression.Of<float>(Match.Plain));
-        var signatureD = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain), TypeExpression.Of<float>(Match.Plain));
+        var signatureA = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        var signatureB = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<float>(MatchOld.Plain));
+        var signatureC = new Signature<TypeExpression>(TypeExpression.Of<string>(MatchOld.Plain), TypeExpression.Of<float>(MatchOld.Plain));
+        var signatureD = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain), TypeExpression.Of<float>(MatchOld.Plain));
 
         var union = signatureA.Union(signatureB);
         var intersect = signatureA.Intersect(signatureC);
@@ -130,19 +130,19 @@ public class SignatureTests
         var except = signatureA.Except(signatureB);
 
         Assert.Equal(signatureD, union);
-        Assert.Equal(new Signature<TypeExpression>(TypeExpression.Of<string>(Match.Plain)), intersect);
-        Assert.Equal(new Signature<TypeExpression>(TypeExpression.Of<float>(Match.Plain)), symmetricExcept);
-        Assert.Equal(new Signature<TypeExpression>(TypeExpression.Of<string>(Match.Plain)), except);
+        Assert.Equal(new Signature<TypeExpression>(TypeExpression.Of<string>(MatchOld.Plain)), intersect);
+        Assert.Equal(new Signature<TypeExpression>(TypeExpression.Of<float>(MatchOld.Plain)), symmetricExcept);
+        Assert.Equal(new Signature<TypeExpression>(TypeExpression.Of<string>(MatchOld.Plain)), except);
     }
 
 
     [Fact]
     public void Signature_Has_Equals()
     {
-        var signatureA = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        var signatureEqual = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        var signatureSubset = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain));
-        var signatureSuperset = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain), TypeExpression.Of<float>(Match.Plain));
+        var signatureA = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        var signatureEqual = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        var signatureSubset = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain));
+        var signatureSuperset = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain), TypeExpression.Of<float>(MatchOld.Plain));
 
         Assert.True(signatureA.Equals(signatureEqual));
         Assert.False(signatureA.Equals(signatureSubset));
@@ -155,13 +155,13 @@ public class SignatureTests
     [Fact]
     public void Signature_Has_Enumerator()
     {
-        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
         using var enumerator = signature.GetEnumerator();
 
         Assert.True(enumerator.MoveNext());
-        Assert.Equal(TypeExpression.Of<string>(Match.Plain), enumerator.Current);
+        Assert.Equal(TypeExpression.Of<string>(MatchOld.Plain), enumerator.Current);
         Assert.True(enumerator.MoveNext());
-        Assert.Equal(TypeExpression.Of<int>(Match.Plain), enumerator.Current);
+        Assert.Equal(TypeExpression.Of<int>(MatchOld.Plain), enumerator.Current);
         Assert.False(enumerator.MoveNext());
     }
 
@@ -169,7 +169,7 @@ public class SignatureTests
     [Fact]
     public void Signature_Has_Clear()
     {
-        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
         var cleared = signature.Clear();
         Assert.Empty(cleared);
     }
@@ -178,20 +178,20 @@ public class SignatureTests
     [Fact]
     public void Signature_Has_TryGetValue()
     {
-        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        Assert.True(signature.TryGetValue(TypeExpression.Of<int>(Match.Plain), out var value));
-        Assert.Equal(TypeExpression.Of<int>(Match.Plain), value);
-        Assert.False(signature.TryGetValue(TypeExpression.Of<float>(Match.Plain), out _));
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        Assert.True(signature.TryGetValue(TypeExpression.Of<int>(MatchOld.Plain), out var value));
+        Assert.Equal(TypeExpression.Of<int>(MatchOld.Plain), value);
+        Assert.False(signature.TryGetValue(TypeExpression.Of<float>(MatchOld.Plain), out _));
     }
 
 
     [Fact]
     public void Signature_Has_Equality_Operator()
     {
-        var signatureA = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        var signatureEqual = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        var signatureSubset = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain));
-        var signatureSuperset = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain), TypeExpression.Of<float>(Match.Plain));
+        var signatureA = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        var signatureEqual = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        var signatureSubset = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain));
+        var signatureSuperset = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain), TypeExpression.Of<float>(MatchOld.Plain));
 
         Assert.True(signatureA == signatureEqual);
         Assert.False(signatureA == signatureSubset);
@@ -204,16 +204,16 @@ public class SignatureTests
     [Fact]
     public void Signature_Has_Indexer()
     {
-        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        Assert.Equal(TypeExpression.Of<string>(Match.Plain), signature[0]);
-        Assert.Equal(TypeExpression.Of<int>(Match.Plain), signature[1]);
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        Assert.Equal(TypeExpression.Of<string>(MatchOld.Plain), signature[0]);
+        Assert.Equal(TypeExpression.Of<int>(MatchOld.Plain), signature[1]);
     }
 
     [Fact]
     public void Signature_Has_ToString()
     {
-        var tInt = TypeExpression.Of<int>(Match.Plain);
-        var tString = TypeExpression.Of<string>(Match.Plain);
+        var tInt = TypeExpression.Of<int>(MatchOld.Plain);
+        var tString = TypeExpression.Of<string>(MatchOld.Plain);
         var signature = new Signature<TypeExpression>(tInt, tString);
         Assert.Contains(tString.ToString(), signature.ToString());
         Assert.Contains(tInt.ToString(), signature.ToString());
@@ -222,7 +222,7 @@ public class SignatureTests
     [Fact]
     public void Signature_Has_Blank_Enumerator()
     {
-        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
 
         IEnumerable enumerable = signature;
 
@@ -230,7 +230,7 @@ public class SignatureTests
         {
             if (expr is TypeExpression expression)
             {
-                Assert.True(expression.Equals(TypeExpression.Of<int>(Match.Plain)) || expression.Equals(TypeExpression.Of<string>(Match.Plain)));
+                Assert.True(expression.Equals(TypeExpression.Of<int>(MatchOld.Plain)) || expression.Equals(TypeExpression.Of<string>(MatchOld.Plain)));
             }
             else
             {
@@ -242,15 +242,15 @@ public class SignatureTests
     [Fact]
     public void Signature_Always_Greater_Than_Default()
     {
-        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
+        var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
         Assert.True(signature.CompareTo(default) > 0);
     }
     
     [Fact]
     public void Differing_Signature_Of_Same_Length_Comparable_Complementary()
     {
-        var signature1 = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        var signature2 = new Signature<TypeExpression>(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<float>(Match.Plain));
+        var signature1 = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<string>(MatchOld.Plain));
+        var signature2 = new Signature<TypeExpression>(TypeExpression.Of<int>(MatchOld.Plain), TypeExpression.Of<float>(MatchOld.Plain));
 
         Assert.Equal(-1 * signature1.CompareTo(signature2), signature2.CompareTo(signature1));
     }
