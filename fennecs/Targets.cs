@@ -15,11 +15,11 @@ public readonly record struct Relate
 
     public static implicit operator Relate(Entity entity) => new(entity.Id);
 
-    public static implicit operator MatchOld(Relate self)
+    public static implicit operator Target(Relate self)
     {
         // Unfortunately, plain is not default here, but it helps a lot with the other match
         // Expressions. But actually this. That we have strong ID types.
-        if (self.Value == default) return MatchOld.Plain;
+        if (self.Value == default) return Identity.Plain;
         return new(self.Value);
     }
 }
@@ -39,7 +39,7 @@ public readonly record struct Link<T> where T : class
 
     public static implicit operator Link<T>(T self) => new() {Object = self};
 
-    public static implicit operator MatchOld(Link<T> self)
+    public static implicit operator Target(Link<T> self)
     {
         return new(Identity.Of(self.Object));
     }

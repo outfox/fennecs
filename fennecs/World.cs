@@ -124,7 +124,7 @@ public partial class World : Query
 
                 foreach (var source in tablesWithType)
                 {
-                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != new MatchOld(entity)).ToImmutableSortedSet());
+                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != new Target(entity)).ToImmutableSortedSet());
                     
                     var destination = GetArchetype(signatureWithoutTarget);
                     source.Migrate(destination);
@@ -267,7 +267,7 @@ public partial class World : Query
 
     internal void CollectTargets<T>(List<Relate> entities)
     {
-        var type = TypeExpression.Of<T>(MatchOld.Entity);
+        var type = TypeExpression.Of<T>(Identity.Entity);
 
         // Modern LINQ version.
         entities.AddRange(

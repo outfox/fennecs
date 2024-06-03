@@ -49,14 +49,14 @@ public partial class World
     }
 
 
-    internal bool HasComponent<T>(Identity identity, MatchOld match)
+    internal bool HasComponent<T>(Identity identity, Target match)
     {
         var type = TypeExpression.Of<T>(match);
         return HasComponent(identity, type);
     }
 
 
-    internal ref T GetComponent<T>(Identity identity, MatchOld target)
+    internal ref T GetComponent<T>(Identity identity, Target target)
     {
         AssertAlive(identity);
 
@@ -68,7 +68,7 @@ public partial class World
         return ref storage.Span[meta.Row];
     }
 
-    internal ref T GetComponent<T>(Identity identity) => ref GetComponent<T>(identity, MatchOld.Plain);
+    internal ref T GetComponent<T>(Identity identity) => ref GetComponent<T>(identity, Identity.Plain);
 
     internal Signature<TypeExpression> GetSignature(Identity identity)
     {

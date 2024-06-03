@@ -17,6 +17,21 @@ namespace fennecs;
 /// </remarks>
 public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entity>, IDisposable
 {
+    #region Match Expressions
+
+    /// <summary>
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
+    /// </para>
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
+    /// </para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// </summary>
+    /// <inheritdoc cref="Target.Any"/>
+    public static Target Any => new(Identity.idEntity);
+    
+    
+    #endregion
+    
     #region Internal State
 
     /// <summary>
@@ -55,11 +70,11 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(MatchOld target) => ref World.GetComponent<C>(this, target);
+    public ref C Ref<C>(Target target) => ref World.GetComponent<C>(this, target);
 
 
-    /// <inheritdoc cref="Ref{C}(MatchOld)"/>
-    public ref C Ref<C>() => ref World.GetComponent<C>(this, MatchOld.Plain);
+    /// <inheritdoc cref="Ref{C}(Target)"/>
+    public ref C Ref<C>() => ref World.GetComponent<C>(this, Identity.Plain);
 
 
     /// <summary>
@@ -149,7 +164,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<T>()
     {
-        World.RemoveComponent(Id, TypeExpression.Of<T>(MatchOld.Plain));
+        World.RemoveComponent(Id, TypeExpression.Of<T>(Identity.Plain));
         return this;
     }
 
@@ -192,7 +207,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
 
     /// <summary>
     /// Checks if the Entity has a Plain Component.
-    /// Same as calling <see cref="Has{T}()"/> with <see cref="MatchOld.Plain"/>
+    /// Same as calling <see cref="Has{T}()"/> with <see cref="Identity.Plain"/>
     /// </summary>
     public bool Has<T>() => World.HasComponent<T>(Id, default);
 
@@ -201,7 +216,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// Checks if the Entity has a Component of a specific type.
     /// Allows for a <see cref="Cross"/> Expression to be specified.
     /// </summary>
-    public bool Has<T>(MatchOld match) => World.HasComponent<T>(Id, match);
+    public bool Has<T>(Target match) => World.HasComponent<T>(Id, match);
 
 
     /// <summary>

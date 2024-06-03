@@ -49,7 +49,7 @@ public sealed class EntitySpawner : IDisposable
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>(T component) where T : notnull
     {
-        var type = TypeExpression.Of<T>(MatchOld.Plain);
+        var type = TypeExpression.Of<T>(Target.Plain);
         return AddComponent(type, component);
     }
 
@@ -60,7 +60,7 @@ public sealed class EntitySpawner : IDisposable
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>() where T : new()
     {
-        var type = TypeExpression.Of<T>(MatchOld.Plain);
+        var type = TypeExpression.Of<T>(Target.Plain);
         return AddComponent(type, new T());
     }
 

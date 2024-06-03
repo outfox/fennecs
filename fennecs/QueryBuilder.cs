@@ -31,8 +31,8 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
         foreach (var type in streamTypes) _mask.Has(type);
         
         // TODO: need to agree with myself what I can do about including Identity or not.
-        if (!_mask.HasTypes.Contains(TypeExpression.Of<Identity>(MatchOld.Plain)))
-            _mask.Has(TypeExpression.Of<Identity>(MatchOld.Plain));
+        if (!_mask.HasTypes.Contains(TypeExpression.Of<Identity>(Target.Plain)))
+            _mask.Has(TypeExpression.Of<Identity>(Target.Plain));
     }
 
     #endregion
@@ -61,7 +61,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <typeparam name="T">component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
-    public QB Has<T>(MatchOld match = default)
+    public QB Has<T>(Target match = default)
     {
         _mask.Has(TypeExpression.Of<T>(match));
         return (QB)this;
@@ -90,7 +90,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <typeparam name="T">component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
-    public QB Not<T>(MatchOld match = default)
+    public QB Not<T>(Target match = default)
     {
         _mask.Not(TypeExpression.Of<T>(match));
         return (QB)this;
@@ -111,13 +111,13 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
 
     /// <summary>
     /// Include Entities that have the given Component or Relation, or any other Relation that is
-    /// given in other <see cref="Any{T}(MatchOld)"/> calls.
+    /// given in other <see cref="Any{T}(Target)"/> calls.
     /// </summary>
     /// <param name="match">defaults th Plain Components. Can be a match wildcard or specific relation target / or object link</param>
     /// <typeparam name="T">component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
-    public QB Any<T>(MatchOld match = default)
+    public QB Any<T>(Target match = default)
     {
         _mask.Any(TypeExpression.Of<T>(match));
         return (QB)this;
@@ -125,7 +125,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
 
     /// <summary>
     /// Include Entities that have the given Component or Relation, or any other Relation that is
-    /// given in other <see cref="Any{T}(MatchOld)"/> calls.
+    /// given in other <see cref="Any{T}(Target)"/> calls.
     /// </summary>
     /// <param name="link">an object link</param>
     /// <typeparam name="T">component's backing type</typeparam>
@@ -175,7 +175,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
 public class QueryBuilder(World world) : QueryBuilderBase<QueryBuilder>(world, []);
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-public class QueryBuilder<C1>(World world, MatchOld match1 = default)
+public class QueryBuilder<C1>(World world, Target match1 = default)
     : QueryBuilderBase<QueryBuilder<C1>>(world, [TypeExpression.Of<C1>(match1)])
     where C1 : notnull
 {
@@ -184,34 +184,34 @@ public class QueryBuilder<C1>(World world, MatchOld match1 = default)
 }
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-public class QueryBuilder<C1, C2>(World world, MatchOld match1, MatchOld match2)
+public class QueryBuilder<C1, C2>(World world, Target match1, Target match2)
     : QueryBuilderBase<QueryBuilder<C1, C2>>(world, [TypeExpression.Of<C1>(match1), TypeExpression.Of<C2>(match2)])
     where C1 : notnull
     where C2 : notnull
 {
     /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-    public QueryBuilder(World world, MatchOld matchAll = default) : this(world, matchAll, matchAll) { }
+    public QueryBuilder(World world, Target matchAll = default) : this(world, matchAll, matchAll) { }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1, C2> Stream() => Compile().Stream<C1, C2>(match1, match2);
 }
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-public class QueryBuilder<C1, C2, C3>(World world, MatchOld match1, MatchOld match2, MatchOld match3)
+public class QueryBuilder<C1, C2, C3>(World world, Target match1, Target match2, Target match3)
     : QueryBuilderBase<QueryBuilder<C1, C2, C3>>(world, [TypeExpression.Of<C1>(match1), TypeExpression.Of<C2>(match2), TypeExpression.Of<C3>(match3)])
     where C1 : notnull
     where C2 : notnull
     where C3 : notnull
 {
     /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-    public QueryBuilder(World world, MatchOld matchAll = default) : this(world, matchAll, matchAll, matchAll) { }
+    public QueryBuilder(World world, Target matchAll = default) : this(world, matchAll, matchAll, matchAll) { }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1, C2, C3> Stream() => Compile().Stream<C1, C2, C3>(match1, match2, match3);
 }
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-public class QueryBuilder<C1, C2, C3, C4>(World world, MatchOld match1, MatchOld match2, MatchOld match3, MatchOld match4)
+public class QueryBuilder<C1, C2, C3, C4>(World world, Target match1, Target match2, Target match3, Target match4)
     : QueryBuilderBase<QueryBuilder<C1, C2, C3, C4>>(world, [ TypeExpression.Of<C1>(match1), TypeExpression.Of<C2>(match2), TypeExpression.Of<C3>(match3), TypeExpression.Of<C4>(match4) ])
     where C1 : notnull
     where C2 : notnull
@@ -219,14 +219,14 @@ public class QueryBuilder<C1, C2, C3, C4>(World world, MatchOld match1, MatchOld
     where C4 : notnull
 {
     /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-    public QueryBuilder(World world, MatchOld matchAll = default) : this(world, matchAll, matchAll, matchAll, matchAll) { }
+    public QueryBuilder(World world, Target matchAll = default) : this(world, matchAll, matchAll, matchAll, matchAll) { }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1, C2, C3, C4> Stream() => Compile().Stream<C1, C2, C3, C4>(match1, match2, match3, match4);
 }
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-public class QueryBuilder<C1, C2, C3, C4, C5>(World world, MatchOld match1, MatchOld match2, MatchOld match3, MatchOld match4, MatchOld match5)
+public class QueryBuilder<C1, C2, C3, C4, C5>(World world, Target match1, Target match2, Target match3, Target match4, Target match5)
     : QueryBuilderBase<QueryBuilder<C1, C2, C3, C4, C5>>(world, [ TypeExpression.Of<C2>(match2), TypeExpression.Of<C3>(match3), TypeExpression.Of<C4>(match4), TypeExpression.Of<C5>(match5) ])
     where C1 : notnull
     where C2 : notnull
@@ -235,7 +235,7 @@ public class QueryBuilder<C1, C2, C3, C4, C5>(World world, MatchOld match1, Matc
     where C5 : notnull
 {
     /// <inheritdoc cref="QueryBuilderBase{QB}"/>
-    public QueryBuilder(World world, MatchOld matchAll = default) : this(world, matchAll, matchAll, matchAll, matchAll, matchAll) { }
+    public QueryBuilder(World world, Target matchAll = default) : this(world, matchAll, matchAll, matchAll, matchAll, matchAll) { }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1, C2, C3, C4, C5> Stream() => Compile().Stream<C1, C2, C3, C4, C5>(match1, match2, match3, match4, match5);

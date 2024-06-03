@@ -175,14 +175,14 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(123);
 
         Assert.True(entity.Has<int>());
-        Assert.True(entity.Has<int>(MatchOld.Plain));
-        Assert.True(entity.Has<int>(MatchOld.Any));
+        Assert.True(entity.Has<int>(Identity.Plain));
+        Assert.True(entity.Has<int>(Identity.Any));
 
-        Assert.False(entity.Has<int>(MatchOld.Entity));
-        Assert.False(entity.Has<int>(MatchOld.Object));
-        Assert.False(entity.Has<int>(MatchOld.Target));
+        Assert.False(entity.Has<int>(Identity.Entity));
+        Assert.False(entity.Has<int>(Identity.Object));
+        Assert.False(entity.Has<int>(Identity.Target));
 
-        Assert.False(entity.Has<float>(MatchOld.Any));
+        Assert.False(entity.Has<float>(Identity.Any));
     }
 
 
@@ -195,12 +195,12 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(Link.With("hello world"));
 
         Assert.True(entity.Has<string>("hello world"));
-        Assert.True(entity.Has<string>(MatchOld.Any));
-        Assert.True(entity.Has<string>(MatchOld.Object));
-        Assert.True(entity.Has<string>(MatchOld.Target));
+        Assert.True(entity.Has<string>(Identity.Any));
+        Assert.True(entity.Has<string>(Identity.Object));
+        Assert.True(entity.Has<string>(Identity.Target));
 
         Assert.False(entity.Has<string>("goodbye world"));
-        Assert.False(entity.Has<int>(MatchOld.Entity));
+        Assert.False(entity.Has<int>(Identity.Entity));
     }
 
 
@@ -228,11 +228,11 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add<int>(target);
 
         Assert.True(entity.Has<int>(target));
-        Assert.True(entity.Has<int>(MatchOld.Target));
-        Assert.True(entity.Has<int>(MatchOld.Any));
+        Assert.True(entity.Has<int>(Identity.Target));
+        Assert.True(entity.Has<int>(Identity.Any));
 
         Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
-        Assert.False(entity.Has<int>(MatchOld.Object));
+        Assert.False(entity.Has<int>(Identity.Object));
     }
 
 
@@ -245,8 +245,8 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add<int>(target);
 
         Assert.False(entity.Has<int>());
-        Assert.True(entity.Has<int>(MatchOld.Entity));
-        Assert.False(entity.Has<float>(MatchOld.Entity));
+        Assert.True(entity.Has<int>(Identity.Entity));
+        Assert.False(entity.Has<float>(Identity.Entity));
     }
 
 

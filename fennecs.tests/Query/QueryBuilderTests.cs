@@ -29,11 +29,11 @@ public class QueryBuilderTests
     {
         using var world = new World();
         var q1 = world.Query();
-        var q2 = world.Query<int>(MatchOld.Entity);
-        var q3 = world.Query<int, string>(MatchOld.Any, MatchOld.Plain);
-        var q4 = world.Query<int, string, double>(MatchOld.Object, MatchOld.Target, MatchOld.Plain);
-        var q5 = world.Query<int, string, double, float>(MatchOld.Object, MatchOld.Target, MatchOld.Plain, MatchOld.Any);
-        var q6 = world.Query<int, string, double, float, long>(MatchOld.Object, MatchOld.Target, MatchOld.Plain, MatchOld.Any, MatchOld.Object);
+        var q2 = world.Query<int>(Identity.Entity);
+        var q3 = world.Query<int, string>(Identity.Any, Identity.Plain);
+        var q4 = world.Query<int, string, double>(Identity.Object, Identity.Target, Identity.Plain);
+        var q5 = world.Query<int, string, double, float>(Identity.Object, Identity.Target, Identity.Plain, Identity.Any);
+        var q6 = world.Query<int, string, double, float, long>(Identity.Object, Identity.Target, Identity.Plain, Identity.Any, Identity.Object);
         Assert.NotNull(q1);
         Assert.NotNull(q2);
         Assert.NotNull(q3);
@@ -179,9 +179,9 @@ public class QueryBuilderTests
             .Any<long>()
             .Any(Link.With(new List<float>()));
 
-        Assert.Throws<InvalidOperationException>(() => builder.Has<float>(MatchOld.Any));
-        Assert.Throws<InvalidOperationException>(() => builder.Not<List<int>>(MatchOld.Object));
-        Assert.Throws<InvalidOperationException>(() => builder.Any<float>(MatchOld.Entity));
+        Assert.Throws<InvalidOperationException>(() => builder.Has<float>(Identity.Any));
+        Assert.Throws<InvalidOperationException>(() => builder.Not<List<int>>(Identity.Object));
+        Assert.Throws<InvalidOperationException>(() => builder.Any<float>(Identity.Entity));
     }
 
 
@@ -200,7 +200,7 @@ public class QueryBuilderTests
             .Any(Link.With(new List<float>()));
 
         Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
-        Assert.Throws<InvalidOperationException>(() => builder.Not<string>(MatchOld.Object));
+        Assert.Throws<InvalidOperationException>(() => builder.Not<string>(Identity.Object));
         Assert.Throws<InvalidOperationException>(() => builder.Any<double>());
 
         builder.Has<string>("I'm different");
@@ -223,7 +223,7 @@ public class QueryBuilderTests
             .Any(Link.With(new List<float>()));
 
         //Conflict
-        builder.Has<int>().Not<string>(MatchOld.Object).Any<double>();
+        builder.Has<int>().Not<string>(Identity.Object).Any<double>();
 
         //Repeat
         builder.Has<int>();

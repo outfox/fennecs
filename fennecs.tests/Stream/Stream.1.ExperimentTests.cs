@@ -83,7 +83,7 @@ public class Stream1TestsExperiment
     {
         using var world = new World();
 
-        var query = world.Query<string>(MatchOld.Plain).Stream();
+        var query = world.Query<string>(Identity.Plain).Stream();
 
         //Create an empty table by spawning and despawning a single Entity
         //that matches our test Query (but is a larger Archetype)
@@ -402,7 +402,7 @@ public class Stream1TestsExperiment
             world.Spawn()
                 .Add(index);
 
-        var query = world.Query<int>(MatchOld.Plain).Stream();
+        var query = world.Query<int>(Identity.Plain).Stream();
 
         var processed = 0;
         query.Job((ref int index) =>

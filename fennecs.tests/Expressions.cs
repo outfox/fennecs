@@ -1,6 +1,4 @@
-﻿using fennecs.expressions;
-
-namespace fennecs.tests;
+﻿namespace fennecs.tests;
 
 public static class ExpressionTests
 {
@@ -13,7 +11,7 @@ public static class ExpressionTests
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("dieter");
+        var compObject = Component.Object<string>("erwin");
 
         Assert.True(matchAny.Matches(compPlain));
         Assert.True(matchAny.Matches(compEntity));
@@ -30,7 +28,7 @@ public static class ExpressionTests
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("dieter");
+        var compObject = Component.Object<string>("erwin");
 
         Assert.False(matchTarget.Matches(compPlain));
         Assert.True(matchTarget.Matches(compEntity));
@@ -47,7 +45,7 @@ public static class ExpressionTests
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("dieter");
+        var compObject = Component.Object<string>("erwin");
 
         Assert.False(matchObject.Matches(compPlain));
         Assert.False(matchObject.Matches(compEntity));
@@ -64,7 +62,7 @@ public static class ExpressionTests
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("dieter");
+        var compObject = Component.Object<string>("erwin");
 
         Assert.False(matchObject.Matches(compPlain));
         Assert.True(matchObject.Matches(compEntity));
@@ -81,7 +79,7 @@ public static class ExpressionTests
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("dieter");
+        var compObject = Component.Object<string>("erwin");
 
         Assert.True(matchPlain.Matches(compPlain));
         Assert.False(matchPlain.Matches(compEntity));
@@ -112,7 +110,7 @@ public static class ExpressionTests
         using var world = new World();
 
         // CAUTION - string interning might cause flukes / weird artifacts
-        const string right = "interned";
+        const string right = "erwin";
         const string wrong = "different";
         
         var matchObject = Match.Object(right);
@@ -131,7 +129,7 @@ public static class ExpressionTests
         using var world = new World();
 
         List<string> right = ["erwin"];
-        List<string> wrong = ["fumpel"];
+        List<string> wrong = ["different"];
         
         var matchObject = Match.Object(right);
 
