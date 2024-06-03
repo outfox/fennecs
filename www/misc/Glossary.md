@@ -96,8 +96,13 @@ All the Query runners use this internally to defer structural changes until the 
 ```cs [how to use it]
 var myWorld = new World();
 // using statement will ensure the lock is disposed when it goes out of scope.
-using var worldLock = myWorld.Lock;
-```
+using var worldLock1 = myWorld.Lock;
 
-<<< ../../fennecs/Query1.cs#Showcase{10} [fennecs internal usage]
+// or
+
+using (var worldLock2 = myWorld.Lock)
+{
+    // do stuff
+}
+```
 :::
