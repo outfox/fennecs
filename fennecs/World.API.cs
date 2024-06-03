@@ -43,7 +43,7 @@ public partial class World : IDisposable
     /// <param name="values">component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>(Target.Plain));
+        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(Component.Plain<Identity>().value);
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components, values);
     }
@@ -82,12 +82,12 @@ public partial class World : IDisposable
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
-    /// <param name="match">default <see cref="Target.Plain"/>.<br/>Can alternatively be one
+    /// <param name="match">default <see cref="Component.Plain"/>.<br/>Can alternatively be one
     /// of <see cref="Target.Any"/>, <see cref="Target.Object"/> or <see cref="Target.AnyTarget"/>
     /// </param>
     public void DespawnAllWith<T>(Target match = default)
     {
-        var query = Query<Identity>(Target.Plain).Has<T>(match).Stream();
+        var query = Query<Identity>().Has<T>(match).Stream();
         query.Raw(delegate(Memory<Identity> entities)
         {
             //TODO: This is not good. Need to untangle the types here.
@@ -157,7 +157,7 @@ public partial class World : IDisposable
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new(TypeExpression.Of<Identity>(Target.Plain)));
+        _root = GetArchetype(new(Component.Plain<Identity>().value));
     }
 
 

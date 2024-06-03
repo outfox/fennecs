@@ -84,22 +84,8 @@ public readonly record struct Target
     /// <inheritdoc cref="Any"/>
     [Obsolete("Use Entity.Any")]
     public static Target Entity => new(idEntity);
-    
-    /// <summary>
-    /// <para>
-    /// <c>default</c><br/>In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
-    /// </para>
-    /// <para>
-    /// Since it's specific, this Match Expression is always free and has no enumeration cost.
-    /// </para>
-    /// </summary>
-    /// <remarks>
-    /// Not a wildcard. Formerly known as "None", as plain components without a target
-    /// can only exist once per Entity (same as components with a particular target).
-    /// </remarks>
-    public static Target Plain => new(idPlain);
-    
-    
+
+
     internal bool Matches(Target other) => Value == other.Value;
     
     /// <summary>

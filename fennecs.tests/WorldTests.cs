@@ -161,7 +161,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add(Link.With("dieter"))
             .Spawn(count);
 
-        var query = world.Query<int, string>(Target.Plain, Target.Link("dieter")).Stream();
+        var query = world.Query<int, string>(Identity.Plain, Target.Link("dieter")).Stream();
         Assert.Equal(count, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -189,7 +189,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add("relation", other)
             .Spawn(count);
 
-        var query = world.Query<int, string>(Target.Plain, other).Stream();
+        var query = world.Query<int, string>(Identity.Plain, other).Stream();
         Assert.Equal(count, query.Count);
         
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
@@ -228,7 +228,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Target.Plain).Stream();
+        var query = world.Query<Identity>(Identity.Plain).Stream();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -248,7 +248,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Target.Plain).Stream();
+        var query = world.Query<Identity>(Identity.Plain).Stream();
         query.Raw(world, (_, uniform) =>
         {
             for (var i = 0; i < count; i++)
@@ -275,7 +275,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Target.Plain).Stream();
+        var query = world.Query<Identity>(Identity.Plain).Stream();
         query.For(world, (ref Identity _, World uniform) =>
         {
             var entity = uniform.Spawn();
@@ -343,8 +343,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().Add(444, target2);
         }
 
-        var query1 = world.Query<Identity>(Target.Plain).Has<int>(target1).Stream();
-        var query2 = world.Query<Identity>(Target.Plain).Has<int>(target2).Stream();
+        var query1 = world.Query<Identity>(Identity.Plain).Has<int>(target1).Stream();
+        var query2 = world.Query<Identity>(Identity.Plain).Has<int>(target2).Stream();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);
@@ -359,8 +359,8 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add<NewableClass>().Id;
-        Assert.True(world.HasComponent<NewableClass>(identity, Target.Plain));
-        Assert.NotNull(world.GetComponent<NewableClass>(identity, Target.Plain));
+        Assert.True(world.HasComponent<NewableClass>(identity, Identity.Plain));
+        Assert.NotNull(world.GetComponent<NewableClass>(identity, Identity.Plain));
     }
 
 
@@ -369,8 +369,8 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add<NewableStruct>().Id;
-        Assert.True(world.HasComponent<NewableStruct>(identity, Target.Plain));
-        Assert.Equal(default, world.GetComponent<NewableStruct>(identity, Target.Plain));
+        Assert.True(world.HasComponent<NewableStruct>(identity, Identity.Plain));
+        Assert.Equal(default, world.GetComponent<NewableStruct>(identity, Identity.Plain));
     }
 
 
@@ -379,8 +379,8 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add<string>("12").Id;
-        Assert.True(world.HasComponent<string>(identity, Target.Plain));
-        Assert.NotNull(world.GetComponent<string>(identity, Target.Plain));
+        Assert.True(world.HasComponent<string>(identity, Identity.Plain));
+        Assert.NotNull(world.GetComponent<string>(identity, Identity.Plain));
     }
 
 
@@ -392,11 +392,11 @@ public class WorldTests(ITestOutputHelper output)
         var worldLock = world.Lock();
 
         entity.Add(666);
-        Assert.False(world.HasComponent<int>(entity, Target.Plain));
-        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(entity, Target.Plain));
+        Assert.False(world.HasComponent<int>(entity, Identity.Plain));
+        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(entity, Identity.Plain));
         worldLock.Dispose();
-        Assert.True(world.HasComponent<int>(entity, Target.Plain));
-        Assert.Equal(666, world.GetComponent<int>(entity, Target.Plain));
+        Assert.True(world.HasComponent<int>(entity, Identity.Plain));
+        Assert.Equal(666, world.GetComponent<int>(entity, Identity.Plain));
     }
 
 
@@ -435,11 +435,11 @@ public class WorldTests(ITestOutputHelper output)
         var worldLock = world.Lock();
         entity.Add(666);
 
-        Assert.False(world.HasComponent<int>(entity, Target.Plain));
+        Assert.False(world.HasComponent<int>(entity, Identity.Plain));
         worldLock.Dispose();
 
-        Assert.True(world.HasComponent<int>(entity, Target.Plain));
-        Assert.Equal(666, world.GetComponent<int>(entity, Target.Plain));
+        Assert.True(world.HasComponent<int>(entity, Identity.Plain));
+        Assert.Equal(666, world.GetComponent<int>(entity, Identity.Plain));
     }
 
 
@@ -452,7 +452,7 @@ public class WorldTests(ITestOutputHelper output)
         entity.Remove<int>();
 
         worldLock.Dispose();
-        Assert.False(world.HasComponent<int>(entity, Target.Plain));
+        Assert.False(world.HasComponent<int>(entity, Identity.Plain));
     }
 
 
@@ -614,7 +614,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity2 = world.Spawn().Add(Link.With("to the past"));
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
-        world.DespawnAllWith<string>(Target.Plain);
+        world.DespawnAllWith<string>(Identity.Plain);
         Assert.False(world.IsAlive(entity1));
         Assert.True(world.IsAlive(entity2));
         Assert.True(world.IsAlive(entity3));
