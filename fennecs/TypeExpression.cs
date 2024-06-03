@@ -9,7 +9,7 @@ namespace fennecs;
 /// Entity-Entity relations, Entity-object relations, and Wildcard expressions matching multiple.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-internal readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
+public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<TypeExpression>
 {
     #region Struct Data Layout
 
@@ -138,6 +138,9 @@ internal readonly struct TypeExpression : IEquatable<TypeExpression>, IComparabl
     /// <returns>true if the other expression is matched by this expression</returns>
     public bool Matches(TypeExpression other)
     {
+        // Default matches nothing.
+        if (this == default || other == default) return false;
+        
         // Reject if Types are incompatible. 
         if (TypeId != other.TypeId) return false;
 

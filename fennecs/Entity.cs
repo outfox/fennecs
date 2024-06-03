@@ -15,7 +15,7 @@ namespace fennecs;
 /// <remarks>
 /// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
 /// </remarks>
-public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entity>, IDisposable
+public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveComponent<Entity>, IComparable<Entity>, IDisposable
 {
     #region Match Expressions
 
@@ -119,6 +119,13 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     }
 
 
+    /// <inheritdoc cref="Add{B}(fennecs.Relate)"/>
+    public Entity Add<R>(R value, Entity relation) where R : notnull
+    {
+        Add(value, new Relate(relation));
+        return this;
+    }
+
     /// <summary>
     /// Adds a object link to the current entity.
     /// Object links, in addition to making the object available as a Component,
@@ -160,11 +167,18 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     /// <summary>
     /// Removes a Component of a specific type from the current entity.
     /// </summary>
-    /// <typeparam name="T">The type of the Component to be removed.</typeparam>
+    /// <typeparam name="C">The type of the Component to be removed.</typeparam>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
-    public Entity Remove<T>()
+    public Entity Remove<C>() where C : notnull
     {
-        World.RemoveComponent(Id, TypeExpression.Of<T>(Identity.Plain));
+        World.RemoveComponent(Id, TypeExpression.Of<C>(Identity.Plain));
+        return this;
+    }
+
+    
+    public Entity Remove<R>(Entity relation) where R : notnull
+    {
+        World.RemoveComponent(Id, TypeExpression.Of<R>(new Relate(relation)));
         return this;
     }
 
@@ -192,6 +206,12 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IComparable<Entit
     public Entity Remove<T>(Link<T> link) where T : class
     {
         World.RemoveComponent(Id, link.TypeExpression);
+        return this;
+    }
+
+    public Entity RemoveAny(Match match)
+    {
+        World.RemoveComponent(Id, match.TypeExpression);
         return this;
     }
 
