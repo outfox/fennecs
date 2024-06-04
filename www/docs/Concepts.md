@@ -23,7 +23,7 @@ Components can be backed by any type; Value or Reference, even empty `structs`.
 ### [Queries](Queries/) filter Entities using [Match Expressions](Queries/Matching.md).
 This matching is done by Component types and targets (presence or absence).
 
-### Code [Acts](Queries/Stream.For.md) rapidly on Component data.
+### Code [Acts](Queries/Stream.For.md) on Component data in tight, optimized loops.
 You provide logic in [Runner Delegates](Queries/Delegates.md) which are executed on a [single](Queries/Stream.For.md) or [multiple](Queries/Stream.Job.md) threads.
 
 ### Component data is always kept contiguous* in Memory.
@@ -35,17 +35,20 @@ Structurally similar Entities are packed into [Archetypes](Archetype.md) for imp
 
 ----------------------
 
-# Unique Concepts 
+# Unique fennecs Concepts 
 
-::: warning <sub>*(~~weird~~ cool stuff specific to **fenn**ecs)*</sub>
+::: warning <sub>*(~~weird~~ cool stuff made us you all wide-eyed and bushy tailed again)*</sub>
 ### [Relations](Relation.md) are Components with an [Entity Target](Queries/Matching.md#match-targets).
 These add expressive, powerful grouping semantics. Relations can be backed by any type.
 
 ### [Links](Link.md) are Components backed by an [Object Target](Queries/Matching.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
 
-### Streams expose *fast* Iteration, Structural Change, and SIMD Ops
-Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk - even entire [memory blocks](Queries/Stream.Raw.md).
+### [Streams](Streams/) expose *fast* Iteration and SIMD Ops 
+Efficiently and safely [iterate entities](Queries/Stream.For.md), or [blit](Queries/SIMD.md) Components in bulk - read/write entire [memory blocks](Queries/Stream.Raw.md).
+
+### Queries expose Structural Changes (just as Entities do)
+Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md) from individual Entities or entire matched Queries.
 
 ### Runners let you pass [uniform](Queries/Stream.For.md#uniforms-shmuniforms) data to those Workloads.
 A tiny tidbit that streamlines the process of passing data into a job or run.

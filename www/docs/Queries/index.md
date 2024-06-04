@@ -2,6 +2,7 @@
 title: Queries
 layout: doc
 outline: [2, 3]
+order: 5
 ---
 
 # Queries

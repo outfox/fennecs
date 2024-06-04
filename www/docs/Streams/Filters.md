@@ -1,7 +1,9 @@
 ---
-title: WIP Link
-order: 2
+title: Filtering
+layout: doc
+outline: [2, 3]
+order: 8
 ---
 
-# Object Link
+# Filters
 :neofox_what: Sorry! Come back later, work in progress.

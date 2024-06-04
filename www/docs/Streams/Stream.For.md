@@ -1,9 +1,9 @@
 ---
 title: For
-order: 2
+order: 1
 ---
 
-# Classic Query Workloads
+# Flexible Query Workloads
 #### `Stream<>.For(ComponentAction<>)`
 #### `Stream<>.For(EntityComponentAction<>)`
 #### `Stream<>.For<U>(U, UniformComponentAction<>)`
@@ -120,13 +120,16 @@ And yet... don't skimp on static functions just because you need data from your 
 
 But amazingly, a **Uniform** can be anything: a primitive type like `int`, a `struct`, a `class`, and also the new `System.ValueTuple`. The latter makes it possible to capture arbitrary data, and provide it in a readable, named, *and allocation-free* way into your `static` anonymous or named functions, without having to declare a struct somewhere else.
 
-::: details REMINDER
+::: tip REMINDER - What was that again?
 ```cs
-// Declaring with a System.ValueTuple Uniform for the win!
-myStream.For(static (ref Vector3 velocity, (Vector3 gravity, float dt) uniform) =>
-{
-    velocity += uniform.gravity * uniform.dt;
-}, 
-(Vector3.DOWN, Time.deltaTime)); //and the actual ValueTuple being passed in
+// Declaring a uniform as a System.ValueTuple for the win!
+myStream.For(
+    uniform: (Vector3.DOWN, Time.deltaTime)
+    static ((Vector3 gravity, float dt) uniform, ref Vector3 velocity) =>
+    {
+        velocity += uniform.gravity * uniform.dt;
+    }); 
 ```
 :::
+
+You can also make your Uniforms a Mutable reference type, and repeatedly change them in your Action. This is done in the [Numbering](/cookbook/staples/Numbering.md) Staple Recipe's fancy Enumerator and store-bought Enumerator variants, and would work just as well for the Queue version.

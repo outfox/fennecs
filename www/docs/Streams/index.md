@@ -1,7 +1,7 @@
 ---
-title: Stream &lt; C1, C2, ... &gt;
-outline: [2, 3]
-order: 1
+title: Streams
+outline: [1, 3]
+order: 5
 ---
 
 # Stream Views
@@ -26,6 +26,35 @@ Entities in Queries (including Worlds) and their Components can be read and modi
 3. ... give you safe (and `unsafe`) access to all the components of all the Entities in the Query contiguous blocks of `Memory<C>`, for you do with anything you can imagine. 
 :::
 
+## How to obtain a Stream View
+You can get a Stream View from a Query, or from a World.
+::: code-group
+```csharp   [from new Query (shorthand)]
+var query = stream.Query<Position, Velocity>().Not<Boring>().Stream();
+// This is the tried-and-true way of getting a Stream View from a Query,
+// similar to how it was in fennecs 0.4.x but modernized by splitting
+// the resolution of the Query from the matching from the Stream's
+// iteration and execution. Queries compile fast and are cached!
+// Stream<>.Query provides you access to the underlying Query just in case.
+```
+```csharp   [from existing Query]
+var query = world.Query().Has<Position>().Has<Velocity>().Not<Boring>();
+// Query with arbitrarily complexity of Expressions, and any number of Streams
+var positions = query.Stream<Position>();
+var velocities = query.Stream<Velocity>();
+var both = query.Stream<Position, Velocity>();
+var swap = query.Stream<Velocity, Position>();
+```
+```csharp   [from the World (super shorthand)]
+var query = world.Stream<Position, Velocity>();
+// The super-foxy minimal boilerplate shorthand version!
+// Disadvantage: Only up to 5 simple Has<T> Query Expressions.
+// Internally also compiles a (new) cached Query and returns
+// a view to *that*, because even though a World *is* a Query, it 
+// can get too large to filter + iterate compared to simple Queries.
+```
+:::
+## Internals
 Each Stream has an underlying Query, and any number of Streams can be created as views into the same Query. When it comes to processing data, Stream Views are <ins>practically always</ins> your first go-to solution in **fenn**ecs. 
 
 You can get so much work done with these bad bois! *(slaps roof)*
@@ -56,6 +85,6 @@ One work item at a time, multi-threaded. Takes a [`ComponentAction`](Delegates.m
 ::: danger THE FREIGHT TRAIN
 #  [`Raw`](Stream.Raw.md) / [`Raw<U>`](Stream.Raw.md) 
 All work items at once, as contiguous memory. Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryUniformAction), delivers the *entire stream data* of each Archetype directly into your ~~fox~~ delegate in one `Memory<T>` per Stream Type.
-:neofox_waffle_long_blurry::neofox_scream_stare:
+:neofox_waffle_long_blurry::neofox_kirby_succ:
 :::
 

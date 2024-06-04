@@ -5,11 +5,11 @@ order: 2
 
 # Shareable Components
 
-In **fenn**ecs, components are typically value types unique to each entity. However, you can easily share the same instance of a component among multiple entities using reference types.
+In **fenn**ecs, components are typically value types unique to each entity. However, you can easily share the same instance of a component among multiple entities using **reference types**.
+
+![two fennecs happily holding a huge cardboard box together](https://fennecs.tech/img/fennecs-shareable.png)
 
 This is especially useful for heavyweight objects that are expensive to create or update, such as large data structures.
-
-![two fennecs happily holding a huge cardboard box together](https://fennecs.tech/img/fennec-shareable.png)
 
 
 ::: info :neofox_thumbsup: SHARING MADE SIMPLE

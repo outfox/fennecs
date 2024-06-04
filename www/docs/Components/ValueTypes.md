@@ -1,5 +1,5 @@
 ---
-title: Value Types
+title: Values
 order: 1
 ---
 

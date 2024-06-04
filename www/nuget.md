@@ -21,9 +21,13 @@ var entity = world.Spawn().Add<Vector3>();
 var query = world.Query<Vector3>().Stream();
 
 // Run the query
-Stream.For(static (ref Vector3 position, float dt) => {
-    pos.Y -= 9.81f * dt;
-}, uniform: Time.deltaTime);
+stream.For(
+    uniform: Time.deltaTime,
+    action: static (float dt, ref Vector3 position) => 
+    {
+        pos.Y -= 9.81f * dt;
+    }
+);
 ```
 
 ## 🌟 Key Features

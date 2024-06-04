@@ -1,6 +1,6 @@
 ---
 title: Delegates 
-order: 3
+order: 5
 ---
 # Delegates
 Runner methods on Steam Queries expect delegates (Actions) to call. The delegate signatures mirror the count and order of the Query's Stream Types.

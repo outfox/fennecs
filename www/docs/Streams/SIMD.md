@@ -1,6 +1,6 @@
 ---
 title: SIMD
-order: 4
+order: 5
 content: SIMD Query Interface
 ---
 
@@ -14,17 +14,10 @@ They perform simple writes and arithmetic operations at blazing speeds, and are 
 
 The operations make use of `System.Intrinsics`, especailly the AVX2, SSE2 and ARM AdvSIMD vector instructions where available. 
 
-
-::: tip QUAD :neofox_glasses: WORD :neofox_glasses: QUAD :neofox_glasses: NERD :neofox_glasses: HACK
-Psst... you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](Stream.Raw.md#examples).  
-And since we like to live fast and foxy, try the new implicit extension types in C# 13 for that!
-:::
-
-
-## `Query<C>.Blit`
+## `Stream<>.Blit<C>`
 ![a fennec splashes a paintbucket at an entire wall ](https://fennecs.tech/img/fennec-blit.png)
 
-The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Query. `C` must be one of the Query's [Stream Types](index.md#stream-types). It requires no additional setup and is always safe.
+The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Stream's Query. `C` must be one of the [Stream Types](index.md#stream-types). It requires no additional setup and is always safe.
 
 ```csharp
 var myStream = new Query<Velocity, Position>().Stream();
@@ -33,11 +26,7 @@ myStream.Blit(default(Position));
 myStream.Blit(new Velocity(c, 0, 0));
 ```
 
-`Blit` is incapable of adding new Components, and is also unable to modify Relation Targets. Use the [CRUD](CRUD.md) `Add...` functions for that, which internally uses Blit to write the new components.
-
-::: warning :neofox_confused: INCONSISTENCY or (IN)CONVENIENCE?
-Unlike the other SIMD operations, the `Blit` methods are declared in each `Query<>` class, where the others are in the `Query.SIMD` sub-interface. This may change in the future.
-:::
+`Blit` is incapable of adding new Components, and is also unable to modify Relation Targets. Use the [Query CRUD](/docs/Queries/CRUD.md) `Add...` function for that, which internally uses Blit to write the new components.
 
 ::: details :neofox_magnify: BEHIND THE SCENES
 `Blit` uses `Span<T>.Fill` to write the data. This is a fast and safe operation that is optimized by the .NET runtime and JIT compiler.
@@ -79,4 +68,13 @@ But because Jobs execute in non-deterministic order, you will not be able to Bli
 ### `float` Arithmetic (AddF, SubtractF, MultiplyF, DivideF)
 ### `double` Arithmetic (AddD, SubtractD, MultiplyD, DivideD)
 
+
+
+:::
+
+
+::: tip QUAD :neofox_glasses: WORD :neofox_glasses: QUAD :neofox_glasses: NERD :neofox_glasses: HACK
+Psst... you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](Stream.Raw.md#examples).  
+And since we like to live fast and foxy, try the new implicit extension types in C# 13 for that!
+:::
 
