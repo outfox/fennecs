@@ -190,7 +190,7 @@ public readonly struct Batch : IDisposable
         /// Overwrites existing component data with the addded component if it is already present.
         /// </summary>
         /// <remarks>
-        /// Alternatively, you can use the faster <see cref="Query{C0}.Blit"/> if you
+        /// Alternatively, you can use the faster <see cref="Stream{C0}.Blit"/> if you
         /// can ensure that the component is present on all entities in the query.
         /// </remarks>
         Replace,

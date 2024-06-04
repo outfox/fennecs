@@ -213,7 +213,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
 
     #region Stream.Raw
 
-    /// <inheritdoc cref="Query{C0}.Raw"/>
+    /// <inheritdoc cref="Stream{C0}.Raw"/>
     public void Raw(MemoryAction<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -236,7 +236,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
     }
 
 
-    /// <inheritdoc cref="Query{C0}.Raw{U}"/>
+    /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
     public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -263,7 +263,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
 
     #region Blitters
 
-    /// <inheritdoc cref="Query{C0}.Blit(C0,Target)"/>
+    /// <inheritdoc cref="Stream{C0}.Blit(C0,Target)"/>
     public void Blit(C1 value, Target target = default)
     {
         using var worldLock = World.Lock();
