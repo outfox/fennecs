@@ -27,10 +27,10 @@ And since we like to live fast and foxy, try the new implicit extension types in
 The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Query. `C` must be one of the Query's [Stream Types](index.md#stream-types). It requires no additional setup and is always safe.
 
 ```csharp
-var myQuery = new Query<Velocity, Position>().Compile();
+var myStream = new Query<Velocity, Position>().Stream();
 
-myQuery.Blit(default(Position));
-myQuery.Blit(new Velocity(c, 0, 0));
+myStream.Blit(default(Position));
+myStream.Blit(new Velocity(c, 0, 0));
 ```
 
 `Blit` is incapable of adding new Components, and is also unable to modify Relation Targets. Use the [CRUD](CRUD.md) `Add...` functions for that, which internally uses Blit to write the new components.

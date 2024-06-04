@@ -4,8 +4,11 @@ order: 2
 ---
 
 # Classic Query Workloads
-# `Stream<>.For(ComponentAction)`
-# `Stream<>.For<U>(ComponentAction,U)`
+#### `Stream<>.For(ComponentAction<>)`
+#### `Stream<>.For(EntityComponentAction<>)`
+#### `Stream<>.For<U>(U, UniformComponentAction<>)`
+#### `Stream<>.For<U>(U, UniformEntityComponentAction<>)`
+#### `Stream<>.For<U>(U, UniformComponentAction)`
 
 ::: info ENTITY BY ENTITY, ONE BY ONE
 Process one work item at a time. Fast, fun, and flexible.
@@ -18,7 +21,7 @@ Call a [`ComponentAction`](Delegates.md#ComponentAction-and-UniformComponentActi
 ### Description
 Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](Stream.1-5.md#stream-types).
 
-Each `For`-Runner takes a [`ComponentAction`](Delegates.md#ComponentAction-and-UniformComponentAction) or [`UniformComponentAction<>`](Delegates.md#ComponentAction-and-UniformComponentAction) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Stream.1-5.md#prefix-subsets).
+A `For`-Runner takes one of the [ComponentActions](Delegates.md) as argument. It's the most flexible runner and can both pass in Uniforms, as well as comfortably iterate over Entites themselves! 
 
 The Runner is executed directly on the calling thread. Until the runner returns, the World is in `WorldMode.Deferred`, meaning structural changes are applied once the Runner has finished.
 

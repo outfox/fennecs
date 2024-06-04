@@ -122,17 +122,17 @@ sun3.AddRelation(sun3, body3);
 // Query to accumulate forces acting on each body
 var accumulator = world
     .Query<Force, Position, Body>(Match.Plain, Match.Plain, Match.Entity)
-    .Compile();
+    .Stream();
 
 // Query to update velocities and positions based on the accumulated forces
 var integrator = world
     .Query<Force, Velocity, Position>()
-    .Compile();
+    .Stream();
 
 // Query to copy the updated positions back to the Body components
 var consolidator = world
     .Query<Position, Body>(Match.Plain, Match.Plain)
-    .Compile();        
+    .Stream();        
 ```
 
 ```csharp [Simulation Loop]        

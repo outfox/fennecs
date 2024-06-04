@@ -37,9 +37,9 @@ Both `entity1` and `entity2` now reference the same `sharedData` instance. Modif
 Query shared components using the same syntax as regular components:
 
 ```csharp
-var query = world.Query<SharedData>().Compile();
+var stream = world.Query<SharedData>().Stream();
 
-Stream.For((ref SharedData data) =>
+stream.For((ref SharedData data) =>
 {
     data.Value++; // increments value once for each entity in query!
 });

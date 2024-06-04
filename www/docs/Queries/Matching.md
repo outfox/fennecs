@@ -7,18 +7,47 @@ order: 1
 
 # Matching
 
-Perk up your ears! Match Expressions ware what makes **fenn**ecs so cool and powerful, and it is a complex topic, shaped by two intertwined ideas: 
+Queries match Entities.
 
-1. the `Match Type`, a commonplace concept in ECS
-2. the `Match Target` (or `Match Identity`), a feature unique to **fenn**ecs
+> #### *Any Query who must say "I match Entities" is no true Query.*
+> ~ Erwin Canister
 
-Together, they enable Entity interactions natively in **fenn**ecs in elegant, expressive ways that in other ECS might seem like pure science fiction. 
+### True, true... but perk up your ears! 
+
+**Match Expressions** are what makes **fenn**ecs performant and powerful! 
+They are a complex topic, shaped by two intertwined ideas: 
+
+::: tip 🅰️ the `Match Type`, a somewhat commonplace concept in most ECS
+Matching groups / selects Entities by the Components they **must have, may have, or must not have**.
+
+Queries let us find and **access any set** of Entities & Components **extremely quickly**.
+
+:::
+  
+... and ... 
+
+::: tip 🅱️ the `Match Target` (or `Match Relation`), a feature specific to **fenn**ecs
+Targets further group entities by an optional **secondary key**, like an Object or another Entity. 
+
+Match Expressions with targets constitute `many-to-1` Relations (Entity-Entity, or Entity-Object).
+
+Relations can be backed by **any Component** type (and data) - even **their Targets themselves** or **Shareable Components on them**!
+:::
+
+Both have low, usually zero cost - at runtime, as well as compile and design times.
+
+In fact, the way matching is implemented is foundational for how Archetype-based ECS can be so fast, intuitive, and efficient.
+
+
+
+## Teaser
+Together, `Types` and `Targets` unlock Entity relations and interactions in elegant, expressive ways that in many other ECS might seem like *pure science fiction*.
 
 ![a fennec wearing a futuristic VR headset](https://fennecs.tech/img/fennec-3body.png)
 
 The [3-Body-Problem](/cookbook/staples/3Body.md) recipe and [N-Body-Problem](/examples/NBody.md) demo illustrate how to use Match Expressions to simulate complex systems of mutually interacting Entities.
 
-## Sneak Dive / Deep Peek
+## How to ~~Basic~~ Match
 A match expression is split into a `Match Type` and a `Target` (or `Identity`), and they can be combined in any way to create complex Queries that match (and enumerate!) exactly the Entities and Components you need.
 
 When building a Query with Match Expressions, any number of Match Expressions can be passed to the QueryBuilder to specify what this Query should include and exclude. Here's a quick example to give an overview over what's available
@@ -46,7 +75,7 @@ var partyGoers = world.Query<Name, PlayList>() // "()" means Match.Any
 //... but only if they specifically don't like (the string) pineapple
     .Not<Likes>(Identity.Of("pineapple"));
 // compile query to register it with the world
-    .Compile();
+    .Stream();
 
 
 // WAIT! It's the 2020s. We need two last minute additions!
@@ -137,7 +166,6 @@ var enemies = world.Query<Enemy>()
 // Match.Target already includes Object, but Object excludes Entity.  
     .Has<Objective>(Match.Object).Has<Objective>(Match.Target) 
     .Compile();
-
   ```
 :::
 

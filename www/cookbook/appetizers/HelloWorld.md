@@ -67,7 +67,7 @@ Now, let's create two kinds of query to find all entities with a `Name` and run 
 ```csharp{2}
 var noHumans = world.Query<Name>()
     .Not<Human>()
-    .Compile();
+    .Stream();
 
 noHumans.For(static (ref Name name) =>
 {
@@ -80,7 +80,7 @@ noHumans.For(static (ref Name name) =>
 ```csharp{2}
 var onlyFennecs = world.Query<Name>()
     .Has<Fennec>()
-    .Compile();
+    .Stream();
 
 onlyFennecs.For(static (ref Name name) =>
 {

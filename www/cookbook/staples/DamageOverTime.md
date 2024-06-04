@@ -46,7 +46,7 @@ Now, let's create a query that applies damage to all vampires based on the sunli
 
 ```csharp
 var sunIntensity = 10.0f;
-var vampireHealth = world.Query<Health>().Has<Vampirism>().Compile();
+var vampireHealth = world.Query<Health>().Has<Vampirism>().Stream();
 
 // We use an EntityAction to apply the damage and also queue the
 // structural change - in this case, full despawn of the Vampire
