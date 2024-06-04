@@ -91,7 +91,7 @@ public class ChunkingBenchmarks
     [Benchmark]
     public void CrossProduct_RunU()
     {
-        _queryV3.For(UniformConstantVector, static (ref Vector3 v, Vector3 uniform) => { v = Vector3.Cross(v, uniform); });
+        _queryV3.For(UniformConstantVector, static (Vector3 uniform, ref Vector3 v) => { v = Vector3.Cross(v, uniform); });
     }
 
     [Benchmark]
@@ -103,6 +103,6 @@ public class ChunkingBenchmarks
     [Benchmark]
     public void CrossProduct_JobU()
     {
-        _queryV3.Job(UniformConstantVector, delegate(ref Vector3 v, Vector3 uniform) { v = Vector3.Cross(v, uniform); });
+        _queryV3.Job(UniformConstantVector, delegate( Vector3 uniform, ref Vector3 v) { v = Vector3.Cross(v, uniform); });
     }
 }

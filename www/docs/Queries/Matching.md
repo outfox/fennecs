@@ -78,13 +78,13 @@ The Query feeds the Storages corresponding to its Stream Types of each matched A
 
 ### The three main `Match Type` Expressions are:
 
-> ### `Query<>.Has<C>()` and `Query<>.Has<C>(Identity)`
+> ### `Stream<>.Has<C>()` and `Stream<>.Has<C>(Identity)`
 > `includes only` Entities that have the given component or relation. Multiple `Has` statements can be compared to a logical `A AND B AND C`.
 
-> ### `Query<>.Not<C>()` and `Query<>.Not<C>(Identity)`
+> ### `Stream<>.Not<C>()` and `Stream<>.Not<C>(Identity)`
 > `excludes` any Entities that have the given component. Multiple `Not` statements can be compared to a logical `NOT (A OR B OR C)`, aka. `(NOT A) AND (NOT B) AND (NOT C)`.
 
-> ### `Query<>.Any<C>()` and `Query<>.Any<C>(Identity)`
+> ### `Stream<>.Any<C>()` and `Stream<>.Any<C>(Identity)`
 > matches Entities that match `at least one` of the Any statements. Multiple `Any` statements can be compared to a logical `A OR B OR C`.
 
  

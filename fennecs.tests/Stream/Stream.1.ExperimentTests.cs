@@ -128,20 +128,20 @@ public class Stream1TestsExperiment
             str = "five";
         });
 
-        query.Job(6, (ref string str, int uniform) =>
+        query.Job(6, (int uniform, ref string str) =>
         {
             Assert.Equal("five", str);
             str = uniform.ToString();
         });
 
 
-        query.For(7, (ref string str, int uniform) =>
+        query.For(7, (int uniform, ref string str) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         });
 
-        query.Raw(8, (strings, uniform) =>
+        query.Raw(8, (uniform, strings) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -150,7 +150,7 @@ public class Stream1TestsExperiment
             }
         });
 
-        query.Raw(9, (c1, uniform) =>
+        query.Raw(9, (uniform, c1) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -498,7 +498,7 @@ public class Stream1TestsExperiment
         query.For((ref long value) => { Assert.Equal(index++, value); });
 
         var index2 = 0;
-        query.For(1337, (ref long value, int _) => { Assert.Equal(index2++, value); });
+        query.For(1337, (int _, ref long value) => { Assert.Equal(index2++, value); });
     }
 
     [Fact]
@@ -536,7 +536,7 @@ public class Stream1TestsExperiment
 
         var found = new List<Entity>();
 
-        query.For(3.1415f, (Entity e, ref int _, float uniform) =>
+        query.For(3.1415f, (float uniform, Entity e, ref int _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);

@@ -66,7 +66,7 @@ public class Stream4Tests
             str = "five";
         });
 
-        query.Job(6, (ref double _, ref int index, ref string str, ref char _, int uniform) =>
+        query.Job(6, (int uniform, ref double _, ref int index, ref string str, ref char _) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
@@ -74,14 +74,14 @@ public class Stream4Tests
         });
 
 
-        query.For(7, (ref double _, ref int _, ref string str, ref char _, int uniform) =>
+        query.For(7, (int uniform, ref double _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         });
 
 
-        query.Raw(8, (_, _, strings, _, uniform) =>
+        query.Raw(8, (uniform, _, _, strings, _) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -90,7 +90,7 @@ public class Stream4Tests
             }
         });
 
-        query.Raw(9, (_, _, strings, _, uniform) =>
+        query.Raw(9, (uniform, _, _, strings, _) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -108,7 +108,7 @@ public class Stream4Tests
         });
 
         
-        query.For(11, (Entity _, ref double _, ref int _, ref string str, ref char _, int uniform) =>
+        query.For(11, (int uniform, Entity _, ref double _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(10.ToString(), str);
             str = uniform.ToString();

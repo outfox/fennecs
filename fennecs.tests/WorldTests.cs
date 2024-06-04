@@ -249,7 +249,7 @@ public class WorldTests(ITestOutputHelper output)
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>(Identity.Plain).Stream();
-        query.Raw(world, (_, uniform) =>
+        query.Raw(world, (uniform, _) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -276,7 +276,7 @@ public class WorldTests(ITestOutputHelper output)
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>(Identity.Plain).Stream();
-        query.For(world, (ref Identity _, World uniform) =>
+        query.For(world, (World uniform, ref Identity _) =>
         {
             var entity = uniform.Spawn();
             Assert.True(entity.Id.IsEntity);

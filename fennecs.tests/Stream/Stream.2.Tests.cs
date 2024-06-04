@@ -74,7 +74,7 @@ public class Stream2Tests
             str = uniform.ToString();
         });
 
-        query.Raw(8, (_, strings, uniform) =>
+        query.Raw(8, (uniform, _, strings) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -83,7 +83,7 @@ public class Stream2Tests
             }
         });
 
-        query.Raw(9, (_, c1, uniform) =>
+        query.Raw(9, (uniform, _, c1) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -479,7 +479,7 @@ public class Stream2Tests
 
         var found = new List<Entity>();
         
-        query.For( 3.1415f, (Entity e, ref int _, ref string _, float uniform) =>
+        query.For( 3.1415f, (float uniform, Entity e, ref int _, ref string _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);

@@ -32,7 +32,7 @@ public class Stream3Tests
                 .Add('Q');
         }
 
-        query.For(12f, (Entity x, ref int _, ref string str, ref char _, float uniform) =>
+        query.For(12f, (float _, Entity _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal("one", str);
             str = "two";
@@ -65,7 +65,7 @@ public class Stream3Tests
             str = "five";
         });
 
-        query.Job(6, (ref int index, ref string str, ref char _, int uniform) =>
+        query.Job(6, (int uniform, ref int index, ref string str, ref char _) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
@@ -73,13 +73,13 @@ public class Stream3Tests
         });
 
 
-        query.For(7, (ref int _, ref string str, ref char _, int uniform) =>
+        query.For(7, (int uniform, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
         });
         
-        query.Raw(8, (_, strings, _, uniform) =>
+        query.Raw(8, (uniform, _, strings, _) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -88,7 +88,7 @@ public class Stream3Tests
             }
         });
 
-        query.Raw(9, (_, strings, _, uniform) =>
+        query.Raw(9, (uniform, _, strings, _) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -97,14 +97,14 @@ public class Stream3Tests
             }
         });
 
-        query.For((Entity e, ref int _, ref string str, ref char _) =>
+        query.For((Entity _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(9.ToString(), str);
             str = "10";
         });
 
 
-        query.For(11, (Entity e, ref int _, ref string str, ref char _, int uniform) =>
+        query.For(11, (int uniform, Entity _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(10.ToString(), str);
             str = uniform.ToString();

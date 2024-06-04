@@ -18,7 +18,7 @@ Well... randomly half of randomly half!
 ### How it works
 First we create a bunch of entities, give some of them a "Lucky" and some of them a "Unlucky" component, then we filter our Query to target the Unlucky and move the Lucky ones out of harm's way.
 
-Finally, we unleash the power of the ~~Infinity Gauntlet~~ `Query<>.Despawn()` to bring an awkward balance to the Universe. 
+Finally, we unleash the power of the ~~Infinity Gauntlet~~ `Stream<>.Despawn()` to bring an awkward balance to the Universe. 
 
 I'm sure you already see that nothing can go wrong! Let's get snapping!
 

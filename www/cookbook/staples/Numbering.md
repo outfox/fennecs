@@ -62,7 +62,7 @@ stream.For((ref Index index) => index = new(i++));
 // This is the cleanest way and overall has good characteristics.
 stream.For(
     uniform: Index.Ascending(from: 0),
-    action: static (ref Index index, IEnumerator<Index> enumerator) =>
+    action: static (IEnumerator<Index> enumerator, ref Index index) =>
     {
         enumerator.MoveNext();
         index = enumerator.Current;
@@ -80,7 +80,7 @@ using var range =
 
 stream.For(
     uniform: range,
-    action: static (ref Index index, IEnumerator<Index> enumerator) =>
+    action: static (IEnumerator<Index> enumerator, ref Index index) =>
     {
         enumerator.MoveNext();
         index = enumerator.Current;

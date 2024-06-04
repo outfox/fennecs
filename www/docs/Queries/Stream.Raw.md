@@ -4,13 +4,13 @@ order: 2
 
 ---
 # Custom Query Workloads
-# `Query<>.Raw(MemoryAction)`
-# `Query<>.Raw<U>(MemoryAction,U)`
+# `Stream<>.Raw(MemoryAction)`
+# `Stream<>.Raw<U>(MemoryAction,U)`
 
 ::: danger ARCHETYPE BY ARCHETYPE
 Entire Archetypes, delivered as contiguous memory. Here's your truckload of stuff - dig in!
 ![a fennec with a big stack of pizza in boxes](https://fennecs.tech/img/fennec-raw.png)
-Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryactionu), delivers the *entire stream data* of each Archetype directly ~~into your fox~~ to your delegate in one `Memory<T>` per Stream Type.
+Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryUniformAction), delivers the *entire stream data* of each Archetype directly ~~into your fox~~ to your delegate in one `Memory<T>` per Stream Type.
 :::
 
 ### Processing Memory in Contiguous Blocks
@@ -60,7 +60,7 @@ myStream.Raw((Memory<Vector3> velocities, (float dt, Vector3 g) uniform) =>
 
 
 ## Differences to other Runners
-`Query<>.Raw` differs from `Query<>.For` by providing a `Memory<T>` for each Stream Type instead, and instead of running the delegate for each Entity, it is instead run once for each Archetype, and the `Memory<T>` structs provided constitute the entirety of all Component data for the Stream Type `T`.
+`Stream<>.Raw` differs from `Stream<>.For` by providing a `Memory<T>` for each Stream Type instead, and instead of running the delegate for each Entity, it is instead run once for each Archetype, and the `Memory<T>` structs provided constitute the entirety of all Component data for the Stream Type `T`.
 
 All the `Memory<T>` structs are the same length, because each Entity in the Archetype has exactly one of the Archetype's components.
 

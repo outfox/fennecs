@@ -14,7 +14,7 @@ public class DocumentationExampleTests
 
         const float MULTIPLIER = 10f;
 
-        query.Job(MULTIPLIER,(ref Position pos, float uniform) => { pos *= uniform; });
+        query.Job(MULTIPLIER,(float uniform, ref Position pos) => { pos *= uniform; });
 
         var pos1 = world.GetComponent<Position>(entity1, Identity.Plain);
         var expected = new Position() * MULTIPLIER;

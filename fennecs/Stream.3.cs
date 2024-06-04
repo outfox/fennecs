@@ -46,7 +46,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(U uniform, UniformComponentAction<C0, C1, C2, U> action)
+    public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
     {
         using var worldLock = World.Lock();
 
@@ -58,7 +58,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
             do
             {
                 var (s0, s1, s2) = join.Select;
-                Unroll8U(s0, s1, s2, action, uniform);
+                Unroll8U(uniform, s0, s1, s2, action);
             } while (join.Iterate());
         }
     }
@@ -88,7 +88,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(U uniform, UniformEntityComponentAction<C0, C1, C2, U> action)
+    public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2> action)
     {
         using var worldLock = World.Lock();
 
@@ -104,7 +104,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
                 var span0 = s0.Span;
                 var span1 = s1.Span;
                 var span2 = s2.Span;
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], uniform);
+                for (var i = 0; i < count; i++) action(uniform, table[i], ref span0[i], ref span1[i], ref span2[i]);
             } while (join.Iterate());
         }
     }
@@ -164,7 +164,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
 
 
     /// <inheritdoc cref="Stream{C0}.Job{U}"/>
-    public void Job<U>(U uniform, UniformComponentAction<C0, C1, C2, U> action)
+    public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
     {
         if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
 
@@ -173,7 +173,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
         using var worldLock = World.Lock();
         Countdown.Reset();
 
-        using var jobs = PooledList<UniformWork<C0, C1, C2, U>>.Rent();
+        using var jobs = PooledList<UniformWork<U, C0, C1, C2>>.Rent();
 
         foreach (var table in Archetypes)
         {
@@ -193,7 +193,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
 
                     var (s0, s1, s2) = join.Select;
 
-                    var job = JobPool<UniformWork<C0, C1, C2, U>>.Rent();
+                    var job = JobPool<UniformWork<U, C0, C1, C2>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
                     job.Memory3 = s2.AsMemory(start, length);
@@ -210,7 +210,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
         Countdown.Signal();
         Countdown.Wait();
 
-        JobPool<UniformWork<C0, C1, C2, U>>.Return(jobs);
+        JobPool<UniformWork<U, C0, C1, C2>>.Return(jobs);
     }
 
     #endregion
@@ -243,7 +243,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(U uniform, MemoryUniformAction<C0, C1, C2, U> uniformAction)
+    public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2> action)
     {
         using var worldLock = World.Lock();
 
@@ -260,7 +260,7 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
                 var mem1 = s1.AsMemory(0, count);
                 var mem2 = s2.AsMemory(0, count);
 
-                uniformAction(mem0, mem1, mem2, uniform);
+                action(uniform, mem0, mem1, mem2);
             } while (join.Iterate());
         }
     }
@@ -338,26 +338,26 @@ public record Stream<C0, C1, C2>(Query Query, Target Match0, Target Match1, Targ
         }
     }
 
-    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, UniformComponentAction<C0, C1, C2, U> action, U uniform)
+    private static void Unroll8U<U>(U uniform, Span<C0> span0, Span<C1> span1, Span<C2> span2, UniformComponentAction<U, C0, C1, C2> action)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
         {
-            action(ref span0[i], ref span1[i], ref span2[i], uniform);
-            action(ref span0[i + 1], ref span1[i + 1], ref span2[i + 1], uniform);
-            action(ref span0[i + 2], ref span1[i + 2], ref span2[i + 2], uniform);
-            action(ref span0[i + 3], ref span1[i + 3], ref span2[i + 3], uniform);
-
-            action(ref span0[i + 4], ref span1[i + 4], ref span2[i + 4], uniform);
-            action(ref span0[i + 5], ref span1[i + 5], ref span2[i + 5], uniform);
-            action(ref span0[i + 6], ref span1[i + 6], ref span2[i + 6], uniform);
-            action(ref span0[i + 7], ref span1[i + 7], ref span2[i + 7], uniform);
+            action(uniform, ref span0[i], ref span1[i], ref span2[i]);
+            action(uniform, ref span0[i + 1], ref span1[i + 1], ref span2[i + 1]);
+            action(uniform, ref span0[i + 2], ref span1[i + 2], ref span2[i + 2]);
+            action(uniform, ref span0[i + 3], ref span1[i + 3], ref span2[i + 3]);
+                   
+            action(uniform, ref span0[i + 4], ref span1[i + 4], ref span2[i + 4]);
+            action(uniform, ref span0[i + 5], ref span1[i + 5], ref span2[i + 5]);
+            action(uniform, ref span0[i + 6], ref span1[i + 6], ref span2[i + 6]);
+            action(uniform, ref span0[i + 7], ref span1[i + 7], ref span2[i + 7]);
         }
 
         var d = span0.Length;
         for (var i = c; i < d; i++)
         {
-            action(ref span0[i], ref span1[i], ref span2[i], uniform);
+            action(uniform, ref span0[i], ref span1[i], ref span2[i]);
         }
     }
 }

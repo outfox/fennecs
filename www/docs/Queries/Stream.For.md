@@ -4,13 +4,13 @@ order: 2
 ---
 
 # Classic Query Workloads
-# `Query<>.For(RefAction)`
-# `Query<>.For<U>(RefAction,U)`
+# `Stream<>.For(ComponentAction)`
+# `Stream<>.For<U>(ComponentAction,U)`
 
 ::: info ENTITY BY ENTITY, ONE BY ONE
 Process one work item at a time. Fast, fun, and flexible.
 ![a fennec eating pizza alone](https://fennecs.tech/img/fennec-for.png)
-Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each Entity in the Query, providing the Components that match the ==Stream Types== as `ref` to the code.  
+Call a [`ComponentAction`](Delegates.md#ComponentAction-and-UniformComponentAction) delegate for each Entity in the Query, providing the Components that match the ==Stream Types== as `ref` to the code.  
 :::
 
 "**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  Chances are you can ship your entire game with just this one. Let us know how it went!
@@ -18,7 +18,7 @@ Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each En
 ### Description
 Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](Stream.1-5.md#stream-types).
 
-Each `For`-Runner takes a [`RefAction`](Delegates.md#refaction-and-refactionu) or [`RefActionU<>`](Delegates.md#refaction-and-refactionu) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Stream.1-5.md#prefix-subsets).
+Each `For`-Runner takes a [`ComponentAction`](Delegates.md#ComponentAction-and-UniformComponentAction) or [`UniformComponentAction<>`](Delegates.md#ComponentAction-and-UniformComponentAction) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Stream.1-5.md#prefix-subsets).
 
 The Runner is executed directly on the calling thread. Until the runner returns, the World is in `WorldMode.Deferred`, meaning structural changes are applied once the Runner has finished.
 
@@ -45,14 +45,14 @@ myStream.For((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) =>
 :::
 
 ::: tip :neofox_glasses::neofox_glasses: DOUBLE SUPERNERD PRO TIP
-1. The function passed as `RefAction` can be `static`, even if they are written as anonymous delegates or lambda expressions! This reduces the allocation of memory for a closure or context to zero in most cases. Consider adding the keyword `static` where you can.
+1. The function passed as `ComponentAction` can be `static`, even if they are written as anonymous delegates or lambda expressions! This reduces the allocation of memory for a closure or context to zero in most cases. Consider adding the keyword `static` where you can.
 
 2. Uniforms will improve performance of your worker functions when it comes to reading data "from outside". In our examples, if `Time.deltaTime` would be read from memory, cache, or (heaven forbid) run a getter function for each Entity! Pre-read and pre-calculate values and pass them as uniforms when processing a large number of Entities.
 :::
 
 ### Performance Considerations in Calling Conventions
 
-Want more nuance? `RefActions` can be passed to runners in several ways. Choose based on your preferred code style and desired conciseness. Here's a lineup to compare options.
+Want more nuance? `ComponentActions` can be passed to runners in several ways. Choose based on your preferred code style and desired conciseness. Here's a lineup to compare options.
 
 ::: code-group
 ```cs [🆗 lambda/delegate]

@@ -882,7 +882,7 @@ public class QueryTests
 
 
         var query1 = world.Query<Vector4>().Stream();
-        query1.For(0.0f, (ref Vector4 _, float _) =>
+        query1.For(0.0f, (float _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });
@@ -896,19 +896,19 @@ public class QueryTests
         );
 
         var query3 = world.Query<Vector2, Vector3, Vector4>().Stream();
-        query3.For(0.0f, (ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query3.For(0.0f, (float _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });
 
         var query4 = world.Query<string, Vector2, Vector3, Vector4>().Stream();
-        query4.For(0.0f, (ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query4.For(0.0f, (float _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });
 
         var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Stream();
-        query5.For(0.0f, (ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query5.For(0.0f, (float _, ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });
@@ -928,31 +928,31 @@ public class QueryTests
         e.Despawn();
 
         var query1 = world.Query<Vector4>().Stream();
-        query1.For(0.0f, (Entity _, ref Vector4 _, float _) =>
+        query1.For(0.0f, (float _, Entity _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });
 
         var query2 = world.Query<Vector3, Vector4>().Stream();
-        query2.For(0.0f, (Entity _, ref Vector3 _, ref Vector4 _, float _) =>
+        query2.For(0.0f, (float _, Entity _, ref Vector3 _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });
 
         var query3 = world.Query<Vector2, Vector3, Vector4>().Stream();
-        query3.For(0.0f, (Entity _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query3.For(0.0f, (float _, Entity _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });
 
         var query4 = world.Query<string, Vector2, Vector3, Vector4>().Stream();
-        query4.For(0.0f, (Entity _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query4.For(0.0f, (float _, Entity _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });
 
         var query5 = world.Query<int, string, Vector2, Vector3, Vector4>().Stream();
-        query5.For(0.0f, (Entity _, ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _, float _) =>
+        query5.For(0.0f, (float _, Entity _, ref int _, ref string _, ref Vector2 _, ref Vector3 _, ref Vector4 _) =>
         {
             Assert.Fail("Should not be called");
         });

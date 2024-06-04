@@ -86,7 +86,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
     /// <param name="action"><see cref="UniformComponentAction{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
     // /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(U uniform, UniformComponentAction<C0, U> action)
+    public void For<U>(U uniform, UniformComponentAction<U, C0> action)
     {
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
@@ -98,7 +98,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
                 var s0 = join.Select;
                 var span0 = s0.Span;
                 // foreach is faster than for loop & unroll
-                foreach (ref var c0 in span0) action(ref c0, uniform);
+                foreach (ref var c0 in span0) action(uniform, ref c0);
             } while (join.Iterate());
         }
     }
@@ -127,7 +127,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(U uniform, UniformEntityComponentAction<C0, U> componentAction)
+    public void For<U>(U uniform, UniformEntityComponentAction<U, C0> componentAction)
     {
         using var worldLock = World.Lock();
 
@@ -141,7 +141,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
             {
                 var s0 = join.Select;
                 var span0 = s0.Span;
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], uniform);
+                for (var i = 0; i < count; i++) componentAction(uniform, table[i], ref span0[i]);
             } while (join.Iterate());
         }
     }
@@ -207,7 +207,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
     /// </summary>
     /// <param name="action"><see cref="ComponentAction{C0}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void Job<U>(U uniform, UniformComponentAction<C0, U> action)
+    public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
     {
         if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
         
@@ -216,7 +216,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
         using var worldLock = World.Lock();
         Countdown.Reset();
 
-        using var jobs = PooledList<UniformWork<C0, U>>.Rent();
+        using var jobs = PooledList<UniformWork<U, C0>>.Rent();
 
         foreach (var table in Archetypes)
         {
@@ -236,7 +236,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
 
                     var s0 = join.Select;
 
-                    var job = JobPool<UniformWork<C0, U>>.Rent();
+                    var job = JobPool<UniformWork<U, C0>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Action = action;
                     job.Uniform = uniform;
@@ -251,7 +251,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
         Countdown.Signal();
         Countdown.Wait();
 
-        JobPool<UniformWork<C0, U>>.Return(jobs);
+        JobPool<UniformWork<U, C0>>.Return(jobs);
     }
 
     #endregion
@@ -300,9 +300,9 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
     /// <see cref="Memory{T}"/> contains a <c>Span</c> that can be used to access the data in a contiguous block of memory.
     /// </para>
     /// </remarks>
-    /// <param name="uniformAction"><see cref="MemoryAction{C0}"/> action to execute.</param>
+    /// <param name="action"><see cref="MemoryAction{C0}"/> action to execute.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    public void Raw<U>(U uniform, MemoryUniformAction<C0, U> uniformAction)
+    public void Raw<U>(U uniform, MemoryUniformAction<U, C0> action)
     {
         using var worldLock = World.Lock();
 
@@ -314,7 +314,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
             {
                 var s0 = join.Select;
                 var mem0 = s0.AsMemory(0, table.Count);
-                uniformAction(mem0, uniform);
+                action(uniform, mem0);
             } while (join.Iterate());
         }
     }

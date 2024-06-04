@@ -44,7 +44,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(U uniform, UniformComponentAction<C0, C1, U> action)
+    public void For<U>(U uniform, UniformComponentAction<U, C0, C1> action)
     {
         using var worldLock = World.Lock();
 
@@ -88,7 +88,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(U uniform, UniformEntityComponentAction<C0, C1, U> componentAction)
+    public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1> componentAction)
     {
         using var worldLock = World.Lock();
 
@@ -103,7 +103,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
                 var (s0, s1) = join.Select;
                 var span0 = s0.Span;
                 var span1 = s1.Span;
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], uniform);
+                for (var i = 0; i < count; i++) componentAction(uniform, table[i], ref span0[i], ref span1[i]);
             } while (join.Iterate());
         }
     }
@@ -160,7 +160,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
 
 
     /// <inheritdoc cref="Stream{C0}.Job{U}"/>
-    public void Job<U>(U uniform, UniformComponentAction<C0, C1, U> action)
+    public void Job<U>(U uniform, UniformComponentAction<U, C0, C1> action)
     {
         if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
 
@@ -169,7 +169,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
         using var worldLock = World.Lock();
         Countdown.Reset();
 
-        using var jobs = PooledList<UniformWork<C0, C1, U>>.Rent();
+        using var jobs = PooledList<UniformWork<U, C0, C1>>.Rent();
 
         foreach (var table in Archetypes)
         {
@@ -189,7 +189,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
 
                     var (s0, s1) = join.Select;
 
-                    var job = JobPool<UniformWork<C0, C1, U>>.Rent();
+                    var job = JobPool<UniformWork<U, C0, C1>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
                     job.Action = action;
@@ -205,7 +205,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
         Countdown.Signal();
         Countdown.Wait();
 
-        JobPool<UniformWork<C0, C1, U>>.Return(jobs);
+        JobPool<UniformWork<U, C0, C1>>.Return(jobs);
     }
 
     #endregion
@@ -237,7 +237,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(U uniform, MemoryUniformAction<C0, C1, U> uniformAction)
+    public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1> action)
     {
         using var worldLock = World.Lock();
 
@@ -253,7 +253,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
                 var mem0 = s0.AsMemory(0, count);
                 var mem1 = s1.AsMemory(0, count);
 
-                uniformAction(mem0, mem1, uniform);
+                action(uniform, mem0, mem1);
             } while (join.Iterate());
         }
     }
@@ -333,7 +333,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
         }
     }
 
-    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<C0, C1, U> action, U uniform)
+    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<U, C0, C1> action, U uniform)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)

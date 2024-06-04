@@ -4,13 +4,13 @@ order: 2
 
 ---
 # Parallel Query Workloads
-# `Query<>.Job(MemoryAction)`
-# `Query<>.Job<U>(MemoryAction,U)`
+# `Stream<>.Job(MemoryAction)`
+# `Stream<>.Job<U>(MemoryAction,U)`
 
 ::: info ENTITY BY ENTITY, ONE BY ONE (IN PARALLEL!)
 One work item at a time, multi-threaded. Super-fast, and with few synchronization caveats.
 ![three fennecs eating pizza together](https://fennecs.tech/img/fennec-job.png)
-Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instantly schedules and executes the workload split into chunks, calling it many times in parallel across CPU cores.  
+Takes a [`ComponentAction`](Delegates.md#ComponentAction-and-UniformComponentAction) delegate and instantly schedules and executes the workload split into chunks, calling it many times in parallel across CPU cores.  
 :::
 
 Sometimes, mommy and daddy foxes want to be on separate CPU cores. That doesn't mean they don't love each other anymore! It only means that if you ~~can keep a secret~~ have **lots and lots** of entities in large Archetypes, you might get ~~a new action figure~~ performance gains tomorrow!

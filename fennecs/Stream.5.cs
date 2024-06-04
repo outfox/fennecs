@@ -51,7 +51,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(U uniform, UniformComponentAction<C0, C1, C2, C3, C4, U> action)
+    public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
 
@@ -69,7 +69,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
                 var span3 = s3.Span;
                 var span4 = s4.Span;
 
-                Unroll8U(span0, span1, span2, span3, span4, action, uniform);
+                Unroll8U(uniform, span0, span1, span2, span3, span4, action);
             } while (join.Iterate());
         }
     }
@@ -101,7 +101,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(U uniform, UniformEntityComponentAction<C0, C1, C2, C3, C4, U> componentAction)
+    public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3, C4> componentAction)
     {
         using var worldLock = World.Lock();
 
@@ -119,7 +119,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
                 var span2 = s2.Span;
                 var span3 = s3.Span;
                 var span4 = s4.Span;
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
+                for (var i = 0; i < count; i++) componentAction(uniform, table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
             } while (join.Iterate());
         }
     }
@@ -182,7 +182,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
 
 
     /// <inheritdoc cref="Stream{C0}.Job{U}"/>
-    public void Job<U>(U uniform, UniformComponentAction<C0, C1, C2, C3, C4, U> action)
+    public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
     {
         if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
 
@@ -191,7 +191,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
         using var worldLock = World.Lock();
         Countdown.Reset();
 
-        using var jobs = PooledList<UniformWork<C0, C1, C2, C3, C4, U>>.Rent();
+        using var jobs = PooledList<UniformWork<U, C0, C1, C2, C3, C4>>.Rent();
 
         foreach (var table in Archetypes)
         {
@@ -211,7 +211,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
 
                     var (s0, s1, s2, s3, s4) = join.Select;
 
-                    var job = JobPool<UniformWork<C0, C1, C2, C3, C4, U>>.Rent();
+                    var job = JobPool<UniformWork<U, C0, C1, C2, C3, C4>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
                     job.Memory3 = s2.AsMemory(start, length);
@@ -230,7 +230,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
         Countdown.Signal();
         Countdown.Wait();
 
-        JobPool<UniformWork<C0, C1, C2, C3, C4, U>>.Return(jobs);
+        JobPool<UniformWork<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
 
     #endregion
@@ -265,7 +265,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
 
 
     /// <inheritdoc cref="Query{C0}.Raw{U}"/>
-    public void Raw<U>(U uniform, MemoryUniformAction<C0, C1, C2, C3, C4, U> uniformAction)
+    public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
 
@@ -284,7 +284,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
                 var mem3 = s3.AsMemory(0, count);
                 var mem4 = s4.AsMemory(0, count);
 
-                uniformAction(mem0, mem1, mem2, mem3, mem4, uniform);
+                action(uniform, mem0, mem1, mem2, mem3, mem4);
             } while (join.Iterate());
         }
     }
@@ -361,26 +361,26 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Target Match0, Target Matc
         }
     }
 
-    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4, UniformComponentAction<C0, C1, C2, C3, C4, U> action, U uniform)
+    private static void Unroll8U<U>(U uniform, Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
         {
-            action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
-            action(ref span0[i + 1], ref span1[i + 1], ref span2[i + 1], ref span3[i + 1], ref span4[i + 1], uniform);
-            action(ref span0[i + 2], ref span1[i + 2], ref span2[i + 2], ref span3[i + 2], ref span4[i + 2], uniform);
-            action(ref span0[i + 3], ref span1[i + 3], ref span2[i + 3], ref span3[i + 3], ref span4[i + 3], uniform);
+            action(uniform, ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
+            action(uniform, ref span0[i + 1], ref span1[i + 1], ref span2[i + 1], ref span3[i + 1], ref span4[i + 1]);
+            action(uniform, ref span0[i + 2], ref span1[i + 2], ref span2[i + 2], ref span3[i + 2], ref span4[i + 2]);
+            action(uniform, ref span0[i + 3], ref span1[i + 3], ref span2[i + 3], ref span3[i + 3], ref span4[i + 3]);
 
-            action(ref span0[i + 4], ref span1[i + 4], ref span2[i + 4], ref span3[i + 4], ref span4[i + 4], uniform);
-            action(ref span0[i + 5], ref span1[i + 5], ref span2[i + 5], ref span3[i + 5], ref span4[i + 5], uniform);
-            action(ref span0[i + 6], ref span1[i + 6], ref span2[i + 6], ref span3[i + 6], ref span4[i + 6], uniform);
-            action(ref span0[i + 7], ref span1[i + 7], ref span2[i + 7], ref span3[i + 7], ref span4[i + 7], uniform);
+            action(uniform, ref span0[i + 4], ref span1[i + 4], ref span2[i + 4], ref span3[i + 4], ref span4[i + 4]);
+            action(uniform, ref span0[i + 5], ref span1[i + 5], ref span2[i + 5], ref span3[i + 5], ref span4[i + 5]);
+            action(uniform, ref span0[i + 6], ref span1[i + 6], ref span2[i + 6], ref span3[i + 6], ref span4[i + 6]);
+            action(uniform, ref span0[i + 7], ref span1[i + 7], ref span2[i + 7], ref span3[i + 7], ref span4[i + 7]);
         }
 
         var d = span0.Length;
         for (var i = c; i < d; i++)
         {
-            action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i], uniform);
+            action(uniform, ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
         }
     }
 }
