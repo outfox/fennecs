@@ -9,20 +9,20 @@ Runner methods on Steam Queries expect delegates (Actions) to call. The delegate
 These are invoked by [`Stream<>.For`](Stream.For.md) and [`Stream<>.Job`](Stream.Job.md). The Uniforms are contravariant, which helps with code reuse when you refactor your anonymous, named, or static method signatures to take broader data types.
 
 ::: code-group
-```cs [plain]
+```cs [basic]
 delegate void ComponentAction<C0>(ref C0 comp0);
 delegate void ComponentAction<C0, C1>(ref C0 comp0, ref C1 comp1);
 delegate void ComponentAction<C0, C1, C2>(ref C0 comp0, ref C1 comp1, ref C2 comp2);
-delegate void ComponentAction<C0, C1, C2, C3>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3);
-delegate void ComponentAction<C0, C1, C2, C3, C4>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4);
+delegate void ComponentAction<C0, C1, C2, C3>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
+delegate void ComponentAction<C0, C1, C2, C3, C4>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 ```
 
 ```cs [with uniform]
-delegate void UniformComponentAction<C0, in U>(ref C0 comp0, U uniform);
-delegate void UniformComponentAction<C0, C1, in U>(ref C0 comp0, ref C1 comp1, U uniform);
-delegate void UniformComponentAction<C0, C1, C2, in U>(ref C0 comp0, ref C1 comp1, ref C2 comp2, U uniform);
-delegate void UniformComponentAction<C0, C1, C2, C3, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, U uniform);
-delegate void UniformComponentAction<C0, C1, C2, C3, C4, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4, U uniform);
+delegate void UniformComponentAction<in U, C0>(U uniform, ref C0 comp0);
+delegate void UniformComponentAction<in U, C0, C1>(U uniform, ref C0 comp0, ref C1 comp1);  
+delegate void UniformComponentAction<in U, C0, C1, C2>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2);
+delegate void UniformComponentAction<in U, C0, C1, C2, C3>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
+delegate void UniformComponentAction<in U, C0, C1, C2, C3, C4>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 ```
 :::
 
@@ -31,20 +31,20 @@ delegate void UniformComponentAction<C0, C1, C2, C3, C4, in U>(ref C0 c0, ref C1
 These are invokable through [`Stream<>.For`](Stream.For.md). In addition to the Components and optional Uniform, they also receive the Entity that can be used to interact structurally with an Entity right then and there.
 
 ::: code-group
-```cs [plain]
-delegate void EntityComponentAction<EntityC0>(ref C0 comp0);
-delegate void EntityComponentAction<C0, C1>(ref C0 comp0, ref C1 comp1);
-delegate void EntityComponentAction<C0, C1, C2>(ref C0 comp0, ref C1 comp1, ref C2 comp2);
-delegate void EntityComponentAction<C0, C1, C2, C3>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3);
-delegate void EntityComponentAction<C0, C1, C2, C3, C4>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4);
+```cs [basic]
+delegate void EntityComponentAction<C0>(Entity entity, ref C0 comp0);
+delegate void EntityComponentAction<C0, C1>(Entity entity, ref C0 comp0, ref C1 comp1);
+delegate void EntityComponentAction<C0, C1, C2>(Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
+delegate void EntityComponentAction<C0, C1, C2, C3>(Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3); 
+delegate void EntityComponentAction<C0, C1, C2, C3, C4>(Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 ```
 
 ```cs [with uniform]
-delegate void UniformEntityComponentAction<C0, in U>(ref C0 comp0, U uniform);
-delegate void UniformEntityComponentAction<C0, C1, in U>(ref C0 comp0, ref C1 comp1, U uniform);
-delegate void UniformEntityComponentAction<C0, C1, C2, in U>(ref C0 comp0, ref C1 comp1, ref C2 comp2, U uniform);
-delegate void UniformEntityComponentAction<C0, C1, C2, C3, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, U uniform);
-delegate void UniformEntityComponentAction<C0, C1, C2, C3, C4, in U>(ref C0 c0, ref C1 c1, ref C2 c2, ref C3 c3, ref C4 c4, U uniform);
+delegate void UniformEntityComponentAction<in U, C0>(U uniform, Entity entity, ref C0 comp0);
+delegate void UniformEntityComponentAction<in U, C0, C1>(U uniform, Entity entity, ref C0 comp0, ref C1 comp1);
+delegate void UniformEntityComponentAction<in U, C0, C1, C2>(U uniform, Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
+delegate void UniformEntityComponentAction<in U, C0, C1, C2, C3>(U uniform, Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
+delegate void UniformEntityComponentAction<in U, C0, C1, C2, C3, C4>(U uniform, Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 ```
 :::
 
@@ -53,20 +53,34 @@ delegate void UniformEntityComponentAction<C0, C1, C2, C3, C4, in U>(ref C0 c0, 
 These are invoked by [`Stream<>.Raw`](Stream.Raw.md).
 
 ::: code-group
-```cs [plain]
-delegate void MemoryAction<C0>(Memory<C0> c0);
-delegate void MemoryAction<C0, C1>(Memory<C0> c0, Memory<C1> c1);
-delegate void MemoryAction<C0, C1, C2>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2);
-delegate void MemoryAction<C0, C1, C2, C3>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3);
-delegate void MemoryAction<C0, C1, C2, C3, C4>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, Memory<C4> c4);
+```cs [basic]
+delegate void MemoryAction<C0>(Memory<C0> comp0);
+delegate void MemoryAction<C0, C1>(Memory<C0> comp0, Memory<C1> comp1);  
+delegate void MemoryAction<C0, C1, C2>(Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2);
+delegate void MemoryAction<C0, C1, C2, C3>(Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
+delegate void MemoryAction<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
 ```
 
 ```cs [with uniform]
-delegate void MemoryUniformAction<C0, in U>(Memory<C0> c0, U uniform);
-delegate void MemoryUniformAction<C0, C1, in U>(Memory<C0> c0, Memory<C1> c1, U uniform);
-delegate void MemoryUniformAction<C0, C1, C2, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, U uniform);
-delegate void MemoryUniformAction<C0, C1, C2, C3, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, U uniform);
-delegate void MemoryUniformAction<C0, C1, C2, C3, C4, in U>(Memory<C0> c0, Memory<C1> c1, Memory<C2> c2, Memory<C3> c3, Memory<C4> c4, U uniform);
+delegate void MemoryUniformAction<in U, C0>(U uniform, Memory<C0> comp0);
+delegate void MemoryUniformAction<in U, C0, C1>(U uniform, Memory<C0> comp0, Memory<C1> comp1);
+delegate void MemoryUniformAction<in U, C0, C1, C2>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2); 
+delegate void MemoryUniformAction<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
+delegate void MemoryUniformAction<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
 ```
 :::
 
+## My name is INigo Montoya
+
+::: warning *"You keep using that keyword. I do not think it means what you think it means."*
+The `in` keyword in the `Uniform*` delegates' type parmeters denotes [contravariance](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/). This simply means that the `U` parameter can be a broader type than the one you pass in.
+
+It does not mean `readonly` or `in` as in C# method arguments, but uniforms are still always passed by value. If that value is a reference type, you can of course do [fun stuff](/cookbook/staples/Numbering.md) with it... 🦊
+
+Components are always passed by reference because they actually reside in a special storage object that enables this.
+:::
+
+Attentive readers will notice that reference type Uniforms passed to a `Job` should, of course, be chosen carefully to be thread safe if they are to be mutated from multiple threads. Anything in `System.Collections.Concurrent` is a faithful friend here.
+
+### Varyings
+Later versions of **fenn**ecs may introduce the concept of "varyings". If you need this feature, please don't hesitate to reach out with some ideas and use cases!

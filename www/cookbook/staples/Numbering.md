@@ -48,16 +48,6 @@ var stream = world.Stream<Index>();
 ... lots of variety in our diet, and probably we can cook up a dozen more.
 ::: code-group
 
-```csharp [Closure]
-// This is the shortest way. It's so simple that we won't argue against it.
-var i = 0; 
-stream.For((ref Index index) => index = new(i++));
-
-// Tiny Boilerplate, good speed, low memory allocations... what's not to love?
-// But loosey-goosey integers and closures can be spoopy in program design.
-// Some season with custom types & operators - others like to eat it plain!
-```
-
 ```csharp [Enumerator (fancy)]
 // This is the cleanest way and overall has good characteristics.
 stream.For(
@@ -71,6 +61,18 @@ stream.For(
 // The method needs the fancy enumerator, e.g. as extension method to Index.
 // Bonus: We can also keep the iterator to auto-number Entities spawned later!
 // (if we spawn 1-by-1, or place them in an interstitial Archetype)
+```
+
+```csharp [Closure]
+// This is the shortest way. It's so simple that we can't help but love it.
+var i = 0; 
+stream.For((ref Index index) => index = new(i++));
+
+// Not only that, but YOU actually clicked here to read this. You earned this!
+
+// Tiny Boilerplate, good speed, low memory allocations... what's not to love?
+// Sure, loosey-goosey integers and closures can be spoopy in program design.
+// But we are all adults here. Some like their food plain, some like it spicy.
 ```
 
 ```csharp [Enumerator (store-bought)]
