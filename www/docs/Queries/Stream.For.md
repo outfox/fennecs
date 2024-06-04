@@ -1,6 +1,6 @@
 ---
 title: For
-order: 1
+order: 2
 ---
 
 # Classic Query Workloads
@@ -10,15 +10,15 @@ order: 1
 ::: info ENTITY BY ENTITY, ONE BY ONE
 Process one work item at a time. Fast, fun, and flexible.
 ![a fennec eating pizza alone](https://fennecs.tech/img/fennec-for.png)
-Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each Entity in the query, providing the Components that match the ==Stream Types== as `ref` to the code.  
+Call a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate for each Entity in the Query, providing the Components that match the ==Stream Types== as `ref` to the code.  
 :::
 
 "**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  Chances are you can ship your entire game with just this one. Let us know how it went!
 
 ### Description
-Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](Query.1-5.md#stream-types).
+Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](Stream.1-5.md#stream-types).
 
-Each `For`-Runner takes a [`RefAction`](Delegates.md#refaction-and-refactionu) or [`RefActionU<>`](Delegates.md#refaction-and-refactionu) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Query.1-5.md#prefix-subsets).
+Each `For`-Runner takes a [`RefAction`](Delegates.md#refaction-and-refactionu) or [`RefActionU<>`](Delegates.md#refaction-and-refactionu) as delegate parameter. The Type Parameters for the Actions are the Stream Types of the Query, or a [prefix subset](Stream.1-5.md#prefix-subsets).
 
 The Runner is executed directly on the calling thread. Until the runner returns, the World is in `WorldMode.Deferred`, meaning structural changes are applied once the Runner has finished.
 
@@ -28,14 +28,14 @@ Call a Runner on a Query to have it execute the delegate you're passing in. You 
 
 ::: code-group
 ```cs [For(...) plain]
-myQuery.For((ref Vector3 velocity) => 
+myStream.For((ref Vector3 velocity) => 
 {
     velocity += 9.81f * Vector3.DOWN * Time.deltaTime;
 });
 ```
 
 ```cs [For&lt;U&gt;(...) with uniform]
-myQuery.For((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
+myStream.For((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
 {
     velocity += uniform.gravity * uniform.dt;
 }, 
@@ -58,14 +58,14 @@ Want more nuance? `RefActions` can be passed to runners in several ways. Choose 
 ```cs [🆗 lambda/delegate]
 // The classic. Fast to write, fast to execute. Easy!
 // 💩 Allocates memory for closure on each call!
-myQuery.For((ref Vector3 thrust, ref Vector3 velocity) => 
+myStream.For((ref Vector3 thrust, ref Vector3 velocity) => 
 {
     velocity += thrust * Time.deltaTime;
 });
 
 // Slightly faster than lambda expression in some benchmarks, but no other upside.
 // 💩 Allocates memory for closure on each call!
-myQuery.For(delegate (ref Vector3 thrust, ref Vector3 velocity) 
+myStream.For(delegate (ref Vector3 thrust, ref Vector3 velocity) 
 {
     velocity += thrust * Time.deltaTime;
 });
@@ -75,20 +75,20 @@ myQuery.For(delegate (ref Vector3 thrust, ref Vector3 velocity)
 // Fastest, most readable, most refactorable, best code re-use.
 // Good when debugging. Awesome for Unit Testing!
 // ✅ No additional memory allocation! Use Uniform variant to "capture" values.
-myQuery.For(Physics.ApplyThrust); 
+myStream.For(Physics.ApplyThrust); 
 ```
 
 ```cs [🥈 static lambda/delegate]
 // Fast, very flexible. Use For<U>+uniform delegate to "capture" values.
 // ✅ No additional memory allocation! A bit meh to log/debug.
-myQuery.For(static (ref Vector3 thrust, ref Vector3 velocity) =>
+myStream.For(static (ref Vector3 thrust, ref Vector3 velocity) =>
 {
     velocity += thrust * Time.deltaTime;
 });
 
 // Slightly faster than lambda expression in some benchmarks.
 // ✅ No additional memory allocation! But longer syntax.
-myQuery.For(static delegate (ref Vector3 thrust, ref Vector3 velocity) 
+myStream.For(static delegate (ref Vector3 thrust, ref Vector3 velocity) 
 {
     velocity += thrust * Time.deltaTime;
 });
@@ -98,7 +98,7 @@ myQuery.For(static delegate (ref Vector3 thrust, ref Vector3 velocity)
 // Named Method means improved readability and code re-use.
 // Executes slightly faster than lambda. Best when debugging (this!)
 // 💩 Allocates memory for 'this' when passed as a delegate!
-myQuery.For(this.ApplyThrust); 
+myStream.For(this.ApplyThrust); 
 
 ```
 :::
@@ -120,7 +120,7 @@ But amazingly, a **Uniform** can be anything: a primitive type like `int`, a `st
 ::: details REMINDER
 ```cs
 // Declaring with a System.ValueTuple Uniform for the win!
-myQuery.For(static (ref Vector3 velocity, (Vector3 gravity, float dt) uniform) =>
+myStream.For(static (ref Vector3 velocity, (Vector3 gravity, float dt) uniform) =>
 {
     velocity += uniform.gravity * uniform.dt;
 }, 

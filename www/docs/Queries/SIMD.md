@@ -10,18 +10,20 @@ Queries expose a set of SIMD operations that allow you to perform bulk operation
 ![fennec, translucent and glowy blue](https://fennecs.tech/img/fennec-vectorized-256.png)
 *"Eight Entities at the same time. f'ing A!"*
 
-They perform simple writes and arithmetic operations at blazing speeds, and are a great complement to your [Runners](Query.For.md) for more complex logic.
+They perform simple writes and arithmetic operations at blazing speeds, and are a great complement to your [Runners](Stream.For.md) for more complex logic.
 
 The operations make use of `System.Intrinsics`, especailly the AVX2, SSE2 and ARM AdvSIMD vector instructions where available. 
 
 
 ::: tip QUAD :neofox_glasses: WORD :neofox_glasses: QUAD :neofox_glasses: NERD :neofox_glasses: HACK
-Psst... you can implement your own arbitrary SIMD operations as seen in the  [Query.Raw Example](Query.Raw.md#examples).  
+Psst... you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](Stream.Raw.md#examples).  
 And since we like to live fast and foxy, try the new implicit extension types in C# 13 for that!
 :::
 
 
 ## `Query<C>.Blit`
+![a fennec splashes a paintbucket at an entire wall ](https://fennecs.tech/img/fennec-blit.png)
+
 The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Query. `C` must be one of the Query's [Stream Types](index.md#stream-types). It requires no additional setup and is always safe.
 
 ```csharp

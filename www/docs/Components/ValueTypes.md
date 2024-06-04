@@ -59,7 +59,7 @@ Since value type components are stored contiguously in memory, iterating over en
 ```csharp
 var query = world.Query<Position, Velocity>().Compile();
 
-query.For((ref Position position, ref Velocity velocity) =>
+Stream.For((ref Position position, ref Velocity velocity) =>
 {
     position.X += velocity.X;
     position.Y += velocity.Y;

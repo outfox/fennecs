@@ -21,7 +21,7 @@ To settle an old score, we need to get even with five ~~former friends~~ Entitie
 
 We create the Entities and define the [Relation](../../docs/Relation.md) (`struct Betrayed`) they have with us, and also ours (`struct Grudge`) with them. We include a plain [Component](/docs/Components/) (`struct Location`) as useful data to everyone involved.
 
-Next, we query for the Relation, say hello, and ~~unalive~~ interact with the Entities in a [Query.For](../../docs/Queries/Query.For.md). This removes our `Grudge` for them.
+Next, we query for the Relation, say hello, and ~~unalive~~ interact with the Entities in a [Stream.For](../../docs/Queries/Stream.For.md). This removes our `Grudge` for them.
 
 ### Recipe
 ::: code-group

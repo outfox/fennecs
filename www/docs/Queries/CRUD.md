@@ -13,7 +13,7 @@ It's an easy, powerful way to operate in bulk on all entities matched by the que
 ::: code-group
 ```cs [Damage System]
 // Query for all entities with Health that also took Damage
-var whoTookDamage = world.Query<Health, Damage, Identity>().Build();
+var whoTookDamage = world.Query<Health, Damage, Identity>().Stream();
 
 // Do something for each Entity in Query
 whoTookDamage.For((ref Health health, ref Damage damage, ref Identity id) => 
@@ -28,7 +28,7 @@ whoTookDamage.Remove<Damage>();
 
 ```cs [Death Explosion System]
 // Query for all Entities that are about to Explode (and have a Position)
-var whosExplodingWhere = world.Query<Position>().Has<Exploding>().Build();
+var whosExplodingWhere = world.Query<Position>().Has<Exploding>().Stream();
 
 // Do something for each Entity in Query
 whosExplodingWhere.For((ref Position position) => Game.SpawnExplosion(position));
@@ -41,7 +41,7 @@ whosExplodingWhere.Despawn();
 var loadedGuns = world.Query()
     .Has<Gun>()
     .Not<Loaded>().Not<Cooldown>().Not<RequestProjectileSpawn>()
-    .Build();
+    .Stream();
 
 // ⚠️ multiple bulk operations may require batching, because
 // entities wouldn't necessarily match our query after each change
@@ -57,9 +57,9 @@ loadedGuns.Batch()
 :::
 
 ## Adding & Removing Components in Bulk
-`Query.Add<C>` adds a Component to each Entity in the Query. This throws if the Query already matches that Component - either ALL entities in the query would already have the Component, or the query would be empty anyway.
+`Query.Add<C>` adds a Component to each Entity in the Query. This throws if the Query already matches that Component - either ALL entities in the Query would already have the Component, or the query would be empty anyway.
 
-`Query.Remove<C>` removes a Component from each Entity in the Query. This throws if the Query doesn't match that Component - NO entities in the query would have the Component on them, anyway.
+`Query.Remove<C>` removes a Component from each Entity in the Query. This throws if the Query doesn't match that Component - NO entities in the Query would have the Component on them, anyway.
 
 
 ## Adding & Removing Links in Bulk
@@ -99,7 +99,7 @@ Replaces any existing components in addition to adding the new ones where not pr
 
 ### Batch.RemoveConflict
 `Disallow = default`  
-Throw if attempting to remove a component unless it is expressly included in the query (and thus present on all entities.)
+Throw if attempting to remove a component unless it is expressly included in the Query (and thus present on all entities.)
 
 `Allow`  
 Allow operating on Archetypes where the Component to be removed is not present. Removal operations are Idempotent on these archetypes, i.e. they don't change them (on their own) and have a near-zero cost.

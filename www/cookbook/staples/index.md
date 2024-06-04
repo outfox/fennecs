@@ -1,5 +1,5 @@
 ---
-title: Staples
+title: Staple Foods
 
 head:
   - - meta

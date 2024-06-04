@@ -1,12 +1,13 @@
 ---
-title: Numbering Entities
+title: 1,2,3 Numbering Entities
 outline: [2, 3]
+order: 1
 ---
 
 # Numbering Entities (with an Index)
 
-What we found while working with ECS was surprisingly often that we needed to assign a unique, contiguous index to all our Entities.
-**fenn**ecs makes this possible in a variety of way, depending on your needs. Here are a few examples:
+What we found while working with ECS was surprisingly often that we needed to assign a not only unique (for that, you could just use the Entity struct), but also contiguous index to all our Entities, for example to sample noise or functions for each Entity deterministically.
+**fenn**ecs makes this possible in a variety of way, depending on your needs.
 
 ### Preparation
 
@@ -15,14 +16,11 @@ First, let's define the components we'll need:
 ::: code-group
 ```csharp [Index Component]
 // We use a super-lightweight, record struct as our index component
-private record struct Index(int Value);
-
-// records and record structs are a C# 9 feature that makes it easy
-// to define simple, expressive, type-safe data types.
+record struct Index(int Value);
 ```
 ```csharp [(or) Fancy Index]
 // We use a super-lightweight, record struct as our index component
-private record struct Index(int Value)
+record struct Index(int Value)
 {    
     public static IEnumerator<Index> Ascending(int from = 0, int to = int.MaxValue)
     {   // This (optional) Enumerator yields arbitrary, persistible index ranges
@@ -30,7 +28,7 @@ private record struct Index(int Value)
     }
 }
 ```
-```csharp [Spawn Test Data]
+```csharp [(then) Test Data]
 // Simply spawn some entities with zero-initialized Index components
 var world = new World();
 world.Entity()
@@ -41,12 +39,13 @@ world.Entity()
 :::
 
 ### Grab your Fork and Stream
+Make your ~~order~~ Query! There's a neat shorthand to get a Stream View since **fenn**ecs 0.5.x!
 ```csharp
-// This is shorthand for a stream query.
 var stream = world.Stream<Index>();
 ```
 
-### Indexer running its (Main) Course
+### Indexer coming right up!
+... lots of variety in our diet, and probably we can cook up a dozen more.
 ::: code-group
 
 ```csharp [Closure]
@@ -55,10 +54,11 @@ var i = 0;
 stream.For((ref Index index) => index = new(i++));
 
 // Tiny Boilerplate, good speed, low memory allocations... what's not to love?
-// But loosey-goosey integers and closures can be spoopy. You have been warned.
+// But loosey-goosey integers and closures can be spoopy in program design.
+// Some season with custom types & operators - others like to eat it plain!
 ```
 
-```csharp [uniform + Fancy]
+```csharp [Enumerator (fancy)]
 // This is the cleanest way and overall has good characteristics.
 stream.For(
     uniform: Index.Ascending(from: 0),
@@ -68,12 +68,13 @@ stream.For(
         index = enumerator.Current;
     }
 );
-
-// ... but it needs the fancy enumerator, e.g. as extension method to Index
+// The method needs the fancy enumerator, e.g. as extension method to Index.
+// Bonus: We can also keep the iterator to auto-number Entities spawned later!
+// (if we spawn 1-by-1, or place them in an interstitial Archetype)
 ```
 
-```csharp [LINQ Enumerator]
-// It is fine if you don't want to augment your Type and want an ad-hoc enumerator.
+```csharp [Enumerator (store-bought)]
+// LINQ is fine! No need to augment your Type, take an ad-hoc enumerator.
 using var range = 
     Enumerable.Range(0, count).Select(i => new Index(i)).GetEnumerator();
 

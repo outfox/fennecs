@@ -23,8 +23,8 @@ Components can be backed by any type; Value or Reference, even empty `structs`.
 ### [Queries](Queries/) filter Entities using [Match Expressions](Queries/Matching.md).
 This matching is done by Component types and targets (presence or absence).
 
-### Queries let your code [Act](Queries/Query.For.md) on streams of Component data.
-You provide logic in [Runner Delegates](Queries/Delegates.md) which are executed on a [single](Queries/Query.For.md) or [multiple](Queries/Query.Job.md) threads.
+### Queries let your code [Act](Queries/Stream.For.md) on streams of Component data.
+You provide logic in [Runner Delegates](Queries/Delegates.md) which are executed on a [single](Queries/Stream.For.md) or [multiple](Queries/Stream.Job.md) threads.
 
 ### Component data is always kept contiguous* in Memory.
 Structurally similar Entities are packed into [Archetypes](Archetype.md) for improved [cache locality](https://en.wikipedia.org/wiki/Locality_of_reference).
@@ -44,11 +44,11 @@ These add expressive, powerful grouping semantics. Relations can be backed by an
 ### [Links](Link.md) are Components backed by an [Object Target](Queries/Matching.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
 
-### Runners let you pass [uniform](Queries/Query.For.md#uniforms-shmuniforms) data to your Workloads.
+### Runners let you pass [uniform](Queries/Stream.For.md#uniforms-shmuniforms) data to your Workloads.
 A tiny tidbit that streamlines the process of passing data into a job or run.
 
 ### Queries expose *fast* Structural Change, SIMD, and Memory Ops
-Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk - even entire [memory blocks](Queries/Query.Raw.md).
+Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md), or [modify](Queries/SIMD.md) components in bulk - even entire [memory blocks](Queries/Stream.Raw.md).
 
 ### Worlds and Queries are `IEnumerable<Entity>`.
 It's amazing to be able to every now and then just LINQ it up and <u>*be done*</u> somewhere.

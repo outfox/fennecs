@@ -1,6 +1,7 @@
 ---
 title: Damage over Time
 outline: [2, 3]
+order: 3
 ---
 
 # Turns out, Vampires aren't Survivors?!

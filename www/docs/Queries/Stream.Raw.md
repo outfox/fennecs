@@ -1,6 +1,6 @@
 ---
 title: Raw
-order: 1
+order: 2
 
 ---
 # Custom Query Workloads
@@ -33,7 +33,7 @@ Copying memory regions is hard, and **Multiprocessing is HARDER.** Currently, **
 // This is NOT how Raw is usually used, but you can, in the trivial
 // case, use it to iterate the Memory<T> yourself. The main use for
 // this is to perform some sort of early-out iteration, e.g. search)
-myQuery.Raw((Memory<Vector3> velocities) => 
+myStream.Raw((Memory<Vector3> velocities) => 
 {
     foreach (ref var velocity in velocities.Span) 
     {
@@ -46,7 +46,7 @@ myQuery.Raw((Memory<Vector3> velocities) =>
 // This is NOT how Raw is usually used, but you can, in the trivial
 // case, use it to iterate the Memory<T> yourself. The main use for
 // this is to perform some sort of early-out iteration, e.g. search)
-myQuery.Raw((Memory<Vector3> velocities, (float dt, Vector3 g) uniform) => 
+myStream.Raw((Memory<Vector3> velocities, (float dt, Vector3 g) uniform) => 
 {
     foreach (ref var velocity in velocities.Span) 
     {
@@ -78,7 +78,7 @@ You can either access this memory as a `Span`, cast it to the desired type, etc.
 
 ::: code-group
 ```cs [🦋 use as span]
-var movers = World.Query<Position, Velocity>().Build();
+var movers = World.Query<Position, Velocity>().Stream();
 movers.Raw((Memory<Position> positions, Memory<Velocity> velocities, float dt) => 
 {
     Engine.Physics.Integrate(positions.Span, velocities.Span, dt);
@@ -87,7 +87,7 @@ Time.deltaTime);
 ```
 
 ```cs [☠️ cast to type]
-_query.Raw(static delegate(Memory<Matrix4X3> transforms)
+_Stream.Raw(static delegate(Memory<Matrix4X3> transforms)
 {
     var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
     
@@ -99,7 +99,7 @@ _query.Raw(static delegate(Memory<Matrix4X3> transforms)
 ```
 
 ```cs [☠️☠️ process with SIMD  ]
-_query.Raw(static delegate(Memory<IntComp1> c1V, Memory<IntComp2> c2V)
+_Stream.Raw(static delegate(Memory<IntComp1> c1V, Memory<IntComp2> c2V)
 {
     var count = c1V.Length;
 

@@ -30,7 +30,7 @@ State is stored in Components on the Entities:
 - 1x `Matrix` (as Transform)
 - 1x `int` (as a simple identifier)
 
-The state is transferred into the Game Engine in bulk each frame using Query.Raw in order to submit just the `Matrix` structs directly to the Engine's data structures for this task.
+The state is transferred into the Game Engine in bulk each frame using Stream.Raw in order to submit just the `Matrix` structs directly to the Engine's data structures for this task.
 
 This static data is then used by the Engine's Renderer and to display the Entities.
 

@@ -63,7 +63,7 @@ partyGoers.For((ref name, ref playlist) =>
 
 ## Match Types
 
-From the start, a Query includes only Entities that match all of its [Stream Types](Query.1-5.md).
+From the start, a Query includes only Entities that match all of its [Stream Types](Stream.1-5.md).
 It does so regardless of whether it's a Plain Component, a Entity-Entity Relation, or an Object Link - unless expressly specified for each stream type in the QueryBuilder factory method. (see: [Match Targets](#match-targets)
 
 ::: details :neofox_magnify: BEHIND THE SCENES: What does a Query even DO?
@@ -158,7 +158,7 @@ Sometimes, it is useful to narrow down a Query a little (or a lot).
 
 For example:
 - perform an action on all followers of a specific character
-- pre-fetch a certain piece of data and then pass it in as a Uniform to a [Query Runner](Query.1-5.md#passing-workloads-to-stream-queries)
+- pre-fetch a certain piece of data and then pass it in as a Uniform to a [Query Runner](Stream.1-5.md#passing-workloads-to-stream-queries)
 
 ::: warning :neofox_think: PAWS FOR THOUGHT: When does the matching / filtering happen?
 Exclusion criteria like those below are hard-baked into the query. This is *slightly more performant*, but semantically inflexible. 
@@ -169,7 +169,7 @@ var friendsInNeed = world.Query<Friend>()
     .Unchecked()    // because the next two conflict with Entity
     .Has<Owes>(bob) // subset - specifically anyone who owes bob
     .Not<Owes>(me)  // exclusion - but who does not owe myself
-    .Build();
+    .Stream();
 
 friendsInNeed.For(PayOffDebt);
 ```
@@ -184,7 +184,7 @@ Our Query is always valid as compiled, and we can dynamically narrow down its ma
 ```cs
 var friendsInNeed = world.Query<Friend>()
     .Has<Owes>(Match.Entity)  // we care about Entity-Entity relations
-    .Build();
+    .Stream();
 
 friendsInNeed.Subset<Owes>(bob);
 friendsInNeed.Exclude<Owes>(me);

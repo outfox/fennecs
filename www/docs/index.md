@@ -24,7 +24,7 @@ var world = new fennecs.World();
 var entity = world.Spawn().Add<Vector3>();
 var query = world.Query<Vector3>().Compile();
 
-query.For(static (ref Vector3 velocity, float dt) => {
+Stream.For(static (ref Vector3 velocity, float dt) => {
     velocity.Y -= 9.81f * dt;
 }, uniform: Time.Delta);
 ```

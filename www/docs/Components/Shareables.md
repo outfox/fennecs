@@ -39,7 +39,7 @@ Query shared components using the same syntax as regular components:
 ```csharp
 var query = world.Query<SharedData>().Compile();
 
-query.For((ref SharedData data) =>
+Stream.For((ref SharedData data) =>
 {
     data.Value++; // increments value once for each entity in query!
 });

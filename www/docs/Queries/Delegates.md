@@ -6,7 +6,7 @@ order: 3
 Runner methods on Steam Queries expect delegates (Actions) to call. The delegate signatures mirror the count and order of the Query's Stream Types.
 
 ## `RefAction<>` and `RefActionU<>`
-These are invoked by [`Query<>.For`](Query.For.md) and [`Query<>.Job`](Query.Job.md). The Uniforms are contravariant, which helps with code reuse when you refactor your anonymous, named, or static method signatures to take broader data types.
+These are invoked by [`Query<>.For`](Stream.For.md) and [`Query<>.Job`](Stream.Job.md). The Uniforms are contravariant, which helps with code reuse when you refactor your anonymous, named, or static method signatures to take broader data types.
 
 ::: code-group
 ```cs [plain]
@@ -28,7 +28,7 @@ delegate void RefActionU<C0, C1, C2, C3, C4, in U>(ref C0 c0, ref C1 c1, ref C2 
 
 
 ## `MemoryAction<>` and `MemoryActionU<>`
-These are invoked by [`Query<>.Raw`](Query.Raw.md).
+These are invoked by [`Query<>.Raw`](Stream.Raw.md).
 
 ::: code-group
 ```cs [plain]

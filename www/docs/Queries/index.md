@@ -25,20 +25,15 @@ A World contains Entities and their Components, as well as their structure and R
 ## 1. Matching & Filtering Entities
 It remains associated with this specific World, and Queries can not bridge multiple Worlds. Queries use [Match Expressions](Matching.md) to define the subset of Entities they ==contain== ("match").
 
-## 2. Processing Data (via [Stream Queries](Query.1-5.md))
+## 2. Processing Data (through [Stream Views](Stream.1-5.md))
 
-The most powerful feature of Queries is that they can un code on all Entities they match; and even feed references to component data (the Stream Types) to the delegate code being passed in.
+The most powerful feature of Queries is that they can provide a Stream View (also known as a `zip view`) that can run code on all Entities in the Query; and even provide mutable references to component data (the Stream Types) to the delegate code being passed in.
 
 
-## 3. Bulk Create, Read, Update, Delete
+## 3. Bulk ~~Create~~, Read, Update, Delete
 Queries expose methods to operate quickly and with clear intent on all the entities matched by the query - [read more!](CRUD.md)
 
 Use the method `Query.Despawn()` to despawn all Entities in that Query.
 Alternatively, use `Query.Truncate(int, TruncateMode)` to cut your Query down to a specific size.
-
-
-
-
-
 
 

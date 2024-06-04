@@ -1,6 +1,7 @@
 ---
 title: OOP & Inheritance
 outline: [2, 3]
+order: 4
 ---
 
 # Object Oriented Programming

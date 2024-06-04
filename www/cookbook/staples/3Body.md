@@ -1,6 +1,7 @@
 ---
 title: 3-Body Problem
 outline: [2, 3]
+order: 2
 ---
 
 # 3-Body Problem

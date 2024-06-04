@@ -89,7 +89,7 @@ No need to manually remove a component from each entity in a Query, enqueing the
 
 An `IDisposable` that can be aquired from a World to set it to Deferred Mode, meaning all structural changes are queued and executed only after the last lock has been returned.
 
-All the Query runners use this internally to defer structural changes until the Runner has completed.
+All the Stream Runners use this internally to defer structural changes until the Runner has completed.
 
 ::: code-group
 

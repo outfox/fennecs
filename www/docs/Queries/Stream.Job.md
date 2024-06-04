@@ -1,6 +1,6 @@
 ---
 title: Job
-order: 1
+order: 2
 
 ---
 # Parallel Query Workloads
@@ -16,19 +16,19 @@ Takes a [`RefAction`](Delegates.md#refaction-and-refactionu) delegate and instan
 Sometimes, mommy and daddy foxes want to be on separate CPU cores. That doesn't mean they don't love each other anymore! It only means that if you ~~can keep a secret~~ have **lots and lots** of entities in large Archetypes, you might get ~~a new action figure~~ performance gains tomorrow!
 
 ### Basic Syntax
-The nice part is, you can easily swap out `Query.Job` for `Query.For` and vice versa. There are optional parameters to optimize how the work is split up that you can use later to fine-tune your runtime performance.
+The nice part is, you can easily swap out `Stream.Job` for `Stream.For` and vice versa. There are optional parameters to optimize how the work is split up that you can use later to fine-tune your runtime performance.
 
 ::: code-group
 
 ```cs [Job(...) plain]
-myQuery.Job((ref Vector3 velocity) => 
+myStream.Job((ref Vector3 velocity) => 
 {
     velocity += 9.81f * Vector3.DOWN * Time.deltaTime;
 });
 ```
 
 ```cs [Job&lt;U&gt;(...) with uniform]
-myQuery.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
+myStream.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
 {
     velocity += uniform.gravity * uniform.dt;
 }, 
@@ -36,7 +36,7 @@ myQuery.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) =>
 ```
 
 ```cs [Job&lt;U&gt;(...) with uniform + chunksize]
-myQuery.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
+myStream.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
 {
     velocity += uniform.gravity * uniform.dt;
 }, 
@@ -47,12 +47,12 @@ myQuery.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) =>
 ## Chunk Size
 Choosing the right way to spread your workload across CPU cores can yield significant performance gains.
 
-By Default, **fenn**ecs will parallelize workloads only per entire Archetype. The `chunkSize` optional parameter passed into `Query.Job` affords fine-grained control over how the work is split up within each Archetype being processed.
+By Default, **fenn**ecs will parallelize workloads only per entire Archetype. The `chunkSize` optional parameter passed into `Stream.Job` affords fine-grained control over how the work is split up within each Archetype being processed.
 
 :::warning :neofox_glare_sob: A GOOD TRADE-OFF LEAVES EVERYONE MAD!
-Overhead for thread scheduling is real; as are context switches between threads. Experiment finding the right workload Chunk Size (start big - try 69,420, they say it's nice) and always consider giving [`Query.For`](Query.For.md) another look if you realize there's too much overhead or ==fragmentation==.
+Overhead for thread scheduling is real; as are context switches between threads. Experiment finding the right workload Chunk Size (start big - try 69,420, they say it's nice) and always consider giving [`Stream.For`](Stream.For.md) another look if you realize there's too much overhead or ==fragmentation==.
 
-You can also set the [Filter State](Filters.md) of your Query to only include the Archetypes you want to process as a `Query.Job`, and use `Query.For` to do the rest. Or make it even easier: **Create Two Queries.**
+You can also set the [Filter State](Filters.md) of your Query to only include the Archetypes you want to process as a `Stream.Job`, and use `Stream.For` to do the rest. Or make it even easier: **Create Two Queries.**
 :::
 
 Scheduling Jobs has a certain overhead, so just splitting work across as many CPUs as possible sometimes slows down processing speeds.
