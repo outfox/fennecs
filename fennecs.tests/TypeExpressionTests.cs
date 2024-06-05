@@ -43,7 +43,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void Is_Sorted_By_TypeId_First()
+    public void Is_Sorted_By_TypeId_Ascending()
     {
         var random = new Random(4711);
         for (var i = 0; i < 10_000; i++)
@@ -54,8 +54,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
             var t2 = new TypeExpression(new Target(new Identity(id, deco)), (TypeID) (i + 1));
 
             //  If this test fails, Archetypes will not be able to build immutable buckets for Wildcards.
-            Assert.True(t1.CompareTo(t2) > 0);
-            Assert.True(t2.CompareTo(t1) < 0);
+            Assert.True(t1.CompareTo(t2) < 0);
+            Assert.True(t2.CompareTo(t1) > 0);
         }
     }
 

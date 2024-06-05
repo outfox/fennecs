@@ -159,9 +159,9 @@ public class SignatureTests
         using var enumerator = signature.GetEnumerator();
 
         Assert.True(enumerator.MoveNext());
-        Assert.Equal(TypeExpression.Of<string>(Identity.Plain), enumerator.Current);
-        Assert.True(enumerator.MoveNext());
         Assert.Equal(TypeExpression.Of<int>(Identity.Plain), enumerator.Current);
+        Assert.True(enumerator.MoveNext());
+        Assert.Equal(TypeExpression.Of<string>(Identity.Plain), enumerator.Current);
         Assert.False(enumerator.MoveNext());
     }
 
@@ -205,8 +205,8 @@ public class SignatureTests
     public void Signature_Has_Indexer()
     {
         var signature = new Signature<TypeExpression>(TypeExpression.Of<int>(Identity.Plain), TypeExpression.Of<string>(Identity.Plain));
-        Assert.Equal(TypeExpression.Of<string>(Identity.Plain), signature[0]);
-        Assert.Equal(TypeExpression.Of<int>(Identity.Plain), signature[1]);
+        Assert.Equal(TypeExpression.Of<int>(Identity.Plain), signature[0]);
+        Assert.Equal(TypeExpression.Of<string>(Identity.Plain), signature[1]);
     }
 
     [Fact]
