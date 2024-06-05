@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -97,6 +98,8 @@ public partial class World : Query
                 return;
             }
 
+            DespawnDependencies(entity);
+
             ref var meta = ref _meta[entity.Id.Index];
 
             var table = meta.Archetype;
@@ -104,35 +107,41 @@ public partial class World : Query
 
             _identityPool.Recycle(entity);
 
-            DespawnDependencies(entity);
-    }
-
-    
-    private void DespawnDependencies(Entity entity)
-    {
             // Patch Meta
             _meta[entity.Id.Index] = default;
+    }
 
-            // Find identity-identity relation reverse lookup (if applicable)
-            if (!_typesByRelationTarget.Remove(Relate.To(entity), out var list)) return;
 
-            //Remove Components from all Entities that had a relation
-            foreach (var type in list) //TODO: Benchmark sorted and reversed hashsets here.
+    private void DespawnDependencies(Entity entity)
+    {
+        // Find identity-identity relation reverse lookup (if applicable)
+        if (!_typesByRelationTarget.Remove(Relate.To(entity), out var relations)) return;
+
+        // If we have multiple components with this target on something, iterative despawn
+        // will actually create some fresh archetypes here, so this has to be multipass.
+        //while (relations.Any(r => _tablesByType.ContainsKey(r)))
+        {
+            //Remove Components from all Entities that had that relation
+            foreach (var type in relations) //TODO: Benchmark sorted and reversed hashsets here.
             {
-                //Cloen the list.
+                //Clone the list. There MUST be a better way (it also doesnt work :D)
                 var tablesWithType = new List<Archetype>(_tablesByType[type]);
 
                 foreach (var source in tablesWithType)
                 {
-                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != new Target(entity)).ToImmutableSortedSet());
-                    
-                    var destination = GetArchetype(signatureWithoutTarget);
-                    source.Migrate(destination);
-                    
+                    if (!source.IsEmpty)
+                    {
+                        var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != new Target(entity)).ToImmutableSortedSet());
+
+                        var destination = GetArchetype(signatureWithoutTarget);
+                        source.Migrate(destination);
+                    }
                     //Because the dependency is now gone, we close down the whole archetype.
+                    //TODO: Should actually do this after certain migrates, not only despawns. 
                     DisposeArchetype(source);
                 }
             }
+        }
     }
     #endregion
 
@@ -224,7 +233,6 @@ public partial class World : Query
         if (_typeGraph.TryGetValue(types, out var table)) return table;
 
         table = new(this, types);
-        _typeGraph.Add(types, table);
 
         //This could be given to us by the next query update?
         Archetypes.Add(table);
@@ -252,15 +260,16 @@ public partial class World : Query
 
             if (!type.isRelation) continue;
 
-            if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeList))
+            if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
             {
-                typeList = [];
-                _typesByRelationTarget[type.Relation] = typeList;
+                typeSet = [];
+                _typesByRelationTarget[type.Relation] = typeSet;
             }
-
-            typeList.Add(type);
+            
+            typeSet.Add(type);
         }
 
+        _typeGraph.Add(types, table);
         return table;
     }
 

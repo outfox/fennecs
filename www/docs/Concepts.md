@@ -1,6 +1,7 @@
 ---
 title: Concepts
 order: 0
+outline: [1, 2]
 
 head:
   - - meta
@@ -8,7 +9,7 @@ head:
       content: Conceptual overview over the fennecs Entity-Component System
 ---
 
-# ~~Entities~~ Foxes for the Win!
+# ~~Entities~~ Foxes  for the Win!
 The Entity Component System (ECS) is an architectural pattern used in game development and software design. It focuses on the composition of entities using components, rather than inheritance. Entities are unique identifiers, components are pure data structures, and systems are the logic that operates on entities and their components. ECS promotes flexibility, performance, and maintainability by separating data from behavior and enabling the creation of complex game objects through the composition of simpler components.
 
 # Typical ECS Concepts 
@@ -68,4 +69,6 @@ Worlds process them at the end of a Query Runner's scope, otherwise immediately.
 
 :::
 
+---------------------
 
+:neofox_boop_happy: ![graffiti "fennecs rule"](https://fennecs.tech/img/fennecs-rule.png)

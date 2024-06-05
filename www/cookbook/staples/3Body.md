@@ -15,7 +15,7 @@ The [three-body problem](https://en.wikipedia.org/wiki/Three-body_problem) is a 
 `1:N` and `N:M` relations with Entities continuously influencing each other in complex ways have always been a challenge to model in Entity Component Systems!
 
 This drawback often affects typical gameplay scenarios such as characters following leaders, flocking, gravitational simulations, group threat/safety assessments, and more.
-::: details WANNA KNOW WHY?
+::: details :neofox_think: PAWS FOR THOUGHT: Wanna know why it's difficult?
 Such features require expensive additional or reverse lookups that do not scale well with the rest of the ECS design, interrupting the normal execution flow, often even requiring external data structures to collate the information.
 
 This is a common problem in ECS design, where the iteration over Entities is the main performance benefit, and the need for additional lookups can quickly negate that benefit.

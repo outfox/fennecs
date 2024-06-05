@@ -22,6 +22,9 @@ public readonly record struct Relate
         if (self.Value == default) return Identity.Plain;
         return new(self.Value);
     }
+    
+    /// <inheritdoc />
+    public override string ToString() => Value.ToString();
 }
 
 /// <summary>
@@ -48,6 +51,9 @@ public readonly record struct Link<T> where T : class
     {
         value = Object;
     }
+    
+    /// <inheritdoc />
+    public override string ToString() => Object?.ToString() ?? "null";
 }
 
 public static class Link

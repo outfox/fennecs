@@ -1,7 +1,7 @@
 ---
-title: 5. WIP One Ring (Links)
+title: 6. WIP One Ring (Links)
 outline: [2, 3]
-order: 5
+order: 6
 ---
 
 #  One Ring to Find Them

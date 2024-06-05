@@ -300,6 +300,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <param name="destination">the Archetype to move the entities to</param>
     internal void Migrate(Archetype destination)
     {
+        if (IsEmpty) return;
+        
         // Certain Add-modes permit operating on archetypes that themselves are in the query.
         // No more migrations are needed at this point (they would be semantically idempotent)
         if (destination == this) return;

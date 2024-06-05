@@ -125,7 +125,7 @@ Technically, all of these are actually methods on `QueryBuilder<>` instances, bu
 
 ## Match Targets
 
-Not only the Stream Types can match specific or wildcarded targets. `world.Query<ST1, ST2>()` is the same as `world.Query<ST1, ST2>(Match.Any, Match.Any)`, but these targets can be other Wildcards, or the IdEntities of specific Objects and Entities.
+Not only the Stream Types can match specific or wildcarded targets. `world.Query<ST1, ST2>()` is the same as `world.Query<ST1, ST2>(Match.Any, Match.Any)`, but these targets can be other Wildcards, or the Identities of specific Objects and Entities.
 
 The same is true for any other `Match Type` expression, like `Has`, `Not`, or `Any`.
 
@@ -135,14 +135,14 @@ In ECS, the presence of another component often carries a meaning in itself, and
 
 The `default` Identity, also known as `Match.Plain`, matches only components that have no targets, i.e. that are just pure data without any relational meaning.
 
-In addition to specific idEntities, there are five virtual wildcard IdEntities:
+### Wildcards
+In addition to specific `Entities` *(or Object Identities)* that can be `Targets`, there are several virtual wildcard Identities:
 - `Match.Any` matches any target, including the default. 
   - *this is the silent default for all Stream Types, unless otherwise specified*
 - `Match.Target` matches any actual targets (both Object and Entity, but not Plain)
 - `Match.Object` matches only Object targets (so called Object Links)
 - `Match.Entity` matches only Entity targets (so called Entity-Entity Relations)
-- `Match.Plain` matches only components without a targets. This is great for [Tags](../Components/Tags.md) (like `Dead` or `Invisible`)
-
+- `Match.Plain` matches only pure data components without targets. 
 
 
 ## Cleaning up unused Queries

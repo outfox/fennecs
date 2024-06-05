@@ -113,6 +113,9 @@ public readonly record struct Target
         identity = Value;
     }
 
+    
+    /// <inheritdoc/>
+    public override string ToString() => Value.ToString();
 
     // TODO: decide encoding whether new(-1/*int.MinValue*/, 0); etc...
     internal static readonly Identity idPlain = default;

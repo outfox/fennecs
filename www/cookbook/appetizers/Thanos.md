@@ -1,7 +1,7 @@
 ---
-title: 6. Thanos (Filters)
+title: 5. Thanos (Filters)
 outline: [2, 3]
-order: 6
+order: 5
 ---
 
 # How to Snap ~25% of the World away

@@ -1,6 +1,7 @@
 ---
 title: Components
 order: 4
+outline: [1, 3]
 ---
 
 # Components
@@ -8,14 +9,15 @@ order: 4
 Components are data attached to Entities!
 
 ### Entities can have ...
-0. no components at all
 1. zero or one of each component type
-2. any number of unique components
+1. any number of unique components
 
 ### Components can ...
-0. be added/removed to an entity
-1. be shared between entities (by reference)
-2. be queried for in systems
+1. be added/removed to an Entity
+1. have any C# language type
+1. have an optional [Target](/docs/Queries/Matching.md#match-targets) (secondary key) associated with them
+1. be shared between Entities (by reference)
+1. be [Queried](/docs/Queries/index.md) for and processed by [Streams](/docs/Streams/index.md)
 
 
 ![a cartoon fennec with a hand truck moving a large stack of colored boxes](https://fennecs.tech/img/fennec-components.png)

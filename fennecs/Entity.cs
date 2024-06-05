@@ -297,6 +297,6 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
 
         return sb.ToString();
     }
-
+    
     #endregion
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 using fennecs.pools;
 
@@ -82,7 +83,7 @@ public partial class World : IDisposable
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
-    /// <param name="match">default <see cref="Component.Plain"/>.<br/>Can alternatively be one
+    /// <param name="match">default <see cref="Component.Plain{T}"/>.<br/>Can alternatively be one
     /// of <see cref="Target.Any"/>, <see cref="Target.Object"/> or <see cref="Target.AnyTarget"/>
     /// </param>
     public void DespawnAllWith<T>(Target match = default)
@@ -170,35 +171,35 @@ public partial class World : IDisposable
         {
             if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
 
-            foreach (var archetype in Archetypes)
+            foreach (var archetype in Archetypes.ToArray())
             {
                 if (archetype.Count == 0) DisposeArchetype(archetype);
             }
-
-            Archetypes.Clear();
-            Archetypes.AddRange(_typeGraph.Values);
         }
     }
 
 
     private void DisposeArchetype(Archetype archetype)
     {
+        Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
+        Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
+        
         _typeGraph.Remove(archetype.Signature);
 
         foreach (var type in archetype.Signature)
         {
-            _tablesByType[type].Remove(archetype);
-
+            // Delete the entire reverse lookup if it's no longer needed)
             // This is still relevant if ONE relation component is eliminated, but NOT all of them.
             // In the case where the target itself is Despawned, _typesByRelationTarget already
             // had its entire entry for that Target removed.
-            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Relation, out var stillInUse))
+            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
             {
-                stillInUse.Remove(type);
-                if (stillInUse.Count == 0) _typesByRelationTarget.Remove(type.Relation);
+                typeSet.Remove(type);
+                if (typeSet.Count == 0) _typesByRelationTarget.Remove(type.Relation);
             }
 
             // Same here, if all Archetypes with a Type are gone, we can clear the entry.
+            _tablesByType[type].Remove(archetype);
             if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
         }
 
@@ -207,6 +208,10 @@ public partial class World : IDisposable
             // TODO: Will require some optimization later.
             query.ForgetArchetype(archetype);
         }
+        
+        //TODO: Maybe make these a virtual property or so.
+        Archetypes.Clear();
+        Archetypes.AddRange(_typeGraph.Values);        
     }
 
 

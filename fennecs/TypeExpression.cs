@@ -169,7 +169,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
 
     /// <inheritdoc cref="System.IComparable{T}"/>
-    public int CompareTo(TypeExpression other) => -Value.CompareTo(other.Value);
+    public int CompareTo(TypeExpression other) => Value.CompareTo(other.Value);
 
 
     ///<summary>
