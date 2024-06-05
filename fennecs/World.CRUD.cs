@@ -60,12 +60,12 @@ public partial class World
     {
         AssertAlive(identity);
 
+        //TODO: Should be moved up in hierarchy / removed (Identity is internal only)
         if (typeof(T) == typeof(Identity)) throw new TypeAccessException("Not allowed get mutable reference in root table (TypeExpression<Identity>, system integrity).");
 
-        var meta = _meta[identity.Index];
-        var table = meta.Archetype;
+        var (table, row, _) = _meta[identity.Index];
         var storage = table.GetStorage<T>(target);
-        return ref storage.Span[meta.Row];
+        return ref storage.Span[row];
     }
 
     internal ref T GetComponent<T>(Identity identity) => ref GetComponent<T>(identity, Identity.Plain);

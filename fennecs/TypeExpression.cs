@@ -94,6 +94,7 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         var self = this;
 
+        //TODO: HUGE OPTIMIZATION POTENTIAL! (set comparison is way faster than linear search, etc.) FIXME!!
         foreach (var type in other)
         {
             if (self.Matches(type)) return true;

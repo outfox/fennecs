@@ -65,7 +65,7 @@ public sealed class EntitySpawner : IDisposable
     }
 
     /// <inheritdoc cref="Entity.Add{T}(T, fennecs.Relate)"/>
-    public EntitySpawner Add<T>(T component, Relate target) where T : class
+    public EntitySpawner Add<T>(T component, Relate target) where T : notnull
     {
         var type = TypeExpression.Of<T>(target);
         return AddComponent(type, component);

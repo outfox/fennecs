@@ -188,6 +188,8 @@ public partial class World : IDisposable
 
         foreach (var type in archetype.Signature)
         {
+            /* BAD BUG: This would eagerly remove relations too early.
+             
             // Delete the entire reverse lookup if it's no longer needed)
             // This is still relevant if ONE relation component is eliminated, but NOT all of them.
             // In the case where the target itself is Despawned, _typesByRelationTarget already
@@ -197,6 +199,7 @@ public partial class World : IDisposable
                 typeSet.Remove(type);
                 if (typeSet.Count == 0) _typesByRelationTarget.Remove(type.Relation);
             }
+            */
 
             // Same here, if all Archetypes with a Type are gone, we can clear the entry.
             _tablesByType[type].Remove(archetype);

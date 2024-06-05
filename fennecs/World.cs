@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -115,33 +114,26 @@ public partial class World : Query
     private void DespawnDependencies(Entity entity)
     {
         // Find identity-identity relation reverse lookup (if applicable)
-        if (!_typesByRelationTarget.Remove(Relate.To(entity), out var relations)) return;
+        if (!_typesByRelationTarget.TryGetValue(Relate.To(entity), out var types) 
+            || types.Count == 0) return;
 
-        // If we have multiple components with this target on something, iterative despawn
-        // will actually create some fresh archetypes here, so this has to be multipass.
-        //while (relations.Any(r => _tablesByType.ContainsKey(r)))
+        // Collect Archetypes that have any of these relations
+        var toMigrate = Archetypes.Where(a => a.Signature.Overlaps(types)).ToList();
+
+        // And migrate them to a new Archetype without the relation
+        foreach (var archetype in toMigrate)
         {
-            //Remove Components from all Entities that had that relation
-            foreach (var type in relations) //TODO: Benchmark sorted and reversed hashsets here.
+            if (archetype.Count > 0)
             {
-                //Clone the list. There MUST be a better way (it also doesnt work :D)
-                var tablesWithType = new List<Archetype>(_tablesByType[type]);
-
-                foreach (var source in tablesWithType)
-                {
-                    if (!source.IsEmpty)
-                    {
-                        var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != new Target(entity)).ToImmutableSortedSet());
-
-                        var destination = GetArchetype(signatureWithoutTarget);
-                        source.Migrate(destination);
-                    }
-                    //Because the dependency is now gone, we close down the whole archetype.
-                    //TODO: Should actually do this after certain migrates, not only despawns. 
-                    DisposeArchetype(source);
-                }
+                var signatureWithoutTarget = archetype.Signature.Except(types);
+                var destination = GetArchetype(signatureWithoutTarget);
+                archetype.Migrate(destination);
             }
+            DisposeArchetype(archetype);
         }
+        
+        // No longer tracking this Entity
+        _typesByRelationTarget.Remove(Relate.To(entity));
     }
     #endregion
 
