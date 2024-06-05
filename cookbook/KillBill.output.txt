@@ -1,91 +1,62 @@
 Directed by: Trentin Quarantino
 As we said, there were 5 of them.
-One hides in hideout 0x60d4f1fc.
-One hides in hideout 0x41f62c79.
-One hides in hideout 0x241f4062.
-One hides in hideout 0x795c3754.
-One hides in hideout 0x42cdc3df.
+One hides in hideout 0x7de0285e.
+One hides in hideout 0x3b3a3133.
+One hides in hideout 0x0fc4b7d1.
+One hides in hideout 0x0de13700.
+One hides in hideout 0x02375482.
 
 We are still here, though.
 
 Do we hold grudges? True.
-This is us (and our grudges):
-E-00000001:00001 <Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
+This is us (and our grudges): 
+E-00000001:00001 <fennecs.Identity>
   |-<Location>
-  |-<fennecs.Identity>
+  |-<Grudge> >> E-00000002:00001
+  |-<Grudge> >> E-00000003:00001
+  |-<Grudge> >> E-00000004:00001
+  |-<Grudge> >> E-00000005:00001
+  |-<Grudge> >> E-00000006:00001
 
-Oh, hello E-00000002:00001 <Betrayed> >> Target { }
+Suddenly, in hideout 0x7de0285e:
+Oh, hello E-00000002:00001 <fennecs.Identity>
   |-<Location>
-  |-<fennecs.Identity>!
-Remember us? (E-00000001:00001 <Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Location>
-  |-<fennecs.Identity>)?
-They do. They remember everything
+  |-<Betrayed> >> E-00000001:00001!
+Remember us?
+They do. They remember everything!They admit their Betral is True!
 
-Oh, hello E-00000003:00001 <Betrayed> >> Target { }
+Suddenly, in hideout 0x3b3a3133:
+Oh, hello E-00000003:00001 <fennecs.Identity>
   |-<Location>
-  |-<fennecs.Identity>!
-Remember us? (E-00000001:00001 <Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Location>
-  |-<fennecs.Identity>)?
-They do. They remember everything
+  |-<Betrayed> >> E-00000001:00001!
+Remember us?
+They do. They remember everything!They admit their Betral is True!
 
-Oh, hello E-00000004:00001 <Betrayed> >> Target { }
+Suddenly, in hideout 0x0fc4b7d1:
+Oh, hello E-00000004:00001 <fennecs.Identity>
   |-<Location>
-  |-<fennecs.Identity>!
-Remember us? (E-00000001:00001 <Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Location>
-  |-<fennecs.Identity>)?
-They do. They remember everything
+  |-<Betrayed> >> E-00000001:00001!
+Remember us?
+They do. They remember everything!They admit their Betral is True!
 
-Oh, hello E-00000005:00001 <Betrayed> >> Target { }
+Suddenly, in hideout 0x0de13700:
+Oh, hello E-00000005:00001 <fennecs.Identity>
   |-<Location>
-  |-<fennecs.Identity>!
-Remember us? (E-00000001:00001 <Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Location>
-  |-<fennecs.Identity>)?
-They do. They remember everything
+  |-<Betrayed> >> E-00000001:00001!
+Remember us?
+They do. They remember everything!They admit their Betral is True!
 
-Oh, hello E-00000006:00001 <Betrayed> >> Target { }
+Suddenly, in hideout 0x02375482:
+Oh, hello E-00000006:00001 <fennecs.Identity>
   |-<Location>
-  |-<fennecs.Identity>!
-Remember us? (E-00000001:00001 <Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Location>
-  |-<fennecs.Identity>)?
-They do. They remember everything
+  |-<Betrayed> >> E-00000001:00001!
+Remember us?
+They do. They remember everything!They admit their Betral is True!
 
 Now, there are 0 of them.
-Let's get out of hideout 0x42cdc3df.
-Any more grudges? True.
+Let's get out of hideout 0x02375482.
+Any more grudges? False.
 This is us now:
-E-00000001:00001 <Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
-  |-<Grudge> >> Target { }
+E-00000001:00001 <fennecs.Identity>
   |-<Location>
-  |-<fennecs.Identity>
 We'll be traveling for a while.

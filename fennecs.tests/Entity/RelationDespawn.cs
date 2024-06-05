@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests;
 
-public class RelationDespawn()
+public class RelationDespawn
 {
     [Theory]
     [InlineData(1)]
