@@ -86,6 +86,18 @@ public readonly record struct Target
     public static Target Entity => new(idEntity);
 
 
+    /// <summary>
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Plain</b> Components of the given Stream Type.
+    /// </para>
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
+    /// </para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// </summary>
+    /// <inheritdoc cref="Plain"/>
+    [Obsolete("Use Entity.Any")]
+    public static Target Plain => new(idPlain);
+
+
     internal bool Matches(Target other) => Value == other.Value;
     
     /// <summary>
