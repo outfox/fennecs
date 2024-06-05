@@ -1,5 +1,5 @@
 ---
-title: Relations as Components
+title: Relations via Components
 outline: [2, 3]
 ---
 
