@@ -18,7 +18,7 @@ Call a [`ComponentAction`](Delegates.md#ComponentAction-and-UniformComponentActi
 "**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  Chances are you can ship your entire game with just this one. Let us know how it went!
 
 ### Description
-Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](Stream.1-5.md#stream-types).
+Single-theaded, synchronous Runner Methods on Queries with 1 or more [Stream Types](index.md#stream-types).
 
 A `For`-Runner takes one of the [ComponentActions](Delegates.md) as argument. It's the most flexible runner, and the [EntityComponentAction](Delegates.md) variants will conveniently provide the Entity along with the Component refs, and the [UniformComponentAction](Delegates.md) variants will provide a Uniform data item to the delegate.
 

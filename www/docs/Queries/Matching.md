@@ -92,15 +92,15 @@ partyGoers.For((ref name, ref playlist) =>
 
 ## Match Types
 
-From the start, a Query includes only Entities that match all of its [Stream Types](Stream.1-5.md).
+From the start, a Query includes only Entities that match all of its [Stream Types](../Streams/).
 It does so regardless of whether it's a Plain Component, a Entity-Entity Relation, or an Object Link - unless expressly specified for each stream type in the QueryBuilder factory method. (see: [Match Targets](#match-targets)
 
 ::: details :neofox_magnify: BEHIND THE SCENES: What does a Query even DO?
-Each compiled Query object maintains a collection of all Archetypes it matches (and a [filtered subset](Filters.md)), and when iterating Components or enumerating Entities, the Query does so *for each Archetype*, in deterministic order.
+Each compiled Query object maintains a collection of all Archetypes it matches (and a [filtered subset](/docs/Streams/Filters.md)), and when iterating Components or enumerating Entities, the Query does so *for each Archetype*, in deterministic order.
 
 Whenever a new Archetype materializes, the World will notify _all matching Queries_ of its existence.
 
-The Query feeds the Storages corresponding to its Stream Types of each matched Archetype to its [Runner Delegates](Delegates.md).
+The Query feeds the Storages corresponding to its Stream Types of each matched Archetype to its [Runner Delegates](/docs/Streams/Delegates.md).
 :::
 
 -----
@@ -186,7 +186,7 @@ Sometimes, it is useful to narrow down a Query a little (or a lot).
 
 For example:
 - perform an action on all followers of a specific character
-- pre-fetch a certain piece of data and then pass it in as a Uniform to a [Query Runner](Stream.1-5.md#passing-workloads-to-stream-queries)
+- pre-fetch a certain piece of data and then pass it in as a Uniform to a [Query Runner](../Streams/#passing-workloads-to-stream-queries)
 
 ::: warning :neofox_think: PAWS FOR THOUGHT: When does the matching / filtering happen?
 Exclusion criteria like those below are hard-baked into the query. This is *slightly more performant*, but semantically inflexible. 
@@ -205,9 +205,9 @@ What if bob despawns?  In that case, a whole new query needs to be compiled (thi
 
 :::
 
-As a rule of paw, consider [Filters](Filters.md) first for these cases. A Filter has similar performance characteristics to a compiled (and thus immutable) query, and can be dynamically reconfigured!
+As a rule of paw, consider [Filters](/docs/Streams/Filters.md) first for these cases. A Filter has similar performance characteristics to a compiled (and thus immutable) query, and can be dynamically reconfigured!
 
-::: tip :neofox_thumbsup: PROTIP: SUBSET and EXCLUDE via [Stream Filters](Filters.md)
+::: tip :neofox_thumbsup: PROTIP: SUBSET and EXCLUDE via [Stream Filters](/docs/Streams/Filters.md)
 Our Query is always valid as compiled, and we can dynamically narrow down its matched archetypes whenever our criteria change. 
 ```cs
 var friendsInNeed = world.Query<Friend>()

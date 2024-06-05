@@ -19,7 +19,7 @@
   "license": "MIT",
   "devDependencies": {
     "markdown-it": "^14.1.0",
-    "vitepress": "1.1.4",
+    "vitepress": "^1.2.3",
     "vitepress-sidebar": "^1.22.0"
   }
 }
