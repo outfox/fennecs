@@ -56,7 +56,7 @@ public partial class DemoCubes : Node
 	private Vector3 _goalAmplitude;
 
 	// Fennecs: The Query that will be used to interact with the Entities.
-	private Query<Matrix4X3, Vector3, int> _query;
+	private Stream<Matrix4X3, Vector3, int> _stream;
 
 	// ??Boilerplate: Array used to copy the Entity Transform data into Godot's MultiMesh.
 	private float[] _submissionArray = [];
@@ -78,7 +78,7 @@ public partial class DemoCubes : Node
 	[Export] public Slider SimulatedSlider;
 
 	// Godot: Read by the UI to show the simulated Entity count. (not just the visible ones)
-	private int QueryCount => _query.Count;
+	private int QueryCount => _stream.Count;
 
 	// Facade: Sets and reads the MultiMesh's InstanceCount.
 	private int InstanceCount
@@ -95,13 +95,13 @@ public partial class DemoCubes : Node
 	private void SetEntityCount(int spawnCount)
 	{
 		// Spawn new entities if needed.
-		for (var i = _query.Count; i < spawnCount; i++)
+		for (var i = _stream.Count; i < spawnCount; i++)
 			_world.Spawn().Add(i)
 				.Add<Matrix4X3>()
 				.Add<Vector3>();
 
 		// Cut off excess entities, if any.
-		_query.Truncate(spawnCount);
+		_stream.Query.Truncate(spawnCount);
 	}
 
 
@@ -111,7 +111,7 @@ public partial class DemoCubes : Node
 	public override void _Ready()
 	{
 		// Boilerplate: Prepare our Query that we'll use to interact with the Entities.
-		_query = _world.Query<Matrix4X3, Vector3, int>().Compile();
+		_stream = _world.Query<Matrix4X3, Vector3, int>().Stream();
 
 		// Boilerplate: Users can change the number of entities, so pre-warm the memory allocator a bit.
 		SetEntityCount(MaxEntities);
@@ -135,22 +135,22 @@ public partial class DemoCubes : Node
 		_time += dt * _currentTimeScale;
 
 		// Calculation: Determine the number of entities that will be displayed (also used to smooth out animation).
-		_cubeCount = Mathf.FloorToInt(_currentRenderedFraction * _query.Count);
+		_cubeCount = Mathf.FloorToInt(_currentRenderedFraction * _stream.Count);
 
 		// Calculation: A desirable size of each work item to spread it across available CPU cores.
-		var chunkSize = Math.Max(_query.Count / Environment.ProcessorCount, 128);
+		var chunkSize = Math.Max(_stream.Count / Environment.ProcessorCount, 128);
 
 		// ----------------------- HERE'S WHERE THE SIMULATION WORK IS RUN ------------------------
 		// Update Transforms and Positions of all Cube Entities.
 		//  We decided to put the code for this into a static method.
 		// -------------------------------------------------------------------------------------------
-		_query.Job(UpdatePositionForCube, (_time, _currentAmplitude, _cubeCount, dt));
+		_stream.Job((_time, _currentAmplitude, _cubeCount, dt), UpdatePositionForCube);
 
 		// Workaround for Godot not accepting oversize Arrays or Spans.
 		Array.Resize(ref _submissionArray, (int) (_cubeCount * Matrix4X3.SizeInFloats));
 
 		// Make the cloud of cubes denser if there are more cubes.
-		var amplitudePortion = Mathf.Clamp(1.0f - _query.Count / (float) MaxEntities, 0f, 1f);
+		var amplitudePortion = Mathf.Clamp(1.0f - _stream.Count / (float) MaxEntities, 0f, 1f);
 		_goalAmplitude = Mathf.Lerp(MinAmplitude, MaxAmplitude, amplitudePortion) * Vector3.One;
 		_currentAmplitude = _currentAmplitude * 0.9f + 0.1f * _goalAmplitude;
 
@@ -163,23 +163,25 @@ public partial class DemoCubes : Node
 		// We're saving a few keystrokes by using a method on the Query with only the first Stream Type (Matrix4X3).
 		// But fennecs doesn't limit us. We can use any Instance or Static method, lambda, or delegate here.
 		// -------------------------------------------------------------------------------------------
-		_query.Raw(static delegate(Memory<Matrix4X3> transforms, (Rid mesh, float[] submission) uniform)
-		{
-			var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
+		_stream.Raw(
+			uniform: (MeshInstance.Multimesh.GetRid(), _submissionArray),
+			action:  static ((Rid mesh, float[] submission) uniform, Memory<Matrix4X3> transforms) =>
+			{
+				var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
 
-			// We must copy the data manually once, into our pre-created array.
-			// ISSUE : (Godot) It cannot come from an ArrayPool because it needs to have the exact size.
-			// ISSUE : (Godot) It cannot come from a Span because the API doesn't accept it (yet).
-			// Upvote: https://github.com/godotengine/godot-proposals/issues/9083
-			floatSpan[..uniform.submission.Length].CopyTo(uniform.submission);
-			RenderingServer.MultimeshSetBuffer(uniform.mesh, uniform.submission);
+				// We must copy the data manually once, into our pre-created array.
+				// ISSUE : (Godot) It cannot come from an ArrayPool because it needs to have the exact size.
+				// ISSUE : (Godot) It cannot come from a Span because the API doesn't accept it (yet).
+				// Upvote: https://github.com/godotengine/godot-proposals/issues/9083
+				floatSpan[..uniform.submission.Length].CopyTo(uniform.submission);
+				RenderingServer.MultimeshSetBuffer(uniform.mesh, uniform.submission);
 
-			// Dream way - raw Query to pass Memory<T>, Godot Memory<TY overload not yet available.
-			// _query.Raw(transforms => RenderingServer.MultimeshSetBuffer(uniform.mesh, transforms));
-			// or, in line with Godot's internal Marshalling:
-			// _query.Raw(transforms => RenderingServer.MultimeshSetBuffer(uniform.mesh, transforms.Span));
-			// ISSUE: Calling Span.ToArray() makes an expensive allocation; and is unusable for this purpose.
-		}, (MeshInstance.Multimesh.GetRid(), _submissionArray));
+				// Dream way - raw Query to pass Memory<T>, Godot Memory<TY overload not yet available.
+				// _stream.Raw(transforms => RenderingServer.MultimeshSetBuffer(uniform.mesh, transforms));
+				// or, in line with Godot's internal Marshalling:
+				// _stream.Raw(transforms => RenderingServer.MultimeshSetBuffer(uniform.mesh, transforms.Span));
+				// ISSUE: Calling Span.ToArray() makes an expensive allocation; and is unusable for this purpose.
+			});
 	}
 
 
@@ -188,10 +190,10 @@ public partial class DemoCubes : Node
 	//  We decided to put the code for this into a static method to keep _Process() clean.
 	// -------------------------------------------------------------------------------------------
 	private static void UpdatePositionForCube(
+		(float Time, Vector3 Amplitude, float CubeCount, float dt) uniform,
 		ref Matrix4X3 transform,
 		ref Vector3 position,
-		ref int index,
-		(float Time, Vector3 Amplitude, float CubeCount, float dt) uniform)
+		ref int index)
 	{
 		#region Motion Calculations (just generic math for the cube motion)
 

@@ -33,7 +33,7 @@ public partial class Ship : Sprite2D
 		_entity = demo.World.Spawn();
 
 		// Used for grouping and targeting
-		_entity.AddLink(Faction);
+		_entity.Add(Link.With(Faction));
 
 		// This is a ship ...
 		_entity.Add(this);

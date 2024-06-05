@@ -15,14 +15,14 @@ public partial class BattleShipsDemo : Node2D
 
 	internal Dictionary<int, HashSet<SpatialClient>> SpatialHash = new();
 
-	
+
 	public override void _Process(double delta)
 	{
 		_fps = _fps * 0.99 + 0.01 * (1.0/delta);
 
 		var dt = (float) delta;
 
-		var ships = World.Query<Ship, MotionState>().Compile();
+		var ships = World.Query<Ship, MotionState>().Stream();
 		ships.For((ref Ship ship, ref MotionState motion) =>
 		{
 			var direction = System.Numerics.Vector2.UnitX;
@@ -34,13 +34,13 @@ public partial class BattleShipsDemo : Node2D
 		});
 
 
-		var guns = World.Query<Gun>().Compile();
-		var pos = GetGlobalMousePosition();
-		guns.For((ref Gun gun, Vector2 aim) =>
+		var guns = World.Query<Gun>().Stream();
+		var mousePos = GetGlobalMousePosition();
+		guns.For(mousePos, (Vector2 aim, ref Gun gun) =>
 		{
 			gun.Aim = aim;
 			gun.LookAt(gun.Aim);
-		}, pos);
+		});
 
 
 		GetNode<Label>("Ui Layer/Label").Text = $"Ships: {ships.Count} Guns: {guns.Count}\n FPS {Mathf.RoundToInt(_fps)}";
