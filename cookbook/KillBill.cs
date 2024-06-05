@@ -60,13 +60,14 @@ betrayingVipers.For((Entity them, ref Location theirLocation) =>
     ourLocation = theirLocation;
 
     // Knock knock.
+    Console.WriteLine($"Suddenly, in {theirLocation}:");
     Console.WriteLine($"Oh, hello {them}!");
     Console.WriteLine("Remember us?"); 
     Console.WriteLine($"They do. They remember everything!" + 
                       $"They admit their Betral is {them.Has<Betrayed>(us)}!");
     
     // Get our revenge. (could also them.Despawn()) 
-    world.Despawn(them);
+    them.Despawn();
 });
 
 world.GC();
