@@ -46,7 +46,7 @@ Console.WriteLine($"We are still {us.Ref<Location>()}, though.");
 // Has<>(Match.Entity) is the same as saying HasRelation<>()
 Console.WriteLine();
 Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Entity.Any)}.");
-Console.WriteLine("This is us (and our grudges):\n" + us);
+Console.WriteLine("This is us (and our grudges): \n" + us);
 
 // Choose your weapon:
 //    query.Despawn();
@@ -60,12 +60,16 @@ betrayingVipers.For((Entity them, ref Location theirLocation) =>
     ourLocation = theirLocation;
 
     // Knock knock.
-    Console.WriteLine($"Oh, hello {them}! Remember us ({us})?");
-    Console.WriteLine("They do. They remember everything");
+    Console.WriteLine($"Oh, hello {them}!");
+    Console.WriteLine("Remember us?"); 
+    Console.WriteLine($"They do. They remember everything!" + 
+                      $"They admit their Betral is {them.Has<Betrayed>(us)}!");
     
     // Get our revenge. (could also them.Despawn()) 
     world.Despawn(them);
 });
+
+world.GC();
 
 // Survey the aftermath.
 Console.WriteLine();
