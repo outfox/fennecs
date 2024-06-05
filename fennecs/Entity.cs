@@ -176,6 +176,12 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     }
 
     
+    /// <summary>
+    /// Removes a relation of a specific type between the current entity and the target entity.
+    /// </summary>
+    /// <param name="relation">target of the relation.</param>
+    /// <typeparam name="R">backing type of the relation to be removed.</typeparam>
+    /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<R>(Entity relation) where R : notnull
     {
         World.RemoveComponent(Id, TypeExpression.Of<R>(new Relate(relation)));
@@ -209,6 +215,12 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
         return this;
     }
 
+    /// <summary>
+    /// Removes any component that matches the specified Match Expression from the entity.
+    /// </summary>
+    /// <remarks> TODO: Doesn't match Wildcards correctly. :) </remarks>
+    /// <param name="match">Match Expression.</param>
+    /// <returns></returns>
     public Entity RemoveAny(Match match)
     {
         World.RemoveComponent(Id, match.TypeExpression);

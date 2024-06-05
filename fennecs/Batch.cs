@@ -163,7 +163,7 @@ public readonly struct Batch : IDisposable
         /// Disallows the addition of components that could already be present in a query.
         /// </summary>
         /// <remarks>
-        /// Exclude the component from the query via <see cref="QueryBuilder{C1}.Not{T}(Target)"/> or similar
+        /// Exclude the component from the query via <see cref="QueryBuilderBase{QB}.Not{T}(fennecs.Target)"/> or similar
         /// means. If you want to allow the addition of components that are already present, use <see cref="Preserve"/>
         /// to keep any values already present, or use <see cref="Replace"/> if you'd like to overwrite the component
         /// value everywhere it is already encountered in the query.
@@ -204,7 +204,7 @@ public readonly struct Batch : IDisposable
     {
         /// <summary>
         /// Disallow remove operation if the Component to be removed is not guaranteed to be present
-        /// on ALL matched Archetypes, see <see cref="QueryBuilder.Has{T}(Target)"/>.
+        /// on ALL matched Archetypes, see <see cref="QueryBuilderBase{QB}.Has{T}(fennecs.Target)"/>.
         /// </summary>
         Strict = default,
 

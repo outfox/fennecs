@@ -106,7 +106,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
     
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityComponentAction<C0> componentAction)
+    public void For(EntityComponentAction<C0> action)
     {
         using var worldLock = World.Lock();
 
@@ -120,14 +120,14 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
             {
                 var s0 = join.Select;
                 var span0 = s0.Span;
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i]);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i]);
             } while (join.Iterate());
         }
     }
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(U uniform, UniformEntityComponentAction<U, C0> componentAction)
+    public void For<U>(U uniform, UniformEntityComponentAction<U, C0> action)
     {
         using var worldLock = World.Lock();
 
@@ -141,7 +141,7 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
             {
                 var s0 = join.Select;
                 var span0 = s0.Span;
-                for (var i = 0; i < count; i++) componentAction(uniform, table[i], ref span0[i]);
+                for (var i = 0; i < count; i++) action(uniform, table[i], ref span0[i]);
             } while (join.Iterate());
         }
     }

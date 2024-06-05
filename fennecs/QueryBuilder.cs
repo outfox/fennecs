@@ -21,8 +21,6 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// A QueryBuilder provides a fluent API to construct Queries into a <see cref="fennecs.World"/>.
     /// Queries use Query Expressions to Match Entities based on their Components, Relations, or Object Links.
     /// </summary>
-    /// <typeparam name="QB">F-bound polymorphic / CRTP type reference to own type, so inheritors
-    /// can inherit all their methods with the appropriate return types</typeparam>
     /// <param name="world"><see cref="fennecs.World"/> to build queries for</param>
     /// <param name="streamTypes">list of types that must be guaranteed to be on the Query's Mask for Stream Creation</param>
     protected private QueryBuilderBase(World world, Span<TypeExpression> streamTypes)
@@ -55,7 +53,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     #region Builder Interface
 
     /// <summary>
-    /// Include only Entities that have the given Component, Relation, or Object Link.
+    /// QueryBuilder includes only Entities that have the given Component, Relation, or Object Link.
     /// </summary>
     /// <param name="match">defaults th Plain Components. Can be a match wildcard or specific relation target / or object link</param>
     /// <typeparam name="T">component's backing type</typeparam>
@@ -69,7 +67,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
 
     
     /// <summary>
-    /// Include only Entities that have the given Component, Relation, or Object Link.
+    /// QueryBuilder includes only Entities that have the given Component, Relation, or Object Link.
     /// </summary>
     /// <param name="link">an object link</param>
     /// <typeparam name="T">component's backing type</typeparam>
@@ -166,6 +164,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
         GC.SuppressFinalize(this);
     }
 
+    /// <inheritdoc cref="IDisposable"/>
     ~QueryBuilderBase() => Dispose();
 
     #endregion

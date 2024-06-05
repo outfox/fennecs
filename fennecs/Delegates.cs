@@ -1,4 +1,5 @@
 ﻿namespace fennecs;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 public delegate void EntityAction(Entity entity);
 public delegate void EntitySpanAction(Span<Entity> entities);
@@ -38,3 +39,5 @@ public delegate void MemoryUniformAction<in U, C0, C1>(U uniform, Memory<C0> com
 public delegate void MemoryUniformAction<in U, C0, C1, C2>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2); 
 public delegate void MemoryUniformAction<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
 public delegate void MemoryUniformAction<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

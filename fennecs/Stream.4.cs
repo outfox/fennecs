@@ -72,7 +72,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Target Match0, Target Match1, 
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityComponentAction<C0, C1, C2, C3> componentAction)
+    public void For(EntityComponentAction<C0, C1, C2, C3> action)
     {
         using var worldLock = World.Lock();
 
@@ -89,14 +89,14 @@ public record Stream<C0, C1, C2, C3>(Query Query, Target Match0, Target Match1, 
                 var span1 = s1.Span;
                 var span2 = s2.Span;
                 var span3 = s3.Span;
-                for (var i = 0; i < count; i++) componentAction(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
+                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
             } while (join.Iterate());
         }
     }
 
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3> componentAction)
+    public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3> action)
     {
         using var worldLock = World.Lock();
 
@@ -113,7 +113,7 @@ public record Stream<C0, C1, C2, C3>(Query Query, Target Match0, Target Match1, 
                 var span1 = s1.Span;
                 var span2 = s2.Span;
                 var span3 = s3.Span;
-                for (var i = 0; i < count; i++) componentAction(uniform, table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
+                for (var i = 0; i < count; i++) action(uniform, table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
             } while (join.Iterate());
         }
     }
