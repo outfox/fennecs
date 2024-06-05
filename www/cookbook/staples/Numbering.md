@@ -68,11 +68,12 @@ stream.For(
 var i = 0; 
 stream.For((ref Index index) => index = new(i++));
 
-// Not only that, but YOU actually clicked here to read this. You earned this!
+// Not only that, but YOU actually clicked here to read further. 
+// You earned this. 🦊
+// Tiny, speedy, low memory allocations... what's not to love? ❤️
 
-// Tiny Boilerplate, good speed, low memory allocations... what's not to love?
-// Sure, loosey-goosey integers and closures can be spoopy in program design.
-// But we are all adults here. Some like their food plain, some like it spicy.
+// Sure, loosey-goosey integers and closures can get spoopy in some cases.
+// But we are all adults here. Some like plain food, some like it spicy. 🌶️
 ```
 
 ```csharp [Enumerator (store-bought)]
