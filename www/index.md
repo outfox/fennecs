@@ -19,7 +19,7 @@ hero:
       link: /cookbook/
     - theme: alt
       text: GitHub
-      link: https://github.com/thygrrr/fennecs
+      link: https://github.com/outfox/fennecs
 
 features:
   - title: Minimal Boilerplate.
@@ -69,7 +69,7 @@ head:
 
 ---
 
-| [![Nuget](https://img.shields.io/nuget/v/fennecs?color=blue)](https://www.nuget.org/packages/fennecs/) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-blue) | [![License: MIT](https://img.shields.io/github/license/thygrrr/fennecs?color=blue)](https://github.com/thygrrr/fennECS?tab=MIT-1-ov-file#readme) |
+| [![Nuget](https://img.shields.io/nuget/v/fennecs?color=blue)](https://www.nuget.org/packages/fennecs/) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-blue) | [![License: MIT](https://img.shields.io/github/license/outfox/fennecs?color=blue)](https://github.com/outfox/fennECS?tab=MIT-1-ov-file#readme) |
 |-----|-----|-----|
 
 <br/>

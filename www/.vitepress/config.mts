@@ -41,8 +41,8 @@ export default defineConfig({
     ],
 
     footer: {
-      message: '<a href="https://github.com/thygrrr/fennecs/?tab=MIT-1-ov-file#readme"><b>fenn</b>ecs</a> is released under the MIT License. <a href="https://volpeon.ink/emojis/neofox/">Neofox</a> is released under the CC BY-NC-SA 4.0 License.',
-      copyright: '<b>fenn</b>ecs is made with love & foxes, copyright © 2024 <a href="https://github.com/thygrrr/fennecs/graphs/contributors"> its contributors</a>'
+      message: '<a href="https://github.com/outfox/fennecs/?tab=MIT-1-ov-file#readme"><b>fenn</b>ecs</a> is released under the MIT License. <a href="https://volpeon.ink/emojis/neofox/">Neofox</a> is released under the CC BY-NC-SA 4.0 License.',
+      copyright: '<b>fenn</b>ecs is made with love & foxes, copyright © 2024 <a href="https://github.com/outfox/fennecs/graphs/contributors"> its contributors</a>'
     },
 
     sidebar: generateSidebar([
@@ -62,7 +62,7 @@ export default defineConfig({
     ]),
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/thygrrr/fennecs/' },
+      { icon: 'github', link: 'https://github.com/outfox/fennecs/' },
       { icon: 'mastodon', link: 'https://mastodon.gamedev.place/@jupiter' },
     ],
   },

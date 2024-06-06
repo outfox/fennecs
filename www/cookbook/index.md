@@ -39,15 +39,15 @@ Good old git. Nothing beats that!
 ::: code-group
 
 ```shell [ssh...]
-git clone git@github.com:thygrrr/fennecs.git
+git clone git@github.com:outfox/fennecs.git
 ```
 
 ```shell [no tears now, only https!]
-git clone https://github.com/thygrrr/fennecs.git
+git clone https://github.com/outfox/fennecs.git
 ```
 
 ```shell [wait... you... you... GitHub CLI unironically?]
-gh repo clone thygrrr/fennecs
+gh repo clone outfox/fennecs
 ```
 
 *(repo includes the Appetizers and Example Demos, ready to run!)*

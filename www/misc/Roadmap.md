@@ -11,8 +11,8 @@ Here's a list of planned and speculative features coming in the future.
 Feedback and questions are always appreciated, please submit them on GitHub:
 | What? | Where? |
 | ------- | --------- |
-| Issues | https://github.com/thygrrr/fennecs/issues |
-| Discussions | https://github.com/thygrrr/fennecs/discussions |
+| Issues | https://github.com/outfox/fennecs/issues |
+| Discussions | https://github.com/outfox/fennecs/discussions |
 
 Pull Requests especially welcome (please open an issue first to discuss the feature or bugfix you're planning to work on so your work gets the appreciation and attention it deserves).
 
