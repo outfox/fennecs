@@ -5,7 +5,12 @@ order: 2
 
 # Shareable Components
 
-In **fenn**ecs, components are typically value types unique to each entity. However, you can easily share the same instance of a component among multiple entities using reference types.
+In **fenn**ecs, components are typically value types unique to each entity. However, you can easily share the same instance of a component among multiple entities using **reference types**.
+
+![two fennecs happily holding a huge cardboard box together](https://fennecs.tech/img/fennecs-shareable.png)
+
+This is especially useful for heavyweight objects that are expensive to create or update, such as large data structures.
+
 
 ::: info :neofox_thumbsup: SHARING MADE SIMPLE
 To share a component, define it as a [reference type](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) (e.g., a class) and add the same instance to multiple entities. Each entity will hold a reference to the shared component instance.
@@ -32,9 +37,9 @@ Both `entity1` and `entity2` now reference the same `sharedData` instance. Modif
 Query shared components using the same syntax as regular components:
 
 ```csharp
-var query = world.Query<SharedData>().Compile();
+var stream = world.Query<SharedData>().Stream();
 
-query.For((ref SharedData data) =>
+stream.For((ref SharedData data) =>
 {
     data.Value++; // increments value once for each entity in query!
 });

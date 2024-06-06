@@ -19,17 +19,17 @@ for (var i = 0; i < 5; i++)
 {
     var them = world.Spawn()
         .Add<Location>("wedding chapel")
-        .AddRelation<Betrayed>(us);
+        .Add<Betrayed>(us);
 
     // And just in case, we will never forget.
-    us.AddRelation<Grudge>(them);
+    us.Add<Grudge>(them);
 }
 
 // We query for their Locations; to pay them a visit;
 // and their Entity Id. It's a surprise tool that will help us later!
-var betrayingVipers = world.Query<Location, Identity>()
+var betrayingVipers = world.Query<Location>()
     .Has<Betrayed>(us)
-    .Compile();
+    .Stream();
 
 Console.WriteLine($"As we said, there were {betrayingVipers.Count} of them.");
 
@@ -45,14 +45,14 @@ Console.WriteLine($"We are still {us.Ref<Location>()}, though.");
 
 // Has<>(Match.Entity) is the same as saying HasRelation<>()
 Console.WriteLine();
-Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Match.Entity)}.");
-Console.WriteLine("This is us (and our grudges):\n" + us);
+Console.WriteLine($"Do we hold grudges? {us.Has<Grudge>(Entity.Any)}.");
+Console.WriteLine("This is us (and our grudges): \n" + us);
 
 // Choose your weapon:
 //    query.Despawn();
 //    query.Truncate(0);
 // -> visiting each entity personally
-betrayingVipers.For((ref Location theirLocation, ref Identity theirIdentity) =>
+betrayingVipers.For((Entity them, ref Location theirLocation) =>
 {
     Console.WriteLine();
     
@@ -60,17 +60,17 @@ betrayingVipers.For((ref Location theirLocation, ref Identity theirIdentity) =>
     ourLocation = theirLocation;
 
     // Knock knock.
-    Console.WriteLine($"Oh, hello {theirIdentity}! Remember us ({us.Id})?");
+    Console.WriteLine($"Suddenly, in {theirLocation}:");
+    Console.WriteLine($"Oh, hello {them}!");
+    Console.WriteLine("Remember us?"); 
+    Console.WriteLine($"They do. They remember everything!" + 
+                      $"They admit their Betral is {them.Has<Betrayed>(us)}!");
     
-    // We only have an identity, so we fudge one in the world. We could also
-    // use world.ListComponents(theirIdentity). (and more API coming soon)
-    var they = world.GetEntity(theirIdentity);
-    Console.WriteLine("They do. They remember everything. They are:\n" + they);
-
-    // Get our revenge.
-    world.Despawn(theirIdentity);
-
+    // Get our revenge. (could also them.Despawn()) 
+    them.Despawn();
 });
+
+world.GC();
 
 // Survey the aftermath.
 Console.WriteLine();
@@ -79,7 +79,7 @@ Console.WriteLine($"Let's get out of {us.Ref<Location>()}.");
 us.Ref<Location>() = "traveling";
 
 // We satisfied our grudges.
-Console.WriteLine($"Any more grudges? {us.Has<Grudge>(Match.Entity)}.");
+Console.WriteLine($"Any more grudges? {us.Has<Grudge>(Entity.Any)}.");
 Console.WriteLine("This is us now:\n" + us);
 Console.WriteLine($"We'll be {us.Ref<Location>()} for a while.");
 

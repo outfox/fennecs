@@ -16,11 +16,11 @@ public class ChunkingBenchmarks
     [Params(1_000_000)] public int entityCount { get; set; } = 1_000_000;
     [Params(4096, 16384, 32768)] public int chunkSize { get; set; } = 16384;
 
-    private static readonly Random random = new(1337);
+    private static readonly Random Random = new(1337);
 
     private World _world = null!;
 
-    private Query<Vector3> _queryV3 = null!;
+    private Stream<Vector3> _queryV3 = null!;
     private Vector3[] _vectorsRaw = null!;
 
     [GlobalSetup]
@@ -45,12 +45,12 @@ public class ChunkingBenchmarks
         Thread.Yield();
 
         _world = new World();
-        _queryV3 = _world.Query<Vector3>().Compile();
+        _queryV3 = _world.Query<Vector3>().Stream();
         _vectorsRaw = new Vector3[entityCount];
 
         for (var i = 0; i < entityCount; i++)
         {
-            _vectorsRaw[i] = new Vector3(random.NextSingle(), random.NextSingle(), random.NextSingle());
+            _vectorsRaw[i] = new Vector3(Random.NextSingle(), Random.NextSingle(), Random.NextSingle());
 
             //Multiple unused Components added to create fennecs Archetype fragmentation, which is used as basis for many parallel processing partitions.
             switch (i % 4)
@@ -91,7 +91,7 @@ public class ChunkingBenchmarks
     [Benchmark]
     public void CrossProduct_RunU()
     {
-        _queryV3.For(static (ref Vector3 v, Vector3 uniform) => { v = Vector3.Cross(v, uniform); }, UniformConstantVector);
+        _queryV3.For(UniformConstantVector, static (Vector3 uniform, ref Vector3 v) => { v = Vector3.Cross(v, uniform); });
     }
 
     [Benchmark]
@@ -103,6 +103,6 @@ public class ChunkingBenchmarks
     [Benchmark]
     public void CrossProduct_JobU()
     {
-        _queryV3.Job(delegate(ref Vector3 v, Vector3 uniform) { v = Vector3.Cross(v, uniform); }, UniformConstantVector);
+        _queryV3.Job(UniformConstantVector, delegate( Vector3 uniform, ref Vector3 v) { v = Vector3.Cross(v, uniform); });
     }
 }

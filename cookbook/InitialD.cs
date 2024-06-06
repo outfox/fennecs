@@ -25,27 +25,27 @@ Console.WriteLine($"Look, {takumi} is driving his dad's\n{ae86}");
 
 // All cars in the race.
 var racers =
-    world.Query<Driver, Model, Identity>() // "Stream Types", data to process
+    world.Query<Driver, Model>() // "Stream Types", data to process
         .Has<Car>() // additional Filter Expression(s) to match in the Query 
         .Not<Vroom>() // additional Filter Expression(s) to exclude
-        .Compile();
+        .Stream();
 
 
 Console.WriteLine($"Cars on the street: {racers.Count}");
 
 // Drivers, get ready! (mutative per-entity operation on Query)
-racers.For((ref Driver driver, ref Model name, ref Identity carIdentity) =>
+racers.For((Entity raceCar, ref Driver driver, ref Model name) =>
 {
     driver.ReportForRace();
     Console.WriteLine($"{driver}'s {name} is ready to race!");
-    world.On(carIdentity).Add<Ready>();
+    raceCar.Add<Ready>();
 });
 
 // Adding component conditionally outside a Query runner
 if (ae86.Has<Ready>()) ae86.Add<Steady>();
 
 // Or do bulk operations on the Query!
-racers.Add<Vroom>();
+racers.Query.Add<Vroom>();
 
 Console.WriteLine("Got 60 seconds to spare?");
 Console.WriteLine("--> https://behance.net/gallery/101574771/D-CG-Animation");

@@ -62,7 +62,7 @@ public partial class World
                     break;
 
                 case Opcode.Despawn:
-                    DespawnImpl(op.Identity);
+                    DespawnImpl(new(this, op.Identity));
                     break;
 
                 case Opcode.Batch:

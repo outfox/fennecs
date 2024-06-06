@@ -44,29 +44,29 @@ public class Scenarios
             if (i % shortRate == 0)
             {
                 shorts++;
-                builder.AddRelation<ushort>(new Entity(world, entities[random.Next(entities.Count)]));
+                builder.Add<ushort>(new Entity(world, entities[random.Next(entities.Count)]));
             }
 
             entities.Add(builder);
         }
 
         
-        var floatsActual = world.Query<float>().Compile().Count;
+        var floatsActual = world.Query<float>().Stream().Count;
         Assert.Equal(floats, floatsActual);
         
-        var doublesActual = world.Query<double>().Compile().Count;
+        var doublesActual = world.Query<double>().Stream().Count;
         Assert.Equal(doubles, doublesActual);
 
-        var stringsActual = world.Query<string>().Compile().Count;
+        var stringsActual = world.Query<string>().Stream().Count;
         Assert.Equal(strings, stringsActual);
 
-        var stringsAndDoublesActual = world.Query<string, double>().Compile().Count;
+        var stringsAndDoublesActual = world.Query<string, double>().Stream().Count;
         Assert.Equal(count / (stringRate * doubleRate), stringsAndDoublesActual);
 
-        var floatsAndShortsActual = world.Query().Any<float>().Has<ushort>(Match.Any).Compile().Count;
+        var floatsAndShortsActual = world.Query().Any<float>().Has<ushort>(Target.Any).Compile().Count;
         Assert.Equal(count / (floatRate * shortRate), floatsAndShortsActual);
 
-        var shortsActual = world.Query().Has<ushort>(Match.Any).Compile().Count;
+        var shortsActual = world.Query().Has<ushort>(Target.Any).Compile().Count;
         Assert.Equal(shorts, shortsActual);
     }
 }

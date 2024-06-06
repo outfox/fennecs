@@ -55,7 +55,7 @@ public static class QueryEnumeration
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                foreach (var identity in query) world.On(identity).Add("structural change");
+                foreach (var entity in query) entity.Add("structural change");
             });
         }
 

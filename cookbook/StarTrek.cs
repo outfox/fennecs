@@ -9,13 +9,13 @@ Console.WriteLine("Directed by Renard Nimoy.");
 var world = new World(1);
 
 var kirk = world.Spawn();
-Console.WriteLine($"James Tiberius Kirk, StarFleet identification\n{kirk}");
+Console.WriteLine($"James Tiberius Kirk, Starfleet identification\n{kirk}");
 
-Console.WriteLine("Kirk despawned.");
+Console.WriteLine("(Kirk despawned)");
 world.Despawn(kirk);
 
 var picard = world.Spawn();
-Console.WriteLine($"Jean-Luc Picard, (The Next Generation!) StarFleet identification\n{picard}");
+Console.WriteLine($"Jean-Luc Picard, (The Next Generation!) identification\n{picard}");
 
 var janeway = world.Spawn();
-Console.WriteLine($"Kathryn Janeway, (New Series!) StarFleet identification\n{janeway}");
+Console.WriteLine($"Kathryn Janeway, (New Series!) identification\n{janeway}");

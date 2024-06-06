@@ -22,6 +22,8 @@ var fennecsUsers = world.Query()
                     .Has<Smart>()
                     .Has<Cool>()
                     .Compile();
+
+Assert.Contains(you, fennecsUsers);
 ```	
 
 They need practically no memory and are great to use in Match Expressions. (they're not so great as Stream Types, but they're not harmful either - they just take a slot you might want to use for actual data).

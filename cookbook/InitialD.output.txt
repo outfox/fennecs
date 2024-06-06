@@ -1,10 +1,10 @@
 Shusai: fuji hara tofu ten
 Look, Takumi Fujiwara is driving his dad's
-E-00000001:00001 <Engine>
-  |-<Driver>
-  |-<Model>
+E-00000001:00001 <fennecs.Identity>
   |-<Car>
-  |-<fennecs.Identity>
+  |-<Model>
+  |-<Driver>
+  |-<Engine>
 Cars on the street: 1
 Takumi Fujiwara: I'm Ready!
 Takumi Fujiwara's Toyota Sprinter Trueno AE86 is ready to race!

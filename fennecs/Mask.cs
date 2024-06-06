@@ -13,11 +13,11 @@ internal sealed class Mask : IDisposable
     internal bool safety = true;
     
     
-    public bool SafeForAddition(TypeExpression typeExpression) => NotTypes.Contains(typeExpression);
+    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
 
-    public void Has(TypeExpression typeExpression)
+    public Mask Has(TypeExpression typeExpression)
     {
         switch (safety)
         {
@@ -29,10 +29,17 @@ internal sealed class Mask : IDisposable
                 HasTypes.Add(typeExpression);
                 break;
         }
+        return this;
+    }
+
+    public Mask Has(IEnumerable<TypeExpression> typeExpression)
+    {
+        foreach (var type in typeExpression) Has(type);        
+        return this;
     }
 
 
-    public void Not(TypeExpression typeExpression)
+    public Mask Not(TypeExpression typeExpression)
     {
         switch (safety)
         {
@@ -44,10 +51,11 @@ internal sealed class Mask : IDisposable
                 NotTypes.Add(typeExpression);
                 break;
         }
+        return this;
     }
 
 
-    public void Any(TypeExpression typeExpression)
+    public Mask Any(TypeExpression typeExpression)
     {
         switch (safety)
         {
@@ -59,6 +67,7 @@ internal sealed class Mask : IDisposable
                 AnyTypes.Add(typeExpression);
                 break;
         }
+        return this;
     }
 
 

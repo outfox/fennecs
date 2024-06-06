@@ -1,5 +1,5 @@
 ---
-title: Value Types
+title: Values
 order: 1
 ---
 
@@ -57,9 +57,9 @@ Since value type components are stored contiguously in memory, iterating over en
 :::
 
 ```csharp
-var query = world.Query<Position, Velocity>().Compile();
+var query = world.Query<Position, Velocity>().Stream();
 
-query.For((ref Position position, ref Velocity velocity) =>
+stream.For((ref Position position, ref Velocity velocity) =>
 {
     position.X += velocity.X;
     position.Y += velocity.Y;

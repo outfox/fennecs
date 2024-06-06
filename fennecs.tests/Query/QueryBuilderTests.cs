@@ -29,11 +29,11 @@ public class QueryBuilderTests
     {
         using var world = new World();
         var q1 = world.Query();
-        var q2 = world.Query<int>(Match.Entity);
-        var q3 = world.Query<int, string>(Match.Any, Match.Plain);
-        var q4 = world.Query<int, string, double>(Match.Object, Match.Target, Match.Plain);
-        var q5 = world.Query<int, string, double, float>(Match.Object, Match.Target, Match.Plain, Match.Any);
-        var q6 = world.Query<int, string, double, float, long>(Match.Object, Match.Target, Match.Plain, Match.Any, Match.Object);
+        var q2 = world.Query<int>(Identity.Entity);
+        var q3 = world.Query<int, string>(Identity.Any, Identity.Plain);
+        var q4 = world.Query<int, string, double>(Identity.Object, Identity.Target, Identity.Plain);
+        var q5 = world.Query<int, string, double, float>(Identity.Object, Identity.Target, Identity.Plain, Identity.Any);
+        var q6 = world.Query<int, string, double, float, long>(Identity.Object, Identity.Target, Identity.Plain, Identity.Any, Identity.Object);
         Assert.NotNull(q1);
         Assert.NotNull(q2);
         Assert.NotNull(q3);
@@ -51,11 +51,11 @@ public class QueryBuilderTests
         Assert.NotNull(builder);
         builder
             .Has<float>()
-            .Has<string>("123")
+            .Has(Link.With("123"))
             .Not<double>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
     }
 
 
@@ -69,9 +69,9 @@ public class QueryBuilderTests
             .Has<float>()
             .Has<string>("123")
             .Not<double>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
     }
 
 
@@ -81,13 +81,13 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string>();
         Assert.NotNull(builder);
-        builder.Has(new StringBuilder("123"));
+        builder.Has(Link.With(new StringBuilder("123")));
         builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<byte>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
         builder.Compile();
     }
 
@@ -98,13 +98,13 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string, double>();
         Assert.NotNull(builder);
-        builder.Has(new StringBuilder("123"));
+        builder.Has(Link.With(new StringBuilder("123")));
         builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<byte>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
         builder.Compile();
     }
 
@@ -115,13 +115,13 @@ public class QueryBuilderTests
         using var world = new World();
         var builder = world.Query<int, string, double, float>();
         Assert.NotNull(builder);
-        builder.Has(new StringBuilder("123"));
+        builder.Has(Link.With(new StringBuilder("123")));
         builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<byte>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
         builder.Compile();
     }
 
@@ -134,13 +134,13 @@ public class QueryBuilderTests
         using var world = new World();
         using var builder = world.Query<int, string, double, float, long>();
         Assert.NotNull(builder);
-        builder.Has(new StringBuilder("123"));
+        builder.Has(Link.With(new StringBuilder("123")));
         builder.Has<TypeA>(world.Spawn())
             .Has<Thread>()
             .Not<Half>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<byte>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
         builder.Compile();
     }
 
@@ -155,9 +155,9 @@ public class QueryBuilderTests
             .Has<float>()
             .Has<string>("123")
             .Not<double>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
 
         Assert.Throws<InvalidOperationException>(() => builder.Has<float>());
         Assert.Throws<InvalidOperationException>(() => builder.Not<float>());
@@ -175,13 +175,13 @@ public class QueryBuilderTests
             .Has<float>(entity)
             .Has<string>("123")
             .Not<double>()
-            .Not(new List<int>())
+            .Not(Link.With(new List<int>()))
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
 
-        Assert.Throws<InvalidOperationException>(() => builder.Has<float>(Match.Any));
-        Assert.Throws<InvalidOperationException>(() => builder.Not<List<int>>(Match.Object));
-        Assert.Throws<InvalidOperationException>(() => builder.Any<float>(Match.Entity));
+        Assert.Throws<InvalidOperationException>(() => builder.Has<float>(Identity.Any));
+        Assert.Throws<InvalidOperationException>(() => builder.Not<List<int>>(Identity.Object));
+        Assert.Throws<InvalidOperationException>(() => builder.Any<float>(Identity.Entity));
     }
 
 
@@ -197,10 +197,10 @@ public class QueryBuilderTests
             .Not<double>()
             .Not<int>()
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
 
         Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
-        Assert.Throws<InvalidOperationException>(() => builder.Not<string>(Match.Object));
+        Assert.Throws<InvalidOperationException>(() => builder.Not<string>(Identity.Object));
         Assert.Throws<InvalidOperationException>(() => builder.Any<double>());
 
         builder.Has<string>("I'm different");
@@ -220,10 +220,10 @@ public class QueryBuilderTests
             .Not<double>()
             .Not<int>()
             .Any<long>()
-            .Any(new List<float>());
+            .Any(Link.With(new List<float>()));
 
         //Conflict
-        builder.Has<int>().Not<string>(Match.Object).Any<double>();
+        builder.Has<int>().Not<string>(Identity.Object).Any<double>();
 
         //Repeat
         builder.Has<int>();
@@ -245,54 +245,6 @@ public class QueryBuilderTests
     }
 
 
-    [Fact]
-    private void Can_Create_Unique_Queries_1()
-    {
-        using var world = new World();
-        var builder = world.Query<int>();
-
-        var query1 = builder.Unique();
-        var query2 = builder.Unique();
-        var query3 = builder.Compile();
-        Assert.False(query1 == query2);
-        Assert.False(query1 == query3);
-        Assert.False(query2 == query3);
-    }
-
-
-    [Fact]
-    private void Unique_Queries_Receive_Updated_Archetypes()
-    {
-        using var world = new World();
-        using var builder = world.Query<int>();
-
-        var query1 = builder.Unique();
-
-        world.Spawn().Add(123);
-        Assert.Single(query1);
-
-        world.Spawn().Add(555).Add("fennecs");
-        Assert.Equal(2, query1.Count);
-    }
-
-    [Fact]
-    private void Unique_Queries_Match_Same()
-    {
-        using var world = new World();
-        using var builder = world.Query<int>();
-
-        var entity = world.Spawn().Add(123);
-
-        var query1 = builder.Unique();
-        var query2 = builder.Compile();
-
-        Assert.Single(query1);
-        Assert.Single(query2);
-
-        Assert.Contains(entity, query1);
-        Assert.Contains(entity, query2);
-    }
-
 
     [Fact]
     private void Can_Create_Cached_Queries_1()
@@ -307,13 +259,13 @@ public class QueryBuilderTests
 
 
     [Fact]
-    private void Can_Create_Unique_Queries_2()
+    private void Streams_are_Unique_2()
     {
         using var world = new World();
         var builder = world.Query<float, string>();
 
-        var query1 = builder.Unique();
-        var query2 = builder.Unique();
+        var query1 = builder.Stream();
+        var query2 = builder.Stream();
         Assert.False(query1 == query2);
     }
 
@@ -331,13 +283,13 @@ public class QueryBuilderTests
 
 
     [Fact]
-    private void Can_Create_Unique_Queries_3()
+    private void Streams_are_Unique_3()
     {
         using var world = new World();
         var builder = world.Query<Random, float, string>();
 
-        var query1 = builder.Unique();
-        var query2 = builder.Unique();
+        var query1 = builder.Stream();
+        var query2 = builder.Stream();
         Assert.False(query1 == query2);
     }
 
@@ -355,13 +307,13 @@ public class QueryBuilderTests
 
 
     [Fact]
-    private void Can_Create_Unique_Queries_4()
+    private void Streams_are_Unique_4()
     {
         using var world = new World();
         var builder = world.Query<byte, Random, float, string>();
 
-        var query1 = builder.Unique();
-        var query2 = builder.Unique();
+        var query1 = builder.Stream();
+        var query2 = builder.Stream();
         Assert.False(query1 == query2);
     }
 
@@ -379,13 +331,13 @@ public class QueryBuilderTests
 
 
     [Fact]
-    private void Can_Create_Unique_Queries_5()
+    private void Streams_are_Unique_5()
     {
         using var world = new World();
-        var builder = world.Query<Query<int>, int, double, float, string>();
+        var builder = world.Query<object, int, double, float, string>();
 
-        var query1 = builder.Unique();
-        var query2 = builder.Unique();
+        var query1 = builder.Stream();
+        var query2 = builder.Stream();
         Assert.False(query1 == query2);
     }
 
@@ -407,11 +359,11 @@ public class QueryBuilderTests
     {
         using var world = new World();
         world.Query().Unchecked().Has<Vector4>().Has<Vector4>().Compile();
-        world.Query<Vector4>().Unchecked().Has<Vector4>().Compile();
-        world.Query<Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
-        world.Query<Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
-        world.Query<float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
-        world.Query<int, float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Compile();
+        world.Query<Vector4>().Unchecked().Has<Vector4>().Stream();
+        world.Query<Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
+        world.Query<Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
+        world.Query<float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
+        world.Query<int, float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
     }
 
     
@@ -427,27 +379,28 @@ public class QueryBuilderTests
 
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<Vector4>().Has<Vector4>().Compile();
+            world.Query<Vector4>().Has<Vector4>().Stream();
         });
 
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<Vector3, Vector4>().Has<Vector4>().Compile();
+            world.Query<Vector3, Vector4>().Has<Vector4>().Stream();
         });
         
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+            world.Query<Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
         });
         
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<float, Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+            world.Query<float, Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
         });
         
+        //TODO: This test failed once for "no" reason?.
         Assert.Throws<InvalidOperationException>(() =>
         {
-            world.Query<int, float, Vector2, Vector3, Vector4>().Has<Vector4>().Compile();
+            world.Query<int, float, Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
         });
     }
 }

@@ -57,39 +57,39 @@ public class DocumentationNBodyTests
         sun3.Add<Velocity>();
         
         sun1.Add(body1);
-        sun1.AddRelation(sun1, body1);
-        sun1.AddRelation(sun2, body2);
-        sun1.AddRelation(sun3, body3);
+        sun1.Add(body1, sun1);
+        sun1.Add(body2, sun2);
+        sun1.Add(body3, sun3);
         
         sun2.Add(body2);
-        sun2.AddRelation(sun1, body1);
-        sun2.AddRelation(sun2, body2);
-        sun2.AddRelation(sun3, body3);
+        sun2.Add(body1, sun1);
+        sun2.Add(body2, sun2);
+        sun2.Add(body3, sun3);
         
         sun3.Add(body3);
-        sun3.AddRelation(sun1, body1);
-        sun3.AddRelation(sun2, body2);
-        sun3.AddRelation(sun3, body3);
+        sun3.Add(body1, sun1);
+        sun3.Add(body2, sun2);
+        sun3.Add(body3, sun3);
 
         // The match specifiers can be omitted, as there are no "Position" and "Forces" relations, only "Body"
-        // var accumulator = world.Query<Forces, Position, Body>().Compile();
+        // var accumulator = world.Query<Forces, Position, Body>().Stream();
         
         // Used to accumulate all forces acting on a body from the other bodies
         // (the plain and relation Body Stream Components are backed by the same object!)
-        using var accumulator = world
-            .Query<Acceleration, Body, Body>(Match.Plain, Match.Plain, Match.Entity)
-            .Compile();
+        var accumulator = world
+            .Query<Acceleration, Body, Body>(Identity.Plain, Identity.Plain, Identity.Entity)
+            .Stream();
         
         Assert.Equal(3, accumulator.Count);
-        Assert.Contains(sun1, accumulator);
-        Assert.Contains(sun2, accumulator);
-        Assert.Contains(sun3, accumulator);
+        Assert.Contains(sun1, accumulator.Query);
+        Assert.Contains(sun2, accumulator.Query);
+        Assert.Contains(sun3, accumulator.Query);
 
         // Used to calculate the the forces into the velocities and positions
-        using var integrator = world.Query<Acceleration, Velocity, Position>().Compile();
+        var integrator = world.Query<Acceleration, Velocity, Position>().Stream();
         
         // Used to copy the Position into the Body components of the same object (plain = non-relation component)
-        using var consolidator = world.Query<Position, Body>(Match.Plain, Match.Plain).Compile();
+        var consolidator = world.Query<Position, Body>(Identity.Plain, Identity.Plain).Stream();
         
         const int bodyCount = 3;
         
@@ -117,12 +117,12 @@ public class DocumentationNBodyTests
         Assert.Equal(bodyCount * bodyCount, iterations1);
 
         // Integrate forces, velocities, and positions
-        integrator.For((ref Acceleration accel, ref Velocity velocity, ref Position position, float dt) =>
+        integrator.For(0.01f, (float dt, ref Acceleration accel, ref Velocity velocity, ref Position position) =>
         {
             iterations2++;
             velocity.Value += dt * accel.Value;
             position.Value += dt * velocity.Value;
-        }, 0.01f);
+        });
         
         Assert.Equal(bodyCount, iterations2);
 

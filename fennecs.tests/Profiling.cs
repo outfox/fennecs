@@ -34,7 +34,7 @@ public class ProfilingWorld : IEnumerable<object[]>
             world.Spawn().Add<Vector3>(new(rnd.NextSingle(), rnd.NextSingle(), rnd.NextSingle()));
         }
 
-        var query = world.Query<Vector3>().Compile();
+        var query = world.Query<Vector3>().Stream();
         query.Warmup();
 
         yield return [query, rnd];

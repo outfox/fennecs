@@ -9,8 +9,11 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Virtual_Entities_have_no_Successors()
     {
-        Assert.Throws<InvalidCastException>(() => Match.Any.Successor);
-        Assert.Throws<InvalidCastException>(() => Match.Plain.Successor);
+        Assert.Throws<InvalidCastException>(() => Identity.idAny.Successor);
+        Assert.Throws<InvalidCastException>(() => Identity.idObject.Successor);
+        Assert.Throws<InvalidCastException>(() => Identity.idTarget.Successor);
+        Assert.Throws<InvalidCastException>(() => Identity.idEntity.Successor);
+        Assert.Throws<InvalidCastException>(() => Identity.idPlain.Successor);
     }
 
 
@@ -26,9 +29,9 @@ public class IdentityTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void Identity_None_is_default()
+    public void Identity_Plain_is_default()
     {
-        var none = Match.Plain;
+        var none = Identity.idPlain;
         Assert.Equal(default, none.Generation);
         output.WriteLine(none.Generation.ToString());
         output.WriteLine(none.ToString());
@@ -39,20 +42,20 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_ToString()
     {
-        _ = Match.Any.ToString();
-        _ = Match.Entity.ToString();
-        _ = Match.Target.ToString();
-        _ = Match.Object.ToString();
-        _ = Match.Plain.ToString();
+        _ = Identity.Any.ToString();
+        _ = Identity.Entity.ToString();
+        _ = Identity.Target.ToString();
+        _ = Identity.Object.ToString();
+        _ = Identity.Plain.ToString();
         _ = Identity.Of("hello world").ToString();
         _ = new Identity(123, 456).ToString();
         _ = new Identity(-1, 2).ToString();
 
-        output.WriteLine(Match.Any.ToString());
-        output.WriteLine(Match.Entity.ToString());
-        output.WriteLine(Match.Target.ToString());
-        output.WriteLine(Match.Object.ToString());
-        output.WriteLine(Match.Plain.ToString());
+        output.WriteLine(Identity.Any.ToString());
+        output.WriteLine(Identity.Entity.ToString());
+        output.WriteLine(Identity.Target.ToString());
+        output.WriteLine(Identity.Object.ToString());
+        output.WriteLine(Identity.Plain.ToString());
         output.WriteLine(Identity.Of("hello world").ToString());
         output.WriteLine(new Identity(123, 456).ToString());
         output.WriteLine(new Identity(-1, 2).ToString());
@@ -63,10 +66,10 @@ public class IdentityTests(ITestOutputHelper output)
     public void Identity_None_cannot_Match_One()
     {
         var zero = new Identity(0);
-        Assert.NotEqual(Match.Plain, zero);
+        Assert.NotEqual(Identity.Plain, new(zero));
 
         var one = new Identity(1);
-        Assert.NotEqual(Match.Plain, one);
+        Assert.NotEqual(Identity.Plain, new(one));
     }
 
 
@@ -97,8 +100,8 @@ public class IdentityTests(ITestOutputHelper output)
         {
             var identity = new Identity(i, g);
 
-            Assert.NotEqual(identity, Match.Any);
-            Assert.NotEqual(identity, Match.Plain);
+            Assert.NotEqual(new(identity), Identity.Any);
+            Assert.NotEqual(new(identity), Identity.Plain);
 
             if (ids.ContainsKey(identity.GetHashCode()))
                 Assert.Fail($"Collision of {identity} with {ids[identity.GetHashCode()]}, {identity.GetHashCode()}#==#{ids[identity.GetHashCode()].GetHashCode()}");
@@ -120,8 +123,8 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Any_and_None_are_Distinct()
     {
-        Assert.NotEqual(Match.Any, Match.Plain);
-        Assert.NotEqual(Match.Any.GetHashCode(), Match.Plain.GetHashCode());
+        Assert.NotEqual(Identity.Any, Identity.Plain);
+        Assert.NotEqual(Identity.Any.GetHashCode(), Identity.Plain.GetHashCode());
     }
 
 
@@ -158,8 +161,8 @@ public class IdentityTests(ITestOutputHelper output)
     public void Entity_HashCode_is_Stable()
     {
         using var world = new World();
-        var entity1 = world.Spawn().Id;
-        var entity2 = world.Spawn().Id;
+        var entity1 = world.Spawn();
+        var entity2 = world.Spawn();
         var hash1 = entity1.GetHashCode();
         var hash2 = entity2.GetHashCode();
         Assert.NotEqual(hash1, hash2);
@@ -172,7 +175,7 @@ public class IdentityTests(ITestOutputHelper output)
     private void Identity_is_Equal_to_Itself()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
+        var identity = world.Spawn();
         Assert.Equal(identity, identity);
     }
 
@@ -233,7 +236,7 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_has_no_Components_after_Spawn()
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
+        var identity = world.Spawn();
         var components = world.GetSignature(identity);
         Assert.False(world.HasComponent<int>(identity, default));
         Assert.True(components.Count() == 1);
@@ -245,8 +248,8 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_can_Add_Component<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
-        world.On(identity).Add(t1);
+        var identity = world.Spawn();
+        identity.Add(t1);
         Assert.True(world.HasComponent<T>(identity, default));
         var components = world.GetSignature(identity);
         Assert.True(components.Count() == 2);
@@ -285,7 +288,7 @@ public class IdentityTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add(t1).Id;
-        var x = world.GetComponent<T>(identity, default);
+        var x = world.GetComponent<T>(identity);
         Assert.Equal(t1, x);
     }
 
@@ -295,9 +298,9 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_can_Remove_Component<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
-        world.On(identity).Add(t1);
-        world.On(identity).Remove<T>();
+        var identity = world.Spawn();
+        identity.Add(t1);
+        identity.Remove<T>();
         Assert.False(world.HasComponent<T>(identity, default));
     }
 
@@ -307,10 +310,10 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_can_ReAdd_Component<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
-        world.On(identity).Add(t1);
-        world.On(identity).Remove<T>();
-        world.On(identity).Add(t1);
+        var identity = world.Spawn();
+        identity.Add(t1);
+        identity.Remove<T>();
+        identity.Add(t1);
         Assert.True(world.HasComponent<T>(identity, default));
     }
 
@@ -320,9 +323,9 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_cannot_Add_Component_twice<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
-        world.On(identity).Add(t1);
-        Assert.Throws<ArgumentException>(() => world.On(identity).Add(t1));
+        var identity = world.Spawn();
+        identity.Add(t1);
+        Assert.Throws<ArgumentException>(() => identity.Add(t1));
     }
 
 
@@ -331,10 +334,10 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_cannot_Remove_Component_twice<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
-        world.On(identity).Add(t1);
-        world.On(identity).Remove<T>();
-        Assert.Throws<ArgumentException>(() => world.On(identity).Remove<T>());
+        var identity = world.Spawn();
+        identity.Add(t1);
+        identity.Remove<T>();
+        Assert.Throws<ArgumentException>(() => identity.Remove<T>());
     }
 
 
@@ -344,8 +347,8 @@ public class IdentityTests(ITestOutputHelper output)
     private void Entity_cannot_Remove_Component_without_Adding<T>(T _) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn().Id;
-        Assert.Throws<ArgumentException>(() => world.On(identity).Remove<T>());
+        var identity = world.Spawn();
+        Assert.Throws<ArgumentException>(() => identity.Remove<T>());
     }
 #pragma warning restore xUnit1026
 

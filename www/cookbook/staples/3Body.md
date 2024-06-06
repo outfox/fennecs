@@ -1,19 +1,32 @@
 ---
 title: 3-Body Problem
 outline: [2, 3]
+order: 2
 ---
 
 # 3-Body Problem
 
-The [three-body problem](https://en.wikipedia.org/wiki/Three-body_problem) is a classic problem in physics and mathematics that involves predicting the motion of three bodies (such as stars or planets) under their mutual gravitational influence. It's a complex problem because the bodies continuously affect each other's trajectories, leading to chaotic and often unpredictable behavior.
+The [three-body problem](https://en.wikipedia.org/wiki/Three-body_problem) is a classic problem in physics and mathematics that involves predicting the motion of three or more bodies under mutual attractive influences.
 
-> *Trisolarians, Trishmolarians ...* 
+![a fennec weaing a chrome-plated VR headset](https://fennecs.tech/img/fennec-3body.png)
 
-`1:N` and `N:M` relations where Entities continuously influence each other in complex ways have always been a challenge in Entity Component Systems. Usually, these require expensive additional or reverse lookups that do not scale well with the rest of the ECS design.
+### Trisolarians, Trishmolarians ...
 
-This includes typical gameplay scenarios such as many troops following a few leaders, flocking, gravitational simulations, threat assessments, and more.
+`1:N` and `N:M` relations with Entities continuously influencing each other in complex ways have always been a challenge to model in Entity Component Systems!
 
-**fenn**ecs's relation features allow us you to model such relations with ease - reaping the full benefits of ECS iteration. In this recipe, we'll show you how to simulate a simple 3-Body stellar system, where each body exerts a gravitational pull on all others.
+This drawback often affects typical gameplay scenarios such as characters following leaders, flocking, gravitational simulations, group threat/safety assessments, and more.
+::: details :neofox_think: PAWS FOR THOUGHT: Wanna know why it's difficult?
+Such features require expensive additional or reverse lookups that do not scale well with the rest of the ECS design, interrupting the normal execution flow, often even requiring external data structures to collate the information.
+
+This is a common problem in ECS design, where the iteration over Entities is the main performance benefit, and the need for additional lookups can quickly negate that benefit.
+
+And worst of all, it will require the loop to be broken up on the source code level, making it harder to maintain and understand.
+:::
+
+## But our ~~Lord~~ lot provides...
+**fenn**ecs's relation features allow users to model many of those scenarios with ease - reaping the full benefits of ECS iteration without having to exit the loop! 
+
+In this recipe, we'll show you how to simulate a simple 3-Body stellar system, where each body exerts a gravitational pull on all others.
 
 ## Implementing the Simulation
 
@@ -109,17 +122,17 @@ sun3.AddRelation(sun3, body3);
 // Query to accumulate forces acting on each body
 var accumulator = world
     .Query<Force, Position, Body>(Match.Plain, Match.Plain, Match.Entity)
-    .Compile();
+    .Stream();
 
 // Query to update velocities and positions based on the accumulated forces
 var integrator = world
     .Query<Force, Velocity, Position>()
-    .Compile();
+    .Stream();
 
 // Query to copy the updated positions back to the Body components
 var consolidator = world
     .Query<Position, Body>(Match.Plain, Match.Plain)
-    .Compile();        
+    .Stream();        
 ```
 
 ```csharp [Simulation Loop]        
@@ -172,9 +185,11 @@ By leveraging fennecs' efficient query system and component-based architecture, 
 
 
 ::: warning :neofox_science: DON'T MISTAKE GAME DEV TRICKERY FOR MAGIC!
-Even though **fenn**ecs gives tangible speed benefits when iterating over Entities due to cache coherent data layout and loop structure, an `N:N` relation still implies runtime complexity `o(n²)` - and thus, an elegant real-time approximation to simulate the *1-Million-Body-Problem* remains elusive.
+Although **fenn**ecs has tangible speed benefits when iterating over Entities since it retains its cache coherent data layout and loop structure, an `N:N` relation still implies runtime complexity `o(n²)`!
 
-To simulate larger systems, you would need to employ optimization techniques such as spatial partitioning, approximation methods, or hardware acceleration to reduce the computational burden.
+Alas, an elegant real-time approximation to simulate the *1-Million-Body-Problem* remains elusive.
 
-Also, (if it even has to be said), the above code is a simple simulation and not even remotely scientifically accurate. The "Problem" in "3-Body-Problem" means that for these simulations, small changes in initial conditions quickly lead to vastly different and unpredictable outcomes. Analytical solutions for these systems are difficult to generalize, and numerical simulations quickly diverge.
+You'll be fine if you stay below maybe 100 ~ 300 members per clique, though. Pinky promise.
 :::
+
+To simulate larger interconnected systems, consider researching optimization techniques such as spatial partitioning, algebraic approximation, or hardware acceleration to reduce the computational burden.

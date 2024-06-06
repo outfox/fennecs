@@ -1,11 +1,12 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
 using fennecs.pools;
 
 namespace fennecs;
 
 /// <summary>
-/// A fennecs.World contains Entities, their Components, and manages their lifecycles.
+/// A fennecs.World contains Entities, their Components, compiled Queries, and manages the lifecycles of these objects.
 /// </summary>
 public partial class World : IDisposable
 {
@@ -43,80 +44,35 @@ public partial class World : IDisposable
     /// <param name="values">component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(TypeExpression.Of<Identity>());
+        var signature = new Signature<TypeExpression>(components.ToImmutableSortedSet()).Add(Component.Plain<Identity>().value);
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components, values);
     }
-
-
-    /// <summary>
-    /// Spawns a number of pre-configured Entities 
-    /// </summary>
-    /// <remarks>
-    /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
-    /// </remarks>
-    /// <param name="components">TypeExpressions and boxed objects to spawn</param>
-    /// <param name="count"></param>
-    public void Spawn(int count = 1, params (TypeExpression, object)[] components)
-    {
-        var signature = new Signature<TypeExpression>(components.Select(c => c.Item1).Append(TypeExpression.Of<Identity>()).ToImmutableSortedSet());
-        var archetype = GetArchetype(signature);
-        archetype.Spawn(count, components.Select(c => c.Item2).ToArray());
-    }
-
 
     /// <summary>
     /// Despawn (destroy) an Entity from this World.
     /// </summary>
     /// <param name="entity">the entity to despawn.</param>
-    public void Despawn(Entity entity) => DespawnImpl(entity.Id);
+    public void Despawn(Entity entity) => DespawnImpl(entity);
 
-
-    /// <summary>
-    /// Despawn (destroy) an Entity from this World by its Identity.
-    /// </summary>
-    /// <param name="identity">the entity to despawn.</param>
-    public void Despawn(Identity identity) => DespawnImpl(identity);
-
-
-    /// <summary>
-    /// Interact with an Identity as an Entity.
-    /// Perform operations on the given identity in this world, via fluid API.
-    /// </summary>
-    /// <example>
-    /// <code>world.On(identity).Add(123).Add("string").Remove&lt;int&gt;();</code>
-    /// </example>
-    /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
-    public Entity On(Identity identity)
-    {
-        AssertAlive(identity);
-        return new Entity(this, identity);
-    }
-
-
-    /// <summary>
-    /// Alias for <see cref="On(Identity)"/>, returning an Entity builder struct to operate on. Included to
-    /// provide a more intuitive verb to "get" an Entity to assign to a variable.
-    /// </summary>
-    /// <example>
-    /// <code>var bob = world.GetEntity(bobsIdentity);</code>
-    /// </example>
-    /// <returns>an Entity builder struct whose methods return itself, to provide a fluid syntax. </returns>
-    public Entity GetEntity(Identity identity) => On(identity);
-
-
+    
     /// <summary>
     /// Checks if the entity is alive (was not despawned).
     /// </summary>
     /// <param name="identity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    public bool IsAlive(Identity identity) => identity.IsEntity && identity == _meta[identity.Index].Identity;
+    internal bool IsAlive(Identity identity) => identity == _meta[identity.Index].Identity;
 
 
     /// <summary>
     /// The number of living entities in the World.
     /// </summary>
-    public int Count => _identityPool.Count;
+    public override int Count => _identityPool.Count;
+
+    /// <summary>
+    /// All Queries that exist in this World.
+    /// </summary>
+    public IReadOnlySet<Query> Queries => _queries;
 
     #endregion
 
@@ -127,15 +83,16 @@ public partial class World : IDisposable
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
-    /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
-    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/> or <see cref="Match.Target"/>
+    /// <param name="match">default <see cref="Component.Plain{T}"/>.<br/>Can alternatively be one
+    /// of <see cref="Target.Any"/>, <see cref="Target.Object"/> or <see cref="Target.AnyTarget"/>
     /// </param>
-    public void DespawnAllWith<T>(Identity match = default)
+    public void DespawnAllWith<T>(Target match = default)
     {
-        using var query = Query<Identity>().Has<T>(match).Compile();
+        var query = Query<Identity>().Has<T>(match).Stream();
         query.Raw(delegate(Memory<Identity> entities)
         {
-            foreach (var identity in entities.Span) DespawnImpl(identity);
+            //TODO: This is not good. Need to untangle the types here.
+            foreach (var identity in entities.Span) DespawnImpl(new(this, identity));
         });
     }
 
@@ -144,7 +101,7 @@ public partial class World : IDisposable
     /// Bulk Despawn Entities from a World.
     /// </summary>
     /// <param name="toDelete">the entities to despawn (remove)</param>
-    public void Despawn(ReadOnlySpan<Identity> toDelete)
+    internal void Despawn(ReadOnlySpan<Entity> toDelete)
     {
         lock (_spawnLock)
         {
@@ -159,11 +116,12 @@ public partial class World : IDisposable
     /// Bulk Despawn Entities from a World.
     /// </summary>
     /// <param name="identities">the entities to despawn (remove)</param>
-    public void Recycle(ReadOnlySpan<Identity> identities)
+    internal void Recycle(ReadOnlySpan<Identity> identities)
     {
         lock (_spawnLock)
         {
-            foreach (var identity in identities) DespawnDependencies(identity);
+            //TODO: Not good to assemble the Entity like that. Types need to be untangled.
+            foreach (var identity in identities) DespawnDependencies(new(this, identity));
             _identityPool.Recycle(identities);
         }
     }
@@ -171,13 +129,13 @@ public partial class World : IDisposable
     /// <summary>
     /// Despawn one Entity from a World.
     /// </summary>
-    /// <param name="identity">the entity to despawn (remove)</param>
-    public void Recycle(Identity identity)
+    /// <param name="entity">the entity to despawn (remove)</param>
+    internal void Recycle(Entity entity)
     {
         lock (_spawnLock)
         {
-            DespawnDependencies(identity);
-            _identityPool.Recycle(identity);
+            DespawnDependencies(entity);
+            _identityPool.Recycle(entity);
         }
     }
 
@@ -192,12 +150,15 @@ public partial class World : IDisposable
     /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
     public World(int initialCapacity = 4096)
     {
+        World = this;
+       
+        
         _identityPool = new(initialCapacity);
 
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new Signature<TypeExpression>(TypeExpression.Of<Identity>(Match.Plain)));
+        _root = GetArchetype(new(Component.Plain<Identity>().value));
     }
 
 
@@ -210,35 +171,38 @@ public partial class World : IDisposable
         {
             if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
 
-            foreach (var archetype in _archetypes)
+            foreach (var archetype in Archetypes.ToArray())
             {
-                if (archetype.Count == 0) ForgetArchetype(archetype);
+                if (archetype.Count == 0) DisposeArchetype(archetype);
             }
-
-            _archetypes.Clear();
-            _archetypes.AddRange(_typeGraph.Values);
         }
     }
 
 
-    private void ForgetArchetype(Archetype archetype)
+    private void DisposeArchetype(Archetype archetype)
     {
+        Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
+        Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
+        
         _typeGraph.Remove(archetype.Signature);
 
         foreach (var type in archetype.Signature)
         {
-            _tablesByType[type].Remove(archetype);
-
+            /* BAD BUG: This would eagerly remove relations too early.
+             
+            // Delete the entire reverse lookup if it's no longer needed)
             // This is still relevant if ONE relation component is eliminated, but NOT all of them.
             // In the case where the target itself is Despawned, _typesByRelationTarget already
             // had its entire entry for that Target removed.
-            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Target, out var stillInUse))
+            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
             {
-                stillInUse.Remove(type);
-                if (stillInUse.Count == 0) _typesByRelationTarget.Remove(type.Target);
+                typeSet.Remove(type);
+                if (typeSet.Count == 0) _typesByRelationTarget.Remove(type.Relation);
             }
+            */
 
             // Same here, if all Archetypes with a Type are gone, we can clear the entry.
+            _tablesByType[type].Remove(archetype);
             if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
         }
 
@@ -247,15 +211,19 @@ public partial class World : IDisposable
             // TODO: Will require some optimization later.
             query.ForgetArchetype(archetype);
         }
+        
+        //TODO: Maybe make these a virtual property or so.
+        Archetypes.Clear();
+        Archetypes.AddRange(_typeGraph.Values);        
     }
 
 
     /// <summary>
     /// Disposes of the World. Currently, a no-op.
     /// </summary>
-    public void Dispose()
+    public new void Dispose()
     {
-        //TODO: Release all Object Links?
+        //TODO: Dispose all Object Links, Queries, etc.?
     }
 
 
@@ -282,7 +250,7 @@ public partial class World : IDisposable
     {
         var sb = new StringBuilder("World:");
         sb.AppendLine();
-        sb.AppendLine($" {_archetypes.Count} Archetypes");
+        sb.AppendLine($" {Archetypes.Count} Archetypes");
         sb.AppendLine($" {Count} Entities");
         sb.AppendLine($" {_queries.Count} Queries");
         sb.AppendLine($"{nameof(WorldMode)}.{Mode}");

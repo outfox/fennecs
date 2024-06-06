@@ -14,6 +14,7 @@
     internal struct Size(int cm) : Fox<int>
     {
         public int Value { get; set; } = cm;
+        public static implicit operator Size(int centimeters) => new(centimeters); 
     }
 
 
@@ -38,9 +39,9 @@
             var world = new World();
             world.Spawn()
                 .Add<Weight>(50)
-                .Add<Size>(new(150));
+                .Add<Size>(150);
             
-            var query = world.Query<Weight, Size>().Compile();
+            var query = world.Query<Weight, Size>().Stream();
             
             query.For(static (ref Weight weight, ref Size size) =>
             {

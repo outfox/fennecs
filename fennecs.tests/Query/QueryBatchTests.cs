@@ -28,7 +28,7 @@ public class QueryBatchTests
 
         var intQuery = world.Query<int>().Compile();
         intQuery.Batch(Batch.AddConflict.Preserve).Add(123456.0f).Submit();
-        intQuery.Batch(Batch.AddConflict.Preserve).Add<float>(default).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add<float>().Submit();
     }
 
 
@@ -53,7 +53,7 @@ public class QueryBatchTests
 
         var intQuery = world.Query<int>().Compile();
         intQuery.Batch(Batch.AddConflict.Preserve).Add(new TypeA(55)).Submit();
-        intQuery.Batch(Batch.AddConflict.Preserve).Add<TypeA>(default).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add<TypeA>().Submit();
     }
 
 
@@ -230,11 +230,11 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var relationQuery = world.Query<float>(Match.Entity).Compile();
+        var relationQuery = world.Query<float>(Identity.Entity).Compile();
         Assert.Empty(relationQuery);
 
         var intQuery = world.Query<int>().Compile();
-        intQuery.Batch(Batch.AddConflict.Preserve).AddRelation<float>(e3).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add<float>(e3).Submit();
 
         Assert.Equal(2, relationQuery.Count);
         Assert.Contains(e1, relationQuery);
@@ -257,11 +257,11 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var relationQuery = world.Query<string>(Match.Entity).Compile();
+        var relationQuery = world.Query<string>(Identity.Entity).Compile();
         Assert.Empty(relationQuery);
 
         var intQuery = world.Query<int>().Compile();
-        intQuery.Batch(Batch.AddConflict.Preserve).AddRelation<string>("object backed, buddy!", e3).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add<string>("object backed, buddy!", e3).Submit();
 
         Assert.Equal(2, relationQuery.Count);
         Assert.Contains(e1, relationQuery);
@@ -271,18 +271,18 @@ public class QueryBatchTests
 
 
     [Fact]
-    public void Can_RemoveLink_Batched()
+    public void Can_Remove_Batched()
     {
         using var world = new World();
-        const string link = "doom";
+        const string doom = "doom";
         
-        var e1 = world.Spawn().AddLink<string>(link);
+        var e1 = world.Spawn().Add(Link.With(doom));
 
-        var linkQuery = world.Query<string>(Identity.Of(link)).Compile();
+        var linkQuery = world.Query<string>(Link.With(doom)).Compile();
         Assert.Single(linkQuery);
         Assert.Contains(e1, linkQuery);
         
-        linkQuery.Batch().RemoveLink<string>(link).Submit();
+        linkQuery.Batch().Remove(Link.With(doom)).Submit();
         
         Assert.Empty(linkQuery);
     }
@@ -292,12 +292,12 @@ public class QueryBatchTests
     {
         using var world = new World();
         var target = world.Spawn();
-        var e1 = world.Spawn().AddRelation(target, 123);
+        var e1 = world.Spawn().Add(123, target);
 
-        Assert.True(e1.HasRelation<int>(target));
-        var intQuery = world.Query<int>(target).Compile();
-        intQuery.Batch().RemoveRelation<int>(target).Submit();
-        Assert.False(e1.HasRelation<int>(target));
+        Assert.True(e1.Has<int>(target));
+        var intQuery = world.Query<int>(Target.Relation(target)).Compile();
+        intQuery.Batch().Remove<int>(target).Submit();
+        Assert.False(e1.Has<int>(target));
     }
     
 
@@ -315,11 +315,11 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var linkQuery = world.Query<string>(Match.Object).Compile();
+        var linkQuery = world.Query<string>(Identity.Object).Compile();
         Assert.Empty(linkQuery);
 
         var intQuery = world.Query<int>().Compile();
-        intQuery.Batch(Batch.AddConflict.Preserve).AddLink<string>("doom").Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Add(Link.With("doom")).Submit();
 
         Assert.Equal(2, linkQuery.Count);
         Assert.Contains(e1, linkQuery);
@@ -377,7 +377,7 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234);
         var e3 = world.Spawn().Add(567).Add("pre-existing");
 
-        var intQuery = world.Query<int>().Compile();
+        var intQuery = world.Query<int>().Stream();
         
         intQuery.Blit(314);
         
@@ -400,7 +400,7 @@ public class QueryBatchTests
         var e2 = world.Spawn().Add(234).Add("goofy");
         var e3 = world.Spawn().Add(567).Add("pre-existing");
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
         
         query.Blit(314);
         query.Blit("works");
@@ -428,7 +428,7 @@ public class QueryBatchTests
 
         world.Spawn().Add(123.5f);
 
-        var query = world.Query<int, string>().Compile();
+        var query = world.Query<int, string>().Stream();
         
         query.Blit(314);
         query.Blit("works");

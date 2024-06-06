@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace fennecs;
@@ -10,7 +9,7 @@ namespace fennecs;
 /// real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
+internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 {
     [FieldOffset(0)] internal readonly ulong Value;
 
@@ -45,7 +44,7 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
     // Wildcard Entities, such as Any, Object, Entity, or Relation.
     /// <summary>
-    /// Truthy if the Identity represents a virtual concept (see <see cref="Match"/>).
+    /// Truthy if the Identity represents a virtual concept (see <see cref="Cross"/>).
     /// Falsy if it is an actual Entity or a tracked object.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>
@@ -120,8 +119,8 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <typeparam name="T">type of the item (becomes the backing type of the object link)</typeparam>
     /// <returns></returns>
     public static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
-
-
+    
+    
     internal Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)
     {
     }
@@ -149,19 +148,19 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <inheritdoc />
     public override string ToString()
     {
-        if (Equals(Match.Plain))
+        if (Equals(idPlain))
             return "[None]";
 
-        if (Equals(Match.Any))
+        if (Equals(idAny))
             return "wildcard[Any]";
 
-        if (Equals(Match.Target))
+        if (Equals(idTarget))
             return "wildcard[Target]";
 
-        if (Equals(Match.Entity))
+        if (Equals(idEntity))
             return "wildcard[Entity]";
 
-        if (Equals(Match.Object))
+        if (Equals(idObject))
             return "wildcard[Object]";
 
         if (IsObject)
@@ -172,4 +171,79 @@ public readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
         return $"?-{Value:x16}";
     }
+
+    /// <summary>
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
+    /// </para>
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
+    /// </para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// </summary>
+    /// <remarks>
+    /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for
+    /// each matching component. While querying is efficient, this increases the number of operations per entity.</para>
+    /// <para>This is an intentional feature, and <c>Match.Any</c> is the default as usually the same backing types are not re-used across
+    /// relations or links; but if they are, the user likely wants their Query to enumerate all of them.</para>
+    /// <para>This effect is more pronounced in large archetypes with many matching components, potentially
+    /// multiplying the workload significantly. However, for smaller archetypes or simpler tasks, impacts are minimal.</para>
+    /// <para>Risks and considerations include:</para>
+    /// <ul>
+    /// <li>Repeated enumeration: Entities matching a wildcard are processed multiple times, for each matching
+    /// component type combination.</li>
+    /// <li>Complex queries: Especially in Archetypes where Entities match multiple components, multiple wildcards
+    /// can create a cartesian product effect, significantly increasing complexity and workload.</li>
+    /// <li>Use wildcards deliberately and sparingly.</li>
+    /// </ul>
+    /// </remarks>
+    public static Target Any => new(idAny); // or prefer default ?
+
+    /// <summary>
+    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Target"/>.
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
+    /// </para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// </summary>
+    /// <inheritdoc cref="Any"/>
+    public static Target Target => new(idTarget);
+
+    /// <summary>
+    /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
+    /// </para>
+    /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
+    /// </para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// </summary>
+    /// <inheritdoc cref="Any"/>
+    public static Target Object => new(idObject);
+
+    /// <summary>
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
+    /// </para>
+    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
+    /// </para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// </summary>
+    /// <inheritdoc cref="Any"/>
+    public static Target Entity => new(idEntity);
+
+    /// <summary>
+    /// <para>
+    /// <c>default</c><br/>In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
+    /// </para>
+    /// <para>
+    /// Since it's specific, this Match Expression is always free and has no enumeration cost.
+    /// </para>
+    /// </summary>
+    /// <remarks>
+    /// Not a wildcard. Formerly known as "None", as plain components without a target
+    /// can only exist once per Entity (same as components with a particular target).
+    /// </remarks>
+    public static Target Plain => new(idPlain);
+
+    internal static readonly Identity idPlain = default;
+    internal static readonly Identity idEntity = new(-3, 0);
+    internal static readonly Identity idObject = new(-4, 0);
+    internal static readonly Identity idAny = new(-1, 0);
+    internal static readonly Identity idTarget = new(-2, 0);
 }

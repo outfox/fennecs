@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Collections;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -8,13 +7,12 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
+public partial class World : Query
 {
-    #region State & Storage
+    #region World State & Storage
     private readonly IdentityPool _identityPool;
 
     private Meta[] _meta;
-    private readonly List<Archetype> _archetypes = [];
 
     // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
     private readonly Archetype _root;
@@ -26,7 +24,7 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
     private readonly Dictionary<Signature<TypeExpression>, Archetype> _typeGraph = new();
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
-    private readonly Dictionary<Identity, HashSet<TypeExpression>> _typesByRelationTarget = new();
+    private readonly Dictionary<Relate, HashSet<TypeExpression>> _typesByRelationTarget = new();
     #endregion
 
 
@@ -83,62 +81,92 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
     private bool HasComponent(Identity identity, TypeExpression typeExpression)
     {
         var meta = _meta[identity.Index];
-        return meta.Identity != Match.Plain
+        return meta.Identity != default
                && meta.Identity == identity
                && typeExpression.Matches(meta.Archetype.Signature);
     }
 
 
-    private void DespawnImpl(Identity identity)
+    private void DespawnImpl(Entity entity)
     {
-            AssertAlive(identity);
+            AssertAlive(entity);
 
             if (Mode == WorldMode.Deferred)
             {
-                _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Despawn, Identity = identity});
+                _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Despawn, Identity = entity});
                 return;
             }
 
-            ref var meta = ref _meta[identity.Index];
+            DespawnDependencies(entity);
+
+            ref var meta = ref _meta[entity.Id.Index];
 
             var table = meta.Archetype;
             table.Delete(meta.Row);
 
-            _identityPool.Recycle(identity);
+            _identityPool.Recycle(entity);
 
-            DespawnDependencies(identity);
+            // Patch Meta
+            _meta[entity.Id.Index] = default;
     }
 
-    
-    private void DespawnDependencies(Identity identity)
+
+    private void DespawnDependencies(Entity entity)
     {
-            // Patch Meta
-            _meta[identity.Index] = default;
+        // Find identity-identity relation reverse lookup (if applicable)
+        if (!_typesByRelationTarget.TryGetValue(Relate.To(entity), out var types) 
+            || types.Count == 0) return;
 
-            // Find identity-identity relation reverse lookup (if applicable)
-            if (!_typesByRelationTarget.Remove(identity, out var list)) return;
+        // Collect Archetypes that have any of these relations
+        var toMigrate = Archetypes.Where(a => a.Signature.Overlaps(types)).ToList();
 
-            //Remove Components from all Entities that had a relation
-            foreach (var type in list) //TODO: Benchmark sorted and reversed hashsets here.
+        // And migrate them to a new Archetype without the relation
+        foreach (var archetype in toMigrate)
+        {
+            if (archetype.Count > 0)
             {
-                //Cloen the list.
-                var tablesWithType = new List<Archetype>(_tablesByType[type]);
-
-                foreach (var source in tablesWithType)
-                {
-                    var signatureWithoutTarget = new Signature<TypeExpression>(source.Signature.Where(t => t.Target != identity).ToImmutableSortedSet());
-                    var destination = GetArchetype(signatureWithoutTarget);
-                    source.Migrate(destination);
-                    
-                    //Because the dependency is now gone, we close down the whole archetype.
-                    ForgetArchetype(source);
-                }
+                var signatureWithoutTarget = archetype.Signature.Except(types);
+                var destination = GetArchetype(signatureWithoutTarget);
+                archetype.Migrate(destination);
             }
+            DisposeArchetype(archetype);
+        }
+        
+        // No longer tracking this Entity
+        _typesByRelationTarget.Remove(Relate.To(entity));
     }
     #endregion
 
 
     #region Queries
+
+    internal Query CompileQuery(Mask mask)
+    {
+        // Return cached query if available.
+        if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
+
+        // Compile if not cached.
+        var type = mask.HasTypes[index: 0];
+        if (!_tablesByType.TryGetValue(type, out var typeTables))
+        {
+            typeTables = new(capacity: 16);
+            _tablesByType[type] = typeTables;
+        }
+
+        var matchingTables = PooledList<Archetype>.Rent();
+        foreach (var table in Archetypes)
+        {
+            if (table.Matches(mask)) matchingTables.Add(table);
+        }
+
+        query = new(this, mask.Clone(), matchingTables);
+        if (!_queries.Add(query) || !_queryCache.TryAdd(query.Mask.GetHashCode(), query))
+        {
+            throw new InvalidOperationException("Query was already added to World. File a bug report!");
+        }
+        return query;
+    }
+
 
     internal Query CompileQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
@@ -150,7 +178,7 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
         }
 
         var matchingTables = PooledList<Archetype>.Rent();
-        foreach (var table in _archetypes)
+        foreach (var table in Archetypes)
         {
             if (table.Matches(mask)) matchingTables.Add(table);
         }
@@ -197,8 +225,9 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
         if (_typeGraph.TryGetValue(types, out var table)) return table;
 
         table = new(this, types);
-        _archetypes.Add(table);
-        _typeGraph.Add(types, table);
+
+        //This could be given to us by the next query update?
+        Archetypes.Add(table);
 
         // TODO: This is a suboptimal lookup (enumerate dictionary)
         // IDEA: Maybe we can keep Queries in a Tree which
@@ -223,27 +252,40 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
 
             if (!type.isRelation) continue;
 
-            if (!_typesByRelationTarget.TryGetValue(type.Target, out var typeList))
+            if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
             {
-                typeList = [];
-                _typesByRelationTarget[type.Target] = typeList;
+                typeSet = [];
+                _typesByRelationTarget[type.Relation] = typeSet;
             }
-
-            typeList.Add(type);
+            
+            typeSet.Add(type);
         }
 
+        _typeGraph.Add(types, table);
         return table;
     }
 
 
-    internal void CollectTargets<T>(List<Identity> entities)
+    internal void CollectTargets<T>(List<Relate> entities)
     {
-        var type = TypeExpression.Of<T>(Match.Any);
+        var type = TypeExpression.Of<T>(Identity.Entity);
 
+        // Modern LINQ version.
+        entities.AddRange(
+            from candidate in _tablesByType.Keys 
+            where type.Matches(candidate) 
+            select candidate.Relation);
+        
         // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
+        /*
         foreach (var candidate in _tablesByType.Keys)
+        {
             if (type.Matches(candidate))
-                entities.Add(candidate.Target);
+            {
+                entities.Add(candidate.Relation);
+            }
+        }
+        */
     }
     #endregion
 
@@ -255,26 +297,6 @@ public partial class World : IEnumerable<Query>, IEnumerable<Archetype>
         if (IsAlive(identity)) return;
 
         throw new ObjectDisposedException($"Identity {identity} is no longer alive.");
-    }
-    #endregion
-
-    #region IEnumerable
-    /// <inheritdoc />
-    IEnumerator<Archetype> IEnumerable<Archetype>.GetEnumerator()
-    {
-        return _archetypes.GetEnumerator();
-    }
-
-    /// <inheritdoc />
-    public IEnumerator<Query> GetEnumerator()
-    {
-        return _queries.GetEnumerator();
-    }
-
-    /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return _archetypes.GetEnumerator();
     }
     #endregion
 }

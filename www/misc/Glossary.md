@@ -54,11 +54,11 @@ Console.WriteLine(myWorld.DebugString());
 An Identity is a 64-bit number. When associated with a World, the majority of Identities are called Entities. Identities can represent multiple things:
 - a specific Entity (as itself or for targeting)
 - a specific Object's Identity (for Link targeting)
-- a Wildcard for a Query Filter (see [Match Expressions](/docs/Queries/MatchExpressions.md))
+- a Wildcard for a Query Filter (see [Match Expressions](/docs/Queries/Matching.md))
 
 ## Structural Changes
 
-Changes to the layout of Entities - meaning which Components, Links, or Relations they have - define which [Archetype](/docs/Archetype.md) they falls into. 
+Changes to the layout of Entities - meaning which Components, Links, or Relations they have - define which [Archetype](/docs/Components/index.md#archetype) they falls into. 
 
 ### Each of these constitutes a structural change:
  - Adding a Component, Link, or Relation
@@ -89,15 +89,20 @@ No need to manually remove a component from each entity in a Query, enqueing the
 
 An `IDisposable` that can be aquired from a World to set it to Deferred Mode, meaning all structural changes are queued and executed only after the last lock has been returned.
 
-All the Query runners use this internally to defer structural changes until the Runner has completed.
+All the Stream Runners use this internally to defer structural changes until the Runner has completed.
 
 ::: code-group
 
 ```cs [how to use it]
 var myWorld = new World();
 // using statement will ensure the lock is disposed when it goes out of scope.
-using var worldLock = myWorld.Lock;
-```
+using var worldLock1 = myWorld.Lock;
 
-<<< ../../fennecs/Query1.cs#Showcase{10} [fennecs internal usage]
+// or
+
+using (var worldLock2 = myWorld.Lock)
+{
+    // do stuff
+}
+```
 :::

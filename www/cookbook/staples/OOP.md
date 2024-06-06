@@ -1,6 +1,7 @@
 ---
 title: OOP & Inheritance
 outline: [2, 3]
+order: 4
 ---
 
 # Object Oriented Programming
@@ -25,7 +26,7 @@ var component = new DerivedComponent();
 entity.Add<BaseComponent>(component);
 entity.Add<DerivedComponent>(component);
 
-// Reachable in various ways (and with two type identities)!
+// Reachable in various ways (and with two type Identities)!
 var queryBase = world.Query<BaseComponent>();
 var queryDerived = world.Query<DerivedComponent>();
 var queryBoth = world.Query<BaseComponent, DerivedComponent>();

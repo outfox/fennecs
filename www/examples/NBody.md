@@ -21,6 +21,17 @@ This demo is available for the following:
 Your browser does not support the video tag.
 </video>
 
+
+### Remarks
+Case in point here is not raw performance (although the basic GDscript-driven line trail rendering easily eats 90% of the Godot rendering time). Instead, note how short and concise the simulation loop stays - without as much as a single reverse lookup.
+
+::: code-group
+
+<<< ../../demos/godot/N-Body/NBodyDemo.cs#Showcase [Showcase]
+
+:::
+
+
 State and Structure are stored in the Components on the Entities:
 
 - 1x `Body` as Plain Component (contains mass and last position)

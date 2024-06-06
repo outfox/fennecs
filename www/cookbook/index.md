@@ -10,11 +10,13 @@ head:
 
 # Welcome to the Kitchen
 
-![three fennecs eating pizza together](https://fennecs.tech/img/fennec-job.png)
+![two fennecs behind a kitchen counter, ready to cook](https://fennecs.tech/img/fennecs-kitchen-transparent.png)
 
-Come in, we have cookies & pizza! Let's get you ~~sated~~ started! 
+*"Come in, we have cookies & pasta! Let's get you ~~sated~~ started!"*
 
-## Tippity-tap ...
+----------------
+
+# Tippity-tap ...
 ```shell
 dotnet add package fennecs
 ```
@@ -32,7 +34,7 @@ using fennecs;
 
 
 
-::: details What about the kitchen sink?
+::: details I need the kitchen sink!
 Good old git. Nothing beats that!  
 ::: code-group
 

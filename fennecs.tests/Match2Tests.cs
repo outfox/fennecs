@@ -17,17 +17,17 @@ public class Match2Tests
         var bob = _world.Spawn();
         _world.Spawn()
             .Add<float>()
-            .AddLink(OBJECT1)
-            .AddLink(OBJECT2)
+            .Add(Link.With(OBJECT1))
+            .Add(Link.With(OBJECT2))
             .Add(NONE1)
-            .AddRelation(bob, RELATION1);
+            .Add(RELATION1, Relate.To(bob));
     }
 
     
     [Fact]
     public void Any_Enumerates_all_Components_Once()
     {
-        using var query = _world.Query<string, float>(Match.Any, Match.Plain).Compile();
+        var query = _world.Query<string, float>(Identity.Any, Identity.Plain).Stream();
 
         HashSet<string> seen = [];
         query.For((ref string str, ref float _) =>
@@ -46,7 +46,7 @@ public class Match2Tests
     [Fact]
     public void Plain_Enumerates_Only_Plain_Components()
     {
-        using var query = _world.Query<string, float>(Match.Plain, Match.Plain).Compile();
+        var query = _world.Query<string, float>(Identity.Plain, Identity.Plain).Stream();
 
         HashSet<string> seen = [];
         query.Job((ref string str, ref float _) =>
@@ -62,7 +62,7 @@ public class Match2Tests
     [Fact]
     public void Target_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string, float>(Match.Target, Match.Plain).Compile();
+        var query = _world.Query<string, float>(Identity.Target, Identity.Plain).Stream();
 
         HashSet<string> seen = [];
 
@@ -81,7 +81,7 @@ public class Match2Tests
     [Fact]
     public void Relation_Enumerates_all_Relations()
     {
-        using var query = _world.Query<string, float>(Match.Entity, Match.Plain).Compile();
+        var query = _world.Query<string, float>(Identity.Entity, Identity.Plain).Stream();
 
         HashSet<string> seen = [];
 
@@ -98,7 +98,7 @@ public class Match2Tests
     [Fact]
     public void Object_Enumerates_all_Object_Links()
     {
-        using var query = _world.Query<string, float>(Match.Object, Match.Plain).Compile();
+        var query = _world.Query<string, float>(Identity.Object, Identity.Plain).Stream();
 
         HashSet<string> seen = [];
 

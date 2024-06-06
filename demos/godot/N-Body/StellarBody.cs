@@ -55,7 +55,7 @@ public partial class StellarBody : EntityNode2D
 		{
 			if (sibling.entity)
 			{
-				entity.AddRelation(sibling.entity, sibling._body);
+				entity.Add(sibling._body, sibling.entity);
 			}
 		}
 	}

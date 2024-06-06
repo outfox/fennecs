@@ -19,12 +19,12 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// The TypeExpressions that define this Archetype.
     /// </summary>
-    public readonly Signature<TypeExpression> Signature;
+    internal readonly Signature<TypeExpression> Signature;
 
     /// <summary>
     /// Get a Span of all Identities contained in this Archetype.
     /// </summary>
-    public ReadOnlySpan<Identity> Identities => IdentityStorage.Span;
+    internal ReadOnlySpan<Identity> Identities => IdentityStorage.Span;
 
     /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
@@ -60,7 +60,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     // private readonly ImmutableDictionary<TypeID, IStorage[]> _buckets;
 
     // Used by Queries to check if the table has been modified while enumerating.
-    private int _version;
+    internal int Version;
 
 
     internal Archetype(World world, Signature<TypeExpression> signature)
@@ -103,10 +103,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             currentBucket.Add(Storages[index]);
         }
 
-        // Get quick lookup for Identity component
+        // Get quick lookup for Identity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(default);
+        IdentityStorage = GetStorage<Identity>(fennecs.Identity.Plain);
 
         // TODO: Bake buckets dictionary
         // _buckets = Zip(finishedTypes, finishedBuckets);
@@ -300,6 +300,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <param name="destination">the Archetype to move the entities to</param>
     internal void Migrate(Archetype destination)
     {
+        if (IsEmpty) return;
+        
         // Certain Add-modes permit operating on archetypes that themselves are in the query.
         // No more migrations are needed at this point (they would be semantically idempotent)
         if (destination == this) return;
@@ -345,12 +347,17 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             return;
         }
 
-        var storage = (Storage<T>) GetStorage(type);
-        storage.Blit(value);
+        var join = CrossJoin<T>([type]);
+        if (join.Empty) return;
+        do
+        {
+            var storage = join.Select;
+            storage.Blit(value);
+        } while (join.Iterate());
     }
 
 
-    internal Storage<T> GetStorage<T>(Identity target)
+    internal Storage<T> GetStorage<T>(Target target)
     {
         var type = TypeExpression.Of<T>(target);
         return (Storage<T>) GetStorage(type);
@@ -422,10 +429,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <inheritdoc />
     public IEnumerator<Entity> GetEnumerator()
     {
-        var snapshot = Volatile.Read(ref _version);
+        var snapshot = Volatile.Read(ref Version);
         for (var i = 0; i < Count; i++)
         {
-            if (snapshot != Volatile.Read(ref _version)) throw new InvalidOperationException("Collection modified while enumerating.");
+            if (snapshot != Volatile.Read(ref Version)) throw new InvalidOperationException("Collection modified while enumerating.");
             yield return new Entity(_world, IdentityStorage[i]);
         }
     }
@@ -447,33 +454,65 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     #region Cross Joins
-    internal Match.Join<C0> CrossJoin<C0>(TypeExpression[] streamTypes)
+    internal Cross.Join<C0> CrossJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Match.Join<C0>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes.AsSpan());
     }
 
 
-    internal Match.Join<C0, C1> CrossJoin<C0, C1>(TypeExpression[] streamTypes)
+    internal Cross.Join<C0, C1> CrossJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Match.Join<C0, C1>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal Match.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(TypeExpression[] streamTypes)
+    internal Cross.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Match.Join<C0, C1, C2>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal Match.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(TypeExpression[] streamTypes)
+    internal Cross.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Match.Join<C0, C1, C2, C3>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal Match.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(TypeExpression[] streamTypes)
+    internal Cross.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Match.Join<C0, C1, C2, C3, C4>(this, streamTypes);
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
+    }
+    #endregion
+
+
+    #region Inner Joins
+    internal Cross.Join<C0> InnerJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes.AsSpan());
+    }
+
+
+    internal Cross.Join<C0, C1> InnerJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
+    }
+
+
+    internal Cross.Join<C0, C1, C2> InnerJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
+    }
+
+
+    internal Cross.Join<C0, C1, C2, C3> InnerJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
+    }
+
+
+    internal Cross.Join<C0, C1, C2, C3, C4> InnerJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
+    {
+        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
     #endregion
 
@@ -486,7 +525,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         foreach (var component in components)
         {
-            var type = TypeExpression.Of(component.GetType());
+            var type = TypeExpression.Of(component.GetType(), fennecs.Identity.Plain);
             var storage = GetStorage(type);
             storage.Append(component, count);
         }
@@ -514,5 +553,5 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal void Invalidate() => Interlocked.Increment(ref _version);
+    internal void Invalidate() => Interlocked.Increment(ref Version);
 }

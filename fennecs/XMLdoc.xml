@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <members>
+    <member name="T:Stream">
+        <summary>
+            Compiles the Query and returns a Stream View that exposes the Runners (For, Job, and Raw), the Blit SIMD interface, and also acts as an IEnumerable of ValueTuples.
+        </summary>
+    </member>
     <member name="T:For">
         <summary>
             Performs a query with specified action, passing in values for requested stream types.
