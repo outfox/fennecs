@@ -11,6 +11,7 @@
     <PackageReference Include="fennecs" Version="0.5.0-beta" />
     <PackageReference Update="Godot.SourceGenerators" Version="4.3.0-dev.6" />
     <PackageReference Update="GodotSharp" Version="4.3.0-dev.6" />
+    <PackageReference Update="GodotSharpEditor" Version="4.3.0-beta.1" />
   </ItemGroup>
   
   

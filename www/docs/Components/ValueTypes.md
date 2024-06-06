@@ -8,7 +8,7 @@ order: 1
 In **fenn**ecs, components are typically defined as [value types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types) (e.g., structs or primitives). Value type components are stored directly within the memory of each entity, providing excellent performance and memory efficiency.
 
 ::: info :neofox_verified: SIMPLY THE BEST
-By default, components in **fenn**ecs are value types. This means that each entity has its own copy of the component. Their data is neatly arranged in memory so it's easy to access and process efficiently and with speed.
+The fastest Components to process with **fenn**ecs value types. This means that each entity has its own copy of the component. Their data is neatly arranged in memory so it's easy to access and process efficiently and with speed.
 :::
 
 ## Defining Value Type Components
