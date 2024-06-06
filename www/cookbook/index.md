@@ -34,7 +34,7 @@ using fennecs;
 
 
 
-::: details I need the kitchen sink!
+::: details I also want the kitchen sink!
 Good old git. Nothing beats that!  
 ::: code-group
 

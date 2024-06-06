@@ -12,7 +12,7 @@ The [three-body problem](https://en.wikipedia.org/wiki/Three-body_problem) is a 
 
 ### Trisolarians, Trishmolarians ...
 
-`1:N` and `N:M` relations with Entities continuously influencing each other in complex ways have always been a challenge to model in Entity Component Systems!
+`1:N` and `N:M` relations with Entities continuously influencing each other in complex ways have always been a challenge to model in Entity-Component Systems!
 
 This drawback often affects typical gameplay scenarios such as characters following leaders, flocking, gravitational simulations, group threat/safety assessments, and more.
 ::: details :neofox_think: PAWS FOR THOUGHT: Wanna know why it's difficult?

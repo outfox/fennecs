@@ -10,7 +10,7 @@ head:
 ---
 
 # Welcome to the last ECS of your life!
-Outfox complexity with **fenn**ecs, a clever, quick, and tiny Entity Component System!
+Outfox complexity with **fenn**ecs, a clever, quick, and tiny Entity-Component System!
 
 ::: info :neofox_knives: THE COOKBOOK - Tutorials and Tricks
 Feeling snackish? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. Snack on easily digestible code samples, and come back whenever you need to to jog your memory.
