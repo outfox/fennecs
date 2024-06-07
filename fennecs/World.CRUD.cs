@@ -49,14 +49,14 @@ public partial class World
     }
 
 
-    internal bool HasComponent<T>(Identity identity, Target match)
+    internal bool HasComponent<T>(Identity identity, Match match)
     {
         var type = TypeExpression.Of<T>(match);
         return HasComponent(identity, type);
     }
 
 
-    internal ref T GetComponent<T>(Identity identity, Target target)
+    internal ref T GetComponent<T>(Identity identity, Match match)
     {
         AssertAlive(identity);
 
@@ -64,7 +64,7 @@ public partial class World
         if (typeof(T) == typeof(Identity)) throw new TypeAccessException("Not allowed get mutable reference in root table (TypeExpression<Identity>, system integrity).");
 
         var (table, row, _) = _meta[identity.Index];
-        var storage = table.GetStorage<T>(target);
+        var storage = table.GetStorage<T>(match);
         return ref storage.Span[row];
     }
 

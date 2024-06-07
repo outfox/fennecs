@@ -84,9 +84,9 @@ public partial class World : IDisposable
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
     /// <param name="match">default <see cref="Component.Plain{T}"/>.<br/>Can alternatively be one
-    /// of <see cref="Target.Any"/>, <see cref="Target.Object"/> or <see cref="Target.AnyTarget"/>
+    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/> or <see cref=Match.AnyMatcht"/>
     /// </param>
-    public void DespawnAllWith<T>(Target match = default)
+    public void DespawnAllWith<T>(Match match = default)
     {
         var query = Query<Identity>().Has<T>(match).Stream();
         query.Raw(delegate(Memory<Identity> entities)

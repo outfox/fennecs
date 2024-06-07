@@ -161,7 +161,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add(Link.With("dieter"))
             .Spawn(count);
 
-        var query = world.Query<int, string>(Identity.Plain, Target.Link("dieter")).Stream();
+        var query = world.Query<int, string>(Identity.Plain, Match.Link("dieter")).Stream();
         Assert.Equal(count, query.Count);
         
         query.For((ref int i, ref string s) =>
@@ -631,7 +631,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity2 = world.Spawn().Add(Link.With("to the past"));
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
-        world.DespawnAllWith<string>(Target.Any);
+        world.DespawnAllWith<string>(Match.Any);
         Assert.False(world.IsAlive(entity1));
         Assert.False(world.IsAlive(entity2));
         Assert.False(world.IsAlive(entity3));
@@ -648,7 +648,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity2 = world.Spawn().Add(Link.With("to the past"));
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
-        world.DespawnAllWith<string>(Target.Object);
+        world.DespawnAllWith<string>(Match.Object);
         Assert.True(world.IsAlive(entity1));
         Assert.False(world.IsAlive(entity2));
         Assert.True(world.IsAlive(entity3));
@@ -665,7 +665,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity2 = world.Spawn().Add(Link.With("to the past"));
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
-        world.DespawnAllWith<string>(Target.AnyTarget);
+        world.DespawnAllWith<string>(Match.AnyMatch);
         Assert.True(world.IsAlive(entity1));
         Assert.False(world.IsAlive(entity2));
         Assert.False(world.IsAlive(entity3));
@@ -699,7 +699,7 @@ public class WorldTests(ITestOutputHelper output)
         var e = world.Spawn();
         e.Add<float>(world.Spawn());
 
-        var stream = world.Query<float>(Target.Any).Stream();
+        var stream = world.Query<float>(Match.Any).Stream();
         Assert.Single(stream);
         e.Despawn();
         Assert.Single(stream.Query.Archetypes);

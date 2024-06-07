@@ -38,7 +38,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
-    public ref C Ref<C>(Entity entity, Target match)
+    public ref C Ref<C>(Entity entity, Match match)
     {
         //TODO: We should be able to do that with another intermediate type component.
         if (match.IsWildcard) throw new("Match expression must not be a wildcard.");
@@ -52,7 +52,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         return ref World.GetComponent<C>(entity, match);
     }
 
-    /// <inheritdoc cref="Ref{C}(fennecs.Entity,Target)"/>
+    /// <inheritdoc cref="Ref{C}(fennecs.Entity,Match)"/>
     public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Identity.Plain);
 
     #endregion
@@ -78,7 +78,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     The default is <see cref="Identity.Plain"/>
     /// </param>
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
-    public bool Contains<T>(Target match = default)
+    public bool Contains<T>(Match match = default)
     {
         var typeExpression = TypeExpression.Of<T>(match);
         return Archetypes.Any(a => typeExpression.Matches(a.MatchSignature));

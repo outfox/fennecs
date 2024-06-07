@@ -161,7 +161,7 @@ public static class ExpressionTests
         
         var expanded = type.Expand();
         var anyInt = TypeExpression.Of<int>(Identity.Any);
-        var targetInt = TypeExpression.Of<int>(Identity.Target);
+        var targetInt = TypeExpression.Of<int>(Identity.Match);
         var entityInt = TypeExpression.Of<int>(Identity.Entity);
         Assert.Contains(type, expanded);
         Assert.Contains(anyInt, expanded);
@@ -179,7 +179,7 @@ public static class ExpressionTests
         
         var expanded = type.Expand();
         var wildAny = TypeExpression.Of<string>(Identity.Any);
-        var wildTarget = TypeExpression.Of<string>(Identity.Target);
+        var wildTarget = TypeExpression.Of<string>(Identity.Match);
         var wildObject = TypeExpression.Of<string>(Identity.Object);
         Assert.Contains(type, expanded);
         Assert.Contains(wildAny, expanded);
@@ -191,7 +191,7 @@ public static class ExpressionTests
     [Fact]
     public static void Can_Expand_Target()
     {
-        var type = TypeExpression.Of<string>(Identity.Target);
+        var type = TypeExpression.Of<string>(Identity.Match);
         
         var expanded = type.Expand();
         var wildAny = TypeExpression.Of<string>(Identity.Any);

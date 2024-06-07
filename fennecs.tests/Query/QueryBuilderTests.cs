@@ -31,9 +31,9 @@ public class QueryBuilderTests
         var q1 = world.Query();
         var q2 = world.Query<int>(Identity.Entity);
         var q3 = world.Query<int, string>(Identity.Any, Identity.Plain);
-        var q4 = world.Query<int, string, double>(Identity.Object, Identity.Target, Identity.Plain);
-        var q5 = world.Query<int, string, double, float>(Identity.Object, Identity.Target, Identity.Plain, Identity.Any);
-        var q6 = world.Query<int, string, double, float, long>(Identity.Object, Identity.Target, Identity.Plain, Identity.Any, Identity.Object);
+        var q4 = world.Query<int, string, double>(Identity.Object, Identity.Match, Identity.Plain);
+        var q5 = world.Query<int, string, double, float>(Identity.Object, Identity.Match, Identity.Plain, Identity.Any);
+        var q6 = world.Query<int, string, double, float, long>(Identity.Object, Identity.Match, Identity.Plain, Identity.Any, Identity.Object);
         Assert.NotNull(q1);
         Assert.NotNull(q2);
         Assert.NotNull(q3);

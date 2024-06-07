@@ -350,9 +350,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal Storage<T> GetStorage<T>(Target target)
+    internal Storage<T> GetStorage<T>(Match match)
     {
-        var type = TypeExpression.Of<T>(target);
+        var type = TypeExpression.Of<T>(match);
         return (Storage<T>) GetStorage(type);
     }
 

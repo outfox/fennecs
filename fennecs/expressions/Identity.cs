@@ -172,16 +172,16 @@ public readonly record struct Identity : IComparable<Identity>
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    public static Target Any => new(Wildcard.Any); // or prefer default ?
+    public static Match Any => new(Wildcard.Any); // or prefer default ?
 
     /// <summary>
-    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Target"/>.
+    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Match"/>.
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Target => new(Wildcard.Target);
+    public static Match Match => new(Wildcard.Target);
 
     /// <summary>
     /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
@@ -192,7 +192,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Object => new(Wildcard.Object);
+    public static Match Object => new(Wildcard.Object);
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
@@ -202,7 +202,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Entity => new(Wildcard.Entity);
+    public static Match Entity => new(Wildcard.Entity);
 
     /// <summary>
     /// <para>
@@ -216,7 +216,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// Not a wildcard. Formerly known as "None", as plain components without a target
     /// can only exist once per Entity (same as components with a particular target).
     /// </remarks>
-    public static Target Plain => new(Wildcard.Plain);
+    public static Match Plain => new(Wildcard.Plain);
 
 }
 

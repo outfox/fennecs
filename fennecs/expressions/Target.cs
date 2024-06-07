@@ -7,11 +7,11 @@
 /// Match's static readonly constants differentiate between Plain Components, Entity-Entity Relations, and Entity-Object Relations.
 /// The class offers a set of Wildcards for matching combinations of the above in <see cref="Query">Queries</see>; as opposed to filtering for only a specific target.
 /// </para>
-public readonly record struct Target 
+public readonly record struct Match 
 {
     private Identity Value { get; }
     
-    internal Target(Identity Value) => this.Value = Value;
+    internal Match(Identity Value) => this.Value = Value;
 
     /// <summary>
     /// <para>
@@ -19,7 +19,7 @@ public readonly record struct Target
     /// </para>
     /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// </summary>
-    public static Target Relation(Entity other) => new(other.Id);
+    public static Match Relation(Entity other) => new(other.Id);
     
     /// <summary>
     /// <para>
@@ -27,7 +27,7 @@ public readonly record struct Target
     /// </para>
     /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// </summary>
-    public static Target Link<T>(T link) where T : class => new(Identity.Of<T>(link));
+    public static Match Link<T>(T link) where T : class => new(Identity.Of<T>(link));
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
@@ -52,16 +52,16 @@ public readonly record struct Target
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    public static Target Any => new(idAny); // or prefer default ?
+    public static Match Any => new(idAny); // or prefer default ?
 
     /// <summary>
-    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Target"/>.
+    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Match"/>.
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target AnyTarget => new(idTarget);
+    public static Match AnyMatch => new(idTarget);
     
     /// <summary>
     /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
@@ -72,7 +72,7 @@ public readonly record struct Target
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Object => new(idObject);
+    public static Match Object => new(idObject);
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
@@ -83,7 +83,7 @@ public readonly record struct Target
     /// </summary>
     /// <inheritdoc cref="Any"/>
     [Obsolete("Use Entity.Any")]
-    public static Target Entity => new(idEntity);
+    public static Match Entity => new(idEntity);
 
 
     /// <summary>
@@ -95,18 +95,18 @@ public readonly record struct Target
     /// </summary>
     /// <inheritdoc cref="Plain"/>
     [Obsolete("Use Entity.Any")]
-    public static Target Plain => new(idPlain);
+    public static Match Plain => new(idPlain);
 
 
-    internal bool Matches(Target other) => Value == other.Value;
+    internal bool Matches(Match other) => Value == other.Value;
     
     /// <summary>
-    /// <para>Implicitly convert an <see cref="Identity"/> to a <see cref="Target"/> for use in filter expressions.</para>
+    /// <para>Implicitly convert an <see cref="Identity"/> to a <see cref="Match"/> for use in filter expressions.</para>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
     //public static implicit operator Match(Identity value) => new(value);
-    public static implicit operator Target(Entity value) => new(value);
+    public static implicit operator Match(Entity value) => new(value);
 
     //public static implicit operator Match(Identity value) => new(value);
     

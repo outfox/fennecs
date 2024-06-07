@@ -62,7 +62,7 @@ public class Match2Tests
     [Fact]
     public void Target_Enumerates_all_Relations()
     {
-        var query = _world.Query<string, float>(Identity.Target, Identity.Plain).Stream();
+        var query = _world.Query<string, float>(Identity.Match, Identity.Plain).Stream();
 
         HashSet<string> seen = [];
 

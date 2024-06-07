@@ -42,7 +42,7 @@ public readonly record struct Link<T> where T : class
     /// <summary>
     /// Implicit conversion from Link to generic Target.
     /// </summary>
-    public static implicit operator Target(Link<T> self)
+    public static implicit operator Match(Link<T> self)
     {
         return new(Identity.Of(self.Object));
     }

@@ -172,7 +172,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Target_Matches_all_Entity_Target_Relations()
     {
-        var rel = TypeExpression.Of<TypeA>(Identity.Target);
+        var rel = TypeExpression.Of<TypeA>(Identity.Match);
 
         var typ = TypeExpression.Of<TypeA>(Identity.Plain);
         var ent = TypeExpression.Of<TypeA>(new Entity(null!, new(123)));

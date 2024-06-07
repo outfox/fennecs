@@ -26,8 +26,8 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
-    /// <inheritdoc cref="Target.Any"/>
-    public static Target Any => new(Wildcard.Entity);
+    /// <inheritdoc cref="Match.Any"/>
+    public static Match Any => new(Wildcard.Entity);
     
     
     #endregion
@@ -64,16 +64,16 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
-    /// <param name="target">specific (targeted) Match Expression for the component type. No wildcards!</param>
+    /// <param name="match">specific (targeted) Match Expression for the component type. No wildcards!</param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Target target) => ref World.GetComponent<C>(this, target);
+    public ref C Ref<C>(Match match) => ref World.GetComponent<C>(this, match);
 
 
-    /// <inheritdoc cref="Ref{C}(Target)"/>
+    /// <inheritdoc cref="Ref{C}(Match)"/>
     public ref C Ref<C>() => ref World.GetComponent<C>(this, Identity.Plain);
 
 
@@ -244,7 +244,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// Checks if the Entity has a Component of a specific type.
     /// Allows for a <see cref="Cross"/> Expression to be specified.
     /// </summary>
-    public bool Has<T>(Target match) => World.HasComponent<T>(Id, match);
+    public bool Has<T>(Match match) => World.HasComponent<T>(Id, match);
 
 
     /// <summary>
