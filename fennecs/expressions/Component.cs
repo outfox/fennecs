@@ -1,56 +1,6 @@
 ﻿namespace fennecs;
 
 /// <summary>
-/// A Match Expression that can be used to match components in a Query.
-/// TODO: Do not instantiate directly, use the static methods instead.
-/// </summary>
-public readonly record struct Match
-{
-    private Match(Identity value)
-    {
-        this.value = value;
-    }
-
-    /// <summary>TypeExpresion backing this Match.</summary>
-    internal Identity value { get; }
-
-    /// <summary>
-    /// Matches any component, regardless target.
-    /// </summary>
-    public static Match Any => new(Wildcard.Any);
-
-    /// <summary>
-    ///  Matches any component with a target of any type.
-    /// </summary>
-    public static Match Target => new(Wildcard.Target);
-
-    /// <summary>
-    ///  Matches any component with a Entity target.
-    ///  </summary>
-    public static Match Entity => new(Wildcard.Entity);
-
-    /// <summary>
-    ///  Matches any component with a Object Link target.
-    ///  </summary>
-    public static Match Link => new(Wildcard.Object);
-
-    /// <summary>
-    /// <para>
-    /// <c>default</c><br/>In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
-    /// </para>
-    /// <para>
-    /// Since it's specific, this Match Expression is always free and has no enumeration cost.
-    /// </para>
-    /// </summary>
-    /// <remarks>
-    /// Not a wildcard. Formerly known as "None", as plain components without a target
-    /// can only exist once per Entity (same as components with a particular target).
-    /// </remarks>
-    public static Match Plain() => new(Wildcard.Plain);
-
-}
-
-/// <summary>
 /// A specific set of match expressions to match specific component types where type parameters are not available.
 /// </summary>
 public readonly record struct Component
