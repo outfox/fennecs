@@ -223,7 +223,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <returns></returns>
     public Entity RemoveAny(Match match)
     {
-        World.RemoveComponent(Id, match.TypeExpression);
+        World.RemoveComponent(Id, match.value);
         return this;
     }
 

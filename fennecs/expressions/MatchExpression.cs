@@ -4,9 +4,21 @@
 /// A Match Expression that can be used to match components in a Query.
 /// TODO: Do not instantiate directly, use the static methods instead.
 /// </summary>
-/// <param name="value">TypeExpresion backing this Match.</param>
-public readonly record struct Match(TypeExpression value)
+public readonly record struct Match
 {
+    /// <summary>TypeExpresion backing this Match.</summary>
+    internal TypeExpression value { get; }
+
+    /// <summary>
+    /// A Match Expression that can be used to match components in a Query.
+    /// TODO: Do not instantiate directly, use the static methods instead.
+    /// </summary>
+    /// <param name="value">TypeExpresion backing this Match.</param>
+    private Match(TypeExpression value)
+    {
+        this.value = value;
+    }
+    
     /// <summary>
     /// Matches any component of type <typeparamref name="T"/> regardless of Target
     /// </summary>
@@ -29,6 +41,7 @@ public readonly record struct Match(TypeExpression value)
     ///  Matches the Plain Component of type <typeparamref name="T"/>.
     /// </summary>
     public static Match Plain<T>() => new(Component.Plain<T>().value);
+    
     /// <summary>
     /// Matches the Relation of type <typeparamref name="T"/> with the specified Entity Target.
     /// </summary>
@@ -39,11 +52,6 @@ public readonly record struct Match(TypeExpression value)
     public static Match Object<T>(T target) where T : class => new(TypeExpression.Of<T>(Link.With(target)));
     
     internal bool Matches(Component other) => value.Matches(other.value);
-
-    internal TypeExpression TypeExpression => value;
-    
-    // IDEA: This would only be needed for Query globs or something.
-    // internal bool Matches(TypeExpression other) => value.Matches(other);
 }
 
 
