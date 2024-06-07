@@ -180,7 +180,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Match => new(new(-2, 0));
+    public static Match Target => new(new(-2, 0));
 
     /// <summary>
     /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.

@@ -63,7 +63,7 @@ public class Match1Tests
     [Fact]
     public void Target_Enumerates_all_Relations()
     {
-        var query = _world.Query<string>(Identity.Match).Stream();
+        var query = _world.Query<string>(Identity.Target).Stream();
 
         HashSet<string> seen = [];
 

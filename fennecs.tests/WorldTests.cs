@@ -665,7 +665,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity2 = world.Spawn().Add(Link.With("to the past"));
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
-        world.DespawnAllWith<string>(Match.AnyMatch);
+        world.DespawnAllWith<string>(Match.Target);
         Assert.True(world.IsAlive(entity1));
         Assert.False(world.IsAlive(entity2));
         Assert.False(world.IsAlive(entity3));

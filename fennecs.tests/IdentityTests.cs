@@ -44,7 +44,7 @@ public class IdentityTests(ITestOutputHelper output)
     {
         _ = Identity.Any.ToString();
         _ = Identity.Entity.ToString();
-        _ = Identity.Match.ToString();
+        _ = Identity.Target.ToString();
         _ = Identity.Object.ToString();
         _ = Identity.Plain.ToString();
         _ = Identity.Of("hello world").ToString();
@@ -53,7 +53,7 @@ public class IdentityTests(ITestOutputHelper output)
 
         output.WriteLine(Identity.Any.ToString());
         output.WriteLine(Identity.Entity.ToString());
-        output.WriteLine(Identity.Match.ToString());
+        output.WriteLine(Identity.Target.ToString());
         output.WriteLine(Identity.Object.ToString());
         output.WriteLine(Identity.Plain.ToString());
         output.WriteLine(Identity.Of("hello world").ToString());

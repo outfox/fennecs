@@ -16,7 +16,7 @@ namespace fennecs;
 /// <para>If a specific <see cref="Identity"/> (e.g. <see cref="Identity.IsEntity"/> or <see cref="Identity.IsObject"/> are true), the type expression represents a relation targeting that Entity.</para>
 /// <para>If <see cref="fennecs.Identity.Any"/>, the type expression acts as a Wildcard 
 ///   expression that matches any target, INCLUDING <see cref="fennecs.Identity.Plain"/>.</para>
-/// <para> If <see cref="fennecs.Identity.Match"/>, the type expression acts as a Wildcard 
+/// <para> If <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
 ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>
 /// <para> If <see cref="fennecs.Identity.Entity"/>, the type expression acts as a Wildcard 
 ///   expression that matches ONLY Entity-entity relations.</para>
@@ -92,7 +92,7 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// Match against another TypeExpression; used for Query Matching.
     /// Examines the Type and Target fields of either and decides whether the other TypeExpression is a match.
     /// <para>
-    /// See also: <see cref="fennecs.Identity.Plain"/>, <see cref="fennecs.Identity.Match"/>, <see cref="fennecs.Identity.Entity"/>, <see cref="fennecs.Identity.Object"/>, <see cref="fennecs.Identity.Any"/>
+    /// See also: <see cref="fennecs.Identity.Plain"/>, <see cref="fennecs.Identity.Target"/>, <see cref="fennecs.Identity.Entity"/>, <see cref="fennecs.Identity.Object"/>, <see cref="fennecs.Identity.Any"/>
     /// </para>
     /// </summary>
     /// <remarks>
@@ -113,7 +113,7 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// </example>
     /// <param name="other">another type expression</param>
     /// <seealso cref="fennecs.Identity.Plain"/>
-    /// <seealso cref="fennecs.Identity.Match"/>
+    /// <seealso cref="fennecs.Identity.Target"/>
     /// <seealso cref="fennecs.Identity.Entity"/>
     /// <seealso cref="fennecs.Identity.Object"/>
     /// <seealso cref="fennecs.Identity.Any"/>
@@ -132,7 +132,7 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
         if (Match == Match.Any) return true;
 
         // Match.Target matches all Entity-Target Relations.
-        if (Match == Match.AnyMatch) return other.Match != Match.Plain;
+        if (Match == Match.Target) return other.Match != Match.Plain;
 
         // Match.Relation matches only Entity-Entity relations.
         if (Match == Match.Entity) return other.Match.IsEntity;
@@ -158,14 +158,14 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// This may express a plain Component if <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, 
     /// or a relation if <paramref name="match"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
-    /// Providing any of the special virtual Entities <see cref="Wildcard.Any"/>, <see cref="fennecs.Identity.Match"/>,
+    /// Providing any of the special virtual Entities <see cref="Wildcard.Any"/>, <see cref="fennecs.Identity.Target"/>,
     /// <see cref="fennecs.Identity.Entity"/>, or <see cref="fennecs.Identity.Object"/> will create a Wildcard expression.
     /// </summary>
     /// <remarks>
     /// <para>If <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
     /// <para>If <paramref name="match"/> is <see cref="Wildcard.Any"/>, the type expression acts as a Wildcard 
     ///   expression that matches any target, INCLUDING <see cref="fennecs.Identity.Plain"/>.</para>
-    /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Match"/>, the type expression acts as a Wildcard 
+    /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>
     /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Entity"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-entity relations.</para>
@@ -183,14 +183,14 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// This may express a plain Component if <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, 
     /// or a relation if <paramref name="match"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
-    /// Providing any of the special virtual Entities <see cref="Wildcard.Any"/>, <see cref="fennecs.Identity.Match"/>,
+    /// Providing any of the special virtual Entities <see cref="Wildcard.Any"/>, <see cref="fennecs.Identity.Target"/>,
     /// <see cref="fennecs.Identity.Entity"/>, or <see cref="fennecs.Identity.Object"/> will create a Wildcard expression.
     /// </summary>
     /// <remarks>
     /// <para>If <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
     /// <para>If <paramref name="match"/> is <see cref="Wildcard.Any"/>, the type expression acts as a Wildcard 
     ///   expression that matches any Component or relation, INCLUDING <see cref="fennecs.Identity.Plain"/>.</para>
-    /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Match"/>, the type expression acts as a Wildcard 
+    /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>
     /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Entity"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-entity relations.</para>
@@ -260,7 +260,7 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
         if (Match == Match.Any) return [ this, this with { Identity = default }, this with { Identity = entity }, this with { Identity = o } ];
 
         Identity any = new(-1, 0);
-        if (Match == Match.AnyMatch) return [ this, this with { Identity = any }, this with { Identity = entity }, this with { Identity = o } ];
+        if (Match == Match.Target) return [ this, this with { Identity = any }, this with { Identity = entity }, this with { Identity = o } ];
 
         Identity target = new(-2, 0);
         if (Match == Match.Entity) return [ this, this with { Identity = any }, this with { Identity = target }];
