@@ -83,7 +83,7 @@ public partial class World : Query
         var meta = _meta[identity.Index];
         return meta.Identity != default
                && meta.Identity == identity
-               && typeExpression.Matches(meta.Archetype.Signature);
+               && typeExpression.Matches(meta.Archetype.MatchSignature);
     }
 
 

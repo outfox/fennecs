@@ -110,16 +110,6 @@ public class IdentityTests(ITestOutputHelper output)
         }
     }
 
-
-    [Fact]
-    public void Equals_Prevents_Boxing_as_InvalidCastException()
-    {
-        object o = "don't @ me";
-        var id = new Identity(69, 420);
-        Assert.Throws<InvalidCastException>(() => id.Equals(o));
-    }
-
-
     [Fact]
     public void Any_and_None_are_Distinct()
     {

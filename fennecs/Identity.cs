@@ -9,7 +9,7 @@ namespace fennecs;
 /// real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-internal readonly  struct Identity : IEquatable<Identity>, IComparable<Identity>
+public readonly record struct Identity : IComparable<Identity>
 {
     [FieldOffset(0)] internal readonly ulong Value;
 
@@ -52,10 +52,6 @@ internal readonly  struct Identity : IEquatable<Identity>, IComparable<Identity>
 
 
     #region IComparable/IEquatable Implementation
-    /// <inheritdoc cref="Equals(fennecs.Identity)"/>
-    public static bool operator ==(Identity left, Identity right) => left.Equals(right);
-    /// <inheritdoc cref="Equals(fennecs.Identity)"/>
-    public static bool operator !=(Identity left, Identity right) => !left.Equals(right);
 
     /// <inheritdoc cref="IEquatable{T}"/>
     public bool Equals(Identity other) => Value == other.Value;
@@ -70,18 +66,6 @@ internal readonly  struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <returns>the Identity</returns>
     public static implicit operator Identity(Entity entity) => entity.Id;
     
-    
-    ///<summary>
-    /// Implements <see cref="System.IEquatable{T}"/>.Equals(object? obj)
-    /// </summary>
-    /// <remarks>
-    /// ⚠️This method ALWAYS throws InvalidCastException, as boxing of this type is disallowed.
-    /// </remarks>
-    public override bool Equals(object? obj)
-    {
-        throw new InvalidCastException("fennecs.Identity: Boxing equality comparisons disallowed. Use IEquatable<Identity>.Equals(Identity other) instead.");
-    }
-
 
     /// <inheritdoc />
     public override int GetHashCode()

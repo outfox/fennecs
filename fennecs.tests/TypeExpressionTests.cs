@@ -50,8 +50,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         {
             var id = random.Next();
             var deco = (TypeID) (random.Next() % TypeID.MaxValue);
-            var t1 = new TypeExpression(new Target(new Identity(id, deco)), (TypeID) i);
-            var t2 = new TypeExpression(new Target(new Identity(id, deco)), (TypeID) (i + 1));
+            var t1 = new TypeExpression((new Identity(id, deco)), (TypeID) i);
+            var t2 = new TypeExpression((new Identity(id, deco)), (TypeID) (i + 1));
 
             //  If this test fails, Archetypes will not be able to build immutable buckets for Wildcards.
             Assert.True(t1.CompareTo(t2) < 0);
@@ -90,16 +90,6 @@ public class TypeExpressionTests(ITestOutputHelper output)
         Assert.True(t1 != t2);
         Assert.False(t3 != t2);
     }
-
-
-    [Fact]
-    public void Prevents_Boxing_Equality()
-    {
-        object o = "don't @ me";
-        var id = TypeExpression.Of<TypeA>(Identity.Plain);
-        Assert.Throws<InvalidCastException>(() => id.Equals(o));
-    }
-
 
     [Fact]
     public void Can_Create_For_Type()

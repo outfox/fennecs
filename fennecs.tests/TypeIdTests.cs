@@ -7,13 +7,6 @@ namespace fennecs.tests;
 public class TypeIdTests
 {
     [Fact]
-    public void TypeId_is_64_bits()
-    {
-        Assert.Equal(64 / 8, Marshal.SizeOf<TypeExpression>());
-    }
-
-
-    [Fact]
     public void Identity_is_64_bits()
     {
         Assert.Equal(64 / 8, Marshal.SizeOf<Identity>());
