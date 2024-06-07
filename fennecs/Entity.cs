@@ -215,19 +215,15 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
         return this;
     }
 
-    /// <summary>
-    /// Removes any component that matches the specified Match Expression from the entity.
-    /// </summary>
-    /// <remarks> TODO: Doesn't match Wildcards correctly. :) </remarks>
-    /// <param name="match">Match Expression.</param>
-    /// <returns></returns>
-    public Entity RemoveAny(Match match)
+    /// <inheritdoc />
+    public Entity RemoveAny(Component match)
     {
-        World.RemoveComponent(Id, match.value);
-        return this;
+        throw new NotImplementedException();
     }
 
+    
 
+    
     /// <summary>
     /// Despawns the Entity from the World.
     /// </summary>
@@ -261,7 +257,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// Checks if the Entity has a specifc Entity-Entity Relation backed by a specific type.
     /// </summary>
     public bool Has<T>(Relate relation) => World.HasComponent<T>(Id, relation);
-
+    
     #endregion
 
 
