@@ -61,7 +61,7 @@ internal readonly record struct Component(TypeExpression value)
     /// Not a wildcard. Formerly known as "None", as plain components without a target
     /// can only exist once per Entity (same as components with a particular target).
     /// </remarks>
-    public static Component Plain<T>() => new(TypeExpression.Of<T>(new(Identity.idPlain)));
+    public static Component Plain<T>() => new(TypeExpression.Of<T>(new(Wildcard.Plain)));
     
     public static Component Entity<T>(Entity target) => new(TypeExpression.Of<T>(target));
     public static Component Object<T>(T target) where T : class => new(TypeExpression.Of<T>(Link.With(target)));

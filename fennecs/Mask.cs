@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections.Immutable;
 using fennecs.pools;
 
 namespace fennecs;
@@ -13,7 +14,7 @@ internal sealed class Mask : IDisposable
     internal bool safety = true;
     
     
-    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
+    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(new Signature(NotTypes.ToImmutableHashSet()));
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
 

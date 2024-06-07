@@ -27,7 +27,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Target.Any"/>
-    public static Target Any => new(Identity.idEntity);
+    public static Target Any => new(Wildcard.Entity);
     
     
     #endregion
@@ -282,7 +282,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public static implicit operator bool(Entity entity) => entity.Id && entity.World.IsAlive(entity.Id);
+    public static implicit operator bool(Entity entity) => entity.Id != default && entity.World.IsAlive(entity.Id);
 
 
     /// <inheritdoc />

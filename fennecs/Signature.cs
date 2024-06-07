@@ -6,112 +6,132 @@ using System.Collections.Immutable;
 namespace fennecs;
 
 /// <summary>
-/// Generic IImmutableSortedSet whose hash code is a combination of its elements' hashes.
+/// <c>ImmutableSortedSet&lt;TypeExpression&gt;</c> whose hash code is a combination of its elements' hashes.
+/// TODO: Maybe can be simplified to just use the underlying <c>ImmutableSortedSet</c> directly.
 /// </summary>
-public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>, IComparable<Signature<T>>
-    where T : IComparable<T>
+public readonly record struct Signature : IEnumerable<TypeExpression>, IComparable<Signature>
 {
-    private readonly ImmutableSortedSet<T> _set = ImmutableSortedSet<T>.Empty;
+    private readonly ImmutableSortedSet<TypeExpression> _set = ImmutableSortedSet<TypeExpression>.Empty;
     private readonly int _hashCode;
 
     /// <inheritdoc />
     public override int GetHashCode() => _hashCode;
 
 
+    /// <summary>
+    /// Returns a copy of this Signature with all its Wildcards expanded.
+    /// </summary>
+    public Signature Expanded()
+    {
+        var expanded = _set.ToBuilder();
+        foreach (var equivalent in _set.SelectMany(item => item.Expand()))
+        {
+            expanded.Add(equivalent);
+        }
+        
+        return new(expanded.ToImmutable());
+    }
      
     /// <summary>
-    /// Creates a new <see cref="Signature{T}"/> from the given values.
+    /// Creates a new <see cref="Signature"/> from the given values.
     /// </summary>
     /// <param name="values">constituent values of the signature; will be converted to an <see cref="ImmutableSortedSet{T}"/></param>
-    public Signature(params T[] values) : this(values.ToImmutableSortedSet())
+    public Signature(params TypeExpression[] values) : this(values.ToImmutableSortedSet())
     {
     }
 
 
     /// <summary>
-    /// Creates a new <see cref="Signature{T}"/> from the given values.
+    /// Creates a new <see cref="Signature"/> from the given values.
     /// </summary>
     /// <param name="set">a set of constituent values of the signature</param>
     /// <inheritdoc cref="ImmutableSortedSet{T}"/>
-    public Signature(ImmutableSortedSet<T> set)
+    public Signature(ImmutableSortedSet<TypeExpression> set)
     {
         _set = set;
         Count = set.Count;
         _hashCode = BakeHash(_set);
     }
 
+    /// <summary>
+    /// Creates a signature from the given values.
+    /// </summary>
+    public Signature(IEnumerable<TypeExpression> items) : this(items.ToImmutableSortedSet())
+    {
+    }
+
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Add"/>
-    public Signature<T> Add(T value) => new(_set.Add(value));
+    public Signature Add(TypeExpression value) => new(_set.Add(value));
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Clear"/>
-    public Signature<T> Clear() => new(ImmutableSortedSet<T>.Empty);
+    public Signature Clear() => new(ImmutableSortedSet<TypeExpression>.Empty);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Contains"/>
-    public bool Contains(T item) => _set.Contains(item);
+    public bool Contains(TypeExpression item) => _set.Contains(item);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Except"/>
-    public Signature<T> Except(IEnumerable<T> other) => new(_set.Except(other));
+    public Signature Except(IEnumerable<TypeExpression> other) => new(_set.Except(other));
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Intersect"/>
-    public Signature<T> Intersect(IEnumerable<T> other) => new(_set.Intersect(other));
+    public Signature Intersect(IEnumerable<TypeExpression> other) => new(_set.Intersect(other));
 
 
     
     /// <inheritdoc cref="ImmutableSortedSet{T}.IsProperSubsetOf"/>
-    public bool IsProperSubsetOf(IEnumerable<T> other) => _set.IsProperSubsetOf(other);
+    public bool IsProperSubsetOf(IEnumerable<TypeExpression> other) => _set.IsProperSubsetOf(other);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.IsProperSupersetOf"/>
-    public bool IsProperSupersetOf(IEnumerable<T> other) => _set.IsProperSupersetOf(other);
+    public bool IsProperSupersetOf(IEnumerable<TypeExpression> other) => _set.IsProperSupersetOf(other);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.IsSubsetOf"/>
-    public bool IsSubsetOf(IEnumerable<T> other) => _set.IsSubsetOf(other);
+    public bool IsSubsetOf(IEnumerable<TypeExpression> other) => _set.IsSubsetOf(other);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.IsSupersetOf"/>
-    public bool IsSupersetOf(IEnumerable<T> other) => _set.IsSupersetOf(other);
+    public bool IsSupersetOf(IEnumerable<TypeExpression> other) => _set.IsSupersetOf(other);
 
     
     /// <inheritdoc cref="ImmutableSortedSet{T}.Overlaps"/>
-    public bool Overlaps(IEnumerable<T> other) => _set.Overlaps(other);
+    public bool Overlaps(IEnumerable<TypeExpression> other) => _set.Overlaps(other);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Remove"/>
-    public Signature<T> Remove(T value) => new(_set.Remove(value));
+    public Signature Remove(TypeExpression value) => new(_set.Remove(value));
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.SetEquals"/>
-    public bool SetEquals(IEnumerable<T> other) => _set.SetEquals(other);
+    public bool SetEquals(IEnumerable<TypeExpression> other) => _set.SetEquals(other);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.SymmetricExcept"/>
-    public Signature<T> SymmetricExcept(IEnumerable<T> other) => new(_set.SymmetricExcept(other));
+    public Signature SymmetricExcept(IEnumerable<TypeExpression> other) => new(_set.SymmetricExcept(other));
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.TryGetValue"/>
-    public bool TryGetValue(T equalValue, out T actualValue) => _set.TryGetValue(equalValue, out actualValue);
+    public bool TryGetValue(TypeExpression equalValue, out TypeExpression actualValue) => _set.TryGetValue(equalValue, out actualValue);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Union"/>
-    public Signature<T> Union(IEnumerable<T> other) => new(_set.Union(other));
+    public Signature Union(IEnumerable<TypeExpression> other) => new(_set.Union(other));
     
     /// <inheritdoc cref="ImmutableSortedSet{T}.SetEquals"/>
-    public bool Equals(Signature<T> other) => _set.SetEquals(other._set);
+    public bool Equals(Signature other) => _set.SetEquals(other._set);
 
 
     /// <inheritdoc />
     // ReSharper disable once NotDisposedResourceIsReturned
-    public IEnumerator<T> GetEnumerator() => _set.GetEnumerator();
+    public IEnumerator<TypeExpression> GetEnumerator() => _set.GetEnumerator();
 
 
     /// <inheritdoc />
-    public int CompareTo(Signature<T> other)
+    public int CompareTo(Signature other)
     {
         if (other._set == default!) return 1;
         
@@ -127,14 +147,10 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>, 
     }
 
     /// <inheritdoc />
-    public override bool Equals(object? obj) => obj is Signature<T> other && Equals(other);
-
-
-    /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 
-    private static int BakeHash(IEnumerable<T> source)
+    private static int BakeHash(IEnumerable<TypeExpression> source)
     {
         var code = new HashCode();
         foreach (var item in source) code.Add(item);
@@ -144,12 +160,13 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>, 
     /// <inheritdoc />
     public override string ToString() => $"~{string.Join(",", _set)}~";
 
+    /*
     /// <inheritdoc cref="SetEquals" />
-    public static bool operator ==(Signature<T> left, Signature<T> right) => left.Equals(right);
+    public static bool operator ==(Signature left, Signature right) => left.Equals(right);
 
     /// <inheritdoc cref="SetEquals" />
-    public static bool operator !=(Signature<T> left, Signature<T> right) => !left.Equals(right);
-
+    public static bool operator !=(Signature left, Signature right) => !left.Equals(right);
+    */
 
     /// <summary>
     /// Number of constituent values in this signature.
@@ -157,5 +174,5 @@ public readonly struct Signature<T> : IEquatable<Signature<T>>, IEnumerable<T>, 
     public int Count { get; }
 
     /// <inheritdoc cref="Enumerable.ElementAt{TSource}(System.Collections.Generic.IEnumerable{TSource},System.Index)"/>
-    public T this[int index] => _set.ElementAt(index);
+    public TypeExpression this[int index] => _set.ElementAt(index);
 }

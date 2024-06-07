@@ -37,7 +37,7 @@ public class RelationDespawn
             
             target.Despawn();
             targets.Remove(target);
-            
+
             Assert.False(subject.Has<int>(target));
         }
     }

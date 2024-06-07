@@ -70,7 +70,7 @@ public partial class World
 
     internal ref T GetComponent<T>(Identity identity) => ref GetComponent<T>(identity, Identity.Plain);
 
-    internal Signature<TypeExpression> GetSignature(Identity identity)
+    internal Signature GetSignature(Identity identity)
     {
         AssertAlive(identity);
         var meta = _meta[identity.Index];

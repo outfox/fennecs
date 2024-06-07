@@ -70,13 +70,6 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <returns>the Identity</returns>
     public static implicit operator Identity(Entity entity) => entity.Id;
     
-    /// <summary>
-    /// Truthy if the Identity is not default.
-    /// </summary>
-    /// <param name="self">an Identity</param>
-    /// <returns>truthiness value</returns>
-    public static implicit operator bool(Identity self) => self != default;
-    
     
     ///<summary>
     /// Implements <see cref="System.IEquatable{T}"/>.Equals(object? obj)
@@ -148,19 +141,19 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <inheritdoc />
     public override string ToString()
     {
-        if (Equals(idPlain))
+        if (Equals(Wildcard.Plain))
             return "[None]";
 
-        if (Equals(idAny))
+        if (Equals(Wildcard.Any))
             return "wildcard[Any]";
 
-        if (Equals(idTarget))
+        if (Equals(Wildcard.Target))
             return "wildcard[Target]";
 
-        if (Equals(idEntity))
+        if (Equals(Wildcard.Entity))
             return "wildcard[Entity]";
 
-        if (Equals(idObject))
+        if (Equals(Wildcard.Object))
             return "wildcard[Object]";
 
         if (IsObject)
@@ -195,7 +188,7 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    public static Target Any => new(idAny); // or prefer default ?
+    public static Target Any => new(Wildcard.Any); // or prefer default ?
 
     /// <summary>
     /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Target"/>.
@@ -204,7 +197,7 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Target => new(idTarget);
+    public static Target Target => new(Wildcard.Target);
 
     /// <summary>
     /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
@@ -215,7 +208,7 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Object => new(idObject);
+    public static Target Object => new(Wildcard.Object);
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
@@ -225,7 +218,7 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Entity => new(idEntity);
+    public static Target Entity => new(Wildcard.Entity);
 
     /// <summary>
     /// <para>
@@ -239,11 +232,15 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// Not a wildcard. Formerly known as "None", as plain components without a target
     /// can only exist once per Entity (same as components with a particular target).
     /// </remarks>
-    public static Target Plain => new(idPlain);
+    public static Target Plain => new(Wildcard.Plain);
 
-    internal static readonly Identity idPlain = default;
-    internal static readonly Identity idEntity = new(-3, 0);
-    internal static readonly Identity idObject = new(-4, 0);
-    internal static readonly Identity idAny = new(-1, 0);
-    internal static readonly Identity idTarget = new(-2, 0);
+}
+
+internal static class Wildcard
+{
+    internal static readonly Identity Plain = default;
+    internal static readonly Identity Any = new(-1, 0);
+    internal static readonly Identity Target = new(-2, 0);
+    internal static readonly Identity Entity = new(-3, 0);
+    internal static readonly Identity Object = new(-4, 0);
 }

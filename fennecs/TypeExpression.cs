@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
 namespace fennecs;
@@ -34,6 +35,9 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     [FieldOffset(4)] internal readonly ushort Generation;
     [FieldOffset(4)] internal readonly TypeID Decoration;
 
+    //Target interpretation
+    [FieldOffset(0)] internal readonly Identity Identity;
+
     // Type Header
     [FieldOffset(6)] internal readonly TypeID TypeId;
 
@@ -60,17 +64,16 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// <para> If <see cref="fennecs.Identity.Object"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>
-    internal Target Target => new(new(Id, Decoration));
+    //internal Target Target => new(new(Id, Decoration));
 
     internal Relate Relation => new(new(Id, Decoration));
-    
-    [Obsolete("Needs refactoring out... replace with Target and Match type.")]
-    internal Identity Identity => new(Id, Decoration);
+
+    internal Identity Target { get => Identity; init => Identity = value; }
 
     /// <summary>
     /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
     /// </summary>
-    public bool isRelation => TypeId != 0 && Target != Identity.Plain && !Target.IsWildcard;
+    public bool isRelation => TypeId != 0 && Target != Wildcard.Plain && !Target.IsWildcard;
 
 
     /// <summary>
@@ -85,12 +88,13 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     public Type Type => LanguageType.Resolve(TypeId);
 
 
+    // A method to check if a TypeExpression matches any of the given type expressions in a collection.
     /// <summary>
     /// Does this <see cref="TypeExpression"/> match any of the given type expressions?
     /// </summary>
     /// <param name="other">a collection of type expressions</param>
     /// <returns>true if matched</returns>
-    public bool Matches(IEnumerable<TypeExpression> other)
+    public bool Matches(ImmutableHashSet<TypeExpression> other)
     {
         var self = this;
 
@@ -102,6 +106,21 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         }
 
         return false;
+    }
+
+    /// <inheritdoc cref="Matches(System.Collections.Immutable.ImmutableHashSet{fennecs.TypeExpression})"/>
+    [Obsolete("Try to use Matches(Signature) or ImmutableSortedSets directly.")]
+    public bool Matches(IEnumerable<TypeExpression> other)
+    {
+        return Matches(other.ToImmutableHashSet());
+    }
+
+    /// <summary>
+    /// Fast O(1) Matching against Signatures.
+    /// </summary>
+    public bool Matches(Signature other)
+    {
+        return other.Contains(this);
     }
 
 
@@ -141,24 +160,24 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         // Default matches nothing.
         if (this == default || other == default) return false;
-        
+
         // Reject if Types are incompatible. 
         if (TypeId != other.TypeId) return false;
 
         // Match.None matches only None. (plain Components)
-        if (Target == Identity.Plain) return other.Target == Identity.Plain;
+        if (Target == Wildcard.Plain) return other.Target == Wildcard.Plain;
 
         // Match.Any matches everything; relations and pure Components (target == none).
-        if (Target == Identity.Any) return true;
+        if (Target == Wildcard.Any) return true;
 
         // Match.Target matches all Entity-Target Relations.
-        if (Target == Identity.Target) return other.Target != Identity.Plain;
+        if (Target == Wildcard.Target) return other.Target != Wildcard.Plain;
 
         // Match.Relation matches only Entity-Entity relations.
-        if (Target == Identity.Entity) return other.Target.IsEntity;
+        if (Target == Wildcard.Entity) return other.Target.IsEntity;
 
         // Match.Object matches only Entity-Object relations.
-        if (Target == Identity.Object) return other.Target.IsObject;
+        if (Target == Wildcard.Object) return other.Target.IsObject;
 
         // Direct match?
         return Target == other.Target;
@@ -187,12 +206,12 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// This may express a plain Component if <paramref name="target"/> is <see cref="fennecs.Identity.Plain"/>, 
     /// or a relation if <paramref name="target"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
-    /// Providing any of the special virtual Entities <see cref="fennecs.Identity.Any"/>, <see cref="fennecs.Identity.Target"/>,
+    /// Providing any of the special virtual Entities <see cref="Wildcard.Any"/>, <see cref="fennecs.Identity.Target"/>,
     /// <see cref="fennecs.Identity.Entity"/>, or <see cref="fennecs.Identity.Object"/> will create a Wildcard expression.
     /// </summary>
     /// <remarks>
     /// <para>If <paramref name="target"/> is <see cref="fennecs.Identity.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
-    /// <para>If <paramref name="target"/> is <see cref="fennecs.Identity.Any"/>, the type expression acts as a Wildcard 
+    /// <para>If <paramref name="target"/> is <see cref="Wildcard.Any"/>, the type expression acts as a Wildcard 
     ///   expression that matches any target, INCLUDING <see cref="fennecs.Identity.Plain"/>.</para>
     /// <para> If <paramref name="target"/> is <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>
@@ -212,12 +231,12 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     /// This may express a plain Component if <paramref name="target"/> is <see cref="fennecs.Identity.Plain"/>, 
     /// or a relation if <paramref name="target"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
-    /// Providing any of the special virtual Entities <see cref="fennecs.Identity.Any"/>, <see cref="fennecs.Identity.Target"/>,
+    /// Providing any of the special virtual Entities <see cref="Wildcard.Any"/>, <see cref="fennecs.Identity.Target"/>,
     /// <see cref="fennecs.Identity.Entity"/>, or <see cref="fennecs.Identity.Object"/> will create a Wildcard expression.
     /// </summary>
     /// <remarks>
     /// <para>If <paramref name="target"/> is <see cref="fennecs.Identity.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
-    /// <para>If <paramref name="target"/> is <see cref="fennecs.Identity.Any"/>, the type expression acts as a Wildcard 
+    /// <para>If <paramref name="target"/> is <see cref="Wildcard.Any"/>, the type expression acts as a Wildcard 
     ///   expression that matches any Component or relation, INCLUDING <see cref="fennecs.Identity.Plain"/>.</para>
     /// <para> If <paramref name="target"/> is <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>
@@ -276,5 +295,34 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
         target.Deconstruct(out var id);
         Value = id.Value;
         TypeId = typeId;
+    }
+
+    /// <summary>
+    /// Expands this TypeExpression into a set of TypeExpressions that that are Equivalent but unique.
+    /// </summary>
+    /// <remarks>
+    /// <ul>
+    /// <li>wild Any -> [ wild Plain, wild Entity, wild Object ]</li>
+    /// <li>wild Target -> [ wild Entity, wild Object ]</li>
+    /// <li>specific Object -> [ wild Object ] </li>
+    /// <li>specific Entity -> [ wild Entity ]</li>
+    /// </ul>
+    /// </remarks>
+    /// <returns></returns>
+    public ImmutableHashSet<TypeExpression> Expand()
+    {
+        if (Target == Wildcard.Any) return [ this, this with { Target = Wildcard.Plain }, this with { Target = Wildcard.Entity }, this with { Target = Wildcard.Object } ];
+        
+        if (Target == Wildcard.Target) return [ this, this with { Target = Wildcard.Entity }, this with { Target = Wildcard.Object } ];
+        
+        if (Target == Wildcard.Entity) return [ this, this with { Target = Wildcard.Target }];
+        
+        if (Target == Wildcard.Object) return [ this, this with { Target = Wildcard.Target } ];
+        
+        if (Target.IsObject) return [ this, this with { Target = Wildcard.Any }, this with { Target = Wildcard.Target }, this with { Target = Wildcard.Object } ];
+        
+        if (Target.IsEntity) return [ this, this with { Target = Wildcard.Any }, this with { Target = Wildcard.Target }, this with { Target = Wildcard.Entity } ];
+        
+        return [ this, this with { Target = Wildcard.Any } ];
     }
 }

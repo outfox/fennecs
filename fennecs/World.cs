@@ -21,7 +21,7 @@ public partial class World : Query
     private readonly Dictionary<int, Query> _queryCache = new();
 
     // The new Type Graph that replaces the old Table Edge system.
-    private readonly Dictionary<Signature<TypeExpression>, Archetype> _typeGraph = new();
+    private readonly Dictionary<Signature, Archetype> _typeGraph = new();
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
     private readonly Dictionary<Relate, HashSet<TypeExpression>> _typesByRelationTarget = new();
@@ -220,7 +220,7 @@ public partial class World : Query
     internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
 
 
-    private Archetype GetArchetype(Signature<TypeExpression> types)
+    private Archetype GetArchetype(Signature types)
     {
         if (_typeGraph.TryGetValue(types, out var table)) return table;
 
