@@ -9,7 +9,7 @@ namespace fennecs;
 /// real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public readonly record struct Identity : IComparable<Identity>
+internal readonly record struct Identity : IComparable<Identity>
 {
     [FieldOffset(0)] internal readonly ulong Value;
 
@@ -95,7 +95,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// <param name="item">target item (an instance of object)</param>
     /// <typeparam name="T">type of the item (becomes the backing type of the object link)</typeparam>
     /// <returns></returns>
-    public static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
+    internal static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
     
     
     internal Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)

@@ -48,12 +48,15 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// </summary>
     protected Match Match0 { get; init; } = Match0;
 
+    internal ImmutableHashSet<Component> Subset => [];
+    internal ImmutableHashSet<Component> Exclude => [];
+    
     /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
     protected readonly CountdownEvent Countdown = new(initialCount: 1);
 
-    /// <summary>
+    /// <summary>   
     ///     The number of threads this Stream uses for parallel processing.
     /// </summary>
     protected static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
@@ -67,7 +70,6 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
-
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
             do

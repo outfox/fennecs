@@ -63,7 +63,7 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/outfox/fennecs/' },
-      { icon: 'discord', link: 'https://discord.gg/3SF4gWhANS' },
+      { icon: 'discord', link: 'https://discord.gg/Bfx74WcVXW' },
     ],
   },
 })

@@ -24,7 +24,7 @@ hero:
 features:
   - title: Minimal Boilerplate.
     details: Pure C#, right out of the box. Plays nice with game engines. <i>Make choices, not compromises!</i>
-  - title: Fastm, Flexible, and Relational!
+  - title: Free, Flexible, Relational!
     details: A powerful Link & Relation system <i>puts you in control</i> of how your Entities and Objects relate. 
   - title: Zero Dependencies. Zero Codegen. 
     details: <br/> . . . . . 💢
@@ -69,7 +69,7 @@ head:
 
 ---
 
-| [![Discord: ⤜outfox⤏](https://img.shields.io/badge/Discord-_%E2%A4%9Coutfox%E2%A4%8F-284AAF?style=for-the-badge&logo=discord&logoColor=f5f5f5)](https://discord.gg/3SF4gWhANS) |[![Nuget](https://img.shields.io/nuget/v/fennecs?style=for-the-badge&color=284AAF&logo=nuget&logoColor=f5f5f5)](https://www.nuget.org/packages/fennecs/) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-284AAF?style=for-the-badge&logo=csharp&logoColor=f5f5f5) | [![License: MIT](https://img.shields.io/github/license/outfox/fennecs?style=for-the-badge&color=284AAF)](https://github.com/outfox/fennECS?tab=MIT-1-ov-file#readme) |
+| [![Discord: ⤜outfox⤏](https://img.shields.io/badge/Discord-_%E2%A4%9Coutfox%E2%A4%8F-284AAF?style=for-the-badge&logo=discord&logoColor=f5f5f5)](https://discord.gg/Bfx74WcVXW) |[![Nuget](https://img.shields.io/nuget/v/fennecs?style=for-the-badge&color=284AAF&logo=nuget&logoColor=f5f5f5)](https://www.nuget.org/packages/fennecs/) | ![GitHub top language](https://img.shields.io/badge/C%23-100%25_-284AAF?style=for-the-badge&logo=csharp&logoColor=f5f5f5) | [![License: MIT](https://img.shields.io/github/license/outfox/fennecs?style=for-the-badge&color=284AAF)](https://github.com/outfox/fennECS?tab=MIT-1-ov-file#readme) |
 |-----|-----|-----|-----|
 
 <br/>

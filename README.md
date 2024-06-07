@@ -62,8 +62,8 @@ var query = world.Query<Velocity>().Compile();
 
 // Run code on all entities in the query. (exchange 'For' with 'Job' for parallel processing)
 query.For(uniform: Time.Delta * 9.81f,
-    static (float Gdt, ref Velocity velocity) => {
-    velocity.Y -= Gdt;
+    static (float uniform, ref Velocity velocity) => {
+    velocity.Y -= uniform;
 });
 ```
 
