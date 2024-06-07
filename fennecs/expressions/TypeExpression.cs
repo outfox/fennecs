@@ -255,19 +255,23 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// <returns></returns>
     public ImmutableHashSet<TypeExpression> Expand()
     {
-        if (Match == Match.Any) return [ this, this with { Identity = Wildcard.Plain }, this with { Identity = Wildcard.Entity }, this with { Identity = Wildcard.Object } ];
+        Identity entity = new(-3, 0);
+        Identity o = new(-4, 0);
+        if (Match == Match.Any) return [ this, this with { Identity = default }, this with { Identity = entity }, this with { Identity = o } ];
+
+        Identity any = new(-1, 0);
+        if (Match == Match.AnyMatch) return [ this, this with { Identity = any }, this with { Identity = entity }, this with { Identity = o } ];
+
+        Identity target = new(-2, 0);
+        if (Match == Match.Entity) return [ this, this with { Identity = any }, this with { Identity = target }];
         
-        if (Match == Match.AnyMatch) return [ this, this with { Identity = Wildcard.Any }, this with { Identity = Wildcard.Entity }, this with { Identity = Wildcard.Object } ];
+        if (Match == Match.Object) return [ this, this with { Identity = any }, this with { Identity = target } ];
         
-        if (Match == Match.Entity) return [ this, this with { Identity = Wildcard.Any }, this with { Identity = Wildcard.Target }];
+        if (Match.IsObject) return [ this, this with { Identity = any }, this with { Identity = target }, this with { Identity = o } ];
         
-        if (Match == Match.Object) return [ this, this with { Identity = Wildcard.Any }, this with { Identity = Wildcard.Target } ];
+        if (Match.IsEntity) return [ this, this with { Identity = any }, this with { Identity = target }, this with { Identity = entity } ];
         
-        if (Match.IsObject) return [ this, this with { Identity = Wildcard.Any }, this with { Identity = Wildcard.Target }, this with { Identity = Wildcard.Object } ];
-        
-        if (Match.IsEntity) return [ this, this with { Identity = Wildcard.Any }, this with { Identity = Wildcard.Target }, this with { Identity = Wildcard.Entity } ];
-        
-        return [ this, this with { Identity = Wildcard.Any } ];
+        return [ this, this with { Identity = any } ];
     }
     
     

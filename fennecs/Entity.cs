@@ -27,7 +27,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Match.Any"/>
-    public static Match Any => new(Wildcard.Entity);
+    public static Match Any => new(new(-3, 0));
     
     
     #endregion

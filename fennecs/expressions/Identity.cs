@@ -18,9 +18,6 @@ internal readonly record struct Identity : IComparable<Identity>
     [FieldOffset(4)] internal readonly ushort Generation;
     [FieldOffset(4)] internal readonly TypeID Decoration;
 
-    //Type header (only used in TypeExpression, so must be 0 here) 
-    [FieldOffset(6)] internal readonly TypeID RESERVED = 0;
-
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
@@ -125,19 +122,19 @@ internal readonly record struct Identity : IComparable<Identity>
     /// <inheritdoc />
     public override string ToString()
     {
-        if (Equals(Wildcard.Plain))
+        if (Equals(default))
             return "[None]";
 
-        if (Equals(Wildcard.Any))
+        if (Equals(new(-1, 0)))
             return "wildcard[Any]";
 
-        if (Equals(Wildcard.Target))
+        if (Equals(new(-2, 0)))
             return "wildcard[Target]";
 
-        if (Equals(Wildcard.Entity))
+        if (Equals(new(-3, 0)))
             return "wildcard[Entity]";
 
-        if (Equals(Wildcard.Object))
+        if (Equals(new(-4, 0)))
             return "wildcard[Object]";
 
         if (IsObject)
@@ -148,6 +145,8 @@ internal readonly record struct Identity : IComparable<Identity>
 
         return $"?-{Value:x16}";
     }
+    
+    #region Wildcards
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
@@ -172,7 +171,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    public static Match Any => new(Wildcard.Any); // or prefer default ?
+    public static Match Any => new(new(-1, 0)); // or prefer default ?
 
     /// <summary>
     /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Match"/>.
@@ -181,7 +180,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Match => new(Wildcard.Target);
+    public static Match Match => new(new(-2, 0));
 
     /// <summary>
     /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
@@ -192,7 +191,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Object => new(Wildcard.Object);
+    public static Match Object => new(new(-4, 0));
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
@@ -202,7 +201,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Entity => new(Wildcard.Entity);
+    public static Match Entity => new(new(-3, 0));
 
     /// <summary>
     /// <para>
@@ -216,15 +215,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// Not a wildcard. Formerly known as "None", as plain components without a target
     /// can only exist once per Entity (same as components with a particular target).
     /// </remarks>
-    public static Match Plain => new(Wildcard.Plain);
-
-}
-
-internal static class Wildcard
-{
-    internal static readonly Identity Plain = default;
-    internal static readonly Identity Any = new(-1, 0);
-    internal static readonly Identity Target = new(-2, 0);
-    internal static readonly Identity Entity = new(-3, 0);
-    internal static readonly Identity Object = new(-4, 0);
+    public static Match Plain => default;
+    
+    #endregion
 }

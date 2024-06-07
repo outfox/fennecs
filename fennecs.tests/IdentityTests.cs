@@ -9,11 +9,11 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Virtual_Entities_have_no_Successors()
     {
-        Assert.Throws<InvalidCastException>(() => Wildcard.Any.Successor);
-        Assert.Throws<InvalidCastException>(() => Wildcard.Object.Successor);
-        Assert.Throws<InvalidCastException>(() => Wildcard.Target.Successor);
-        Assert.Throws<InvalidCastException>(() => Wildcard.Entity.Successor);
-        Assert.Throws<InvalidCastException>(() => Wildcard.Plain.Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(-1, 0).Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(-4, 0).Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(-2, 0).Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(-3, 0).Successor);
+        Assert.Throws<InvalidCastException>(() => default(Identity).Successor);
     }
 
 
@@ -31,7 +31,7 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_Plain_is_default()
     {
-        var none = Wildcard.Plain;
+        var none = default(Identity);
         Assert.Equal(default, none.Generation);
         output.WriteLine(none.Generation.ToString());
         output.WriteLine(none.ToString());

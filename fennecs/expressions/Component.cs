@@ -12,13 +12,13 @@ public readonly record struct Component
     
     internal TypeExpression value { get; }
 
-    public static Component Any<T>() => new(TypeExpression.Of<T>(new(Wildcard.Any)));
+    public static Component Any<T>() => new(TypeExpression.Of<T>(new(new(-1, 0))));
     
-    public static Component AnyTarget<T>() => new(TypeExpression.Of<T>(new(Wildcard.Target)));
+    public static Component AnyTarget<T>() => new(TypeExpression.Of<T>(new(new(-2, 0))));
     
-    public static Component AnyEntity<T>() => new(TypeExpression.Of<T>(new(Wildcard.Entity)));
+    public static Component AnyEntity<T>() => new(TypeExpression.Of<T>(new(new(-3, 0))));
     
-    public static Component AnyObject<T>() => new(TypeExpression.Of<T>(new(Wildcard.Object)));
+    public static Component AnyObject<T>() => new(TypeExpression.Of<T>(new(new(-4, 0))));
     
     /// <summary>
     /// <para>
@@ -32,7 +32,7 @@ public readonly record struct Component
     /// Not a wildcard. Formerly known as "None", as plain components without a target
     /// can only exist once per Entity (same as components with a particular target).
     /// </remarks>
-    public static Component Plain<T>() => new(TypeExpression.Of<T>(new(Wildcard.Plain)));
+    public static Component Plain<T>() => new(TypeExpression.Of<T>(new(default)));
 
     /// <summary>
     /// Matches any component backing an Entity-Entity relation.
