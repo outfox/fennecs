@@ -139,4 +139,69 @@ public static class ExpressionTests
         Assert.True(matchObject.Matches(compObjectRight));
         Assert.False(matchObject.Matches(compObjectWrong));
     }
+
+    [Fact]
+    public static void Can_Expand_Plain()
+    {
+        var type = TypeExpression.Of<int>(Identity.Plain);
+        
+        var expanded = type.Expand();
+        var anyInt = TypeExpression.Of<int>(Identity.Any);
+        Assert.Contains(type, expanded);
+        Assert.Contains(anyInt, expanded);
+        Assert.Equal(2, expanded.Count);
+    }
+
+    [Fact]
+    public static void Can_Expand_Entity()
+    {
+        var world = new World();
+        var entity = world.Spawn();
+        var type = TypeExpression.Of<int>(entity);
+        
+        var expanded = type.Expand();
+        var anyInt = TypeExpression.Of<int>(Identity.Any);
+        var targetInt = TypeExpression.Of<int>(Identity.Target);
+        var entityInt = TypeExpression.Of<int>(Identity.Entity);
+        Assert.Contains(type, expanded);
+        Assert.Contains(anyInt, expanded);
+        Assert.Contains(targetInt, expanded);
+        Assert.Contains(entityInt, expanded);
+        Assert.Equal(4, expanded.Count);
+    }
+
+    [Fact]
+    public static void Can_Expand_Object()
+    {
+        var world = new World();
+        var entity = world.Spawn();
+        var type = TypeExpression.Of<string>(Link.With("dieter"));
+        
+        var expanded = type.Expand();
+        var wildAny = TypeExpression.Of<string>(Identity.Any);
+        var wildTarget = TypeExpression.Of<string>(Identity.Target);
+        var wildObject = TypeExpression.Of<string>(Identity.Object);
+        Assert.Contains(type, expanded);
+        Assert.Contains(wildAny, expanded);
+        Assert.Contains(wildTarget, expanded);
+        Assert.Contains(wildObject, expanded);
+        Assert.Equal(4, expanded.Count);
+    }
+
+    [Fact]
+    public static void Can_Expand_Target()
+    {
+        var type = TypeExpression.Of<string>(Identity.Target);
+        
+        var expanded = type.Expand();
+        var wildAny = TypeExpression.Of<string>(Identity.Any);
+        var wildEntity = TypeExpression.Of<string>(Identity.Entity);
+        var wildObject = TypeExpression.Of<string>(Identity.Object);
+        Assert.Contains(type, expanded);
+        Assert.Contains(wildAny, expanded);
+        Assert.Contains(wildEntity, expanded);
+        Assert.Contains(wildObject, expanded);
+        Assert.Equal(4, expanded.Count);
+    }
+
 }

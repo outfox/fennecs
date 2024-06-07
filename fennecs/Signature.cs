@@ -24,9 +24,12 @@ public readonly record struct Signature : IEnumerable<TypeExpression>, IComparab
     public Signature Expanded()
     {
         var expanded = _set.ToBuilder();
-        foreach (var equivalent in _set.SelectMany(item => item.Expand()))
+        foreach (var type in _set)
         {
-            expanded.Add(equivalent);
+            foreach (var equivalent in type.Expand())
+            {
+                expanded.Add(equivalent);
+            }
         }
         
         return new(expanded.ToImmutable());

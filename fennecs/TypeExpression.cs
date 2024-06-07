@@ -35,9 +35,6 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     [FieldOffset(4)] internal readonly ushort Generation;
     [FieldOffset(4)] internal readonly TypeID Decoration;
 
-    //Target interpretation
-    [FieldOffset(0)] internal readonly Identity Identity;
-
     // Type Header
     [FieldOffset(6)] internal readonly TypeID TypeId;
 
@@ -45,6 +42,8 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(4)] internal readonly uint DWordHigh;
 
+    //Target interpretation
+    [FieldOffset(0)] internal readonly Identity Identity;
     #endregion
 
 
@@ -68,7 +67,16 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
 
     internal Relate Relation => new(new(Id, Decoration));
 
-    internal Identity Target { get => Identity; init => Identity = value; }
+    internal Identity Target
+    {
+        get => Identity;
+        init
+        {
+            var type = TypeId;
+            Identity = value;
+            TypeId = type;
+        }
+    }
 
     /// <summary>
     /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
@@ -313,11 +321,11 @@ public readonly struct TypeExpression : IEquatable<TypeExpression>, IComparable<
     {
         if (Target == Wildcard.Any) return [ this, this with { Target = Wildcard.Plain }, this with { Target = Wildcard.Entity }, this with { Target = Wildcard.Object } ];
         
-        if (Target == Wildcard.Target) return [ this, this with { Target = Wildcard.Entity }, this with { Target = Wildcard.Object } ];
+        if (Target == Wildcard.Target) return [ this, this with { Target = Wildcard.Any }, this with { Target = Wildcard.Entity }, this with { Target = Wildcard.Object } ];
         
-        if (Target == Wildcard.Entity) return [ this, this with { Target = Wildcard.Target }];
+        if (Target == Wildcard.Entity) return [ this, this with { Target = Wildcard.Any }, this with { Target = Wildcard.Target }];
         
-        if (Target == Wildcard.Object) return [ this, this with { Target = Wildcard.Target } ];
+        if (Target == Wildcard.Object) return [ this, this with { Target = Wildcard.Any }, this with { Target = Wildcard.Target } ];
         
         if (Target.IsObject) return [ this, this with { Target = Wildcard.Any }, this with { Target = Wildcard.Target }, this with { Target = Wildcard.Object } ];
         
