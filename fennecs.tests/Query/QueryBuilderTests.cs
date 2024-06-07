@@ -144,70 +144,6 @@ public class QueryBuilderTests
         builder.Compile();
     }
 
-
-    [Fact]
-    private void Disallows_Repeat_Type()
-    {
-        using var world = new World();
-        using var builder = world.Query();
-        Assert.NotNull(builder);
-        builder
-            .Has<float>()
-            .Has<string>("123")
-            .Not<double>()
-            .Not(Link.With(new List<int>()))
-            .Any<long>()
-            .Any(Link.With(new List<float>()));
-
-        Assert.Throws<InvalidOperationException>(() => builder.Has<float>());
-        Assert.Throws<InvalidOperationException>(() => builder.Not<float>());
-        Assert.Throws<InvalidOperationException>(() => builder.Any<float>());
-    }
-
-    [Fact]
-    private void Disallows_Repeat_Type_With_Match()
-    {
-        using var world = new World();
-        using var builder = world.Query();
-        var entity = world.Spawn();
-        Assert.NotNull(builder);
-        builder
-            .Has<float>(entity)
-            .Has<string>("123")
-            .Not<double>()
-            .Not(Link.With(new List<int>()))
-            .Any<long>()
-            .Any(Link.With(new List<float>()));
-
-        Assert.Throws<InvalidOperationException>(() => builder.Has<float>(Identity.Any));
-        Assert.Throws<InvalidOperationException>(() => builder.Not<List<int>>(Identity.Object));
-        Assert.Throws<InvalidOperationException>(() => builder.Any<float>(Identity.Entity));
-    }
-
-
-    [Fact]
-    private void Disallows_Conflicting_Type()
-    {
-        using var world = new World();
-        using var builder = world.Query();
-        Assert.NotNull(builder);
-        builder
-            .Has<float>()
-            .Has<string>("123")
-            .Not<double>()
-            .Not<int>()
-            .Any<long>()
-            .Any(Link.With(new List<float>()));
-
-        Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
-        Assert.Throws<InvalidOperationException>(() => builder.Not<string>(Identity.Object));
-        Assert.Throws<InvalidOperationException>(() => builder.Any<double>());
-
-        builder.Has<string>("I'm different");
-        builder.Not<string>("Think different");
-    }
-
-
     [Fact]
     private void Builder_Allows_Conflicting_and_Repeat_Type()
     {
@@ -233,18 +169,6 @@ public class QueryBuilderTests
 
         builder.Compile();
     }
-
-
-    [Fact]
-    private void Cannot_Add_Stream_Type_Twice()
-    {
-        using var world = new World();
-        var builder = world.Query<int>();
-        Assert.NotNull(builder);
-        Assert.Throws<InvalidOperationException>(() => builder.Has<int>());
-    }
-
-
 
     [Fact]
     private void Can_Create_Cached_Queries_1()
