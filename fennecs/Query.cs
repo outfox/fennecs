@@ -53,7 +53,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     }
 
     /// <inheritdoc cref="Ref{C}(fennecs.Entity,Match)"/>
-    public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Identity.Plain);
+    public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Match.Plain);
 
     #endregion
 
@@ -162,7 +162,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
         World ??= (World) this;
         
         // Global Query (if we don't have a mask)
-        Mask ??= MaskPool.Rent().Has(TypeExpression.Of<Identity>(Identity.Plain));
+        Mask ??= MaskPool.Rent().Has(TypeExpression.Of<Identity>(Match.Plain));
     }
 
     #endregion

@@ -52,7 +52,7 @@ public readonly record struct Match
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    public static Match Any => Identity.Any; // or prefer default ?
+    public static Match Any => new(Identity.Any); // or prefer default ?
 
     /// <summary>
     /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Match"/>.
@@ -61,7 +61,7 @@ public readonly record struct Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Target => Identity.Target;
+    public static Match Target => new(Identity.Target);
     
     /// <summary>
     /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
@@ -72,7 +72,7 @@ public readonly record struct Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Object => Identity.Object;
+    public static Match Object => new(Identity.Object);
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
@@ -82,7 +82,7 @@ public readonly record struct Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Entity => Identity.Entity;
+    public static Match Entity => new(Identity.Entity);
 
 
     /// <summary>
@@ -93,11 +93,9 @@ public readonly record struct Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Plain"/>
-    public static Match Plain => Identity.Plain;
+    public static Match Plain => new(Identity.Plain);
 
 
-    internal bool Matches(Match other) => Value == other.Value;
-    
     /// <summary>
     /// <para>Implicitly convert an <see cref="Identity"/> to a <see cref="Match"/> for use in filter expressions.</para>
     /// </summary>

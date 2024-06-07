@@ -74,7 +74,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
 
 
     /// <inheritdoc cref="Ref{C}(Match)"/>
-    public ref C Ref<C>() => ref World.GetComponent<C>(this, Identity.Plain);
+    public ref C Ref<C>() => ref World.GetComponent<C>(this, Match.Plain);
 
 
     /// <summary>
@@ -171,7 +171,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<C>() where C : notnull
     {
-        World.RemoveComponent(Id, TypeExpression.Of<C>(Identity.Plain));
+        World.RemoveComponent(Id, TypeExpression.Of<C>(Match.Plain));
         return this;
     }
 

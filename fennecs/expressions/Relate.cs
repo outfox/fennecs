@@ -28,7 +28,7 @@ public readonly record struct Relate
     {
         // Unfortunately, plain is not default here, but it helps a lot with the other match
         // Expressions. But actually this. That we have strong ID types.
-        return self.Value == default ? Identity.Plain : new(self.Value);
+        return self.Value == default ? Match.Plain : new(self.Value);
     }
     
     /// <inheritdoc />

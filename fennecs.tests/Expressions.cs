@@ -143,10 +143,10 @@ public static class ExpressionTests
     [Fact]
     public static void Can_Expand_Plain()
     {
-        var type = TypeExpression.Of<int>(Identity.Plain);
+        var type = TypeExpression.Of<int>(Match.Plain);
         
         var expanded = type.Expand();
-        var anyInt = TypeExpression.Of<int>(Identity.Any);
+        var anyInt = TypeExpression.Of<int>(Match.Any);
         Assert.Contains(type, expanded);
         Assert.Contains(anyInt, expanded);
         Assert.Equal(2, expanded.Count);
@@ -160,9 +160,9 @@ public static class ExpressionTests
         var type = TypeExpression.Of<int>(entity);
         
         var expanded = type.Expand();
-        var anyInt = TypeExpression.Of<int>(Identity.Any);
-        var targetInt = TypeExpression.Of<int>(Identity.Target);
-        var entityInt = TypeExpression.Of<int>(Identity.Entity);
+        var anyInt = TypeExpression.Of<int>(Match.Any);
+        var targetInt = TypeExpression.Of<int>(Match.Target);
+        var entityInt = TypeExpression.Of<int>(Match.Entity);
         Assert.Contains(type, expanded);
         Assert.Contains(anyInt, expanded);
         Assert.Contains(targetInt, expanded);
@@ -178,9 +178,9 @@ public static class ExpressionTests
         var type = TypeExpression.Of<string>(Link.With("dieter"));
         
         var expanded = type.Expand();
-        var wildAny = TypeExpression.Of<string>(Identity.Any);
-        var wildTarget = TypeExpression.Of<string>(Identity.Target);
-        var wildObject = TypeExpression.Of<string>(Identity.Object);
+        var wildAny = TypeExpression.Of<string>(Match.Any);
+        var wildTarget = TypeExpression.Of<string>(Match.Target);
+        var wildObject = TypeExpression.Of<string>(Match.Object);
         Assert.Contains(type, expanded);
         Assert.Contains(wildAny, expanded);
         Assert.Contains(wildTarget, expanded);
@@ -191,12 +191,12 @@ public static class ExpressionTests
     [Fact]
     public static void Can_Expand_Target()
     {
-        var type = TypeExpression.Of<string>(Identity.Target);
+        var type = TypeExpression.Of<string>(Match.Target);
         
         var expanded = type.Expand();
-        var wildAny = TypeExpression.Of<string>(Identity.Any);
-        var wildEntity = TypeExpression.Of<string>(Identity.Entity);
-        var wildObject = TypeExpression.Of<string>(Identity.Object);
+        var wildAny = TypeExpression.Of<string>(Match.Any);
+        var wildEntity = TypeExpression.Of<string>(Match.Entity);
+        var wildObject = TypeExpression.Of<string>(Match.Object);
         Assert.Contains(type, expanded);
         Assert.Contains(wildAny, expanded);
         Assert.Contains(wildEntity, expanded);

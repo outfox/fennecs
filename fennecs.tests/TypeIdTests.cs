@@ -54,8 +54,8 @@ public class TypeIdTests
     [Fact]
     public void TypeAssigner_None_Matches_Identical()
     {
-        var id1 = TypeExpression.Of<int>(Identity.Plain);
-        var id2 = TypeExpression.Of<int>(Identity.Plain);
+        var id1 = TypeExpression.Of<int>(Match.Plain);
+        var id2 = TypeExpression.Of<int>(Match.Plain);
 
         Assert.True(id1.Matches(id2));
     }
@@ -66,8 +66,8 @@ public class TypeIdTests
     {
         // Keeping the default case to ensure it remains at default
         // ReSharper disable once RedundantArgumentDefaultValue
-        var id1 = TypeExpression.Of<int>(Identity.Plain);
-        var id2 = TypeExpression.Of<int>(Identity.Any);
+        var id1 = TypeExpression.Of<int>(Match.Plain);
+        var id2 = TypeExpression.Of<int>(Match.Any);
 
         Assert.True(id2.Matches(id1));
         Assert.False(id1.Matches(id2)); //Non-commutative, TODO: Review whether we actually want this.
@@ -77,8 +77,8 @@ public class TypeIdTests
     [Fact]
     public void TypeAssigner_does_not_Match_Identical()
     {
-        var id1 = TypeExpression.Of<int>(Identity.Plain);
-        var id2 = TypeExpression.Of<float>(Identity.Plain);
+        var id1 = TypeExpression.Of<int>(Match.Plain);
+        var id2 = TypeExpression.Of<float>(Match.Plain);
 
         Assert.False(id1.Matches(id2));
     }
@@ -87,9 +87,9 @@ public class TypeIdTests
     [Fact]
     public void TypeAssigner_None_does_not_match_Any()
     {
-        var id1 = TypeExpression.Of<int>(Identity.Plain);
+        var id1 = TypeExpression.Of<int>(Match.Plain);
         var id2 = TypeExpression.Of<int>(new(new Identity(123)));
-        var id3 = TypeExpression.Of<int>(Identity.Any);
+        var id3 = TypeExpression.Of<int>(Match.Any);
 
         Assert.False(id1.Matches(id2));
         Assert.False(id1.Matches(id3));
@@ -99,14 +99,14 @@ public class TypeIdTests
     [Fact]
     public void TypeId_from_Generic_is_same_as_Identify()
     {
-        var id1 = TypeExpression.Of<int>(Identity.Plain).TypeId;
+        var id1 = TypeExpression.Of<int>(Match.Plain).TypeId;
         var id2 = LanguageType.Identify(typeof(int));
         Assert.Equal(id1, id2);
 
-        _ = TypeExpression.Of<string>(Identity.Plain);
+        _ = TypeExpression.Of<string>(Match.Plain);
 
         var id3 = LanguageType.Identify(typeof(bool));
-        var id4 = TypeExpression.Of<bool>(Identity.Plain).TypeId;
+        var id4 = TypeExpression.Of<bool>(Match.Plain).TypeId;
         Assert.Equal(id3, id4);
 
         Assert.NotEqual(id1, id3);

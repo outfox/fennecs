@@ -335,7 +335,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
     /// </remarks>
     /// <param name="value">a component value</param>
-    /// <param name="match">default for Plain components, Entity for Relations, Match.Of(Object) for ObjectLinks </param>
+    /// <param name="match">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
     public void Blit(C0 value, Match match = default)
     {
         var typeExpression = TypeExpression.Of<C0>(match);

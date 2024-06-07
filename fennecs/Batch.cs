@@ -67,7 +67,7 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>() where T : new() => AddComponent(new T(), match: Identity.Plain);
+    public Batch Add<T>() where T : new() => AddComponent(new T(), Match.Plain);
 
     /// <summary>
     /// Append an Add operation to the batch.
@@ -83,7 +83,7 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>() => RemoveComponent<T>(Identity.Plain);
+    public Batch Remove<T>() => RemoveComponent<T>(Match.Plain);
 
     /// <summary>
     /// Append an Remove operation to the batch.

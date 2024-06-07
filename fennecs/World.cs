@@ -270,7 +270,7 @@ public partial class World : Query
 
     internal void CollectTargets<T>(List<Relate> entities)
     {
-        var type = TypeExpression.Of<T>(Identity.Entity);
+        var type = TypeExpression.Of<T>(Match.Entity);
 
         // Modern LINQ version.
         entities.AddRange(
