@@ -81,7 +81,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     public bool Contains<T>(Target match = default)
     {
         var typeExpression = TypeExpression.Of<T>(match);
-        return Archetypes.Any(a => typeExpression.Matches(a.Signature));
+        return Archetypes.Any(a => typeExpression.Matches(a.MatchSignature));
     }
 
 

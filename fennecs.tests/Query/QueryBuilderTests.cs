@@ -209,10 +209,10 @@ public class QueryBuilderTests
 
 
     [Fact]
-    private void Unchecked_Allows_Conflicting_and_Repeat_Type()
+    private void Builder_Allows_Conflicting_and_Repeat_Type()
     {
         using var world = new World();
-        using var builder = world.Query().Unchecked();
+        using var builder = world.Query();
 
         builder
             .Has<float>()
@@ -274,7 +274,7 @@ public class QueryBuilderTests
     private void Can_Create_Cached_Queries_2()
     {
         using var world = new World();
-        var builder = world.Query<object, string>();
+        var builder = world.Query<int, string>();
 
         var query1 = builder.Compile();
         var query2 = builder.Compile();
@@ -351,56 +351,5 @@ public class QueryBuilderTests
         var query1 = builder.Compile();
         var query2 = builder.Compile();
         Assert.True(query1 == query2);
-    }
-
-
-    [Fact]
-    private void Can_Create_Unchecked_Queries()
-    {
-        using var world = new World();
-        world.Query().Unchecked().Has<Vector4>().Has<Vector4>().Compile();
-        world.Query<Vector4>().Unchecked().Has<Vector4>().Stream();
-        world.Query<Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
-        world.Query<Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
-        world.Query<float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
-        world.Query<int, float, Vector2, Vector3, Vector4>().Unchecked().Has<Vector4>().Stream();
-    }
-
-    
-    [Fact]
-    private void Cannot_Create_Duplicate_Has()
-    {
-        using var world = new World();
-        
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            world.Query().Has<Vector4>().Has<Vector4>().Compile();
-        });
-
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            world.Query<Vector4>().Has<Vector4>().Stream();
-        });
-
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            world.Query<Vector3, Vector4>().Has<Vector4>().Stream();
-        });
-        
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            world.Query<Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
-        });
-        
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            world.Query<float, Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
-        });
-        
-        //TODO: This test failed once for "no" reason?.
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            world.Query<int, float, Vector2, Vector3, Vector4>().Has<Vector4>().Stream();
-        });
     }
 }

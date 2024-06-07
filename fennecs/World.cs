@@ -146,22 +146,22 @@ public partial class World : Query
         if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
         // Compile if not cached.
-        var type = mask.HasTypes[index: 0];
-        if (!_tablesByType.TryGetValue(type, out var typeTables))
+        /* TODO: Also mysterious...
+        foreach (var type in mask.HasTypes)
         {
+            if (_tablesByType.TryGetValue(type, out var typeTables)) continue;
             typeTables = new(capacity: 16);
             _tablesByType[type] = typeTables;
         }
+        */
 
         var matchingTables = PooledList<Archetype>.Rent();
-        foreach (var table in Archetypes)
-        {
-            if (table.Matches(mask)) matchingTables.Add(table);
-        }
+        matchingTables.AddRange(Archetypes.Where(table => table.Matches(mask)));
 
         query = new(this, mask.Clone(), matchingTables);
         if (!_queries.Add(query) || !_queryCache.TryAdd(query.Mask.GetHashCode(), query))
         {
+            //TODO: Remove this check :)
             throw new InvalidOperationException("Query was already added to World. File a bug report!");
         }
         return query;
@@ -170,12 +170,14 @@ public partial class World : Query
 
     internal Query CompileQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
+        /* TODO: Why was it like this? Probably based on the old type graph.
         var type = mask.HasTypes[index: 0];
         if (!_tablesByType.TryGetValue(type, out var typeTables))
         {
             typeTables = new(capacity: 16);
             _tablesByType[type] = typeTables;
         }
+        */
 
         var matchingTables = PooledList<Archetype>.Rent();
         foreach (var table in Archetypes)
@@ -244,7 +246,7 @@ public partial class World : Query
         {
             if (!_tablesByType.TryGetValue(type, out var tableList))
             {
-                tableList = [];
+                tableList = new(capacity: 16);
                 _tablesByType[type] = tableList;
             }
 

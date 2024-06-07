@@ -181,16 +181,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> matchTypes)
-    {
-        var matches = true;
-        for (var i = 0; i < matchTypes.Count; i++)
-        {
-            matches &= matchTypes[i].Matches(Signature);
-        }
-
-        return matches;
-    }
+    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> matchTypes) => MatchSignature.IsSupersetOf(matchTypes);
 
     
     internal void Delete(int entry, int count = 1)

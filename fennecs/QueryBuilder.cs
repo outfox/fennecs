@@ -134,23 +134,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
         _mask.Any(TypeExpression.Of<T>(link));
         return (QB)this;
     }
-
-
-    /// <summary>
-    /// Disable conflict checks for subsequent Query Expressions.
-    /// </summary>
-    /// <remarks>
-    /// The builder will no longer throw exceptions if the inclusion or exclusion of a type would result in a guaranteed empty set,
-    /// or if redundant statements are made. This is useful for programmatically created queries, where duplicate or conflicting
-    /// Query Expressions can be intentional or impossible to prevent.
-    /// </remarks>
-    /// <returns>itself (fluent pattern)</returns>
-    public QB Unchecked()
-    {
-        _mask.safety = false;
-        return (QB)this;
-    }
-
+    
     #endregion
 
     # region IDisposable
