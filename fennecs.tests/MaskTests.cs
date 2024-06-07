@@ -10,6 +10,7 @@ public class MaskTests
     public void Reference_Equality_Only()
     {
         var mask1 = new Mask();
+        // ReSharper disable once EqualExpressionComparison
         Assert.True(mask1.Equals(mask1));
 
         var mask2 = new Mask();
@@ -44,7 +45,6 @@ public class MaskTests
         var mask = MaskPool.Rent();
         Assert.DoesNotContain(mask, MaskPool.Pool);
         mask.Dispose();
-        //TODO: This possibly fails because of concurrent test runners?
-        //Assert.Contains(mask, MaskPool.Pool);
+        //Assert.Contains(mask, MaskPool.Pool); //Would require avoiding parallelism, a little rough to do that here.
     }
 }

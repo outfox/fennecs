@@ -74,7 +74,6 @@ head:
 
 <br/>
 
-
 ## Ok, what the fox? *Another ECS?!*
 # :neofox_facepalm: We know... oh, _we know._    
 

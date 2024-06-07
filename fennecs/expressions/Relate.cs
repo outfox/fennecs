@@ -7,7 +7,7 @@ namespace fennecs;
 /// </summary>
 public readonly record struct Relate
 {
-    private Identity Value { get; init; }
+    private Identity Value { get; }
     
     internal Relate(Identity identity) => Value = identity;
     

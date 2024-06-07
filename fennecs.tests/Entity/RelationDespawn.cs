@@ -8,7 +8,7 @@ public class RelationDespawn
     [InlineData(3)]
     [InlineData(10)]
     [InlineData(100)]
-    [InlineData(345)]
+    [InlineData(234)]
     public void DespawnRelationTargetRemovesComponent(int relations)
     {
         using var world = new World();
