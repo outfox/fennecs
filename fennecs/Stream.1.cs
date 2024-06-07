@@ -10,7 +10,7 @@ namespace fennecs;
 /// Query's contents.
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
-public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)> 
+public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)> 
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
@@ -46,14 +46,17 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
     /// <summary>
     /// The Match Target for the first Stream Type
     /// </summary>
-    protected Target Match0 { get; init; } = Match0;
+    protected Match Match0 { get; init; } = Match0;
 
+    internal ImmutableHashSet<Component> Subset => [];
+    internal ImmutableHashSet<Component> Exclude => [];
+    
     /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
     protected readonly CountdownEvent Countdown = new(initialCount: 1);
 
-    /// <summary>
+    /// <summary>   
     ///     The number of threads this Stream uses for parallel processing.
     /// </summary>
     protected static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
@@ -67,7 +70,6 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
         using var worldLock = World.Lock();
         foreach (var table in Archetypes)
         {
-
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
             do
@@ -333,10 +335,10 @@ public record Stream<C0>(Query Query, Target Match0) : IEnumerable<(Entity, C0)>
     /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
     /// </remarks>
     /// <param name="value">a component value</param>
-    /// <param name="target">default for Plain components, Entity for Relations, Match.Of(Object) for ObjectLinks </param>
-    public void Blit(C0 value, Target target = default)
+    /// <param name="match">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
+    public void Blit(C0 value, Match match = default)
     {
-        var typeExpression = TypeExpression.Of<C0>(target);
+        var typeExpression = TypeExpression.Of<C0>(match);
         foreach (var table in Archetypes) table.Fill(typeExpression, value);
     }
 

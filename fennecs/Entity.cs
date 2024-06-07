@@ -26,8 +26,8 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
-    /// <inheritdoc cref="Target.Any"/>
-    public static Target Any => new(Identity.idEntity);
+    /// <inheritdoc cref="Match.Any"/>
+    public static Match Any => new(new(-3, 0));
     
     
     #endregion
@@ -64,17 +64,17 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
-    /// <param name="target">specific (targeted) Match Expression for the component type. No wildcards!</param>
+    /// <param name="match">specific (targeted) Match Expression for the component type. No wildcards!</param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Target target) => ref World.GetComponent<C>(this, target);
+    public ref C Ref<C>(Match match) => ref World.GetComponent<C>(this, match);
 
 
-    /// <inheritdoc cref="Ref{C}(Target)"/>
-    public ref C Ref<C>() => ref World.GetComponent<C>(this, Identity.Plain);
+    /// <inheritdoc cref="Ref{C}(Match)"/>
+    public ref C Ref<C>() => ref World.GetComponent<C>(this, Match.Plain);
 
 
     /// <summary>
@@ -171,7 +171,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<C>() where C : notnull
     {
-        World.RemoveComponent(Id, TypeExpression.Of<C>(Identity.Plain));
+        World.RemoveComponent(Id, TypeExpression.Of<C>(Match.Plain));
         return this;
     }
 
@@ -215,19 +215,15 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
         return this;
     }
 
-    /// <summary>
-    /// Removes any component that matches the specified Match Expression from the entity.
-    /// </summary>
-    /// <remarks> TODO: Doesn't match Wildcards correctly. :) </remarks>
-    /// <param name="match">Match Expression.</param>
-    /// <returns></returns>
-    public Entity RemoveAny(Match match)
+    /// <inheritdoc />
+    public Entity RemoveAny(Component match)
     {
-        World.RemoveComponent(Id, match.TypeExpression);
-        return this;
+        throw new NotImplementedException();
     }
 
+    
 
+    
     /// <summary>
     /// Despawns the Entity from the World.
     /// </summary>
@@ -248,7 +244,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// Checks if the Entity has a Component of a specific type.
     /// Allows for a <see cref="Cross"/> Expression to be specified.
     /// </summary>
-    public bool Has<T>(Target match) => World.HasComponent<T>(Id, match);
+    public bool Has<T>(Match match) => World.HasComponent<T>(Id, match);
 
 
     /// <summary>
@@ -261,7 +257,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// Checks if the Entity has a specifc Entity-Entity Relation backed by a specific type.
     /// </summary>
     public bool Has<T>(Relate relation) => World.HasComponent<T>(Id, relation);
-
+    
     #endregion
 
 
@@ -282,7 +278,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public static implicit operator bool(Entity entity) => entity.Id && entity.World.IsAlive(entity.Id);
+    public static implicit operator bool(Entity entity) => entity.Id != default && entity.World.IsAlive(entity.Id);
 
 
     /// <inheritdoc />

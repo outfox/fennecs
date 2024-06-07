@@ -7,7 +7,7 @@ namespace fennecs;
 /// <inheritdoc cref="Stream{C0}"/>
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
-public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
+public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     : Stream<C0>(Query, Match0), IEnumerable<(Entity, C0, C1)>
     where C0 : notnull
     where C1 : notnull
@@ -20,7 +20,7 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
     /// <summary>
     /// The Match Target for the second Stream Type 
     /// </summary>
-    protected Target Match1 { get; init; } = Match1;
+    protected Match Match1 { get; init; } = Match1;
 
 
     #region Stream.For
@@ -263,12 +263,12 @@ public record Stream<C0, C1>(Query Query, Target Match0, Target Match1)
 
     #region Blitters
 
-    /// <inheritdoc cref="Stream{C0}.Blit(C0,Target)"/>
-    public void Blit(C1 value, Target target = default)
+    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
+    public void Blit(C1 value, Match match = default)
     {
         using var worldLock = World.Lock();
 
-        var typeExpression = TypeExpression.Of<C1>(target);
+        var typeExpression = TypeExpression.Of<C1>(match);
 
         foreach (var table in Archetypes)
         {

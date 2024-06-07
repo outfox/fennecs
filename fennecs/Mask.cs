@@ -1,34 +1,23 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections.Immutable;
 using fennecs.pools;
 
 namespace fennecs;
 
 internal sealed class Mask : IDisposable
 {
-    internal readonly List<TypeExpression> HasTypes = new(8);
-    internal readonly List<TypeExpression> NotTypes = new(8);
-    internal readonly List<TypeExpression> AnyTypes = new(8);
+    internal readonly SortedSet<TypeExpression> HasTypes = [];
+    internal readonly SortedSet<TypeExpression> NotTypes = [];
+    internal readonly SortedSet<TypeExpression> AnyTypes = [];
 
-    internal bool safety = true;
-    
-    
-    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
+    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(new Signature(NotTypes.ToImmutableHashSet()));
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
 
     public Mask Has(TypeExpression typeExpression)
     {
-        switch (safety)
-        {
-            case true when typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes):
-                throw new InvalidOperationException($"Overlapping Has<C>: Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
-            case true when typeExpression.Matches(NotTypes):
-                throw new InvalidOperationException($"Conflicting Has<C>: Type {typeExpression} is already filtered out by this Query/Mask (result is always empty).");
-            default:
-                HasTypes.Add(typeExpression);
-                break;
-        }
+        HasTypes.Add(typeExpression);
         return this;
     }
 
@@ -41,32 +30,14 @@ internal sealed class Mask : IDisposable
 
     public Mask Not(TypeExpression typeExpression)
     {
-        switch (safety)
-        {
-            case true when typeExpression.Matches(NotTypes):
-                throw new InvalidOperationException($"Duplicate Not<C>: Type {typeExpression} is already filtered out by this Query/Mask.");
-            case true when typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes):
-                throw new InvalidOperationException($"Conflicting Not<C>: Type {typeExpression} is already (partially or fully) included by this Query/Mask (result or sub-result is always empty).");
-            default:
-                NotTypes.Add(typeExpression);
-                break;
-        }
+        NotTypes.Add(typeExpression);
         return this;
     }
 
 
     public Mask Any(TypeExpression typeExpression)
     {
-        switch (safety)
-        {
-            case true when typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes):
-                throw new InvalidOperationException($"Overlapping Any<C>: Type {typeExpression} is already (partially or fully) covered by this Query/Mask.");
-            case true when typeExpression.Matches(NotTypes):
-                throw new InvalidOperationException($"Conflicting Any<C>: Type {typeExpression} is already filtered out by this Query/Mask.");
-            default:
-                AnyTypes.Add(typeExpression);
-                break;
-        }
+        AnyTypes.Add(typeExpression);
         return this;
     }
 
@@ -82,29 +53,14 @@ internal sealed class Mask : IDisposable
     private int Key()
     {
         var hash = HashCode.Combine(HasTypes.Count);
-
-        foreach (var type in HasTypes)
-        {
-            hash = HashCode.Combine(hash, type);
-        }
-
-        HashCode.Combine(NotTypes.Count);
-
-        foreach (var type in NotTypes)
-        {
-            hash = HashCode.Combine(hash, type);
-        }
-
-        HashCode.Combine(AnyTypes.Count);
-
-        foreach (var type in AnyTypes)
-        {
-            hash = HashCode.Combine(hash, type);
-        }
-
+        hash = HasTypes.Aggregate(hash, HashCode.Combine);
+        hash = HashCode.Combine(hash, NotTypes.Count);
+        hash = NotTypes.Aggregate(hash, HashCode.Combine);
+        hash = HashCode.Combine(hash, AnyTypes.Count);
+        hash = AnyTypes.Aggregate(hash, HashCode.Combine);
+        
         return hash;
     }
-
 
     /// <inheritdoc />
     public override int GetHashCode() => Key();
@@ -122,9 +78,9 @@ internal sealed class Mask : IDisposable
     public Mask Clone()
     {
         var mask = MaskPool.Rent();
-        mask.HasTypes.AddRange(HasTypes);
-        mask.NotTypes.AddRange(NotTypes);
-        mask.AnyTypes.AddRange(AnyTypes);
+        mask.HasTypes.UnionWith(HasTypes);
+        mask.NotTypes.UnionWith(NotTypes);
+        mask.AnyTypes.UnionWith(AnyTypes);
         return mask;
     }
 }

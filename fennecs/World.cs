@@ -21,7 +21,7 @@ public partial class World : Query
     private readonly Dictionary<int, Query> _queryCache = new();
 
     // The new Type Graph that replaces the old Table Edge system.
-    private readonly Dictionary<Signature<TypeExpression>, Archetype> _typeGraph = new();
+    private readonly Dictionary<Signature, Archetype> _typeGraph = new();
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
     private readonly Dictionary<Relate, HashSet<TypeExpression>> _typesByRelationTarget = new();
@@ -83,7 +83,7 @@ public partial class World : Query
         var meta = _meta[identity.Index];
         return meta.Identity != default
                && meta.Identity == identity
-               && typeExpression.Matches(meta.Archetype.Signature);
+               && typeExpression.Matches(meta.Archetype.MatchSignature);
     }
 
 
@@ -146,22 +146,22 @@ public partial class World : Query
         if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
         // Compile if not cached.
-        var type = mask.HasTypes[index: 0];
-        if (!_tablesByType.TryGetValue(type, out var typeTables))
+        /* TODO: Also mysterious...
+        foreach (var type in mask.HasTypes)
         {
+            if (_tablesByType.TryGetValue(type, out var typeTables)) continue;
             typeTables = new(capacity: 16);
             _tablesByType[type] = typeTables;
         }
+        */
 
         var matchingTables = PooledList<Archetype>.Rent();
-        foreach (var table in Archetypes)
-        {
-            if (table.Matches(mask)) matchingTables.Add(table);
-        }
+        matchingTables.AddRange(Archetypes.Where(table => table.Matches(mask)));
 
         query = new(this, mask.Clone(), matchingTables);
         if (!_queries.Add(query) || !_queryCache.TryAdd(query.Mask.GetHashCode(), query))
         {
+            //TODO: Remove this check :)
             throw new InvalidOperationException("Query was already added to World. File a bug report!");
         }
         return query;
@@ -170,12 +170,14 @@ public partial class World : Query
 
     internal Query CompileQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
     {
+        /* TODO: Why was it like this? Probably based on the old type graph.
         var type = mask.HasTypes[index: 0];
         if (!_tablesByType.TryGetValue(type, out var typeTables))
         {
             typeTables = new(capacity: 16);
             _tablesByType[type] = typeTables;
         }
+        */
 
         var matchingTables = PooledList<Archetype>.Rent();
         foreach (var table in Archetypes)
@@ -220,7 +222,7 @@ public partial class World : Query
     internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
 
 
-    private Archetype GetArchetype(Signature<TypeExpression> types)
+    private Archetype GetArchetype(Signature types)
     {
         if (_typeGraph.TryGetValue(types, out var table)) return table;
 
@@ -244,7 +246,7 @@ public partial class World : Query
         {
             if (!_tablesByType.TryGetValue(type, out var tableList))
             {
-                tableList = [];
+                tableList = new(capacity: 16);
                 _tablesByType[type] = tableList;
             }
 
@@ -268,7 +270,7 @@ public partial class World : Query
 
     internal void CollectTargets<T>(List<Relate> entities)
     {
-        var type = TypeExpression.Of<T>(Identity.Entity);
+        var type = TypeExpression.Of<T>(Match.Entity);
 
         // Modern LINQ version.
         entities.AddRange(

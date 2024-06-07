@@ -18,13 +18,13 @@ public partial class NBodyDemo : Node2D
 	{
 		// Used to accumulate all forces acting on a body from the other bodies
 		// (the plain and relation Body Stream Components are backed by the same object!)
-		_accumulator = world.Query<Acceleration, Body, Body>(Target.Plain, Target.Plain, Entity.Any).Stream();
+		_accumulator = world.Query<Acceleration, Body, Body>(Match.Plain, Match.Plain, Entity.Any).Stream();
 
 		// Used to calculate the the forces into the velocities and positions
-		_integrator = world.Query<Acceleration, Velocity, Position>(Target.Plain, Target.Plain, Target.Plain).Stream();
+		_integrator = world.Query<Acceleration, Velocity, Position>(Match.Plain, Match.Plain, Match.Plain).Stream();
 
 		// Used to copy the Position into the Body components of the same object (plain = non-relation component)
-		_consolidator = world.Query<Position, Body, StellarBody>(Target.Plain, Target.Plain, Target.Plain).Stream();
+		_consolidator = world.Query<Position, Body, StellarBody>(Match.Plain, Match.Plain, Match.Plain).Stream();
 
 		world.GC();
 	}

@@ -67,7 +67,7 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type (newable)</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>() where T : new() => AddComponent(new T(), target: Identity.Plain);
+    public Batch Add<T>() where T : new() => AddComponent(new T(), Match.Plain);
 
     /// <summary>
     /// Append an Add operation to the batch.
@@ -83,7 +83,7 @@ public readonly struct Batch : IDisposable
     /// </summary>
     /// <typeparam name="T">component type</typeparam>
     /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>() => RemoveComponent<T>(Identity.Plain);
+    public Batch Remove<T>() => RemoveComponent<T>(Match.Plain);
 
     /// <summary>
     /// Append an Remove operation to the batch.
@@ -102,9 +102,9 @@ public readonly struct Batch : IDisposable
     public Batch Remove<T>(Relate target) => RemoveComponent<T>(target);
 
 
-    private Batch AddComponent<T>(T data, Target target)
+    private Batch AddComponent<T>(T data, Match match)
     {
-        var typeExpression = TypeExpression.Of<T>(target);
+        var typeExpression = TypeExpression.Of<T>(match);
 
         if (AddMode == AddConflict.Strict && !_mask.SafeForAddition(typeExpression))
             throw new InvalidOperationException(
@@ -121,9 +121,9 @@ public readonly struct Batch : IDisposable
         return this;
     }
 
-    private Batch RemoveComponent<T>(Target target = default)
+    private Batch RemoveComponent<T>(Match match = default)
     {
-        var typeExpression = TypeExpression.Of<T>(target);
+        var typeExpression = TypeExpression.Of<T>(match);
 
         if (RemoveMode == RemoveConflict.Strict && !_mask.SafeForRemoval(typeExpression))
             throw new InvalidOperationException(
@@ -163,25 +163,14 @@ public readonly struct Batch : IDisposable
         /// Disallows the addition of components that could already be present in a query.
         /// </summary>
         /// <remarks>
-        /// Exclude the component from the query via <see cref="QueryBuilderBase{QB}.Not{T}(fennecs.Target)"/> or similar
+        /// Exclude the component from the query via <see cref="QueryBuilderBase{QB}.Not{T}(Match)"/> or similar
         /// means. If you want to allow the addition of components that are already present, use <see cref="Preserve"/>
         /// to keep any values already present, or use <see cref="Replace"/> if you'd like to overwrite the component
         /// value everywhere it is already encountered in the query.
         /// </remarks>
         Strict = default,
 
-        /// <summary>
-        /// Ignores archetypes that already contain the component, leaving their data and state unchanged.
-        /// ⚠️ This affects all operations to be submitted with the Batch, even retroactively, when a conflicting
-        /// Add operation is added.
-        /// </summary>
-        /// <remarks>
-        /// If an archetype already has the component that a batch tries to add, no entities of that archetype are affected. This is true regardless of whether or not they match the batch's EntityQuery.
-        /// </remarks>
-        [Obsolete("Use Preserve instead.", true)]
-        SkipEntirely,
-
-        /// <summary>
+       /// <summary>
         /// Keeps the existing component data whenever trying to add a duplicate.
         /// </summary>
         Preserve,
@@ -204,7 +193,7 @@ public readonly struct Batch : IDisposable
     {
         /// <summary>
         /// Disallow remove operation if the Component to be removed is not guaranteed to be present
-        /// on ALL matched Archetypes, see <see cref="QueryBuilderBase{QB}.Has{T}(fennecs.Target)"/>.
+        /// on ALL matched Archetypes, see <see cref="QueryBuilderBase{QB}.Has{T}(Match)"/>.
         /// </summary>
         Strict = default,
 

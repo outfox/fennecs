@@ -7,11 +7,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchAny = Match.Any<string>();
+        var matchAny = Component.Any<string>();
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("erwin");
+        var compObject = Component.Link<string>("erwin");
 
         Assert.True(matchAny.Matches(compPlain));
         Assert.True(matchAny.Matches(compEntity));
@@ -24,11 +24,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchTarget = Match.AnyTarget<string>();
+        var matchTarget = Component.AnyTarget<string>();
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("erwin");
+        var compObject = Component.Link<string>("erwin");
 
         Assert.False(matchTarget.Matches(compPlain));
         Assert.True(matchTarget.Matches(compEntity));
@@ -41,11 +41,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchObject = Match.AnyObject<string>();
+        var matchObject = Component.AnyObject<string>();
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("erwin");
+        var compObject = Component.Link<string>("erwin");
 
         Assert.False(matchObject.Matches(compPlain));
         Assert.False(matchObject.Matches(compEntity));
@@ -58,11 +58,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchObject = Match.AnyEntity<string>();
+        var matchObject = Component.AnyEntity<string>();
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("erwin");
+        var compObject = Component.Link<string>("erwin");
 
         Assert.False(matchObject.Matches(compPlain));
         Assert.True(matchObject.Matches(compEntity));
@@ -75,11 +75,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchPlain = Match.Plain<string>();
+        var matchPlain = Component.Plain<string>();
 
         var compPlain = Component.Plain<string>();
         var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Object<string>("erwin");
+        var compObject = Component.Link<string>("erwin");
 
         Assert.True(matchPlain.Matches(compPlain));
         Assert.False(matchPlain.Matches(compEntity));
@@ -95,7 +95,7 @@ public static class ExpressionTests
         var right = world.Spawn();
         var wrong = world.Spawn();
         
-        var matchObject = Match.Entity<string>(right);
+        var matchObject = Component.Entity<string>(right);
 
         var compEntityRight = Component.Entity<string>(right);
         var compEntityWrong = Component.Entity<string>(wrong);
@@ -113,10 +113,10 @@ public static class ExpressionTests
         const string right = "erwin";
         const string wrong = "different";
         
-        var matchObject = Match.Object(right);
+        var matchObject = Component.Link(right);
 
-        var compObjectRight = Component.Object(right);
-        var compObjectWrong = Component.Object(wrong);
+        var compObjectRight = Component.Link(right);
+        var compObjectWrong = Component.Link(wrong);
         
         Assert.True(matchObject.Matches(compObjectRight));
         Assert.False(matchObject.Matches(compObjectWrong));
@@ -131,12 +131,76 @@ public static class ExpressionTests
         List<string> right = ["erwin"];
         List<string> wrong = ["different"];
         
-        var matchObject = Match.Object(right);
+        var matchObject = Component.Link(right);
 
-        var compObjectRight = Component.Object(right);
-        var compObjectWrong = Component.Object(wrong);
+        var compObjectRight = Component.Link(right);
+        var compObjectWrong = Component.Link(wrong);
         
         Assert.True(matchObject.Matches(compObjectRight));
         Assert.False(matchObject.Matches(compObjectWrong));
+    }
+
+    [Fact]
+    public static void Can_Expand_Plain()
+    {
+        var type = TypeExpression.Of<int>(Match.Plain);
+        
+        var expanded = type.Expand();
+        var anyInt = TypeExpression.Of<int>(Match.Any);
+        Assert.Contains(type, expanded);
+        Assert.Contains(anyInt, expanded);
+        Assert.Equal(2, expanded.Count);
+    }
+
+    [Fact]
+    public static void Can_Expand_Entity()
+    {
+        var world = new World();
+        var entity = world.Spawn();
+        var type = TypeExpression.Of<int>(entity);
+        
+        var expanded = type.Expand();
+        var anyInt = TypeExpression.Of<int>(Match.Any);
+        var targetInt = TypeExpression.Of<int>(Match.Target);
+        var entityInt = TypeExpression.Of<int>(Match.Entity);
+        Assert.Contains(type, expanded);
+        Assert.Contains(anyInt, expanded);
+        Assert.Contains(targetInt, expanded);
+        Assert.Contains(entityInt, expanded);
+        Assert.Equal(4, expanded.Count);
+    }
+
+    [Fact]
+    public static void Can_Expand_Object()
+    {
+        var world = new World();
+        var entity = world.Spawn();
+        var type = TypeExpression.Of<string>(Link.With("dieter"));
+        
+        var expanded = type.Expand();
+        var wildAny = TypeExpression.Of<string>(Match.Any);
+        var wildTarget = TypeExpression.Of<string>(Match.Target);
+        var wildObject = TypeExpression.Of<string>(Match.Object);
+        Assert.Contains(type, expanded);
+        Assert.Contains(wildAny, expanded);
+        Assert.Contains(wildTarget, expanded);
+        Assert.Contains(wildObject, expanded);
+        Assert.Equal(4, expanded.Count);
+    }
+
+    [Fact]
+    public static void Can_Expand_Target()
+    {
+        var type = TypeExpression.Of<string>(Match.Target);
+        
+        var expanded = type.Expand();
+        var wildAny = TypeExpression.Of<string>(Match.Any);
+        var wildEntity = TypeExpression.Of<string>(Match.Entity);
+        var wildObject = TypeExpression.Of<string>(Match.Object);
+        Assert.Contains(type, expanded);
+        Assert.Contains(wildAny, expanded);
+        Assert.Contains(wildEntity, expanded);
+        Assert.Contains(wildObject, expanded);
+        Assert.Equal(4, expanded.Count);
     }
 }

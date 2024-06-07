@@ -57,7 +57,7 @@ public interface IAddRemoveComponent<out SELF>
     /// Remove any component that matches the specified Match from the entity.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF RemoveAny(Match match);
+    public SELF RemoveAny(fennecs.Component match);
 }
 
 /// <summary>
@@ -93,5 +93,5 @@ public interface IHasComponent<out SELF>
     /// Check if the entity has any component that matches the specified Match.
     /// </summary>
     /// <returns>true if the entity has any matching component; otherwise, false.</returns>
-    public bool HasAny(Match match);
+    public bool HasAny(Component component);
 }

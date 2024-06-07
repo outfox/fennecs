@@ -9,7 +9,7 @@ namespace fennecs;
 /// real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
+internal readonly record struct Identity : IComparable<Identity>
 {
     [FieldOffset(0)] internal readonly ulong Value;
 
@@ -17,9 +17,6 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     [FieldOffset(0)] internal readonly int Index;
     [FieldOffset(4)] internal readonly ushort Generation;
     [FieldOffset(4)] internal readonly TypeID Decoration;
-
-    //Type header (only used in TypeExpression, so must be 0 here) 
-    [FieldOffset(6)] internal readonly TypeID RESERVED = 0;
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
@@ -52,10 +49,6 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
 
     #region IComparable/IEquatable Implementation
-    /// <inheritdoc cref="Equals(fennecs.Identity)"/>
-    public static bool operator ==(Identity left, Identity right) => left.Equals(right);
-    /// <inheritdoc cref="Equals(fennecs.Identity)"/>
-    public static bool operator !=(Identity left, Identity right) => !left.Equals(right);
 
     /// <inheritdoc cref="IEquatable{T}"/>
     public bool Equals(Identity other) => Value == other.Value;
@@ -70,25 +63,6 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <returns>the Identity</returns>
     public static implicit operator Identity(Entity entity) => entity.Id;
     
-    /// <summary>
-    /// Truthy if the Identity is not default.
-    /// </summary>
-    /// <param name="self">an Identity</param>
-    /// <returns>truthiness value</returns>
-    public static implicit operator bool(Identity self) => self != default;
-    
-    
-    ///<summary>
-    /// Implements <see cref="System.IEquatable{T}"/>.Equals(object? obj)
-    /// </summary>
-    /// <remarks>
-    /// ⚠️This method ALWAYS throws InvalidCastException, as boxing of this type is disallowed.
-    /// </remarks>
-    public override bool Equals(object? obj)
-    {
-        throw new InvalidCastException("fennecs.Identity: Boxing equality comparisons disallowed. Use IEquatable<Identity>.Equals(Identity other) instead.");
-    }
-
 
     /// <inheritdoc />
     public override int GetHashCode()
@@ -118,7 +92,7 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <param name="item">target item (an instance of object)</param>
     /// <typeparam name="T">type of the item (becomes the backing type of the object link)</typeparam>
     /// <returns></returns>
-    public static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
+    internal static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
     
     
     internal Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)
@@ -148,19 +122,19 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <inheritdoc />
     public override string ToString()
     {
-        if (Equals(idPlain))
+        if (Equals(default))
             return "[None]";
 
-        if (Equals(idAny))
+        if (Equals(new(-1, 0)))
             return "wildcard[Any]";
 
-        if (Equals(idTarget))
+        if (Equals(new(-2, 0)))
             return "wildcard[Target]";
 
-        if (Equals(idEntity))
+        if (Equals(new(-3, 0)))
             return "wildcard[Entity]";
 
-        if (Equals(idObject))
+        if (Equals(new(-4, 0)))
             return "wildcard[Object]";
 
         if (IsObject)
@@ -171,6 +145,8 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
 
         return $"?-{Value:x16}";
     }
+    
+    #region Wildcards
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
@@ -195,16 +171,16 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    public static Target Any => new(idAny); // or prefer default ?
+    public static Identity Any => new(-1, 0); // or prefer default ?
 
     /// <summary>
-    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Target"/>.
+    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Match"/>.
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Target => new(idTarget);
+    public static Identity Target => new(-2, 0);
 
     /// <summary>
     /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
@@ -215,7 +191,7 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Object => new(idObject);
+    public static Identity Object => new(-4, 0);
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
@@ -225,7 +201,7 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Target Entity => new(idEntity);
+    public static Identity Entity => new(-3, 0);
 
     /// <summary>
     /// <para>
@@ -239,11 +215,7 @@ internal readonly struct Identity : IEquatable<Identity>, IComparable<Identity>
     /// Not a wildcard. Formerly known as "None", as plain components without a target
     /// can only exist once per Entity (same as components with a particular target).
     /// </remarks>
-    public static Target Plain => new(idPlain);
-
-    internal static readonly Identity idPlain = default;
-    internal static readonly Identity idEntity = new(-3, 0);
-    internal static readonly Identity idObject = new(-4, 0);
-    internal static readonly Identity idAny = new(-1, 0);
-    internal static readonly Identity idTarget = new(-2, 0);
+    public static Identity Plain => default;
+    
+    #endregion
 }

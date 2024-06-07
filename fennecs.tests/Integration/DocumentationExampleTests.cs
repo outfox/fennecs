@@ -10,17 +10,17 @@ public class DocumentationExampleTests
         var entity1 = world.Spawn().Add<Position>();
         var entity2 = world.Spawn().Add(new Position(1, 2, 3)).Add<int>();
 
-        var query = world.Query<Position>(Identity.Plain).Stream();
+        var query = world.Query<Position>(Match.Plain).Stream();
 
         const float MULTIPLIER = 10f;
 
         query.Job(MULTIPLIER,(float uniform, ref Position pos) => { pos *= uniform; });
 
-        var pos1 = world.GetComponent<Position>(entity1, Identity.Plain);
+        var pos1 = world.GetComponent<Position>(entity1, Match.Plain);
         var expected = new Position() * MULTIPLIER;
         Assert.Equal(expected, pos1);
 
-        var pos2 = world.GetComponent<Position>(entity2, Identity.Plain);
+        var pos2 = world.GetComponent<Position>(entity2, Match.Plain);
         expected = new Position(1, 2, 3) * MULTIPLIER;
         Assert.Equal(expected, pos2);
     }

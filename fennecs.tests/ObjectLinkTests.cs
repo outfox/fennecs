@@ -6,7 +6,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
     public void Can_Link_Objects_via_Builder()
     {
         using var world = new World();
-        var query = world.Query<string>(Identity.Any).Stream();
+        var query = world.Query<string>(Match.Any).Stream();
 
         // string may be interned or not
         const string target = "hello world";
@@ -28,7 +28,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
     public void Can_Link_Objects_via_World()
     {
         using var world = new World();
-        var query = world.Query<string>(Identity.Any).Stream();
+        var query = world.Query<string>(Match.Any).Stream();
 
         // string may be interned or not
         const string link = "hello world";
@@ -54,7 +54,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         //TODO: This test intermittently fails! May be due to string interning or concurrent test runners.
         
         using var world = new World();
-        var query = world.Query<string>(Identity.Any).Stream();
+        var query = world.Query<string>(Match.Any).Stream();
 
         // string may be interned or not
         const string target = "hello world";
@@ -72,7 +72,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
     public void Can_Unlink_Objects_via_World()
     {
         using var world = new World();
-        var query = world.Query<string>(Identity.Any).Stream();
+        var query = world.Query<string>(Match.Any).Stream();
 
         // string may be interned or not
         const string target = "hello world";

@@ -19,7 +19,12 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// The TypeExpressions that define this Archetype.
     /// </summary>
-    internal readonly Signature<TypeExpression> Signature;
+    internal readonly Signature Signature;
+    
+    /// <summary>
+    /// Expanded Signature with all Wildcards resolved for fast, set-level matching.
+    /// </summary>
+    internal readonly Signature MatchSignature;
 
     /// <summary>
     /// Get a Span of all Identities contained in this Archetype.
@@ -63,13 +68,14 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     internal int Version;
 
 
-    internal Archetype(World world, Signature<TypeExpression> signature)
+    internal Archetype(World world, Signature signature)
     {
         _world = world;
         Storages = new IStorage[signature.Count];
         
         Signature = signature;
-        
+        MatchSignature = signature.Expanded();
+
         // Build the relation between storages and types, as well as type Wildcards in buckets.
         var finishedTypes = PooledList<TypeID>.Rent();
         var finishedBuckets = PooledList<IStorage[]>.Rent();
@@ -106,7 +112,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         // Get quick lookup for Identity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(fennecs.Identity.Plain);
+        IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
 
         // TODO: Bake buckets dictionary
         // _buckets = Zip(finishedTypes, finishedBuckets);
@@ -151,44 +157,31 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     internal bool Matches(TypeExpression type)
     {
-        return type.Matches(Signature);
+        var yes = MatchSignature.Contains(type);
+        return yes;
     }
 
 
-    internal bool Matches(IReadOnlyList<TypeExpression> types)
-    {
-        return types.Any(Matches);
-    }
-
-
+    // A method that checks if a given Mask parameter matches certain criteria using boolean logic and short circuiting.
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.
-        var matchesNot = !mask.NotTypes.Any(t => t.Matches(Signature));
+        var matchesNot = !MatchSignature.Overlaps(mask.NotTypes);
         if (!matchesNot) return false;
 
         //If already matching, no need to check any further. 
-        var matchesHas = mask.HasTypes.All(t => t.Matches(Signature));
+        var matchesHas = MatchSignature.IsSupersetOf(mask.HasTypes);
         if (!matchesHas) return false;
 
         //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
         var matchesAny = mask.AnyTypes.Count == 0;
-        matchesAny |= mask.AnyTypes.Any(t => t.Matches(Signature));
+        matchesAny |= MatchSignature.Overlaps(mask.AnyTypes);
 
         return matchesHas && matchesNot && matchesAny;
     }
 
 
-    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> matchTypes)
-    {
-        var matches = true;
-        for (var i = 0; i < matchTypes.Count; i++)
-        {
-            matches &= matchTypes[i].Matches(Signature);
-        }
-
-        return matches;
-    }
+    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> matchTypes) => MatchSignature.IsSupersetOf(matchTypes);
 
     
     internal void Delete(int entry, int count = 1)
@@ -357,9 +350,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal Storage<T> GetStorage<T>(Target target)
+    internal Storage<T> GetStorage<T>(Match match)
     {
-        var type = TypeExpression.Of<T>(target);
+        var type = TypeExpression.Of<T>(match);
         return (Storage<T>) GetStorage(type);
     }
 
@@ -525,7 +518,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         foreach (var component in components)
         {
-            var type = TypeExpression.Of(component.GetType(), fennecs.Identity.Plain);
+            var type = TypeExpression.Of(component.GetType(), fennecs.Match.Plain);
             var storage = GetStorage(type);
             storage.Append(component, count);
         }

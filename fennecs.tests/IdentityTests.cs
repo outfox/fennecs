@@ -9,11 +9,11 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Virtual_Entities_have_no_Successors()
     {
-        Assert.Throws<InvalidCastException>(() => Identity.idAny.Successor);
-        Assert.Throws<InvalidCastException>(() => Identity.idObject.Successor);
-        Assert.Throws<InvalidCastException>(() => Identity.idTarget.Successor);
-        Assert.Throws<InvalidCastException>(() => Identity.idEntity.Successor);
-        Assert.Throws<InvalidCastException>(() => Identity.idPlain.Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(-1, 0).Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(-4, 0).Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(-2, 0).Successor);
+        Assert.Throws<InvalidCastException>(() => new Identity(-3, 0).Successor);
+        Assert.Throws<InvalidCastException>(() => default(Identity).Successor);
     }
 
 
@@ -31,7 +31,7 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_Plain_is_default()
     {
-        var none = Identity.idPlain;
+        var none = default(Identity);
         Assert.Equal(default, none.Generation);
         output.WriteLine(none.Generation.ToString());
         output.WriteLine(none.ToString());
@@ -42,20 +42,20 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Identity_ToString()
     {
-        _ = Identity.Any.ToString();
-        _ = Identity.Entity.ToString();
-        _ = Identity.Target.ToString();
-        _ = Identity.Object.ToString();
-        _ = Identity.Plain.ToString();
+        _ = Match.Any.ToString();
+        _ = Match.Entity.ToString();
+        _ = Match.Target.ToString();
+        _ = Match.Object.ToString();
+        _ = Match.Plain.ToString();
         _ = Identity.Of("hello world").ToString();
         _ = new Identity(123, 456).ToString();
         _ = new Identity(-1, 2).ToString();
 
-        output.WriteLine(Identity.Any.ToString());
-        output.WriteLine(Identity.Entity.ToString());
-        output.WriteLine(Identity.Target.ToString());
-        output.WriteLine(Identity.Object.ToString());
-        output.WriteLine(Identity.Plain.ToString());
+        output.WriteLine(Match.Any.ToString());
+        output.WriteLine(Match.Entity.ToString());
+        output.WriteLine(Match.Target.ToString());
+        output.WriteLine(Match.Object.ToString());
+        output.WriteLine(Match.Plain.ToString());
         output.WriteLine(Identity.Of("hello world").ToString());
         output.WriteLine(new Identity(123, 456).ToString());
         output.WriteLine(new Identity(-1, 2).ToString());
@@ -66,10 +66,10 @@ public class IdentityTests(ITestOutputHelper output)
     public void Identity_None_cannot_Match_One()
     {
         var zero = new Identity(0);
-        Assert.NotEqual(Identity.Plain, new(zero));
+        Assert.NotEqual(Match.Plain, new Match(zero));
 
         var one = new Identity(1);
-        Assert.NotEqual(Identity.Plain, new(one));
+        Assert.NotEqual(Match.Plain, new Match(one));
     }
 
 
@@ -100,8 +100,8 @@ public class IdentityTests(ITestOutputHelper output)
         {
             var identity = new Identity(i, g);
 
-            Assert.NotEqual(new(identity), Identity.Any);
-            Assert.NotEqual(new(identity), Identity.Plain);
+            Assert.NotEqual(new(identity), Match.Any);
+            Assert.NotEqual(new(identity), Match.Plain);
 
             if (ids.ContainsKey(identity.GetHashCode()))
                 Assert.Fail($"Collision of {identity} with {ids[identity.GetHashCode()]}, {identity.GetHashCode()}#==#{ids[identity.GetHashCode()].GetHashCode()}");
@@ -110,21 +110,11 @@ public class IdentityTests(ITestOutputHelper output)
         }
     }
 
-
-    [Fact]
-    public void Equals_Prevents_Boxing_as_InvalidCastException()
-    {
-        object o = "don't @ me";
-        var id = new Identity(69, 420);
-        Assert.Throws<InvalidCastException>(() => id.Equals(o));
-    }
-
-
     [Fact]
     public void Any_and_None_are_Distinct()
     {
-        Assert.NotEqual(Identity.Any, Identity.Plain);
-        Assert.NotEqual(Identity.Any.GetHashCode(), Identity.Plain.GetHashCode());
+        Assert.NotEqual(Match.Any, Match.Plain);
+        Assert.NotEqual(Match.Any.GetHashCode(), Match.Plain.GetHashCode());
     }
 
 
