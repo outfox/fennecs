@@ -5,17 +5,44 @@ order: 1
 
 # Value Type Components
 
-In **fenn**ecs, components are typically defined as [value types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types) (e.g., structs or primitives). Value type components are stored directly within the memory of each entity, providing excellent performance and memory efficiency.
+In **fenn**ecs, components are often defined as [value types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types) (e.g., structs or primitives). Value type components are stored directly within the memory of each Archetype, providing excellent performance and memory efficiency.
 
 ::: info :neofox_verified: SIMPLY THE BEST
-The fastest Components to process with **fenn**ecs value types. This means that each entity has its own copy of the component. Their data is neatly arranged in memory so it's easy to access and process efficiently and with speed.
+The fastest Components to process with **fenn**ecs are indeed value types - pure data. This means that each entity has its own copy of the component. Their data is neatly arranged in memory so it's easy to access and process efficiently and with speed.
 :::
+
+Reference types, although very useful, always require at least one indirect memory lookup when accessed, and it is not guaranteed that they are even all in the same memory region - which (when pushed to extremes) will lead to CPU cache misses and somewhat slower processing.
+
 
 ## Defining Value Type Components
 
-To define a value type component, simply create a struct:
+To define a value type component, simply create a record struct (recommended!) or a simple struct:
 
-```csharp
+::: code-group
+
+```csharp [🌟 record structs 🌟]
+// Minimal Boilerplate™️ - it's what fennecs crave!
+public record struct Position(float X, float Y);
+public record struct Velocity(float X, float Y);
+```
+
+```csharp [records, with extra steps]
+// you can do all the things with these getters and setters if you need
+public record struct Position(float X, float Y)
+{
+    public float X { get; set; } = X;
+    public float Y { get; set; } = Y;
+}
+
+public record struct Velocity(float X, float Y)
+{
+    public float X { get; set; } = X;
+    public float Y { get; set; } = Y;
+}
+```
+
+```csharp [old-timey structs]
+// not here to judge, these work great, too!
 public struct Position
 {
     public float X;
@@ -28,13 +55,21 @@ public struct Velocity
     public float Y;
 }
 ```
+:::
 
 A special case are `Tags` - empty structs. These use no memory at all for storage, and carry their meaning just through their presence.
 
-```csharp
+::: code-group
+
+```csharp [plain struct]
+// look at me, I'm the minimalist now!
 public struct PlayerTag;
 ```
-
+```csharp [record struct]
+// still good, indents better in groups with other records
+public record struct PlayerTag;
+```
+:::
 
 ## Adding Value Type Components to Entities
 

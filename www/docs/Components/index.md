@@ -21,8 +21,8 @@ Components are data attached to Entities!
 
 
 ![a cartoon fennec with a hand truck moving a large stack of colored boxes](https://fennecs.tech/img/fennec-components.png)
+*(a cute fennec moving into its new Archetype!)
 
+# Archetypes
 
-# Archetype
-
-An Archetype is a collection of Entities that share the same set of Components. Thes entities can be processed efficiently with an ECS, so in large projects, there's a performance incentive to make frequently processed Archetypes either rare (a few dozen samll ones), or large (10_000 entities or more).
+An Archetype is a collection of Entities that share the same set of Components. Such collections can be processed most efficiently by the ECS, so in large projects, there's a performance incentive to make frequently processed Archetypes either rare (e.g. aim for just a few dozen small ones), or chunky and large (e.g. 10k entities for a start, or even more).

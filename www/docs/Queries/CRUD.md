@@ -92,7 +92,7 @@ These could be used to great effect, e.g. to set a new Component value for all E
 Throw an exception if attempting to add a component that is not explicitly excluded from the query.
 
 `Preserve`  
-Preserve the Values of already present Components, and adds the new ones where not present. *(currently not implemented)*
+Preserve the Values of already present Components, and adds the new ones where not present.
 
 `Replace`  
 Replaces any existing components in addition to adding the new ones where not present.

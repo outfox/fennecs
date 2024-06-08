@@ -9,13 +9,13 @@ head:
       content: Conceptual overview over the fennecs Entity-Component System
 ---
 
-![graffito "fennecs rule"](https://fennecs.tech/img/fennecs-rule.png)
-The Entity-Component System (ECS) is an architectural pattern used in game development and software design. It focuses on the composition of entities using components, rather than inheritance. Entities are unique identifiers, components are pure data structures, and systems are the logic that operates on entities and their components. ECS promotes flexibility, performance, and maintainability by separating data from behavior and enabling the creation of complex game objects through the composition of simpler components.
+![a fennec fox spraying "using fennecs;" against a wall](https://fennecs.tech/img/fennec-using-fennecs.png)<br/>
+The Entity-Component System (ECS) is an architectural pattern that favors composition over inheritance. **Entities** are small, unique identifiers, and **Components** are data attached to them. **Systems** denote the logic that operates on this data. ECS provides flexibility, performance, and maintainability by separating data and behavior, allowing complex game objects to be built from simpler components.
 
 # Typical ECS Concepts 
 
-::: tip <sub>*(these are what makes most ECS architectures tick)*</sub>
-### [Entities](Entities/) are spawned in a [World](World.md). 
+::: tip <sub>*(these are what makes many ECS architectures tick)*</sub>
+### [Entities](Entities/) exist in a [World](World.md). 
 Entities can be spawned solo, or in bulk with pre-configured components.
 
 ### [Components](Components/) can be added to / removed from Entities.

@@ -147,9 +147,8 @@ public static class ExpressionTests
         
         var expanded = type.Expand();
         var anyInt = TypeExpression.Of<int>(Match.Any);
-        Assert.Contains(type, expanded);
         Assert.Contains(anyInt, expanded);
-        Assert.Equal(2, expanded.Count);
+        Assert.Single(expanded);
     }
 
     [Fact]
@@ -163,29 +162,26 @@ public static class ExpressionTests
         var anyInt = TypeExpression.Of<int>(Match.Any);
         var targetInt = TypeExpression.Of<int>(Match.Target);
         var entityInt = TypeExpression.Of<int>(Match.Entity);
-        Assert.Contains(type, expanded);
         Assert.Contains(anyInt, expanded);
         Assert.Contains(targetInt, expanded);
         Assert.Contains(entityInt, expanded);
-        Assert.Equal(4, expanded.Count);
+        Assert.Equal(3, expanded.Count);
     }
 
     [Fact]
     public static void Can_Expand_Object()
     {
         var world = new World();
-        var entity = world.Spawn();
         var type = TypeExpression.Of<string>(Link.With("dieter"));
         
         var expanded = type.Expand();
         var wildAny = TypeExpression.Of<string>(Match.Any);
         var wildTarget = TypeExpression.Of<string>(Match.Target);
         var wildObject = TypeExpression.Of<string>(Match.Object);
-        Assert.Contains(type, expanded);
         Assert.Contains(wildAny, expanded);
         Assert.Contains(wildTarget, expanded);
         Assert.Contains(wildObject, expanded);
-        Assert.Equal(4, expanded.Count);
+        Assert.Equal(3, expanded.Count);
     }
 
     [Fact]
@@ -197,10 +193,9 @@ public static class ExpressionTests
         var wildAny = TypeExpression.Of<string>(Match.Any);
         var wildEntity = TypeExpression.Of<string>(Match.Entity);
         var wildObject = TypeExpression.Of<string>(Match.Object);
-        Assert.Contains(type, expanded);
         Assert.Contains(wildAny, expanded);
         Assert.Contains(wildEntity, expanded);
         Assert.Contains(wildObject, expanded);
-        Assert.Equal(4, expanded.Count);
+        Assert.Equal(3, expanded.Count);
     }
 }

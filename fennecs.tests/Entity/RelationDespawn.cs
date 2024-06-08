@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests;
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace fennecs.tests;
 
 public class RelationDespawn
 {
@@ -7,7 +9,7 @@ public class RelationDespawn
     [InlineData(2)]
     [InlineData(3)]
     [InlineData(10)]
-    [InlineData(100)]
+    [InlineData(69)]
     [InlineData(234)]
     public void DespawnRelationTargetRemovesComponent(int relations)
     {
@@ -26,7 +28,7 @@ public class RelationDespawn
         var rnd = new Random(1234 + relations);
         foreach (var target in targets)
         {
-            subject.Add<int>(Relate.To(target));
+            subject.Add(rnd.Next(), Relate.To(target));
         }
 
         while (targets.Count > 0)
@@ -41,4 +43,38 @@ public class RelationDespawn
             Assert.False(subject.Has<int>(target));
         }
     }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(10)]
+    [InlineData(69)]
+    [InlineData(200)]
+    public void DespawningInSelfReferencedArchetypeIsPossible(int relations)
+    {
+        using var world = new World();
+        
+        var subjects = new List<Entity>();
+        var rnd = new Random(1234 + relations);
+        
+        for (var i = 0; i < relations; i++)
+        {
+            subjects.Add(world.Spawn());
+        }
+
+        // Create a bunch of self-referential relations
+        foreach (var subject in subjects)
+        {
+            subject.Add(rnd.Next(), Relate.To(subject));
+        }
+
+        var query = world.Query<int>(Match.Entity).Compile();
+        Assert.Equal(relations, query.Count);
+        
+        query.Truncate(relations/2);
+
+        Assert.Equal(relations/2, query.Count);
+    }
+    
 }

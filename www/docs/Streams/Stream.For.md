@@ -124,7 +124,7 @@ But amazingly, a **Uniform** can be anything: a primitive type like `int`, a `st
 ```cs
 // Declaring a uniform as a System.ValueTuple for the win!
 myStream.For(
-    uniform: (Vector3.DOWN, Time.deltaTime)
+    uniform: (Vector3.DOWN, Time.deltaTime),
     static ((Vector3 gravity, float dt) uniform, ref Vector3 velocity) =>
     {
         velocity += uniform.gravity * uniform.dt;

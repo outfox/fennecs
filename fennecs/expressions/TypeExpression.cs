@@ -26,14 +26,13 @@ namespace fennecs;
 internal readonly record struct TypeExpression(Identity Identity = default, TypeID TypeId = default) : IComparable<TypeExpression>
 {
     private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId)
-    {
-    }
+    { }
 
     internal Relate Relation => new(Identity);
 
     internal Match Match => new(Identity);
 
-    
+
     /// <summary>
     /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
     /// </summary>
@@ -52,13 +51,14 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     public Type Type => LanguageType.Resolve(TypeId);
 
 
-    // A method to check if a TypeExpression matches any of the given type expressions in a collection.
     /// <summary>
+    /// TODO: Remove me.
+    /// A method to check if a TypeExpression matches any of the given type expressions in an IEnumerable.
     /// Does this <see cref="TypeExpression"/> match any of the given type expressions?
     /// </summary>
     /// <param name="other">a collection of type expressions</param>
     /// <returns>true if matched</returns>
-    public bool Matches(ImmutableHashSet<TypeExpression> other)
+    public bool Matches(IEnumerable<TypeExpression> other)
     {
         var self = this;
 
@@ -72,20 +72,13 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
         return false;
     }
 
-    /// <inheritdoc cref="Matches(System.Collections.Immutable.ImmutableHashSet{fennecs.TypeExpression})"/>
-    [Obsolete("Try to use Matches(Signature) or ImmutableSortedSets directly.")]
-    public bool Matches(IEnumerable<TypeExpression> other)
-    {
-        return Matches(other.ToImmutableHashSet());
-    }
-
     /// <summary>
-    /// Fast O(1) Matching against Signatures.
+    /// Fast O(1) Matching against (expanded) Signature.
     /// </summary>
-    public bool Matches(Signature other)
-    {
-        return other.Contains(this);
-    }
+    /// <remarks>
+    /// The other signature must be a Wildcard-Expanded signature.
+    /// </remarks>
+    public bool Matches(Signature expandedSignature) => expandedSignature.Contains(this);
 
 
     /// <summary>
@@ -144,15 +137,6 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
         return Match == other.Match;
     }
 
-/*
-    /// <inheritdoc cref="System.IEquatable{T}"/>
-    public bool Equals(TypeExpression other) => Value == other.Value;
-
-
-    /// <inheritdoc cref="System.IComparable{T}"/>
-    public int CompareTo(TypeExpression other) => Value.CompareTo(other.Value);
-*/
-
     /// <summary>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and target entity.
     /// This may express a plain Component if <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, 
@@ -203,43 +187,12 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     public static TypeExpression Of(Type type, Match match) => new(match, LanguageType.Identify(type));
 
 
-    /// <summary>
-    /// Implements a hash function that aims for a low collision rate.
-    /// </summary>
-    /*
-    public override int GetHashCode()
-    {
-        unchecked
-        {
-            return (int)(0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
-        }
-    }
-    */
-
-
     /// <inheritdoc cref="object.ToString"/>
     public override string ToString()
     {
         if (isWildcard || isRelation) return $"<{LanguageType.Resolve(TypeId)}> >> {Match}";
         return $"<{LanguageType.Resolve(TypeId)}>";
     }
-
-    /*
-
-    /// <inheritdoc cref="Equals(fennecs.TypeExpression)"/>
-    public static bool operator ==(TypeExpression left, TypeExpression right)
-    {
-        return left.Equals(right);
-    }
-
-
-    /// <inheritdoc cref="Equals(fennecs.TypeExpression)"/>
-    public static bool operator !=(TypeExpression left, TypeExpression right)
-    {
-        return !(left == right);
-    }
-  
-  */  
 
     /// <summary>
     /// Expands this TypeExpression into a set of TypeExpressions that that are Equivalent but unique.
@@ -252,29 +205,28 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// <li>specific Entity -> [ wild Entity ]</li>
     /// </ul>
     /// </remarks>
-    /// <returns></returns>
     public ImmutableHashSet<TypeExpression> Expand()
     {
         Identity entity = new(-3, 0);
         Identity o = new(-4, 0);
-        if (Match == Match.Any) return [ this, this with { Identity = default }, this with { Identity = entity }, this with { Identity = o } ];
+        if (Match == Match.Any) return [this with { Identity = default }, this with { Identity = entity }, this with { Identity = o }];
 
         Identity any = new(-1, 0);
-        if (Match == Match.Target) return [ this, this with { Identity = any }, this with { Identity = entity }, this with { Identity = o } ];
+        if (Match == Match.Target) return [this with { Identity = any }, this with { Identity = entity }, this with { Identity = o }];
 
         Identity target = new(-2, 0);
-        if (Match == Match.Entity) return [ this, this with { Identity = any }, this with { Identity = target }];
-        
-        if (Match == Match.Object) return [ this, this with { Identity = any }, this with { Identity = target } ];
-        
-        if (Match.IsObject) return [ this, this with { Identity = any }, this with { Identity = target }, this with { Identity = o } ];
-        
-        if (Match.IsEntity) return [ this, this with { Identity = any }, this with { Identity = target }, this with { Identity = entity } ];
-        
-        return [ this, this with { Identity = any } ];
+        if (Match == Match.Entity) return [this with { Identity = any }, this with { Identity = target }];
+
+        if (Match == Match.Object) return [this with { Identity = any }, this with { Identity = target }];
+
+        if (Match.IsObject) return [this with { Identity = any }, this with { Identity = target }, this with { Identity = o }];
+
+        if (Match.IsEntity) return [this with { Identity = any }, this with { Identity = target }, this with { Identity = entity }];
+
+        return [this with { Identity = any }];
     }
-    
-    
+
+
     /// <inheritdoc />
     public int CompareTo(TypeExpression other)
     {
@@ -283,7 +235,7 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
         {
             return typeComparison;
         }
-        
+
         var identityComparison = Identity.CompareTo(other.Identity);
         return identityComparison;
     }

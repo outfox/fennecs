@@ -11,7 +11,7 @@ internal sealed class Mask : IDisposable
     internal readonly SortedSet<TypeExpression> NotTypes = [];
     internal readonly SortedSet<TypeExpression> AnyTypes = [];
 
-    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(new Signature(NotTypes.ToImmutableHashSet()));
+    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 
 

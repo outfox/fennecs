@@ -59,11 +59,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
 
-    /// <summary>
-    /// TODO: Buckets for Wildcard Joins (optional optimization for CrossJoin when complex archetypes get hit repeatedly in tight loops).
-    /// </summary>
-    // private readonly ImmutableDictionary<TypeID, IStorage[]> _buckets;
-
     // Used by Queries to check if the table has been modified while enumerating.
     internal int Version;
 
@@ -74,13 +69,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         Storages = new IStorage[signature.Count];
         
         Signature = signature;
-        MatchSignature = signature.Expanded();
-
-        // Build the relation between storages and types, as well as type Wildcards in buckets.
-        var finishedTypes = PooledList<TypeID>.Rent();
-        var finishedBuckets = PooledList<IStorage[]>.Rent();
-        var currentBucket = PooledList<IStorage>.Rent();
-        TypeID currentTypeId = 0;
+        MatchSignature = signature.Expand();
 
         // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
         for (var index = 0; index < signature.Count; index++)
@@ -88,50 +77,20 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             var type = signature[index];
             _storageIndices.Add(type, index);
             Storages[index] = IStorage.Instantiate(type);
-
-            // Time for a new bucket?
-            if (currentTypeId != type.TypeId)
-            {
-                //Finish bucket (exclude null type)
-                if (currentTypeId != 0)
-                {
-                    finishedTypes.Add(currentTypeId);
-                    finishedBuckets.Add(currentBucket.ToArray());
-                    currentBucket.Dispose();
-                    currentBucket = PooledList<IStorage>.Rent();
-                }
-
-                currentTypeId = type.TypeId;
-            }
-
-            //TODO: Harmless assert, but...  is it pretty? We could disallow TypeExpression 0, or skip null types.
-            Debug.Assert(currentTypeId != 0, "Trying to create bucket for a null type.");
-            currentBucket.Add(Storages[index]);
         }
-
+        
         // Get quick lookup for Identity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
         IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
-
-        // TODO: Bake buckets dictionary
-        // _buckets = Zip(finishedTypes, finishedBuckets);
-
-        currentBucket.Dispose();
-        finishedBuckets.Dispose();
-        finishedTypes.Dispose();
     }
 
 
-    private void Match<T>(TypeExpression expression, IList<Storage<T>> result)
+    private void Match<T>(TypeExpression expression, PooledList<Storage<T>> result)
     {
-        //TODO: Use TypeBuckets as optimization (much faster!).
         foreach (var (type, index) in _storageIndices)
         {
-            if (expression.Matches(type))
-            {
-                result.Add((Storage<T>) Storages[index]);
-            }
+            if (expression.Matches(type)) result.Add((Storage<T>) Storages[index]);
         }
     }
 
@@ -144,17 +103,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
     
-    // TODO: This is a surprise tool that will help us later :)
-    // ReSharper disable once UnusedMember.Local
-    private static ImmutableDictionary<T, U> Zip<T, U>(IReadOnlyList<T> finishedTypes, IReadOnlyList<U> finishedBuckets) where T : notnull
-    {
-        var result = finishedTypes
-            .Zip(finishedBuckets, (k, v) => new {Key = k, Value = v})
-            .ToImmutableDictionary(item => item.Key, item => item.Value);
-        return result;
-    }
-
-
     internal bool Matches(TypeExpression type)
     {
         var yes = MatchSignature.Contains(type);
@@ -204,6 +152,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         if (excess <= 0) return;
         
         var toDelete = Identities.Slice(Count - excess, excess);
+
         foreach (var storage in Storages)
         {
             // HACK... 
@@ -218,7 +167,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         IdentityStorage.Delete(Count - excess, excess);
     }
 
-    internal void PatchMetas(int entry, int count = 1)
+    private void PatchMetas(int entry, int count = 1)
     {
         for (var i = 0; i < count; i++)
         {

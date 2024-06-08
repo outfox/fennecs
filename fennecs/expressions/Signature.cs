@@ -12,29 +12,17 @@ namespace fennecs;
 internal readonly record struct Signature : IEnumerable<TypeExpression>, IComparable<Signature>
 {
     private readonly ImmutableSortedSet<TypeExpression> _set = ImmutableSortedSet<TypeExpression>.Empty;
+    
     private readonly int _hashCode;
 
     /// <inheritdoc />
     public override int GetHashCode() => _hashCode;
+    
+    public bool Matches(TypeExpression type) => Contains(type);
 
-
-    /// <summary>
-    /// Returns a copy of this Signature with all its Wildcards expanded.
-    /// </summary>
-    public Signature Expanded()
-    {
-        var expanded = _set.ToBuilder();
-        foreach (var type in _set)
-        {
-            foreach (var equivalent in type.Expand())
-            {
-                expanded.Add(equivalent);
-            }
-        }
-        
-        return new(expanded.ToImmutable());
-    }
-     
+    public bool Matches(IImmutableSet<TypeExpression> types) => Overlaps(types);
+    
+    
     /// <summary>
     /// Creates a new <see cref="Signature"/> from the given values.
     /// </summary>
@@ -56,6 +44,7 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
         _hashCode = BakeHash(_set);
     }
 
+    
     /// <summary>
     /// Creates a signature from the given values.
     /// </summary>
@@ -178,4 +167,20 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
 
     /// <inheritdoc cref="Enumerable.ElementAt{TSource}(System.Collections.Generic.IEnumerable{TSource},System.Index)"/>
     public TypeExpression this[int index] => _set.ElementAt(index);
+    
+    
+
+
+    /// <summary>
+    /// Create a copy of set with its Wildcards expanded.
+    /// </summary>
+    internal Signature Expand()
+    {
+        var expanded = _set.ToBuilder();
+
+        var expansions = _set.SelectMany(type => type.Expand());
+        expanded.UnionWith(expansions);
+        
+        return new(expanded.ToImmutable());
+    }
 }

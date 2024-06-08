@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Numerics;
 using System.Text;
 using fennecs.pools;
 
@@ -10,6 +11,62 @@ namespace fennecs;
 /// </summary>
 public partial class World : IDisposable
 {
+    #region Config
+        /// <summary>
+        /// Optional name for the World.
+        /// </summary>
+        public string Name { get; init; }
+        
+        /// <summary>
+        /// Flags denoting this World's Garbage Collection Strategy.
+        /// </summary>
+        public GCAction GCBehaviour { get; set; } = GCAction.DefaultBeta;
+    #endregion
+    
+    [Flags]
+    public enum GCAction
+    {
+        DefaultBeta = ManualOnly | CompactStagnantArchetypes | DisposeEmptyRelationArchetypes,
+        
+        /// <summary>
+        /// Do nothing.
+        /// </summary>
+        Nothing = 0,
+        /// <summary>
+        /// Compact Archetypes when invoked.
+        /// </summary>
+        CompactStagnantArchetypes = 1,
+        /// <summary>
+        /// Dispose of empty Relation Archetypes when invoked.
+        /// </summary>
+        DisposeEmptyRelationArchetypes = 2,
+        /// <summary>
+        /// Dispose of empty Archetypes when invoked.
+        /// </summary>
+        DisposeEmptyArchetypes = 4,
+        /// <summary>
+        /// Compact the Meta Table
+        /// </summary>
+        CompactMeta = 8,
+        
+        /// <summary>
+        /// No Automatic GC, call World.GC() manually.
+        /// </summary>
+        ManualOnly = 0,
+        /// <summary>
+        /// Invoke GC on World.Catchup.
+        /// </summary>
+        InvokeOnWorldCatchup = 128,
+        /// <summary>
+        /// Invoke GC on every Single Entity Despawn. 
+        /// </summary>
+        InvokeOnSingleDespawn = 256,
+        /// <summary>
+        /// Invoke GC on Entity Bulk Despawn (includes <c>Truncate</c>, <c>Clear</c>)
+        /// </summary>
+        InvokeOnBulkDespawn = 512,
+    }
+    
     #region Entity Spawn, Liveness, and Despawn
 
     /// <summary>
@@ -23,7 +80,7 @@ public partial class World : IDisposable
     internal PooledList<Identity> SpawnBare(int count)
     {
         var identities = _identityPool.Spawn(count);
-        while (_meta.Length <= _identityPool.Created) Array.Resize(ref _meta, _meta.Length * 2);
+        Array.Resize(ref _meta, (int) BitOperations.RoundUpToPowerOf2((uint)_identityPool.Created + 1));
         return identities;
     }
 
@@ -188,19 +245,6 @@ public partial class World : IDisposable
 
         foreach (var type in archetype.Signature)
         {
-            /* BAD BUG: This would eagerly remove relations too early.
-             
-            // Delete the entire reverse lookup if it's no longer needed)
-            // This is still relevant if ONE relation component is eliminated, but NOT all of them.
-            // In the case where the target itself is Despawned, _typesByRelationTarget already
-            // had its entire entry for that Target removed.
-            if (type.isRelation && _typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
-            {
-                typeSet.Remove(type);
-                if (typeSet.Count == 0) _typesByRelationTarget.Remove(type.Relation);
-            }
-            */
-
             // Same here, if all Archetypes with a Type are gone, we can clear the entry.
             _tablesByType[type].Remove(archetype);
             if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
