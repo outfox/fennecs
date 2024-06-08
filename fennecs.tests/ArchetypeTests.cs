@@ -94,8 +94,8 @@ public class ArchetypeTests(ITestOutputHelper output)
     {
         using var world = new World();
 
-        var entity = world.Spawn();
-        var entityInt = world.Spawn().Add(123);
+        world.Spawn();
+        world.Spawn().Add(123);
         
         var queryAll = world.Query().Compile();
         var queryInt = world.Query().Has<int>().Compile();
@@ -109,7 +109,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
-        var entity2 = world.Spawn().Add(123).Add(17.0f).Id;
+        _ = world.Spawn().Add(123).Add(17.0f).Id;
         
         var table1 = world.GetEntityMeta(entity1).Archetype;
         var table2 = world.GetEntityMeta(entity1).Archetype;

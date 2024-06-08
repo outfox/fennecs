@@ -151,37 +151,27 @@ Queries have a modest memory footprint, but in Worlds with many fragmented Arche
 
 
 ## Conflicting Match Expressions
-QueryBuilders start in checked mode: An internal safety flag tells them to throw exceptions whenever duplicate or conflicting Match Expressions are incorporated.
+Some expressions can cause a Query to be empty, or to miss matches you may want.
+
+~~QueryBuilders start in checked mode: An internal safety flag tells them to throw exceptions whenever conflicting Match Expressions are incorporated that would lead to a guaranteed empty query.~~
+
+As of fennecs 0.5.1, this safety feature is removed (it may come back, yet! feedback is welcome!). 
+
+Here's what's at risk:
 
 ::: info Examples of Conflicts
 
 ```cs
 var enemies = world.Query<Enemy>()
-// already covered by stream type
-    .Has<Enemy>()
-// duplicate
-    .Has<Velocity>().Has<Velocity>()
-// always empty, never possible to match
+// query always empty, never possible to match
     .Has<Position>().Not<Position>()` 
-// Match.Target already includes Object, but Object excludes Entity.  
-    .Has<Objective>(Match.Object).Has<Objective>(Match.Target) 
+// Match.Target includes Object & Entity, but we exclude Entity: only Object Links match!
+    .Has<Objective>(Match.Target).Not<Objective>(Match.Entity) 
     .Compile();
   ```
 :::
 
-This helps remediate minor developer oversights that can happen especially during refactors or merges. However, these can add up as the number of queries and components grows. Semantically inconsistent queries may become the cause of subtle, insidious bugs (or lead to hard-to-debug refactors or seemingly fine SCM diffs later in the project life cycle, where it is easy to miss a bug in plain sight).
-
-However, this safety means QueryBuilders that are programmatically composed or set up late during runtime may throw as they are being configured.
-
-### Unchecked Queries
-
-Calling the `Unchecked()` builder method disables the safety on QueryBuilder's mask, allowing, for all subsequent operations:
-- repeat and overlapping types
-- conflicting types (even if that would cause the query to always be empty)
-
-Unchecked mode will also allow building a Query that matches groups of relations while excluding a small subset / single target.
-
-### Unchecked Query vs. Filter
+### Query vs. Filter
 Sometimes, it is useful to narrow down a Query a little (or a lot).
 
 For example:
@@ -193,6 +183,7 @@ Exclusion criteria like those below are hard-baked into the query. This is *slig
 
 ```cs
 var friendsInNeed = world.Query<Friend>()
+
     .Has<Owes>(Match.Entity)  // we care about Entity-Entity relations
     .Unchecked()    // because the next two conflict with Entity
     .Has<Owes>(bob) // subset - specifically anyone who owes bob

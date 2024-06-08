@@ -4,7 +4,7 @@ title: Roadmap
 
 ![a stylized fennec fox looking at an endless horizon](https://fennecs.tech/img/fennec-roadmap.png)
 
-n# The future of **fenn**ecs
+# The future of **fenn**ecs
 
 Here's a list of planned and speculative features coming in the future.
 

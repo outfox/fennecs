@@ -8,9 +8,8 @@ head:
       content: API documentation for fennecs, the tiny, tiny, high-energy Entity-Component System
 
 ---
-
 # Welcome to the last ECS of your life!
-Outfox complexity with **fenn**ecs, a clever, quick, and tiny Entity-Component System!
+!["using fennecs;"](https://fennecs.tech/img/using-fennecs.svg)
 
 ::: info :neofox_knives: THE COOKBOOK - Tutorials and Tricks
 Feeling snackish? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. Snack on easily digestible code samples, and come back whenever you need to to jog your memory.
@@ -20,23 +19,19 @@ Feeling snackish? Try **fenn**ecs for yourself as you flip through the courses o
 
 ::: code-group
 ```cs [🦊 1, 2, 3 - gravity!]
-var world = new fennecs.World();
-var entity = world.Spawn().Add<Vector3>();
 var stream = world.Query<Vector3>().Stream();
 
 stream.For(
     uniform: Time.Delta, 
     action: static (float dt, ref Vector3 velocity) => 
     {
-      velocity.Y -= 9.81f * dt;
+        velocity.Y -= 9.81f * dt;
     }
 );
 ```
 
-```cs [(shorter in OTBS)]
-var world = new fennecs.World();
-var entity = world.Spawn().Add<Vector3>();
-var query = world.Query<Vector3>().Stream();
+```cs [(tighter in OTBS)]
+var stream = world.Query<Vector3>().Stream();
 
 stream.For(Time.Delta, static (float dt, ref Vector3 velocity) => {
       velocity.Y -= 9.81f * dt;
@@ -45,10 +40,13 @@ stream.For(Time.Delta, static (float dt, ref Vector3 velocity) => {
 :::
 
 ::: tip :neofox_book: THE DOCS - all the Deets and Don'ts
-The **Documentation** section (you're in it now!) describes the core principles of **fenn**ecs C# API. The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
+The **Documentation** section (you're in it now!) describes the core principles of **fenn**ecs C# API. 
 
-#### Great first pick?
+### Great first pick?
 - [Concepts of ECS & **fenn**ecs](Concepts.md)
+
+The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
+
 :::
 
 

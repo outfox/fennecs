@@ -17,7 +17,7 @@ var world = new World();
 // Spawn a single entity
 var entity = world.Spawn()
     .Add(new Position { X = 0, Y = 0 })
-    .Add(new Velocity { X = 1, Y = 1 });
+    .Add<Velocity>(); // velocity has new(), so default value is used
 ```
 
 In this example, we create a new entity using `World.Spawn()` and add two components (`Position` and `Velocity`) to it using the `Add` method. The entity is automatically spawned in the world after the components are added.
