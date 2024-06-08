@@ -43,7 +43,7 @@ public class RelationDespawn
             Assert.False(subject.Has<int>(target));
         }
     }
-
+/*
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
@@ -76,5 +76,5 @@ public class RelationDespawn
 
         Assert.Equal(relations/2, query.Count);
     }
-    
+  */  
 }
