@@ -7,11 +7,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchAny = Component.Any<string>();
+        var matchAny = Match.AnyAny<string>();
 
-        var compPlain = Component.Plain<string>();
-        var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Link<string>("erwin");
+        var compPlain = Match.PlainComponent<string>();
+        var compEntity = Match.SpecificEntity<string>(world.Spawn());
+        var compObject = Match.SpecificLink<string>("erwin");
 
         Assert.True(matchAny.Matches(compPlain));
         Assert.True(matchAny.Matches(compEntity));
@@ -24,11 +24,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchTarget = Component.AnyTarget<string>();
+        var matchTarget = Match.AnyRelation<string>();
 
-        var compPlain = Component.Plain<string>();
-        var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Link<string>("erwin");
+        var compPlain = Match.PlainComponent<string>();
+        var compEntity = Match.SpecificEntity<string>(world.Spawn());
+        var compObject = Match.SpecificLink<string>("erwin");
 
         Assert.False(matchTarget.Matches(compPlain));
         Assert.True(matchTarget.Matches(compEntity));
@@ -41,11 +41,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchObject = Component.AnyObject<string>();
+        var matchObject = Match.AnyObject<string>();
 
-        var compPlain = Component.Plain<string>();
-        var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Link<string>("erwin");
+        var compPlain = Match.PlainComponent<string>();
+        var compEntity = Match.SpecificEntity<string>(world.Spawn());
+        var compObject = Match.SpecificLink<string>("erwin");
 
         Assert.False(matchObject.Matches(compPlain));
         Assert.False(matchObject.Matches(compEntity));
@@ -58,11 +58,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchObject = Component.AnyEntity<string>();
+        var matchObject = Match.AnyEntity<string>();
 
-        var compPlain = Component.Plain<string>();
-        var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Link<string>("erwin");
+        var compPlain = Match.PlainComponent<string>();
+        var compEntity = Match.SpecificEntity<string>(world.Spawn());
+        var compObject = Match.SpecificLink<string>("erwin");
 
         Assert.False(matchObject.Matches(compPlain));
         Assert.True(matchObject.Matches(compEntity));
@@ -75,11 +75,11 @@ public static class ExpressionTests
     {
         using var world = new World();
 
-        var matchPlain = Component.Plain<string>();
+        var matchPlain = Match.PlainComponent<string>();
 
-        var compPlain = Component.Plain<string>();
-        var compEntity = Component.Entity<string>(world.Spawn());
-        var compObject = Component.Link<string>("erwin");
+        var compPlain = Match.PlainComponent<string>();
+        var compEntity = Match.SpecificEntity<string>(world.Spawn());
+        var compObject = Match.SpecificLink<string>("erwin");
 
         Assert.True(matchPlain.Matches(compPlain));
         Assert.False(matchPlain.Matches(compEntity));
@@ -95,10 +95,10 @@ public static class ExpressionTests
         var right = world.Spawn();
         var wrong = world.Spawn();
         
-        var matchObject = Component.Entity<string>(right);
+        var matchObject = Match.SpecificEntity<string>(right);
 
-        var compEntityRight = Component.Entity<string>(right);
-        var compEntityWrong = Component.Entity<string>(wrong);
+        var compEntityRight = Match.SpecificEntity<string>(right);
+        var compEntityWrong = Match.SpecificEntity<string>(wrong);
         
         Assert.True(matchObject.Matches(compEntityRight));
         Assert.False(matchObject.Matches(compEntityWrong));
@@ -113,10 +113,10 @@ public static class ExpressionTests
         const string right = "erwin";
         const string wrong = "different";
         
-        var matchObject = Component.Link(right);
+        var matchObject = Match.SpecificLink(right);
 
-        var compObjectRight = Component.Link(right);
-        var compObjectWrong = Component.Link(wrong);
+        var compObjectRight = Match.SpecificLink(right);
+        var compObjectWrong = Match.SpecificLink(wrong);
         
         Assert.True(matchObject.Matches(compObjectRight));
         Assert.False(matchObject.Matches(compObjectWrong));
@@ -131,10 +131,10 @@ public static class ExpressionTests
         List<string> right = ["erwin"];
         List<string> wrong = ["different"];
         
-        var matchObject = Component.Link(right);
+        var matchObject = Match.SpecificLink(right);
 
-        var compObjectRight = Component.Link(right);
-        var compObjectWrong = Component.Link(wrong);
+        var compObjectRight = Match.SpecificLink(right);
+        var compObjectWrong = Match.SpecificLink(wrong);
         
         Assert.True(matchObject.Matches(compObjectRight));
         Assert.False(matchObject.Matches(compObjectWrong));

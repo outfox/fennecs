@@ -44,7 +44,7 @@ public partial class World : IDisposable
     /// <param name="values">component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature(components.ToImmutableSortedSet()).Add(Component.Plain<Identity>().value);
+        var signature = new Signature(components.ToImmutableSortedSet()).Add(Match.PlainComponent<Identity>().value);
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components, values);
     }
@@ -83,8 +83,8 @@ public partial class World : IDisposable
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
-    /// <param name="match">default <see cref="Component.Plain{T}"/>.<br/>Can alternatively be one
-    /// of <see cref="Match.Any"/>, <see cref="Match.Object"/> or <see cref=Match.AnyMatcht"/>
+    /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
+    /// of <see cref="Match.Any"/>, <see cref="Match.Target"/>, or <see cref="Match.Object"/>, <see cref="Match.Entity"/>
     /// </param>
     public void DespawnAllWith<T>(Match match = default)
     {
@@ -158,7 +158,7 @@ public partial class World : IDisposable
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new(Component.Plain<Identity>().value));
+        _root = GetArchetype(new(Match.PlainComponent<Identity>().value));
     }
 
 
