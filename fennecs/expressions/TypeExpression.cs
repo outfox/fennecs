@@ -25,7 +25,7 @@ namespace fennecs;
 /// </remarks>
 internal readonly record struct TypeExpression(Identity Identity = default, TypeID TypeId = default) : IComparable<TypeExpression>
 {
-    private TypeExpression(Match match, TypeID typeId) : this(new Identity(match.Raw), typeId)
+    private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId)
     {
     }
 

@@ -49,7 +49,7 @@ public sealed class EntitySpawner : IDisposable
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>(T component) where T : notnull
     {
-        var type = Match.PlainComponent<T>().value;
+        var type = Component.PlainComponent<T>().value;
         return AddComponent(type, component);
     }
 
@@ -60,7 +60,7 @@ public sealed class EntitySpawner : IDisposable
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>() where T : new()
     {
-        var type = Match.PlainComponent<T>().value;
+        var type = Component.PlainComponent<T>().value;
         return AddComponent(type, new T());
     }
 

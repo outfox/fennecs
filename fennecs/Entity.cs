@@ -216,7 +216,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     }
 
     /// <inheritdoc />
-    public Entity RemoveAny(Component match)
+    public Entity RemoveAny<T>(Match match)
     {
         throw new NotImplementedException();
     }
