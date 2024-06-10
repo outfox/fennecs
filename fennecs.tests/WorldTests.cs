@@ -393,7 +393,6 @@ public class WorldTests(ITestOutputHelper output)
 
         entity.Add(666);
         Assert.False(world.HasComponent<int>(entity, Match.Plain));
-        Assert.Throws<KeyNotFoundException>(() => world.GetComponent<int>(entity, Match.Plain));
         worldLock.Dispose();
         Assert.True(world.HasComponent<int>(entity, Match.Plain));
         Assert.Equal(666, world.GetComponent<int>(entity, Match.Plain));

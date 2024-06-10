@@ -278,7 +278,7 @@ public class IdentityTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn().Add(t1).Id;
-        var x = world.GetComponent<T>(identity);
+        var x = world.GetComponent<T>(identity, default);
         Assert.Equal(t1, x);
     }
 

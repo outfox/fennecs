@@ -8,7 +8,6 @@ head:
       content: API documentation for fennecs, the tiny, tiny, high-energy Entity-Component System
 
 ---
-# Welcome to the last ECS of your life!
 !["using fennecs;"](https://fennecs.tech/img/using-fennecs.svg)
 
 ::: info :neofox_knives: THE COOKBOOK - Tutorials and Tricks

@@ -94,7 +94,7 @@ public readonly record struct Match
     /// </summary>
     /// <inheritdoc cref="Plain"/>
     public static Match Plain => new(Identity.Plain);
-
+    
 
     /// <summary>
     /// <para>Implicitly convert an <see cref="Identity"/> to a <see cref="Match"/> for use in filter expressions.</para>

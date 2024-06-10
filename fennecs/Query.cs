@@ -26,37 +26,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     Affected by Filters.
     /// </summary>
     public virtual int Count => Archetypes.Sum(t => t.Count);
-
-    #region Accessors
-
-    /// <summary>
-    ///     Gets a reference to the Component of type <typeparamref name="C" /> for the entity.
-    /// </summary>
-    /// <param name="entity">the entity to get the component from</param>
-    /// <param name="match">Match Expression for the component type <see cref="Cross" /></param>
-    /// <typeparam name="C">any Component type</typeparam>
-    /// <returns>ref C, reference to the Component</returns>
-    /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the Query's tables for <see cref="Entity"/> entity.</exception>
-    public ref C Ref<C>(Entity entity, Match match)
-    {
-        //TODO: We should be able to do that with another intermediate type component.
-        if (match.IsWildcard) throw new("Match expression must not be a wildcard.");
-        if (entity.World != World) throw new InvalidOperationException("Entity is not from this World.");
-        World.AssertAlive(entity);
-
-        if (!Contains<C>(match)) throw new TypeAccessException("Query does not match this Component type.");
-        if (!Contains(entity)) throw new KeyNotFoundException("Entity not in Query.");
-
-        //TODO: Maybe it's possible to lock the World for the lifetime of the ref?
-        return ref World.GetComponent<C>(entity, match);
-    }
-
-    /// <inheritdoc cref="Ref{C}(fennecs.Entity,Match)"/>
-    public ref C Ref<C>(Entity entity) => ref Ref<C>(entity, Match.Plain);
-
-    #endregion
-
+    
     
     /// <summary>
     ///     Does this Query match ("contain") the Entity, and would enumerate it?

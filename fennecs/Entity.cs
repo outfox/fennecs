@@ -64,17 +64,32 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
     /// </summary>
+    /// <remarks>
+    /// Adds the component before if possible.
+    /// </remarks>
     /// <param name="match">specific (targeted) Match Expression for the component type. No wildcards!</param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Match match) => ref World.GetComponent<C>(this, match);
+    public ref C Ref<C>(Match match) where C : notnull, new() => ref World.GetOrCreateComponent<C>(this, match);
 
 
-    /// <inheritdoc cref="Ref{C}(Match)"/>
+    /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
     public ref C Ref<C>() => ref World.GetComponent<C>(this, Match.Plain);
+    
+
+    /// <summary>
+    /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the entity.
+    /// </summary>
+    /// <param name="link">object link match expressioon</param>
+    /// <typeparam name="L">any Component type</typeparam>
+    /// <returns>ref C, reference to the Component</returns>
+    /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
+    /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
+    public ref L Ref<L>(Link<L> link) where L : class => ref World.GetComponent<L>(this, link);
 
 
     /// <summary>
@@ -215,15 +230,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
         return this;
     }
 
-    /// <inheritdoc />
-    public Entity RemoveAny<T>(Match match)
-    {
-        throw new NotImplementedException();
-    }
 
-    
-
-    
     /// <summary>
     /// Despawns the Entity from the World.
     /// </summary>
@@ -242,7 +249,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
 
     /// <summary>
     /// Checks if the Entity has a Component of a specific type.
-    /// Allows for a <see cref="Cross"/> Expression to be specified.
+    /// Allows for a <see cref="Match"/> Expression to be specified (Wildcards)
     /// </summary>
     public bool Has<T>(Match match) => World.HasComponent<T>(Id, match);
 

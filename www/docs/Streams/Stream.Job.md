@@ -27,20 +27,23 @@ myStream.Job((ref Vector3 velocity) =>
 });
 ```
 
-```cs [Job&lt;U&gt;(...) with uniform]
-myStream.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
-{
-    velocity += uniform.gravity * uniform.dt;
-}, 
-(9.81f * Vector3.DOWN, Time.deltaTime); 
+```cs [Job&lt;U&gt;(...) with uniform float]
+myStream.Job(
+    uniform: 9.81f * Vector3.DOWN * Time.deltaTime,  // pre-calculating gravity
+    action: static (Vector3 Gdt, ref Vector3 velocity) => 
+    {
+        velocity += Gdt; // our uniform can have any parameter name
+    }
+); 
 ```
-
-```cs [Job&lt;U&gt;(...) with uniform + chunksize]
-myStream.Job((ref Vector3 velocity, (Vector3 gravity, float dt) uniform) => 
-{
-    velocity += uniform.gravity * uniform.dt;
-}, 
-(9.81f * Vector3.DOWN, Time.deltaTime), chunkSize: 4096); 
+```cs [Job&lt;U&gt;(...) with uniform tuple]
+myStream.Job(
+    uniform: (9.81f, Vector3.DOWN, Time.deltaTime),
+    action: ((float g, Vector3 dir, float dt) uniform, ref Vector3 velocity) => 
+    {
+        velocity += uniform.g * uniform.dir * uniform.dt;
+    } // not as optimal as precalc, but an example how to submit complex tuples
+); 
 ```
 :::
 

@@ -56,19 +56,50 @@ public partial class World
     }
 
 
-    internal ref T GetComponent<T>(Identity identity, Match match)
+    internal ref T GetOrCreateComponent<T>(Identity identity, Match match) where T : notnull, new()
     {
         AssertAlive(identity);
 
-        //TODO: Should be moved up in hierarchy / removed (Identity is internal only)
-        if (typeof(T) == typeof(Identity)) throw new TypeAccessException("Not allowed get mutable reference in root table (TypeExpression<Identity>, system integrity).");
+        if (!HasComponent<T>(identity, match))
+        {
+            if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot create bew mutable reference to component in deferred mode. (the Entity did must already have the component)");
+            AddComponent<T>(identity, TypeExpression.Of<T>(match), new());
+        }
 
         var (table, row, _) = _meta[identity.Index];
         var storage = table.GetStorage<T>(match);
         return ref storage.Span[row];
     }
+    
+    internal ref T GetComponent<T>(Identity identity, Match match)
+    {
+        AssertAlive(identity);
 
-    internal ref T GetComponent<T>(Identity identity) => ref GetComponent<T>(identity, Match.Plain);
+        if (!HasComponent<T>(identity, match))
+        {
+            throw new InvalidOperationException($"Entity {identity} does not have a reference type component of type {typeof(T)} / {match}");
+        }
+
+        var (table, row, _) = _meta[identity.Index];
+        var storage = table.GetStorage<T>(match);
+        return ref storage.Span[row];
+    }
+    
+/*
+    internal T GetComponent<T>(Identity identity, Match match) where T : class
+    {
+        AssertAlive(identity);
+
+        if (!HasComponent<T>(identity, match))
+        {
+           throw new InvalidOperationException($"Entity {identity} does not have a reference type component of type {typeof(T)}");
+        }
+
+        var (table, row, _) = _meta[identity.Index];
+        var storage = table.GetStorage<T>(match);
+        return storage.Span[row];
+    }
+*/
 
     internal Signature GetSignature(Identity identity)
     {

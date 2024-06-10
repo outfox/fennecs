@@ -46,14 +46,17 @@ myStream.Raw((Memory<Vector3> velocities) =>
 // This is NOT how Raw is usually used, but you can, in the trivial
 // case, use it to iterate the Memory<T> yourself. The main use for
 // this is to perform some sort of early-out iteration, e.g. search)
-myStream.Raw((Memory<Vector3> velocities, (float dt, Vector3 g) uniform) => 
-{
-    foreach (ref var velocity in velocities.Span) 
+myStream.Raw(
+    uniform: (Time.deltaTime, 9.81f * Vector3.DOWN), 
+    action: static ((float dt, Vector3 g) uniform, Memory<Vector3> velocities) => 
     {
-        velocity += uniform.g * uniform.dt;
-    }
-}, 
-(Time.deltaTime, 9.81f * Vector3.DOWN); 
+        var Gdt = uniform.g * uniform.dt; //example precalc per archetype
+        foreach (ref var velocity in velocities.Span) 
+        {
+            velocity += Gdt;
+        }
+    }, 
+); 
 ```
 
 :::

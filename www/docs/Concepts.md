@@ -9,7 +9,7 @@ head:
       content: Conceptual overview over the fennecs Entity-Component System
 ---
 
-# :neofox_heart: ... a little ECS that loves you back!
+# :neofox_heart: ... the ECS that loves you back!
 The Entity-Component System (ECS) is an architectural pattern that favors composition over inheritance. **Entities** are small, unique identifiers, and **Components** are data attached to them. **Systems** denote the logic that operates on this data. ECS provides flexibility, performance, and maintainability by separating data and behavior, allowing complex game objects to be built from simpler components.
 
 # Typical ECS Concepts 
@@ -45,7 +45,7 @@ These add expressive, powerful grouping semantics. Relations can be backed by an
 ### [Links](/docs/Components/Link.md) are Components backed by an [Object Target](Queries/Matching.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
 
-### [Streams](Streams/) expose *fast* Iteration and SIMD Ops 
+### [Streams](Streams/) expose *fast* Iteration and SIMD Operations 
 Efficiently and safely [iterate entities](Streams/Stream.For.md), or [blit](Streams/SIMD.md) Components in bulk - read/write entire [memory blocks](Streams/Stream.Raw.md).
 
 ### Queries expose Structural Changes (just as Entities do)

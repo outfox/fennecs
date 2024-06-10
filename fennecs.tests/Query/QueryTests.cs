@@ -362,55 +362,6 @@ public class QueryTests
     }
 
 
-    [Fact]
-    private void Ref_disallows_Component_Type_Entity()
-    {
-        using var world = new World();
-        var identity = world.Spawn();
-        var query = world.Query<Identity>(Match.Plain).Compile();
-
-        Assert.Throws<TypeAccessException>(() => query.Ref<Identity>(identity));
-    }
-
-
-    [Fact]
-    private void Ref_disallows_Dead_Entity()
-    {
-        using var world = new World();
-        var entity = world.Spawn().Add<int>();
-        world.Despawn(entity);
-        Assert.False(world.IsAlive(entity));
-
-        var query = world.Query<int>().Compile();
-        Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
-    }
-
-
-    [Fact]
-    private void Ref_disallows_Nonexistent_Component()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Add<int>();
-        var query = world.Query<int>().Compile();
-
-        Assert.Throws<TypeAccessException>(() => query.Ref<float>(identity));
-    }
-
-
-    [Fact]
-    private void Ref_gets_Mutable_Component()
-    {
-        using var world = new World();
-        var identity = world.Spawn().Add(23);
-        var query = world.Query<int>().Compile();
-
-        ref var gotten = ref query.Ref<int>(identity);
-        Assert.Equal(23, gotten);
-
-        // Identity can't be a ref (is readonly - make sure!)
-        gotten = 42;
-        Assert.Equal(42, query.Ref<int>(identity));
-    }
 
 
     [Fact]
@@ -540,24 +491,6 @@ public class QueryTests
         var entity = world.Spawn().Add(23);
         var query = world.Query<int>().Compile();
         Assert.True(query.Contains(entity));
-    }
-
-
-    [Fact]
-    private void Ref_throws_for_non_contained_Entity()
-    {
-        using var world = new World();
-        var entity = world.Spawn().Add(23);
-        var query = world.Query<int>().Compile();
-        world.Despawn(entity);
-        Assert.Throws<ObjectDisposedException>(() => query.Ref<int>(entity));
-
-        var foreignQueryEntity = world.Spawn().Add("not in query");
-        Assert.Throws<KeyNotFoundException>(() => query.Ref<int>(foreignQueryEntity));
-
-        using var anotherWorld = new World();
-        var foreignWorldEntity = anotherWorld.Spawn().Add(23);
-        Assert.Throws<InvalidOperationException>(() => query.Ref<int>(foreignWorldEntity));
     }
 
 

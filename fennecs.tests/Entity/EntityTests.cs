@@ -262,15 +262,16 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(456, entity.Ref<int>());
     }
 
+    private record Name(string Value);
 
     [Fact]
     public void Can_Get_Link_Object_as_Ref()
     {
         using var world = new World();
         var entity = world.Spawn();
-        const string helloWorld = "hello world";
+        Name helloWorld = new("hello world");
         entity.Add(Link.With(helloWorld));
-        ref var component = ref entity.Ref<string>(Link.With(helloWorld));
+        ref var component = ref entity.Ref(Link.With(helloWorld));
         Assert.Equal(helloWorld, component);
     }
 

@@ -18,7 +18,7 @@ Let's start with a simple "Hello, World!" example to get you familiar with the b
 
 ## Defining Components
 
-First, we define a simple `Name` component to store a string value. And let's sprinkle on a little 💫 *raffinésse* 💫 with implicit conversion operator! 
+First, we define a simple `Name` component to store a string value. And let's sprinkle on a little 💫 *raffinésse* 💫 with a conversion operator... (it's a surprise tool that will help us later!)
 
 ```csharp
 internal readonly struct Name(string value)
@@ -47,15 +47,15 @@ var world = new World();
 
 var fennec = world.Spawn()
       .Add<Fennec>()
-      .Add<Name>("Erwin");
+      .Add<Name>("Erwin"); // Erwin is a Fennec!
 
 var human1 = world.Spawn()
       .Add<Human>()
-      .Add<Name>("Junno");
+      .Add<Name>("Junno"); // Conversion operator makes these so readable!
 
 var human2 = world.Spawn()
       .Add<Human>()
-      .Add<Name>("Avinash");
+      .Add<Name>("Avinash"); // Feels good!
 ```
 
 ## Querying Entities
