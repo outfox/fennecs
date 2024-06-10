@@ -8,23 +8,16 @@ namespace fennecs;
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
 /// <typeparam name="C2">stream type</typeparam>
+/// // ReSharper disable once NotAccessedPositionalProperty.Global
 public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match Match2)
     : Stream<C0, C1>(Query, Match0, Match1), IEnumerable<(Entity, C0, C1, C2)>
     where C0 : notnull 
     where C1 : notnull 
     where C2 : notnull
 {
-    /// <summary>
-    /// A Stream is an accessor that allows for iteration over a Query's contents.
-    /// </summary>
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1), TypeExpression.Of<C2>(Match2)];
-
-    /// <summary>
-    /// The Match Target for the third Stream Type 
-    /// </summary>
-    protected Match Match2 { get; init; } = Match2;
-
-
+    
+    
     #region Stream.For
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
@@ -32,7 +25,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;
@@ -50,7 +43,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;
@@ -69,7 +62,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;
@@ -92,7 +85,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;
@@ -125,7 +118,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
 
         using var jobs = PooledList<Work<C0, C1, C2>>.Rent();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;
@@ -175,7 +168,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
 
         using var jobs = PooledList<UniformWork<U, C0, C1, C2>>.Rent();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;
@@ -215,7 +208,6 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
 
     #endregion
 
-
     #region Stream.Raw
 
     /// <inheritdoc cref="Stream{C0}.Raw"/>
@@ -223,7 +215,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;
@@ -247,7 +239,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;
@@ -266,7 +258,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     }
 
     #endregion
-
+    
 
     #region Blitters
 
@@ -277,7 +269,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
 
         var typeExpression = TypeExpression.Of<C2>(match);
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             table.Fill(typeExpression, value);
         }
@@ -285,14 +277,13 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
 
     #endregion
 
-
     #region IEnumerable
 
     /// <inheritdoc />
     public new IEnumerator<(Entity, C0, C1, C2)> GetEnumerator()
     {
         using var worldLock = World.Lock();
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2>(_streamTypes);
             if (join.Empty) continue;

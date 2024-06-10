@@ -10,6 +10,7 @@ namespace fennecs;
 /// <typeparam name="C2">stream type</typeparam>
 /// <typeparam name="C3">stream type</typeparam>
 /// <typeparam name="C4">stream type</typeparam>
+// ReSharper disable once NotAccessedPositionalProperty.Global
 public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1, Match Match2, Match Match3, Match Match4)
     : Stream<C0, C1, C2, C3>(Query, Match0, Match1, Match2, Match3), IEnumerable<(Entity, C0, C1, C2, C3, C4)>
     where C0 : notnull
@@ -18,16 +19,8 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
     where C3 : notnull
     where C4 : notnull
 {
-    /// <summary>
-    /// A Stream is an accessor that allows for iteration over a Query's contents.
-    /// </summary>
     private readonly ImmutableArray<TypeExpression> _streamTypes =
         [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1), TypeExpression.Of<C2>(Match2), TypeExpression.Of<C3>(Match3), TypeExpression.Of<C4>(Match4)];
-
-    /// <summary>
-    /// The Match Target for the fifth Stream Type 
-    /// </summary>
-    protected Match Match4 { get; init; } = Match4;
 
 
     #region Stream.For
@@ -37,7 +30,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;
@@ -55,7 +48,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;
@@ -80,7 +73,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;
@@ -105,7 +98,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;
@@ -133,7 +126,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
     {
         if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
 
-        
+
         using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -141,7 +134,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
         using var jobs = PooledList<Work<C0, C1, C2, C3, C4>>.Rent();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;
@@ -193,7 +186,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
         using var jobs = PooledList<UniformWork<U, C0, C1, C2, C3, C4>>.Rent();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;
@@ -235,7 +228,6 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
     #endregion
 
-
     #region Stream.Raw
 
     /// <inheritdoc cref="Stream{C0}.Raw"/>
@@ -243,7 +235,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;
@@ -269,7 +261,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;
@@ -301,7 +293,7 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
         var typeExpression = TypeExpression.Of<C4>(match);
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             table.Fill(typeExpression, value);
         }
@@ -309,14 +301,13 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
 
     #endregion
 
-
     #region IEnumerable
 
     /// <inheritdoc />
     public new IEnumerator<(Entity, C0, C1, C2, C3, C4)> GetEnumerator()
     {
         using var worldLock = World.Lock();
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes);
             if (join.Empty) continue;

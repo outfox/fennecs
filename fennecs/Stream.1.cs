@@ -10,10 +10,16 @@ namespace fennecs;
 /// Query's contents.
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
+// ReSharper disable once NotAccessedPositionalProperty.Global
 public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)> 
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
+
+    /// <summary>
+    /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
+    /// </summary>
+    protected IEnumerable<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty ? Archetypes : Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude));
 
     /// <summary>
     /// Creates a builder for a Batch Operation on the Stream's underyling Query.
@@ -44,12 +50,14 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     public Query Query { get; init; } = Query;
 
     /// <summary>
-    /// The Match Target for the first Stream Type
+    /// Subset Stream Filter - if not empty, only entities with these components will be included in the Stream. 
     /// </summary>
-    protected Match Match0 { get; init; } = Match0;
-
-    internal ImmutableHashSet<Component> Subset => [];
-    internal ImmutableHashSet<Component> Exclude => [];
+    public ImmutableSortedSet<Component> Subset { get; init; } = [];
+    
+    /// <summary>
+    /// Exclude Stream Filter - any entities with these components will be excluded from the Stream. (none if empty)
+    /// </summary>
+    public ImmutableSortedSet<Component> Exclude { get; init; } = [];
     
     /// <summary>
     ///     Countdown event for parallel runners.
@@ -67,8 +75,10 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(ComponentAction<C0> action)
     {
+        
         using var worldLock = World.Lock();
-        foreach (var table in Archetypes)
+        
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
@@ -91,7 +101,8 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     public void For<U>(U uniform, UniformComponentAction<U, C0> action)
     {
         using var worldLock = World.Lock();
-        foreach (var table in Archetypes)
+        
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
@@ -112,7 +123,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
@@ -133,7 +144,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
@@ -169,7 +180,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
         using var jobs = PooledList<Work<C0>>.Rent();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
@@ -220,7 +231,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
 
         using var jobs = PooledList<UniformWork<U, C0>>.Rent();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
 
@@ -276,7 +287,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
@@ -308,7 +319,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     {
         using var worldLock = World.Lock();
 
-        foreach (var table in Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;
@@ -322,7 +333,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     }
 
     #endregion
-
+    
 
     #region Blitters
 
@@ -339,7 +350,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     public void Blit(C0 value, Match match = default)
     {
         var typeExpression = TypeExpression.Of<C0>(match);
-        foreach (var table in Archetypes) table.Fill(typeExpression, value);
+        foreach (var table in Filtered) table.Fill(typeExpression, value);
     }
 
     #endregion

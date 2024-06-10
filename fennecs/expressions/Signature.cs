@@ -22,6 +22,7 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
 
     public bool Matches(IImmutableSet<TypeExpression> types) => Overlaps(types);
     
+    internal bool Matches(IImmutableSet<Component> subset) => Overlaps(subset.Select(component => component.value).ToImmutableSortedSet());
     
     /// <summary>
     /// Creates a new <see cref="Signature"/> from the given values.
@@ -92,6 +93,10 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
     
     /// <inheritdoc cref="ImmutableSortedSet{T}.Overlaps"/>
     public bool Overlaps(IEnumerable<TypeExpression> other) => _set.Overlaps(other);
+
+
+    /// <inheritdoc cref="ImmutableSortedSet{T}.Overlaps"/>
+    public bool Overlaps(ImmutableSortedSet<TypeExpression> other) => _set.Overlaps(other);
 
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Remove"/>

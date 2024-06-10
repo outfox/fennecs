@@ -3,9 +3,9 @@
 /// <summary>
 /// A specific set of match expressions to match specific component types where type parameters are not available.
 /// </summary>
-internal readonly record struct Component
+public readonly record struct Component
 {
-    internal Component(TypeExpression value)
+    private Component(TypeExpression value)
     {
         this.value = value;
     }
