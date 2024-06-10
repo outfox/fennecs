@@ -23,9 +23,15 @@ public partial class World : IDisposable
         public GCAction GCBehaviour { get; set; } = GCAction.DefaultBeta;
     #endregion
     
+    /// <summary>
+    /// Flags to compose Garbage Collection Strategies.
+    /// </summary>
     [Flags]
     public enum GCAction
     {
+        /// <summary>
+        /// Default GC Strategy for the beta phase.
+        /// </summary>
         DefaultBeta = ManualOnly | CompactStagnantArchetypes | DisposeEmptyRelationArchetypes,
         
         /// <summary>
@@ -207,9 +213,10 @@ public partial class World : IDisposable
     /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
     public World(int initialCapacity = 4096)
     {
+        Name = nameof(World);
+        
         World = this;
        
-        
         _identityPool = new(initialCapacity);
 
         _meta = new Meta[initialCapacity];

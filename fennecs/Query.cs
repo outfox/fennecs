@@ -17,7 +17,7 @@ namespace fennecs;
 ///         See <see cref="Stream{C}" /> Views with configurable output Stream Types for fast iteration.
 ///     </para>
 /// </summary>
-public partial class Query : IEnumerable<Entity>, IDisposable
+public partial class Query : IEnumerable<Entity>, IDisposable, IBatch
 {
     internal static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
 
@@ -105,7 +105,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// The World this Query is associated with.
     /// The World will notify the Query of new matched Archetypes, or Archetypes to forget.
     /// </summary>
-    internal protected World World { get; init; }
+    internal protected World World { get; protected init; }
 
     /// <summary>
     ///  Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
@@ -313,7 +313,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     ///     Adds a Component (using default constructor) to all Entities matched by this query.
     /// </summary>
     /// <inheritdoc cref="Add{T}(T)" />
-    public void Add<T>() where T : new() => Add<T>(new T());
+    public void Add<T>() where T : notnull, new() => Add<T>(new T());
 
 
     /// <summary>
@@ -323,7 +323,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// <param name="data">the data to add</param>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     // ReSharper disable once MemberCanBePrivate.Global
-    public void Add<T>(T data) => Batch().Add(data).Submit();
+    public void Add<T>(T data) where T : notnull => Batch().Add(data).Submit();
 
 
     /// <summary>
@@ -331,17 +331,10 @@ public partial class Query : IEnumerable<Entity>, IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
     /// <typeparam name="T">any Component type matched by the query</typeparam>
-    public void Remove<T>() => Batch().Remove<T>().Submit();
+    public void Remove<T>() where T : notnull => Batch().Remove<T>().Submit();
 
 
-    /// <summary>
-    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
-    /// </summary>
-    /// <remarks>
-    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities in many cases to no longer
-    /// be matched after the first operation, and thus lead to undesired no-ops.
-    /// </remarks> 
-    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
+    /// <inheritdoc />
     public Batch Batch() => new(Archetypes, World, Mask.Clone(), default, default);
 
 

@@ -11,7 +11,7 @@ namespace fennecs;
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)> 
+public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>, IBatch 
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
@@ -19,7 +19,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
     /// </summary>
-    protected IEnumerable<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty ? Archetypes : Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude));
+    protected IReadOnlyList<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty ? Archetypes : Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude)).ToList();
 
     /// <summary>
     /// Creates a builder for a Batch Operation on the Stream's underyling Query.

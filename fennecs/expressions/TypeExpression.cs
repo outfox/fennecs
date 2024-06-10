@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Immutable;
-using System.Runtime.InteropServices;
 
 namespace fennecs;
 
@@ -142,12 +141,12 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// This may express a plain Component if <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, 
     /// or a relation if <paramref name="match"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
-    /// Providing any of the special virtual Entities <see cref="Wildcard.Any"/>, <see cref="fennecs.Identity.Target"/>,
+    /// Providing any of the special virtual Entities <see cref="fennecs.Match.Any"/>, <see cref="fennecs.Identity.Target"/>,
     /// <see cref="fennecs.Identity.Entity"/>, or <see cref="fennecs.Identity.Object"/> will create a Wildcard expression.
     /// </summary>
     /// <remarks>
     /// <para>If <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
-    /// <para>If <paramref name="match"/> is <see cref="Wildcard.Any"/>, the type expression acts as a Wildcard 
+    /// <para>If <paramref name="match"/> is <see cref="fennecs.Match.Any"/>, the type expression acts as a Wildcard 
     ///   expression that matches any target, INCLUDING <see cref="fennecs.Identity.Plain"/>.</para>
     /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>
@@ -167,12 +166,12 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// This may express a plain Component if <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, 
     /// or a relation if <paramref name="match"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
-    /// Providing any of the special virtual Entities <see cref="Wildcard.Any"/>, <see cref="fennecs.Identity.Target"/>,
+    /// Providing any of the special virtual Entities <see cref="fennecs.Match.Any"/>, <see cref="fennecs.Identity.Target"/>,
     /// <see cref="fennecs.Identity.Entity"/>, or <see cref="fennecs.Identity.Object"/> will create a Wildcard expression.
     /// </summary>
     /// <remarks>
     /// <para>If <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
-    /// <para>If <paramref name="match"/> is <see cref="Wildcard.Any"/>, the type expression acts as a Wildcard 
+    /// <para>If <paramref name="match"/> is <see cref="fennecs.Match.Any"/>, the type expression acts as a Wildcard 
     ///   expression that matches any Component or relation, INCLUDING <see cref="fennecs.Identity.Plain"/>.</para>
     /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>

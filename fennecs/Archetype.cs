@@ -86,11 +86,18 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    private void Match<T>(TypeExpression expression, PooledList<Storage<T>> result)
+    private void Match<T>(TypeExpression expression, PooledList<Storage<T>> result) 
+        //, ImmutableSortedSet<TypeExpression>? subset = default!, IImmutableSet<TypeExpression>? exclude = default!)
     {
         foreach (var (type, index) in _storageIndices)
         {
-            if (expression.Matches(type)) result.Add((Storage<T>) Storages[index]);
+            //if (subset != null && !subset.Contains(type)) continue;
+            //if (exclude != null && exclude.Contains(type)) continue;
+
+            if (expression.Matches(type))
+            {
+                result.Add((Storage<T>) Storages[index]);
+            }
         }
     }
 

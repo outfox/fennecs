@@ -90,3 +90,20 @@ public interface IHasComponent
     /// <returns>true if the entity/entities has the component with the specified link; otherwise, false.</returns>
     public bool Has<L>(Link<L> link) where L : class;
 }
+
+
+/// <summary>
+/// Objects of this type can perform Batch operations on entities or sets of entities.
+/// </summary>
+public interface IBatch
+{
+    /// <summary>
+    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
+    /// </summary>
+    /// <remarks>
+    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities in many cases to no longer
+    /// be matched after the first operation, and thus lead to undesired no-ops.
+    /// </remarks> 
+    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
+    public Batch Batch();
+}
