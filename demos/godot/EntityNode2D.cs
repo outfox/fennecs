@@ -25,8 +25,8 @@ public partial class EntityNode2D : Node2D
 			return;
 		}
 		
-		// Entity structs are truthy if alive / falsy otherwise
-		if (entity) return;
+		// Already got an entity? Don't make a new one.
+		if (entity.Alive) return;
 
 		entity = World.Spawn();
 		// "Our" entity has "us ourselves" as a component.

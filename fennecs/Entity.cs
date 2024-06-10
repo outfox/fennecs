@@ -218,14 +218,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
 
     /// <inheritdoc />
     public bool Equals(Entity other) => Id.Equals(other.Id) && Equals(_world, other._world);
-
-    /// <summary>
-    /// Implicit cast to Boolean. Returns true if the Entity is alive and its Identity is nondefault.
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
-    public static implicit operator bool(Entity entity) => entity.Id != default && entity._world.IsAlive(entity.Id);
-
+    
 
     /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(_world, Id);
@@ -234,6 +227,11 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// <inheritdoc/>
     public int CompareTo(Entity other) => Id.CompareTo(other.Id);
 
+
+    /// <summary>
+    /// Is this Entity Alive in its World?
+    /// </summary>
+    public bool Alive => _world != null && _world.IsAlive(Id);
 
     /// <inheritdoc/>
     public override string ToString()

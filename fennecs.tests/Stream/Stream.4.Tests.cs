@@ -102,7 +102,7 @@ public class Stream4Tests
 
         query.For((Entity e, ref double _, ref int _, ref string str, ref char _) =>
         {
-            Assert.True(e);
+            Assert.True(e.Alive);
             Assert.Equal(9.ToString(), str);
             str = "10";
         });

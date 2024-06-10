@@ -103,7 +103,7 @@ public class Stream5Tests
 
         query.For((Entity e, ref TypeA a, ref double _, ref int _, ref string str, ref char _) =>
         {
-            Assert.True(e);
+            Assert.True(e.Alive);
             Assert.Equal(e, a.entity);
             
             Assert.Equal(9.ToString(), str);

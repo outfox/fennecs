@@ -16,8 +16,8 @@ public partial class EntityNode3D : Node3D
     // Easy route: only make new entity if not alive.
     public override void _EnterTree()
     {
-        // Entity structs are truthy if alive / falsy otherwise
-        if (!entity) 
+        // Already got an entity? Don't make a new one.
+        if (!entity.Alive) 
         {
             entity = World.Spawn();
         }

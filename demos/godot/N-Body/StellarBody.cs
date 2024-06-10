@@ -15,7 +15,7 @@ public partial class StellarBody : EntityNode2D
 	{
 		base._EnterTree();
 
-		if (!entity) return;
+		if (!entity.Alive) return;
 
 		mass = Random.Shared.NextSingle() * 0.5f + 0.75f;
 		Scale *= mass*mass;
@@ -35,7 +35,7 @@ public partial class StellarBody : EntityNode2D
 	public override void _Ready()
 	{
 		base._Ready();
-		if (!entity) return;
+		if (!entity.Alive) return;
 
 		// Get all sibling bodies (these were all set up in _EnterTree)
 		// (we need to check if they got an entity assigned because of the
@@ -43,7 +43,7 @@ public partial class StellarBody : EntityNode2D
 		var siblings = GetParent()
 			.GetChildren()
 			.OfType<StellarBody>()
-			.Where(body => body.entity);
+			.Where(body => body.entity.Alive);
 
 		// Add all attractor relations to our own entity;
 		// we include ourselves - this means that all entities in
@@ -53,7 +53,7 @@ public partial class StellarBody : EntityNode2D
 		// pointer per entity.
 		foreach (var sibling in siblings)
 		{
-			if (sibling.entity)
+			if (sibling.entity.Alive)
 			{
 				entity.Add(sibling._body, sibling.entity);
 			}
