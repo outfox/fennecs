@@ -72,10 +72,10 @@ public class EntitySpawnerTests
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
-    [InlineData(31)]
-    [InlineData(41)]
+    [InlineData(13)]
+    [InlineData(42)]
     [InlineData(69)]
-    [InlineData(512)]
+    [InlineData(444)]
     [InlineData(4096)]
     public void Can_Add_Component_and_Spawn_Again(int amount)
     {
@@ -120,5 +120,17 @@ public class EntitySpawnerTests
 
         Assert.Equal(amount * 1, query0.Count);
         Assert.Equal(amount * 2, query1.Count);
+    }
+
+    [Fact]
+    public void Safe_to_Spawn_Negative_Amounts()
+    {
+        using var world = new World();
+        using var spawner = world.Entity().Add(123); //Must add component to cause inner loop to run
+        spawner.Spawn(-1);
+        spawner.Spawn(-2);
+        spawner.Spawn(-69);
+        
+        Assert.Equal(0, world.Count);
     }
 }
