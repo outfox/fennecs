@@ -4,6 +4,25 @@
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Stream2Tests(ITestOutputHelper output)
 {
+    [Fact]
+    public void Can_Enumerate_Stream()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold").Add(1);
+        var dolph = world.Spawn().Add("Dolph").Add(2);
+        
+        List<(Entity, string, int)> list = [(arnold, "Arnold", 1), (dolph, "Dolph", 2)];
+        
+        var stream = world.Stream<string, int>();
+        foreach (var row in stream)
+        {
+            Assert.True(list.Remove(row));
+        }
+        
+        Assert.Empty(list);
+    }
+
+    
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)

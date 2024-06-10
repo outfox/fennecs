@@ -6,6 +6,25 @@ namespace fennecs.tests.Stream;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Stream5Tests(ITestOutputHelper output)
 {
+    [Fact]
+    public void Can_Enumerate_Stream()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold").Add(1).Add(7.0f).Add('x').Add(5d);
+        var dolph = world.Spawn().Add("Dolph").Add(2).Add(8.0f).Add('y').Add(6d);
+        
+        List<(Entity, string, int, float, char, double)> list = [(arnold, "Arnold", 1, 7.0f, 'x', 5d), (dolph, "Dolph", 2, 8.0f, 'y', 6d)];
+        
+        var stream = world.Stream<string, int, float, char, double>();
+        foreach (var row in stream)
+        {
+            Assert.True(list.Remove(row));
+        }
+        
+        Assert.Empty(list);
+    }
+
+
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)
