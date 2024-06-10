@@ -152,6 +152,49 @@ public static class ExpressionTests
     }
 
     [Fact]
+    public static void Can_Expand_EntityWildcard()
+    {
+        var type = TypeExpression.Of<int>(Match.Entity);
+        
+        var expanded = type.Expand();
+        var anyInt = TypeExpression.Of<int>(Match.Any);
+        var targetInt = TypeExpression.Of<int>(Match.Target);
+        Assert.Contains(anyInt, expanded);
+        Assert.Contains(targetInt, expanded);
+        Assert.Equal(2, expanded.Count);
+    }
+
+    [Fact]
+    public static void Can_Expand_ObjectWildcard()
+    {
+        var type = TypeExpression.Of<int>(Match.Object);
+        
+        var expanded = type.Expand();
+        var anyInt = TypeExpression.Of<int>(Match.Any);
+        var targetInt = TypeExpression.Of<int>(Match.Target);
+        Assert.Contains(anyInt, expanded);
+        Assert.Contains(targetInt, expanded);
+        Assert.Equal(2, expanded.Count);
+    }
+
+    [Fact]
+    public static void Can_Expand_AnyWildcard()
+    {
+        var type = TypeExpression.Of<int>(Match.Any);
+        
+        var expanded = type.Expand();
+        var targetInt = TypeExpression.Of<int>(Match.Target);
+        var entityInt = TypeExpression.Of<int>(Match.Entity);
+        var objectInt = TypeExpression.Of<int>(Match.Object);
+        var plainInt = TypeExpression.Of<int>(Match.Plain);
+        Assert.Contains(targetInt, expanded);
+        Assert.Contains(objectInt, expanded);
+        Assert.Contains(entityInt, expanded);
+        Assert.Contains(plainInt, expanded);
+        Assert.Equal(4, expanded.Count);
+    }
+
+    [Fact]
     public static void Can_Expand_Entity()
     {
         var world = new World();

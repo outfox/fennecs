@@ -20,9 +20,9 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
     
     public bool Matches(TypeExpression type) => Contains(type);
 
-    public bool Matches(IImmutableSet<TypeExpression> types) => Overlaps(types);
+    public bool Matches(IReadOnlySet<TypeExpression> types) => Overlaps(types);
     
-    internal bool Matches(IImmutableSet<Component> subset) => Overlaps(subset.Select(component => component.value).ToImmutableSortedSet());
+    internal bool Matches(IReadOnlySet<Component> subset) => Overlaps(subset.Select(component => component.value).ToImmutableSortedSet());
     
     /// <summary>
     /// Creates a new <see cref="Signature"/> from the given values.
@@ -43,14 +43,6 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
         _set = set;
         Count = set.Count;
         _hashCode = BakeHash(_set);
-    }
-
-    
-    /// <summary>
-    /// Creates a signature from the given values.
-    /// </summary>
-    public Signature(IEnumerable<TypeExpression> items) : this(items.ToImmutableSortedSet())
-    {
     }
 
 

@@ -112,7 +112,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     
     internal bool Matches(TypeExpression type)
     {
-        var yes = MatchSignature.Contains(type);
+        var yes = MatchSignature.Matches(type);
         return yes;
     }
 
@@ -121,7 +121,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.
-        var matchesNot = !MatchSignature.Overlaps(mask.NotTypes);
+        var matchesNot = !MatchSignature.Matches(mask.NotTypes);
         if (!matchesNot) return false;
 
         //If already matching, no need to check any further. 
@@ -130,7 +130,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
         //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
         var matchesAny = mask.AnyTypes.Count == 0;
-        matchesAny |= MatchSignature.Overlaps(mask.AnyTypes);
+        matchesAny |= MatchSignature.Matches(mask.AnyTypes);
 
         return matchesHas && matchesNot && matchesAny;
     }
@@ -218,7 +218,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         foreach (var type in Signature)
         {
             var srcStorage = GetStorage(type);
-            if (destination.Signature.Contains(type))
+            if (destination.Signature.Matches(type))
             {
                 var destStorage = destination.GetStorage(type);
                 srcStorage.Migrate(destStorage);
@@ -249,11 +249,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <param name="destination">the Archetype to move the entities to</param>
     internal void Migrate(Archetype destination)
     {
-        if (IsEmpty) return;
-        
         // Certain Add-modes permit operating on archetypes that themselves are in the query.
         // No more migrations are needed at this point (they would be semantically idempotent)
-        if (destination == this) return;
+        if (IsEmpty || destination == this) return;
         
         Invalidate();
         destination.Invalidate();
@@ -266,7 +264,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         foreach (var type in Signature)
         {
             var srcStorage = GetStorage(type);
-            if (destination.Signature.Contains(type))
+            if (destination.Signature.Matches(type))
             {
                 var destStorage = destination.GetStorage(type);
                 srcStorage.Migrate(destStorage);

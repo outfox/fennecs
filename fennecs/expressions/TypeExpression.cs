@@ -65,7 +65,7 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
         foreach (var type in other)
         {
             if (self.Matches(type)) return true;
-            if (type.Matches(self)) return true;
+            //if (type.Matches(self)) return true;
         }
 
         return false;
@@ -77,7 +77,7 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// <remarks>
     /// The other signature must be a Wildcard-Expanded signature.
     /// </remarks>
-    public bool Matches(Signature expandedSignature) => expandedSignature.Contains(this);
+    public bool Matches(Signature expandedSignature) => expandedSignature.Matches(this);
 
 
     /// <summary>
@@ -206,23 +206,19 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// </remarks>
     public ImmutableHashSet<TypeExpression> Expand()
     {
-        Identity entity = new(-3, 0);
-        Identity o = new(-4, 0);
-        if (Match == Match.Any) return [this with { Identity = default }, this with { Identity = entity }, this with { Identity = o }];
+        if (Match == Match.Any) return [this with { Identity = default }, this with { Identity = Identity.Entity }, this with { Identity = Identity.Object }, this with { Identity = Identity.Target }];
 
-        Identity any = new(-1, 0);
-        if (Match == Match.Target) return [this with { Identity = any }, this with { Identity = entity }, this with { Identity = o }];
+        if (Match == Match.Target) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Entity }, this with { Identity = Identity.Object }];
 
-        Identity target = new(-2, 0);
-        if (Match == Match.Entity) return [this with { Identity = any }, this with { Identity = target }];
+        if (Match == Match.Entity) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Target }];
 
-        if (Match == Match.Object) return [this with { Identity = any }, this with { Identity = target }];
+        if (Match == Match.Object) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Target }];
 
-        if (Match.IsObject) return [this with { Identity = any }, this with { Identity = target }, this with { Identity = o }];
+        if (Match.IsObject) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Target }, this with { Identity = Identity.Object }];
 
-        if (Match.IsEntity) return [this with { Identity = any }, this with { Identity = target }, this with { Identity = entity }];
+        if (Match.IsEntity) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Target }, this with { Identity = Identity.Entity }];
 
-        return [this with { Identity = any }];
+        return [this with { Identity = Identity.Any }];
     }
 
 

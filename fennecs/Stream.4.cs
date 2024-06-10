@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using fennecs.pools;
 
 namespace fennecs;
@@ -312,9 +311,6 @@ public record Stream<C0, C1, C2, C3>(Query Query, Match Match0, Match Match1, Ma
             } while (join.Iterate());
         }
     }
-
-    /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion
 

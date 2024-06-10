@@ -18,7 +18,7 @@ public partial class World
         ref var meta = ref _meta[identity.Index];
         var oldArchetype = meta.Archetype;
 
-        if (oldArchetype.Signature.Contains(typeExpression)) throw new ArgumentException($"Entity {identity} already has a component of type {typeExpression}");
+        if (oldArchetype.Signature.Matches(typeExpression)) throw new ArgumentException($"Entity {identity} already has a component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -41,7 +41,7 @@ public partial class World
 
         var oldArchetype = meta.Archetype;
 
-        if (!oldArchetype.Signature.Contains(typeExpression)) throw new ArgumentException($"Entity {identity} does not have a component of type {typeExpression}");
+        if (!oldArchetype.Signature.Matches(typeExpression)) throw new ArgumentException($"Entity {identity} does not have a component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
         var newArchetype = GetArchetype(newSignature);

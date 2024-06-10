@@ -112,13 +112,6 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatch
     /// </summary>
     internal readonly Mask Mask;
 
-    internal Query(World world, Mask mask, IReadOnlyCollection<Archetype> archetypes)
-    {
-        Archetypes.AddRange(archetypes);
-        World = world;
-        Mask = mask;
-    }
-
     internal Query(World world, Mask mask, PooledList<Archetype> matchingTables)
     {
         Archetypes = matchingTables;

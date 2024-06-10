@@ -118,7 +118,7 @@ public partial class World : Query
             || types.Count == 0) return;
 
         // Collect Archetypes that have any of these relations
-        var toMigrate = Archetypes.Where(a => a.Signature.Overlaps(types)).ToList();
+        var toMigrate = Archetypes.Where(a => a.Signature.Matches(types)).ToList();
 
         // And migrate them to a new Archetype without the relation
         foreach (var archetype in toMigrate)

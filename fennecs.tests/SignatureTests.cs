@@ -90,7 +90,7 @@ public class SignatureTests
         var changedSignature = signature.Add(type);
 
         Assert.NotEqual(signature, changedSignature);
-        Assert.True(changedSignature.Contains(type));
+        Assert.True(changedSignature.Matches(type));
 
         var restoredSignature = changedSignature.Remove(type);
         Assert.Equal(signature, restoredSignature);
@@ -253,5 +253,18 @@ public class SignatureTests
         var signature2 = new Signature(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<float>(Match.Plain));
 
         Assert.Equal(-1 * signature1.CompareTo(signature2), signature2.CompareTo(signature1));
+    }
+
+    [Fact]
+    public void Signature_Can_Match_Component_Sets()
+    {
+        var signature1 = new Signature(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
+        ImmutableSortedSet<Component> componentSet1 = [Component.PlainComponent<int>()];
+        ImmutableSortedSet<Component> componentSet2 = [Component.PlainComponent<string>()];
+        ImmutableSortedSet<Component> componentSet3 = [Component.PlainComponent<float>()];
+        
+        Assert.True(signature1.Matches(componentSet1));
+        Assert.True(signature1.Matches(componentSet2));
+        Assert.False(signature1.Matches(componentSet3));
     }
 }
