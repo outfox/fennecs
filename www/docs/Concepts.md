@@ -1,7 +1,7 @@
 ---
 title: Concepts
 order: 0
-outline: [1,1]
+outline: [2,2]
 
 head:
   - - meta
@@ -9,12 +9,12 @@ head:
       content: Conceptual overview over the fennecs Entity-Component System
 ---
 
-# :neofox_heart: ... the ECS that loves you back!
-The Entity-Component System (ECS) is an architectural pattern that favors composition over inheritance. **Entities** are small, unique identifiers, and **Components** are data attached to them. **Systems** denote the logic that operates on this data. ECS provides flexibility, performance, and maintainability by separating data and behavior, allowing complex game objects to be built from simpler components.
+# :neofox_heart: ... the little ECS that loves you back!
+The Entity-Component System (ECS) is an architectural pattern that champions composition over inheritance. **Entities** are small, unique identifiers, and **Components** are data attached to them. The term **Systems** refers to the logic that operates on this data. 
 
-# Typical ECS Concepts 
+## Typical ECS Concepts 
 
-::: tip <sub>*(these are what makes many ECS architectures tick)*</sub>
+::: tip *(these are what makes many ECS architectures tick)*
 ### [Entities](Entities/) exist in a [World](World.md). 
 Entities can be spawned solo, or in bulk with pre-configured components.
 
@@ -34,19 +34,17 @@ Structurally similar Entities are packed into [Archetypes](/docs/Components/inde
 
 :::
 
-----------------------
+## Unique fennecs Concepts 
 
-# Unique fennecs Concepts 
+::: warning *(~~weird~~ cool stuff that gets us all wide-eyed and bushy tailed)*
+### [Streams](Streams/) expose *fast* Iteration and SIMD Operations 
+Quickly & safely [iterate entities](Streams/Stream.For.md), or [modify](Streams/SIMD.md#streamblitc) Components in bulk, or process entire [memory blocks](Streams/Stream.Raw.md).
 
-::: warning <sub>*(~~weird~~ cool stuff made us you all wide-eyed and bushy tailed again)*</sub>
 ### [Relations](/docs/Components/Relation.md) are Components with an [Entity Target](Queries/Matching.md#match-targets).
 These add expressive, powerful grouping semantics. Relations can be backed by any type.
 
 ### [Links](/docs/Components/Link.md) are Components backed by an [Object Target](Queries/Matching.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
-
-### [Streams](Streams/) expose *fast* Iteration and SIMD Operations 
-Efficiently and safely [iterate entities](Streams/Stream.For.md), or [blit](Streams/SIMD.md) Components in bulk - read/write entire [memory blocks](Streams/Stream.Raw.md).
 
 ### Queries expose Structural Changes (just as Entities do)
 Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md) from individual Entities or entire matched Queries.
@@ -68,8 +66,6 @@ Worlds process them at the end of a Query Runner's scope, otherwise immediately.
 <sub>\* *never type* [`EndInitializationEntityCommandBufferSystem`](https://docs.unity3d.com/Packages/com.unity.entities@1.0/api/Unity.Entities.EndInitializationEntityCommandBufferSystem.html) *nor* [`AddJobHandleForProducer(JobHandle)`](https://docs.unity.cn/Packages/com.unity.entities@1.0/api/Unity.Entities.EntityCommandBufferSystem.AddJobHandleForProducer.html) *again!* 🦊</sub>
 
 :::
-
----------------------
 
 ## :neofox_boop_happy: Boop the fox, and you're all done with the first page!
 !["using fennecs;"](https://fennecs.tech/img/fennecs-rule.png)

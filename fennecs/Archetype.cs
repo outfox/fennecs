@@ -462,24 +462,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     #endregion
 
 
-    internal void Spawn(int count, object[] components)
-    {
-        using var worldLock = _world.Lock();
-        
-        var first = Count;
-        
-        foreach (var component in components)
-        {
-            var type = TypeExpression.Of(component.GetType(), fennecs.Match.Plain);
-            var storage = GetStorage(type);
-            storage.Append(component, count);
-        }
-        
-        using var identities = _world.SpawnBare(count); 
-        IdentityStorage.Append(identities);
-        PatchMetas(first, count);
-    }
-
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
         using var worldLock = _world.Lock();

@@ -31,7 +31,7 @@ Copying memory regions is hard, and **Multiprocessing is HARDER.** Currently, **
 
 ```cs [Raw(...) DIY]
 // This is NOT how Raw is usually used, but you can, in the trivial
-// case, use it to iterate the Memory<T> yourself. The main use for
+// case, use it to iterate the Memory<T> yourself. A nice use case for
 // this is to perform some sort of early-out iteration, e.g. search)
 myStream.Raw((Memory<Vector3> velocities) => 
 {
@@ -44,7 +44,7 @@ myStream.Raw((Memory<Vector3> velocities) =>
 
 ```cs [Raw&lt;U&gt;(...) with uniform]
 // This is NOT how Raw is usually used, but you can, in the trivial
-// case, use it to iterate the Memory<T> yourself. The main use for
+// case, use it to iterate the Memory<T> yourself. A nice use case for
 // this is to perform some sort of early-out iteration, e.g. search)
 myStream.Raw(
     uniform: (Time.deltaTime, 9.81f * Vector3.DOWN), 
@@ -76,7 +76,7 @@ This Runner's primary use is to transfer Component data into another facility, s
 
 Raw processing is synchronous, immediate, and happens on the calling thread.
 
-### Examples
+## Realistic Examples
 You can either access this memory as a `Span`, cast it to the desired type, etc. Depending on your use case and context, it may be necessary to [Pin the Memory](https://learn.microsoft.com/en-us/dotnet/api/system.memory-1.pin) to get a [MemoryHandle](https://learn.microsoft.com/en-us/dotnet/api/system.buffers.memoryhandle).
 
 ::: code-group

@@ -8,7 +8,7 @@ content: SIMD Query Interface
 Queries expose a set of SIMD operations that allow you to perform bulk operations on the matched entities.
 
 ![fennec, translucent and glowy blue](https://fennecs.tech/img/fennec-vectorized-256.png)
-*"Eight Entities at the same time. f'ing A!"*
+*"Eight Entities at the same time. Foxin' A!"*
 
 They perform simple writes and arithmetic operations at blazing speeds, and are a great complement to your [Runners](Stream.For.md) for more complex logic.
 
@@ -37,15 +37,17 @@ Fast Vectorization techniques are used to write Component Types that are [Blitta
 ------
 ## Limitations
 ::: danger 🔏 ALIASING
-SIMD Operations can lead to aliasing, where multiple process write the same memory location. 
-
-This can happen with:
-- nested query runs
-- jobs
-
 For simplicity's sake, if a world is not in `WorldMode.Immediate`, i.e. when any `WorldLock` is active, SIMD operations will throw before executing.
 
-(this restriction will be lifted change soon!)
+### Wait, that's illegal!
+The reason is that SIMD Operations can lead to aliasing, where multiple threads write the same memory location, or a source and destination location becomes accessible under multiple "aliases" for reading and writing.
+
+### This can happen with:
+- most commonly, **JOBS** *(oh, if it weren't for those darn meddling threads!)*
+- certain storage **JOINS** *(when a Stream outputs the same backing type multiple times)*
+
+
+*(we hope to lift this restriction in the future, probably with per-query/per-archetype locks!)*
 
 But because Jobs execute in non-deterministic order, you will not be able to Blit during a Job/from inside a job for the foreseeable time. But fret not - future versions of fennecs will have an aliasing system to allow for safe writes (especially to other queries/archetypes!)
 :::
@@ -74,7 +76,6 @@ But because Jobs execute in non-deterministic order, you will not be able to Bli
 
 
 ::: tip QUAD :neofox_glasses: WORD :neofox_glasses: QUAD :neofox_glasses: NERD :neofox_glasses: HACK
-Psst... you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](Stream.Raw.md#examples).  
-And since we like to live fast and foxy, try the new implicit extension types in C# 13 for that!
+Psst... until then, you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](Stream.Raw.md#examples). And since we like to live fast and foxy, try the new extension types in C# 13 for that!
 :::
 

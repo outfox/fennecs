@@ -19,11 +19,11 @@ order: 5
 Entities in Queries (including Worlds) and their Components can be read and modified using the extremely light-weight **Stream Views**. Dubbed `Stream<>` in **fenn**ecs code and loosely related to [zip iterators](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.zip), their inner workings are tailored specifically to high-performance Entity-Component System use cases.
 
 ::: tip :neofox_rainbow: STREAM VIEWS WILL LET YOU ...
-1. ... pass a set of Runners for [`Delegate Actions`](Delegates.md) where you read and write the components in your own custom code. Your code will be run in heavily optimized, super-tight, unrolled loops; most which can even be run in parallel.
+1. ... call a set of Runners, passing [`Delegate Actions`](Delegates.md) where you read and write the components in your own custom code. Your action will be run in heavily optimized, super-tight, unrolled loops; most which can even be run in parallel.
 
 1. ... enumerate each Entity in its underlying Query, together with each Component matching the View's Stream Types, as `ValueTuple(Entity, C1, C2, ...)`. This is awesome for Unit tests and easy inspection of your data, and prototyping behaviours using LINQ.
  
-3. ... give you safe (and `unsafe`) access to all the components of all the Entities in the Query contiguous blocks of `Memory<C>`, for you do with anything you can imagine. 
+3. ... give you safe (and `unsafe`) access to all the Components of all the Entities matched by the Query - as contiguous blocks of `Memory<C>`, for you do anything with that you can imagine. 
 :::
 
 ## How to obtain a Stream View
