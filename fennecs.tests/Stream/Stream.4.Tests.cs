@@ -4,7 +4,7 @@ namespace fennecs.tests.Stream;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
-public class Stream4Tests
+public class Stream4Tests(ITestOutputHelper output)
 {
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
@@ -125,5 +125,33 @@ public class Stream4Tests
         using var world = new World();
         var stream = world.Query<string, Vector3, int, Matrix4x4>().Stream();
         stream.Query.Warmup();
+    }
+    
+    [Fact]
+    public void Cannot_Run_Job_on_Wildcard_Query()
+    {
+        using var world = new World();
+        world.Spawn().Add("jason").Add(123).Add(1.5f).Add('3');
+
+        var stream = world.Query<string, int, float, char>(Match.Any).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string, int, float, char>(Match.Entity).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string, int, float, char>(Match.Target).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string, int, float, char>(Match.Object).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string, int, float, char>(Match.Plain).Stream();
+        var ran = false;
+        stream.Job((ref string str, ref int _, ref float _, ref char _) =>
+        { 
+            output.WriteLine(str); 
+            ran = true;
+        });
+        Assert.True(ran);
     }
 }

@@ -2,7 +2,7 @@
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
-public class Stream2Tests
+public class Stream2Tests(ITestOutputHelper output)
 {
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
@@ -496,5 +496,33 @@ public class Stream2Tests
         using var world = new World();
         var stream = world.Query<int, byte>().Stream();
         stream.Query.Warmup();
+    }
+    
+    [Fact]
+    public void Cannot_Run_Job_on_Wildcard_Query()
+    {
+        using var world = new World();
+        world.Spawn().Add("jason").Add(123);
+
+        var stream = world.Query<string, int>(Match.Any).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string, int>(Match.Entity).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string, int>(Match.Target).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string, int>(Match.Object).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string, int>(Match.Plain).Stream();
+        var ran = false;
+        stream.Job((ref string str, ref int _) =>
+        { 
+            output.WriteLine(str); 
+            ran = true;
+        });
+        Assert.True(ran);
     }
 }

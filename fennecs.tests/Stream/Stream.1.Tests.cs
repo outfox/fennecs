@@ -1,6 +1,6 @@
 ﻿namespace fennecs.tests.Stream;
 
-public class Stream1Tests
+public class Stream1Tests(ITestOutputHelper output)
 {
     [Fact]
     public void Can_Enumerate_Stream()
@@ -100,5 +100,35 @@ public class Stream1Tests
         
         Assert.Equal(stream1.Query, stream2.Query);
         Assert.Equal(stream1.Query, stream3.Query);
+    }
+
+
+    [Fact]
+    public void Cannot_Run_Job_on_Wildcard_Query()
+    {
+        using var world = new World();
+        world.Spawn().Add("jason");
+
+        var stream = world.Query<string>(Match.Any).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string>(Match.Entity).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string>(Match.Target).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string>(Match.Object).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+
+        stream = world.Query<string>(Match.Plain).Stream();
+        var ran = false;
+        stream.Job((ref string str) =>
+        { 
+            output.WriteLine(str); 
+            ran = true;
+        });
+        Assert.True(ran);
+        
     }
 }
