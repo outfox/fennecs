@@ -145,16 +145,6 @@ public partial class World : Query
         // Return cached query if available.
         if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
-        // Compile if not cached.
-        /* TODO: Also mysterious...
-        foreach (var type in mask.HasTypes)
-        {
-            if (_tablesByType.TryGetValue(type, out var typeTables)) continue;
-            typeTables = new(capacity: 16);
-            _tablesByType[type] = typeTables;
-        }
-        */
-
         var matchingTables = PooledList<Archetype>.Rent();
         matchingTables.AddRange(Archetypes.Where(table => table.Matches(mask)));
 
@@ -164,46 +154,6 @@ public partial class World : Query
             //TODO: Remove this check :)
             throw new InvalidOperationException("Query was already added to World. File a bug report!");
         }
-        return query;
-    }
-
-
-    internal Query CompileQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
-    {
-        /* TODO: Why was it like this? Probably based on the old type graph.
-        var type = mask.HasTypes[index: 0];
-        if (!_tablesByType.TryGetValue(type, out var typeTables))
-        {
-            typeTables = new(capacity: 16);
-            _tablesByType[type] = typeTables;
-        }
-        */
-
-        var matchingTables = PooledList<Archetype>.Rent();
-        foreach (var table in Archetypes)
-        {
-            if (table.Matches(mask)) matchingTables.Add(table);
-        }
-
-        var query = createQuery(this, streamTypes, mask, matchingTables);
-        if (!_queries.Add(query))
-        {
-            throw new InvalidOperationException("Query was already added to World. File a bug report!");
-        }
-        return query;
-    }
-    
-    internal Query CacheQuery(List<TypeExpression> streamTypes, Mask mask, Func<World, List<TypeExpression>, Mask, List<Archetype>, Query> createQuery)
-    {
-        // Compile if not cached.
-        if (!_queryCache.TryGetValue(mask.GetHashCode(), out var query))
-        {
-            query = CompileQuery(streamTypes, mask, createQuery);
-            _queryCache.Add(query.Mask.GetHashCode(), query);
-            return query;
-        }
-        
-        MaskPool.Return(mask);
         return query;
     }
 
