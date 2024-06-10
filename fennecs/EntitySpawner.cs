@@ -10,13 +10,15 @@ namespace fennecs;
 /// </remarks>
 public sealed class EntitySpawner : IDisposable
 {
+    #region Internals
+
     private readonly World _world;
 
     private PooledList<TypeExpression> _components = PooledList<TypeExpression>.Rent();
     private PooledList<object> _values = PooledList<object>.Rent();
-    
+
     private bool _disposed;
-    
+
     internal EntitySpawner(World world)
     {
         _world = world;
@@ -44,6 +46,8 @@ public sealed class EntitySpawner : IDisposable
         _components.Remove(type);
         return this;
     }
+
+    #endregion
 
     /// <inheritdoc cref="Entity.Add{T}()"/>
     /// <summary> Adds a component of the given type to the Spawner's configuration state.
@@ -81,6 +85,38 @@ public sealed class EntitySpawner : IDisposable
         return AddComponent(type, target.Object);
     }
 
+    /// <inheritdoc cref="Entity.Remove{C}()"/>
+    /// <summary>
+    /// Removes the plain component of the given type from the Spawner.
+    /// </summary>
+    /// <returns>EntitySpawner (fluent interface)</returns>
+    public EntitySpawner Remove<T>()
+    {
+        var type = Component.PlainComponent<T>().value;
+        return RemoveComponent(type);
+    }
+
+    /// <inheritdoc cref="Entity.Remove{C}()"/>
+    /// <summary>
+    /// Removes the Relation component of the given type from the Spawner.
+    /// </summary>
+    /// <returns>EntitySpawner (fluent interface)</returns>
+    public EntitySpawner Remove<T>(Entity entity)
+    {
+        var type = TypeExpression.Of<T>(entity);
+        return RemoveComponent(type);
+    }
+    
+    /// <inheritdoc cref="Entity.Remove{C}()"/>
+    /// <summary>
+    /// Removes the Object Link component to the given Object from the Spawner.
+    /// </summary>
+    /// <returns>EntitySpawner (fluent interface)</returns>
+    public EntitySpawner Remove<L>(Link<L> link) where L : class
+    {
+        return RemoveComponent(link.TypeExpression);
+    }
+    
     /// <summary>
     /// Spawns <c>count</c> entities with the configured components.
     /// </summary>
@@ -107,10 +143,10 @@ public sealed class EntitySpawner : IDisposable
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         _disposed = true;
-        
+
         _components.Dispose();
         _components = null!;
-        
+
         _values.Dispose();
         _values = null!;
     }
