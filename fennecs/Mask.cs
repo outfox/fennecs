@@ -21,12 +21,6 @@ internal sealed class Mask : IDisposable
         return this;
     }
 
-    public Mask Has(IEnumerable<TypeExpression> typeExpression)
-    {
-        foreach (var type in typeExpression) Has(type);        
-        return this;
-    }
-
 
     public Mask Not(TypeExpression typeExpression)
     {

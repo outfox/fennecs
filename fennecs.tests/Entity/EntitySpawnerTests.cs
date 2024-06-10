@@ -177,7 +177,7 @@ public class EntitySpawnerTests
         Assert.Equal(1, query1.Count);
         Assert.Equal(2, world.Count);
 
-        using var spawner2 = world.Entity().Add<Type42>(other); 
+        using var spawner2 = world.Entity().Add<Type42>(new(), other); 
         spawner2.Spawn();
         
         using var query2 = world.Query<Type42>(other).Compile();
@@ -191,5 +191,39 @@ public class EntitySpawnerTests
         Assert.Equal(2, query1.Count);
         Assert.Equal(2, query2.Count);
         Assert.Equal(4, world.Count);
+    }
+
+    [Fact]
+    public void Can_Remove_Relation()
+    {
+        using var world = new World();
+        var other = world.Spawn();
+        using var spawner1 = world.Entity().Add<Type69>(other); 
+        spawner1.Spawn();
+        
+        using var query1 = world.Query<Type69>(other).Compile();
+        Assert.Equal(1, query1.Count);
+        Assert.Equal(2, world.Count);
+        
+        spawner1.Remove<Type69>(other).Spawn();
+        Assert.Equal(1, query1.Count);
+        Assert.Equal(3, world.Count);
+    }
+
+    [Fact]
+    public void Can_Remove_Link()
+    {
+        using var world = new World();
+        var other = world.Spawn();
+        using var spawner1 = world.Entity().Add(Link.With("hello")); 
+        spawner1.Spawn();
+        
+        using var query1 = world.Query<string>(Link.With("hello")).Compile();
+        Assert.Equal(1, query1.Count);
+        Assert.Equal(2, world.Count);
+        
+        spawner1.Remove("hello").Spawn();
+        Assert.Equal(1, query1.Count);
+        Assert.Equal(3, world.Count);
     }
 }

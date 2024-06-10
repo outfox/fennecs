@@ -14,15 +14,6 @@ public class MyClass<C1, C2> : MyClass<MyClass<C1, C2>>
 
 public class BoxingAndCovariance()
 {
-    public void Test2()
-    {
-        var test = new MyClass<int, bool>();
-        var fluent = test.Fluent();
-
-    }
-
-
-    
     public record struct CoolPerson(string Value) : ICool;
 
 
@@ -35,8 +26,6 @@ public class BoxingAndCovariance()
         var coolOne = coolPerson as ICool; // boxing!
         coolOne.DoCoolStuff();             // no boxing
     }
-
-    
 }
 
 public interface ICool;

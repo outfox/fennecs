@@ -25,7 +25,7 @@ public class Match1Tests
 
 
     [Fact]
-    public void Any_Enumerates_all_Components_Once()
+    public void Match_Any_Enumerates_all_Components_Once()
     {
         var query = _world.Query<string>(Match.Any).Stream();
 
@@ -42,7 +42,6 @@ public class Match1Tests
         Assert.Contains(RELATION1, seen);
         Assert.Equal(4, seen.Count);
     }
-
 
     [Fact]
     public void Plain_Enumerates_Only_Plain_Components()
@@ -80,7 +79,24 @@ public class Match1Tests
 
 
     [Fact]
-    public void Relation_Enumerates_all_Relations()
+    public void EntityAny_Relation_Enumerates_all_Relations()
+    {
+        var query = _world.Query<string>(Entity.Any).Stream();
+
+        HashSet<string> seen = [];
+
+        query.For((ref string str) =>
+        {
+            Assert.DoesNotContain(str, seen);
+            seen.Add(str);
+        });
+        Assert.Contains(RELATION1, seen);
+        Assert.Single(seen);
+    }
+
+
+    [Fact]
+    public void MatchEntity_Relation_Enumerates_all_Relations()
     {
         var query = _world.Query<string>(Match.Entity).Stream();
 

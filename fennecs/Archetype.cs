@@ -427,7 +427,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     #endregion
 
 
+    
     #region Inner Joins
+    /*
     internal Cross.Join<C0> InnerJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes.AsSpan());
@@ -456,6 +458,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
+    */
     #endregion
 
 
