@@ -47,11 +47,6 @@ public readonly record struct Link<T> where T : class
         return new(Identity.Of(self.Object));
     }
    
-    internal void Deconstruct(out T value)
-    {
-        value = Object;
-    }
-    
     /// <inheritdoc />
-    public override string ToString() => Object?.ToString() ?? "null";
+    public override string ToString() => $"Link {TypeExpression} -> {Object?.ToString() ?? "null"}";
 }

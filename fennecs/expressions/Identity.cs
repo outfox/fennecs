@@ -92,7 +92,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// <param name="item">target item (an instance of object)</param>
     /// <typeparam name="T">type of the item (becomes the backing type of the object link)</typeparam>
     /// <returns></returns>
-    internal static Identity Of<T>(T item) where T : class => new(item.GetHashCode(), LanguageType<T>.TargetId);
+    internal static Identity Of<T>(T item) where T : class => new(item != null! ? item.GetHashCode() : 0, LanguageType<T>.TargetId);
     
     
     internal Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)

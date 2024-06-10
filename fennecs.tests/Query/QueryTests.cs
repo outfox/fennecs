@@ -363,6 +363,17 @@ public class QueryTests
 
 
 
+    [Fact]
+    private void Query_Double_Dispose()
+    {
+        using var world = new World();
+
+        var query = world.Query().Compile();
+        query.Dispose();
+        Assert.Throws<ObjectDisposedException>(query.Dispose);
+    }
+
+
 
     [Fact]
     private void Contains_Like_Enumerable()

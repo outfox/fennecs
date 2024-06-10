@@ -12,7 +12,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
 {
     #region Builder State
 
-    private readonly Mask _mask = MaskPool.Rent();
+    private Mask _mask = MaskPool.Rent();
     private bool _disposed;
 
     private readonly World _world;
@@ -142,9 +142,11 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <inheritdoc cref="IDisposable"/>
     public void Dispose()
     {
-        if (_disposed) return;
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        
         _disposed = true;
         _mask.Dispose();
+        _mask = null!;
         GC.SuppressFinalize(this);
     }
 

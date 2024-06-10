@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if EXPERIMENTAL
+using System.Collections;
 using System.Numerics;
 
 namespace fennecs.pools;
@@ -155,3 +156,4 @@ internal class ValueQueue<T> : IEnumerable<T> where T : struct
     
     #endregion
 }
+#endif

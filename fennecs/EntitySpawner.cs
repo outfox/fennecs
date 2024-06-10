@@ -12,8 +12,11 @@ public sealed class EntitySpawner : IDisposable
 {
     private readonly World _world;
 
-    private readonly PooledList<TypeExpression> _components = PooledList<TypeExpression>.Rent();
-    private readonly PooledList<object> _values = PooledList<object>.Rent();
+    private PooledList<TypeExpression> _components = PooledList<TypeExpression>.Rent();
+    private PooledList<object> _values = PooledList<object>.Rent();
+    
+    private bool _disposed;
+    
     internal EntitySpawner(World world)
     {
         _world = world;
@@ -102,7 +105,13 @@ public sealed class EntitySpawner : IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        _disposed = true;
+        
         _components.Dispose();
+        _components = null!;
+        
         _values.Dispose();
+        _values = null!;
     }
 }

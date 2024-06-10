@@ -87,11 +87,6 @@ public static class Cross
         /// </summary>
         internal bool Empty => !_populated;
         
-        /// <summary>
-        /// Returns <c>true</c> if the Join has been populated with at least one permutation.
-        /// </summary>
-        internal bool Populated => _populated;
-
 
         public void Dispose()
         {

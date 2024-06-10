@@ -276,4 +276,39 @@ public class QueryBuilderTests
         var query2 = builder.Compile();
         Assert.True(query1 == query2);
     }
+    
+    
+    
+    [Fact]
+    private void Builders_Cannot_Double_Dispose()
+    {
+        using var world = new World();
+
+            var builder0 = world.Query();
+            builder0.Dispose();
+            Assert.Throws<ObjectDisposedException>(builder0.Dispose);
+
+            var builder1 = world.Query<Matrix4x4>();
+            builder1.Dispose();
+            Assert.Throws<ObjectDisposedException>(builder1.Dispose);
+
+
+            var builder2 = world.Query<string, Vector3>();
+            builder2.Dispose();
+            Assert.Throws<ObjectDisposedException>(builder2.Dispose);
+
+       
+            var builder3 = world.Query<int, byte, string>();
+            builder3.Dispose();
+            Assert.Throws<ObjectDisposedException>(builder3.Dispose);
+        
+            var builder4 = world.Query<int, float, byte, char>();
+            builder4.Dispose();
+            Assert.Throws<ObjectDisposedException>(builder4.Dispose);
+
+
+            var builder5 = world.Query<double, Thread, Exception, byte, char>();
+            builder5.Dispose();
+            Assert.Throws<ObjectDisposedException>(builder5.Dispose);
+    }
 }
