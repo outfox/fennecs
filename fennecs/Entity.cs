@@ -15,7 +15,7 @@ namespace fennecs;
 /// <remarks>
 /// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
 /// </remarks>
-public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveComponent<Entity>, IComparable<Entity>, IDisposable
+public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponent, IComparable<Entity>
 {
     #region Match Expressions
 
@@ -29,7 +29,6 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <inheritdoc cref="Match.Any"/>
     public static Match Any => new(new(-3, 0));
     
-    
     #endregion
     
     #region Internal State
@@ -40,7 +39,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// </summary>
     internal Entity(World world, Identity identity)
     {
-        World = world;
+        _world = world;
         Id = identity;
     }
 
@@ -48,7 +47,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <summary>
     /// The World in which the Entity exists.
     /// </summary>
-    internal readonly World World;
+    private readonly World _world;
 
 
     /// <summary>
@@ -73,11 +72,11 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Match match) where C : notnull, new() => ref World.GetOrCreateComponent<C>(this, match);
+    public ref C Ref<C>(Match match) where C : notnull, new() => ref _world.GetOrCreateComponent<C>(this, match);
 
 
     /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
-    public ref C Ref<C>() => ref World.GetComponent<C>(this, Match.Plain);
+    public ref C Ref<C>() => ref _world.GetComponent<C>(this, Match.Plain);
     
 
     /// <summary>
@@ -89,7 +88,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref L Ref<L>(Link<L> link) where L : class => ref World.GetComponent<L>(this, link);
+    public ref L Ref<L>(Link<L> link) where L : class => ref _world.GetComponent<L>(this, link);
 
 
     /// <summary>
@@ -129,10 +128,17 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     public Entity Add<T>(T data, Relate relate) where T : notnull
     {
         var typeExpression = TypeExpression.Of<T>(relate);
-        World.AddComponent(Id, typeExpression, data);
+        _world.AddComponent(Id, typeExpression, data);
         return this;
     }
 
+
+    /// <inheritdoc />
+    public Entity Add<T>(Entity relation) where T : notnull, new()
+    {
+        Add(new T(), new Relate(relation));
+        return this;
+    }
 
     /// <inheritdoc cref="Add{B}(fennecs.Relate)"/>
     public Entity Add<R>(R value, Entity relation) where R : notnull
@@ -158,9 +164,12 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(Link<T> link) where T : class
     {
-        World.AddComponent(Id, TypeExpression.Of<T>(link), link.Target);
+        _world.AddComponent(Id, TypeExpression.Of<T>(link), link.Target);
         return this;
     }
+
+    /// <inheritdoc />
+    public Entity Add<C>() where C : notnull, new() => Add(new C());
 
     /// <summary>
     /// Adds a Plain Component of a specific type, with specific data, to the current entity. 
@@ -169,15 +178,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <typeparam name="T">Any value or reference component type.</typeparam>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(T data) where T : notnull => Add(data, default);
-
-
-    /// <summary>
-    /// Adds a newable Component of a specific type to the current entity.
-    /// </summary>
-    /// <typeparam name="T">The type of the Component to be added.</typeparam>
-    /// <returns>Entity struct itself, allowing for method chaining.</returns>
-    public Entity Add<T>() where T : notnull, new() => Add(new T());
-
+    
 
     /// <summary>
     /// Removes a Component of a specific type from the current entity.
@@ -186,7 +187,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<C>() where C : notnull
     {
-        World.RemoveComponent(Id, TypeExpression.Of<C>(Match.Plain));
+        _world.RemoveComponent(Id, TypeExpression.Of<C>(Match.Plain));
         return this;
     }
 
@@ -199,9 +200,12 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<R>(Entity relation) where R : notnull
     {
-        World.RemoveComponent(Id, TypeExpression.Of<R>(new Relate(relation)));
+        _world.RemoveComponent(Id, TypeExpression.Of<R>(new Relate(relation)));
         return this;
     }
+    
+    /// <inheritdoc />
+    public Entity Remove<L>(L linkedObject) where L : class => Remove(Link<L>.With(linkedObject));
 
 
     /// <summary>
@@ -213,7 +217,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     public Entity Remove<T>(Relate relation)
     {
         var typeExpression = TypeExpression.Of<T>(relation);
-        World.RemoveComponent(Id, typeExpression);
+        _world.RemoveComponent(Id, typeExpression);
         return this;
     }
 
@@ -226,7 +230,7 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Remove<T>(Link<T> link) where T : class
     {
-        World.RemoveComponent(Id, link.TypeExpression);
+        _world.RemoveComponent(Id, link.TypeExpression);
         return this;
     }
 
@@ -237,59 +241,60 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     /// <remarks>
     /// The entity builder struct still exists afterwards, but the entity is no longer alive and subsequent CRUD operations will throw.
     /// </remarks>
-    public void Despawn() => World.Despawn(this);
+    public void Despawn() => _world.Despawn(this);
 
 
     /// <summary>
     /// Checks if the Entity has a Plain Component.
     /// Same as calling <see cref="Has{T}()"/> with <see cref="Identity.Plain"/>
     /// </summary>
-    public bool Has<T>() => World.HasComponent<T>(Id, default);
+    public bool Has<T>() where T : notnull => _world.HasComponent<T>(Id, default);
+
+    
+    /// <inheritdoc />
+    public bool Has<R>(Entity relation) where R : notnull => _world.HasComponent<R>(Id, new Relate(relation));
+
+    
+    /// <inheritdoc />
+    public bool Has<L>(L linkedObject) where L : class => Has(Link<L>.With(linkedObject));
 
 
     /// <summary>
     /// Checks if the Entity has a Component of a specific type.
     /// Allows for a <see cref="Match"/> Expression to be specified (Wildcards)
     /// </summary>
-    public bool Has<T>(Match match) => World.HasComponent<T>(Id, match);
+    public bool Has<T>(Match match) => _world.HasComponent<T>(Id, match);
 
 
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type and specific target.
     /// </summary>
-    public bool Has<T>(Link<T> link) where T : class => World.HasComponent<T>(Id, link);
+    public bool Has<T>(Link<T> link) where T : class => _world.HasComponent<T>(Id, link);
 
 
     /// <summary>
     /// Checks if the Entity has a specifc Entity-Entity Relation backed by a specific type.
     /// </summary>
-    public bool Has<T>(Relate relation) => World.HasComponent<T>(Id, relation);
+    public bool Has<T>(Relate relation) => _world.HasComponent<T>(Id, relation);
     
     #endregion
-
-
-    /// <summary>
-    /// Disposes of the Entity builder, releasing any pooled resources.
-    /// </summary>
-    public void Dispose()
-    { }
 
 
     #region Cast Operators and IEquatable<Entity>
 
     /// <inheritdoc />
-    public bool Equals(Entity other) => Id.Equals(other.Id) && Equals(World, other.World);
+    public bool Equals(Entity other) => Id.Equals(other.Id) && Equals(_world, other._world);
 
     /// <summary>
     /// Implicit cast to Boolean. Returns true if the Entity is alive and its Identity is nondefault.
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public static implicit operator bool(Entity entity) => entity.Id != default && entity.World.IsAlive(entity.Id);
+    public static implicit operator bool(Entity entity) => entity.Id != default && entity._world.IsAlive(entity.Id);
 
 
     /// <inheritdoc />
-    public override int GetHashCode() => HashCode.Combine(World, Id);
+    public override int GetHashCode() => HashCode.Combine(_world, Id);
 
 
     /// <inheritdoc/>
@@ -301,9 +306,9 @@ public readonly record struct Entity : /*IEquatable<Entity>,*/ IAddRemoveCompone
     {
         var sb = new System.Text.StringBuilder(Id.ToString());
         sb.Append(' ');
-        if (World.IsAlive(Id))
+        if (_world.IsAlive(Id))
         {
-            sb.AppendJoin("\n  |-", World.GetSignature(Id));
+            sb.AppendJoin("\n  |-", _world.GetSignature(Id));
         }
         else
         {

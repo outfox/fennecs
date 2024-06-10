@@ -133,4 +133,63 @@ public class EntitySpawnerTests
         
         Assert.Equal(0, world.Count);
     }
+
+
+    private record Type69;
+    private struct Type42;
+    
+    [Fact]
+    public void Can_Add_Plain_Newable()
+    {
+        using var world = new World();
+        using var spawner1 = world.Entity().Add<Type69>(); 
+        spawner1.Spawn();
+        
+        using var query1 = world.Query<Type69>().Compile();
+        Assert.Equal(1, query1.Count);
+        Assert.Equal(1, world.Count);
+
+        using var spawner2 = world.Entity().Add<Type42>(); 
+        spawner2.Spawn();
+        
+        using var query2 = world.Query<Type42>().Compile();
+        Assert.Equal(1, query2.Count);
+        Assert.Equal(2, world.Count);
+
+        var entity = world.Spawn();
+        entity.Add<Type69>();
+        entity.Add<Type42>();
+        
+        Assert.Equal(2, query1.Count);
+        Assert.Equal(2, query2.Count);
+        Assert.Equal(3, world.Count);
+    }
+
+    [Fact]
+    public void Can_Add_Relation()
+    {
+        using var world = new World();
+        var other = world.Spawn();
+        using var spawner1 = world.Entity().Add<Type69>(other); 
+        spawner1.Spawn();
+        
+        using var query1 = world.Query<Type69>(other).Compile();
+        Assert.Equal(1, query1.Count);
+        Assert.Equal(2, world.Count);
+
+        using var spawner2 = world.Entity().Add<Type42>(other); 
+        spawner2.Spawn();
+        
+        using var query2 = world.Query<Type42>(other).Compile();
+        Assert.Equal(1, query2.Count);
+        Assert.Equal(3, world.Count);
+
+        var entity = world.Spawn();
+        entity.Add<Type69>(other);
+        entity.Add<Type42>(other);
+        
+        Assert.Equal(2, query1.Count);
+        Assert.Equal(2, query2.Count);
+        Assert.Equal(4, world.Count);
+    }
 }

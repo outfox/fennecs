@@ -7,7 +7,7 @@ public class NumberingTests
         using var world = new World();
 
         using var _ = world.Entity()
-            .Add<Index>(default)
+            .Add<Index>()
             .Spawn(count1)
             .Add(true)
             .Spawn(count2);

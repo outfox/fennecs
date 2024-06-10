@@ -156,17 +156,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(entity.Id, identity);
     }
 
-
-    [Fact]
-    public void Entity_is_Disposable()
-    {
-        using var world = new World();
-        var builder = world.Spawn();
-        Assert.IsAssignableFrom<IDisposable>(builder);
-        builder.Dispose();
-    }
-
-
+    
     [Fact]
     public void Entity_provides_Has()
     {
@@ -262,7 +252,8 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(456, entity.Ref<int>());
     }
 
-    private record Name(string Value);
+    // ReSharper disable once NotAccessedPositionalProperty.Local
+    private record Name(string _);
 
     [Fact]
     public void Can_Get_Link_Object_as_Ref()
@@ -287,5 +278,34 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(0, component);
         component = 123;
         Assert.Equal(123, entity.Ref<int>(target));
+    }
+
+
+    [Fact]
+    public void Implements_IHasComponent()
+    {
+        using var world = new World();
+        var other = world.Spawn();
+        
+        var entity = world.Spawn().Add(123);
+        var interfaceEntity = (IHasComponent) entity;
+        Assert.True(entity.Has<int>());
+        
+        entity.Add("123");
+        Assert.True(interfaceEntity.Has<string>());
+        
+        entity.Add(Link.With("666"));
+        Assert.True(interfaceEntity.Has(Link.With("666")));
+        
+        Assert.False(interfaceEntity.Has<int>(other));
+        Assert.False(interfaceEntity.Has<string>(other));
+
+        entity.Add(123, other);
+        Assert.True(interfaceEntity.Has<int>(other));
+        Assert.False(interfaceEntity.Has<string>(other));
+        
+        entity.Add("123", other);
+        Assert.True(interfaceEntity.Has<int>(other));
+        Assert.True(interfaceEntity.Has<string>(other));
     }
 }

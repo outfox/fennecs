@@ -142,7 +142,21 @@ public class TypeIdTests
         Assert.NotEqual(obj1.GetHashCode(), obj2.GetHashCode());
         Assert.False(ReferenceEquals(obj1, obj2));
     }
+
+    private struct Type1337;
+    private struct Type1338;
     
+    [Fact]
+    public void Can_Identify_Exotic_Type()
+    {
+        var id1 = LanguageType.Identify(typeof(Dictionary<string, Type1337>));
+        var id2 = TypeExpression.Of<Dictionary<string, Type1337>>(Match.Plain).TypeId;
+        Assert.Equal(id1, id2);
+
+        id1 = TypeExpression.Of<Dictionary<string, Type1338>>(Match.Plain).TypeId;
+        id2 = LanguageType.Identify(typeof(Dictionary<string, Type1338>));
+        Assert.Equal(id1, id2);
+    }
     
     private struct Type1;
 

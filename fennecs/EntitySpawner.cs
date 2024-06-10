@@ -8,7 +8,7 @@ namespace fennecs;
 /// <remarks>
 /// Call <see cref="Spawn"/> to actually spawn the Entities.
 /// </remarks>
-public sealed class EntitySpawner : IDisposable
+public sealed class EntitySpawner : IDisposable, IAddRemoveComponent<EntitySpawner>
 {
     #region Internals
 
@@ -59,16 +59,15 @@ public sealed class EntitySpawner : IDisposable
         var type = Component.PlainComponent<T>().value;
         return AddComponent(type, component);
     }
-
-    /// <inheritdoc cref="Entity.Add{T}()"/>
-    /// <summary> Adds a component of the given type to the Spawner's configuration state.
-    /// If the EntitySpawner already contains a component of the same type, it will be replaced.
-    /// </summary>
-    /// <returns>EntitySpawner (fluent interface)</returns>
-    public EntitySpawner Add<T>() where T : new()
+    
+    /// <inheritdoc />
+    public EntitySpawner Add<C>() where C : notnull, new() => Add(new C());
+    
+    /// <inheritdoc />
+    public EntitySpawner Add<R>(R value, Entity relation) where R : notnull
     {
-        var type = Component.PlainComponent<T>().value;
-        return AddComponent(type, new T());
+        var type = TypeExpression.Of<R>(relation);
+        return AddComponent(type, value);
     }
 
     /// <inheritdoc cref="Entity.Add{T}(T, fennecs.Relate)"/>
@@ -84,13 +83,20 @@ public sealed class EntitySpawner : IDisposable
         var type = TypeExpression.Of<T>(target);
         return AddComponent(type, target.Object);
     }
+    
+    /// <inheritdoc />
+    public EntitySpawner Add<T>(Entity relation) where T : notnull, new()
+    {
+        return Add(new T(), relation);
+    }
+
 
     /// <inheritdoc cref="Entity.Remove{C}()"/>
     /// <summary>
     /// Removes the plain component of the given type from the Spawner.
     /// </summary>
     /// <returns>EntitySpawner (fluent interface)</returns>
-    public EntitySpawner Remove<T>()
+    public EntitySpawner Remove<T>() where T : notnull
     {
         var type = Component.PlainComponent<T>().value;
         return RemoveComponent(type);
@@ -101,11 +107,14 @@ public sealed class EntitySpawner : IDisposable
     /// Removes the Relation component of the given type from the Spawner.
     /// </summary>
     /// <returns>EntitySpawner (fluent interface)</returns>
-    public EntitySpawner Remove<T>(Entity entity)
+    public EntitySpawner Remove<T>(Entity entity) where T : notnull
     {
         var type = TypeExpression.Of<T>(entity);
         return RemoveComponent(type);
     }
+    
+    /// <inheritdoc />
+    public EntitySpawner Remove<L>(L linkedObject) where L : class => Remove(Link<L>.With(linkedObject));
     
     /// <inheritdoc cref="Entity.Remove{C}()"/>
     /// <summary>
@@ -127,17 +136,6 @@ public sealed class EntitySpawner : IDisposable
         return this;
     }
 
-    /// <summary>
-    ///  Spawns <c>count</c> entities with the configured components and disposes the spawner.
-    /// </summary>
-    /// <param name="count">number of entities to spawn</param>
-    [Obsolete("use .Spawn() and .Dispose()]")]
-    public void SpawnOnce(int count = 1)
-    {
-        Spawn(count);
-        Dispose();
-    }
-
     /// <inheritdoc />
     public void Dispose()
     {
@@ -150,4 +148,5 @@ public sealed class EntitySpawner : IDisposable
         _values.Dispose();
         _values = null!;
     }
+
 }
