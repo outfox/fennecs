@@ -47,10 +47,13 @@ myStream.Job(
 ```
 :::
 
-## Chunk Size
+## Concurrency
 Choosing the right way to spread your workload across CPU cores can yield significant performance gains.
 
-By Default, **fenn**ecs will parallelize workloads only per entire Archetype. The `chunkSize` optional parameter passed into `Stream.Job` affords fine-grained control over how the work is split up within each Archetype being processed.
+::: danger WORK IN PROGRESS (*currently this property is waiting for a re-work and is protected*).
+
+**fenn**ecs attempt to will parallelize workloads across cores, and the `Stream<>.Concurrency` property can be used to fine-tune this. 
+:::
 
 :::warning :neofox_glare_sob: A GOOD TRADE-OFF LEAVES EVERYONE MAD!
 Overhead for thread scheduling is real; as are context switches between threads. Experiment finding the right workload Chunk Size (start big - try 69,420, they say it's nice) and always consider giving [`Stream.For`](Stream.For.md) another look if you realize there's too much overhead or ==fragmentation==.
@@ -60,4 +63,3 @@ You can also set the [Filter State](Filters.md) of your Query to only include th
 
 Scheduling Jobs has a certain overhead, so just splitting work across as many CPUs as possible sometimes slows down processing speeds.
 
-If you have Archetypes that contain only a few dozen entities, but these have truly huge workloads (such as, entire Physics Worlds stored as a Component for regular updating through a Query), then a hypothetical Chunk Size as low as 1 could reserve 1 Job / 1 Core per Entity.

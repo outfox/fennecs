@@ -62,7 +62,7 @@ var human2 = world.Spawn()
 
 Now, let's create two kinds of query to find all entities with a `Name` and run it to print a greeting for each entity. We also want to only match entities with a `Fennec` - in our case we can do it by inclusion or exclusion.
 
-### :neofox_floof_mug_reverse: *"Aww! This is **fenn**ecs, not ***human ecs***!"*
+### :neofox_floof_mug_reverse: *"Yo! This is **fenn**ecs, not ***human ecs***!"*
 
 ```csharp{2}
 var noHumans = world.Query<Name>()
@@ -99,5 +99,5 @@ Hello, Erwin!
 ```
 ----------
 
-### :neofox_think_anime: *"**Only**Fennecs... now there's an idea for a web search."*
+### :neofox_think_anime: *"**Only**Fennecs... ... !"*
 

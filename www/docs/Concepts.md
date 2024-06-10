@@ -10,7 +10,7 @@ head:
 ---
 
 # :neofox_heart: ... the little ECS that loves you back!
-The Entity-Component System (ECS) is an architectural pattern that champions composition over inheritance. **Entities** are small, unique identifiers, and **Components** are data attached to them. The term **Systems** refers to the logic that operates on this data. 
+The Entity-Component System (ECS) is an architectural pattern that champions composition over inheritance. **Entities** are small, unique identifiers, and **Components** are data attached to them. The term **Systems** often refers to the logic that operates on this data. 
 
 ## Typical ECS Concepts 
 
@@ -49,10 +49,10 @@ Group Entities logically and in memory by linking them to shared data, like a ph
 ### Queries expose Structural Changes (just as Entities do)
 Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md) from individual Entities or entire matched Queries.
 
-### Runners let you pass [uniform](Streams/Stream.For.md#uniforms-shmuniforms) data to those Workloads.
+### Runners let you pass [uniform](Streams/Stream.For.md#uniforms-shmuniforms) data to your Workloads.
 A tiny tidbit that streamlines the process of passing data into a job or run.
 
-### Worlds and Queries are `IEnumerable<Entity>`.
+### Worlds, Queries, and Streams implement `IEnumerable<>`.
 It's amazing to be able to every now and then just LINQ it up and <u>*be done*</u> somewhere.
 
 ### There are no formalized Systems.

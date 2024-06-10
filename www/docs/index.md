@@ -36,11 +36,11 @@ stream.For(Time.Delta, (float dt, ref Vector3 velocity) => {
 ```
 :::
 
-::: tip :neofox_book: THE DOCS - all the Deets and Don'ts
-The **Documentation** section (you're in it now!) describes the core facets and some finer points of **fenn**ecs C# API. 
+::: tip :neofox_book: THE DOCS - the Deets and Don'ts
+The **Documentation** section (you're in it now!) explains core facets of the **fenn**ecs C# API. 
 
 ### Where to begin? 👇
-- [Concepts of ECS & **fenn**ecs](Concepts.md)
+- [Concepts](Concepts.md) of ECS in general & specific to **fenn**ecs
 - [Queries & Matching](Queries/index.md)
 
 The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
@@ -54,5 +54,5 @@ The **[Demos](/examples/index)** category has concrete examples for a growing li
 
 
 ::: info :neofox_pat_floof: THE REST
-The **Misc** section contains our [Glossary](/misc/Glossary.md) of terms and a few [heartfelt words of thanks.](/misc/Acknowledgements.md), and anything else that didn't fit elsewhere.
+The **Misc** section contains our [Glossary](/misc/Glossary.md) of terms and a few [heartfelt words of thanks.](/misc/Acknowledgements.md), and anything else that didn't fit elsewhere. Like our [Roadmap](/misc/Roadmap.md)!
 :::

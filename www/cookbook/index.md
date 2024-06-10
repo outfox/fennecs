@@ -20,7 +20,7 @@ head:
 ```shell
 dotnet add package fennecs
 ```
-:neofox_laptop:
+:neofox_laptop: *(psst append, `--prerelease` while we're still in beta!)*
 
 # ... and go!
 
