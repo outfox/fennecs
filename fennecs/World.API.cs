@@ -184,7 +184,9 @@ public partial class World : IDisposable
         lock (_spawnLock)
         {
             //TODO: Not good to assemble the Entity like that. Types need to be untangled.
-            foreach (var identity in identities) DespawnDependencies(new(this, identity));
+            foreach (var identity in identities)DespawnDependencies(new(this, identity));
+            foreach (var identity in identities)_meta[identity.Index] = default;
+
             _identityPool.Recycle(identities);
         }
     }
@@ -195,9 +197,12 @@ public partial class World : IDisposable
     /// <param name="entity">the entity to despawn (remove)</param>
     internal void Recycle(Entity entity)
     {
+        AssertAlive(entity.Id);
+        
         lock (_spawnLock)
         {
             DespawnDependencies(entity);
+            _meta[entity.Id.Index] = default;
             _identityPool.Recycle(entity);
         }
     }

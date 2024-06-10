@@ -691,6 +691,18 @@ public class WorldTests(ITestOutputHelper output)
 
 
     [Fact]
+    private void Can_Recycle_Entity()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(666);
+        world.Recycle(entity);
+        Assert.False(entity.Alive);
+        Assert.False(world.IsAlive(entity));
+    }
+
+
+    [Fact]
     private void Can_Garbage_Collect()
     {
         using var world = new World();
@@ -715,6 +727,27 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Throws<InvalidOperationException>(() => world.GC());
     }
 
+
+    [Fact]
+    private void World_has_Name()
+    {
+        using var world = new World
+        {
+            Name = "hallo",
+        };
+        Assert.Equal("hallo", world.Name);
+    }
+    
+    
+    [Fact]
+    private void World_has_GBehaviour()
+    {
+        using var world = new World
+        {
+            GCBehaviour = World.GCAction.DefaultBeta,
+        };
+        Assert.Equal(World.GCAction.DefaultBeta, world.GCBehaviour);
+    }
 
     [Theory]
     [InlineData(0)]
