@@ -5,7 +5,7 @@ namespace fennecs;
 /// <summary>
 /// Target Expression to build a relation.
 /// </summary>
-public readonly record struct Relate
+internal readonly record struct Relate
 {
     private Identity Value { get; }
     

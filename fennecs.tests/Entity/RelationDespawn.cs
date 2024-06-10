@@ -28,7 +28,7 @@ public class RelationDespawn
         var rnd = new Random(1234 + relations);
         foreach (var target in targets)
         {
-            subject.Add(rnd.Next(), Relate.To(target));
+            subject.Add(rnd.Next(), target);
         }
 
         while (targets.Count > 0)

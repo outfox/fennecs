@@ -91,59 +91,14 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     public ref L Ref<L>(Link<L> link) where L : class => ref _world.GetComponent<L>(this, link);
 
 
-    /// <summary>
-    /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
-    /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
-    /// in the same Archetype for faster enumeration and processing as a group.
-    ///
-    /// The Component data is instantiated / initialized via the default constructor of the relation type.
-    /// </summary>
-    /// <typeparam name="B">Any value or reference type. The type of the relation to be added.</typeparam>
-    /// <remarks>
-    /// Beware of Archetype fragmentation! 
-    /// You can end up with a large number of Archetypes with few Entities in them,
-    /// which negatively impacts processing speed and memory usage.
-    /// Try to keep the size of your Archetypes as large as possible for maximum performance.
-    /// </remarks>
-    /// <param name="relate">The entity with which to establish the relation.</param>
-    /// <returns>Entity struct itself, allowing for method chaining.</returns>
-    public Entity Add<B>(Relate relate) where B : notnull, new() => Add(new B(), relate);
-
-
-    /// <summary>
-    /// Adds a relation of a specific type, with specific data, between the current entity and the target entity.
-    /// The relation is backed by the Component data of the relation. Entities with the same relations are placed
-    /// in the same Archetype for faster enumeration and processing as a group.
-    /// </summary>
-    /// <typeparam name="T">The backing type of the relation to be added, can be any value or reference component type.</typeparam>
-    /// <remarks>
-    /// Beware of Archetype fragmentation! 
-    /// You can end up with a large number of Archetypes with few Entities in them,
-    /// which negatively impacts processing speed and memory usage.
-    /// Try to keep the size of your Archetypes as large as possible for maximum performance.
-    /// </remarks>
-    /// <param name="data">The data associated with the relation.</param>
-    /// <param name="relate">The entity with which to establish the relation.</param>
-    /// <returns>Entity struct itself, allowing for method chaining.</returns>
-    public Entity Add<T>(T data, Relate relate) where T : notnull
-    {
-        var typeExpression = TypeExpression.Of<T>(relate);
-        _world.AddComponent(Id, typeExpression, data);
-        return this;
-    }
-
-
     /// <inheritdoc />
-    public Entity Add<T>(Entity relation) where T : notnull, new()
-    {
-        Add(new T(), new Relate(relation));
-        return this;
-    }
+    public Entity Add<T>(Entity relation) where T : notnull, new() => Add(new T(), relation);
 
-    /// <inheritdoc cref="Add{B}(fennecs.Relate)"/>
+    
+    /// <inheritdoc cref="Add{R}(R,fennecs.Entity)"/>
     public Entity Add<R>(R value, Entity relation) where R : notnull
     {
-        Add(value, new Relate(relation));
+        _world.AddComponent(Id, TypeExpression.Of<R>(relation), value);
         return this;
     }
 
@@ -209,20 +164,6 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
 
 
     /// <summary>
-    /// Removes a relation of a specific type between the current entity and the target entity.
-    /// </summary>
-    /// <typeparam name="T">The type of the relation to be removed.</typeparam>
-    /// <param name="relation">The entity from which the relation will be removed.</param>
-    /// <returns>Entity struct itself, allowing for method chaining.</returns>
-    public Entity Remove<T>(Relate relation)
-    {
-        var typeExpression = TypeExpression.Of<T>(relation);
-        _world.RemoveComponent(Id, typeExpression);
-        return this;
-    }
-
-
-    /// <summary>
     /// Removes the link of a specific type with the target object.
     /// </summary>
     /// <typeparam name="T">The type of the link to be removed.</typeparam>
@@ -265,17 +206,10 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// </summary>
     public bool Has<T>(Match match) => _world.HasComponent<T>(Id, match);
 
-
     /// <summary>
     /// Checks if the Entity has an Object Link of a specific type and specific target.
     /// </summary>
     public bool Has<T>(Link<T> link) where T : class => _world.HasComponent<T>(Id, link);
-
-
-    /// <summary>
-    /// Checks if the Entity has a specifc Entity-Entity Relation backed by a specific type.
-    /// </summary>
-    public bool Has<T>(Relate relation) => _world.HasComponent<T>(Id, relation);
     
     #endregion
 

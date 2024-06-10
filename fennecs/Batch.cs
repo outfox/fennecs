@@ -5,7 +5,7 @@ namespace fennecs;
 /// <summary>
 /// Wraps a set of operations to be executed atomically on a set of Archetypes (usually those matching a Query).
 /// </summary>
-public readonly struct Batch : IDisposable
+public readonly struct Batch : IDisposable, IAddRemoveComponent<Batch>
 {
     private readonly World _world;
     private readonly Mask _mask;
@@ -45,62 +45,7 @@ public readonly struct Batch : IDisposable
     }
 
 
-    /// <summary>
-    /// Append an AddComponent operation to the batch.
-    /// </summary>
-    /// <typeparam name="T">component type</typeparam>
-    /// <param name="data">component data</param>
-    /// <param name="target">relation target (default = no relation, plain component)</param>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>(T data, Relate target = default) => AddComponent(data, target);
-    
-    /// <summary>
-    /// Append an AddComponent operation to the batch.
-    /// </summary>
-    /// <typeparam name="T">component type</typeparam>
-    /// <param name="link">an object link</param>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>(Link<T> link) where T : class => AddComponent(link.Target, link);
-
-    /// <summary>
-    /// Append an AddComponent operation to the batch.
-    /// </summary>
-    /// <typeparam name="T">component type (newable)</typeparam>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>() where T : new() => AddComponent(new T(), Match.Plain);
-
-    /// <summary>
-    /// Append an Add operation to the batch.
-    /// </summary>
-    /// <param name="target">target of the relation</param>
-    /// <typeparam name="T">component type (newable)</typeparam>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Add<T>(Entity target) where T : new() => AddComponent<T>(new(), Relate.To(target));
-    
-    
-    /// <summary>
-    /// Append an RemoveComponent operation to the batch.
-    /// </summary>
-    /// <typeparam name="T">component type</typeparam>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>() => RemoveComponent<T>(Match.Plain);
-
-    /// <summary>
-    /// Append an Remove operation to the batch.
-    /// </summary>
-    /// <typeparam name="T">component type</typeparam>
-    /// <param name="link">target of the link</param>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>(Link<T> link) where T : class => RemoveComponent<T>(link);
-
-    /// <summary>
-    /// Append a RemoveRelation operation to the batch.
-    /// </summary>
-    /// <typeparam name="T">component type</typeparam>
-    /// <param name="target">target of the relation</param>
-    /// <returns>the Batch itself (fluent syntax)</returns>
-    public Batch Remove<T>(Relate target) => RemoveComponent<T>(target);
-
+    #region Internals
 
     private Batch AddComponent<T>(T data, Match match)
     {
@@ -139,20 +84,37 @@ public readonly struct Batch : IDisposable
         return this;
     }
 
+    #endregion
 
-    /// <summary>
-    /// Disposes the Batch Operation, freeing internals resources.
-    /// Automatically called by Submit().
-    /// </summary>
-    public void Dispose()
-    {
-        Archetypes.Dispose();
-        Additions.Dispose();
-        Removals.Dispose();
-        BackFill.Dispose();
-        _mask.Dispose();
-    }
 
+    #region IAddRemoveComponent
+
+    /// <inheritdoc />
+    public Batch Add<R>(R value, Entity relation) where R : notnull => AddComponent(value, Relate.To(relation));
+
+    /// <inheritdoc />
+    public Batch Add<T>(Link<T> link) where T : class => AddComponent(link.Target, link);
+
+    /// <inheritdoc />
+    public Batch Add<T>() where T : notnull, new() => AddComponent(new T(), Match.Plain);
+
+    /// <inheritdoc />
+    public Batch Add<C>(C value) where C : notnull => AddComponent(value, Match.Plain);
+
+    /// <inheritdoc />
+    public Batch Add<T>(Entity target) where T : notnull, new() => AddComponent<T>(new(), Relate.To(target));
+    
+    /// <inheritdoc />
+    public Batch Remove<T>() where T : notnull => RemoveComponent<T>(Match.Plain);
+
+    /// <inheritdoc />
+    public Batch Remove<R>(Entity relation) where R : notnull => RemoveComponent<R>(Relate.To(relation));
+
+    /// <inheritdoc />
+    public Batch Remove<L>(L linkedObject) where L : class => RemoveComponent<L>(Link<L>.With(linkedObject));
+
+    /// <inheritdoc />
+    public Batch Remove<T>(Link<T> link) where T : class => RemoveComponent<T>(link);
 
     /// <summary>
     /// Specifies behavior when adding a component to an archetype that already has the same type of component. 
@@ -170,7 +132,7 @@ public readonly struct Batch : IDisposable
         /// </remarks>
         Strict = default,
 
-       /// <summary>
+        /// <summary>
         /// Keeps the existing component data whenever trying to add a duplicate.
         /// </summary>
         Preserve,
@@ -204,4 +166,22 @@ public readonly struct Batch : IDisposable
         /// </summary>
         Allow,
     }
+
+    #endregion
+
+
+    /// <summary>
+    /// Disposes the Batch Operation, freeing internals resources.
+    /// Automatically called by Submit().
+    /// </summary>
+    public void Dispose()
+    {
+        Archetypes.Dispose();
+        Additions.Dispose();
+        Removals.Dispose();
+        BackFill.Dispose();
+        _mask.Dispose();
+    }
+
+
 }

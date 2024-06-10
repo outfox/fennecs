@@ -49,6 +49,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemoveComponent<EntitySpawn
 
     #endregion
 
+    
     /// <inheritdoc cref="Entity.Add{T}()"/>
     /// <summary> Adds a component of the given type to the Spawner's configuration state.
     /// If the EntitySpawner already contains a component of the same type, it will be replaced.
@@ -60,22 +61,19 @@ public sealed class EntitySpawner : IDisposable, IAddRemoveComponent<EntitySpawn
         return AddComponent(type, component);
     }
     
+    
     /// <inheritdoc />
     public EntitySpawner Add<C>() where C : notnull, new() => Add(new C());
+    
     
     /// <inheritdoc />
     public EntitySpawner Add<R>(R value, Entity relation) where R : notnull
     {
-        return Add(value, Relate.To(relation));
+        var type = TypeExpression.Of<R>(relation);
+        return AddComponent(type, value);
     }
-
-    /// <inheritdoc cref="Entity.Add{T}(T, fennecs.Relate)"/>
-    public EntitySpawner Add<T>(T component, Relate target) where T : notnull
-    {
-        var type = TypeExpression.Of<T>(target);
-        return AddComponent(type, component);
-    }
-
+    
+    
     /// <inheritdoc cref="Entity.Add{T}(Link{T})"/>
     public EntitySpawner Add<T>(Link<T> target) where T : class
     {

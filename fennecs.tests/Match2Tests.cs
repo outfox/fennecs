@@ -20,7 +20,7 @@ public class Match2Tests
             .Add(Link.With(OBJECT1))
             .Add(Link.With(OBJECT2))
             .Add(NONE1)
-            .Add(RELATION1, Relate.To(bob));
+            .Add(RELATION1, bob);
     }
 
     

@@ -37,7 +37,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(entity.ToString(), builder.ToString());
 
         entity.Add(123);
-        entity.Add(7.0f, Relate.To(world.Spawn()));
+        entity.Add(7.0f, world.Spawn());
         entity.Add(Link.With("hello"));
         output.WriteLine(entity.ToString());
         
