@@ -45,27 +45,6 @@ head:
   - - meta
     - property: og:title
       content: fennecs — tiny ECS
-  - - meta
-    - property: og:description
-      content: A tiny, fast, modern C# Entity-Component System for games and simulations!
-  - - meta
-    - property: og:image
-      content: https://fennecs.tech/img/fennecs-social-panel.png
-  - - meta
-    - property: twitter:card
-      content: summary_large_image
-  - - meta
-    - property: twitter:url
-      content: https://fennecs.tech
-  - - meta
-    - property: twitter:title
-      content: fennecs — tiny ECS
-  - - meta
-    - property: twitter:description
-      content: A tiny, fast, modern C# Entity-Component System for games and simulations!
-  - - meta
-    - property: twitter:image
-      content: https://fennecs.tech/img/fennecs-social-panel.png
 
 ---
 

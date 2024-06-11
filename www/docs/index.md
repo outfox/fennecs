@@ -12,7 +12,7 @@ head:
 !["using fennecs;"](https://fennecs.tech/img/using-fennecs-lightmode.svg){.light-only}
 
 ::: info :neofox_knives: THE COOKBOOK - Tutorials and Tricks
-Hungry? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. 
+Can't wait? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. 
 :::
 
 ::: code-group
@@ -40,8 +40,8 @@ stream.For(Time.Delta, (float dt, ref Vector3 velocity) => {
 ::: tip :neofox_book: THE DOCUMENTATION - (you're in it now!)
 All the deets & don'ts and core facets of the **fenn**ecs API. Use the navigation menu on the left!
 
-### Where to begin? 👇
-- 🔭 [**Concepts**](Concepts.md) - an overview of **fenn**ecs (and ECS in general)
+### Where to begin?
+#### 👉 [**Concepts**](Concepts.md) - an overview of **fenn**ecs (and ECS in general)
 
 The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
 
