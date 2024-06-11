@@ -747,4 +747,57 @@ public class QueryBatchTests
         Assert.Contains(e2, intQuery);
         Assert.Contains(e3, intQuery);
     }
+
+    [Fact]
+    public void Can_Remove_Link_Direct()
+    {
+        const string target = "lala!";
+        using var world = new World();
+        var e3 = world.Spawn().Add(Link.With(target));
+
+        var stringQuery = world.Query<string>(Match.Object).Compile();
+        Assert.Equal(1, stringQuery.Count);
+        Assert.Contains(e3, stringQuery);
+
+        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(target).Submit();
+
+        Assert.Equal(0, stringQuery.Count);
+        Assert.Empty(stringQuery);
+    }
+
+    [Fact]
+    public void Can_Remove_Link_Indirect()
+    {
+        const string target = "lala!";
+        using var world = new World();
+        var e3 = world.Spawn().Add(Link.With(target));
+
+        var stringQuery = world.Query<string>(Match.Object).Compile();
+        Assert.Equal(1, stringQuery.Count);
+        Assert.Contains(e3, stringQuery);
+
+        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(Link.With(target)).Submit();
+
+        Assert.Equal(0, stringQuery.Count);
+        Assert.Empty(stringQuery);
+    }
+
+    [Fact]
+    public void Can_Remove_From_Empty()
+    {
+        const string target = "lala!";
+        using var world = new World();
+        var e3 = world.Spawn().Add(Link.With(target));
+
+        var stringQuery = world.Query<string>(Match.Object).Compile();
+        Assert.Equal(1, stringQuery.Count);
+        Assert.Contains(e3, stringQuery);
+
+        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(Link.With(target)).Submit();
+
+        Assert.Equal(0, stringQuery.Count);
+        Assert.Empty(stringQuery);
+
+        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(Link.With(target)).Submit();
+    }
 }
