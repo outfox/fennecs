@@ -293,7 +293,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             return;
         }
 
-        var join = CrossJoin<T>([type]);
+        using var join = CrossJoin<T>([type]);
         if (join.Empty) return;
         do
         {
