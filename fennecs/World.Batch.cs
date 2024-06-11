@@ -13,6 +13,7 @@ public partial class World
         }
 
         Commit(batch);
+        
         return true;
     }
 

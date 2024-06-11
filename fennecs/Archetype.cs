@@ -187,6 +187,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <param name="addMode"></param>
     internal void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills, Batch.AddConflict addMode)
     {
+        if (IsEmpty) return;
+        
         Invalidate();
         destination.Invalidate();
 
@@ -243,6 +245,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <param name="destination">the Archetype to move the entities to</param>
     internal void Migrate(Archetype destination)
     {
+        Migrate(destination, PooledList<TypeExpression>.Rent(), PooledList<object>.Rent(), Batch.AddConflict.Strict);
+        /*
         // Certain Add-modes permit operating on archetypes that themselves are in the query.
         // No more migrations are needed at this point (they would be semantically idempotent)
         if (IsEmpty || destination == this) return;
@@ -272,6 +276,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         // Update all Meta info to mark entities as moved.
         destination.PatchMetas(addedStart, addedCount);
+        */
     }
 
 

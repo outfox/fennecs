@@ -22,10 +22,16 @@ namespace fennecs;
 /// <para> If <see cref="fennecs.Identity.Object"/>, the type expression acts as a Wildcard 
 ///   expression that matches ONLY entity-object relations.</para>
 /// </remarks>
-internal readonly record struct TypeExpression(Identity Identity = default, TypeID TypeId = default) : IComparable<TypeExpression>
+internal readonly record struct TypeExpression : IComparable<TypeExpression>
 {
     private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId)
     { }
+    
+    public TypeExpression(Identity Identity, TypeID TypeId)
+    {
+        this.Identity = Identity;
+        this.TypeId = TypeId;
+    }
 
     internal Relate Relation => new(Identity);
 
@@ -48,6 +54,9 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
     /// Get the backing Component type that this <see cref="TypeExpression"/> represents.
     /// </summary>
     public Type Type => LanguageType.Resolve(TypeId);
+
+    public Identity Identity { get; init; }
+    public TypeID TypeId { get; init; }
 
 
     /// <summary>
