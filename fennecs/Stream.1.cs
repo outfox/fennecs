@@ -47,7 +47,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// The Query this Stream is associated with.
     /// Can be re-inited via the with keyword.
     /// </summary>
-    public Query Query { get; init; } = Query;
+    public Query Query { get; } = Query;
 
     /// <summary>
     /// Subset Stream Filter - if not empty, only entities with these components will be included in the Stream. 
@@ -383,7 +383,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <inheritdoc />
     public IEnumerator<(Entity, C0)> GetEnumerator()
     {
-        foreach (var table in Query.Archetypes)
+        foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
             if (join.Empty) continue;

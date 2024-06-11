@@ -51,9 +51,7 @@ public class Stream3Tests(ITestOutputHelper output)
         using var world = new World();
         var arnold = world.Spawn().Add("Arnold").Add(1).Add(7.0f);
         var dolph = world.Spawn().Add("Dolph").Add(2).Add(8.0f);
-        
-        List<(Entity, string, int, float)> list = [(arnold, "Arnold", 1, 7.0f), (dolph, "Dolph", 2, 8.0f)];
-        
+
         var stream = world.Stream<string, int, float>();
         
         Assert.Throws<InvalidOperationException>(() =>

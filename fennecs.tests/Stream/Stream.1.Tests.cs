@@ -45,8 +45,8 @@ public class Stream1Tests(ITestOutputHelper output)
     public void Cannot_Structural_Chane_While_Enumerating()
     {
         using var world = new World();
-        var arnold = world.Spawn().Add("Arnold");
-        var dolph = world.Spawn().Add("Dolph");
+        world.Spawn().Add("Arnold");
+        world.Spawn().Add("Dolph");
 
         var stream = world.Stream<string>();
         Assert.Throws<InvalidOperationException>(() =>
