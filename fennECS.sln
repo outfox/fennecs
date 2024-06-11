@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs-demos-godot", "demo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thanos", "cookbook\Thanos.csproj", "{390AB260-8877-4E08-9DA4-FE8EF5CE99C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs.demo.shapeengine", "demos\shapeengine\demo-shapeengine.csproj", "{7A5704B0-816A-4F03-8B40-770E2D75E1E1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,9 +60,5 @@ Global
 		{390AB260-8877-4E08-9DA4-FE8EF5CE99C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{390AB260-8877-4E08-9DA4-FE8EF5CE99C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{390AB260-8877-4E08-9DA4-FE8EF5CE99C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A5704B0-816A-4F03-8B40-770E2D75E1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A5704B0-816A-4F03-8B40-770E2D75E1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A5704B0-816A-4F03-8B40-770E2D75E1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A5704B0-816A-4F03-8B40-770E2D75E1E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

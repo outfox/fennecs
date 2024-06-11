@@ -8,15 +8,13 @@
     <RootNamespace>fennecs.demos.godot</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <!--<PackageReference Include="fennecs" Version="0.5.2-beta" />-->
+    <!--<PackageReference Include="fennecs" Version="0.5.4-beta" />-->
     <PackageReference Update="Godot.SourceGenerators" Version="4.3.0-beta.1" />
     <PackageReference Update="GodotSharp" Version="4.3.0-beta.1" />
     <PackageReference Update="GodotSharpEditor" Version="4.3.0-beta.1" />
   </ItemGroup>
   
-  
   <ItemGroup>
     <ProjectReference Include="..\..\fennecs\fennecs.csproj" />
   </ItemGroup>
-  
 </Project>
