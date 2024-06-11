@@ -3,7 +3,6 @@
 using System.Collections;
 using System.Text;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -25,11 +24,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// Expanded Signature with all Wildcards resolved for fast, set-level matching.
     /// </summary>
     internal readonly Signature MatchSignature;
-
-    /// <summary>
-    /// Get a Span of all Identities contained in this Archetype.
-    /// </summary>
-    internal ReadOnlySpan<Identity> Identities => IdentityStorage.Span;
 
     /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
@@ -158,7 +152,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         var excess = Math.Clamp(Count - maxEntityCount, 0, Count);
         if (excess <= 0) return;
         
-        var toDelete = Identities.Slice(Count - excess, excess);
+        var toDelete = ((ReadOnlySpan<Identity>)IdentityStorage.Span).Slice(Count - excess, excess);
 
         foreach (var storage in Storages)
         {

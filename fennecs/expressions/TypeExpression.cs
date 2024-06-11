@@ -65,7 +65,7 @@ internal readonly record struct TypeExpression(Identity Identity = default, Type
         foreach (var type in other)
         {
             if (self.Matches(type)) return true;
-            //if (type.Matches(self)) return true;
+            if (type.Matches(self)) return true;
         }
 
         return false;

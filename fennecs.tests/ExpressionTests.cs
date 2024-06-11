@@ -214,7 +214,6 @@ public static class ExpressionTests
     [Fact]
     public static void Can_Expand_Object()
     {
-        var world = new World();
         var type = TypeExpression.Of<string>(Link.With("dieter"));
         
         var expanded = type.Expand();
