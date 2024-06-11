@@ -4,15 +4,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.5.4-beta</Version>
+        <Version>0.5.5-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
         <Company>tiger.blue</Company>
         <Description>The tiny ECS that could!</Description>
         <Copyright>2024 Moritz Voss, 2022 Aaron Winter</Copyright>
-        <PackageProjectUrl>https://github.com/thygrrr/fennecs</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/thygrrr/fennecs</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/outfox/fennecs</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/outfox/fennecs</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
         <PackageReadmeFile>./nuget.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
