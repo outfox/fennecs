@@ -8,7 +8,8 @@ head:
       content: API documentation for fennecs, the tiny, tiny, high-energy Entity-Component System
 
 ---
-!["using fennecs;"](https://fennecs.tech/img/using-fennecs.svg)
+!["using fennecs;"](https://fennecs.tech/img/using-fennecs-darkmode.svg){.dark-only}
+!["using fennecs;"](https://fennecs.tech/img/using-fennecs-lightmode.svg){.light-only}
 
 ::: info :neofox_knives: THE COOKBOOK - Tutorials and Tricks
 Hungry? Try **fenn**ecs for yourself as you flip through the courses of our **[Cookbook](/cookbook/index)**. 
@@ -40,7 +41,7 @@ stream.For(Time.Delta, (float dt, ref Vector3 velocity) => {
 All the deets & don'ts and core facets of the **fenn**ecs API. Use the navigation menu on the left!
 
 ### Where to begin? 👇
-- [Conceptual Overview](Concepts.md) of **fenn**ecs (and ECS in general)
+- 🔭 [**Concepts**](Concepts.md) - an overview of **fenn**ecs (and ECS in general)
 
 The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
 

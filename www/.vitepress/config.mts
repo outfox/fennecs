@@ -28,7 +28,14 @@ export default defineConfig({
     ['link', { rel: "manifest", href: "/site.webmanifest" }],
     ['link', { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#142458" }],
     ['meta', { name: "msapplication-TileColor", content: "#142458" }],
-    ['meta', { name: "theme-color", content: "#ffffff" }],
+    ['meta', { name: "theme-color", content: "#222222" }],
+    ['meta', { name: "twitter:card", content: "summary" }],    
+    ['meta', { name: "twitter:image", content: "https://fennecs.tech/img/meta-twitter-square.png" }],    
+    ['meta', { name: "twitter:image:alt", content: "fennecs entity component system, logotype, white on orange" }],    
+    ['meta', { name: "twitter:description", content: "A free Entity-Component System written in pure C#! fennecs is lithe, fun, fast, and plays well with game engines!" }],        
+    ['meta', { property: "og:title", content: "fennecs ... the little ECS that loves you back! 🫶" }],        
+    ['meta', { property: "og:description", content: "A free Entity-Component System written in pure C#! fennecs is lithe, fun, fast, and plays well with game engines!" }],        
+    ['meta', { property: "og:image", content: "https://fennecs.tech//img/meta-opengraph.png" }],        
   ],
 
 

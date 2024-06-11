@@ -5,11 +5,13 @@ outline: [2,2]
 
 head:
   - - meta
-    - name: description
-      content: Conceptual overview over the fennecs Entity-Component System
+    - property: og:title
+      content: Concepts of the fennecs Entity-Component System
+    - property: og:description
+      content: A comparison of typical ECS concepts with unique fennecs features.
 ---
 
-# :neofox_heart: ... the little ECS that loves you back!
+#  :neofox_heart: ... the little ECS that loves you back!
 The Entity-Component System (ECS) is an architectural pattern that champions composition over inheritance. **Entities** are small, unique identifiers, and **Components** are data attached to them. The term **Systems** often refers to the logic that operates on this data. 
 
 ## Typical ECS Concepts 
