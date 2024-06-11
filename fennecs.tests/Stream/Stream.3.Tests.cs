@@ -49,8 +49,8 @@ public class Stream3Tests(ITestOutputHelper output)
     public void Cannot_Structural_Change_While_Enumerating()
     {
         using var world = new World();
-        var arnold = world.Spawn().Add("Arnold").Add(1).Add(7.0f);
-        var dolph = world.Spawn().Add("Dolph").Add(2).Add(8.0f);
+        world.Spawn().Add("Arnold").Add(1).Add(7.0f);
+        world.Spawn().Add("Dolph").Add(2).Add(8.0f);
 
         var stream = world.Stream<string, int, float>();
         

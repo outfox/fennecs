@@ -48,8 +48,8 @@ public class Stream4Tests(ITestOutputHelper output)
     public void Cannot_Structural_Change_While_Enumerating()
     {
         using var world = new World();
-        var arnold = world.Spawn().Add("Arnold").Add(1).Add(7.0f).Add('x').Add(5d);
-        var dolph = world.Spawn().Add("Dolph").Add(2).Add(8.0f).Add('y').Add(6d);
+        world.Spawn().Add("Arnold").Add(1).Add(7.0f).Add('x').Add(5d);
+        world.Spawn().Add("Dolph").Add(2).Add(8.0f).Add('y').Add(6d);
 
         var stream = world.Stream<string, int, float, char>();
         Assert.Throws<InvalidOperationException>(() =>
