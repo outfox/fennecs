@@ -252,6 +252,14 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(456, entity.Ref<int>());
     }
 
+    [Fact]
+    public void Cannot_Get_Missing_Component_as_Ref()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        Assert.Throws<InvalidOperationException>(() => entity.Ref<int>());
+    }
+
     // ReSharper disable once NotAccessedPositionalProperty.Local
     private record Name(string _);
 

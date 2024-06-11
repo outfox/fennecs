@@ -55,7 +55,7 @@ public partial class World
         return HasComponent(identity, type);
     }
 
-
+    /*
     internal ref T GetOrCreateComponent<T>(Identity identity, Match match) where T : notnull, new()
     {
         AssertAlive(identity);
@@ -70,6 +70,7 @@ public partial class World
         var storage = table.GetStorage<T>(match);
         return ref storage.Span[row];
     }
+    */
     
     internal ref T GetComponent<T>(Identity identity, Match match)
     {

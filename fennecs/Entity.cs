@@ -72,13 +72,14 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Match match) where C : notnull, new() => ref _world.GetOrCreateComponent<C>(this, match);
+    public ref C Ref<C>(Match match) where C : struct => ref _world.GetComponent<C>(this, match);
 
 
     /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
     public ref C Ref<C>() => ref _world.GetComponent<C>(this, Match.Plain);
-    
 
+    
+    
     /// <summary>
     /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the entity.
     /// </summary>
