@@ -19,8 +19,6 @@ namespace fennecs;
 /// </summary>
 public partial class Query : IEnumerable<Entity>, IDisposable, IBatch
 {
-    internal static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
-
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
     ///     Affected by Filters.

@@ -41,6 +41,23 @@ public class Stream1Tests(ITestOutputHelper output)
         Assert.Empty(list);
     }
 
+    [Fact]
+    public void Cannot_Structural_Chane_While_Enumerating()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold");
+        var dolph = world.Spawn().Add("Dolph");
+
+        var stream = world.Stream<string>();
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            foreach (var row in stream)
+            {
+                world.Spawn().Add("Sylvester");
+            }
+        });
+    }
+
 
     [Fact]
     public void Can_Create_Stream_From_Query()

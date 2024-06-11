@@ -79,6 +79,10 @@ public class StorageTests
         storage.Clear();
         Assert.Equal(0, storage.Count);
         Assert.Equal(default, storage[0]);
+
+        storage.Clear(); // clear empty storage
+        Assert.Equal(0, storage.Count);
+        Assert.Equal(default, storage[0]);
     }
 
     [Fact]

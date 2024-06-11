@@ -383,7 +383,6 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <inheritdoc />
     public IEnumerator<(Entity, C0)> GetEnumerator()
     {
-        using var worldLock = World.Lock();
         foreach (var table in Query.Archetypes)
         {
             using var join = table.CrossJoin<C0>(_streamTypes);
@@ -394,8 +393,8 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
                 var s0 = join.Select;
                 for (var index = 0; index < table.Count; index++)
                 {
-                    if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
                     yield return (table[index], s0.Span[index]);
+                    if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
                 }
             } while (join.Iterate());
         }

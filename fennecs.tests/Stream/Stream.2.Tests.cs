@@ -42,7 +42,24 @@ public class Stream2Tests(ITestOutputHelper output)
         Assert.Empty(list);
     }
 
-    
+    [Fact]
+    public void Cannot_Structural_Change_While_Enumerating()
+    {
+        using var world = new World();
+        world.Spawn().Add("Arnold").Add(1);
+        world.Spawn().Add("Dolph").Add(2);
+        
+        var stream = world.Stream<string, int>();
+        
+        Assert.Throws<InvalidOperationException>(() =>
+        {
+            foreach (var row in stream)
+            {
+                row.Item1.Remove<int>();
+            }
+        });
+    }
+
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)

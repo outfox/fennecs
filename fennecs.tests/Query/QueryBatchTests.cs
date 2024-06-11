@@ -355,7 +355,7 @@ public class QueryBatchTests
     {
         using var world = new World();
 
-        using var _ = world.Lock();
+        var worldLock = world.Lock();
 
         world.Spawn().Add(123);
         world.Spawn().Add(234);
@@ -365,6 +365,8 @@ public class QueryBatchTests
         var intQuery = world.Query<int>().Compile();
 
         Assert.Throws<InvalidOperationException>(() => intQuery.Truncate(1, fennecs.Query.TruncateMode.PerArchetype));
+        
+        worldLock.Dispose();
     }
 
 
