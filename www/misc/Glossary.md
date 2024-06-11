@@ -14,7 +14,7 @@ Here we hope to explain some of them a little more in depth, without creating a 
 ## Contains
 We contextually sometimes say:
 
-- "the Query contains" a set of Entities, and the base `Query` class also exposes these "contents" via a `IEnumerable<Entity>` interface. This is used rarely, however.
+- "the Query contains" a set of Entities, and the base `Query` class also exposes these "contents" via a `IEnumerable<Entity>` interface. This is usable for world setup and in unit tests - but your game logic might want to do its heavy lifting with [Streams](/docs/Streams/index.md) and [SIMD](/docs/Streams/SIMD.md) operations.
 - "the World contains", which can refer to both Entites and Archetypes.
 - "the Archetype contains", which can refer both to the Entities that share this Archetype, but also the Types that constitute said Archetype.
 

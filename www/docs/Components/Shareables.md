@@ -5,7 +5,9 @@ order: 2
 
 # Shareable Components
 
-In **fenn**ecs, components are typically value types unique to each entity. However, you can easily share the same instance of a component among multiple entities using **reference types**.
+One word: `reference types`. No, wait...
+
+You can easily share the same instance of a component among multiple entities using **reference types**. This allows you to efficiently share state and updates across entities.
 
 ![two fennecs happily holding a huge cardboard box together](https://fennecs.tech/img/fennecs-shareable.png)
 
@@ -13,8 +15,10 @@ This is especially useful for heavyweight objects that are expensive to create o
 
 
 ::: info :neofox_thumbsup: SHARING MADE SIMPLE
-To share a component, define it as a [reference type](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) (e.g., a class) and add the same instance to multiple entities. Each entity will hold a reference to the shared component instance.
+To share a component, devlare it as a [reference type](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) (e.g., a class or record, but not struct) and add the same instance to multiple entities. Each entity will hold a reference to the same instance of the component.
 :::
+
+You can, of course, still add reference type components only to a single entity, and not share them at all.
 
 ## Sharing Components
 
@@ -36,14 +40,50 @@ Both `entity1` and `entity2` now reference the same `sharedData` instance. Modif
 
 Query shared components using the same syntax as regular components:
 
-```csharp
+::: code-group
+```csharp [component setup]
+record SharedData(int Value) // a mutable record, could also be a class
+{
+    public int Value { get; set; } = Value;
+}
+```
+
+```csharp [modifying / iterating]
+using var world = new World();
 var stream = world.Query<SharedData>().Stream();
+
+var sharedData = new SharedData(42); // shared instance
+world.Entity().Add(sharedData).Spawn(5); // add it to 5 fresh entities
 
 stream.For((ref SharedData data) =>
 {
     data.Value++; // increments value once for each entity in query!
+    Console.WriteLine(data.ToString());
+});
+
+sharedData.Value++; // increment outside of runner
+Console.WriteLine();
+
+stream.For((ref SharedData data) =>
+{
+    Console.WriteLine(data.ToString());
 });
 ```
+
+```csharp [output]
+SharedData { Value = 43 }
+SharedData { Value = 44 }
+SharedData { Value = 45 }
+SharedData { Value = 46 }
+SharedData { Value = 47 }
+
+SharedData { Value = 48 }
+SharedData { Value = 48 }
+SharedData { Value = 48 }
+SharedData { Value = 48 }
+SharedData { Value = 48 }
+```
+:::
 
 ## Considerations
 

@@ -36,12 +36,11 @@ stream.For(Time.Delta, (float dt, ref Vector3 velocity) => {
 ```
 :::
 
-::: tip :neofox_book: THE DOCS - the Deets and Don'ts
-The **Documentation** section (you're in it now!) explains core facets of the **fenn**ecs C# API. 
+::: tip :neofox_book: THE DOCUMENTATION - (you're in it now!)
+All the deets & don'ts and core facets of the **fenn**ecs API. Use the navigation menu on the left!
 
 ### Where to begin? 👇
-- [Concepts](Concepts.md) of ECS in general & specific to **fenn**ecs
-- [Queries & Matching](Queries/index.md)
+- [Conceptual Overview](Concepts.md) of **fenn**ecs (and ECS in general)
 
 The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
 
