@@ -109,8 +109,8 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     /// <inheritdoc cref="Stream{C0}.Job"/>
     public void Job(ComponentAction<C0, C1, C2> action)
     {
-        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
-        
+        AssertNoWildcards();
+
         using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -159,7 +159,7 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
     /// <inheritdoc cref="Stream{C0}.Job{U}"/>
     public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
     {
-        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
+        AssertNoWildcards();
 
         var chunkSize = Math.Max(1, Count / Concurrency);
 

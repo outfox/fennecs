@@ -171,7 +171,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <param name="action"><see cref="ComponentAction{C0}"/> taking references to Component Types.</param>
     public void Job(ComponentAction<C0> action)
     {
-        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
+        AssertNoWildcards();
             
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -222,7 +222,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <param name="uniform">The uniform data to pass to the action.</param>
     public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
     {
-        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException("Cannot run a Job on a wildcard query (write destination Aliasing).");
+        AssertNoWildcards();
         
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -334,6 +334,16 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
 
     #endregion
     
+    #region Assertions
+    /// <summary>
+    /// Throws if the query has any Wildcards.
+    /// </summary>
+    protected void AssertNoWildcards()
+    {
+        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {_streamTypes}");
+    }
+
+    #endregion
 
     #region Blitters
 
@@ -356,6 +366,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     #endregion
 
     #region Query Forwarding
+    
     /// <inheritdoc cref="fennecs.Query.Truncate"/>
     public void Truncate(int targetSize, Query.TruncateMode mode = default)
     {
@@ -364,6 +375,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     
     /// <inheritdoc cref="fennecs.Query.Despawn"/>
     public void Despawn() => Query.Despawn();
+    
     #endregion
 
     #region IEnumerable

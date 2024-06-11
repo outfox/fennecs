@@ -55,7 +55,7 @@ public partial class World
         return HasComponent(identity, type);
     }
 
-    /*
+    /* This is sad but can't be done syntactically at the moment (without bloating the interface)
     internal ref T GetOrCreateComponent<T>(Identity identity, Match match) where T : notnull, new()
     {
         AssertAlive(identity);

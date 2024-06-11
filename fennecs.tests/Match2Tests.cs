@@ -102,7 +102,7 @@ public class Match2Tests
 
         HashSet<string> seen = [];
 
-        query.Job((ref string str, ref float _) =>
+        query.For((ref string str, ref float _) =>
         {
             lock (seen)
             {

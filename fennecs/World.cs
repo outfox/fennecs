@@ -148,22 +148,15 @@ public partial class World : Query
         matchingTables.AddRange(Archetypes.Where(table => table.Matches(mask)));
 
         query = new(this, mask.Clone(), matchingTables);
-        if (!_queries.Add(query) || !_queryCache.TryAdd(query.Mask.GetHashCode(), query))
-        {
-            //TODO: Remove this check :)
-            throw new InvalidOperationException("Query was already added to World. File a bug report!");
-        }
+        _queries.Add(query);
+        _queryCache.TryAdd(query.Mask.GetHashCode(), query);
         return query;
     }
 
 
     internal void RemoveQuery(Query query)
     {
-        if (!_queries.Remove(query))
-        {
-            throw new InvalidOperationException("Query was not found in World.");
-        }
-        
+        _queries.Remove(query);
         _queryCache.Remove(query.Mask.GetHashCode());
     }
 
