@@ -114,7 +114,7 @@ public static class Cross
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, ImmutableArray<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
         {
             _allocated = true;
 
@@ -166,7 +166,7 @@ public static class Cross
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, ImmutableArray<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
         {
             _allocated = true;
 
@@ -222,7 +222,7 @@ public static class Cross
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, ImmutableArray<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
         {
             _allocated = true;
 
@@ -282,7 +282,7 @@ public static class Cross
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, ImmutableArray<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
         {
             _allocated = true;
 

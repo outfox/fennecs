@@ -80,7 +80,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatch
     ///     Array of TypeExpressions for the Output Stream of this Query.
     ///     Mutated by Filter Expressions.
     /// </summary>
-    internal readonly ImmutableArray<TypeExpression> StreamTypes;
+    internal readonly ReadOnlySpan<TypeExpression> streamTypes;
 
     /// <summary>
     ///  Filters for the Archetypes matched by the StreamTypes (must match)

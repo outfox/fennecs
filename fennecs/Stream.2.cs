@@ -25,7 +25,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
             do
             {
@@ -43,7 +43,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
 
             do
@@ -65,7 +65,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
 
             var count = table.Count;
@@ -87,7 +87,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
 
             var count = table.Count;
@@ -119,7 +119,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
@@ -168,7 +168,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
 
             var count = table.Count; // storage.Length is the capacity, not the count.
@@ -214,7 +214,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
 
             var count = table.Count;
@@ -237,7 +237,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
 
             var count = table.Count;
@@ -279,7 +279,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     {
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes);
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
             if (join.Empty) continue;
             var snapshot = table.Version;
             do

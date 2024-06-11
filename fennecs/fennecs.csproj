@@ -16,12 +16,12 @@
         <RepositoryType>Github</RepositoryType>
         <PackageReadmeFile>./nuget.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageTags>ecs, gamedev, entity, entity component system, entity-component, game, gamedev, game development, godot, dots, defaultecs, hypecs, relecs, entt, arch, flecs</PackageTags>
+        <PackageTags>ecs, entity, component, system, game, gamedev, game-development, godot, monogame, flax, stride, entity-component, entity-component-system</PackageTags>
         <TargetFramework>net8.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <LangVersion>default</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <Configurations>Debug;Release</Configurations>
         <DebugType>embedded</DebugType>
         <Platforms>AnyCPU</Platforms>

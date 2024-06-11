@@ -2,7 +2,6 @@
 
 using System.Collections;
 using System.Text;
-using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -292,8 +291,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             sysArray.Blit(value);
             return;
         }
-
-        using var join = CrossJoin<T>([type]);
+        
+        Span<TypeExpression> span = stackalloc TypeExpression[1] {type};
+        using var join = CrossJoin<T>(span);
         if (join.Empty) return;
         do
         {
@@ -400,31 +400,31 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     #region Cross Joins
-    internal Cross.Join<C0> CrossJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0> CrossJoin<C0>(ReadOnlySpan<TypeExpression> streamTypes)
     {
-        return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes.AsSpan());
+        return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1> CrossJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1> CrossJoin<C0, C1>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
@@ -434,31 +434,31 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     
     #region Inner Joins
     /*
-    internal Cross.Join<C0> InnerJoin<C0>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0> InnerJoin<C0>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes.AsSpan());
     }
 
 
-    internal Cross.Join<C0, C1> InnerJoin<C0, C1>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1> InnerJoin<C0, C1>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2> InnerJoin<C0, C1, C2>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2> InnerJoin<C0, C1, C2>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2, C3> InnerJoin<C0, C1, C2, C3>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3> InnerJoin<C0, C1, C2, C3>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2, C3, C4> InnerJoin<C0, C1, C2, C3, C4>(ImmutableArray<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3, C4> InnerJoin<C0, C1, C2, C3, C4>(ReadOnlySpan<TypeExpression> streamTypes)
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
