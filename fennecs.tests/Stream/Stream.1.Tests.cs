@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests.Stream;
+﻿using System.Collections;
+
+namespace fennecs.tests.Stream;
 
 public class Stream1Tests(ITestOutputHelper output)
 {
@@ -12,6 +14,25 @@ public class Stream1Tests(ITestOutputHelper output)
         List<(Entity, string)> list = [(arnold, "Arnold"), (dolph, "Dolph")];
 
         var stream = world.Stream<string>();
+        foreach (var row in stream)
+        {
+            Assert.True(list.Remove(row));
+        }
+
+        Assert.Empty(list);
+    }
+
+
+    [Fact]
+    public void Can_Enumerate_Boxed()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold");
+        var dolph = world.Spawn().Add("Dolph");
+
+        List<object> list = [(arnold, "Arnold"), (dolph, "Dolph")];
+
+        IEnumerable stream = world.Stream<string>();
         foreach (var row in stream)
         {
             Assert.True(list.Remove(row));
@@ -141,6 +162,21 @@ public class Stream1Tests(ITestOutputHelper output)
 
         Assert.True(entity.Has<string>());
         stream.Batch().Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        Assert.Empty(world.Query<string>().Compile());
+    }
+
+    [Fact]
+    public void Streams_Can_Despawn()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add("jason");
+
+        var stream = world.Query<string>(Match.Any).Stream();
+
+        Assert.True(entity.Has<string>());
+        stream.Despawn();
         Assert.False(entity.Has<string>());
 
         Assert.Empty(world.Query<string>().Compile());

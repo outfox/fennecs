@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections;
+using System.Collections.Immutable;
 using fennecs.pools;
 
 namespace fennecs;
@@ -323,6 +324,9 @@ public record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1
         }
     }
 
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    
     #endregion
 
     private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4, ComponentAction<C0, C1, C2, C3, C4> action)

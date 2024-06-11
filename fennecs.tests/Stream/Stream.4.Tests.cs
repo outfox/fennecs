@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections;
+using System.Numerics;
 
 namespace fennecs.tests.Stream;
 
@@ -16,6 +17,25 @@ public class Stream4Tests(ITestOutputHelper output)
         List<(Entity, string, int, float, char)> list = [(arnold, "Arnold", 1, 7.0f, 'x'), (dolph, "Dolph", 2, 8.0f, 'y')];
         
         var stream = world.Stream<string, int, float, char>();
+        foreach (var row in stream)
+        {
+            Assert.True(list.Remove(row));
+        }
+        
+        Assert.Empty(list);
+    }
+
+
+    [Fact]
+    public void Can_Enumerate_Stream_Boxed()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold").Add(1).Add(7.0f).Add('x').Add(5d);
+        var dolph = world.Spawn().Add("Dolph").Add(2).Add(8.0f).Add('y').Add(6d);
+        
+        List<object> list = [(arnold, "Arnold", 1, 7.0f, 'x'), (dolph, "Dolph", 2, 8.0f, 'y')];
+        
+        IEnumerable stream = world.Stream<string, int, float, char>();
         foreach (var row in stream)
         {
             Assert.True(list.Remove(row));

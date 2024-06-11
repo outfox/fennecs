@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests.Stream;
+﻿using System.Collections;
+
+namespace fennecs.tests.Stream;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -14,6 +16,24 @@ public class Stream2Tests(ITestOutputHelper output)
         List<(Entity, string, int)> list = [(arnold, "Arnold", 1), (dolph, "Dolph", 2)];
         
         var stream = world.Stream<string, int>();
+        foreach (var row in stream)
+        {
+            Assert.True(list.Remove(row));
+        }
+        
+        Assert.Empty(list);
+    }
+
+    [Fact]
+    public void Can_Enumerate_Boxed_Inherited()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold").Add(1);
+        var dolph = world.Spawn().Add("Dolph").Add(2);
+        
+        List<object> list = [(arnold, "Arnold", 1), (dolph, "Dolph", 2)];
+        
+        IEnumerable stream = world.Stream<string, int>();
         foreach (var row in stream)
         {
             Assert.True(list.Remove(row));

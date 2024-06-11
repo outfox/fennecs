@@ -300,6 +300,9 @@ public record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match 
         }
     }
 
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
     #endregion
 
 
