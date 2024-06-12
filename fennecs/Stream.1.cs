@@ -27,6 +27,16 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <returns>fluent builder</returns>
     public Batch Batch() => Query.Batch();
     
+    /// <inheritdoc cref="fennecs.Query.Batch()"/>
+    public Batch Batch(Batch.AddConflict add) => Query.Batch(add);
+    
+    /// <inheritdoc cref="fennecs.Query.Batch()"/>
+    public Batch Batch(Batch.RemoveConflict remove) => Query.Batch(remove);
+
+    /// <inheritdoc cref="fennecs.Query.Batch()"/>
+    public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => Query.Batch(add, remove);
+    
+    
     /// <summary>
     /// The number of entities that match the underlying Query.
     /// </summary>
@@ -404,5 +414,4 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion
-
 }
