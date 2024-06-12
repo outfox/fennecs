@@ -11,21 +11,24 @@ It's designed to be easy to use, with minimal boilerplate and no code generation
 Here's a simple example to get you started:
 
 ```csharp
-// Create a world
+// Declare a component record. (we can also use most existing value & reference types)
+record struct Velocity(Vector3 Value);
+
+// Create a world. (fyi, World implements IDisposable)
 var world = new fennecs.World();
 
-// Spawn an entity with a Position component
-var entity = world.Spawn().Add<Vector3>();
+// Spawn an entity into the world with a choice of components. (or add/remove them later)
+var entity = world.Spawn().Add<Velocity>();
 
-// Create a query to update positions
-var query = world.Query<Vector3>().Stream();
+// Queries are cached & we use ultra-lightweight Stream Views to feed data to our code!
+var stream = world.Query<Velocity>().Stream();
 
-// Run the query
+// Run code on all entities in the query. (exchange 'For' with 'Job' for parallel processing)
 stream.For(
-    uniform: Time.deltaTime,
-    action: static (float dt, ref Vector3 position) => 
+    uniform: DeltaTime * 9.81f * Vector3.UnitZ,
+    static (Vector3 uniform, ref Velocity velocity) =>
     {
-        pos.Y -= 9.81f * dt;
+        velocity.Value -= uniform;
     }
 );
 ```

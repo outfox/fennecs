@@ -48,8 +48,8 @@ Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
 
 ```csharp
-// Declare your own component types. (you can also use most existing value or reference types)
-using Velocity = System.Numerics.Vector3;
+// Declare a component record. (we can also use most existing value & reference types)
+record struct Velocity(Vector3 Value);
 
 // Create a world. (fyi, World implements IDisposable)
 var world = new fennecs.World();
@@ -57,14 +57,17 @@ var world = new fennecs.World();
 // Spawn an entity into the world with a choice of components. (or add/remove them later)
 var entity = world.Spawn().Add<Velocity>();
 
-// Queries are cached, just build them right where you want to use them.
-var query = world.Query<Velocity>().Compile();
+// Queries are cached & we use ultra-lightweight Stream Views to feed data to our code!
+var stream = world.Query<Velocity>().Stream();
 
 // Run code on all entities in the query. (exchange 'For' with 'Job' for parallel processing)
-query.For(uniform: Time.Delta * 9.81f,
-    static (float uniform, ref Velocity velocity) => {
-    velocity.Y -= uniform;
-});
+stream.For(
+    uniform: DeltaTime * 9.81f * Vector3.UnitZ,
+    static (Vector3 uniform, ref Velocity velocity) =>
+    {
+        velocity.Value -= uniform;
+    }
+);
 ```
 
 #### 💢... when we said minimal boilerplate, <em>we meant it.</em>

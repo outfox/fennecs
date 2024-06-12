@@ -59,6 +59,10 @@ A set of specific or user-defined Interfaces that Component Types can "implement
 - `World.SetGarbageCollectionStrategy<I>` to set the strategy for a given Interface.
 :::
 
+::: details `0.6.0+` Arithmetic SIMD Methods
+A set of specific methods to allow for SIMD-accelerated arithmetic operations on Component data.
+:::
+
 ::: details `0.5.0+` Dog Fooding Phase + Enhanced Beta
 - systematic internal and external beta testing
 - using the library in a [real-world project](https://jupiter.blue)
@@ -70,8 +74,9 @@ A set of specific or user-defined Interfaces that Component Types can "implement
 
 
 
-### Q2 2024
-::: details `0.1.x` ... `0.4.x` Fundamental Beta & Feedback Phase
+### ~~Q2 2024~~
+::: details `0.1.x` ... `0.4.x` ~~Fundamental Beta & Feedback Phase~~
+
 - feedback acquisition & experimentation
 - API stabilization
 - submission to various game dev communities for feedback
@@ -79,6 +84,7 @@ A set of specific or user-defined Interfaces that Component Types can "implement
 - performance testing and optimization
 - 3rd party benchmarking (e.g. [Doraku's Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark))
 :::
+
 
 ### ~~Q1 2024~~
 ::: details `0.1.0` ~~Prerelease and First Beta~~
