@@ -1,5 +1,6 @@
 ---
 title: Roadmap
+order: 3
 ---
 
 ![a stylized fennec fox looking at an endless horizon](https://fennecs.tech/img/fennec-roadmap.png)

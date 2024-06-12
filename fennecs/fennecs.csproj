@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.5.5-beta</Version>
+        <Version>0.5.6-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -15,7 +15,7 @@
         <RepositoryUrl>https://github.com/outfox/fennecs</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
         <PackageReadmeFile>./nuget.md</PackageReadmeFile>
-        <PackageReleaseNotes>https://fennecs.tech/misc/Changelog.html</PackageReleaseNotes>
+        <PackageReleaseNotes>https://fennecs.tech/misc/ReleaseNotes.html</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ecs, entity, component, system, game, gamedev, game-development, godot, monogame, flax, stride, entity-component, entity-component-system</PackageTags>
         <TargetFramework>net8.0</TargetFramework>

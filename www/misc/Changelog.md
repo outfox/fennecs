@@ -1,9 +1,21 @@
-﻿# Change Log
+﻿---
+title: Release Notes
+order: 2
+outline: [2,2]
+
+---
+
+![a stylized fox shattering red and green polygons surrounded by source code](https://fennecs.tech/img/fennec-changelog.png)
+
+# Release Notes
 > [!CAUTION] BETA NOTICE
 > **fenn**ecs will remain in Beta until version 1.0.0, which is expected in Q4 2024. Breaking API changes as well as bugs are likely to occur without warning in these beta builds. 
 > You are nonetheless encouraged to try **fenn**ecs out, play around and experiment with the package freely; our resident foxes aim to keep it it as useful and stable as possible! Please report issues and feedback on the [GitHub Issues](https://github.com/outfox/fennecs/issues) board.
 
-## Release 0.5.5
+## UPCOMING 0.5.6-beta
+...
+
+## Release 0.5.5-beta
 - `/www/misc/Changelog.md` added 🦊
 - `IBatch` renamed to `IBatchBegin`, since it is not the "Batch" itself, just the ability to create (begin) batches.
 -  `IBatchBegin` now has all the overloads with AddConflict and RemoveConflict parameters formerly only available in `Query`, and thus are now available in `Stream<>`.
@@ -62,7 +74,7 @@ public readonly record struct Component
 * Streams can no longer be warmed up (`Stream.Warmup()`) (like queries used to - this is an oversight). This results in one or several one-time 40 byte allocations to show up in BenchmarkDotNet output.
 
 
-## Releases 0.5.0 ... 0.5.4-beta - enhanced beta & dog-fooding begins
+## Release 0.5.4-beta
 - `Stream<>` is a lightweight View that can be created for any Query, and is what wraps zip_view-like enumeration and iteration over the Query (especiall `For`, `Job`, and `Raw`)
 - `Stream<...>` is `IEnumerable<ValueTuple<Entity, ...>>`, which is great for Unit Testing and simple, read-only enumeration of Queries.
 - `Stream<C1, C2, ...>` expose all the runner functions from `Stream<C1, C2>` and `Stream<C1>`.
@@ -80,5 +92,19 @@ public readonly record struct Component
 - `Entity.Ref<C>` in these versions is impossible to invoke with certain type parameters.
 
 
-## Releases 0.1.0 ... 0.4.5 - early betas and experiments
-- Initial Beta Releases
+
+## Legacy Releases
+#### Release 0.5.3-beta
+#### Release 0.5.2-beta
+#### Release 0.5.0-beta
+#### Release 0.4.6-beta
+#### Release 0.4.5-beta
+#### Release 0.4.2-beta
+#### Release 0.4.0-beta
+#### Release 0.3.5-beta
+#### Release 0.2.0-beta
+#### Release 0.1.1-beta
+#### Release 0.1.0-beta
+#### Release 0.0.3-pre
+#### Release 0.0.1-pre
+
