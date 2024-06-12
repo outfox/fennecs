@@ -200,6 +200,36 @@ public class Stream1Tests(ITestOutputHelper output)
     }
 
     [Fact]
+    public void Streams_Can_Batch_With_params1()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add("jason");
+
+        var stream = world.Query<string>(Match.Any).Stream();
+
+        Assert.True(entity.Has<string>());
+        stream.Batch(Batch.AddConflict.Replace).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        Assert.Empty(world.Query<string>().Compile());
+    }
+
+    [Fact]
+    public void Streams_Can_Batch_With_params2()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add("jason");
+
+        var stream = world.Query<string>(Match.Any).Stream();
+
+        Assert.True(entity.Has<string>());
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        Assert.Empty(world.Query<string>().Compile());
+    }
+
+    [Fact]
     public void Streams_Can_Despawn()
     {
         using var world = new World();

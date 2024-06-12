@@ -20,7 +20,7 @@ public partial class World : IDisposable
         /// <summary>
         /// Flags denoting this World's Garbage Collection Strategy.
         /// </summary>
-        public GCAction GCBehaviour { get; set; } = GCAction.DefaultBeta;
+        public GCAction GCBehaviour { get; init; } = GCAction.DefaultBeta;
     #endregion
     
     /// <summary>

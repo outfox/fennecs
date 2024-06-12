@@ -95,7 +95,7 @@ public interface IHasComponent
 /// <summary>
 /// Objects of this type can perform Batch operations on entities or sets of entities.
 /// </summary>
-public interface IBatch
+public interface IBatchBegin
 {
     /// <summary>
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.

@@ -17,7 +17,7 @@ namespace fennecs;
 ///         See <see cref="Stream{C}" /> Views with configurable output Stream Types for fast iteration.
 ///     </para>
 /// </summary>
-public partial class Query : IEnumerable<Entity>, IDisposable, IBatch
+public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
 {
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.

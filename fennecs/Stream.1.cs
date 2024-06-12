@@ -11,7 +11,7 @@ namespace fennecs;
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>, IBatch 
+public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>, IBatchBegin 
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
