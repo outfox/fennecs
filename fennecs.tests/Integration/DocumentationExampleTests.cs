@@ -15,18 +15,16 @@ public class DocumentationExampleTests
 
         var query = world.Query<Position>(Match.Plain).Stream();
 
-        const float MULTIPLIER = 10f;
+        const float multiplier = 10f;
         
-        query.Job(MULTIPLIER,(float uniform, ref Position pos) => { pos.Value *= uniform; });
+        query.Job(multiplier,(float uniform, ref Position pos) => { pos.Value *= uniform; });
 
         var pos1 = world.GetComponent<Position>(entity1, Match.Plain);
-        var expected = new Position(pos1.Value * MULTIPLIER);
+        var expected = new Position(pos1.Value * multiplier);
         Assert.Equal(expected, pos1);
 
         var pos2 = world.GetComponent<Position>(entity2, Match.Plain);
-        expected = new Position( new Vector3(1, 2, 3) * MULTIPLIER);
+        expected = new Position( new Vector3(1, 2, 3) * multiplier);
         Assert.Equal(expected, pos2);
     }
-
-    private struct TypeA;
 }
