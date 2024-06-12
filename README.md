@@ -48,7 +48,6 @@ Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
 
 ```cs
-{
 // Declare a component record. (we can also use most existing value & reference types)
 record struct Velocity(Vector3 Value);
 
@@ -69,7 +68,6 @@ stream.For(
         velocity.Value -= uniform;
     }
 );
-}
 ```
 
 #### 💢... when we said minimal boilerplate, <em>we meant it.</em>

@@ -17,7 +17,7 @@ Can't wait? Try **fenn**ecs for yourself as you flip through the courses of our 
 
 ::: code-group
 ```cs [🦊 1, 2, 3 - gravity!]
-var stream = world.Query<Vector3>().Stream();
+var stream = world.Stream<Vector3>();
 
 stream.For(
     uniform: Time.Delta, 
@@ -29,7 +29,7 @@ stream.For(
 ```
 
 ```cs [(tighter in OTBS)]
-var stream = world.Query<Vector3>().Stream();
+var stream = world.Stream<Vector3>();
 
 stream.For(Time.Delta, (float dt, ref Vector3 velocity) => {
       velocity.Y -= 9.81f * dt;
