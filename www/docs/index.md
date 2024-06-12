@@ -54,5 +54,5 @@ The **[Demos](/examples/index)** category has concrete examples for a growing li
 
 
 ::: info :neofox_pat_floof: THE REST
-The **Misc** section contains our [Glossary](/misc/Glossary.md) of terms and a few [heartfelt words of thanks.](/misc/Acknowledgements.md), and anything else that didn't fit elsewhere. Like our [Roadmap](/misc/Roadmap.md)!
+The **Misc** section contains our [Glossary](/misc/Glossary.md) of terms and a few [heartfelt words of thanks.](/misc/Acknowledgements.md), and anything else that didn't fit elsewhere. Like our [Roadmap](/misc/Roadmap.md) and [Changelog](/misc/Changelog.md)!
 :::

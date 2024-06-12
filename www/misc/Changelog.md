@@ -1,13 +1,11 @@
-﻿# Changelog: **fenn**ecs Entity-Component System 
-
-## BETA NOTICE
-> [!CAUTION]
-> **fenn*ecs will remain in Beta until version 1.0.0, which is expected in Q4 2024. Breaking API changes as well as bugs are expected to occur without warning in these beta builds. 
-> You are still encouraged to report issues and experiment with the package freely; our resident foxes aim to keep it it as useful and stable as possible.
+﻿# Change Log
+> [!CAUTION] BETA NOTICE
+> **fenn**ecs will remain in Beta until version 1.0.0, which is expected in Q4 2024. Breaking API changes as well as bugs are likely to occur without warning in these beta builds. 
+> You are nonetheless encouraged to try **fenn**ecs out, play around and experiment with the package freely; our resident foxes aim to keep it it as useful and stable as possible! Please report issues and feedback on the [GitHub Issues](https://github.com/outfox/fennecs/issues) board.
 
 ## Release 0.5.5
-- `changelog.md` added 🦊
-- `IBatch` renamed to `IBatchBegin`, becuase it is not the "Batch" itself, just the ability to start batches.
+- `/www/misc/Changelog.md` added 🦊
+- `IBatch` renamed to `IBatchBegin`, since it is not the "Batch" itself, just the ability to create (begin) batches.
 -  `IBatchBegin` now has all the overloads with AddConflict and RemoveConflict parameters formerly only available in `Query`, and thus are now available in `Stream<>`.
 ```csharp
 public interface IBatchBegin

@@ -15,7 +15,7 @@
         <RepositoryUrl>https://github.com/outfox/fennecs</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
         <PackageReadmeFile>./nuget.md</PackageReadmeFile>
-        <PackageReleaseNotes>BETA VERSION</PackageReleaseNotes>
+        <PackageReleaseNotes>https://fennecs.tech/misc/Changelog.html</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ecs, entity, component, system, game, gamedev, game-development, godot, monogame, flax, stride, entity-component, entity-component-system</PackageTags>
         <TargetFramework>net8.0</TargetFramework>
@@ -51,7 +51,6 @@
 
     <ItemGroup>
         <None Include="../www/nuget.md" Pack="true" PackagePath="\"/>
-        <None Include="../www/changelog.md" Pack="true" PackagePath="\"/>
         <None Include="../www/logos/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>
