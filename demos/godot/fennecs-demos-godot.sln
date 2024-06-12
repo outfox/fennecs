@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs-demos-godot", "fennecs-demos-godot.csproj", "{A16C8C96-2629-470D-AEE5-B307EFA809ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs.demos.godott", "fennecs.demos.godot.csproj", "{A16C8C96-2629-470D-AEE5-B307EFA809ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
