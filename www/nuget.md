@@ -10,7 +10,7 @@ It's designed to be easy to use, with minimal boilerplate and no code generation
 
 Here's a simple example to get you started:
 
-```csharp
+```cs
 // Declare a component record. (we can also use most existing value & reference types)
 record struct Velocity(Vector3 Value);
 
