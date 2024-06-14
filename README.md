@@ -5,7 +5,7 @@
 <table style="width: 100%">
    <tr>
       <th colspan="2">
-         <a href="https://discord.gg/3SF4gWhANS"><img alt="Discord" src="(https://img.shields.io/badge/Discord-_%E2%A4%9Coutfox%E2%A4%8F-284AAF?style=for-the-badge&logo=discord&logoColor=f5f5f5"/></a>
+         <a href="https://discord.gg/3SF4gWhANS"><img alt="Discord" src="https://img.shields.io/badge/Discord-_%E2%A4%9Coutfox%E2%A4%8F-284AAF?style=for-the-badge&logo=discord&logoColor=f5f5f5"/></a>
          <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
          <a href="https://github.com/outfox/fennecs/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/outfox/fennecs/xUnit.yml"/></a>
          <a href="https://github.com/outfox/fennecs/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/outfox/fennecs?color=green"/></a>
