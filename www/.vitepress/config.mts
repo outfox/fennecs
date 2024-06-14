@@ -49,7 +49,7 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Documentation', link: '/docs/index' },
-      { text: 'Examples', link: '/examples/index' },
+      { text: 'Discord', link: 'https://discord.gg/Bfx74WcVXW' },
     ],
 
     footer: {
