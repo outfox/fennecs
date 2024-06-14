@@ -17,6 +17,10 @@ public class DocumentationExampleTests
 
         const float multiplier = 10f;
         
+        foreach ((Entity, Position p) item in query)
+        {
+        }
+        
         query.Job(multiplier,(float uniform, ref Position pos) => { pos.Value *= uniform; });
 
         var pos1 = world.GetComponent<Position>(entity1, Match.Plain);

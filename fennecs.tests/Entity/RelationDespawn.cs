@@ -43,7 +43,7 @@ public class RelationDespawn
             Assert.False(subject.Has<int>(target));
         }
     }
-/*
+
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
@@ -51,7 +51,7 @@ public class RelationDespawn
     [InlineData(10)]
     [InlineData(69)]
     [InlineData(200)]
-    public void DespawningInSelfReferencedArchetypeIsPossible(int relations)
+    public void DespawningBulkInSelfReferencedArchetypeIsPossible(int relations)
     {
         using var world = new World();
         
@@ -66,7 +66,7 @@ public class RelationDespawn
         // Create a bunch of self-referential relations
         foreach (var subject in subjects)
         {
-            subject.Add(rnd.Next(), Relate.To(subject));
+            subject.Add(rnd.Next(), subject);
         }
 
         var query = world.Query<int>(Match.Entity).Compile();
@@ -76,5 +76,42 @@ public class RelationDespawn
 
         Assert.Equal(relations/2, query.Count);
     }
-  */  
+   
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(10)]
+    [InlineData(69)]
+    [InlineData(200)]
+    public void DespawningSingleInSelfReferencedArchetypeIsPossible(int relations)
+    {
+        using var world = new World();
+        
+        var subjects = new List<Entity>();
+        var rnd = new Random(1234 + relations);
+        
+        for (var i = 0; i < relations; i++)
+        {
+            subjects.Add(world.Spawn());
+        }
+
+        // Create a bunch of self-referential relations
+        foreach (var subject in subjects)
+        {
+            subject.Add(rnd.Next(), subject);
+        }
+
+        var query = world.Query<int>(Match.Entity).Compile();
+        Assert.Equal(relations, query.Count);
+        
+        // Create a bunch of self-referential relations
+        foreach (var subject in subjects)
+        {
+            subject.Despawn();
+        }
+        
+        Assert.Equal(relations/2, query.Count);
+    }
+   
 }
