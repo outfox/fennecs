@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace fennecs.tests;
+﻿namespace fennecs.tests;
 
 public class RelationDespawn
 {
@@ -64,9 +62,9 @@ public class RelationDespawn
         }
 
         // Create a bunch of self-referential relations
-        foreach (var subject in subjects)
+        foreach (var self in subjects)
         {
-            subject.Add(rnd.Next(), subject);
+            self.Add(rnd.Next(), self);
         }
 
         var query = world.Query<int>(Match.Entity).Compile();
@@ -97,9 +95,9 @@ public class RelationDespawn
         }
 
         // Create a bunch of self-referential relations
-        foreach (var subject in subjects)
+        foreach (var self in subjects)
         {
-            subject.Add(rnd.Next(), subject);
+            self.Add(rnd.Next(), self);
         }
 
         var query = world.Query<int>(Match.Entity).Compile();
