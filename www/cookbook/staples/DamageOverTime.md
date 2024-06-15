@@ -50,12 +50,15 @@ var vampireHealth = world.Query<Health>().Has<Vampirism>().Stream();
 
 // We use an EntityAction to apply the damage and also queue the
 // structural change - in this case, full despawn of the Vampire
-vampireHealth.For(static (Entity vampire, ref Health health, float sunBurn) => 
-{   
-    health.Value -= sunBurn;
-    if (health.Value <= 0) vampire.Despawn();
-    // give it ~10 seconds and your humans will be safe    
-}, uniform: Time.deltaTime * sunIntensity);
+vampireHealth.For(
+    uniform: Time.deltaTime * sunIntensity
+    static (float sunBurn, Entity vampire, ref Health health) => 
+    {   
+        health.Value -= sunBurn;
+        if (health.Value <= 0) vampire.Despawn();
+        // give it ~10 seconds and your humans will be safe    
+    }
+);
 ```
 
 This query finds all entities that have both a `Vampire` and a `Health` component, and applies damage to their health based on the intensity of the sun.
