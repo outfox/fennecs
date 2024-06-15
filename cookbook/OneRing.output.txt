@@ -1,0 +1,59 @@
+E-00000001:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its elven bearer - True!
+E-00000002:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its elven bearer - True!
+E-00000003:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its elven bearer - True!
+E-00000004:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its dwarven bearer - True!
+E-00000005:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its dwarven bearer - True!
+E-00000006:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its dwarven bearer - True!
+E-00000007:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its dwarven bearer - True!
+E-00000008:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its dwarven bearer - True!
+E-00000009:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its dwarven bearer - True!
+E-0000000a:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its dwarven bearer - True!
+E-0000000b:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+E-0000000c:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+E-0000000d:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+E-0000000e:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+E-0000000f:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+E-00000010:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+E-00000011:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+E-00000012:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+E-00000013:00001 <fennecs.Identity>
+  |-<RingBearer>
+  |-<OneRing> >> O-<OneRing>#0202C666 has corrupted its human bearer - True!
+
+Directed by: Peter Foxen

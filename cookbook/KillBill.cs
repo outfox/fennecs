@@ -4,6 +4,7 @@ using fennecs;
 
 if (!Console.IsOutputRedirected) Console.Clear();
 Console.WriteLine("Directed by: Trentin Quarantino");
+var random = new Random(2003);
 
 // The world is a stage. 
 var world = new World();
@@ -36,7 +37,7 @@ Console.WriteLine($"As we said, there were {betrayingVipers.Count} of them.");
 // They went into hiding around the world.
 betrayingVipers.For((ref Location location) =>
 {
-    location = $"hideout 0x{Random.Shared.Next():x8}";
+    location = $"hideout 0x{random.Next():x8}";
     Console.WriteLine($"One hides in {location}.");
 });
 

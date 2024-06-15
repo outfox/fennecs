@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <UseCommonOutputDirectory>false</UseCommonOutputDirectory>
+        <IntermediateOutputPath>obj\onering</IntermediateOutputPath>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="OneRing.cs"/>
+        <Compile Include="GlobalUsings.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\fennecs\fennecs.csproj"/>
+    </ItemGroup>
+
+</Project>
