@@ -154,40 +154,40 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 // Job: ShortRun(IterationCount=3, LaunchCount=1, WarmupCount=3)
 ```
 
-| ECS & Method | Duration (µs)<br/>**(less is better)** |
+| ECS & Method | Duration<br/>**(less=better)** |
 | ---------- | ----------:|
-| 🦊 fennecs(AVX2) | 10.43  |
-| 🦊 fennecs(SSE2) | 11.41  |
-| FrifloEngineEcs_MultiThread | 13.45  |
-| FrifloEngineEcs_SIMD_MonoThread | 16.92  |
-| TinyEcs_EachJob | 20.51  |
-| Myriad_MultiThreadChunk | 20.73  |
-| TinyEcs_Each | 40.84  |
-| FrifloEngineEcs_MonoThread | 43.41  |
-| HypEcs_MonoThread | 43.86  |
-| 🦊 fennecs(Raw) | 46.36  |
-| HypEcs_MultiThread | 46.8  |
-| Myriad_SingleThreadChunk | 48.56  |
-| Arch_MonoThread | 51.08  |
-| Myriad_SingleThread | 55.65  |
-| 🦊 fennecs(For) | 56.32  |
-| Arch_MultiThread | 59.84  |
-| FlecsNet_Iter | 77.47  |
-| 🦊 fennecs(Job) | 97.7  |
-| DefaultEcs_MultiThread | 102.37  |
-| Myriad_Delegate | 109.31  |
-| Arch_MonoThread_SourceGenerated | 134.12  |
-| DefaultEcs_MonoThread | 142.35  |
-| LeopotamEcs | 181.76  |
-| FlecsNet_Each | 212.61  |
-| LeopotamEcsLite | 230.5  |
-| Myriad_Enumerable | 245.76  |
-| RelEcs | 250.93  |
-| SveltoECS | 322.3  |
-| MonoGameExtended | 387.12  |
-| Morpeh_Stash | 992.62  |
-| Myriad_MultiThread | 1115.44  |
-| Morpeh_Direct | 2465.25  |
+| 🦊 fennecs(AVX2) | 10.43 µs |
+| 🦊 fennecs(SSE2) | 11.41 µs |
+| FrifloEngineEcs_MultiThread | 13.45 µs |
+| FrifloEngineEcs_SIMD_MonoThread | 16.92 µs |
+| TinyEcs_EachJob | 20.51 µs |
+| Myriad_MultiThreadChunk | 20.73 µs |
+| TinyEcs_Each | 40.84 µs |
+| FrifloEngineEcs_MonoThread | 43.41 µs |
+| HypEcs_MonoThread | 43.86 µs |
+| 🦊 fennecs(Raw) | 46.36 µs |
+| HypEcs_MultiThread | 46.8 µs |
+| Myriad_SingleThreadChunk | 48.56 µs |
+| Arch_MonoThread | 51.08 µs |
+| Myriad_SingleThread | 55.65 µs |
+| 🦊 fennecs(For) | 56.32 µs |
+| Arch_MultiThread | 59.84 µs |
+| FlecsNet_Iter | 77.47 µs |
+| 🦊 fennecs(Job) | 97.7 µs |
+| DefaultEcs_MultiThread | 102.37 µs |
+| Myriad_Delegate | 109.31 µs |
+| Arch_MonoThread_SourceGenerated | 134.12 µs |
+| DefaultEcs_MonoThread | 142.35 µs |
+| LeopotamEcs | 181.76 µs |
+| FlecsNet_Each | 212.61 µs |
+| LeopotamEcsLite | 230.5 µs |
+| Myriad_Enumerable | 245.76 µs |
+| RelEcs | 250.93 µs |
+| SveltoECS | 322.3 µs |
+| MonoGameExtended | 387.12 µs |
+| Morpeh_Stash | 992.62 µs |
+| Myriad_MultiThread | 1115.44 µs |
+| Morpeh_Direct | 2465.25 µs |
 
 
 ------------------------
