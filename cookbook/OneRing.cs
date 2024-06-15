@@ -20,13 +20,13 @@ world.Entity() //Nine for Mortal Men doomed to die...
     .Spawn(9);
 
 // Use our Palantir to find all Rings linked to the One Ring
-var linkedRings = world
+var ringsOfPower = world
     .Query<RingBearer, OneRing>(Match.Plain, Link.Any)
     .Has(Link.With(OneRing.Instance)) // and in the darkness bind them.
     .Stream();
 
 // Use the Query to corrupt the Ring Bearers
-linkedRings.For((Entity ring, ref RingBearer bearer, ref OneRing link) =>
+ringsOfPower.For((Entity ring, ref RingBearer bearer, ref OneRing link) =>
 {
     bearer = bearer with { corrupted = true };
     link.CallOut(ring, bearer);  // it calls out to its master!
