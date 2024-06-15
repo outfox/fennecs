@@ -158,7 +158,7 @@ Another optimization pass for **fenn**ecs is [on the Roadmap](https://fennecs.te
 | Myriad_SingleThreadChunk | 48.56 µs |    |
 | Arch_MonoThread | 51.08 µs |    |
 | Myriad_SingleThread | 55.65 µs |    |
-| 🦊 fennecs(For) | 56.32 µs | typical bread & butter C# workload  |
+| 🦊 fennecs(For) | 56.32 µs | your typical bread & butter workload  |
 | Arch_MultiThread | 59.84 µs |    |
 | FlecsNet_Iter | 77.47 µs |    |
 | 🦊 fennecs(Job) | 97.70 µs | unoptimized in beta, ineffective <1M entities |
