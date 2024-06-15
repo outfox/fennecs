@@ -83,8 +83,10 @@ It shares many properties (including strengths and weaknesses) with other ECS of
 
 By grouping Entities into Archetypes, the ECS (and by extension the CPU) can process them very efficiently. The system ensures that Entities with the same Components are stored tightly packed together in memory, which is a key factor in achieving high performance.  
 
-:neofox_packed: :neofox_packed: :neofox_packed:
+:neofox_packed_blue: :neofox_packed: :neofox_packed_green:
 
 This means that in large projects, there's a performance incentive to make frequently processed Archetypes either rare (e.g. aim for just a few dozen small ones), or chunky and large (e.g. 10k entities for a start, or even more).
 
-There's no practical limit to Archetypes and their sizes. Archetypes can get Compacted or Removed by the World's Garbage Collector. this is especially true for Archetypes of Relation Targets when the Target despawns - because that Archetype is extremely unlikely to ever get any Entities.
+There's no practical limit to Archetypes and their sizes. Archetypes can get Compacted or Removed by the World's Garbage Collector. 
+
+This is especially true for Archetypes of Relation Targets when the Target despawns - because that Archetype is extremely unlikely to ever get ~~lucky~~ any Entities again.
