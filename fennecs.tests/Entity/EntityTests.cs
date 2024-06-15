@@ -168,8 +168,8 @@ public class EntityTests(ITestOutputHelper output)
         Assert.True(entity.Has<int>(Match.Plain));
         Assert.True(entity.Has<int>(Match.Any));
 
-        Assert.False(entity.Has<int>(Match.Entity));
-        Assert.False(entity.Has<int>(Match.Object));
+        Assert.False(entity.Has<int>(Entity.Any));
+        Assert.False(entity.Has<int>(Link.Any));
         Assert.False(entity.Has<int>(Match.Target));
 
         Assert.False(entity.Has<float>(Match.Any));
@@ -187,6 +187,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.True(entity.Has<string>("hello world"));
         Assert.True(entity.Has<string>(Match.Any));
         Assert.True(entity.Has<string>(Match.Object));
+        Assert.True(entity.Has<string>(Link.Any));
         Assert.True(entity.Has<string>(Match.Target));
 
         Assert.False(entity.Has<string>("goodbye world"));
