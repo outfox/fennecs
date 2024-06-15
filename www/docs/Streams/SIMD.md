@@ -74,6 +74,6 @@ But because Jobs execute in non-deterministic order, you will not be able to Bli
 
 
 ::: tip QUAD :neofox_glasses: WORD :neofox_glasses: QUAD :neofox_glasses: NERD :neofox_glasses: HACK
-Psst... until then, you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](Stream.Raw.md#examples). And since we like to live fast and foxy, try the new extension types in C# 13 for that!
+Psst... until then, you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](Stream.Raw.md#realistic-examples). And since we like to live fast and foxy, try the new extension types in C# 13 for that!
 :::
 
