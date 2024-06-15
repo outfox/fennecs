@@ -142,7 +142,7 @@ well; and things it may aspire to do but compromised on in order to be able to a
 
 Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU without even customizing your logic.
 
-Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs scores among the fastest ECS in the benchmark suite. *(link goes to PR #36 to reproduce)*
+Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs scores among the faster ECS in the benchmark suite. *(link goes to PR #36 to reproduce)*
 
 ```
 Benchmark: SystemWithTwoComponentsMultipleComposition
@@ -171,7 +171,7 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 | Myriad_SingleThreadChunk | 48.56 µs |    |
 | Arch_MonoThread | 51.08 µs |    |
 | Myriad_SingleThread | 55.65 µs |    |
-| 🦊 fennecs(For) | 56.32 µs | typical C# workload  |
+| 🦊 fennecs(For) | 56.32 µs | typical everyday C# workload  |
 | Arch_MultiThread | 59.84 µs |    |
 | FlecsNet_Iter | 77.47 µs |    |
 | 🦊 fennecs(Job) | 97.70 µs | unoptimized beta, ineffective <1M entities |
