@@ -4,7 +4,7 @@ outline: [2, 3]
 order: 6
 ---
 
-#  One Ring to Rule Them All
+#  One Ring to Find Them
 
 ### Premise
 In this example, we'll recreate the forging of the Rings of Power in the Land of Mordor, as told in the legendary story. We'll use fennecs' Object Link system to model the binding relationship between the One Ring and the other Rings it rules.

@@ -4,8 +4,6 @@ if (!Console.IsOutputRedirected) Console.Clear();
 
 var world = new World();
 
-//But they were, all of them, deceived, for another ring was made!
-
 // Three Rings for the Elven-kings under the sky,
 world.Entity()
     .Add(new RingBearer("elven"))
@@ -47,10 +45,10 @@ Console.WriteLine("Directed by: Peter Foxen");
 // The Ring Bearer component represents the owner of a Ring of Power.
 internal record struct RingBearer(string race, bool corrupted = false);
 
-// The Ring Power represents the magical binding power of the One Ring.
+//But they were, all of them, deceived, for another ring was made!
 internal class OneRing
 {
-    // Of course it's a singleton! It's coming straight out of Mordor!
+    // Of course it's a singleton! It's straight out of Mordor!
     public static readonly OneRing Instance = new();
 
     private OneRing() { }
