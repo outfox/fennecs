@@ -12,6 +12,11 @@ public static class Link
     /// <param name="target">the object</param>
     /// <typeparam name="T">type of the object</typeparam>
     public static Link<T> With<T>(T target) where T : class => Link<T>.With(target);
+
+    /// <summary>
+    /// Match Expressiont to match Any Object Link.
+    /// </summary>
+    public static Match Any => Match.Object;
 }
 
 

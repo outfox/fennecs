@@ -58,7 +58,7 @@ An Identity is a 64-bit number. When associated with a World, the majority of Id
 
 ## Structural Changes
 
-Changes to the layout of Entities - meaning which Components, Links, or Relations they have - define which [Archetype](/docs/Components/index.md#archetype) they falls into. 
+Changes to the layout of Entities - meaning which Components, Links, or Relations they have - define which [Archetype](/docs/Components/index.md#archetypes) they falls into. 
 
 ### Each of these constitutes a structural change:
  - Adding a Component, Link, or Relation

@@ -16,7 +16,7 @@ But despawning the Target of one or more Relations <u>will remove</u> these Rela
 
 Relations can be backed by any type (reference or value types). The backing data is only shared if the component is a [shared component](Shareables.md) itself.
 
-The target of a relation must be [Alive](/docs/Entities/CRUD.md#liveness).
+The target of a relation must be [Alive](/docs/Entities/Liveness.md).
 
 ## Creating & Removing Relations
 Any Component can be backing a Relation.
@@ -78,7 +78,7 @@ var entitiesThatAreDebtFree = world
     .Not<Owes>(Entity.Any)
     .Compile();
 
-// Specific target, specific exclusion, stream filter
+// Wildcard target, specific exclusion, stream filter
 var entitiesOwingAnyoneExceptEve = world
     .Query<Owes>(Entity.Any)
     .Stream() with // do this on-the-fly where needed

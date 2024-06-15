@@ -30,7 +30,7 @@ This matching is done by Component types and targets (presence or absence).
 You provide logic in [Runner Delegates](Streams/Delegates.md) which are executed on a [single](Streams/Stream.For.md) or [multiple](Streams/Stream.Job.md) threads.
 
 ### Component data is always kept contiguous* in Memory.
-Structurally similar Entities are packed into [Archetypes](/docs/Components/index.md#archetype) for improved [cache locality](https://en.wikipedia.org/wiki/Locality_of_reference).
+Structurally similar Entities are packed into [Archetypes](/docs/Components/index.md#archetypes) for improved [cache locality](https://en.wikipedia.org/wiki/Locality_of_reference).
 
 <sub>\* *per Archetype*</sub>
 
