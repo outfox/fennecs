@@ -174,7 +174,7 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 | 🦊 fennecs(For) | 56.32 µs | typical C# workload  |
 | Arch_MultiThread | 59.84 µs |    |
 | FlecsNet_Iter | 77.47 µs |    |
-| 🦊 fennecs(Job) | 97.70 µs | beta job pay-off starts >1M entities (unoptimized) |
+| 🦊 fennecs(Job) | 97.70 µs | unoptimized beta, ineffective <1M entities |
 | DefaultEcs_MultiThread | 102.37 µs |    |
 | Myriad_Delegate | 109.31 µs |    |
 | Arch_MonoThread_SourceGenerated | 134.12 µs |    |
