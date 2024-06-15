@@ -140,28 +140,44 @@ well; and things it may aspire to do but compromised on in order to be able to a
 
 ## ⏩ Nimble: _**fenn**ecs_ benchmarks
 
-Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU.
+Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU without even writing custom code.
 
-We worked hard to minimize allocations, and if using static anonymous methods or delegates, even with uniform parameters, the ECS iterates Entities allocation-free.
+Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs is currently the fastest ECS in the benchmark suite.
 
-_**fenn**ecs_ provides a variety of ways to iterate over and modify components, to offer a good balance of control and elegance without compromising too much. 
-
-Here are some raw results from our WIP benchmark suite, from the Vector3 operations parts, better ones soon.
-(don't @ us)
-
-> Example: Allocation-free enumeration of a million entities with a System.Numerics.Vector3 component, calculating a cross product against a uniform value, and writing the result back to memory. Processing methods included parallel jobs with different batch/chunk sizes and single threaded runs.
-
-
-| Method     | entities  | chunk | Mean       | StdDev    | Jobs | Contention | Alloc |
-|----------- |-----------|------:|-----------:|----------:|-----:|-----------:|------:|
-| Cross_JobU | 1_000_000 | 32768 |   349.9 us |   1.53 us |    32|     0.0029 |     - |
-| Cross_JobU | 1_000_000 | 16384 |   350.5 us |   5.82 us |    64|     0.0005 |     - |
-| Cross_JobU | 1_000_000 | 4096  |   356.1 us |   1.78 us |   248|     0.0083 |     - |
-| Cross_Job  | 1_000_000 | 4096  |   371.7 us |  15.36 us |   248|     0.0103 |     - |
-| Cross_Job  | 1_000_000 | 32768 |   381.6 us |   4.22 us |    32|          - |     - |
-| Cross_Job  | 1_000_000 | 16384 |   405.2 us |   4.56 us |    64|     0.0039 |     - |
-| Cross_RunU | 1_000_000 |     - | 1,268.4 us |  44.76 us |    - |          - |   1 B |
-| Cross_Run  | 1_000_000 |     - | 1,827.0 us |  16.76 us |    - |          - |   1 B |
+| ECS Method | Duration (µs) |
+| ---------- | ---------- |
+| fennecs(AVX2) | 10.43  |
+| fennecs(SSE2) | 11.41  |
+| FrifloEngineEcs_MultiThread | 13.45  |
+| FrifloEngineEcs_SIMD_MonoThread | 16.92  |
+| TinyEcs_EachJob | 20.51  |
+| Myriad_MultiThreadChunk | 20.73  |
+| TinyEcs_Each | 40.84  |
+| FrifloEngineEcs_MonoThread | 43.41  |
+| HypEcs_MonoThread | 43.86  |
+| fennecs(Raw) | 46.36  |
+| HypEcs_MultiThread | 46.8  |
+| Myriad_SingleThreadChunk | 48.56  |
+| Arch_MonoThread | 51.08  |
+| Myriad_SingleThread | 55.65  |
+| fennecs(For) | 56.32  |
+| Arch_MultiThread | 59.84  |
+| FlecsNet_Iter | 77.47  |
+| fennecs(Job) | 97.7  |
+| DefaultEcs_MultiThread | 102.37  |
+| Myriad_Delegate | 109.31  |
+| Arch_MonoThread_SourceGenerated | 134.12  |
+| DefaultEcs_MonoThread | 142.35  |
+| LeopotamEcs | 181.76  |
+| FlecsNet_Each | 212.61  |
+| LeopotamEcsLite | 230.5  |
+| Myriad_Enumerable | 245.76  |
+| RelEcs | 250.93  |
+| SveltoECS | 322.3  |
+| MonoGameExtended | 387.12  |
+| Morpeh_Stash | 992.62  |
+| Myriad_MultiThread | 1115.44  |
+| Morpeh_Direct | 2465.25  |
 
 
 ------------------------
