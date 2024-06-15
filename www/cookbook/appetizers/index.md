@@ -20,8 +20,6 @@ They're a playground you can use to experiment with concepts and components: *Le
 They also toy with different ways of accessing data through **fenn**ecs to give you a taste of what's possible, expanding palates and repertoires.
 :::
 
-Got an idea? Contributions are welcome! They need to run, they need to provide line-by-line documentation, and if possible, they should fit into a single file und 200 lines of ode.
-
 ::: warning :neofox_solder_googly: WHAT THEY'RE NOT
 These examples are not best practices, nor good practices. _**They're practice.**_
 
@@ -31,3 +29,8 @@ Use them as you gradually build an understanding and mental model of **fenn**ecs
 
 
 ### Now go, get'em, foxy!
+
+::: info :neofox_yell: CONTRIBUTIONS WELCOME!
+Got an idea to expand this section? Sweet! Just get it to to run, provide some cringy documentation, and if possible, make it fit into a single file under 200 lines of code, and visit [our Discord](https://discord.gg/Bfx74WcVXW) to share it with us! (or just open a PR on Github, that works too!)
+:::
+

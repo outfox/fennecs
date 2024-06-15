@@ -14,7 +14,7 @@ To do so, we simply clone our lightweight `Stream<>` view and change some fields
 ## Creating a Stream Filter
 Each `Stream<>` has two filter fields, `Subset` and `Exclude`, which are used to filter the Entities that are processed by the Stream.
 
-::: tip :neofox_floof_mug: Can I interesty ou in a Grape-Colored Example
+::: tip :neofox_floof_mug: Can I interest you in a Grape-Colored Example
 There's an appetizer on this topic! Check out [Thanos](/cookbook/appetizers/Thanos.md) for an, ahem, "practical" example of using filters.
 :::
 
@@ -48,7 +48,9 @@ var stream = world.Stream<Position, Velocity>();
 
 var filteredStream = stream with 
 {
-    Subset = otherFilter.Subset.Add([Component.PlainComponent<Alive>()]),
+    Subset = otherFilter.Subset
+        .Add(Component.PlainComponent<Alive>())
+        .Remove(Component.PlainComponent<Dead>()),
     Exclude = otherFilter.Subset.Union([Component.AnyRelation<Owes>()]),
 };
 ```

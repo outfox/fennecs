@@ -36,7 +36,7 @@ var world = new fennecs.World(initialCapacity: 0)
 ```
 
 ### You can have up to a Billion Entities in a World.
-Optimistically, **fenn**ecs might help you handle around 1 or 2 <u>M</u>illion at a reasonable performance level for games, depending on your Component layouts.
+Optimistically, **fenn**ecs might help you handle around 1 or 2 <u>M</u>illion Entities at a reasonable performance level for games, depending on your Component layouts.
 
 ::: details :neofox_cry_loud: I WANT MORE!
 Listen, Jeff Jr. - the difference between 1 million and 1 billion is pretty much exactly 1 billion. Can you even begin to fathom how much a billion is? ... *sigh* ... sure, we'll chip in a couple more! 
