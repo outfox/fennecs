@@ -44,7 +44,7 @@ internal class OneRing
     public static readonly OneRing Instance = new();
     // No, we can't "make another", precious.
     private OneRing() { }
-    
+    // Sample interaction for linked Entities to use
     public void CallOut(Entity ring, RingBearer bearer)
     {
         if (bearer.corrupted)
