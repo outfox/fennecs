@@ -15,7 +15,7 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 > You are nonetheless encouraged to try **fenn**ecs out, play around and experiment with the package freely; our resident foxes aim to keep it it as useful and stable as possible! Please report issues and feedback on the [GitHub Issues](https://github.com/outfox/fennecs/issues) board.
 
 ## UPCOMING
-- `Match.Object` becomes internal / deprecated
+- `Match.Object` becomes internal / deprecated, use `Link.Any` instead.
 - `Stream` (a Stream View without any type parameters) will be added (so filtering without a component list feels less awkward)
 ::: code-group
 ```csharp  [old api]
@@ -40,7 +40,7 @@ var thanosStream = population.Stream() with
 ## Release 0.5.7-beta
 - `bugfix` - Stream Filters (Subset/Exclude) now affect the `Count` property of the Stream.
 - `bugfix` - `Stream<>.Despawn` respects current filters instead of despawning the entire underyling Query
-- reinstated the Thanos appetizer's functionality
+- reinstated the Thanos appetizer's functionality! OH SNAP!
 
 ## Release 0.5.6-beta
 - `Link.Any` is a Match Target that can be used to match any Link target in a Query. It's value-identical to `Match.Object`, but makes the code more readable and reads in line with `Entity.Any`. 
