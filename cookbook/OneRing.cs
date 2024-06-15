@@ -24,15 +24,15 @@ world.Entity()
 
 
 // Gaze into our Palantir to find all Rings linked to the One Ring
-var linkedRings = world //and in the darkness bind them.
+var linkedRings = world 
     .Query<RingBearer>()
     .Has<OneRing>(OneRing.Instance)
-    .Stream();
+    .Stream(); 
 
 // Use the Query to corrupt the Ring Bearers
 linkedRings.For((Entity ring, ref RingBearer bearer) =>
 {
-    bearer = bearer with { corrupted = true };
+    bearer = bearer with { corrupted = true };  //and in the darkness bind them.
     Console.WriteLine(
         $"{ring} has corrupted its {bearer.race} bearer - {bearer.corrupted}!"
         );
