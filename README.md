@@ -125,16 +125,10 @@ well; and things it may aspire to do but compromised on in order to be able to a
 
 - [x] Modern C# 12 codebase, targeting .NET 8.
 - [x] Full Unit Test coverage.
-- [ ] Benchmarking suite. (Work in Progress)
-
-- [x] Workloads can be easily parallelized across *and within* Archetypes
-
-- [x] Expressive, queryable relations between Entities and Objects
 - [x] Powerfully intuitive ways to access data... _fast!_
-
+- [x] Workloads can be easily parallelized across *and within* Archetypes
+- [x] Expressive, queryable relations among Entities themselves & between Entities and Objects
 - [x] No code generation and no reflection required.
-
-
 
 ------------------------
 
