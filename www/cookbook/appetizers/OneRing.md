@@ -31,6 +31,6 @@ This example showcases the expressive power of fennecs' Object Link system. By e
 
 The use of records for the `RingBearer` component allows us to cleanly update the corruption status of each bearer in a single line of code within the `For` loop.
 
-One ECS API to rule them all, one CLI tool to find them,  
-One .NET package to bring them all and the darkness bind them.  
-In the Land of Open Source where the Foxes fly.
+#### One ECS to rule them all, one Query to find them, 
+#### One .NET package to bring them all and the darkness bind them.  
+#### In the Land of Open Source where the Foxes fly.
