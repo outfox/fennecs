@@ -5,7 +5,7 @@ order: 2
 
 # Tag Components
 
-Tags are a special type of component that don't store any data. They are used to mark entities that share a common trait or behavior.
+Tags are a components that don't store any data. They are often used to mark entities that have a common trait or behavior.
 
 ```csharp
 public struct Pretty;
@@ -26,4 +26,4 @@ var fennecsUsers = world.Query()
 Assert.Contains(you, fennecsUsers);
 ```	
 
-They need practically no memory and are great to use in Match Expressions. (they're not so great as Stream Types, but they're not harmful either - they just take a slot you might want to use for actual data).
+They need practically no memory and are great to use in Match Expressions, e.g. `Query.Has<MyTag>()` (they're not so great as Stream Types, but they're not harmful either - they just take a slot you might want to use for actual data).

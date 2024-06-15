@@ -1,6 +1,6 @@
 ---
 title: Shareables
-order: 2
+order: 10
 ---
 
 # Shareable Components

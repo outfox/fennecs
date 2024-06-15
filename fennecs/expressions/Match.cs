@@ -27,7 +27,7 @@ public readonly record struct Match
     /// </para>
     /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// </summary>
-    public static Match Link<T>(T link) where T : class => new(Identity.Of<T>(link));
+    public static Match Link<T>(T link) where T : class => new(Identity.Of(link));
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
