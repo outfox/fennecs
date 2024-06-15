@@ -140,12 +140,12 @@ well; and things it may aspire to do but compromised on in order to be able to a
 
 ## ⏩ Nimble: _**fenn**ecs_ benchmarks
 
-Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU without even writing custom code.
+Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU without even customizing your logic.
 
-Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs is currently the fastest ECS in the benchmark suite.
+Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs scores among the fastest ECS in the benchmark suite.
 
 | ECS Method | Duration (µs) |
-| ---------- | ---------- |
+| ---------- | ----------:|
 | fennecs(AVX2) | 10.43  |
 | fennecs(SSE2) | 11.41  |
 | FrifloEngineEcs_MultiThread | 13.45  |
