@@ -131,7 +131,7 @@ Another optimization pass for **fenn**ecs is [on the Roadmap](https://fennecs.te
 | RelEcs |	65.023 ms |  
 | Morpeh_Direct |	131.363 ms |  
 
-### Benchmark: SystemWithTwoComponentsMultipleComposition
+### Benchmark: SystemWithThreeComponents
 ```
 // Benchmark Process Environment Information:
 // BenchmarkDotNet v0.13.12
