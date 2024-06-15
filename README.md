@@ -142,10 +142,41 @@ well; and things it may aspire to do but compromised on in order to be able to a
 
 Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU without even customizing your logic.
 
-Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs scores among the faster ECS in the benchmark suite. *(link goes to PR #36 to reproduce)*
+Using Doraku's synthetic [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs can score among the faster ECS in the benchmark suite. *(link goes to PR #36 to reproduce)*
 
+Another optimization pass is [on the Roadmap](https://fennecs.tech/misc/Roadmap.html).
+
+
+### Benchmark: CreateEntityWithThreeComponents
 ```
-Benchmark: SystemWithTwoComponentsMultipleComposition
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.13.12
+// Runtime=.NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: ShortRun(IterationCount=3, LaunchCount=1, WarmupCount=3)
+// [EntityCount=100_000]
+```
+| ECS & Method |	Duration<br/>**(less=better)**   |
+| -------| -------|
+| 🦊 fennecs |	1.458 ms |  
+| FrifloEngineEcs |	1.926 ms |  
+| LeopotamEcs |	4.991 ms |  
+| LeopotamEcsLite |	4.994 ms |  
+| Arch |	7.811 ms |  
+| FlecsNet |	17.838 ms |  
+| DefaultEcs |	19.818 ms |  
+| TinyEcs |	24.458 ms |  
+| HypEcs |	25.215 ms |  
+| MonoGameExtended |	27.562 ms |  
+| Myriad |	28.249 ms |  
+| SveltoECS |	52.311 ms |  
+| Morpeh_Stash |	64.93 ms |  
+| RelEcs |	65.023 ms |  
+| Morpeh_Direct |	131.363 ms |  
+
+### Benchmark: SystemWithTwoComponentsMultipleComposition
+```
 // Benchmark Process Environment Information:
 // BenchmarkDotNet v0.13.12
 // Runtime=.NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
@@ -174,7 +205,7 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 | 🦊 fennecs(For) | 56.32 µs | typical bread & butter C# workload  |
 | Arch_MultiThread | 59.84 µs |    |
 | FlecsNet_Iter | 77.47 µs |    |
-| 🦊 fennecs(Job) | 97.70 µs | unoptimized beta, ineffective <1M entities |
+| 🦊 fennecs(Job) | 97.70 µs | unoptimized in beta, ineffective <1M entities |
 | DefaultEcs_MultiThread | 102.37 µs |    |
 | Myriad_Delegate | 109.31 µs |    |
 | Arch_MonoThread_SourceGenerated | 134.12 µs |    |
