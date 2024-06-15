@@ -188,8 +188,8 @@ Another optimization pass is [on the Roadmap](https://fennecs.tech/misc/Roadmap.
 
 | ECS & Method | Duration<br/>**(less=better)** | Comment |
 | ---------- | ----------:| --------- |
-| 🦊 fennecs(AVX2) | 10.43 µs | optimized Raw access using AVX2 Intrinsics  |
-| 🦊 fennecs(SSE2) | 11.41 µs | optimized Raw access using SSE2 Intrinsics |
+| 🦊 fennecs(AVX2) | 10.43 µs | optimized Stream<>.Raw using AVX2 Intrinsics  |
+| 🦊 fennecs(SSE2) | 11.41 µs | optimized Stream<>.Raw using SSE2 Intrinsics |
 | FrifloEngineEcs_MultiThread | 13.45 µs |    |
 | FrifloEngineEcs_SIMD_MonoThread | 16.92 µs |    |
 | TinyEcs_EachJob | 20.51 µs |    |
@@ -197,7 +197,7 @@ Another optimization pass is [on the Roadmap](https://fennecs.tech/misc/Roadmap.
 | TinyEcs_Each | 40.84 µs |    |
 | FrifloEngineEcs_MonoThread | 43.41 µs |    |
 | HypEcs_MonoThread | 43.86 µs |    |
-| 🦊 fennecs(Raw) | 46.36 µs | unoptimized loop over Raw |
+| 🦊 fennecs(Raw) | 46.36 µs | unoptimized loop over Stream<>.Raw |
 | HypEcs_MultiThread | 46.80 µs |    |
 | Myriad_SingleThreadChunk | 48.56 µs |    |
 | Arch_MonoThread | 51.08 µs |    |
