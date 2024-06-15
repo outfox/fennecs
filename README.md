@@ -9,9 +9,8 @@
          <a href="https://discord.gg/3SF4gWhANS"><img alt="Downloads" src="https://img.shields.io/nuget/dt/fennecs"/></a>
          <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
          <a href="https://github.com/outfox/fennecs/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/outfox/fennecs/xUnit.yml"/></a>
-         <a href="https://github.com/outfox/fennecs/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/outfox/fennecs?color=green"/></a>
          <img alt="GitHub top language" src="https://img.shields.io/badge/C%23-100%25_-blue"/>
-         <a href="https://github.com/outfox/fennecs?tab=MIT-1-ov-file#readme"><img alt="License: MIT" src="https://img.shields.io/github/license/outfox/fennecs?color=blue"/></a>
+         <a href="https://github.com/outfox/fennecs/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/outfox/fennecs?color=green"/></a>
       </th>
    </tr>
    <tr>
