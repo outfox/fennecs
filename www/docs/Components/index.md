@@ -81,7 +81,9 @@ Archetypes are internal collections of Entities that share the same set of Compo
 ### **fenn**ecs is an Archetype-Based ECS
 It shares many properties (including strengths and weaknesses) with other ECS of this family. As an ECS user, you never interact with Archetypes directly, but understanding them is helpful to get the most out of **fenn**ecs.
 
-By grouping Entities into Archetypes, the ECS (and by extension the CPU) can process them very efficiently. The system ensures that Entities with the same Components are stored tightly packed together in memory, which is a key factor in achieving high performance.  
+By grouping Entities into Archetypes, the ECS (and by extension the CPU) can process them very efficiently. 
+
+**fenn**ecs constantly ensures that Entities with the same Components are stored tightly packed together in memory, which is a key factor in achieving high performance.  
 
 :neofox_packed_blue: :neofox_packed: :neofox_packed_green:
 
