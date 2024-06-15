@@ -25,7 +25,7 @@ var stream = world.Stream<Position, Velocity>();
 
 var filteredStream = stream with 
 {
-    Subset = [ Component.PlainComponent<Alive>() ], // collection initilizer
+    Subset = [ Component.PlainComponent<Alive>() ], // collection initializer
     Exclude = [ Link.With(TheOneRing) ] // (the collections are immutable sets)
 };
 ```

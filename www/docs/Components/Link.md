@@ -10,7 +10,7 @@ As opposed to Entity-Entity Relations, Links use the Link's target as the backin
 
 This allows us to group Entities by a non-Entity object, such as a string, a game engine's Node, or even an entire Physics Simulation they need to interact with.
 
-Because the Link's target is the backing data, the Link resolves **bidirectionally** at enumeration time - the Entity that is linked to the object will have full access to the object (not just the "data" instead) - becuase the object *is the data.*
+Because the Link's target is the backing data, the Link resolves **bidirectionally** at enumeration time - the Entity that is linked to the object will have full access to the object (not just the "data" instead) - because the object *is the data.*
 
 ## Creating & Removing Links
 
