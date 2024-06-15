@@ -152,6 +152,7 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 // GC=Concurrent Workstation
 // HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
 // Job: ShortRun(IterationCount=3, LaunchCount=1, WarmupCount=3)
+// [EntityCount=100_000, EntityPadding=10]
 ```
 
 | ECS & Method | Duration<br/>**(less=better)** | Comment |
@@ -173,7 +174,7 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 | 🦊 fennecs(For) | 56.32 µs | typical C# workload  |
 | Arch_MultiThread | 59.84 µs |    |
 | FlecsNet_Iter | 77.47 µs |    |
-| 🦊 fennecs(Job) | 97.70 µs | beta scheduler pays off only >1M entities  |
+| 🦊 fennecs(Job) | 97.70 µs | beta job pay-off starts >1M entities (unoptimized) |
 | DefaultEcs_MultiThread | 102.37 µs |    |
 | Myriad_Delegate | 109.31 µs |    |
 | Arch_MonoThread_SourceGenerated | 134.12 µs |    |
