@@ -21,12 +21,12 @@ world.Entity()
 //Nine for Mortal Men doomed to die... 
 world.Entity()
     .Add(new RingBearer("human"))     // ("Human Rings"? I like it!)
-    .Add(Link.With(OneRing.Instance)) // One Ring to bring them all, and in the darkness bind them.
+    .Add(Link.With(OneRing.Instance)) // One Ring to bring them all, 
     .Spawn(9);
 
 
 // Gaze into our Palantir to find all Rings linked to the One Ring
-var linkedRings = world
+var linkedRings = world //and in the darkness bind them.
     .Query<RingBearer>()
     .Has<OneRing>(OneRing.Instance)
     .Stream();
