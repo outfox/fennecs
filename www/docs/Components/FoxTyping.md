@@ -1,6 +1,6 @@
 ---
 title: Fox Typing
-order: 5
+order: 15
 ---
 
 # :neofox_hug_duck_heart: Fox Typing
