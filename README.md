@@ -159,7 +159,7 @@ Another optimization pass is [on the Roadmap](https://fennecs.tech/misc/Roadmap.
 // [EntityCount=100_000]
 ```
 | ECS & Method |	Duration<br/>**(less=better)**   |
-| -------| -------|
+| -------| -------:|
 | 🦊 fennecs |	1.458 ms |  
 | FrifloEngineEcs |	1.926 ms |  
 | LeopotamEcs |	4.991 ms |  
