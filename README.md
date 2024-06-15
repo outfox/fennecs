@@ -154,7 +154,7 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 // Job: ShortRun(IterationCount=3, LaunchCount=1, WarmupCount=3)
 ```
 
-| ECS & Method | Duration (µs)<br/>(smaller is better) |
+| ECS & Method | Duration (µs)<br/>**(less is better)** |
 | ---------- | ----------:|
 | 🦊 fennecs(AVX2) | 10.43  |
 | 🦊 fennecs(SSE2) | 11.41  |
