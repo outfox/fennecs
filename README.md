@@ -157,8 +157,8 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 
 | ECS & Method | Duration<br/>**(less=better)** | Comment |
 | ---------- | ----------:| --------- |
-| 🦊 fennecs(AVX2) | 10.43 µs | optimized Raw access  |
-| 🦊 fennecs(SSE2) | 11.41 µs | optimized Raw access  |
+| 🦊 fennecs(AVX2) | 10.43 µs | optimized Raw access using AVX2 Intrinsics  |
+| 🦊 fennecs(SSE2) | 11.41 µs | optimized Raw access using SSE2 Intrinsics |
 | FrifloEngineEcs_MultiThread | 13.45 µs |    |
 | FrifloEngineEcs_SIMD_MonoThread | 16.92 µs |    |
 | TinyEcs_EachJob | 20.51 µs |    |
