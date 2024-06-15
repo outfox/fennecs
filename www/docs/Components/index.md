@@ -1,7 +1,7 @@
 ---
 title: Components
 order: 4
-outline: [1, 3]
+outline: [2, 2]
 ---
 
 # Components
@@ -78,7 +78,7 @@ bob.Add(Link.With(targo)); // bob also banks at targo (Type Bank->targo)
 
 Archetypes are internal collections of Entities that share the same set of Components.
 
-### **fenn**ecs is an Archetype-Based ECS
+> ### **fenn**ecs is an Archetype-Based ECS
 It shares many properties (including strengths and weaknesses) with other ECS of this family. As an ECS user, you never interact with Archetypes directly, but understanding them is helpful to get the most out of **fenn**ecs.
 
 By grouping Entities into Archetypes, the ECS (and by extension the CPU) can process them very efficiently. 
