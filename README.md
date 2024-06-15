@@ -166,24 +166,24 @@ Benchmark: SystemWithTwoComponentsMultipleComposition
 | FrifloEngineEcs_MonoThread | 43.41 µs |
 | HypEcs_MonoThread | 43.86 µs |
 | 🦊 fennecs(Raw) | 46.36 µs |
-| HypEcs_MultiThread | 46.8 µs |
+| HypEcs_MultiThread | 46.80 µs |
 | Myriad_SingleThreadChunk | 48.56 µs |
 | Arch_MonoThread | 51.08 µs |
 | Myriad_SingleThread | 55.65 µs |
 | 🦊 fennecs(For) | 56.32 µs |
 | Arch_MultiThread | 59.84 µs |
 | FlecsNet_Iter | 77.47 µs |
-| 🦊 fennecs(Job) | 97.7 µs |
+| 🦊 fennecs(Job) | 97.70 µs |
 | DefaultEcs_MultiThread | 102.37 µs |
 | Myriad_Delegate | 109.31 µs |
 | Arch_MonoThread_SourceGenerated | 134.12 µs |
 | DefaultEcs_MonoThread | 142.35 µs |
 | LeopotamEcs | 181.76 µs |
 | FlecsNet_Each | 212.61 µs |
-| LeopotamEcsLite | 230.5 µs |
+| LeopotamEcsLite | 230.50 µs |
 | Myriad_Enumerable | 245.76 µs |
 | RelEcs | 250.93 µs |
-| SveltoECS | 322.3 µs |
+| SveltoECS | 322.30 µs |
 | MonoGameExtended | 387.12 µs |
 | Morpeh_Stash | 992.62 µs |
 | Myriad_MultiThread | 1115.44 µs |
