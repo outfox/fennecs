@@ -98,7 +98,7 @@ Using Doraku's synthetic [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CS
 
 > [!WARNING]
 > These are synthetic benchmarks, using a **BETA BUILD** of **fenn**ecs. Real-world performance will vary wildly.
-> If you want production-ready software, 9 out of 10 fennecs endorse [Friflo.Engine.ECS](https://github.com/friflo/Friflo.Json.Fliox/blob/main/Engine/README.md) and [Flecs.NET](https://github.com/BeanCheeseBurrito/Flecs.NET)
+> Should you need production-ready software *now*, 9 out of 10 fennecs endorse [Friflo.Engine.ECS](https://github.com/friflo/Friflo.Json.Fliox/blob/main/Engine/README.md) and [Flecs.NET](https://github.com/BeanCheeseBurrito/Flecs.NET)
 
 Another optimization pass for **fenn**ecs is [on the Roadmap](https://fennecs.tech/misc/Roadmap.html).
 
