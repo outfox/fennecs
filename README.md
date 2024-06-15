@@ -171,7 +171,7 @@ Another optimization pass for **fenn**ecs is [on the Roadmap](https://fennecs.te
 | LeopotamEcsLite | 230.50 µs |    |
 | Myriad_Enumerable | 245.76 µs |    |
 | RelEcs | 250.93 µs |    |
-| SveltoECS | 322.30 µs | EntityPadding=0   |
+| SveltoECS | 322.30 µs | EntityPadding=0, skips benchmark with 10   |
 | MonoGameExtended | 387.12 µs |    |
 | Morpeh_Stash | 992.62 µs |    |
 | Myriad_MultiThread | 1115.44 µs |    |
