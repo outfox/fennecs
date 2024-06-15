@@ -17,6 +17,10 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 ## UPCOMING
 - `Match.Object` may become internal / deprecated
 ...
+## Release 0.5.7-beta
+- `bugfix` - Stream Filters (Subset/Exclude) now affect the `Count` property of the Stream.
+- `bugfix` - `Stream<>.Despawn` respects current filters instead of despawning the entire underyling Query
+- reinstated the Thanos appetizer's functionality
 
 ## Release 0.5.6-beta
 - `Link.Any` is a Match Target that can be used to match any Link target in a Query. It's value-identical to `Match.Object`, but makes the code more readable and reads in line with `Entity.Any`. 
