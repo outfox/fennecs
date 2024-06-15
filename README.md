@@ -172,7 +172,7 @@ Another optimization pass is [on the Roadmap](https://fennecs.tech/misc/Roadmap.
 | MonoGameExtended |	27.562 ms |  
 | Myriad |	28.249 ms |  
 | SveltoECS |	52.311 ms |  
-| Morpeh_Stash |	64.93 ms |  
+| Morpeh_Stash |	64.930 ms |  
 | RelEcs |	65.023 ms |  
 | Morpeh_Direct |	131.363 ms |  
 
