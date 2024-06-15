@@ -37,7 +37,7 @@ var human = world.Entity()
 var vampires = world.Entity()
     .Add(new Health { Value = 100 })
     .Add<Vampirism>()
-    .spawn(100_000); // Not looking good for the humans!
+    .Spawn(100_000); // Not looking good for the humans!
 ```
 
 ## Applying the Damage
