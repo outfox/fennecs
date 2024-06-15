@@ -5,17 +5,14 @@ content: SIMD Query Interface
 ---
 
 # SIMD Query Interface
-Queries expose a set of SIMD operations that allow you to perform bulk operations on the matched entities.
+Queries expose a set of SIMD operations that allow you to perform *bulk mutations* of *components* on all matched entities. Simple writes and arithmetic operations finish at blazing speeds, and are a great complement to your [Runners](Stream.For.md) that deal in more complex logic.
 
-![fennec, translucent and glowy blue](https://fennecs.tech/img/fennec-vectorized-256.png)
-*"Eight Entities at the same time. Foxin' A!"*
-
-They perform simple writes and arithmetic operations at blazing speeds, and are a great complement to your [Runners](Stream.For.md) for more complex logic.
-
-The operations make use of `System.Intrinsics`, especailly the AVX2, SSE2 and ARM AdvSIMD vector instructions where available. 
+**fenn**ecs SIMD operations make use of `System.Intrinsics`, especailly the AVX2, SSE2 and ARM AdvSIMD vector instructions where available.
 
 ## `Stream<>.Blit<C>`
+
 ![a fennec splashes a paintbucket at an entire wall ](https://fennecs.tech/img/fennec-blit.png)
+*"Imagine getting all your work done at once!"*
 
 The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Stream's Query. `C` must be one of the [Stream Types](index.md#stream-types). It requires no additional setup and is always safe.
 
@@ -54,6 +51,7 @@ But because Jobs execute in non-deterministic order, you will not be able to Bli
 
 ## Future SIMD Operations
 ::: details MORE COMING SOON - (click to preview)
+![fennec, translucent and glowy blue](https://fennecs.tech/img/fennec-vectorized-256.png)
 
 ### Index (writes a running, contiguous index to the component)
 

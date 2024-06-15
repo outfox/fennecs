@@ -245,7 +245,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
         }
         else
         {
-            sb.Append("|- DEAD");
+            sb.Append("-DEAD-");
         }
 
         return sb.ToString();

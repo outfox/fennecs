@@ -45,30 +45,21 @@ Here's how we can simulate the 3-body problem using fennecs:
 ```csharp [Components]
 // The Body component represents a celestial body in the simulation.
 // It stores the body's position and mass, and is used as both a
-// plain component and a relation component.
-private class Body
+// plain component and a relation component, as a shareable component.
+class Body // shareable (reference type)
 {
     public Vector3 position;
     public float mass { init; get; }
 }
 
 // The Velocity component stores the current velocity of a body.
-private struct Velocity : Fox<Vector3>
-{
-    public Vector3 Value { get; set; }
-}
+record struct Velocity(Vector3 Value);
 
 // The Force component accumulates the total force acting on a body.
-private struct Force : Fox<Vector3>
-{
-    public Vector3 Value { get; set; }
-}
+record struct Force(Vector3 Value);
 
 // The Position component represents the current position of a body.
-private struct Position : Fox<Vector3>
-{
-    public Vector3 Value { get; set; }
-}
+record struct Position(Vector3 Value);
 ```
 
 ```csharp [System Setup]

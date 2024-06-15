@@ -10,6 +10,22 @@ order: 2
 
 The component data is accessed and processed in bulk through [Queries](/docs/Queries/), a typical way that ECS provide composable functionality.
 
+## Liveness
+Entities are considered `Alive` if they are spawned in a World. Entities that are despawned are considered dead. Their debug string shows this, too.
+
+:::code-group
+```csharp [Code]
+var entity = world.Spawn();
+if (entity.Alive) Console.WriteLine(entity);
+entity.Despawn();
+if (!entity.Alive) Console.WriteLine(entity);
+```
+```plaintext [Output]
+E-00000001:00001 <fennecs.Identity>
+E-00000001:00001 -DEAD-
+```
+:::
+
 ## `World.Spawn()`
 Entities are created through the World's `Spawn()` function, which returns a `fennecs.Entity` builder struct that operates directly on the Entity's ==Identity== in that World.
 
