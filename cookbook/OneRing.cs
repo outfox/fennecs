@@ -24,18 +24,18 @@ world.Entity()
 
 
 // Gaze into our Palantir to find all Rings linked to the One Ring
-var linkedRings = world 
+var linkedRings = world
     .Query<RingBearer>()
-    .Has<OneRing>(OneRing.Instance)
-    .Stream(); 
+    .Has(Link.With(OneRing.Instance)) // and in the darkness bind them.
+    .Stream();
 
 // Use the Query to corrupt the Ring Bearers
 linkedRings.For((Entity ring, ref RingBearer bearer) =>
 {
-    bearer = bearer with { corrupted = true };  //and in the darkness bind them.
+    bearer = bearer with { corrupted = true };
     Console.WriteLine(
         $"{ring} has corrupted its {bearer.race} bearer - {bearer.corrupted}!"
-        );
+    );
 });
 
 
@@ -48,8 +48,8 @@ internal record struct RingBearer(string race, bool corrupted = false);
 //But they were, all of them, deceived, for another ring was made!
 internal class OneRing
 {
-    // Of course it's a singleton! It's straight out of Mordor!
+    // Of course it's a GoF singleton! It's straight out of Mordor!
     public static readonly OneRing Instance = new();
-
+    // No, we can't "make another", precious.
     private OneRing() { }
 }

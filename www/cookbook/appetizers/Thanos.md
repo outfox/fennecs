@@ -6,6 +6,15 @@ order: 5
 
 # How to Snap ~25% of the World away
 
+::: info :neofox_floof_mug: MMMH, REAL CODE
+This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs principles.
+
+Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
+
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
+
+:::
+
 ### Premise
 Hey there, mighty Titan (who flunked probabilitics)! Ready to bring perfect balance to your `fennecs.World`?
 

@@ -14,6 +14,7 @@ Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and g
 All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
 
 :::
+
 ### Premise
 In this example, we'll recreate the forging of the Rings of Power in the Land of Mordor, as told in the legendary story. 
 
