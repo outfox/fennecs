@@ -26,6 +26,21 @@ E-00000001:00001 -DEAD-
 ```
 :::
 
+::: warning Deferred Despawn
+When despawned inside a Runner, operations are deferred until the end of the scope (or until the last World lock is released). An entity will be considered `Alive` until the World goes through `WorldMode.Catchup` to integrate these structural changes.
+
+When despawning while iterating a `Stream<>` or `Query` directly, the Entity will immediately despawn and the enumerator will be invalidated. Take out a world lock if you want to keep iterating.
+```csharp
+var worldLock = world.Lock();
+foreach (var entity in world) // world is a query
+{ 
+    if (Random.Shared.NextSingle() >= 0.5f) entity.Despawn();
+    if (entity.Alive) Console.WriteLine("Dead Fox Walking!");
+}
+worldLock.Dispose(); // this will catch up the despawns
+```
+:::
+
 ## `World.Spawn()`
 Entities are created through the World's `Spawn()` function, which returns a `fennecs.Entity` builder struct that operates directly on the Entity's ==Identity== in that World.
 
