@@ -153,7 +153,7 @@ Another optimization pass for **fenn**ecs is [on the Roadmap](https://fennecs.te
 | TinyEcs_Each | 40.84 µs |    |
 | FrifloEngineEcs_MonoThread | 43.41 µs |    |
 | HypEcs_MonoThread | 43.86 µs |    |
-| 🦊 fennecs(Raw) | 46.36 µs | bread & butter loop over Stream<>.Raw |
+| 🦊 fennecs(Raw) | 46.36 µs | straightforward loop over Stream<>.Raw |
 | HypEcs_MultiThread | 46.80 µs |    |
 | Myriad_SingleThreadChunk | 48.56 µs |    |
 | Arch_MonoThread | 51.08 µs |    |
