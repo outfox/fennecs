@@ -1,10 +1,10 @@
 Directed by: Trentin Quarantino
 As we said, there were 5 of them.
-One hides in hideout 0x00f5e682.
-One hides in hideout 0x7928e5c1.
-One hides in hideout 0x34281871.
-One hides in hideout 0x45ab1245.
-One hides in hideout 0x7d750ad6.
+One hides in hideout 0x379e2dd3.
+One hides in hideout 0x2ca74963.
+One hides in hideout 0x0c4d8f50.
+One hides in hideout 0x49aee4ca.
+One hides in hideout 0x5aad551a.
 
 We are still here, though.
 
@@ -18,35 +18,35 @@ E-00000001:00001 <fennecs.Identity>
   |-<Grudge> >> E-00000005:00001
   |-<Grudge> >> E-00000006:00001
 
-Suddenly, in hideout 0x00f5e682:
+Suddenly, in hideout 0x379e2dd3:
 Oh, hello E-00000002:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
 They do. They remember everything!They admit their Betral is True!
 
-Suddenly, in hideout 0x7928e5c1:
+Suddenly, in hideout 0x2ca74963:
 Oh, hello E-00000003:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
 They do. They remember everything!They admit their Betral is True!
 
-Suddenly, in hideout 0x34281871:
+Suddenly, in hideout 0x0c4d8f50:
 Oh, hello E-00000004:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
 They do. They remember everything!They admit their Betral is True!
 
-Suddenly, in hideout 0x45ab1245:
+Suddenly, in hideout 0x49aee4ca:
 Oh, hello E-00000005:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
 They do. They remember everything!They admit their Betral is True!
 
-Suddenly, in hideout 0x7d750ad6:
+Suddenly, in hideout 0x5aad551a:
 Oh, hello E-00000006:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
@@ -54,7 +54,7 @@ Remember us?
 They do. They remember everything!They admit their Betral is True!
 
 Now, there are 0 of them.
-Let's get out of hideout 0x7d750ad6.
+Let's get out of hideout 0x5aad551a.
 Any more grudges? False.
 This is us now:
 E-00000001:00001 <fennecs.Identity>

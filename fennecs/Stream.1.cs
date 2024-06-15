@@ -40,7 +40,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <summary>
     /// The number of entities that match the underlying Query.
     /// </summary>
-    public int Count => Query.Count;
+    public int Count => Filtered.Sum(f => f.Count);
 
 
     /// <summary>
@@ -384,8 +384,11 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     }
     
     /// <inheritdoc cref="fennecs.Query.Despawn"/>
-    public void Despawn() => Query.Despawn();
-    
+    public void Despawn()
+    {
+        foreach (var archetype in Filtered) archetype.Truncate(0);
+    }
+
     #endregion
 
     #region IEnumerable

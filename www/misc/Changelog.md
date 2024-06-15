@@ -14,12 +14,13 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 > **fenn**ecs will remain in Beta until version 1.0.0, which is expected in Q4 2024. Breaking API changes as well as bugs are likely to occur without warning in these beta builds. 
 > You are nonetheless encouraged to try **fenn**ecs out, play around and experiment with the package freely; our resident foxes aim to keep it it as useful and stable as possible! Please report issues and feedback on the [GitHub Issues](https://github.com/outfox/fennecs/issues) board.
 
-## UPCOMING 0.5.7-beta
+## UPCOMING
+- `Match.Object` may become internal / deprecated
 ...
 
 ## Release 0.5.6-beta
-- `Link.Any` is a Match Target that can be used to match any Link target in a Query. It's the identical to `Match.Object`, but makes the code more readable and is in like with `Entity.Any`.
-- lots of documentation updates and small bugfixes
+- `Link.Any` is a Match Target that can be used to match any Link target in a Query. It's value-identical to `Match.Object`, but makes the code more readable and reads in line with `Entity.Any`. 
+- lots of documentation updates and fixes
 
 ## Release 0.5.5-beta
 - `/www/misc/Changelog.md` added 🦊

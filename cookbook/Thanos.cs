@@ -15,16 +15,16 @@ using var entities = world.Entity()
     .Spawn(initialPopulation);
 
 // Life. Unchecked, it will cease to exist. It needs correcting.
-var thanosQuery = world.Query().Has<Alive>().Compile();  
-Console.WriteLine($"Entities before Thanos Snap: {thanosQuery.Count}");
+var population = world.Query().Has<Alive>().Compile();  
+Console.WriteLine($"Entities before Thanos Snap: {population.Count}");
 
-// The hardest choices require the strongest wills. (and two dumb coin flips) 
+// The hardest choices require the strongest wills. (and two dumb coin flips?) 
 var random = new Random(2018);
 
 using (var _ = world.Lock())
 {
     // We can also use LINQ to iterate Entities: Slower, but sooo convenient.
-    foreach (var entity in thanosQuery)
+    foreach (var entity in population)
     {
         // *mumbles* 50% chance of being Lucky or Unlucky... right?
         if (random.NextDouble() < 0.5) entity.Add<Lucky>();
@@ -32,13 +32,17 @@ using (var _ = world.Lock())
     }
 }
 
-// I'm the only one who knows that. The Unlucky must go! (mkay...)
-//TODO: FIXME!!!
-//thanosQuery.Subset<Unlucky>(Match.Plain);
+var thanosStream = population.Stream<Alive>() with
+{
+    // I'm the only one who knows that. The Unlucky must go! (mkay...)
+    Subset = [Component.PlainComponent<Unlucky>()],
+    
+    // (monologue continues) (Thanos seems confused for a second)
+    
+    // ... the Lucky, I'll leave to chance. (uh oh!)
+    Exclude = [Component.PlainComponent<Lucky>()],
+};
 
-// And I guess that means the Lucky will stay! (uh oh!)
-//TODO: FIXME!!!
-//thanosQuery.Exclude<Lucky>(Match.Plain);
 
 // (Aside: Thanos flunked probabilistics. Here's what's truly going on!)
 var unluckyQuery = world.Query().Has<Unlucky>().Compile();  
@@ -48,12 +52,12 @@ var bothQuery = world.Query().Has<Unlucky>().Not<Lucky>().Compile();
 Console.WriteLine($"Lucky Entities: {luckyQuery.Count} ({Math.Round(luckyQuery.Count * 100f / initialPopulation)}%)");
 Console.WriteLine($"Unlucky Entities: {unluckyQuery.Count} ({Math.Round(unluckyQuery.Count * 100f / initialPopulation)}%)");
 Console.WriteLine($"Unlucky Entities that AREN'T ALSO Lucky: {bothQuery.Count} ({Math.Round(bothQuery.Count * 100f / initialPopulation)}%)");
-Console.WriteLine($"Targeted by Thanos: {thanosQuery.Count} (seen this number before?)");
+Console.WriteLine($"Targeted by Thanos: {thanosStream.Count} (seen this number before?)");
 
 
 // I could simply snap my fingers, and they would all cease to exist.
 Console.WriteLine("OH SNAP!");
-thanosQuery.Despawn();
+thanosStream.Despawn();
 
 // I call that... mercy.
 Console.WriteLine($"Entities surviving after Thanos Snap: {world.Count} ({Math.Round(world.Count * 100f / initialPopulation)}%)");
