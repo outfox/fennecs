@@ -6,12 +6,22 @@ order: 6
 
 #  One Ring to Find Them
 
+::: info :neofox_floof_mug: MMMH, REAL CODE
+This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fenn**ecs principles.
+
+Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
+
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
+
+:::
 ### Premise
-In this example, we'll recreate the forging of the Rings of Power in the Land of Mordor, as told in the legendary story. We'll use fennecs' Object Link system to model the binding relationship between the One Ring and the other Rings it rules.
+In this example, we'll recreate the forging of the Rings of Power in the Land of Mordor, as told in the legendary story. 
 
-We'll create an Entity for the One Ring, and Entities for each of the other Rings (Three for the Elven-kings, Seven for the Dwarf-lords, Nine for Mortal Men). We'll then establish Object Links from each of these Rings to the One Ring, symbolizing its power over them.
+We'll use fennecs' Object Link system to model the binding relationship between the One Ring and the other Rings it rules.
 
-Finally, we'll use a Query to find all the Rings linked to the One Ring and corrupt their bearers, demonstrating the One Ring's ability to influence and control those bound to it.
+First, we spawn Entities for each of the other Rings and its Bearer, and link all of them to our singleton instance of the One Ring.
+
+Then, we bind them all in darkness with a `Stream<>.For` runner.
 
 ### Recipe
 ::: code-group
