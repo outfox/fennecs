@@ -142,7 +142,7 @@ well; and things it may aspire to do but compromised on in order to be able to a
 
 Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU without even customizing your logic.
 
-Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs scores among the fastest ECS in the benchmark suite.
+Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs scores among the fastest ECS in the benchmark suite. *(link goes to PR #36 to reproduce)*
 
 ```
 Benchmark: SystemWithTwoComponentsMultipleComposition
