@@ -37,9 +37,7 @@ var thanosStream = population.Stream<Alive>() with
     // I'm the only one who knows that. The Unlucky must go! (mkay...)
     Subset = [Component.PlainComponent<Unlucky>()],
     
-    // (monologue continues) (Thanos seems confused for a second)
-    
-    // ... the Lucky, I'll leave to chance. (uh oh!)
+    // ... the Lucky, I'll leave to chance. (uh oh!?)
     Exclude = [Component.PlainComponent<Lucky>()],
 };
 
