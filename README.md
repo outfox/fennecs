@@ -144,6 +144,16 @@ Preliminary (WIP) benchmarks suggest you can expect to process over 2 million co
 
 Using Doraku's [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CSharp.Benchmark/pull/36), fennecs scores among the fastest ECS in the benchmark suite.
 
+```
+Benchmark: SystemWithTwoComponentsMultipleComposition
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.13.12
+// Runtime=.NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: ShortRun(IterationCount=3, LaunchCount=1, WarmupCount=3)
+```
+
 | ECS & Method | Duration (µs)<br/>(smaller is better) |
 | ---------- | ----------:|
 | 🦊 fennecs(AVX2) | 10.43  |
