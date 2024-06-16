@@ -44,8 +44,9 @@ The use of records for the `RingBearer` component allows us to cleanly update th
 
 ----------
 ## Congratulations!
-::: info :neofox_evil: YOU COMPLETED THE TUTORIAL
+::: info :neofox_thumbsup:  ONE DOES NOT SIMPLY FINISH A TUTORIAL  :neofox_evil:
 #### One Link to rule them all, one Query to find them, 
 #### One For to bring them all, and in the darkness bind them  
 #### In the land of fennecs, where the foxes play.
+
 ::::
