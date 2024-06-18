@@ -76,6 +76,16 @@ public partial class World : Query
         }
     }
 
+    internal PooledList<Identity> SpawnBare(int count)
+    {
+        lock (_spawnLock)
+        {
+            var identities = _identityPool.Spawn(count);
+            Array.Resize(ref _meta, (int) BitOperations.RoundUpToPowerOf2((uint)_identityPool.Created + 1));
+            return identities;
+        }
+    }
+    
 
     private bool HasComponent(Identity identity, TypeExpression typeExpression)
     {

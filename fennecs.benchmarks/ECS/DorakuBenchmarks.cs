@@ -9,7 +9,7 @@ using fennecs.pools;
 
 namespace Benchmark.ECS;
 
-[SimpleJob]
+[ShortRunJob]
 //[TailCallDiagnoser]
 [ThreadingDiagnoser]
 [MemoryDiagnoser]

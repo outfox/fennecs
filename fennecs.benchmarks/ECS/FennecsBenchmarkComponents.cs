@@ -2,19 +2,10 @@
 
 namespace fennecs_Components
 {
-    internal struct Component1
-    {
-        public int Value;
-    }
+    internal record struct Component1(int Value);
 
-    internal struct Component2
-    {
-        public int Value;
-    }
+    internal record struct Component2(int Value);
 
-    internal struct Component3
-    {
-        public int Value;
-    }
+    internal record struct Component3(int Value);
 }
     

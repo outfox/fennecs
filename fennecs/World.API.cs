@@ -1,8 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Numerics;
 using System.Text;
-using fennecs.pools;
 
 namespace fennecs;
 
@@ -82,13 +80,6 @@ public partial class World : IDisposable
     /// <returns>an Entity to operate on</returns>
     public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
 
-
-    internal PooledList<Identity> SpawnBare(int count)
-    {
-        var identities = _identityPool.Spawn(count);
-        Array.Resize(ref _meta, (int) BitOperations.RoundUpToPowerOf2((uint)_identityPool.Created + 1));
-        return identities;
-    }
 
     /// <summary>
     /// Spawns a number of pre-configured Entities. 

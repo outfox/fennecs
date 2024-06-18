@@ -125,7 +125,7 @@ public class IdentityTests(ITestOutputHelper output)
         for (var i = 0; i < 1_000; i++)
         {
             var id = random.Next();
-            var gen = (TypeID) random.Next();
+            var gen = (TypeID) (random.Next() % TypeID.MaxValue);
 
             var self = new Identity(id, gen);
             var other = new Identity(id, gen);

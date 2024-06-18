@@ -13,13 +13,13 @@ internal class PooledList<T> : List<T>, IDisposable
 
     static PooledList()
     {
-        for (var i = 0; i < BagCapacity; i++) Recycled.Add(new PooledList<T>());
+        for (var i = 0; i < BagCapacity; i++) Recycled.Add(new());
     }
 
 
     public static PooledList<T> Rent()
     {
-        return Recycled.TryTake(out var list) ? list : new PooledList<T>();
+        return Recycled.TryTake(out var list) ? list : new();
     }
 
 
@@ -27,11 +27,11 @@ internal class PooledList<T> : List<T>, IDisposable
     {
         Clear();
         Capacity = Math.Clamp(Capacity, DefaultInstanceCapacity, ReturnedInstanceCapacityLimit);
-
         Recycled.Add(this);
+        
+        GC.SuppressFinalize(this);
     }
-
-
+    
     private PooledList() : base(DefaultInstanceCapacity)
     {
     }

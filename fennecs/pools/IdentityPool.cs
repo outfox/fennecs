@@ -2,24 +2,29 @@
 
 internal class IdentityPool
 {
-    internal int Created { get; private set; }
-    internal int Count => Created - _recycled.Count;
+    internal int Created => _created;
+    internal int Count => _created - _recycled.Count;
 
     private readonly Queue<Identity> _recycled;
+    private int _created;
 
     public IdentityPool(int initialCapacity = 65536)
     {
         _recycled = new(initialCapacity * 2);
         for (var i = 0; i < initialCapacity; i++)
         {
-            _recycled.Enqueue(new(++Created));
+            _created = Created;
+            _recycled.Enqueue(new(++_created));
         }
     }
 
 
     internal Identity Spawn()
     {
-        return _recycled.TryDequeue(out var recycledIdentity) ? recycledIdentity : new(++Created);
+        if (_recycled.TryDequeue(out var recycledIdentity)) return recycledIdentity;
+
+        var newIndex = Interlocked.Increment(ref _created);
+        return new(newIndex);
     }
 
 
@@ -37,13 +42,13 @@ internal class IdentityPool
             // If we don't have enough recycled Identities, create more.
             for (var i = 0; i < requested - recycled; i++)
             {
-                identities.Add(new(++Created));
+                identities.Add(new(++_created));
             }
         }
         else
         {
             // Otherwise, take the requested amount from the recycled pool.
-            for (var i = 0; i < requested; i++) 
+            for (var i = 0; i < requested; i++)
             {
                 //TODO: Optimize this!
                 identities.Add(_recycled.Dequeue());

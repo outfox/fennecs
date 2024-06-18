@@ -287,10 +287,9 @@ internal class Storage<T> : IStorage
         Count += appendage.Length;
     }
 
-    public Memory<T> AsMemory(int start, int length)
-    {
-        return _data.AsMemory(start, length);
-    }
+    public Memory<T> AsMemory(int start, int length) => _data.AsMemory(start, length);
+
+    public Memory<T> AsMemory() => _data.AsMemory(0, Count);
 
     /// <summary>
     /// Returns a span representation of the actually contained data.
