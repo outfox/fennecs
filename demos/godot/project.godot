@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="fennecs-demos-godot"
+config/name="fennecs.demos.godot"
 config/description="A set of examples using the fennecs Entity Component System"
 run/main_scene="res://N-Body/Demo.tscn"
 config/quit_on_go_back=false
@@ -27,7 +27,7 @@ window/vsync/vsync_mode=3
 
 [dotnet]
 
-project/assembly_name="fennecs-demos-godot"
+project/assembly_name="fennecs.demos.godot"
 
 [editor]
 
