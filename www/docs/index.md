@@ -42,8 +42,8 @@ var simd = world.Query<Vector3>().SIMD();
 simd.Add(
       destination: new Comp<Vector3>(),
       operand: new Comp<Vector3>(), // can be same as destination!
-      uniform: Time.Delta * 9.81f * Vector3.UnitZ,
-});
+      uniform: Time.Delta * 9.81f * Vector3.UnitZ
+);
 ```
 
 
