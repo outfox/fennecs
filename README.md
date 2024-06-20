@@ -43,8 +43,7 @@
 Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/examples/) , and more!  
 ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) 
 
-## Quickstart: Let's go!
-### Install
+## Quickstart
 ![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)
 <br/>*append `--prerelease` for the beta version*
 
