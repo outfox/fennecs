@@ -44,7 +44,7 @@ Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](
 ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) 
 
 ## Quickstart: Let's go!
-📦`>` `dotnet add package fennecs`
+[![dotnet add package fennecs](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&random=false&width=435&lines=%F0%9F%93%A6%3E+dotnet+add+package+fennecs)](https://git.io/typing-svg)
 
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
 
