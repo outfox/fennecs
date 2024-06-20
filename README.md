@@ -39,10 +39,6 @@
    </tr>
 </table>
 
-# 📕 DOCUMENTATION: [fennecs.tech](https://fennecs.tech) (official website) 
-Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/examples/) , and more!  
-![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) 
-
 ## Quickstart
 ![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)
 <br/>*append `--prerelease` for the beta version*
@@ -90,6 +86,11 @@ The 💫*real magic*💫 is that none of this brevity compromises on performance
 
 ------------------------
 
+## 📕 DOCUMENTATION: [fennecs.tech](https://fennecs.tech) (official website)
+Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/examples/) , and more!  
+![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png)
+
+------------------------
 ## ⏩ Nimble: _**fenn**ecs_ benchmarks
 
 Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU without even customizing your logic.
