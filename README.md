@@ -71,9 +71,9 @@ stream.For(
 
 #### 💢... when we said minimal boilerplate, <em>we meant it.</em>
 
-Seriously, we weren't kidding about that minimal boilerplate promise. By any measure, we're talking just a couple of lines to get this gravity feature up and running. Creating the world and query is just the pregame setup – the real slam dunk is how cleanly we built the full actor/gravity logic with barely any ceremonial code in sight.
+Seriously, we weren't kidding. By any measure, we're talking just a couple of lines to get this gravity feature up and running. Creating the world and query is just the pregame setup – the real slam dunk is how cleanly we built the full actor/gravity logic with barely any ceremonial code in sight.
 
-And here's the kicker: all that simplicity doesn't force any performance trade-offs! You get to have your cake and eat it too with zero confusion or fluff!
+Here's the kicker: all that simplicity doesn't force any performance trade-offs! You get to have your cake and eat it too with zero confusion or fluff!
 
 ------------------------
 
