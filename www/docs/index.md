@@ -40,9 +40,9 @@ stream.For(Time.Delta, (float dt, ref Vector3 velocity) => {
 var simd = world.Query<Vector3>().SIMD();
 // this is still under hot & messy development right now 😅
 simd.Add(
+      destination: new Comp<Vector3>(),
       operand: new Comp<Vector3>(), // can be same as destination!
       uniform: Time.Delta * 9.81f * Vector3.UnitZ,
-      destination: new Comp<Vector3>(),
 });
 ```
 
