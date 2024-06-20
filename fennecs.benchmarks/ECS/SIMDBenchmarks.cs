@@ -50,15 +50,15 @@ public class SIMDBenchmarks
     [Benchmark(Description = "fennecs (SIMD)")]
     public void fennecs_SIMD()
     {
-        var simd = new SIMD<int>(_query.Query);
-        simd.SumI32(new Cmp<Component1>(), new Cmp<Component1>(), new Cmp<Component2>(), new Cmp<Component3>());
+        var simd = new SIMD(_query.Query);
+        simd.AddI32(new Cmp<Component1>(), new Cmp<Component1>(), new Cmp<Component2>(), new Cmp<Component3>());
     }
 
     [BenchmarkCategory("fennecs")]
     [Benchmark(Description = "fennecs (SIMD-burst)")]
     public void fennecs_SIMD_Burst()
     {
-        var simd = new SIMD<int>(_query.Query);
+        var simd = new SIMD(_query.Query);
         simd.SumI32Burst(new Cmp<Component1>(), new Cmp<Component1>(), new Cmp<Component2>(), new Cmp<Component3>());
     }
 }

@@ -31,7 +31,7 @@ public class SIMD_Add
         using var world = new World();
 
         var query = world.Query<TestInt>().Compile();
-        var simd = new SIMD<TestInt>(query);
+        var simd = new SIMD(query);
 
         world.Entity().Add<TestInt>().Spawn(count);
         simd.AddI32(69);
@@ -70,7 +70,7 @@ public class SIMD_Add
         using var world = new World();
 
         var query = world.Query<TestInt>().Compile();
-        var simd = new SIMD<TestInt>(query);
+        var simd = new SIMD(query);
 
         world.Entity().Add<TestInt>().Spawn(count);
         
@@ -101,14 +101,14 @@ public class SIMD_Add
         using var world = new World();
 
         var query = world.Query<TestInt>().Compile();
-        var simd = new SIMD<TestInt>(query);
+        var simd = new SIMD(query);
 
         world.Entity()
             .Add(new TestInt(5))
             .Add(new TestInt2(7))
             .Spawn(count);
         
-        simd.SumI32<TestInt, TestInt, TestInt2>(new (default), new (default), new (default));
+        simd.AddI32<TestInt, TestInt, TestInt2>(new (default), new (default), new (default));
         
         var stream = query.Stream<TestInt>();
         foreach (var (_, test) in stream)
@@ -132,7 +132,7 @@ public class SIMD_Add
         using var world = new World();
 
         var query = world.Query<TestInt>().Compile();
-        var simd = new SIMD<TestInt>(query);
+        var simd = new SIMD(query);
 
         world.Entity()
             .Add(new TestInt(0))
@@ -140,7 +140,7 @@ public class SIMD_Add
             .Add(new TestInt3(7))
             .Spawn(count);
         
-        simd.SumI32<TestInt, TestInt2, TestInt3>(new (default), new (default), new (default));
+        simd.AddI32<TestInt, TestInt2, TestInt3>(new (default), new (default), new (default));
         
         var stream = query.Stream<TestInt>();
         foreach (var (_, test) in stream)
@@ -164,7 +164,7 @@ public class SIMD_Add
         using var world = new World();
 
         var query = world.Query<TestInt>().Compile();
-        var simd = new SIMD<TestInt>(query);
+        var simd = new SIMD(query);
 
         world.Entity()
             .Add(new TestInt(5))
@@ -172,7 +172,7 @@ public class SIMD_Add
             .Add(new TestInt3(30))
             .Spawn(count);
         
-        simd.SumI32<TestInt, TestInt, TestInt2, TestInt3>(new (default), new (default), new (default), new (default));
+        simd.AddI32<TestInt, TestInt, TestInt2, TestInt3>(new (default), new (default), new (default), new (default));
         
         var stream = query.Stream<TestInt>();
         foreach (var (_, test) in stream)

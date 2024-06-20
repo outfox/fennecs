@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.Arm;
@@ -24,8 +23,7 @@ public record struct Cmp<T>(Match match = default) where T : unmanaged
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public record SIMD<C0>(Query Query)
-    where C0 : unmanaged
+public record SIMD(Query Query)
 {
     public void AddI32(Int32 uniform, Match match0 = default)
     {
@@ -57,7 +55,7 @@ public record SIMD<C0>(Query Query)
     /// <typeparam name="OUT"></typeparam>
     /// <typeparam name="O1"></typeparam>
     /// <typeparam name="O2"></typeparam>
-    public void SumI32<OUT, O1, O2>(Cmp<OUT> destination, Cmp<O1> operand1, Cmp<O2> operand2)
+    public void AddI32<OUT, O1, O2>(Cmp<OUT> destination, Cmp<O1> operand1, Cmp<O2> operand2)
         where OUT : unmanaged
         where O1 : unmanaged
         where O2 : unmanaged
@@ -98,7 +96,7 @@ public record SIMD<C0>(Query Query)
         }
     }
     
-    public void SumI32<OUT, O1, O2, O3>(Cmp<OUT> destination, Cmp<O1> operand1, Cmp<O2> operand2, Cmp<O3> operand3)
+    public void AddI32<OUT, O1, O2, O3>(Cmp<OUT> destination, Cmp<O1> operand1, Cmp<O2> operand2, Cmp<O3> operand3)
         where OUT : unmanaged
         where O1 : unmanaged
         where O2 : unmanaged
@@ -201,7 +199,7 @@ public record SIMD<C0>(Query Query)
         }
     }
 
-    public void SumI32<OUT, O1, O2, O3, O4>(Cmp<OUT> destination, Cmp<O1> operand1, Cmp<O2> operand2, Cmp<O3> operand3, Cmp<O4> operand4)
+    public void AddI32<OUT, O1, O2, O3, O4>(Cmp<OUT> destination, Cmp<O1> operand1, Cmp<O2> operand2, Cmp<O3> operand3, Cmp<O4> operand4)
         where OUT : unmanaged
         where O1 : unmanaged
         where O2 : unmanaged
@@ -261,10 +259,10 @@ public record SIMD<C0>(Query Query)
         else AddImplScalar(uniform, match0);
         */
     }
-    internal void AddImplAvx2(Int32 summand, Match match0)
+    internal void AddImplAvx2<C0, T2, Tunderlying>(T2 summand, Match match0) where C0: unmanaged where T2: unmanaged, INumber<T2>
     {
         var summandVector = Vector256.Create(summand);
-        var vectorSize = Vector256<Int32>.Count;
+        var vectorSize = Vector256<T2>.Count;
 
         foreach (var table in Query.Archetypes)
         {
@@ -276,7 +274,7 @@ public record SIMD<C0>(Query Query)
             using var mem1 = table.GetStorage<C0>(match0).AsMemory(range.from, range.to).Pin();
             unsafe
             {
-                var p1 = (Int32*)mem1.Pointer;
+                var p1 = (T2*)mem1.Pointer;
                 var i = range.from;
                 var vectorEnd = count - count % vectorSize;
 
@@ -417,7 +415,7 @@ public record SIMD<C0>(Query Query)
     }
 
 
-    internal void AddImplScalar(int summand, Match match0)
+    internal void AddImplScalar<C0>(int summand, Match match0) where C0 : struct
     {
         foreach (var table in Query.Archetypes)
         {
