@@ -40,8 +40,8 @@
 </table>
 
 ## Quickstart
-![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)<br/> 
-*(append `--prerelease` for the beta version)*
+> ![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)<br/> 
+> *(append `--prerelease` for the beta version)*
 
 ### Let's code!
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
