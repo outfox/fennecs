@@ -44,11 +44,12 @@ Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](
 ![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) 
 
 ## Quickstart: Let's go!
+### Install
 ![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)
 <br/>*append `--prerelease` for the beta version*
 
+### Let's code!
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
-
 ```cs
 // Declare a component record. (we can also use most existing value & reference types)
 record struct Velocity(Vector3 Value);
