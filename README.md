@@ -2,6 +2,9 @@
 [![fennecs logo](./www/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech#gh-light-mode-only)
 
 # _... the tiny, tiny, high-energy Entity-Component System!_
+> [![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)  
+> *to use the beta versions, append `--prerelease`*  
+> *visit the [**fenn**ecs cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro!*
 
 <table style="width: 100%">
    <tr>
