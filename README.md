@@ -37,7 +37,7 @@
 </table>
 
 ## Quickstart
-> *Brand new? Try the [cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro, then [dive into the docs](https://fennecs.tech/docs/)!*</br>
+> *Brand new? Try the [cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro, or [dive into the docs](https://fennecs.tech/docs/)!*</br>
 > *Familiar with ECS architectures? Get an [overview](https://fennecs.tech/docs/Concepts.html) of new & unique concepts!*
 
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
