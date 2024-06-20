@@ -70,9 +70,10 @@ stream.For(
 ```
 
 #### 💢... when we said minimal boilerplate, <em>we meant it.</em>
-Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "infrastructure".  
 
-The 💫*real magic*💫 is that none of this brevity compromises on performance.
+Seriously, we weren't kidding about that minimal boilerplate promise. By any measure, we're talking just a couple of lines to get this gravity feature up and running. Creating the world and query is just the pregame setup – the real slam dunk is how cleanly we built the full actor/gravity logic with barely any ceremonial code in sight.
+
+And here's the kicker: all that simplicity doesn't force any performance trade-offs! You get to have your cake and eat it too with zero confusion or fluff!
 
 ------------------------
 
