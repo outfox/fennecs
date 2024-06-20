@@ -45,7 +45,7 @@ Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](
 
 ## Quickstart: Let's go!
 ![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)
-*append `--prerelease` for the beta version*
+<br/>*append `--prerelease` for the beta version*
 
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
 
