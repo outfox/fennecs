@@ -4,7 +4,6 @@
 # _... the tiny, tiny, high-energy Entity-Component System!_
 > [![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)  
 > *to use the beta versions, append `--prerelease`*  
-> *visit the [**fenn**ecs cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro!*
 
 <table style="width: 100%">
    <tr>
@@ -38,11 +37,8 @@
 </table>
 
 ## Quickstart
-> [![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)  
-> *to use the beta versions, append `--prerelease`*  
-> *visit the [**fenn**ecs cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro!*
+> *(try the [**fenn**ecs cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro!)*
 
-### Let's code!
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
 ```cs
 // Declare a component record. (we can also use most existing value & reference types)
