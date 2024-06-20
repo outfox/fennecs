@@ -31,11 +31,13 @@
       </td>
    </tr>
    <tr>
-      <td colspan="2">
-         <p><span style="font-size: larger"><em><b>fenn</b>ecs</em></span> is a re-imagining of <a href="https://github.com/Byteron/HypEcs">RelEcs/HypEcs</a> 
-            which <em>feels just right<a href="#quickstart-lets-go">*</a></em> for high performance game development in any modern C# engine. Including, of course, the fantastic <a href="https://godotengine.org">Godot</a>.
-         </p>
-      </td>
+      <th colspan="2">
+         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Downloads" src="https://img.shields.io/nuget/dt/fennecs"/></a>
+         <a href="https://github.com/outfox/fennecs/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/outfox/fennecs/xUnit.yml"/></a>
+         <a href="https://github.com/outfox/fennecs/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/outfox/fennecs?color=green"/></a>
+         <a href="https://discord.gg/3SF4gWhANS"><img alt="Discord" src="https://img.shields.io/badge/Discord-_%E2%A4%9Coutfox%E2%A4%8F-blue?logo=discord&logoColor=f5f5f5"/></a>
+         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
+      </th>
    </tr>
 </table>
 
