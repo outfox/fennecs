@@ -98,6 +98,6 @@ Until then, you can use a mutable reference type object as a uniform, and pass i
 
 ### Remember: Thread fast, thread hard, and thread safe!
 
-Where many threads live, there also be dragons.
+But alas, where many threads live, there also be dragons.
 
 :neofox_hug_dragn_heart: 

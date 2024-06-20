@@ -139,8 +139,16 @@ _Stream.Raw(static delegate(Memory<IntComp1> c1V, Memory<IntComp2> c2V)
 ```
 
 ```cs [☠️☠️☠️ pin for GPU]
-//TODO :) until then, you probably either have a clue already
-//or you better not be copying this code sample anyway
+//TODO :) until then - relaxen and watchen the blinkenlichten!
+
+// ATTENTION
+// This room is fullfilled mit special electronische equippment.
+// Fingergrabbing and pressing the cnoeppkes from the computers is
+// allowed for die experts only! So all the “lefthanders” stay away
+// and do not disturben the brainstorming von here working
+// intelligencies. Otherwise you will be out thrown and kicked
+// anderswhere! Also: please keep still and only watchen astaunished
+// the blinkenlights.
 ```
 :::
 
