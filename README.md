@@ -40,7 +40,7 @@
 </table>
 
 ## Quickstart
-> ![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)<br/> 
+> ![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)   
 > *(append `--prerelease` for the beta version)*
 
 ### Let's code!
