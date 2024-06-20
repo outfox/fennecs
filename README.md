@@ -41,7 +41,7 @@
 
 ## Quickstart
 > [![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)  
-> *append `--prerelease` for the beta version*  
+> *to use the beta versions, append `--prerelease`*  
 > *visit the [**fenn**ecs cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro!*
 
 ### Let's code!
