@@ -5,7 +5,7 @@ order: 2
 
 # Tag Components
 
-Tags are a components that don't store any data. They are often used to mark entities that have a common trait or behavior.
+Super useful: Tags are a components that don't store any data. They are often used to mark entities that have a common trait or behavior.
 
 ```csharp
 public struct Pretty;
