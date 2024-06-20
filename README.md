@@ -1,5 +1,5 @@
-[![fennecs logo](./www/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only)](https://fennecs.tech)
-[![fennecs logo](./www/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech)
+[![fennecs logo](./www/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only)](https://fennecs.tech#gh-dark-mode-only)
+[![fennecs logo](./www/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech#gh-light-mode-only)
 
 # _... the tiny, tiny, high-energy Entity-Component System!_
 
