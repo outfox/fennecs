@@ -28,13 +28,25 @@ stream.For(
 );
 ```
 
-```cs [(tighter in OTBS)]
+```cs [(🤏 200% tighter in OTBS)]
 var stream = world.Stream<Vector3>();
 
 stream.For(Time.Delta, (float dt, ref Vector3 velocity) => {
       velocity.Y -= 9.81f * dt;
 });
 ```
+
+```cs [soon: (🚀 700% faster with SIMD)]
+var simd = world.Query<Vector3>().SIMD();
+// this is still under hot & messy development right now 😅
+simd.Add(
+      destination: new Comp<Vector3>(),
+      operand: new Comp<Vector3>(), // can be same as destination!
+      uniform: Time.Delta * 9.81f * Vector3.UnitZ
+);
+```
+
+
 :::
 
 ::: tip :neofox_book: THE DOCUMENTATION - (you're in it now!)

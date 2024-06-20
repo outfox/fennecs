@@ -1,17 +1,12 @@
-![fennecs logo](./www/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only) ![fennecs logo](./www/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)
+[![fennecs logo](./www/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only)](https://fennecs.tech#gh-dark-mode-only)
+[![fennecs logo](./www/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech#gh-light-mode-only)
 
 # _... the tiny, tiny, high-energy Entity-Component System!_
+> [![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)  
+> *to use the beta versions, append `--prerelease`*  
 
 <table style="width: 100%">
    <tr>
-      <th colspan="2">
-         <a href="https://discord.gg/3SF4gWhANS"><img alt="Discord" src="https://img.shields.io/badge/Discord-_%E2%A4%9Coutfox%E2%A4%8F-blue?logo=discord&logoColor=f5f5f5"/></a>
-         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Downloads" src="https://img.shields.io/nuget/dt/fennecs"/></a>
-         <img alt="GitHub top language" src="https://img.shields.io/badge/C%23-100%25_-blue"/>
-         <a href="https://github.com/outfox/fennecs/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/outfox/fennecs/xUnit.yml"/></a>
-         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
-         <a href="https://github.com/outfox/fennecs/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/outfox/fennecs?color=green"/></a>
-      </th>
    </tr>
    <tr>
       <td>
@@ -31,23 +26,21 @@
       </td>
    </tr>
    <tr>
-      <td colspan="2">
-         <p><span style="font-size: larger"><em><b>fenn</b>ecs</em></span> is a re-imagining of <a href="https://github.com/Byteron/HypEcs">RelEcs/HypEcs</a> 
-            which <em>feels just right<a href="#quickstart-lets-go">*</a></em> for high performance game development in any modern C# engine. Including, of course, the fantastic <a href="https://godotengine.org">Godot</a>.
-         </p>
-      </td>
+      <th colspan="2">
+         <a href="https://discord.gg/3SF4gWhANS"><img alt="Discord" src="https://img.shields.io/badge/Discord-_%E2%A4%9Coutfox%E2%A4%8F-blue?logo=discord&logoColor=f5f5f5"/></a>
+         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
+         <a href="https://www.nuget.org/packages/fennecs/"><img alt="Downloads" src="https://img.shields.io/nuget/dt/fennecs"/></a>
+         <a href="https://github.com/outfox/fennecs/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/outfox/fennecs/xUnit.yml"/></a>
+         <a href="https://github.com/outfox/fennecs/issues"><img alt="Open issues" src="https://img.shields.io/github/issues-raw/outfox/fennecs?color=green"/></a>
+      </th>
    </tr>
 </table>
 
-# 📕 DOCUMENTATION: [fennecs.tech](https://fennecs.tech) (official website) 
-Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/examples/) , and more!  
-![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png) 
-
-## Quickstart: Let's go!
-📦`>` `dotnet add package fennecs`
+## Quickstart
+> *Brand new? Try the [cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro, or [dive into the docs](https://fennecs.tech/docs/)!*</br>
+> *Familiar with ECS architectures? Get an [overview](https://fennecs.tech/docs/Concepts.html) of new & unique concepts!*
 
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
-
 ```cs
 // Declare a component record. (we can also use most existing value & reference types)
 record struct Velocity(Vector3 Value);
@@ -72,9 +65,10 @@ stream.For(
 ```
 
 #### 💢... when we said minimal boilerplate, <em>we meant it.</em>
-Even using the strictest judgment, that's no more than 2 lines of boilerplate! Merely instantiating the world and building the query aren't directly moving parts of the actor/gravity feature we just built, and should be seen as "enablers" or "infrastructure".  
 
-The 💫*real magic*💫 is that none of this brevity compromises on performance.
+By any measure, we're talking just a couple of lines to get this gravity feature up and running. Creating the world and query is the only setup – the real slam dunk is how cleanly we built the full actor/gravity logic with barely any ceremonial code in sight.
+
+And there's more: all that simplicity doesn't force any performance trade-offs! You get to have your cake and eat it too with zero confusion or fluff!
 
 ------------------------
 
@@ -89,6 +83,11 @@ The 💫*real magic*💫 is that none of this brevity compromises on performance
 
 ------------------------
 
+## 📕 DOCUMENTATION: [fennecs.tech](https://fennecs.tech) (official website)
+Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/examples/) , and more!  
+![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png)
+
+------------------------
 ## ⏩ Nimble: _**fenn**ecs_ benchmarks
 
 Preliminary (WIP) benchmarks suggest you can expect to process over 2 million components per millisecond on a 2020 CPU without even customizing your logic.

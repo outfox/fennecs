@@ -1,11 +1,12 @@
 ---
 title: Shareables
-order: 10
+order: 9
 ---
 
 # Shareable Components
 
 One word: `reference types`. No, wait...
+
 
 You can easily share the same instance of a component among multiple entities using **reference types**. This allows you to efficiently share state and updates across entities.
 
@@ -15,7 +16,7 @@ This is especially useful for heavyweight objects that are expensive to create o
 
 
 ::: info :neofox_thumbsup: SHARING MADE SIMPLE
-To share a component, declare it as a [reference type](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) (e.g., a class or record, but not struct) and add the same instance to multiple entities. Each entity will hold a reference to the same instance of the component.
+To share a component, declare it as a [reference type](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) (e.g., a `class` or `record`, but not ~~`struct`~~) and add the same instance to multiple entities. Each entity will hold a reference to the same instance of the component.
 :::
 
 You can, of course, still add reference type components only to a single entity, and not share them at all.
