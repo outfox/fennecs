@@ -5,6 +5,8 @@ order: 5
 ---
 
 # Stream Views
+... where the real work gets done!
+
 ::: info The magic goggles that turn your Queries into super awesome rainbow roads!
 ![a fennec painting wall in rainbow with a single smooth brush stroke](https://fennecs.tech/img/fennec-stream.png)
 

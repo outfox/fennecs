@@ -19,6 +19,12 @@ namespace fennecs;
 /// </summary>
 public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
 {
+
+    /// <summary>
+    /// In Strict Mode, the Query will throw an exception if a Component is interacted with that is not matched by the Query.
+    /// </summary>
+    public readonly bool strict = true;
+    
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
     ///     Affected by Filters.

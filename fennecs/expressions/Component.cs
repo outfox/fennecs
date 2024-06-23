@@ -43,3 +43,45 @@ public readonly record struct Component
     /// </summary>
     public static Component SpecificLink<T>(T target) where T : class => new(TypeExpression.Of<T>(fennecs.Link.With(target)));
 }
+
+
+public interface IBlittable
+{
+    internal TypeExpression TypeExpression { get; }
+}
+
+public interface IComponent
+{
+    internal TypeExpression TypeExpression { get; }
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="match"></param>
+/// <typeparam name="T"></typeparam>
+public readonly record struct Blittable<T>(Match match = default) : IBlittable, IComponent where T : unmanaged
+{
+    TypeExpression IBlittable.TypeExpression => TypeExpression.Of<T>(match);
+    TypeExpression IComponent.TypeExpression => TypeExpression.Of<T>(match);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Match match { get; } = match;
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="match0"></param>
+    /// <returns></returns>
+    public static Blittable<T> Matching(Match match0) => new(match0);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public static Blittable<T> Plain => new(default);
+
+}

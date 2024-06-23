@@ -1,5 +1,6 @@
 ﻿namespace fennecs.tests.Conceptual;
 
+#if EXPERIMENTAL
 public class SIMD_Add
 {
     private record struct TestInt(int Value);
@@ -182,3 +183,4 @@ public class SIMD_Add
         Assert.Equal(count, stream.Count);
     }
 }
+#endif

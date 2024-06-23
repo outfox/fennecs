@@ -24,15 +24,19 @@ namespace fennecs;
 /// </remarks>
 internal readonly record struct TypeExpression : IComparable<TypeExpression>
 {
-    private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId)
-    { }
+    //private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId, default)
+    //{ }
     
-    public TypeExpression(Identity Identity, TypeID TypeId)
+    public TypeExpression(Identity Identity, TypeID TypeId, TypeFlags Flags)
     {
         this.Identity = Identity;
         this.TypeId = TypeId;
+        this.Flags = Flags;
     }
 
+    internal bool isUnmanaged => Flags.HasFlag(TypeFlags.Unmanaged);
+    internal int SIMDsize => (int)(Flags & TypeFlags.SIMDSize) >> 8;
+    
     internal Relate Relation => new(Identity);
 
     internal Match Match => new(Identity);
@@ -56,7 +60,10 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     public Type Type => LanguageType.Resolve(TypeId);
 
     public Identity Identity { get; init; }
-    public TypeID TypeId { get; init; }
+    public TypeID TypeId { get; }
+    
+    public TypeFlags Flags { get; }
+    
 
 
     /// <summary>
@@ -167,7 +174,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <typeparam name="T">The backing type for which to generate the expression.</typeparam>
     /// <param name="match">The target entity, with a default of <see cref="fennecs.Identity.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of<T>(Match match) => new(match, LanguageType<T>.Id);
+    public static TypeExpression Of<T>(Match match) => new(match.Value, LanguageType<T>.Id, LanguageType.FlagsOf<T>());
 
 
     /// <summary>
@@ -192,7 +199,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <param name="type">The Component type.</param>
     /// <param name="match">The target entity, with a default of <see cref="fennecs.Identity.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of(Type type, Match match) => new(match, LanguageType.Identify(type));
+    public static TypeExpression Of(Type type, Match match) => new(match.Value, LanguageType.Identify(type), LanguageType.Flags(type));
 
 
     /// <inheritdoc cref="object.ToString"/>
@@ -244,3 +251,4 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
         return identityComparison;
     }
 }
+

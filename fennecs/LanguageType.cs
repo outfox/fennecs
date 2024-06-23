@@ -1,8 +1,12 @@
 ﻿global using TypeID = short;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace fennecs;
 
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 internal class LanguageType
 {
     internal protected static Type Resolve(TypeID typeId) => Types[typeId];
@@ -18,15 +22,11 @@ internal class LanguageType
 
     internal protected static TypeID Identify(Type type)
     {
+        // Query the registry directly for a fast response.
+        if (Ids.TryGetValue(type, out var id)) return id;
+
         lock (RegistryLock)
         {
-            // Query the registry directly for a fast response.
-            if (Ids.TryGetValue(type, out var id)) return id;
-
-            // ^^^ Optional Pattern: double-checked locking (DCL); move lock down here.
-            // Query the registry again, this time synchronized.
-            //if (Ids.TryGetValue(type, out id)) return id;
-
             // Construct LanguageType<T>, invoking its static constructor.
             Type[] typeArgs = [type];
             var constructed = typeof(LanguageType<>).MakeGenericType(typeArgs);
@@ -55,8 +55,37 @@ internal class LanguageType
     private struct Any;
 
     private struct None;
-}
 
+    private static readonly ConcurrentDictionary<Type, TypeFlags> CachedFlags = new();
+    public static TypeFlags Flags(Type type)
+    {
+        if (CachedFlags.TryGetValue(type, out var flags)) return flags;
+
+        // Call generic method for T
+        var method = typeof(LanguageType).GetMethod(nameof(FlagsOf), BindingFlags.Public | BindingFlags.Static);
+        var generic = method!.MakeGenericMethod(type);
+        return (TypeFlags) generic.Invoke(null, null)!;
+    }
+
+    public static TypeFlags FlagsOf<T>()
+    {
+        if (CachedFlags.TryGetValue(typeof(T), out var flags)) return flags;
+
+        if (typeof(T).IsUnmanaged())
+        {
+            var size = Unsafe.SizeOf<T>();
+
+            // Arbitrary: 2048 bytes is the maximum size of a SIMD-able type.
+            // It is recommended to keep this much lower - 64 bytes or less.
+            if (size <= 0x1000) flags |= (TypeFlags)size;
+
+            flags |= TypeFlags.Unmanaged;
+        }
+
+        CachedFlags.TryAdd(typeof(T), flags);
+        return flags;
+    }
+}
 
 internal class LanguageType<T> : LanguageType
 {
@@ -76,5 +105,31 @@ internal class LanguageType<T> : LanguageType
 
 
     //FIXME: This collides with certain Entity types and generations.
-    public static TypeID TargetId => (TypeID) (-Id);
+    public static TypeID TargetId => (TypeID)(-Id);
+}
+
+internal static class TypeFlagExtensions
+{
+    public static bool IsUnmanaged(this Type t)
+    {
+        if (t.IsPrimitive || t.IsPointer || t.IsEnum) return true;
+        
+        if (t.IsGenericType || !t.IsValueType) return false;
+
+        var fields = t.GetFields(BindingFlags.Public
+                                 | BindingFlags.NonPublic
+                                 | BindingFlags.Instance);
+        
+        // Recursively check all fields.
+        return fields.All(x => x.FieldType.IsUnmanaged());
+    }
+
+    public static bool IsUnmanaged<T>() => IsUnmanaged(typeof(T));
+}
+
+[Flags]
+internal enum TypeFlags : ushort
+{ 
+    SIMDSize  = 0x1fff, // bottom 12 bits.
+    Unmanaged = 0x8000, // top bit.
 }
