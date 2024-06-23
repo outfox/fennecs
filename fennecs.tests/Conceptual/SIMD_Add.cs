@@ -1,6 +1,5 @@
 ﻿namespace fennecs.tests.Conceptual;
 
-#if EXPERIMENTAL
 public class SIMD_Add
 {
     private record struct TestInt(int Value);
@@ -13,20 +12,10 @@ public class SIMD_Add
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(2)]
-    [InlineData(3)]
-    [InlineData(4)]
-    [InlineData(5)]
-    [InlineData(6)]
-    [InlineData(7)]
-    [InlineData(8)]
-    [InlineData(9)]
     [InlineData(10)]
-    [InlineData(11)]
-    [InlineData(12)]
-    [InlineData(13)]
-    [InlineData(14)]
-    [InlineData(15)]
-    [InlineData(16)]
+    [InlineData(69)]
+    [InlineData(420)]
+    [InlineData(4096)]
     public void CanAddI32(int count)
     {
         using var world = new World();
@@ -34,20 +23,19 @@ public class SIMD_Add
         var query = world.Query<TestInt>().Compile();
         var simd = new SIMD(query);
 
-        world.Entity().Add<TestInt>().Spawn(count);
-        simd.AddI32(69);
-        simd.AddImplAvx2(11, default);
-        simd.AddImplSse2(1, default);
-        simd.AddImplScalar(42, default);
+        world.Entity().Add<TestInt>(new (69)).Spawn(count);
+        
+        simd.Add(Comp<TestInt>.Plain, 42);
 
         var stream = query.Stream<TestInt>();
         foreach (var (_, test) in stream)
         {
-            Assert.Equal(123, test.Value);
+            Assert.Equal(111, test.Value);
         }
         Assert.Equal(count, stream.Count);
     }
 
+    /*
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
@@ -182,5 +170,5 @@ public class SIMD_Add
         }
         Assert.Equal(count, stream.Count);
     }
+    */
 }
-#endif

@@ -170,7 +170,7 @@ public class EntitySpawnerTests
     {
         using var world = new World();
         var other = world.Spawn();
-        using var spawner1 = world.Entity().Add<Type69>(other); 
+        using var spawner1 = world.Entity().Add<Type69>(new(), other); 
         spawner1.Spawn();
         
         using var query1 = world.Query<Type69>(other).Compile();
@@ -198,7 +198,7 @@ public class EntitySpawnerTests
     {
         using var world = new World();
         var other = world.Spawn();
-        using var spawner1 = world.Entity().Add<Type69>(other); 
+        using var spawner1 = world.Entity().Add<Type69>(new(), other); 
         spawner1.Spawn();
         
         using var query1 = world.Query<Type69>(other).Compile();

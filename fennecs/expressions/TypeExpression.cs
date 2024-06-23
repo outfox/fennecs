@@ -61,7 +61,6 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
 
     public Identity Identity { get; init; }
     public TypeID TypeId { get; }
-    
     public TypeFlags Flags { get; }
     
 

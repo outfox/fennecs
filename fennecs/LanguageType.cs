@@ -114,7 +114,7 @@ internal static class TypeFlagExtensions
     {
         if (t.IsPrimitive || t.IsPointer || t.IsEnum) return true;
         
-        if (t.IsGenericType || !t.IsValueType) return false;
+        if (!t.IsValueType || t.IsGenericType || t.IsByRef || t.IsByRefLike) return false;
 
         var fields = t.GetFields(BindingFlags.Public
                                  | BindingFlags.NonPublic
@@ -123,8 +123,9 @@ internal static class TypeFlagExtensions
         // Recursively check all fields.
         return fields.All(x => x.FieldType.IsUnmanaged());
     }
-
-    public static bool IsUnmanaged<T>() => IsUnmanaged(typeof(T));
+    
+    // Probably no use for this comptime optimization?
+    // public static bool IsUnmanaged<T>() where T: unmanaged => true;
 }
 
 [Flags]
