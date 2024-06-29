@@ -29,8 +29,8 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
         foreach (var type in streamTypes) _mask.Has(type);
         
         // TODO: need to agree with myself what I can do about including Identity or not.
-        if (!_mask.HasTypes.Contains(Component.PlainComponent<Identity>().value))
-            _mask.Has(Component.PlainComponent<Identity>().value);
+        if (!_mask.HasTypes.Contains(Comp<Identity>.Plain.TypeExpression))
+            _mask.Has(Comp<Identity>.Plain.TypeExpression);
     }
 
     #endregion

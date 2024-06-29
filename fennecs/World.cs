@@ -13,6 +13,8 @@ public partial class World : Query
 
     private Meta[] _meta;
 
+    private readonly Guid _guid = Guid.NewGuid();
+    
     // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
     private readonly Archetype _root;
 
@@ -241,12 +243,16 @@ public partial class World : Query
         }
         */
     }
+
+    /// <inheritdoc />
+    public override int GetHashCode() => _guid.GetHashCode();
+
     #endregion
 
 
     #region Assert Helpers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal void AssertAlive(Identity identity)
+    private void AssertAlive(Identity identity)
     {
         if (IsAlive(identity)) return;
 

@@ -25,7 +25,7 @@ public class QueryFilterTests
         var entity3 = _world.Spawn().Add(new ComponentA()).Add(new ComponentB());
 
         // Act
-        var query2 = _query with { Subset = [Component.PlainComponent<ComponentA>()] }; 
+        var query2 = _query with { Subset = [Comp<ComponentA>.Plain] }; 
 
         var results = query2.ToList().Select(r => r.Item1).ToArray();
         
