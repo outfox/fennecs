@@ -7,7 +7,7 @@ namespace fennecs.pools;
 /// A pooled List implementation. Must be Disposed after use!
 /// </summary>
 /// <typeparam name="T">Type of the List elements.</typeparam>
-public class PooledList<T> : List<T>, IDisposable
+internal class PooledList<T> : List<T>, IDisposable
 {
     /// <summary>
     /// Starting capacity of a new instance.
