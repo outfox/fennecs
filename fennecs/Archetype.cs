@@ -356,6 +356,16 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         destination.PatchMetas(destination.Count-1);
     }
 
+    internal Span<Component> GetRow(int row)
+    {
+        var components = new Component[Signature.Count];
+        foreach (var (type, index) in _storageIndices)
+        {
+            components[index] = new(type, Storages[index].Box(row), _world);
+        }
+        
+        return components;
+    }
 
     /// <inheritdoc />
     public int CompareTo(Archetype? other)

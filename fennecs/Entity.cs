@@ -211,7 +211,11 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// Checks if the Entity has an Object Link of a specific type and specific target.
     /// </summary>
     public bool Has<T>(Link<T> link) where T : class => _world.HasComponent<T>(Id, link);
-    
+
+    public Span<Component> Components()
+    {
+        return _world.GetComponents(Id);
+    }
     #endregion
 
 

@@ -1,30 +1,62 @@
-﻿namespace fennecs;
+﻿using System.Runtime.CompilerServices;
+
+namespace fennecs;
 
 /// <summary>
-/// A boxed Component Expression with its accompanying Type and Value.
+/// A boxed Component Expression with its accompanying Type and Value
 /// </summary>
+/// <remarks>
+/// See <see cref="Comp{T}"/> for strongly-typed Component Expressions.
+/// </remarks>
 public readonly record struct Component
 {
     /// <summary>
-    /// The backing Type of this Component.
+    /// Is this Component a Relation?
     /// </summary>
-    public Type Type => TypeExpression.Type;
-
+    public bool isRelation => Expression.Match.IsEntity;
+    
     /// <summary>
-    /// The boxed Value of this Component. This is always assignable to the backing Type.
+    /// Is this Component a Link?
     /// </summary>
-    public object Value { get; init; }
-
-    internal Component(TypeExpression typeExpression, object value)
+    public bool isLink => Expression.Match.IsObject;
+    
+    /// <summary>
+    /// The Entity target of this Component, if it is a Relation.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">if the Component is not a Relation</exception>
+    public Entity targetEntity
     {
-        TypeExpression = typeExpression;
-        Value = value;
+        get
+        {
+            if (Expression.isRelation) return new(World, Expression.Identity);
+            throw new InvalidOperationException("Component is not a relation.");
+        }
     }
     
-    internal TypeExpression TypeExpression { get; }
+    /// <summary>
+    /// The backing Type of this Component.
+    /// </summary>
+    public Type Type => Expression.Type;
 
-    internal bool Matches(Component other) => TypeExpression.Matches(other.TypeExpression);
-
+    /// <summary>
+    /// The boxed Value of this Component.
+    /// </summary>
+    /// <remarks>
+    /// This is guaranteed to be assignable to the backing System.<see cref="Type"/> used by the component.
+    /// </remarks>
+    public IStrongBox Box { get; init; }
+    
+    private World World { get; }
+    private TypeExpression Expression { get; }
+    
+    internal Component(TypeExpression expression, IStrongBox box, World world)
+    {
+        World = world;
+        Expression = expression;
+        Box = box;
+    }
+    
+    #region DEPRECATED
     /// <summary>
     /// Strongly-Typed Wildcard for a specific component type, with or without a Target. Used for Stream Filtering and CRUD.
     /// </summary>
@@ -36,7 +68,7 @@ public readonly record struct Component
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Match.Target)")]
     public static Comp<T> AnyRelation<T>() => new(Match.Target);
-    
+
     /// <summary>
     /// Wildcard for a specific component type, with any Entity-Entity Relation. Used for Stream Filtering and CRUD.
     /// </summary>
@@ -54,7 +86,7 @@ public readonly record struct Component
     /// </summary>
     [Obsolete("use Comp<T>.Plain")]
     public static Comp<T> PlainComponent<T>() => Comp<T>.Plain;
-    
+
     /// <summary>
     /// Strongly-Typed for a specific component type, with a specific Entity-Entity Relation. Used for Stream Filtering and CRUD.
     /// </summary>
@@ -66,8 +98,8 @@ public readonly record struct Component
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Link.With(target))")]
     public static Comp<T> SpecificLink<T>(T target) where T : class => Comp<T>.Matching(Link.With(target));
+    #endregion
 }
-
 
 /// <summary>
 /// Typeless (dynamic) Component Expression.
@@ -82,15 +114,29 @@ public readonly record struct Component
 /// </remarks>
 public readonly record struct Comp
 {
-    internal readonly TypeExpression Expression;
+    /// <summary>
+    /// The backing Type of this Component Expression.
+    /// </summary>
+    public Type Type => Expression.Type;
+
+    /// <summary>
+    /// Match against a strongly typed Component Expression.
+    /// </summary>
+    public bool Matches<T>(Comp<T> other) => Expression.Matches(other.Expression);
+
+    /// <summary>
+    /// Match against a generic Component Expression.
+    /// </summary>
+    public bool Matches(Comp other) => Expression.Matches(other.Expression);
+
     
+    internal readonly TypeExpression Expression;
+
     internal Comp(TypeExpression expression)
     {
         Expression = expression;
     }
 
-    public bool Matches<T>(Comp<T> other) => Expression.Matches(other.Expression);
-    public bool Matches(Comp other) => Expression.Matches(other.Expression);
 }
 
 /// <summary>
@@ -110,7 +156,7 @@ public readonly record struct Comp<T>(Match match = default)
     /// If 0, the component is managed or not blittable, and cannot be used for SIMD.
     /// </summary>
     public int SIMDsize => Expression.SIMDsize;
-    
+
     /// <summary>
     /// Component Expression for a blittable type with a specific relation target (match expression).
     /// </summary>
@@ -125,7 +171,7 @@ public readonly record struct Comp<T>(Match match = default)
     /// Does this Component match another Component Expression?
     /// </summary>
     public bool Matches(Comp<T> other) => Expression.Matches(other.Expression);
-    
+
     /// <summary>
     /// Cast this component to the typeless representation used by filters, etc.
     /// (this representation wraps an opaque internal type of the ECS)

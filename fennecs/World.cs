@@ -243,6 +243,12 @@ public partial class World : Query
         }
         */
     }
+    
+    internal Span<Component> GetComponents(Identity id)
+    {
+        var archetype = _meta[id.Index].Archetype;
+        return archetype.GetRow(_meta[id.Index].Row);
+    }
 
     /// <inheritdoc />
     public override int GetHashCode() => _guid.GetHashCode();
@@ -259,4 +265,5 @@ public partial class World : Query
         throw new ObjectDisposedException($"Identity {identity} is no longer alive.");
     }
     #endregion
+
 }

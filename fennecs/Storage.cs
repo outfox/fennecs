@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 using fennecs.pools;
 
 namespace fennecs;
@@ -73,6 +74,11 @@ internal interface IStorage
         var instance = (IStorage) Activator.CreateInstance(storageType)!;
         return instance;
     }
+
+    /// <summary>
+    /// Returns the element at position Row as a boxed object.
+    /// </summary>
+    IStrongBox Box(int row);
 }
 
 /// <summary>
@@ -262,6 +268,16 @@ internal class Storage<T> : IStorage
     /// <inheritdoc/>
     public void Move(int index, IStorage destination) => Move(index, (Storage<T>)destination);
 
+    
+    /// <summary>
+    /// Gets the value at index as a <see cref="IStrongBox"/>.
+    /// </summary>
+    /// <remarks>
+    /// Value Types are copied, then boxed.
+    /// </remarks>
+    public IStrongBox Box(int row) => new StrongBox<T>(Span[row]);
+    
+    
     /// <summary>
     /// Boxed / General migration method.
     /// </summary>
