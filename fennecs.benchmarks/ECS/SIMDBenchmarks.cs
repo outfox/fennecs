@@ -3,6 +3,7 @@ using BenchmarkDotNet.Order;
 using fennecs;
 using fennecs_Components;
 using fennecs.pools;
+using fennecs.SIMD;
 
 namespace Benchmark.ECS;
 

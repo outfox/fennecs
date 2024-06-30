@@ -110,4 +110,12 @@ public partial class World
         return array;
     }
     #endregion
+
+    internal T[] Get<T>(Identity id, Match match)
+    {
+        var type = TypeExpression.Of<T>(match);
+        var meta = _meta[id.Index];
+        using var storages = meta.Archetype.Match<T>(type);
+        return storages.Select(s => s[meta.Row]).ToArray();
+    }
 }

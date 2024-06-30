@@ -11,12 +11,15 @@ namespace fennecs;
 public readonly record struct Component
 {
     /// <summary>
-    /// Is this Component a Relation?
+    /// Is this Component a Relation? (if true, targetEntity returns a valid Entity).
     /// </summary>
+    /// <remarks>
+    /// If targetEntity is despawned, Component instances involving relations with that Entity already in existence remain unaffected.
+    /// </remarks>
     public bool isRelation => Expression.Match.IsEntity;
     
     /// <summary>
-    /// Is this Component a Link?
+    /// Is this Component a Link? (if true, the Value is the linked Object)
     /// </summary>
     public bool isLink => Expression.Match.IsObject;
     
@@ -166,6 +169,11 @@ public readonly record struct Comp<T>(Match match = default)
     /// Plain component expression for a blittable type.
     /// </summary>
     public static Comp<T> Plain => new(default);
+
+    /// <summary>
+    /// A component expression matching a specific link object.
+    /// </summary>
+    public static Comp<U> Matching<U>(U target) where U : class => new(Match.Link(target));
 
     /// <summary>
     /// Does this Component match another Component Expression?

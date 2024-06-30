@@ -224,6 +224,25 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// </remarks>
     public Component[] Components => _world.GetComponents(Id);
     
+    
+    /// <summary>
+    /// Gets all Components of a specific type and match expression on the Entity.
+    /// Supports relation Wildcards, for example:<ul>
+    /// <li><see cref="Entity.Any">Entity.Any</see></li>
+    /// <li><see cref="Link.Any">Link.Any</see></li>
+    /// <li><see cref="Match.Target">Match.Target</see></li>
+    /// <li><see cref="Match.Any">Match.Any</see></li>
+    /// <li><see cref="Match.Plain">Match.Plain</see></li>
+    /// </ul>
+    /// </summary>
+    /// <remarks>
+    /// This is not intended as the main way to get a component from an entity. Consider <see cref="Stream"/>s instead.
+    /// </remarks>
+    /// <param name="match">match expression, supports wildcards</param>
+    /// <typeparam name="T">backing type of the component</typeparam>
+    /// <returns>array with all the component values stored for this entity</returns>
+    public T[] Get<T>(Match match) => _world.Get<T>(Id, match);  
+    
     #endregion
 
 

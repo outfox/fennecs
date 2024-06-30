@@ -81,14 +81,6 @@ public sealed class EntitySpawner : IDisposable, IAddRemoveComponent<EntitySpawn
         return AddComponent(type, target.Object);
     }
     
-    /// <inheritdoc />
-    /*
-    public EntitySpawner Add<T>(Entity relation) where T : notnull, new()
-    {
-        return Add(new T(), relation);
-    }
-    */
-
 
     /// <inheritdoc cref="Entity.Remove{C}()"/>
     /// <summary>

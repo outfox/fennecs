@@ -21,7 +21,7 @@ public class SIMD_Add
         using var world = new World();
 
         var query = world.Query<TestInt>().Compile();
-        var simd = new SIMD(query);
+        var simd = new SIMD.SIMD(query);
 
         world.Entity().Add<TestInt>(new (69)).Spawn(count);
         

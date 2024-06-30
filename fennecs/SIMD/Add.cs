@@ -5,12 +5,11 @@ using System.Runtime.Intrinsics.X86;
 // ReSharper disable BuiltInTypeReferenceStyle
 // ReSharper disable ConvertToCompoundAssignment - We do not do this here because RyuJIT prefers the non-compound version.
 
-namespace fennecs;
+namespace fennecs.SIMD;
 
 /// <summary>
 /// Accessor to a Stream that exposes high-speed SIMD operations.
 /// </summary>
-/// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
 public record SIMD(Query Query)
 {
