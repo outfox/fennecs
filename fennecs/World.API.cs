@@ -98,7 +98,7 @@ public partial class World : IDisposable
     /// <param name="values">component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.TypeExpression);
+        var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.Expression);
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components, values);
     }
@@ -207,7 +207,7 @@ public partial class World : IDisposable
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new(Comp<Identity>.Plain.TypeExpression));
+        _root = GetArchetype(new(Comp<Identity>.Plain.Expression));
     }
 
 

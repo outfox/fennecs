@@ -62,12 +62,12 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <summary>
     /// Subset Stream Filter - if not empty, only entities with these components will be included in the Stream. 
     /// </summary>
-    public ImmutableSortedSet<Component> Subset { get; init; } = [];
+    public ImmutableSortedSet<Comp> Subset { get; init; } = [];
     
     /// <summary>
     /// Exclude Stream Filter - any entities with these components will be excluded from the Stream. (none if empty)
     /// </summary>
-    public ImmutableSortedSet<Component> Exclude { get; init; } = [];
+    public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
     
     /// <summary>
     ///     Countdown event for parallel runners.

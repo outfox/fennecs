@@ -259,9 +259,10 @@ public class SignatureTests
     public void Signature_Can_Match_Component_Sets()
     {
         var signature1 = new Signature(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));
-        ImmutableSortedSet<Component> componentSet1 = [Component.PlainComponent<int>()];
-        ImmutableSortedSet<Component> componentSet2 = [Component.PlainComponent<string>()];
-        ImmutableSortedSet<Component> componentSet3 = [Component.PlainComponent<float>()];
+        
+        ImmutableSortedSet<Comp> componentSet1 = [Comp<int>.Plain];
+        ImmutableSortedSet<Comp> componentSet2 = [Comp<string>.Plain];
+        ImmutableSortedSet<Comp> componentSet3 = [Comp<float>.Plain];
         
         Assert.True(signature1.Matches(componentSet1));
         Assert.True(signature1.Matches(componentSet2));

@@ -1,24 +1,36 @@
 ﻿namespace fennecs;
 
 /// <summary>
-/// A specific set of match expressions to match specific component types where type parameters are not available.
+/// A boxed Component Expression with its accompanying Type and Value.
 /// </summary>
-public record Component
+public readonly record struct Component
 {
-    internal Component(TypeExpression type)
+    /// <summary>
+    /// The backing Type of this Component.
+    /// </summary>
+    public Type Type => TypeExpression.Type;
+
+    /// <summary>
+    /// The boxed Value of this Component. This is always assignable to the backing Type.
+    /// </summary>
+    public object Value { get; init; }
+
+    internal Component(TypeExpression typeExpression, object value)
     {
-        Type = type;
+        TypeExpression = typeExpression;
+        Value = value;
     }
     
-    internal TypeExpression Type { get; }
+    internal TypeExpression TypeExpression { get; }
 
-    internal bool Matches(Component other) => Type.Matches(other.Type);
+    internal bool Matches(Component other) => TypeExpression.Matches(other.TypeExpression);
 
     /// <summary>
     /// Strongly-Typed Wildcard for a specific component type, with or without a Target. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Match.Any)")]
     public static Comp<T> AnyAny<T>() => new(Match.Any);
+
     /// <summary>
     /// Strongly-Typed Wildcard for a specific component type, with any (but not no) Target. Used for Stream Filtering and CRUD.
     /// </summary>
@@ -48,6 +60,7 @@ public record Component
     /// </summary>
     [Obsolete("use Comp<T>.Matching(target)")]
     public static Comp<T> SpecificEntity<T>(Entity target) => Comp<T>.Matching(target);
+
     /// <summary>
     /// Strongly-Typed for a specific component type, with a specific Object Link Relation. Used for Stream Filtering and CRUD.
     /// </summary>
@@ -57,29 +70,47 @@ public record Component
 
 
 /// <summary>
-/// Interface tagging blittable Component Expressions.
+/// Typeless (dynamic) Component Expression.
+/// This is created by <see cref="Comp{T}"/>.
 /// </summary>
-public interface IBlittable
+/// <remarks>
+/// Consider using the factory methods:
+/// <ul>
+/// <li><see cref="Comp{T}.Plain"/></li>
+/// <li><see cref="Comp{T}.Matching"/></li>
+/// </ul>
+/// </remarks>
+public readonly record struct Comp
 {
-    internal TypeExpression TypeExpression { get; }
-}
+    internal readonly TypeExpression Expression;
+    
+    internal Comp(TypeExpression expression)
+    {
+        Expression = expression;
+    }
 
+    public bool Matches<T>(Comp<T> other) => Expression.Matches(other.Expression);
+    public bool Matches(Comp other) => Expression.Matches(other.Expression);
+}
 
 /// <summary>
 /// Component Expression for Component types (of any kind).
 /// </summary>
+/// <remarks>
+/// Variables of this type describe a Component, Relation, or Link, but not the actual values.
+/// </remarks>
 /// <param name="match">optional match expression for relation-backing components</param>
 /// <typeparam name="T">any type</typeparam>
 public readonly record struct Comp<T>(Match match = default)
 {
-    internal TypeExpression TypeExpression => TypeExpression.Of<T>(match);
+    internal TypeExpression Expression => TypeExpression.Of<T>(match);
 
     /// <summary>
     /// The size of this component for SIMD operations, in bytes.
     /// If 0, the component is managed or not blittable, and cannot be used for SIMD.
     /// </summary>
-    public int SIMDsize => TypeExpression.SIMDsize;
-
+    public int SIMDsize => Expression.SIMDsize;
+    
     /// <summary>
     /// Component Expression for a blittable type with a specific relation target (match expression).
     /// </summary>
@@ -89,19 +120,15 @@ public readonly record struct Comp<T>(Match match = default)
     /// Plain component expression for a blittable type.
     /// </summary>
     public static Comp<T> Plain => new(default);
+
+    /// <summary>
+    /// Does this Component match another Component Expression?
+    /// </summary>
+    public bool Matches(Comp<T> other) => Expression.Matches(other.Expression);
     
     /// <summary>
-    /// Does this Component match another Component Expression?
+    /// Cast this component to the typeless representation used by filters, etc.
+    /// (this representation wraps an opaque internal type of the ECS)
     /// </summary>
-    public bool Matches(Component other) => TypeExpression.Matches(other.Type);
-
-    /// <summary>
-    /// Does this Component match another Component Expression?
-    /// </summary>
-    public bool Matches(Comp<T> other) => TypeExpression.Matches(other.TypeExpression);
-
-    /// <summary>
-    /// Convert to a generic Component Expression.
-    /// </summary>
-    public static implicit operator Component(Comp<T> self ) => new(self.TypeExpression);
+    public static implicit operator Comp(Comp<T> self) => new(self.Expression);
 }

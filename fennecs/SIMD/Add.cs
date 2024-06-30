@@ -86,7 +86,7 @@ public record SIMD(Query Query)
 
         foreach (var table in Query.Archetypes)
         {
-            using var join = table.CrossJoin<T>([destination.TypeExpression]);
+            using var join = table.CrossJoin<T>([destination.Expression]);
 
             if (join.Empty) continue;
             do
@@ -122,7 +122,7 @@ public record SIMD(Query Query)
 
         foreach (var table in Query.Archetypes)
         {
-            using var join = table.CrossJoin<T>([destination.TypeExpression]);
+            using var join = table.CrossJoin<T>([destination.Expression]);
             
             if (join.Empty) continue;
             do
@@ -167,7 +167,7 @@ public record SIMD(Query Query)
     {
         foreach (var table in Query.Archetypes)
         {
-            using var join = table.CrossJoin<OUT, O1, O2>([destination.TypeExpression, operand1.TypeExpression, operand2.TypeExpression]);
+            using var join = table.CrossJoin<OUT, O1, O2>([destination.Expression, operand1.Expression, operand2.Expression]);
 
             if (join.Empty) continue;
             do
@@ -224,7 +224,7 @@ public record SIMD(Query Query)
     {
         foreach (var table in Query.Archetypes)
         {
-            using var join = table.CrossJoin<OUT, O1, O2>([destination.TypeExpression, operand1.TypeExpression, operand2.TypeExpression]);
+            using var join = table.CrossJoin<OUT, O1, O2>([destination.Expression, operand1.Expression, operand2.Expression]);
 
             if (join.Empty) continue;
             do
@@ -273,7 +273,7 @@ public record SIMD(Query Query)
     {
         foreach (var table in Query.Archetypes)
         {
-            using var join = table.CrossJoin<OUT, O1, O2, O3>([destination.TypeExpression, operand1.TypeExpression, operand2.TypeExpression, operand3.TypeExpression]);
+            using var join = table.CrossJoin<OUT, O1, O2, O3>([destination.Expression, operand1.Expression, operand2.Expression, operand3.Expression]);
 
             if (join.Empty) continue;
             do

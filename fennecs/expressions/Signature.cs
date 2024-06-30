@@ -22,7 +22,7 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
 
     public bool Matches(IReadOnlySet<TypeExpression> types) => Overlaps(types);
     
-    internal bool Matches(IReadOnlySet<Component> subset) => Overlaps(subset.Select(component => component.Type).ToImmutableSortedSet());
+    internal bool Matches(IReadOnlySet<Comp> subset) => Overlaps(subset.Select(component => component.Expression).ToImmutableSortedSet());
     
     /// <summary>
     /// Creates a new <see cref="Signature"/> from the given values.

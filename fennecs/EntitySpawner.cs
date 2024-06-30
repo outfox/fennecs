@@ -57,7 +57,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemoveComponent<EntitySpawn
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>(T component) where T : notnull
     {
-        var type = Comp<T>.Plain.TypeExpression;
+        var type = Comp<T>.Plain.Expression;
         return AddComponent(type, component);
     }
     
@@ -97,7 +97,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemoveComponent<EntitySpawn
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Remove<T>() where T : notnull
     {
-        var type = Comp<T>.Plain.TypeExpression;
+        var type = Comp<T>.Plain.Expression;
         return RemoveComponent(type);
     }
 
