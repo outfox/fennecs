@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests;
+﻿using System.Runtime.CompilerServices;
+
+namespace fennecs.tests;
 
 public class EntityTests(ITestOutputHelper output)
 {
@@ -316,5 +318,30 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add("123", other);
         Assert.True(interfaceEntity.Has<int>(other));
         Assert.True(interfaceEntity.Has<string>(other));
+    }
+
+
+    private struct TypeA;
+    
+    [Fact]
+    public void CanGetComponents()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+        entity.Add(69.420);
+        entity.Add(new TypeA());
+        entity.Add(Link.With("hello"));
+        
+        
+        var components = entity.Components;
+        Assert.Equal(4, components.Length);
+
+        List<IStrongBox> expected  = [new StrongBox<int>(123), new StrongBox<double>(69.420), new StrongBox<TypeA>(new()), new StrongBox<string>("hello")];
+        foreach (var component in components)
+        {
+            var found = expected.Aggregate(false, (current, box) => current | box.Value!.Equals(component.Box.Value));
+            Assert.True(found, $"Component {component.Type} = {component.Box.Value} not found in expected list.");
+        }
     }
 }

@@ -356,15 +356,19 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         destination.PatchMetas(destination.Count-1);
     }
 
-    internal Span<Component> GetRow(int row)
+    internal Component[] GetRow(int row)
     {
-        var components = new Component[Signature.Count];
-        foreach (var (type, index) in _storageIndices)
+        // -1 because we skip IdentityStorage
+        using var components = PooledList<Component>.Rent();
+        
+        foreach (var (expression, index) in _storageIndices)
         {
-            components[index] = new(type, Storages[index].Box(row), _world);
+            var storage = Storages[index];
+            if (storage == IdentityStorage) continue;
+            components.Add(new(expression, storage.Box(row), _world));
         }
         
-        return components;
+        return components.ToArray();
     }
 
     /// <inheritdoc />

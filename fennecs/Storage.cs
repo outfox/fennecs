@@ -9,8 +9,16 @@ namespace fennecs;
 /// </summary>
 internal interface IStorage
 {
+    /// <summary>
+    /// The number of elements currently stored.
+    /// </summary>
     int Count { get; }
 
+    /// <summary>
+    /// The backing type of the elements stored.
+    /// </summary>
+    Type Type { get; }
+    
     /// <summary>
     /// Stores a boxed value at the given index.
     /// (use <c>Append</c> to add a new one)
@@ -99,8 +107,10 @@ internal class Storage<T> : IStorage
     {
         Span[index] = value;
     }
-
-
+    
+    /// <inheritdoc />
+    public Type Type => typeof(T);
+    
     /// <inheritdoc />
     public void Store(int index, object value) => Store(index, (T)value);
 

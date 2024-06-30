@@ -212,10 +212,18 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// </summary>
     public bool Has<T>(Link<T> link) where T : class => _world.HasComponent<T>(Id, link);
 
-    public Span<Component> Components()
-    {
-        return _world.GetComponents(Id);
-    }
+    /// <summary>
+    /// Boxes all the Components on the entity into an array.
+    /// Use sparingly, but don't be paranoid. Suggested uses: serialization and debugging.
+    /// </summary>
+    /// <remarks>
+    /// Values and References are copied, changes to the array will not affect the Entity.
+    /// Changes to objects in the array will affect these objects in the World.
+    /// This array is re-created every time this getter is called.
+    /// The values are re-boxed each time this getter is called.
+    /// </remarks>
+    public Component[] Components => _world.GetComponents(Id);
+    
     #endregion
 
 
