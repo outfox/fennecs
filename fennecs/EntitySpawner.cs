@@ -60,8 +60,11 @@ public sealed class EntitySpawner : IDisposable, IAddRemoveComponent<EntitySpawn
         var type = Comp<T>.Plain.Expression;
         return AddComponent(type, component);
     }
-    
-    
+
+    /// <inheritdoc />
+    public EntitySpawner Add<T>(Entity target) where T : notnull, new() => Add(new T(), target);
+
+
     /// <inheritdoc />
     public EntitySpawner Add<C>() where C : notnull, new() => Add(new C());
     

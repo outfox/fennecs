@@ -35,7 +35,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     }
 
     internal bool isUnmanaged => Flags.HasFlag(TypeFlags.Unmanaged);
-    internal int SIMDsize => (int)(Flags & TypeFlags.SIMDSize) >> 8;
+    internal int SIMDsize => (int)(Flags & TypeFlags.SIMDSize);
     
     internal Relate Relation => new(Identity);
 

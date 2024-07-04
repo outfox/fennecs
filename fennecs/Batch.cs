@@ -90,7 +90,7 @@ public readonly struct Batch : IDisposable, IAddRemoveComponent<Batch>
     #region IAddRemoveComponent
 
     /// <inheritdoc />
-    public Batch Add<R>(R value, Entity relation) where R : notnull => AddComponent(value, Relate.To(relation));
+    public Batch Add<R>(R value, Entity relation) where R : notnull => AddComponent(value, relation);
 
     /// <inheritdoc />
     public Batch Add<T>(Link<T> link) where T : class => AddComponent(link.Target, link);
@@ -102,13 +102,13 @@ public readonly struct Batch : IDisposable, IAddRemoveComponent<Batch>
     public Batch Add<C>(C value) where C : notnull => AddComponent(value, Match.Plain);
 
     /// <inheritdoc />
-    public Batch Add<T>(Entity target) where T : notnull, new() => AddComponent<T>(new(), Relate.To(target));
+    public Batch Add<T>(Entity target) where T : notnull, new() => AddComponent<T>(new(), target);
     
     /// <inheritdoc />
     public Batch Remove<T>() where T : notnull => RemoveComponent<T>(Match.Plain);
 
     /// <inheritdoc />
-    public Batch Remove<R>(Entity relation) where R : notnull => RemoveComponent<R>(Relate.To(relation));
+    public Batch Remove<R>(Entity relation) where R : notnull => RemoveComponent<R>(relation);
 
     /// <inheritdoc />
     public Batch Remove<L>(L linkedObject) where L : class => RemoveComponent<L>(Link<L>.With(linkedObject));

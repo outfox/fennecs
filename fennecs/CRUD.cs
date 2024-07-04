@@ -17,19 +17,18 @@ public interface IAddRemoveComponent<out SELF>
     /// <returns>itself (fluent pattern)</returns>
     public SELF Add<C>(C value) where C : notnull;
 
-    /*
     /// <summary>
     /// Add a newable Relation component backed by a value of type R to the entity/entities. (default value)
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Add<T>(Entity relation) where T : notnull, new();
-    */
+    public SELF Add<T>(Entity target) where T : notnull, new();
     
     /// <summary>
     /// Add a Relation component backed by a value of type R to the entity/entities.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
     public SELF Add<R>(R value, Entity relation) where R : notnull;
+
 
     /// <summary>
     /// Add a Object Link component with an Object of type L to the entity/entities.

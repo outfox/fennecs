@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace fennecs;
 
@@ -64,42 +65,49 @@ public readonly record struct Component
     /// Strongly-Typed Wildcard for a specific component type, with or without a Target. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Match.Any)")]
-    public static Comp<T> AnyAny<T>() => new(Match.Any);
+    [ExcludeFromCodeCoverage]
+    public static Comp<T> Any<T>() => new(Match.Any);
 
     /// <summary>
     /// Strongly-Typed Wildcard for a specific component type, with any (but not no) Target. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Match.Target)")]
+    [ExcludeFromCodeCoverage]
     public static Comp<T> AnyRelation<T>() => new(Match.Target);
 
     /// <summary>
     /// Wildcard for a specific component type, with any Entity-Entity Relation. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Entity.Any)")]
+    [ExcludeFromCodeCoverage]
     public static Comp<T> AnyEntity<T>() => new(Match.Entity);
 
     /// <summary>
     /// Strongly-Typed for a specific component type, with any Object Link. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Link.Any)")]
+    [ExcludeFromCodeCoverage]
     public static Comp<T> AnyObject<T>() => new(Link.Any); //new(Match.Object);
 
     /// <summary>
     /// Strongly-Typed for a specific component type, with no Relation. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Plain")]
+    [ExcludeFromCodeCoverage]
     public static Comp<T> PlainComponent<T>() => Comp<T>.Plain;
 
     /// <summary>
     /// Strongly-Typed for a specific component type, with a specific Entity-Entity Relation. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(target)")]
+    [ExcludeFromCodeCoverage]
     public static Comp<T> SpecificEntity<T>(Entity target) => Comp<T>.Matching(target);
 
     /// <summary>
     /// Strongly-Typed for a specific component type, with a specific Object Link Relation. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Link.With(target))")]
+    [ExcludeFromCodeCoverage]
     public static Comp<T> SpecificLink<T>(T target) where T : class => Comp<T>.Matching(Link.With(target));
     #endregion
 }
@@ -117,6 +125,7 @@ public readonly record struct Component
 /// </remarks>
 public readonly record struct Comp
 {
+    /*
     /// <summary>
     /// The backing Type of this Component Expression.
     /// </summary>
@@ -131,7 +140,7 @@ public readonly record struct Comp
     /// Match against a generic Component Expression.
     /// </summary>
     public bool Matches(Comp other) => Expression.Matches(other.Expression);
-
+    */
     
     internal readonly TypeExpression Expression;
 
@@ -158,7 +167,7 @@ public readonly record struct Comp<T>(Match match = default)
     /// The size of this component for SIMD operations, in bytes.
     /// If 0, the component is managed or not blittable, and cannot be used for SIMD.
     /// </summary>
-    public int SIMDsize => Expression.SIMDsize;
+    internal int SIMDsize => Expression.SIMDsize;
 
     /// <summary>
     /// Component Expression for a blittable type with a specific relation target (match expression).

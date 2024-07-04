@@ -3,7 +3,7 @@ using BenchmarkDotNet.Order;
 using fennecs;
 using fennecs_Components;
 using fennecs.pools;
-using fennecs.SIMD;
+//using fennecs.SIMD;
 
 namespace Benchmark.ECS;
 
@@ -51,7 +51,7 @@ public class SIMDBenchmarks
     [Benchmark(Description = "fennecs (SIMD)")]
     public void fennecs_SIMD()
     {
-        var simd = new SIMD(_query.Query);
+        //var simd = new SIMD(_query.Query);
         //simd.AddI32(new Comp<Component1>(), new Comp<Component1>(), new Comp<Component2>(), new Comp<Component3>());
     }
 
@@ -59,7 +59,7 @@ public class SIMDBenchmarks
     [Benchmark(Description = "fennecs (SIMD-burst)")]
     public void fennecs_SIMD_Burst()
     {
-        var simd = new SIMD(_query.Query);
+        //var simd = new SIMD(_query.Query);
         //simd.SumI32Burst(new Comp<Component1>(), new Comp<Component1>(), new Comp<Component2>(), new Comp<Component3>());
     }
 }

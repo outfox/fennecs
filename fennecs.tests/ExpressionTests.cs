@@ -242,4 +242,32 @@ public static class ExpressionTests
         Assert.Contains(wildObject, expanded);
         Assert.Equal(3, expanded.Count);
     }
+
+    
+    [Fact]
+    public static void ManagedFlagIsAccurate()
+    {
+        var comp1 = Comp<int>.Plain;
+        var comp2 = Comp<int>.Matching(Match.Any);
+        Assert.True(comp1.Expression.isUnmanaged);
+        
+        Assert.True(comp2.Expression.isUnmanaged);
+
+        var comp3 = Comp<string>.Plain;
+        Assert.False(comp3.Expression.isUnmanaged);
+    }
+
+    
+    [Fact]
+    public static void SIMDsizeIsAccurate()
+    {
+        var comp1 = Comp<int>.Plain;
+        var comp2 = Comp<int>.Matching(Match.Any);
+        
+        Assert.Equal(4, comp1.SIMDsize);
+        Assert.Equal(4, comp2.SIMDsize);
+
+        var comp3 = Comp<string>.Plain;
+        Assert.Equal(0, comp3.SIMDsize);
+    }
 }
