@@ -7,6 +7,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace fennecs.SIMD;
 
+#if EXPERIMENTAL
 /// <summary>
 /// Accessor to a Stream that exposes high-speed SIMD operations.
 /// </summary>
@@ -31,7 +32,6 @@ public record SIMD(Query Query)
     /// <param name="destination"></param>
     /// <param name="uniform"></param>
     /// <typeparam name="T"></typeparam>
-    /// <typeparam name="U"></typeparam>
     /// <exception cref="DataMisalignedException"></exception>
     public void Add<T>(Comp<T> destination, Int32 uniform) where T : unmanaged
     {
@@ -58,7 +58,9 @@ public record SIMD(Query Query)
     /// 
     /// </summary>
     /// <remarks>destination can also be operand 1 or operand 2</remarks>
+    /// <param name="operand2"></param>
     /// <param name="destination"></param>
+    /// <param name="operand1"></param>
     /// <exception cref="DataMisalignedException">all operand components must be congruent with Int32, and the same size.</exception>
     public void AddAsI32<O1, O2, DEST>(Comp<O1> operand1, Comp<O2> operand2, Comp<DEST> destination) 
         where O1 : unmanaged
@@ -72,6 +74,13 @@ public record SIMD(Query Query)
         if (Avx2.IsSupported) Add_2I32_impl_AVX2(destination, operand1, operand2);
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="operand1"></param>
+    /// <param name="operand2"></param>
+    /// <typeparam name="O1"></typeparam>
+    /// <typeparam name="O2"></typeparam>
     public void AddAsI32<O1, O2>(Comp<O1> operand1, Comp<O2> operand2) 
         where O1 : unmanaged 
         where O2 : unmanaged 
@@ -264,6 +273,17 @@ public record SIMD(Query Query)
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="destination"></param>
+    /// <param name="operand1"></param>
+    /// <param name="operand2"></param>
+    /// <param name="operand3"></param>
+    /// <typeparam name="OUT"></typeparam>
+    /// <typeparam name="O1"></typeparam>
+    /// <typeparam name="O2"></typeparam>
+    /// <typeparam name="O3"></typeparam>
     public void Add_3I32_impl_AVX2<OUT, O1, O2, O3>(Comp<OUT> destination, Comp<O1> operand1, Comp<O2> operand2, Comp<O3> operand3)
         where OUT : unmanaged
         where O1 : unmanaged
@@ -318,3 +338,5 @@ public record SIMD(Query Query)
         }
     }
 }
+
+#endif

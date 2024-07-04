@@ -8,6 +8,7 @@ public class SIMD_Add
     
     private record struct TestFloat(int Value);
 
+    /*
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
@@ -34,7 +35,7 @@ public class SIMD_Add
         }
         Assert.Equal(count, stream.Count);
     }
-
+    */
     /*
     [Theory]
     [InlineData(0)]

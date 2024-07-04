@@ -39,8 +39,7 @@ public readonly record struct Match
     /// <remarks>
     /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for
     /// each matching component. While querying is efficient, this increases the number of operations per entity.</para>
-    /// <para>This is an intentional feature, and <c>Match.Any</c> is the default as usually the same backing types are not re-used across
-    /// relations or links; but if they are, the user likely wants their Query to enumerate all of them.</para>
+    /// <para>This is an intentional feature, and the user is protected by the fact that the default is <see cref="Plain"/>.</para>
     /// <para>This effect is more pronounced in large archetypes with many matching components, potentially
     /// multiplying the workload significantly. However, for smaller archetypes or simpler tasks, impacts are minimal.</para>
     /// <para>Risks and considerations include:</para>
@@ -75,7 +74,7 @@ public readonly record struct Match
     public static Match Object => new(Identity.Object);
 
     /// <summary>
-    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all <b>Entity-Entity</b> Relations of the given Stream Type.
     /// </para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
@@ -86,11 +85,11 @@ public readonly record struct Match
 
 
     /// <summary>
-    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Plain</b> Components of the given Stream Type.
+    /// <para><b>Plain Component match expression for Entity iteration.</b><br/>This matches only <b>Plain</b> Components of the given Stream Type.
     /// </para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
-    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// <para>This expression does not result in multiple enumeration, because it's not technically a Wildcard - there can only be one plain component per type on an Entity.</para>
     /// </summary>
     /// <inheritdoc cref="Plain"/>
     public static Match Plain => new(Identity.Plain);

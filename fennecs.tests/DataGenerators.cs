@@ -6,11 +6,19 @@ public class QueryCountGenerator : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
-        // base inductionR
-        for (var i = 0; i <= 8; i++) yield return [i, i % 2 == 0];
+        // base induction range
+        for (var i = 0; i <= 8; i++)
+        {
+            yield return [i, true];
+            yield return [i, false];
+        }
 
         // common powers of 2
-        for (var i = 4; i <= 12; i++) yield return [(int) Math.Pow(2, i), i % 2 == 0];
+        for (var i = 4; i <= 12; i++)
+        {
+            yield return [(int) Math.Pow(2, i), true];
+            yield return [(int) Math.Pow(2, i), false];
+        }
 
         yield return [151, true]; // prime number
         yield return [6_197, false]; // prime number

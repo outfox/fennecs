@@ -47,7 +47,7 @@ public readonly record struct Component
     /// <remarks>
     /// This is guaranteed to be assignable to the backing System.<see cref="Type"/> used by the component.
     /// </remarks>
-    public IStrongBox Box { get; init; }
+    public IStrongBox Box { get; }
     
     private World World { get; }
     private TypeExpression Expression { get; }
@@ -143,7 +143,7 @@ public readonly record struct Comp
 }
 
 /// <summary>
-/// Component Expression for Component types (of any kind).
+/// Component Expression for Component types (of any kind). This is used as a more deliberate way to create and apss Component expressions around, for example for SIMD and Stream filters.
 /// </summary>
 /// <remarks>
 /// Variables of this type describe a Component, Relation, or Link, but not the actual values.
