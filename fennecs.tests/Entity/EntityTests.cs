@@ -393,7 +393,20 @@ public class EntityTests(ITestOutputHelper output)
         Assert.True(components[0].isRelation);
         Assert.Equal(other, components[0].targetEntity);
     }
-    
+
+    [Fact]
+    public void CannotGetEntityFromNonRelation()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+        
+        var components = entity.Components;
+        Assert.Single(components);
+        Assert.False(components[0].isRelation);
+        Assert.Throws<InvalidOperationException>(() => components[0].targetEntity);
+    }
+
     
     [Fact]
     public void Can_Get_Link_Object_via_Get()

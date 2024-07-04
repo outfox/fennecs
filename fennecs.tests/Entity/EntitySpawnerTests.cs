@@ -177,7 +177,7 @@ public class EntitySpawnerTests
         Assert.Equal(1, query1.Count);
         Assert.Equal(2, world.Count);
 
-        using var spawner2 = world.Entity().Add<Type42>(new(), other); 
+        using var spawner2 = world.Entity().Add<Type42>(other);  // Newable implcit new()
         spawner2.Spawn();
         
         using var query2 = world.Query<Type42>(other).Compile();

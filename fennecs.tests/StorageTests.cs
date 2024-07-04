@@ -259,4 +259,34 @@ public class StorageTests
         Assert.Equal(1, storage.Count);
         Assert.Equal("hello", storage.Span[0]);
     }
+    
+    [Fact]
+    public void Can_Get_Type()
+    {
+        var storage1 = new Storage<string>();
+        Assert.Equal(typeof(string), storage1.Type);
+        
+        var storage2 = new Storage<int>();
+        Assert.Equal(typeof(int), storage2.Type);
+        
+        var storage3 = new Storage<object>();
+        Assert.Equal(typeof(object), storage3.Type);
+    }
+
+    [Fact]
+    public void AsMemory_Default_Is_Entire_Size()
+    {
+        var storage = new Storage<int>();
+        var memory1 = storage.AsMemory();
+        Assert.Equal(0, memory1.Length);
+
+        storage.Append(1, 1);
+        var memory2 = storage.AsMemory();
+        Assert.Equal(1, memory2.Length);
+
+        storage.Append(2, 3);
+        var memory3 = storage.AsMemory();
+        Assert.Equal(4, memory3.Length);
+    }
+    
 }
