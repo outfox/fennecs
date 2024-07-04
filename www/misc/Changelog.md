@@ -3,6 +3,25 @@ title: Release Notes
 order: 2
 outline: [2,2]
 
+head:
+  - - meta
+    - name: title
+      content: fennecs — Release Notes
+  - - meta
+    - property: og:description
+      content: Changelog for fennecs, the tiny, fast, modern C# Entity-Component System for games and simulations!
+  - - meta
+    - property: og:type
+      content: website
+  - - meta
+    - property: og:url
+      content: https://fennecs.tech/misc/Changelog.html
+  - - meta
+    - property: og:title
+      content: fennecs — Release Notes
+  - - meta
+    - property: og:image
+      content: https://fennecs.tech/img/fennecs-changelog-panel.png
 ---
 
 ![a stylized fox shattering red and green polygons surrounded by source code](https://fennecs.tech/img/fennec-changelog.png)
@@ -20,8 +39,8 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 ...
 
 ## Release 0.5.8-beta
-- `Component` factory class has most of its members deprecated. It is now a storage for a Boxed Component. [See the updated documentation](/docs/Components/Expressions.md)-
-- `Comp<T>` is a new factory class for Component Expressions. [See the updated documentation](/docs/Components/Expressions.md)
+- `Component` factory class has most of its members deprecated. It is now a storage for a Boxed Component. ([updated documentation](/docs/Components/Expressions.md))
+- `Comp<T>` is a new factory class for Component Expressions. ([updated documentation](/docs/Components/Expressions.md))
 
 ### Upgrading
 ::: code-group
