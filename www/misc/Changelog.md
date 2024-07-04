@@ -18,10 +18,22 @@ head:
       content: https://fennecs.tech/misc/Changelog.html
   - - meta
     - property: og:title
-      content: fennecs — Release Notes
+      content: fennecs — tiny ECS Release Notes
+  - - meta
+    - name: twitter:title
+      content: fennecs — tiny ECS Release Notes
   - - meta
     - property: og:image
       content: https://fennecs.tech/img/fennecs-changelog-panel.png
+  - - meta
+    - property: twitter:image
+      content: https://fennecs.tech/img/fennecs-changelog-panel.png
+  - - meta
+    - name: twitter:image
+      content: https://fennecs.tech/img/fennecs-changelog-panel.png
+  - - meta
+    - name: twitter:description
+      content: Changelog for fennecs, the tiny, fast, modern C# Entity-Component System for games and simulations!
 ---
 
 ![a stylized fox shattering red and green polygons surrounded by source code](https://fennecs.tech/img/fennec-changelog.png)
