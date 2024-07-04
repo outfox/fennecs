@@ -12,6 +12,17 @@ outline: [1, 2]
 The component data is accessed and processed in bulk through [Queries](/docs/Queries/), a typical way that ECS provide composable functionality.
 
 
+## Specific Component Operations
+
+ `Ref<T>()`: Get a reference to a component
+ `Ref<T>(Entity relation)`: Get a reference to a component backing a relation (useful for reassigning the value, but not the relation)
+
+- `Get<T>(Match match)`: Gets all components matching the expression; e.g. `entity.Get<MyLinkType>(Link.Any)` to get all the Links.
+
+- `Components`: Returns an `IReadonlyList<Component>` of all components on the entity. See [Boxed Components](/docs/Components/Expressions.md#boxed-components) for more information.
+
+
+
 ## Interface `IAddRemoveComponent`
 
 The `IAddRemoveComponent<SELF>` interface provides methods for adding and removing components from entities or sets of entities. It follows a fluent pattern, allowing chained method calls.
@@ -34,7 +45,6 @@ The `IAddRemoveComponent<SELF>` interface provides methods for adding and removi
 All methods return the interface itself (`SELF`), allowing for fluent method chaining.
 
 Note: The type parameters `C`, `T`, `R`, and `L` have constraints to ensure they are non-null and/or class types.
-
 
 ## Interface `IHasComponent`
 

@@ -53,6 +53,7 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 ## Release 0.5.8-beta
 - `Component` factory class has most of its members deprecated. It is now a storage for a Boxed Component. ([updated documentation](/docs/Components/Expressions.md))
 - `Comp<T>` is a new factory class for Component Expressions. ([updated documentation](/docs/Components/Expressions.md))
+- get (read) a specific component using `entity.Get<T>(Match match)`, e.g. `entity.Get<MyLinkType>(Link.Any)` to get all the Links
 
 ### Upgrading
 ::: code-group
