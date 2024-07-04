@@ -244,7 +244,7 @@ public partial class World : Query
         */
     }
     
-    internal Component[] GetComponents(Identity id)
+    internal IReadOnlyList<Component> GetComponents(Identity id)
     {
         var archetype = _meta[id.Index].Archetype;
         return archetype.GetRow(_meta[id.Index].Row);

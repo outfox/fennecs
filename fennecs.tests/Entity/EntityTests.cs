@@ -332,9 +332,8 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(new TypeA());
         entity.Add(Link.With("hello"));
         
-        
         var components = entity.Components;
-        Assert.Equal(4, components.Length);
+        Assert.Equal(4, components.Count);
 
         List<IStrongBox> expected  = [new StrongBox<int>(123), new StrongBox<double>(69.420), new StrongBox<TypeA>(new()), new StrongBox<string>("hello")];
         foreach (var component in components)
@@ -363,7 +362,7 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(Link.With(literal));
         
         var components = entity.Components;
-        Assert.Equal(2, components.Length);
+        Assert.Equal(2, components.Count);
         
         Assert.True(components[0].isRelation);
         Assert.False(components[1].isRelation);
@@ -373,15 +372,9 @@ public class EntityTests(ITestOutputHelper output)
     }
     
     
-    [Theory]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(1337)]
-    [InlineData(41697)]
-    public void GottenComponentRelationsHaveCorrectEntity(int seed)
+    [Fact]
+    public void GottenComponentRelationsHaveCorrectEntity()
     {
-        var random = new Random(seed);
-        
         using var world = new World();
         var entity = world.Spawn();
         var other = world.Spawn();

@@ -222,7 +222,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// This array is re-created every time this getter is called.
     /// The values are re-boxed each time this getter is called.
     /// </remarks>
-    public Component[] Components => _world.GetComponents(Id);
+    public IReadOnlyList<Component> Components => _world.GetComponents(Id);
     
     
     /// <summary>

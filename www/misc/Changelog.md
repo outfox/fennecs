@@ -17,25 +17,29 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 ## UPCOMING
 - `Match.Object` becomes internal / deprecated, use `Link.Any` instead.
 - `Stream` (a Stream View without any type parameters) will be added (so filtering without a component list feels less awkward)
+...
+
+## Release 0.5.8-beta
+- `Component` factory class has most of its members deprecated. It is now a storage for a Boxed Component. [See the updated documentation](/docs/Components/Expressions.md)-
+- `Comp<T>` is a new factory class for Component Expressions. [See the updated documentation](/docs/Components/Expressions.md)
+
+### Upgrading
 ::: code-group
-```csharp  [old api]
+```csharp  [old api] 🕸️
 var thanosStream = population.Stream<Alive>() with
 {
     Subset = [Component.PlainComponent<Unlucky>()],    
     Exclude = [Component.PlainComponent<Lucky>()],
 };
 ```
-```csharp [new api]
-var thanosStream = population.Stream() with
+```csharp [new api] ✨
+var thanosStream = population.Stream<Alive>() with
 {
-    Subset = [Component.PlainComponent<Unlucky>()],    
-    Exclude = [Component.PlainComponent<Lucky>()],
+    Subset = [Comp<Unlucky>.Plain],    
+    Exclude = [Comp<Lucky>.Plain],
 };
 ```
 :::
-
-...
-
 
 ## Release 0.5.7-beta
 - `bugfix` - Stream Filters (Subset/Exclude) now affect the `Count` property of the Stream.
