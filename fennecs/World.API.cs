@@ -282,7 +282,7 @@ public partial class World : IDisposable
     }
 
     /// <inheritdoc cref="ToString"/>
-    private string DebugString()
+    public string DebugString()
     {
         var sb = new StringBuilder("World:");
         sb.AppendLine();

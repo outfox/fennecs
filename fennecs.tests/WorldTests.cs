@@ -81,7 +81,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Batch_Spawn(int count)
     {
         using var world = new World();
-        world.Entity()
+        using var spawner = world.Entity()
             .Add(555)
             .Add("hallo")
             .Spawn(count);
@@ -304,29 +304,6 @@ public class WorldTests(ITestOutputHelper output)
         var e2 = world.Spawn();
         e2.Add(new { });
         Assert.Equal(2, world.Count);
-    }
-
-
-    [Fact]
-    public void Can_Find_Targets_of_Relation()
-    {
-        using var world = new World();
-        var target1 = world.Spawn();
-        var target2 = world.Spawn().Add("hallo dieter");
-
-        world.Spawn().Add(666, target1);
-        world.Spawn().Add(1.0f, target2);
-        world.Spawn().Add<string>("123");
-
-        var targets = new List<Relate>();
-        world.CollectTargets<int>(targets);
-        Assert.Single(targets);
-        Assert.Contains(target1, targets);
-        targets.Clear();
-
-        world.CollectTargets<float>(targets);
-        Assert.Single(targets);
-        Assert.Contains(target2, targets);
     }
 
 

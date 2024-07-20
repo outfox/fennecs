@@ -47,7 +47,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// <summary>
     /// The World in which the Entity exists.
     /// </summary>
-    private readonly World _world;
+    internal readonly World _world;
 
 
     /// <summary>
@@ -248,6 +248,11 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
 
     #region Cast Operators and IEquatable<Entity>
 
+    /// <summary>
+    /// True if the Entity is alive in its world (and has a world).
+    /// </summary>
+    public static implicit operator bool(Entity entity) => entity.Alive;
+    
     /// <inheritdoc />
     public bool Equals(Entity other) => Id.Equals(other.Id) && Equals(_world, other._world);
     

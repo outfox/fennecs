@@ -220,29 +220,6 @@ public partial class World : Query
         _typeGraph.Add(types, table);
         return table;
     }
-
-
-    internal void CollectTargets<T>(List<Relate> entities)
-    {
-        var type = TypeExpression.Of<T>(Match.Entity);
-
-        // Modern LINQ version.
-        entities.AddRange(
-            from candidate in _tablesByType.Keys 
-            where type.Matches(candidate) 
-            select candidate.Relation);
-        
-        // Iterate through tables and get all concrete Entities from their Archetype TypeExpressions
-        /*
-        foreach (var candidate in _tablesByType.Keys)
-        {
-            if (type.Matches(candidate))
-            {
-                entities.Add(candidate.Relation);
-            }
-        }
-        */
-    }
     
     internal IReadOnlyList<Component> GetComponents(Identity id)
     {

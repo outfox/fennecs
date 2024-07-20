@@ -50,6 +50,49 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 - `Stream` (a Stream View without any type parameters) will be added (so filtering without a component list feels less awkward)
 ...
 
+## Release 0.5.9-beta
+- new namespace for some use cases using reflection: `fennecs.reflection`
+- Extension methods for `Entity`: 
+```cs
+namespace fennecs.reflection;
+
+/// <summary>
+/// Extension Methods that use some sort of Reflection under the hood.
+/// </summary>
+/// <summary>
+/// These are generally against fennecs design principles, but they do have their use cases, for instance when you have to work with contravariant and covariant component types, such as Lists.
+/// </summary>
+public static class ReflectionExtensions
+{
+    /// <summary>
+    /// Experimental method to add a specific Component identified via RTTI 
+    /// (dynamically retrieved at runtime).
+    /// This helps with contravariant and covariant component types, such as Lists.
+    /// Only this call uses the dynamic logic, the component itself is as any normal 
+    /// Component type.
+    /// </summary>
+    /// <remarks>
+    /// This will attempt to create a component type of exactly the object's 
+    /// <see cref="object.GetType"/> returned <c>System.Type</c>.
+    /// Note that <c>QueryBuilders</c> will need to use the specific type to 
+    /// match the Component! (e.g. <c>Query<List<int>></c>)
+    /// </remarks>
+    public static Entity AddVirtual(this Entity entity, object value, Match match = default);
+
+
+    /// <summary>
+    /// Returns all Components on the Entity that are 
+    /// <see cref="Type.IsAssignableTo"/> to the Type Parameter <c>T</c>,
+    /// statically cast to this specific type.
+    /// </summary>
+    /// <remarks>
+    /// The array is empty if there are no matching components.
+    /// </remarks>
+    public static T[] GetVirtual<T>(this Entity entity);
+}
+```
+
+
 ## Release 0.5.8-beta
 - `Component` factory class has most of its members deprecated. It is now a storage for a Boxed Component. ([updated documentation](/docs/Components/Expressions.md))
 - `Comp<T>` is a new factory class for Component Expressions. ([updated documentation](/docs/Components/Expressions.md))
