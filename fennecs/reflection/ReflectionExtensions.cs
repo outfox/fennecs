@@ -29,6 +29,7 @@ public static class ReflectionExtensions
     /// </summary>
     /// <remarks>
     /// The array is empty if there are no matching components.
+    /// TODO: This call has room for optimization, and may benefit from match expression support.
     /// </remarks>
     public static T[] GetVirtual<T>(this Entity entity)
     {
@@ -36,4 +37,13 @@ public static class ReflectionExtensions
         var filtered = components.Where(c => c.Type.IsAssignableTo(typeof(T))).Select(c => c.Box.Value).Cast<T>().ToArray();
         return filtered;
     }
+    
+    
+    /// <summary>
+    /// Returns true if the entity has any components that are <see cref="Type.IsAssignableTo"/> to the Type Parameter <c>T</c>.
+    /// </summary>
+    /// <remarks>
+    /// TODO: This call has room for optimization, and may benefit from match expression support.
+    /// </remarks>
+    static bool HasVirtual<T>(this Entity entity) => entity.GetVirtual<T>().Length > 0;
 }
