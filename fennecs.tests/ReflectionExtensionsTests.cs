@@ -1,4 +1,5 @@
-﻿using fennecs.reflection;
+﻿using System.Collections;
+using fennecs.reflection;
 
 namespace fennecs.tests;
 
@@ -101,6 +102,19 @@ public class ReflectionExtensionsTests
         Assert.NotNull(derivedComponents);
         Assert.Single(baseComponents);
         Assert.Single(derivedComponents);
+    }
+    
+    [Fact]
+    private void CanHasVirtual()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+
+        entity.AddVirtual(new Derived1());
+
+        Assert.True(entity.HasVirtual<Base>());
+        Assert.True(entity.HasVirtual<Derived1>());
+        Assert.False(entity.HasVirtual<Derived2>());
     }
     
     [Fact]

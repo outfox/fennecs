@@ -45,5 +45,5 @@ public static class ReflectionExtensions
     /// <remarks>
     /// TODO: This call has room for optimization, and may benefit from match expression support.
     /// </remarks>
-    static bool HasVirtual<T>(this Entity entity) => entity.GetVirtual<T>().Length > 0;
+    public static bool HasVirtual<T>(this Entity entity) => entity.GetVirtual<T>().Length > 0;
 }
