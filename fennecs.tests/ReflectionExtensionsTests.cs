@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using fennecs.reflection;
+﻿using fennecs.reflection;
 
 namespace fennecs.tests;
 
@@ -18,20 +17,10 @@ public class ReflectionExtensionsTests
         // ReSharper disable once ConvertToConstant.Local
         public int additionalValue = 2; 
     }
+
+    private class Derived2 : Base;
+    private class Derived3 : Derived1;
     
-    private class Derived2 : Base
-    {
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        // ReSharper disable once ConvertToConstant.Local
-        public int additionalValue = 2; 
-    }
-    
-    private class Derived3 : Derived1
-    {
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        // ReSharper disable once ConvertToConstant.Local
-        public int additionalValue = 2; 
-    }
     
     [Fact]
     private void CanAddVirtual_string()

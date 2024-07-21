@@ -149,6 +149,10 @@ public readonly record struct Comp
         Expression = expression;
     }
 
+    /// <summary>
+    /// Creates a Comp expression for a specific type, potentially determined at runtime.
+    /// </summary>
+    public static Comp Virtual(Type type, Match match = default) => new(TypeExpression.Of(type, match));
 }
 
 /// <summary>

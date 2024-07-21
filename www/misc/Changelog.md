@@ -18,10 +18,10 @@ head:
       content: https://fennecs.tech/misc/Changelog.html
   - - meta
     - property: og:title
-      content: fennecs — tiny ECS Release Notes
+      content: fennecs — Release Notes
   - - meta
     - name: twitter:title
-      content: fennecs — tiny ECS Release Notes
+      content: fennecs — Release Notes
   - - meta
     - property: og:image
       content: https://fennecs.tech/img/fennecs-changelog-panel.png
@@ -45,10 +45,17 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 > **fenn**ecs will remain in Beta until version 1.0.0, which is expected in Q4 2024. Breaking API changes as well as bugs are likely to occur without warning in these beta builds. 
 > You are nonetheless encouraged to try **fenn**ecs out, play around and experiment with the package freely; our resident foxes aim to keep it it as useful and stable as possible! Please report issues and feedback on the [GitHub Issues](https://github.com/outfox/fennecs/issues) board.
 
-## UPCOMING
+## Upcoming Changes
+### soon(tm)
 - `Match.Object` becomes internal / deprecated, use `Link.Any` instead.
 - `Stream` (a Stream View without any type parameters) will be added (so filtering without a component list feels less awkward)
+- `Has(params Comp[])` will be added to `QueryBuilders` to check for multiple components at once. (as well as `Any(params Comp[])`and `Not(params Comp[])`). These will be much more performant and low-allocation starting with .NET 9.0, and will use `Span<Comp>` in the future.
+- Breaking for `HasVirtual`, `GetVirtual`, adding `Match` expression support. (breaking means that the old methods will currently match Any, but the new versions will match Plain by default)
 ...
+
+### 0.5.10-beta
+- `bool Entity.HasVirtual(object)` extension method added to `fennecs.reflection`
+
 
 ## Release 0.5.9-beta
 - new namespace for some use cases using reflection: `fennecs.reflection`
