@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace fennecs;
+﻿namespace fennecs;
 
 /// <summary>
 /// Target Expression to build a relation.

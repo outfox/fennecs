@@ -409,8 +409,13 @@ public class QueryTests
         var entity42 = world.Spawn().Add(42).Add<string>("I'm in another table");
 
         var query = world.Query<int>().Compile();
-        Assert.Equal(entity23, query[0]);
-        Assert.Equal(entity42, query[1]);
+        Assert.Contains(entity23, query);
+        Assert.Contains(entity42, query);
+        Assert.Equal(2, query.Count);
+
+        //After switching to sorted sets, this became a tad less predictable (opposite should be true?)
+        Assert.True (entity23 == query[0] || entity23 == query[1]);
+        Assert.True (entity42 == query[0] || entity42 == query[1]);
     }
 
 

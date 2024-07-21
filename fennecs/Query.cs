@@ -103,7 +103,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
-    internal readonly PooledList<Archetype> Archetypes = PooledList<Archetype>.Rent();
+    internal readonly SortedSet<Archetype> Archetypes = [];
 
     /// <summary>
     /// The World this Query is associated with.
@@ -116,11 +116,12 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// </summary>
     internal readonly Mask Mask;
 
-    internal Query(World world, Mask mask, PooledList<Archetype> matchingTables)
+    internal Query(World world, Mask mask, SortedSet<Archetype> matchingTables)
     {
         Archetypes = matchingTables;
         World = world;
         Mask = mask;
+        
     }
     
     internal Query()
@@ -467,7 +468,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
 
         disposed = true;
 
-        Archetypes.Dispose();
+        //Archetypes.Dispose();
 
         World.RemoveQuery(this);
         Mask.Dispose();

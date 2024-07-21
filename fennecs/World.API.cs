@@ -168,21 +168,6 @@ public partial class World : IDisposable
     }
 
     /// <summary>
-    /// Used by Archetypes to bulk delete. TODO: Optimize.
-    /// </summary>
-    internal void Despawn(ReadOnlySpan<Identity> toDelete)
-    {
-        lock (_spawnLock)
-        {
-            //Deleting backwards is usually faster when deleting one-by one (saves a memcpy for each)
-            for (var i = toDelete.Length - 1; i >= 0; i--)
-            {
-                DespawnImpl(new (this, toDelete[i]));
-            }
-        }
-    }
-
-    /// <summary>
     /// Bulk Recycle Entities from a World.
     /// </summary>
     /// <remarks>
@@ -248,7 +233,7 @@ public partial class World : IDisposable
         Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
         
         _typeGraph.Remove(archetype.Signature);
-
+        
         foreach (var type in archetype.Signature)
         {
             // Same here, if all Archetypes with a Type are gone, we can clear the entry.
@@ -262,9 +247,7 @@ public partial class World : IDisposable
             query.ForgetArchetype(archetype);
         }
         
-        //TODO: Maybe make these a virtual property or so.
-        Archetypes.Clear();
-        Archetypes.AddRange(_typeGraph.Values);        
+        Archetypes.Remove(archetype);
     }
 
 

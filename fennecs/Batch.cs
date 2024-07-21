@@ -34,7 +34,7 @@ public readonly struct Batch : IDisposable, IAddRemoveComponent<Batch>
     }
 
 
-    internal Batch(List<Archetype> archetypes, World world, Mask mask, AddConflict addMode, RemoveConflict removeMode)
+    internal Batch(SortedSet<Archetype> archetypes, World world, Mask mask, AddConflict addMode, RemoveConflict removeMode)
     {
         _world = world;
         _mask = mask;

@@ -91,11 +91,11 @@ public class IdentityTests(ITestOutputHelper output)
     [InlineData(1500, 1500)]
     public void Identity_HashCodes_are_Unique(TypeID idCount, TypeID genCount)
     {
-        var ids = new Dictionary<int, Identity>((int) (idCount * genCount * 4f));
+        var ids = new Dictionary<int, Identity>((int)(idCount * genCount * 4f));
 
         //Identities
         for (var i = 0; i < idCount; i++)
-            //Generations
+        //Generations
         for (TypeID g = 1; g < genCount; g++)
         {
             var identity = new Identity(i, g);
@@ -125,7 +125,7 @@ public class IdentityTests(ITestOutputHelper output)
         for (var i = 0; i < 1_000; i++)
         {
             var id = random.Next();
-            var gen = (TypeID) (random.Next() % TypeID.MaxValue);
+            var gen = (TypeID)(random.Next() % TypeID.MaxValue);
 
             var self = new Identity(id, gen);
             var other = new Identity(id, gen);
@@ -367,8 +367,8 @@ public class IdentityTests(ITestOutputHelper output)
             Add([new Vector3(1, 2, 3)]);
             Add([new Vector4(1, 2, 3, 4)]);
             Add([new Matrix4x4()]);
-            Add([new CompoundComponent {B1 = true, I1 = 5}]);
-            Add([new CompoundComponent {B1 = default, I1 = default}]);
+            Add([new CompoundComponent { B1 = true, I1 = 5 }]);
+            Add([new CompoundComponent { B1 = default, I1 = default }]);
         }
     }
 

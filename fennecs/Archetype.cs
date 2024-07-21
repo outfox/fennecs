@@ -245,8 +245,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// discarding any components not present in the destination.
     /// </summary>
     /// <param name="destination">the Archetype to move the entities to</param>
-    internal void Migrate(Archetype destination)
-        => Migrate(destination, PooledList<TypeExpression>.Rent(), PooledList<object>.Rent(), Batch.AddConflict.Strict);
+    internal void Migrate(Archetype destination) => Migrate(destination, PooledList<TypeExpression>.Rent(), PooledList<object>.Rent(), Batch.AddConflict.Strict);
 
 
     /// <summary>
@@ -368,10 +367,16 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
+    /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
+    
+
+    /// <inheritdoc />
+    public override int GetHashCode() => Signature.GetHashCode();
+    
 
     /// <summary>
     /// Returns (constructs) the Entity at the given index, associated with the World this Archetype belongs to.
