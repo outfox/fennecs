@@ -108,12 +108,12 @@ public partial class World : Query
                 return;
             }
 
-            DespawnDependencies(entity);
-
             ref var meta = ref _meta[entity.Id.Index];
 
             var table = meta.Archetype;
             table.Delete(meta.Row);
+
+            DespawnDependencies(entity);
 
             _identityPool.Recycle(entity);
 
@@ -125,22 +125,25 @@ public partial class World : Query
     private void DespawnDependencies(Entity entity)
     {
         // Find identity-identity relation reverse lookup (if applicable)
-        if (!_typesByRelationTarget.TryGetValue(Relate.To(entity), out var types) 
-            || types.Count == 0) return;
-
+        if (!_typesByRelationTarget.TryGetValue(Relate.To(entity), out var types)) return;
+        
         // Collect Archetypes that have any of these relations
         var toMigrate = Archetypes.Where(a => a.Signature.Matches(types)).ToList();
 
+        // Do not change the home archetype of the entity (relating to entities having a relation with themselves)
+        var homeArchetype = _meta[entity.Id.Index].Archetype;
+        
         // And migrate them to a new Archetype without the relation
         foreach (var archetype in toMigrate)
         {
+            if (archetype == homeArchetype) continue;
+            
             if (archetype.Count > 0)
             {
                 var signatureWithoutTarget = archetype.Signature.Except(types);
                 var destination = GetArchetype(signatureWithoutTarget);
                 archetype.Migrate(destination);
             }
-            DisposeArchetype(archetype);
         }
         
         // No longer tracking this Entity

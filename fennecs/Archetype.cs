@@ -234,6 +234,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         // Update all Meta info to mark entities as moved.
         destination.PatchMetas(addedStart, addedCount);
+
+        // Garbage collect own type.
+        if (IsEmpty) _world.DisposeArchetype(this);
     }
 
 
@@ -243,40 +246,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// </summary>
     /// <param name="destination">the Archetype to move the entities to</param>
     internal void Migrate(Archetype destination)
-    {
-        Migrate(destination, PooledList<TypeExpression>.Rent(), PooledList<object>.Rent(), Batch.AddConflict.Strict);
-        /*
-        // Certain Add-modes permit operating on archetypes that themselves are in the query.
-        // No more migrations are needed at this point (they would be semantically idempotent)
-        if (IsEmpty || destination == this) return;
-        
-        Invalidate();
-        destination.Invalidate();
-        
-        var addedCount = Count;
-        var addedStart = destination.Count;
-
-
-        // Migration (and subtractive copy)
-        foreach (var type in Signature)
-        {
-            var srcStorage = GetStorage(type);
-            if (destination.Signature.Matches(type))
-            {
-                var destStorage = destination.GetStorage(type);
-                srcStorage.Migrate(destStorage);
-            }
-            else
-            {
-                // Discard values not in the destination (subtract components)
-                srcStorage.Clear();
-            }
-        }
-        
-        // Update all Meta info to mark entities as moved.
-        destination.PatchMetas(addedStart, addedCount);
-        */
-    }
+        => Migrate(destination, PooledList<TypeExpression>.Rent(), PooledList<object>.Rent(), Batch.AddConflict.Strict);
 
 
     /// <summary>

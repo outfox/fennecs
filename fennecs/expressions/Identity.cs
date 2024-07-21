@@ -110,7 +110,7 @@ internal readonly record struct Identity : IComparable<Identity>
     {
         get
         {
-            if (!IsEntity) throw new InvalidCastException("Cannot reuse virtual Identities");
+            if (!IsEntity) throw new InvalidOperationException("Cannot reuse virtual Identities");
 
             var generationWrappedStartingAtOne = (TypeID) (Generation % (TypeID.MaxValue - 1) + 1);
             return new Identity(Index, generationWrappedStartingAtOne);

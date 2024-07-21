@@ -416,10 +416,13 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
         if (World.Mode != World.WorldMode.Immediate)
             throw new InvalidOperationException("Query.Truncate can only be used in Immediate mode.");
 
+        using var worldLock = World.Lock();
+        
         var count = Count;
         if (count <= maxEntityCount) return;
 
         foreach (var archetype in Archetypes)
+        {
             switch (mode)
             {
                 case TruncateMode.PerArchetype:
@@ -431,6 +434,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
                     archetype.Truncate((int)Math.Round(ratio * archetype.Count));
                     break;
             }
+        }
     }
 
 

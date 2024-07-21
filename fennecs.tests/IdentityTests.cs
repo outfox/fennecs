@@ -9,11 +9,11 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Virtual_Entities_have_no_Successors()
     {
-        Assert.Throws<InvalidCastException>(() => new Identity(-1, 0).Successor);
-        Assert.Throws<InvalidCastException>(() => new Identity(-4, 0).Successor);
-        Assert.Throws<InvalidCastException>(() => new Identity(-2, 0).Successor);
-        Assert.Throws<InvalidCastException>(() => new Identity(-3, 0).Successor);
-        Assert.Throws<InvalidCastException>(() => default(Identity).Successor);
+        Assert.Throws<InvalidOperationException>(() => new Identity(-1, 0).Successor);
+        Assert.Throws<InvalidOperationException>(() => new Identity(-4, 0).Successor);
+        Assert.Throws<InvalidOperationException>(() => new Identity(-2, 0).Successor);
+        Assert.Throws<InvalidOperationException>(() => new Identity(-3, 0).Successor);
+        Assert.Throws<InvalidOperationException>(() => default(Identity).Successor);
     }
 
 

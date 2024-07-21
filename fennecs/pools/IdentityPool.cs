@@ -66,7 +66,6 @@ internal class IdentityPool
 
     internal void Recycle(ReadOnlySpan<Identity> toDelete)
     {
-        //TODO: Optimize this!
         foreach (var identity in toDelete) Recycle(identity);
     }
 }

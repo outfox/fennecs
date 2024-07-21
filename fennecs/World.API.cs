@@ -159,9 +159,25 @@ public partial class World : IDisposable
     {
         lock (_spawnLock)
         {
+            //Deleting backwards is usually faster when deleting one-by one (saves a memcpy for each)
             for (var i = toDelete.Length - 1; i >= 0; i--)
             {
                 DespawnImpl(toDelete[i]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Used by Archetypes to bulk delete. TODO: Optimize.
+    /// </summary>
+    internal void Despawn(ReadOnlySpan<Identity> toDelete)
+    {
+        lock (_spawnLock)
+        {
+            //Deleting backwards is usually faster when deleting one-by one (saves a memcpy for each)
+            for (var i = toDelete.Length - 1; i >= 0; i--)
+            {
+                DespawnImpl(new (this, toDelete[i]));
             }
         }
     }
@@ -177,13 +193,11 @@ public partial class World : IDisposable
     {
         lock (_spawnLock)
         {
-            //TODO: Not good to assemble the Entity like that. Types need to be untangled.
             foreach (var identity in identities)
             {
                 DespawnDependencies(new(this, identity));
+                _meta[identity.Index] = default;
             }
-            foreach (var identity in identities)_meta[identity.Index] = default;
-
             _identityPool.Recycle(identities);
         }
     }
@@ -228,7 +242,7 @@ public partial class World : IDisposable
     }
 
 
-    private void DisposeArchetype(Archetype archetype)
+    internal void DisposeArchetype(Archetype archetype)
     {
         Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
         Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
