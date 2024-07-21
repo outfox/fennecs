@@ -57,6 +57,7 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 ## Version 0.5.10-beta
 - Added `bool Entity.HasVirtual(object)` extension method to `fennecs.reflection`
 - Fixed [Issue #17](https://github.com/outfox/fennecs/issues/17) Entities that have self-referencing relations on themselves can now be despawned and bulk-despawned without crashing / potentially undefined behaviour.
+- Queries and Streams now use a SortedSet of Archetypes, which speeds up removals of Archetypes when they get Disposed from the World. (Experimental - this may get changed to a HashSet in the future)
 
 
 ## Version 0.5.9-beta
