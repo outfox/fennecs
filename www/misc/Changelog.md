@@ -53,13 +53,15 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 - Breaking for `HasVirtual`, `GetVirtual`, adding `Match` expression support. (breaking means that the old methods will currently match Any, but the new versions will match Plain by default)
 ...
 
-### 0.5.10-beta
-- `bool Entity.HasVirtual(object)` extension method added to `fennecs.reflection`
+
+## Version 0.5.10-beta
+- Added `bool Entity.HasVirtual(object)` extension method to `fennecs.reflection`
+- Fixed [Issue #17](https://github.com/outfox/fennecs/issues/17) Entities that have self-referencing relations on themselves can now be despawned and bulk-despawned without crashing / potentially undefined behaviour.
 
 
-## Release 0.5.9-beta
-- new namespace for some use cases using reflection: `fennecs.reflection`
-- Extension methods for `Entity`: 
+## Version 0.5.9-beta
+- Added new namespace for some use cases using reflection: `fennecs.reflection`
+- Added Extension methods for `Entity`: 
 ```cs
 namespace fennecs.reflection;
 
@@ -100,7 +102,7 @@ public static class ReflectionExtensions
 ```
 
 
-## Release 0.5.8-beta
+## Version 0.5.8-beta
 - `Component` factory class has most of its members deprecated. It is now a storage for a Boxed Component. ([updated documentation](/docs/Components/Expressions.md))
 - `Comp<T>` is a new factory class for Component Expressions. ([updated documentation](/docs/Components/Expressions.md))
 - get (read) a specific component using `entity.Get<T>(Match match)`, e.g. `entity.Get<MyLinkType>(Link.Any)` to get all the Links
@@ -123,16 +125,16 @@ var thanosStream = population.Stream<Alive>() with
 ```
 :::
 
-## Release 0.5.7-beta
+## Version 0.5.7-beta
 - `bugfix` - Stream Filters (Subset/Exclude) now affect the `Count` property of the Stream.
 - `bugfix` - `Stream<>.Despawn` respects current filters instead of despawning the entire underyling Query
 - reinstated the Thanos appetizer's functionality! OH SNAP!
 
-## Release 0.5.6-beta
+## Version 0.5.6-beta
 - `Link.Any` is a Match Target that can be used to match any Link target in a Query. It's value-identical to `Match.Object`, but makes the code more readable and reads in line with `Entity.Any`. 
 - lots of documentation updates and fixes
 
-## Release 0.5.5-beta
+## Version 0.5.5-beta
 - `/www/misc/Changelog.md` added 🦊
 - `IBatch` renamed to `IBatchBegin`, since it is not the "Batch" itself, just the ability to create (begin) batches.
 -  `IBatchBegin` now has all the overloads with AddConflict and RemoveConflict parameters formerly only available in `Query`, and thus are now available in `Stream<>`.
@@ -191,7 +193,7 @@ public readonly record struct Component
 * Streams can no longer be warmed up (`Stream.Warmup()`) (like queries used to - this is an oversight). This results in one or several one-time 40 byte allocations to show up in BenchmarkDotNet output.
 
 
-## Release 0.5.4-beta
+## Version 0.5.4-beta
 - `Stream<>` is a lightweight View that can be created for any Query, and is what wraps zip_view-like enumeration and iteration over the Query (especiall `For`, `Job`, and `Raw`)
 - `Stream<...>` is `IEnumerable<ValueTuple<Entity, ...>>`, which is great for Unit Testing and simple, read-only enumeration of Queries.
 - `Stream<C1, C2, ...>` expose all the runner functions from `Stream<C1, C2>` and `Stream<C1>`.
@@ -211,17 +213,17 @@ public readonly record struct Component
 
 
 ## Legacy Releases
-#### Release 0.5.3-beta
-#### Release 0.5.2-beta
-#### Release 0.5.0-beta
-#### Release 0.4.6-beta
-#### Release 0.4.5-beta
-#### Release 0.4.2-beta
-#### Release 0.4.0-beta
-#### Release 0.3.5-beta
-#### Release 0.2.0-beta
-#### Release 0.1.1-beta
-#### Release 0.1.0-beta
-#### Release 0.0.3-pre
-#### Release 0.0.1-pre
+#### Version 0.5.3-beta
+#### Version 0.5.2-beta
+#### Version 0.5.0-beta
+#### Version 0.4.6-beta
+#### Version 0.4.5-beta
+#### Version 0.4.2-beta
+#### Version 0.4.0-beta
+#### Version 0.3.5-beta
+#### Version 0.2.0-beta
+#### Version 0.1.1-beta
+#### Version 0.1.0-beta
+#### Version 0.0.3-pre
+#### Version 0.0.1-pre
 
