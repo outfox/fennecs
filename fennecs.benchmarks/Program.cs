@@ -17,4 +17,4 @@ if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
 //BenchmarkRunner.Run<DorakuBenchmarks>(config);
-BenchmarkRunner.Run<SIMDBenchmarks>(config);
+BenchmarkRunner.Run<DorakuBenchmarks>(config);
