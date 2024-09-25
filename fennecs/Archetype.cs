@@ -131,7 +131,11 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> matchTypes) => MatchSignature.IsSupersetOf(matchTypes);
 
-    
+    /// <summary>
+    /// Remove one or more Entities and all associated Component data from the Archetype.
+    /// </summary>
+    /// <param name="entry">index of the first Entity to remove</param>
+    /// <param name="count">number of Entities to remove</param>
     internal void Delete(int entry, int count = 1)
     {
         Invalidate();
@@ -140,6 +144,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         {
             storage.Delete(entry, count);
         }
+
+        // The code above may relocate Component data, we must
+        // update Metas for all Entities following the removed section.
+        PatchMetas(entry, Math.Min(Count - entry, count));
     }
 
     /// <summary>
@@ -167,6 +175,14 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         IdentityStorage.Delete(Count - excess, excess);
     }
 
+    /// <summary>
+    /// Update Entity metas with new Row information. Call to update the Meta Row information
+    /// after moving Entities/Component data within the Storages. This ensures that the Entity
+    /// Meta within the World will have the correct Row to access the Entity's associated data
+    /// within the Archetype.
+    /// </summary>
+    /// <param name="entry">If `count` param is nonzero, `entry` must be less than `this.Count`.</param>
+    /// <param name="count">If &lt;= 0, PatchMetas does nothing.</param>
     private void PatchMetas(int entry, int count = 1)
     {
         for (var i = 0; i < count; i++)
