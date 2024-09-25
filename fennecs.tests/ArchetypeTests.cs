@@ -151,6 +151,118 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.False(dead_entity_in_world_iteration);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(10)]
+    [InlineData(69)]
+    [InlineData(420)]
+    [InlineData(10_000)]
+    public void Meta_Integrity_After_Despawn(int count)
+    {
+        using var world = new World();
+        
+        Entity e1 = world.Spawn().Add(1);
+        
+        var entities = new Entity[count];
+        for (var i = 0; i < entities.Length; i++)
+        {
+            entities[i] = world.Spawn().Add(i);
+        }
+        
+        world.Despawn(e1);
+
+        for (var i = 0; i < entities.Length; i++)
+        {
+            var entity = entities[i];
+            Assert.True(world.IsAlive(entity));
+
+            // Metas patched?
+            Assert.Equal(entity, world.GetEntityMeta(entity).Identity);
+        }
+    }
+    
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(10)]
+    [InlineData(69)]
+    [InlineData(420)]
+    [InlineData(10_000)]
+    public void Components_Integrity_After_Despawn(int count)
+    {
+        using var world = new World();
+        
+        var e1 = world.Spawn().Add(-1);
+        var e2 = world.Spawn().Add(-2);
+        
+        var entities = new List<Entity>(count);
+        for (var i = 0; i < count; i++)
+        {
+            entities.Add(world.Spawn().Add(i));
+        }
+
+        world.Despawn(e1);
+
+        for (var i = 0; i < count; i++)
+        {
+            var entity = entities[i];
+            entity.Add((short) i);
+        }
+
+        world.Despawn(e2);
+
+        for (var i = 0; i < count; i++)
+        {
+            var entity = entities[i];
+            Assert.True(world.IsAlive(entity));
+
+            // Components correct?
+            Assert.Equal(i, entity.Ref<int>());    
+            Assert.Equal(i, entity.Ref<short>());    
+        }
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(10)]
+    [InlineData(69)]
+    [InlineData(420)]
+    [InlineData(10_000)]
+    public void Components_Integrity_After_Truncate(int count)
+    {
+        using var world = new World();
+        
+        var entities = new List<Entity>(count);
+        for (var i = 0; i < count; i++)
+        {
+            entities.Add(world.Spawn().Add(i));
+        }
+        
+        world.GetEntityMeta(entities[0]).Archetype.Truncate(10);
+        entities = entities.Take(10).ToList();
+        
+
+        for (var i = 0; i < entities.Count; i++)
+        {
+            var entity = entities[i];
+            entity.Add((short) i);
+        }
+
+        for (var i = 0; i < entities.Count; i++)
+        {
+            var entity = entities[i];
+            Assert.True(world.IsAlive(entity));
+
+            // Components correct?
+            Assert.Equal(i, entity.Ref<int>());    
+            Assert.Equal(i, entity.Ref<short>());    
+        }
+    }
+
     [Fact]
     public void IsComparable_Same_As_Signature()
     {
