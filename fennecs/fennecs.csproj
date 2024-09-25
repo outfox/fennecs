@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.5.10-beta</Version>
+        <Version>0.5.11-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
