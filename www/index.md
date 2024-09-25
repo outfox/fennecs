@@ -15,8 +15,8 @@ hero:
       text: Start here!
       link: /docs/index.md
     - theme: alt
-      text: Cookbook
-      link: /cookbook/
+      text: Discord
+      link: https://discord.gg/Bfx74WcVXW
     - theme: alt
       text: GitHub
       link: https://github.com/outfox/fennecs
