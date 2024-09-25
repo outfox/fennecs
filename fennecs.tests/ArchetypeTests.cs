@@ -104,9 +104,6 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Equal(1, queryInt.Count);
     }
     
-    // TODO: Is this a good location for this?
-    // Wasn't sure if it should be an "Archetype Test" or an integration test.
-
     // Verifies fix to https://github.com/outfox/fennecs/issues/23
     [Fact]
     public void Remaining_Entity_Metas_Updated_Upon_Delete()

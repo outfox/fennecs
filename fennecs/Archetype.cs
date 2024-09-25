@@ -134,8 +134,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// Remove one or more Entities and all associated Component data from the Archetype.
     /// </summary>
-    /// <param name="entry"></param>
-    /// <param name="count"></param>
+    /// <param name="entry">index of the first Entity to remove</param>
+    /// <param name="count">number of Entities to remove</param>
     internal void Delete(int entry, int count = 1)
     {
         Invalidate();
@@ -145,8 +145,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             storage.Delete(entry, count);
         }
 
-        // The code above may relocate Component data, so update Metas for all Entities following
-        // the removed section.
+        // The code above may relocate Component data, we must
+        // update Metas for all Entities following the removed section.
         PatchMetas(entry, Math.Min(Count - entry, count));
     }
 
