@@ -103,6 +103,56 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.Equal(2, queryAll.Count);
         Assert.Equal(1, queryInt.Count);
     }
+    
+    // TODO: Is this a good location for this?
+    // Wasn't sure if it should be an "Archetype Test" or an integration test.
+
+    // Verifies fix to https://github.com/outfox/fennecs/issues/23
+    [Fact]
+    public void Remaining_Entity_Metas_Updated_Upon_Delete()
+    {
+        using var world = new World();
+        Entity e1 = world.Spawn().Add(1);
+        Entity e2 = world.Spawn().Add(2);
+        e1.Despawn();
+        Assert.Equal(2, e2.Ref<int>());
+
+        Entity e3 = world.Spawn().Add(3);
+        e2.Despawn();
+        bool e3_seen_in_query_alive_and_with_val_3 = false;
+        bool dead_entity_in_query = false;
+        world.Query<int>().Stream().For((Entity entity, ref int val) =>
+        {
+            if (entity.Alive && val == 3)
+            {
+                e3_seen_in_query_alive_and_with_val_3 = true;
+            }
+
+            if (!entity.Alive)
+            {
+                dead_entity_in_query = true;
+            }
+        });
+        Assert.True(e3_seen_in_query_alive_and_with_val_3);
+        Assert.False(dead_entity_in_query);
+
+        bool e3_seen_in_world_iteration_alive_and_with_val_3 = false;
+        bool dead_entity_in_world_iteration = false;
+        foreach (Entity entity in world)
+        {
+            if (entity.Alive && entity.Ref<int>() == 3)
+            {
+                e3_seen_in_world_iteration_alive_and_with_val_3 = true;
+            }
+
+            if (!entity.Alive)
+            {
+                dead_entity_in_world_iteration = true;
+            }
+        }
+        Assert.True(e3_seen_in_world_iteration_alive_and_with_val_3);
+        Assert.False(dead_entity_in_world_iteration);
+    }
 
     [Fact]
     public void IsComparable_Same_As_Signature()

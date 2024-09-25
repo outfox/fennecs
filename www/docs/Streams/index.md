@@ -32,7 +32,7 @@ Entities in Queries (including Worlds) and their Components can be read and modi
 You can get a Stream View from a Query, or from a World.
 ::: code-group
 ```csharp   [from new Query (shorthand)]
-var query = stream.Query<Position, Velocity>().Not<Boring>().Stream();
+var query = world.Query<Position, Velocity>().Not<Boring>().Stream();
 // This is the tried-and-true way of getting a Stream View from a Query,
 // similar to how it was in fennecs 0.4.x but modernized by splitting
 // the resolution of the Query from the matching from the Stream's
@@ -40,7 +40,7 @@ var query = stream.Query<Position, Velocity>().Not<Boring>().Stream();
 // Stream<>.Query provides you access to the underlying Query just in case.
 ```
 ```csharp   [from existing Query]
-var query = world.Query().Has<Position>().Has<Velocity>().Not<Boring>();
+var stream = world.Query().Has<Position>().Has<Velocity>().Not<Boring>().Compile();
 // Query with arbitrarily complexity of Expressions, and any number of Streams
 var positions = query.Stream<Position>();
 var velocities = query.Stream<Velocity>();

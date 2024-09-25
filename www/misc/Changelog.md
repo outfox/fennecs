@@ -53,7 +53,10 @@ Here, there be ~~dragons~~ more foxes. *What did you expect?*
 - Breaking for `HasVirtual`, `GetVirtual`, adding `Match` expression support. (breaking means that the old methods will currently match Any, but the new versions will match Plain by default)
 ...
 
-
+## Version 0.5.11-beta
+- Fixed [Issue #23](https://github.com/outfox/fennecs/issues/23) Data Integrity Issue Following Despawn. Thanks to [Penny](https://github.com/PennyMew) for the Issue and PR to fix it!
+- Fixed [Issue #21](https://github.com/outfox/fennecs/issues/21) Streams Documentation [Example](https://fennecs.tech/docs/Streams/) was mixed up.
+- 
 ## Version 0.5.10-beta
 - Added `bool Entity.HasVirtual(object)` extension method to `fennecs.reflection`
 - Fixed [Issue #17](https://github.com/outfox/fennecs/issues/17) Entities that have self-referencing relations on themselves can now be despawned and bulk-despawned without crashing / potentially undefined behaviour.
