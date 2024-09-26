@@ -5,11 +5,18 @@ order: 10
 
 # Worlds
 
-Each World contains Entities and their Components, as well as their structure and Relations.
+Worlds represent the universe of Entities and their Components (as well as the component layout, and the Queries that match them). 
+
+![A fennec leaning casually on a World](https://fennecs.tech/img/fennec-world.png)
+
+It is possible to have multiple Worlds, each with its own set of Queries and Entities.
+- Entities are unique to a World
+- Relations can bridge across Worlds (from fennecs 0.6.0+)
+- Component Types are shared between Worlds
+- (this facilitates moving entities between Worlds) (planned fennecs 0.6.5+)
 
 ![World Example: blue circle labeled world filled with fox emojis with many different traits](https://fennecs.tech/img/diagram-world.png)
 *"A world, populated by Entities with different traits (Components)"*
-
 
 ## Instantiation
 Imagine making a new universe was as easy as saying *"let there be fennecs"* - well, it is!
