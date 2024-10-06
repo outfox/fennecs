@@ -7,16 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Stride.Engine" Version="4.2.0.2067" />
-
-        <PackageReference Include="Stride.Video" Version="4.2.0.2067" />
-        <PackageReference Include="Stride.Physics" Version="4.2.0.2067" />
-        <PackageReference Include="Stride.Navigation" Version="4.2.0.2067" />
-        <PackageReference Include="Stride.Particles" Version="4.2.0.2067" />
-        <PackageReference Include="Stride.UI" Version="4.2.0.2067" />
-
-        <PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.2.0.2067" IncludeAssets="build;buildTransitive" />
-        <PackageReference Include="fennecs" Version="0.1.0-beta" />
+		<PackageReference Include="Stride.Engine" Version="4.2.0.2232" />
+		<PackageReference Include="Stride.Video" Version="4.2.0.2232" />
+		<PackageReference Include="Stride.Physics" Version="4.2.0.2232" />
+		<PackageReference Include="Stride.Navigation" Version="4.2.0.2232" />
+		<PackageReference Include="Stride.Particles" Version="4.2.0.2232" />
+		<PackageReference Include="Stride.UI" Version="4.2.0.2232" />
+		<PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.2.0.2232" IncludeAssets="build;buildTransitive" />
+		<PackageReference Include="fennecs" Version="0.5.11-beta" />
     </ItemGroup>
 
 </Project>
