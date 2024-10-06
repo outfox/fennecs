@@ -57,10 +57,10 @@ public class CubeDemo : SyncScript
     private Vector3 _goalAmplitude;
 
     //  Fennecs: The Query that will be used to interact with the Entities.
-    private Query<Matrix, Vector3, int> _query;
+    private Stream<Matrix, Vector3, int> _stream;
 
     // ?? Boilerplate: Array used to copy the Entity Transform data into Stride's MultiMesh.
-    private Matrix[] _submissionArray = Array.Empty<Matrix>();
+    private Matrix[] _submissionArray = [];
 
 
     //  Calculation: Elapsed time value for the simulation.
@@ -78,7 +78,7 @@ public class CubeDemo : SyncScript
     public TextBlock EntityCountText;
 
     //  Stride: Read by the UI to show the simulated Entity count. (not just the visible ones)
-    private int QueryCount => _query.Count;
+    private int QueryCount => _stream.Count;
 
 
     /// <summary>
@@ -88,13 +88,13 @@ public class CubeDemo : SyncScript
     private void SetEntityCount(int spawnCount)
     {
         // Spawn new entities if needed.
-        for (var i = _query.Count; i < spawnCount; i++)
+        for (var i = _stream.Count; i < spawnCount; i++)
             _world.Spawn().Add(i)
                 .Add<Matrix>()
                 .Add<Vector3>();
 
         // Cut off excess entities, if any.
-        _query.Truncate(spawnCount);
+        _stream.Truncate(spawnCount);
 
         EntityCountText.Text = $"Entities: {spawnCount}\nVisible: {_cubeCount}";
     }
@@ -125,7 +125,7 @@ public class CubeDemo : SyncScript
         RenderedSlider.ValueChanged += _on_rendered_slider_value_changed;
 
         //  Boilerplate: Prepare our Query that we'll use to interact with the Entities.
-        _query = _world.Query<Matrix, Vector3, int>().Build();
+        _stream = _world.Query<Matrix, Vector3, int>().Stream();
 
         //  Boilerplate: Users can change the number of entities, so pre-warm the memory allocator a bit.
         SetEntityCount(MaxEntities);
@@ -150,21 +150,23 @@ public class CubeDemo : SyncScript
         //  Calculation: Determine the number of entities that will be displayed (also used to smooth out animation).
 
         // -----------------------  HERE'S WHERE THE SIMULATION WORK IS RUN ------------------------
-        var chunkSize = Math.Max(_query.Count / Environment.ProcessorCount, val2: 128);
-        _query.Job(UpdatePositionForCube, (_time, _currentAmplitude, _cubeCount, dt), chunkSize);
+        var chunkSize = Math.Max(_stream.Count / Environment.ProcessorCount, val2: 128);
+        _stream.Job((_time, _currentAmplitude, _cubeCount, dt), UpdatePositionForCube);
 
         //  Make the cloud of cubes denser if there are more cubes.
-        var amplitudePortion = Math.Clamp(1.0f - _query.Count / (float) MaxEntities, min: 0f, max: 1f);
+        var amplitudePortion = Math.Clamp(1.0f - _stream.Count / (float) MaxEntities, min: 0f, max: 1f);
         _goalAmplitude = MathUtil.Lerp(MinAmplitude, MaxAmplitude, amplitudePortion) * Vector3.One;
         _currentAmplitude = _currentAmplitude * 0.9f + 0.1f * _goalAmplitude;
 
         // ------------------------  HERE IS WHERE THE DATA IS SENT TO Stride ------------------------
         //  Copy transforms into Instanced Mesh
-        _query.Raw(static delegate(Memory<Matrix> transforms, (InstancingUserArray instancingArray, Matrix[] submissionArray, int cubeCount) uniform)
-        {
-            transforms.CopyTo(uniform.submissionArray);
-            uniform.instancingArray.UpdateWorldMatrices(uniform.submissionArray, uniform.cubeCount);
-        }, (InstancingArray, _submissionArray, (int) _cubeCount));
+        _stream.Raw(
+            uniform: (InstancingArray, _submissionArray, _cubeCount),
+            action: static (uniform, transforms) =>
+            {
+                transforms.CopyTo(uniform._submissionArray);
+                uniform.InstancingArray.UpdateWorldMatrices(uniform._submissionArray, (int)uniform._cubeCount);
+            });
     }
 
 
@@ -172,10 +174,10 @@ public class CubeDemo : SyncScript
     //  Update Transforms and Positions of all Cube Entities.
     // -------------------------------------------------------------------------------------------
     private static void UpdatePositionForCube(
+        (float Time, Vector3 Amplitude, float CubeCount, float dt) uniform,
         ref Matrix transform,
         ref Vector3 position,
-        ref int index,
-        (float Time, Vector3 Amplitude, float CubeCount, float dt) uniform)
+        ref int index)
     {
         #region Motion Calculations (just generic math for the cube motion)
         //  Calculation: Apply a chaotic Lissajous-like motion for the cubes
@@ -224,7 +226,7 @@ public class CubeDemo : SyncScript
         // Move cubes faster if there are fewer visible
         _currentTimeScale = BaseTimeScale / MathF.Max(value, y: 0.3f);
         
-        _cubeCount = (int) Math.Floor(_currentRenderedFraction * _query.Count);
+        _cubeCount = (int) Math.Floor(_currentRenderedFraction * _stream.Count);
         EntityCountText.Text = $"Entities: {QueryCount}\nVisible: {_cubeCount}";
     }
 
@@ -238,7 +240,7 @@ public class CubeDemo : SyncScript
         count = Math.Clamp((count / 100 + 1) * 100, min: 0, MaxEntities);
         SetEntityCount(count);
 
-        _cubeCount = (int) Math.Floor(_currentRenderedFraction * _query.Count);
+        _cubeCount = (int) Math.Floor(_currentRenderedFraction * _stream.Count);
         EntityCountText.Text = $"Entities: {QueryCount}\nVisible: {_cubeCount}";
     }
     #endregion
