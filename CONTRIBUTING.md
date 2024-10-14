@@ -1,10 +1,10 @@
 # Contributing to **fenn**ecs
-
 ## Welcome to our Community! 🦊
-
 First and foremost, thank you for your interest in contributing to **fenn**ecs! Your involvement makes this project truly special and helps shape its future.
 
 ## How You Can Make a Difference
+
+![meme, fennec, hotline bling, approving](https://fennecs.tech/img/fennec-bling-yeah-256.png)
 
 There are numerous ways to contribute, each equally valuable:
 
@@ -19,6 +19,8 @@ There are numerous ways to contribute, each equally valuable:
 ## Current Project Status
 
 **fenn**ecs is in its early stages, which means it's highly flexible and open to evolution. While this is exciting, it also means we need to be mindful of its direction.
+
+![meme, fennec, hotline bling, approving](https://fennecs.tech/img/fennec-bling-nope-256.png)
 
 ⚠️ **Important Note**: We're currently focused on realizing the core vision of **fenn**ecs. As such, unsolicited feature additions might not be accepted. To avoid disappointment, please discuss substantial changes with us before investing your valuable time.
 
