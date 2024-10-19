@@ -155,7 +155,7 @@ public class Stream5Tests(ITestOutputHelper output)
         });
 
 
-        query.For((Entity e, ref TypeA a, ref double _, ref int _, ref string str, ref char _) =>
+        query.For((in Entity e, ref TypeA a, ref double _, ref int _, ref string str, ref char _) =>
         {
             Assert.True(e.Alive);
             Assert.Equal(e, a.entity);
@@ -165,7 +165,7 @@ public class Stream5Tests(ITestOutputHelper output)
         });
 
         
-        query.For(11, (int uniform, Entity _, ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
+        query.For(11, (int uniform, in Entity _, ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(10.ToString(), str);
             str = uniform.ToString();

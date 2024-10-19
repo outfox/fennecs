@@ -512,7 +512,7 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var found = new List<Entity>();
         
-        query.For((Entity e, ref int _, ref string _) =>
+        query.For((in Entity e, ref int _, ref string _) =>
         {
             found.Add(e);
         });
@@ -535,7 +535,7 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var found = new List<Entity>();
         
-        query.For( 3.1415f, (float uniform, Entity e, ref int _, ref string _) =>
+        query.For( 3.1415f, (float uniform, in Entity e, ref int _, ref string _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);

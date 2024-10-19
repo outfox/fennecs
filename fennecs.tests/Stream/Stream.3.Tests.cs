@@ -90,7 +90,7 @@ public class Stream3Tests(ITestOutputHelper output)
                 .Add('Q');
         }
 
-        query.For(12f, (float _, Entity _, ref int _, ref string str, ref char _) =>
+        query.For(12f, (float _, in Entity _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal("one", str);
             str = "two";
@@ -155,14 +155,14 @@ public class Stream3Tests(ITestOutputHelper output)
             }
         });
 
-        query.For((Entity _, ref int _, ref string str, ref char _) =>
+        query.For((in Entity _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(9.ToString(), str);
             str = "10";
         });
 
 
-        query.For(11, (int uniform, Entity _, ref int _, ref string str, ref char _) =>
+        query.For(11, (int uniform, in Entity _, ref int _, ref string str, ref char _) =>
         {
             Assert.Equal(10.ToString(), str);
             str = uniform.ToString();
