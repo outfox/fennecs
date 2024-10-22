@@ -1,5 +1,5 @@
-[![fennecs logo](./www/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only)](https://fennecs.tech#gh-dark-mode-only)
-[![fennecs logo](./www/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech#gh-light-mode-only)
+[![fennecs logo](https://fennecs.tech/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only)](https://fennecs.tech#gh-dark-mode-only)
+[![fennecs logo](https://fennecs.tech/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech#gh-light-mode-only)
 
 # _... the tiny, tiny, high-energy Entity-Component System!_
 > [![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)  
@@ -10,7 +10,7 @@
    </tr>
    <tr>
       <td>
-         <img src="www/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px; max-width: 320px"/>
+         <img src="https://fennecs.tech/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px; max-width: 320px"/>
       </td>
       <td style="width: fit-content">
          <h1>Okay, what the fox!<br/><em>Another ECS?!</em></h1>
