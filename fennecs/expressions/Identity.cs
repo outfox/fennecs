@@ -9,7 +9,7 @@ namespace fennecs;
 /// real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-internal readonly record struct Identity : IComparable<Identity>
+public readonly record struct Identity : IComparable<Identity>
 {
     [FieldOffset(0)] internal readonly ulong Value;
 

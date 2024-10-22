@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
@@ -9,18 +10,55 @@ namespace fennecs;
 /// </summary>
 public partial class World : IDisposable
 {
-    #region Config
-        /// <summary>
-        /// Optional name for the World.
-        /// </summary>
-        public string Name { get; init; }
-        
-        /// <summary>
-        /// Flags denoting this World's Garbage Collection Strategy.
-        /// </summary>
-        public GCAction GCBehaviour { get; init; } = GCAction.DefaultBeta;
+    #region Multiverse
+
+    /// <summary>
+    /// Index (unique numeric id) of this world.
+    /// </summary>
+    /// <remarks>
+    /// There can be up to <see cref="MaxWorlds"/> distinct World instances in a single application domain.
+    /// </remarks>
+    private readonly byte _index;
+
+    /// <summary>
+    /// Maximum number of Worlds that can exist in this application domain.
+    /// </summary>
+    private const int MaxWorlds = 256;
+
+    /// <summary>
+    /// All Worlds that can exist in this application domain.
+    /// </summary>
+    /// <remarks>
+    /// Entries in this array may be null.
+    /// </remarks>
+    private static readonly World[] Registry = new World[MaxWorlds];
+
+    /// <summary>
+    /// Queue of available World indices.
+    /// </summary>
+    private static readonly ConcurrentQueue<byte> Available = new(Enumerable.Range(0, MaxWorlds).Select(i => (byte)i));
+
+    /// <summary>
+    /// Gets the World with the given index.
+    /// </summary>
+    /// <throws>
+    /// <see cref="InvalidOperationException">InvalidOperationException</see> if the World does not exist.</throws>
+    public static World Get(byte index) => Registry[index] ?? throw new InvalidOperationException($"World with index {index} does not exist.");
     #endregion
-    
+
+
+    #region Config
+
+    /// <summary>
+    /// Optional name for the World.
+    /// </summary>
+    public string Name { get; init; }
+
+    /// <summary>
+    /// Flags denoting this World's Garbage Collection Strategy.
+    /// </summary>
+    public GCAction GCBehaviour { get; init; } = GCAction.DefaultBeta;
+
     /// <summary>
     /// Flags to compose Garbage Collection Strategies.
     /// </summary>
@@ -31,7 +69,7 @@ public partial class World : IDisposable
         /// Default GC Strategy for the beta phase.
         /// </summary>
         DefaultBeta = ManualOnly | CompactStagnantArchetypes | DisposeEmptyRelationArchetypes,
-        
+
         /// <summary>
         /// Do nothing.
         /// </summary>
@@ -52,7 +90,7 @@ public partial class World : IDisposable
         /// Compact the Meta Table
         /// </summary>
         CompactMeta = 8,
-        
+
         /// <summary>
         /// No Automatic GC, call World.GC() manually.
         /// </summary>
@@ -70,7 +108,8 @@ public partial class World : IDisposable
         /// </summary>
         InvokeOnBulkDespawn = 512,
     }
-    
+    #endregion
+
     #region Entity Spawn, Liveness, and Despawn
 
     /// <summary>
@@ -109,7 +148,7 @@ public partial class World : IDisposable
     /// <param name="entity">the entity to despawn.</param>
     public void Despawn(Entity entity) => DespawnImpl(entity);
 
-    
+
     /// <summary>
     /// Checks if the entity is alive (was not despawned).
     /// </summary>
@@ -174,7 +213,7 @@ public partial class World : IDisposable
     /// MUST BE REMOVED FROM ITS ARCHETYPE STORAGE! (used by Archetype.Truncate)
     /// </remarks>
     /// <param name="identities">the entities to despawn (remove)</param>
-    internal void Recycle(ReadOnlySpan<Identity> identities)
+    internal void Recycle(ReadOnlySpan<NewEntity> identities)
     {
         lock (_spawnLock)
         {
@@ -186,6 +225,7 @@ public partial class World : IDisposable
             _identityPool.Recycle(identities);
         }
     }
+
     #endregion
 
 
@@ -197,11 +237,14 @@ public partial class World : IDisposable
     /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
     public World(int initialCapacity = 4096)
     {
-        Name = nameof(World);
+        if (!Available.TryDequeue(out _index)) throw new InvalidOperationException("No more World slots available.");
+        Registry[_index] = this;
         
+        Name = nameof(World);
+
         World = this;
-       
-        _identityPool = new(initialCapacity);
+
+        _identityPool = new(_index, initialCapacity);
 
         _meta = new Meta[initialCapacity];
 
@@ -231,9 +274,9 @@ public partial class World : IDisposable
     {
         Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
         Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
-        
+
         _typeGraph.Remove(archetype.Signature);
-        
+
         foreach (var type in archetype.Signature)
         {
             // Same here, if all Archetypes with a Type are gone, we can clear the entry.
@@ -246,7 +289,7 @@ public partial class World : IDisposable
             // TODO: Will require some optimization later.
             query.ForgetArchetype(archetype);
         }
-        
+
         Archetypes.Remove(archetype);
     }
 
@@ -257,6 +300,9 @@ public partial class World : IDisposable
     public new void Dispose()
     {
         //TODO: Dispose all Object Links, Queries, etc.?
+
+        Registry[_index] = null!;
+        Available.Enqueue(_index);
     }
 
 
