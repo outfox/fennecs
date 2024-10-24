@@ -10,17 +10,14 @@ jobs:
     timeout-minutes: 5
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Build
-      run: dotnet build -c Release
-    - name: Test
-      run: dotnet test -c Release --no-build
-    - name: Pack nugets
+    - run: dotnet build -c Release
+    - run: dotnet test -c Release --no-build
+    - name: Pack nuget
       run: dotnet pack -c Release --no-build --output .
 #    - name: Push to NuGet
 #      run: dotnet nuget push "*.nupkg" --api-key ${{secrets.nuget_api_key}} --source https://api.nuget.org/v3/index.json
