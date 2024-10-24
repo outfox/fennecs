@@ -117,7 +117,7 @@ public partial class World : IDisposable
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
     /// </summary>
     /// <returns>an Entity to operate on</returns>
-    public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
+    public Entity Spawn() => NewEntity(); //TODO: Check if semantically legal to spawn in Deferred mode.
 
 
     /// <summary>
@@ -154,7 +154,7 @@ public partial class World : IDisposable
     /// </summary>
     /// <param name="identity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    internal bool IsAlive(Identity identity) => identity == _meta[identity.Index].Identity;
+    internal bool IsAlive(Entity identity) => identity == _meta[identity.Index].entity;
 
 
     /// <summary>
@@ -181,11 +181,11 @@ public partial class World : IDisposable
     /// </param>
     public void DespawnAllWith<T>(Match match = default)
     {
-        var query = Query<Identity>().Has<T>(match).Stream();
-        query.Raw(delegate(Memory<Identity> entities)
+        var query = Query<Entity>().Has<T>(match).Stream();
+        query.Raw(delegate(Memory<Entity> entities)
         {
             //TODO: This is not good. Need to untangle the types here.
-            foreach (var identity in entities.Span) DespawnImpl(new(this, identity));
+            foreach (var entity in entities.Span) DespawnImpl(entity);
         });
     }
 
@@ -212,17 +212,17 @@ public partial class World : IDisposable
     /// <remarks>
     /// MUST BE REMOVED FROM ITS ARCHETYPE STORAGE! (used by Archetype.Truncate)
     /// </remarks>
-    /// <param name="identities">the entities to despawn (remove)</param>
-    internal void Recycle(ReadOnlySpan<NewEntity> identities)
+    /// <param name="entities">the entities to despawn (remove)</param>
+    internal void Recycle(ReadOnlySpan<Entity> entities)
     {
         lock (_spawnLock)
         {
-            foreach (var identity in identities)
+            foreach (var entity in entities)
             {
-                DespawnDependencies(new(this, identity));
-                _meta[identity.Index] = default;
+                DespawnDependencies(entity);
+                _meta[entity.Index] = default;
             }
-            _identityPool.Recycle(identities);
+            _identityPool.Recycle(entities);
         }
     }
 

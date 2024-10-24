@@ -48,7 +48,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
     /// </summary>
-    internal readonly Storage<Identity> IdentityStorage;
+    internal readonly Storage<Entity> IdentityStorage;
 
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
 
@@ -75,7 +75,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         // Get quick lookup for Identity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
+        IdentityStorage = GetStorage<Entity>(fennecs.Match.Plain);
     }
 
 
@@ -159,7 +159,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         var excess = Math.Clamp(Count - maxEntityCount, 0, Count);
         if (excess <= 0) return;
         
-        var toDelete = ((ReadOnlySpan<Identity>)IdentityStorage.Span).Slice(Count - excess, excess);
+        var toDelete = ((ReadOnlySpan<Entity>)IdentityStorage.Span).Slice(Count - excess, excess);
 
         foreach (var storage in Storages)
         {
@@ -189,7 +189,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         {
             var identity = IdentityStorage[entry + i];
             ref var meta = ref _world.GetEntityMeta(identity);
-            meta = new() { Identity = identity, Archetype = this, Row = entry + i };
+            meta = new() { entity = identity, Archetype = this, Row = entry + i };
         }
     }
 
@@ -378,7 +378,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         for (var i = 0; i < Count; i++)
         {
             if (snapshot != Volatile.Read(ref Version)) throw new InvalidOperationException("Collection modified while enumerating.");
-            yield return new Entity(_world, IdentityStorage[i]);
+            yield return IdentityStorage[i]; //TODO: Can maybe just forward the Storage.GetEnumerator?
         }
     }
 
@@ -401,7 +401,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// There's no bounds checking, so be sure to check against the Count property before using this method.
     /// (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
     /// </remarks>
-    public Entity this[int index] => new(_world, IdentityStorage[index]);
+    public Entity this[int index] => IdentityStorage[index];
 
 
     #region Cross Joins

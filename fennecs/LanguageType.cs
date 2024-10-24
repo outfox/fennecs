@@ -17,9 +17,9 @@ internal class LanguageType
     protected static readonly ConcurrentDictionary<TypeID, Type> Types = new();
     protected static readonly ConcurrentDictionary<Type, TypeID> Ids = new();
 
+    // TODO: Support .NET 9 System.Threading.Lock type.
     protected static readonly object RegistryLock = new();
-
-
+    
     internal protected static TypeID Identify(Type type)
     {
         // Query the registry directly for a fast response.
@@ -35,6 +35,7 @@ internal class LanguageType
             // Constructor should have added the type to the registry.
             return Ids[type];
         }
+        
     }
 
 
@@ -79,7 +80,7 @@ internal class LanguageType
             // It is recommended to keep this much lower - 64 bytes or less.
             if (size <= 0x1000) flags |= (TypeFlags)size;
 
-            flags |= TypeFlags.Unmanaged;
+            flags |= TypeFlags.SIMDAble;
         }
 
         CachedFlags.TryAdd(typeof(T), flags);
@@ -131,6 +132,6 @@ internal static class TypeFlagExtensions
 [Flags]
 internal enum TypeFlags : ushort
 { 
-    SIMDSize  = 0x1fff, // bottom 12 bits.
-    Unmanaged = 0x8000, // top bit.
+    SIMDSize  = 0x7fff, // bottom 15 bits.
+    SIMDAble = 0x8000, // top bit.
 }

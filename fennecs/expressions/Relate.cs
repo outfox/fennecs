@@ -7,7 +7,7 @@ internal readonly record struct Relate
 {
     private Identity Value { get; }
     
-    internal Relate(Identity identity) => Value = identity;
+    internal Relate(Entity identity) => Value = identity;
     
     /// <summary>
     /// Create a Relation expression to the Target entity.

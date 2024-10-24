@@ -3,22 +3,22 @@
 public partial class World
 {
     #region CRUD
-    internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data) where T : notnull
+    internal void AddComponent<T>(Entity entity, TypeExpression typeExpression, T data) where T : notnull
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Identity = identity, TypeExpression = typeExpression, Data = data});
+            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Entity = entity, TypeExpression = typeExpression, Data = data});
             return;
         }
 
-        AssertAlive(identity);
+        AssertAlive(entity);
 
-        ref var meta = ref _meta[identity.Index];
+        ref var meta = ref _meta[entity.Index];
         var oldArchetype = meta.Archetype;
 
-        if (oldArchetype.Signature.Matches(typeExpression)) throw new ArgumentException($"Entity {identity} already has a component of type {typeExpression}");
+        if (oldArchetype.Signature.Matches(typeExpression)) throw new ArgumentException($"Entity {entity} already has a component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -29,11 +29,11 @@ public partial class World
     }
 
 
-    internal void RemoveComponent(Identity identity, TypeExpression typeExpression)
+    internal void RemoveComponent(Entity identity, TypeExpression typeExpression)
     {
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Identity = identity, TypeExpression = typeExpression});
+            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Entity = identity, TypeExpression = typeExpression});
             return;
         }
 
@@ -49,10 +49,10 @@ public partial class World
     }
 
 
-    internal bool HasComponent<T>(Identity identity, Match match)
+    internal bool HasComponent<T>(Entity entity, Match match)
     {
         var type = TypeExpression.Of<T>(match);
-        return HasComponent(identity, type);
+        return HasComponent(entity, type);
     }
 
     /* This is sad but can't be done syntactically at the moment (without bloating the interface)
@@ -72,16 +72,16 @@ public partial class World
     }
     */
     
-    internal ref T GetComponent<T>(Identity identity, Match match)
+    internal ref T GetComponent<T>(Entity entity, Match match)
     {
-        AssertAlive(identity);
+        AssertAlive(entity);
 
-        if (!HasComponent<T>(identity, match))
+        if (!HasComponent<T>(entity, match))
         {
-            throw new InvalidOperationException($"Entity {identity} does not have a reference type component of type {typeof(T)} / {match}");
+            throw new InvalidOperationException($"Entity {entity} does not have a reference type component of type {typeof(T)} / {match}");
         }
 
-        var (table, row, _) = _meta[identity.Index];
+        var (table, row, _) = _meta[entity.Index];
         var storage = table.GetStorage<T>(match);
         return ref storage.Span[row];
     }
@@ -102,16 +102,16 @@ public partial class World
     }
 */
 
-    internal Signature GetSignature(Identity identity)
+    internal Signature GetSignature(Entity entity)
     {
-        AssertAlive(identity);
-        var meta = _meta[identity.Index];
+        AssertAlive(entity);
+        var meta = _meta[entity.Index];
         var array = meta.Archetype.Signature;
         return array;
     }
     #endregion
 
-    internal T[] Get<T>(Identity id, Match match)
+    internal T[] Get<T>(Entity id, Match match)
     {
         var type = TypeExpression.Of<T>(match);
         var meta = _meta[id.Index];

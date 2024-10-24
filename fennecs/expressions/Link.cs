@@ -28,6 +28,7 @@ public readonly record struct Link<T> where T : class
     internal T Target => Object;
 
     internal TypeExpression TypeExpression => TypeExpression.Of<T>(this);
+
     
     /// <summary>
     /// The linked Object.

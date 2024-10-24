@@ -102,9 +102,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var tx2 = TypeExpression.Of(typeof(TypeEmpty), Match.Any);
         var tx3 = TypeExpression.Of(typeof(TypeEmpty), new Entity(null!, new(123)));
 
-        Assert.False(tx1.isRelation);
+        Assert.False(tx1.hasTarget);
         Assert.True(tx2.isWildcard);
-        Assert.True(tx3.isRelation);
+        Assert.True(tx3.hasTarget);
     }
 
 
@@ -204,7 +204,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void HasCorrectSize_in_Flags_B()
     {
         var flags = LanguageType.FlagsOf<TypeInt>();
-        Assert.True(flags.HasFlag(TypeFlags.Unmanaged));
+        Assert.True(flags.HasFlag(TypeFlags.SIMDAble));
         Assert.Equal(Unsafe.SizeOf<TypeInt>(), (int)(flags & TypeFlags.SIMDSize));
     }
 
@@ -212,7 +212,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void HasCorrectSize_in_Flags_TypeEmpty()
     {
         var flags = LanguageType.FlagsOf<TypeEmpty>();
-        Assert.True(flags.HasFlag(TypeFlags.Unmanaged));
+        Assert.True(flags.HasFlag(TypeFlags.SIMDAble));
         var size = Unsafe.SizeOf<TypeEmpty>();
         var actual = (int)(flags & TypeFlags.SIMDSize);
         Assert.Equal(size, actual);
@@ -222,7 +222,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void HasCorrectSize_in_Flags_TypeIntInt()
     {
         var flags = LanguageType.FlagsOf<TypeIntInt>();
-        Assert.True(flags.HasFlag(TypeFlags.Unmanaged));
+        Assert.True(flags.HasFlag(TypeFlags.SIMDAble));
         var size = Unsafe.SizeOf<TypeIntInt>();
         var actual = (int)(flags & TypeFlags.SIMDSize);
         Assert.Equal(size, actual);
@@ -237,7 +237,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void HasCorrectSize_structs(Type type, int size)
     {
         var flags = LanguageType.Flags(type);
-        Assert.True(flags.HasFlag(TypeFlags.Unmanaged));
+        Assert.True(flags.HasFlag(TypeFlags.SIMDAble));
         Assert.Equal(size, (int)(flags & TypeFlags.SIMDSize));
     }
 
@@ -252,7 +252,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void Recognizes_Managed_Types(Type type)
     {
         var flags = LanguageType.Flags(type);
-        Assert.False(flags.HasFlag(TypeFlags.Unmanaged));
+        Assert.False(flags.HasFlag(TypeFlags.SIMDAble));
     }
 
     private struct TypeEmpty;

@@ -67,7 +67,7 @@ public partial class World : Query
 
     #region CRUD
 
-    private Identity NewEntity()
+    private Entity NewEntity()
     {
         lock (_spawnLock)
         {
@@ -84,7 +84,7 @@ public partial class World : Query
         }
     }
 
-    internal PooledList<Identity> SpawnBare(int count)
+    internal PooledList<Entity> SpawnBare(int count)
     {
         lock (_spawnLock)
         {
@@ -95,11 +95,11 @@ public partial class World : Query
     }
 
 
-    private bool HasComponent(Identity identity, TypeExpression typeExpression)
+    private bool HasComponent(Entity identity, TypeExpression typeExpression)
     {
         var meta = _meta[identity.Index];
-        return meta.Identity != default
-               && meta.Identity == identity
+        return meta.entity != default
+               && meta.entity == identity
                && typeExpression.Matches(meta.Archetype.MatchSignature);
     }
 
@@ -110,11 +110,11 @@ public partial class World : Query
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Identity = entity });
+            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Entity = entity });
             return;
         }
 
-        ref var meta = ref _meta[entity.Id.Index];
+        ref var meta = ref _meta[entity.Index];
 
         var table = meta.Archetype;
         table.Delete(meta.Row);
@@ -124,7 +124,7 @@ public partial class World : Query
         _identityPool.Recycle(entity);
 
         // Patch Meta
-        _meta[entity.Id.Index] = default;
+        _meta[entity.Index] = default;
     }
 
 
@@ -137,7 +137,7 @@ public partial class World : Query
         var toMigrate = Archetypes.Where(a => a.Signature.Matches(types)).ToList();
 
         // Do not change the home archetype of the entity (relating to entities having a relation with themselves)
-        var homeArchetype = _meta[entity.Id.Index].Archetype;
+        var homeArchetype = _meta[entity.Index].Archetype;
 
         // And migrate them to a new Archetype without the relation
         foreach (var archetype in toMigrate)
@@ -182,7 +182,7 @@ public partial class World : Query
     }
 
 
-    internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
+    internal ref Meta GetEntityMeta(Entity identity) => ref _meta[identity.Index];
 
 
     private Archetype GetArchetype(Signature types)
@@ -215,7 +215,7 @@ public partial class World : Query
 
             tableList.Add(table);
 
-            if (!type.isRelation) continue;
+            if (!type.hasTarget) continue;
 
             if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
             {
@@ -230,7 +230,7 @@ public partial class World : Query
         return table;
     }
 
-    internal IReadOnlyList<Component> GetComponents(Identity id)
+    internal IReadOnlyList<Component> GetComponents(Entity id)
     {
         var archetype = _meta[id.Index].Archetype;
         return archetype.GetRow(_meta[id.Index].Row);
@@ -245,7 +245,7 @@ public partial class World : Query
     #region Assert Helpers
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void AssertAlive(Identity identity)
+    private void AssertAlive(Entity identity)
     {
         if (IsAlive(identity)) return;
 

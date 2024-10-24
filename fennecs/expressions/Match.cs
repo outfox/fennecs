@@ -19,7 +19,7 @@ public readonly record struct Match
     /// </para>
     /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// </summary>
-    public static Match Relation(Entity other) => new(other.Id);
+    public static Match Relation(Entity other) => new(other);
     
     /// <summary>
     /// <para>

@@ -179,7 +179,7 @@ public class ArchetypeTests(ITestOutputHelper output)
             Assert.True(world.IsAlive(entity));
 
             // Metas patched?
-            Assert.Equal(entity, world.GetEntityMeta(entity).Identity);
+            Assert.Equal(entity, world.GetEntityMeta(entity).entity);
         }
     }
     
