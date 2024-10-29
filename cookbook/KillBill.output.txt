@@ -23,35 +23,35 @@ Oh, hello E-00000002:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
-They do. They remember everything!They admit their Betral is True!
+They do. They remember everything! They admit their Betral is True!
 
 Suddenly, in hideout 0x4474dd11:
 Oh, hello E-00000003:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
-They do. They remember everything!They admit their Betral is True!
+They do. They remember everything! They admit their Betral is True!
 
 Suddenly, in hideout 0x6ba4d3ab:
 Oh, hello E-00000004:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
-They do. They remember everything!They admit their Betral is True!
+They do. They remember everything! They admit their Betral is True!
 
 Suddenly, in hideout 0x0acc04c4:
 Oh, hello E-00000005:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
-They do. They remember everything!They admit their Betral is True!
+They do. They remember everything! They admit their Betral is True!
 
 Suddenly, in hideout 0x441796fe:
 Oh, hello E-00000006:00001 <fennecs.Identity>
   |-<Location>
   |-<Betrayed> >> E-00000001:00001!
 Remember us?
-They do. They remember everything!They admit their Betral is True!
+They do. They remember everything! They admit their Betral is True!
 
 Now, there are 0 of them.
 Let's get out of hideout 0x441796fe.
