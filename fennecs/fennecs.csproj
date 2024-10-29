@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.5.11-beta</Version>
+        <Version>0.5.12-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -51,8 +51,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../www/nuget.md" Pack="true" PackagePath="\"/>
-        <None Include="../www/logos/fennecs-icon-nuget.png">
+        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\"/>
+        <None Include="../nuget/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
