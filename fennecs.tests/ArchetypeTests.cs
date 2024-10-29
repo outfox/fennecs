@@ -278,4 +278,18 @@ public class ArchetypeTests(ITestOutputHelper output)
         Assert.True(table1.CompareTo(null) == table1.Signature.CompareTo(default));
     }
 
+    [Fact]
+    public void Has_Signature_HashCode()
+    {
+        using var world = new World();
+        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var entity2 = world.Spawn().Add(123).Add(17.0f).Id;
+        
+        var table1 = world.GetEntityMeta(entity1).Archetype;
+        var table2 = world.GetEntityMeta(entity2).Archetype;
+
+        Assert.True(table1.GetHashCode() == table1.Signature.GetHashCode());
+        Assert.True(table2.GetHashCode() == table2.Signature.GetHashCode());
+        Assert.NotEqual(table1.GetHashCode(), table2.GetHashCode());
+    }
 }

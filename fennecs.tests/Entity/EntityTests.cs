@@ -432,5 +432,21 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Contains(helloWorld2, strings);
         Assert.Equal(2, strings.Length);
     }
+
+
+    [Fact]
+    public void Truthy()
+    {
+        using var world = new World();
+
+        var entity = world.Spawn();
+        Assert.True(entity);
+
+        entity.Despawn();
+        Assert.False(entity);
+        
+        entity = default;
+        Assert.False(entity);
+    }
     
 }

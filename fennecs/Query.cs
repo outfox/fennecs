@@ -94,7 +94,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
-    internal readonly SortedSet<Archetype> Archetypes = [];
+    internal readonly SortedSet<Archetype> Archetypes;
 
     /// <summary>
     /// The World this Query is associated with.

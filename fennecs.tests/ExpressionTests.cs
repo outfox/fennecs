@@ -270,4 +270,23 @@ public static class ExpressionTests
         var comp3 = Comp<string>.Plain;
         Assert.Equal(0, comp3.SIMDsize);
     }
+
+    [Fact]
+    public static void Comp_Virtual()
+    {
+        var comp = Comp.Virtual(typeof(int), Match.Any);
+        var test = Comp<int>.Matching(Match.Any);
+
+        Assert.Equal(comp, test);
+        Assert.Equal(test, comp);
+    }
+
+    [Fact]
+    public static void Relate_Entity_Operator()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var to = Relate.To(entity);
+        Assert.Equal(to, entity);
+    }
 }

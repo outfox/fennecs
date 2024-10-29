@@ -243,4 +243,24 @@ public class Stream1Tests(ITestOutputHelper output)
 
         Assert.Empty(world.Query<string>().Compile());
     }
+
+    [Fact]
+    public void MatchAll_Overloads()
+    {
+        using var world = new World();
+        world.Spawn().Add("69").Add(420).Add(1.0f).Add(new object()).Add('a');
+        
+        var query = world.All;
+        var stream1 = query.Stream<string>(Match.Any);
+        var stream2 = query.Stream<string, int>(Match.Any);
+        var stream3 = query.Stream<string, int, float>(Match.Any);
+        var stream4 = query.Stream<string, int, float, object>(Match.Any);
+        var stream5 = query.Stream<string, int, float, object, char>(Match.Any);
+        
+        Assert.Single(stream1);
+        Assert.Single(stream2);
+        Assert.Single(stream3);
+        Assert.Single(stream4);
+        Assert.Single(stream5);
+    }
 }
