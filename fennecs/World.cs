@@ -7,7 +7,7 @@ using fennecs.pools;
 
 namespace fennecs;
 
-public partial class World : Query
+public partial class World
 {
     #region World State & Storage
 
@@ -19,9 +19,11 @@ public partial class World : Query
 
     // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
     private readonly Archetype _root;
-
+    private readonly List<Archetype> _archetypes = [];
+    
     private readonly HashSet<Query> _queries = [];
     private readonly Dictionary<int, Query> _queryCache = new();
+    
 
     // The new Type Graph that replaces the old Table Edge system.
     private readonly Dictionary<Signature, Archetype> _typeGraph = new();
@@ -134,7 +136,7 @@ public partial class World : Query
         if (!_typesByRelationTarget.TryGetValue(Relate.To(entity), out var types)) return;
 
         // Collect Archetypes that have any of these relations
-        var toMigrate = Archetypes.Where(a => a.Signature.Matches(types)).ToList();
+        var toMigrate = _archetypes.Where(a => a.Signature.Matches(types)).ToList();
 
         // Do not change the home archetype of the entity (relating to entities having a relation with themselves)
         var homeArchetype = _meta[entity.Id.Index].Archetype;
@@ -167,7 +169,7 @@ public partial class World : Query
         if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
         // Create a new query and cache it.
-        var matchingTables = new SortedSet<Archetype>(Archetypes.Where(table => table.Matches(mask)));
+        var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(mask)));
         query = new(this, mask.Clone(), matchingTables);
         _queries.Add(query);
         _queryCache.Add(query.Mask.GetHashCode(), query);
@@ -192,7 +194,7 @@ public partial class World : Query
         table = new(this, types);
 
         //This could be given to us by the next query update?
-        Archetypes.Add(table);
+        _archetypes.Add(table);
 
         // TODO: This is a suboptimal lookup (enumerate dictionary)
         // IDEA: Maybe we can keep Queries in a Tree which

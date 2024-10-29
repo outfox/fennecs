@@ -3,7 +3,7 @@
 /// <summary>
 /// Stream Factory Methods
 /// </summary>
-public partial class Query
+public partial class Query : Streamable
 {
     /// <summary>
     /// Creates a Stream View of the Query with 1 Stream Type.
@@ -94,7 +94,7 @@ public partial class Query
         where C4 : notnull
         => new(this, match0, match1, match2, match3, match4);
 
-    
+
     /// <inheritdoc cref="Stream{C0,C1,C2, C3}(Match)"/>
     /// <typeparam name="C4">5th component stream type</typeparam>
     public Stream<C0, C1, C2, C3, C4> Stream<C0, C1, C2, C3, C4>(Match matchAll = default)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace fennecs;
 /// <summary>
 /// A fennecs.World contains Entities, their Components, compiled Queries, and manages the lifecycles of these objects.
 /// </summary>
-public partial class World : IDisposable
+public partial class World : IDisposable, IEnumerable<Entity>
 {
     #region Config
         /// <summary>
@@ -70,6 +71,14 @@ public partial class World : IDisposable
         /// </summary>
         InvokeOnBulkDespawn = 512,
     }
+    #region Query
+    
+    /// <summary>
+    /// Universal Query, matching all Entities in the World.
+    /// </summary>
+    public Query All => CompileQuery(new Mask().Has(TypeExpression.Of<Identity>(Match.Plain)));
+    
+    #endregion
     
     #region Entity Spawn, Liveness, and Despawn
 
@@ -121,7 +130,7 @@ public partial class World : IDisposable
     /// <summary>
     /// The number of living entities in the World.
     /// </summary>
-    public override int Count => _identityPool.Count;
+    public int Count => _identityPool.Count;
 
     /// <summary>
     /// All Queries that exist in this World.
@@ -199,8 +208,6 @@ public partial class World : IDisposable
     {
         Name = nameof(World);
         
-        World = this;
-       
         _identityPool = new(initialCapacity);
 
         _meta = new Meta[initialCapacity];
@@ -219,7 +226,7 @@ public partial class World : IDisposable
         {
             if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
 
-            foreach (var archetype in Archetypes.ToArray())
+            foreach (var archetype in _archetypes.ToArray())
             {
                 if (archetype.Count == 0) DisposeArchetype(archetype);
             }
@@ -247,14 +254,14 @@ public partial class World : IDisposable
             query.ForgetArchetype(archetype);
         }
         
-        Archetypes.Remove(archetype);
+        _archetypes.Remove(archetype);
     }
 
 
     /// <summary>
     /// Disposes of the World. Currently, a no-op.
     /// </summary>
-    public new void Dispose()
+    public void Dispose()
     {
         //TODO: Dispose all Object Links, Queries, etc.?
     }
@@ -269,6 +276,19 @@ public partial class World : IDisposable
     public WorldLock Lock() => new(this);
 
     #endregion
+    
+    #region IEnumerable
+    
+    /// <inheritdoc />
+    public IEnumerator<Entity> GetEnumerator() => _archetypes.SelectMany(archetype => archetype).GetEnumerator();
+
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    #endregion
 
     #region Debug Tools
 
@@ -277,13 +297,12 @@ public partial class World : IDisposable
     {
         return DebugString();
     }
-
     /// <inheritdoc cref="ToString"/>
     public string DebugString()
     {
         var sb = new StringBuilder("World:");
         sb.AppendLine();
-        sb.AppendLine($" {Archetypes.Count} Archetypes");
+        sb.AppendLine($" {_archetypes.Count} Archetypes");
         sb.AppendLine($" {Count} Entities");
         sb.AppendLine($" {_queries.Count} Queries");
         sb.AppendLine($"{nameof(WorldMode)}.{Mode}");

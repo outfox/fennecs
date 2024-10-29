@@ -724,13 +724,14 @@ public class WorldTests(ITestOutputHelper output)
     struct Predicted;
     
     [Fact]
-    private void World_Stream_Has_Same_Count_As_QueryStream_EntityAction()
+    private void World_Stream_Has_Same_Count_As_QueryStream()
     {
         using var world = new World();
         var quickStream = world.Stream<Predicted>();
         var queryStream = world.Query<Predicted>().Stream();
         Assert.Equal(queryStream.Count, quickStream.Count);
-        
+
+        world.Spawn(); // unrelated entity
         world.Spawn().Add(new Predicted());
         world.Spawn().Add(new Predicted());
         
@@ -754,6 +755,40 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Equal(2, queryCount);
         Assert.Equal(quickCount, quickStream.Count);
         Assert.Equal(queryCount, queryStream.Count);
+    }
+
+    [Fact]
+    private void World_Stream_Has_Same_Count_As_QueryStream_Relations()
+    {
+        using var world = new World();
+        var quickStream = world.Stream<Predicted>(Match.Any);
+        var queryStream = world.Query<Predicted>(Match.Any).Stream();
+        Assert.Equal(queryStream.Count, quickStream.Count);
+
+        var target1 = world.Spawn();
+        var target2 = world.Spawn();
+        world.Spawn().Add(new Predicted(), target1).Add(new Predicted(), target2);;
+        
+        var quickCount = 0;
+        quickStream.For(
+            (in Entity _, ref Predicted _) =>
+            {
+                quickCount++;
+            }
+        );
+
+        var queryCount = 0;
+        queryStream.For(
+            (in Entity _, ref Predicted _) =>
+            {
+                queryCount++;
+            }
+        );
+
+        Assert.Equal(2, quickCount);
+        Assert.Equal(2, queryCount);
+        //Assert.Equal(1, quickStream.Count);
+        Assert.Equal(1, queryStream.Count);
     }
 
     [Theory]

@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
-using fennecs.pools;
 
 namespace fennecs;
 
@@ -19,19 +17,12 @@ namespace fennecs;
 /// </summary>
 public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
 {
-
-    /// <summary>
-    /// In Strict Mode, the Query will throw an exception if a Component is interacted with that is not matched by the Query.
-    /// </summary>
-    public readonly bool strict = true;
-    
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
-    ///     Affected by Filters.
     /// </summary>
-    public virtual int Count => Archetypes.Sum(t => t.Count);
-    
-    
+    public int Count => Archetypes.Sum(t => t.Count);
+
+
     /// <summary>
     ///     Does this Query match ("contain") the Entity, and would enumerate it?
     /// </summary>
@@ -93,7 +84,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// </summary>
     private readonly List<TypeExpression> _streamFilters;
     */
-    
+
     /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
@@ -121,73 +112,9 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
         Archetypes = matchingTables;
         World = world;
         Mask = mask;
-        
-    }
-    
-    internal Query()
-    {
-        // Mild hack - needs testing.
-        World ??= (World) this;
-        
-        // Global Query (if we don't have a mask)
-        Mask ??= MaskPool.Rent().Has(TypeExpression.Of<Identity>(Match.Plain));
     }
 
     #endregion
-
-/*
-    #region Filtering
-
-    /// <inheritdoc cref="Subset{T}"/>
-    /// <param name="match">
-    ///     a Match Expression that is narrower than the respective Stream Type's initial
-    ///     Match Expression (e.g. if Query has Match.Any, Match.Plain or Match.Object would be useful here).
-    /// </param>
-    public void Subset<T>(Match match)
-    {
-        _streamFilters.Add(TypeExpression.Of<T>(match));
-        FilterArchetypes();
-    }
-
-    /// <inheritdoc cref="Subset{T}"/>
-    /// <summary>
-    /// Specify a match expression to exclude certain relations.
-    /// </summary>
-    /// <param name="match">
-    ///     a Match Expression that is narrower than the respective Stream Type's initial
-    ///     Match Expression. If it is wider, the matched set will be empty. 
-    /// </param>
-    public void Exclude<T>(Match match)
-    {
-        _streamExclusions.Add(TypeExpression.Of<T>(match));
-        FilterArchetypes();
-    }
-
-    private void FilterArchetypes()
-    {
-        Archetypes.Clear();
-        foreach (var archetype in Archetypes)
-        {
-            if (!archetype.Matches(_streamExclusions) && archetype.IsMatchSuperSet(_streamFilters))
-            {
-                Archetypes.Add(archetype);
-            }
-        }
-    }
-
-    /// <summary>
-    ///     Clears all <see cref="Subset{T}(fennecs.Match)"/> and <see cref="Exclude{T}(fennecs.Match)"/> filters on this Query, returning it to its initial state. See <see cref="Subset{T}(fennecs.Match)" />.
-    /// </summary>
-    public void ClearFilters()
-    {
-        _streamFilters.Clear();
-        _streamExclusions.Clear();
-        Archetypes.Clear();
-        Archetypes.AddRange(Archetypes);
-    }
-
-    #endregion
-*/
 
     #region IEnumerable<Entity>
 
@@ -200,7 +127,6 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// </returns>
     public IEnumerator<Entity> GetEnumerator()
     {
-
         foreach (var table in Archetypes)
         {
             foreach (var entity in table) yield return entity;
@@ -418,7 +344,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
             throw new InvalidOperationException("Query.Truncate can only be used in Immediate mode.");
 
         using var worldLock = World.Lock();
-        
+
         var count = Count;
         if (count <= maxEntityCount) return;
 
