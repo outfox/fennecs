@@ -7,7 +7,7 @@ namespace fennecs.tests;
 public class WorldTests(ITestOutputHelper output)
 {
     [Fact]
-    public void World_Creates()
+    public void Creates()
     {
         using var world = new World();
         Assert.NotNull(world);
@@ -15,14 +15,14 @@ public class WorldTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void World_Disposes()
+    public void Disposes()
     {
         var world = new World();
         world.Dispose();
     }
 
     [Fact]
-    public void World_ToString()
+    public void Has_ToString()
     {
         using var world = new World();
         var str = world.ToString();
@@ -31,7 +31,7 @@ public class WorldTests(ITestOutputHelper output)
     }
 
     [Fact]
-    public void World_Spawns_valid_Entities()
+    public void Spawns_valid_Entities()
     {
         using var world = new World();
         var entity = world.Spawn();
@@ -88,7 +88,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var query = world.Query<int, string>().Stream();
         Assert.Equal(count, query.Count);
-        
+
         query.For((ref int i, ref string s) =>
         {
             Assert.Equal(555, i);
@@ -108,17 +108,17 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         using var spawner = world.Entity();
-            
+
         spawner.Add(555)
-        .Add("hallo")
-        .Spawn(count);
+            .Add("hallo")
+            .Spawn(count);
 
         spawner.Add(420.0f);
         spawner.Spawn(count);
 
         var query = world.Query<int, string>().Stream();
         Assert.Equal(count * 2, query.Count);
-        
+
         query.For((ref int i, ref string s) =>
         {
             Assert.Equal(555, i);
@@ -140,7 +140,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add(555)
             .Add(666)
             .Spawn(count);
-        
+
         var query = world.Query<int>().Stream();
         Assert.Equal(count, query.Count);
         query.For((ref int i) => Assert.Equal(666, i));
@@ -163,14 +163,13 @@ public class WorldTests(ITestOutputHelper output)
 
         var query = world.Query<int, string>(Match.Plain, Match.Link("dieter")).Stream();
         Assert.Equal(count, query.Count);
-        
+
         query.For((ref int i, ref string s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("dieter", s);
         });
     }
-
 
 
     [Theory]
@@ -183,7 +182,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var other = world.Spawn();
-        
+
         world.Entity()
             .Add(555)
             .Add("relation", other)
@@ -191,7 +190,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var query = world.Query<int, string>(Match.Plain, other).Stream();
         Assert.Equal(count, query.Count);
-        
+
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
         query.For((ref int i, ref string s) =>
         {
@@ -199,7 +198,6 @@ public class WorldTests(ITestOutputHelper output)
             Assert.Equal("relation", s);
         });
     }
-
 
 
     [Theory]
@@ -216,7 +214,6 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query().Compile();
         Assert.Equal(count, query.Count);
     }
-
 
 
     [Theory]
@@ -290,7 +287,7 @@ public class WorldTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void World_Count_Accurate()
+    public void Count_Accurate()
     {
         using var world = new World();
         Assert.Equal(0, world.Count);
@@ -347,7 +344,7 @@ public class WorldTests(ITestOutputHelper output)
         public HashSet<Entity> casualties { get; init; } = [];
     }
 
-    
+
     [Fact]
     public void Added_Newable_Struct_is_default()
     {
@@ -561,7 +558,7 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Throws<ArgumentNullException>(() => entity.Add<string>(null!));
     }
 
-    
+
     [Fact]
     private void Can_Despawn_With_Identity()
     {
@@ -701,7 +698,7 @@ public class WorldTests(ITestOutputHelper output)
 
 
     [Fact]
-    private void World_has_Name()
+    private void Has_Name()
     {
         using var world = new World
         {
@@ -709,10 +706,10 @@ public class WorldTests(ITestOutputHelper output)
         };
         Assert.Equal("hallo", world.Name);
     }
-    
-    
+
+
     [Fact]
-    private void World_has_GBehaviour()
+    private void Has_GCBehaviour()
     {
         using var world = new World
         {
@@ -721,10 +718,24 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Equal(World.GCAction.DefaultBeta, world.GCBehaviour);
     }
 
-    struct Predicted;
-    
     [Fact]
-    private void World_Stream_Has_Same_Count_As_QueryStream()
+    private void Provides_Universal_Query()
+    {
+        using var world = new World();
+        var query = world.All;
+        Assert.NotNull(query);
+        Assert.Equal(0, query.Count);
+        var entity = world.Spawn();
+        Assert.Equal(1, query.Count);
+        entity.Add<float>();
+        Assert.Equal(1, query.Count);
+        Assert.Equal(1, world.Count);
+    }
+    
+    struct Predicted;
+
+    [Fact]
+    private void Has_Correct_Count()
     {
         using var world = new World();
         var quickStream = world.Stream<Predicted>();
@@ -734,7 +745,22 @@ public class WorldTests(ITestOutputHelper output)
         world.Spawn(); // unrelated entity
         world.Spawn().Add(new Predicted());
         world.Spawn().Add(new Predicted());
-        
+
+        Assert.Equal(3, world.Count);
+    }
+
+    [Fact]
+    private void Stream_Has_Same_Count_As_QueryStream()
+    {
+        using var world = new World();
+        var quickStream = world.Stream<Predicted>();
+        var queryStream = world.Query<Predicted>().Stream();
+        Assert.Equal(queryStream.Count, quickStream.Count);
+
+        world.Spawn(); // unrelated entity
+        world.Spawn().Add(new Predicted());
+        world.Spawn().Add(new Predicted());
+
         var quickCount = 0;
         quickStream.For(
             (in Entity _, ref Predicted _) =>
@@ -758,7 +784,7 @@ public class WorldTests(ITestOutputHelper output)
     }
 
     [Fact]
-    private void World_Stream_Has_Same_Count_As_QueryStream_Relations()
+    private void Stream_Has_Same_Count_As_QueryStream_Relations()
     {
         using var world = new World();
         var quickStream = world.Stream<Predicted>(Match.Any);
@@ -767,8 +793,9 @@ public class WorldTests(ITestOutputHelper output)
 
         var target1 = world.Spawn();
         var target2 = world.Spawn();
-        world.Spawn().Add(new Predicted(), target1).Add(new Predicted(), target2);;
-        
+        world.Spawn().Add(new Predicted(), target1).Add(new Predicted(), target2);
+        ;
+
         var quickCount = 0;
         quickStream.For(
             (in Entity _, ref Predicted _) =>
@@ -787,7 +814,7 @@ public class WorldTests(ITestOutputHelper output)
 
         Assert.Equal(2, quickCount);
         Assert.Equal(2, queryCount);
-        //Assert.Equal(1, quickStream.Count);
+        Assert.Equal(1, quickStream.Count);
         Assert.Equal(1, queryStream.Count);
     }
 
@@ -798,8 +825,7 @@ public class WorldTests(ITestOutputHelper output)
     [InlineData(69)]
     [InlineData(420)]
     [InlineData(1_000_000)]
-
-    private void Can_Create_World_With_Capacity(int capacity)
+    private void Can_Create_With_Capacity(int capacity)
     {
         using var world = new World(capacity);
         Assert.NotNull(world);
@@ -807,7 +833,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         Assert.True(world.IsAlive(entity));
     }
-    
+
     private class NewableClass;
 
     private struct NewableStruct;
