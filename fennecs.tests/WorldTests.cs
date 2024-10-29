@@ -338,13 +338,6 @@ public class WorldTests(ITestOutputHelper output)
     }
 
 
-    record SharedBattle(HashSet<Entity> combatants)
-    {
-        public HashSet<Entity> combatants { get; init; } = combatants;
-        public HashSet<Entity> casualties { get; init; } = [];
-    }
-
-
     [Fact]
     public void Added_Newable_Struct_is_default()
     {
@@ -794,8 +787,7 @@ public class WorldTests(ITestOutputHelper output)
         var target1 = world.Spawn();
         var target2 = world.Spawn();
         world.Spawn().Add(new Predicted(), target1).Add(new Predicted(), target2);
-        ;
-
+        
         var quickCount = 0;
         quickStream.For(
             (in Entity _, ref Predicted _) =>
