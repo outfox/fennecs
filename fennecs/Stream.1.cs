@@ -20,7 +20,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
     /// </summary>
-    protected SortedSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty 
+    protected HashSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty 
         ? Archetypes 
         : new(Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude)));
 
@@ -49,7 +49,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <summary>
     /// The Archetypes that this Stream is iterating over.
     /// </summary>
-    protected SortedSet<Archetype> Archetypes => Query.Archetypes;
+    protected HashSet<Archetype> Archetypes => Query.Archetypes;
 
     /// <summary>
     /// The World this Stream is associated with.

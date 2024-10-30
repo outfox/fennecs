@@ -6,9 +6,9 @@ namespace fennecs;
 
 internal sealed class Mask : IDisposable
 {
-    internal readonly SortedSet<TypeExpression> HasTypes = [];
-    internal readonly SortedSet<TypeExpression> NotTypes = [];
-    internal readonly SortedSet<TypeExpression> AnyTypes = [];
+    internal readonly HashSet<TypeExpression> HasTypes = [];
+    internal readonly HashSet<TypeExpression> NotTypes = [];
+    internal readonly HashSet<TypeExpression> AnyTypes = [];
 
     public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);

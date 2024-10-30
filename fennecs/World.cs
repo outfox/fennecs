@@ -169,7 +169,7 @@ public partial class World
         if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
         // Create a new query and cache it.
-        var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(mask)));
+        var matchingTables = new HashSet<Archetype>(_archetypes.Where(table => table.Matches(mask)));
         query = new(this, mask.Clone(), matchingTables);
         _queries.Add(query);
         _queryCache.Add(query.Mask.GetHashCode(), query);

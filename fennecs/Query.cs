@@ -95,7 +95,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
-    internal readonly SortedSet<Archetype> Archetypes;
+    internal readonly HashSet<Archetype> Archetypes;
 
     /// <summary>
     /// The World this Query is associated with.
@@ -108,7 +108,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// </summary>
     internal readonly Mask Mask;
 
-    internal Query(World world, Mask mask, SortedSet<Archetype> matchingTables)
+    internal Query(World world, Mask mask,HashSet<Archetype> matchingTables)
     {
         Archetypes = matchingTables;
         World = world;
