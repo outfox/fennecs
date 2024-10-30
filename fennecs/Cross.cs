@@ -60,8 +60,8 @@ public static class Cross
             Debug.Assert(streamTypes.Length == 1, "Not the right amount of stream types.");
             _allocated = true;
 
-            _counter = ArrayPool<int>.Shared.Rent(1);
-            _limiter = ArrayPool<int>.Shared.Rent(1);
+            _counter = ArrayPool.Rent(1);
+            _limiter = ArrayPool.Rent(1);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
 
             Array.Fill(_counter, 0, 0, 1);
@@ -102,8 +102,8 @@ public static class Cross
             if (!_allocated) return;
 
             _storages0.Dispose();
-            ArrayPool<int>.Shared.Return(_counter);
-            ArrayPool<int>.Shared.Return(_limiter);
+            ArrayPool.Return(_counter);
+            ArrayPool.Return(_limiter);
         }
     }
 
@@ -121,15 +121,14 @@ public static class Cross
 
         private readonly bool _allocated;
         private readonly bool _populated;
-
-
+        
         internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
         {
             Debug.Assert(streamTypes.Length == 2, "Not the right amount of stream types.");
             _allocated = true;
 
-            _counter = ArrayPool<int>.Shared.Rent(2);
-            _limiter = ArrayPool<int>.Shared.Rent(2);
+            _counter = ArrayPool.Rent(2);
+            _limiter = ArrayPool.Rent(2);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
             _storages1 = archetype.Match<C1>(streamTypes[1]);
 
@@ -159,8 +158,8 @@ public static class Cross
 
             _storages0.Dispose();
             _storages1.Dispose();
-            ArrayPool<int>.Shared.Return(_counter);
-            ArrayPool<int>.Shared.Return(_limiter);
+            ArrayPool.Return(_counter);
+            ArrayPool.Return(_limiter);
         }
     }
 
@@ -186,8 +185,8 @@ public static class Cross
             Debug.Assert(streamTypes.Length == 3, "Not the right amount of stream types.");
             _allocated = true;
 
-            _counter = ArrayPool<int>.Shared.Rent(3);
-            _limiter = ArrayPool<int>.Shared.Rent(3);
+            _counter = ArrayPool.Rent(3);
+            _limiter = ArrayPool.Rent(3);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
             _storages1 = archetype.Match<C1>(streamTypes[1]);
             _storages2 = archetype.Match<C2>(streamTypes[2]);
@@ -221,8 +220,8 @@ public static class Cross
             _storages0.Dispose();
             _storages1.Dispose();
             _storages2.Dispose();
-            ArrayPool<int>.Shared.Return(_counter);
-            ArrayPool<int>.Shared.Return(_limiter);
+            ArrayPool.Return(_counter);
+            ArrayPool.Return(_limiter);
         }
     }
 
@@ -249,8 +248,8 @@ public static class Cross
             Debug.Assert(streamTypes.Length == 4, "Not the right amount of stream types.");
             _allocated = true;
 
-            _counter = ArrayPool<int>.Shared.Rent(4);
-            _limiter = ArrayPool<int>.Shared.Rent(4);
+            _counter = ArrayPool.Rent(4);
+            _limiter = ArrayPool.Rent(4);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
             _storages1 = archetype.Match<C1>(streamTypes[1]);
             _storages2 = archetype.Match<C2>(streamTypes[2]);
@@ -287,8 +286,8 @@ public static class Cross
             _storages1.Dispose();
             _storages2.Dispose();
             _storages3.Dispose();
-            ArrayPool<int>.Shared.Return(_counter);
-            ArrayPool<int>.Shared.Return(_limiter);
+            ArrayPool.Return(_counter);
+            ArrayPool.Return(_limiter);
         }
     }
 
@@ -316,8 +315,8 @@ public static class Cross
             Debug.Assert(streamTypes.Length == 5, "Not the right amount of stream types.");
             _allocated = true;
 
-            _counter = ArrayPool<int>.Shared.Rent(5);
-            _limiter = ArrayPool<int>.Shared.Rent(5);
+            _counter = ArrayPool.Rent(5);
+            _limiter = ArrayPool.Rent(5);
             _storages0 = archetype.Match<C0>(streamTypes[0]);
             _storages1 = archetype.Match<C1>(streamTypes[1]);
             _storages2 = archetype.Match<C2>(streamTypes[2]);
@@ -358,10 +357,12 @@ public static class Cross
             _storages2.Dispose();
             _storages3.Dispose();
             _storages4.Dispose();
-            ArrayPool<int>.Shared.Return(_counter);
-            ArrayPool<int>.Shared.Return(_limiter);
+            ArrayPool.Return(_counter);
+            ArrayPool.Return(_limiter);
         }
     }
 
     #endregion
+    
+    private static readonly ArrayPool<int> ArrayPool = ArrayPool<int>.Create();
 }
