@@ -220,7 +220,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     ///     Adds a Component (using default constructor) to all Entities matched by this query.
     /// </summary>
     /// <inheritdoc cref="Add{T}(T)" />
-    public void Add<T>() where T : notnull, new() => Add<T>(new T());
+    public void Add<T>() where T : notnull, new() => Add(new T());
 
 
     /// <summary>
@@ -377,13 +377,8 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
 
         disposed = true;
 
-        //Archetypes.Dispose();
-
         World.RemoveQuery(this);
         Mask.Dispose();
-
-        // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
-        GC.SuppressFinalize(this);
     }
 
     private bool disposed { get; set; }
