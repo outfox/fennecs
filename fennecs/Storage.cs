@@ -230,7 +230,12 @@ internal class Storage<T> : IStorage
     public void Compact()
     {
         var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Max(InitialCapacity, Count));
-        Array.Resize(ref _data, newSize);
+        if (newSize <= _data.Length) return;
+
+        var previous = _data;
+        _data = ArrayPool<T>.Shared.Rent(newSize);
+        previous.AsSpan(0, Count).CopyTo(_data);
+        ArrayPool<T>.Shared.Return(previous);
     }
 
 
