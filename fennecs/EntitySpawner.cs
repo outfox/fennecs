@@ -1,4 +1,5 @@
-﻿using fennecs.pools;
+﻿using fennecs.CRUD;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -8,7 +9,7 @@ namespace fennecs;
 /// <remarks>
 /// Call <see cref="Spawn"/> to actually spawn the Entities.
 /// </remarks>
-public sealed class EntitySpawner : IDisposable, IAddRemoveComponent<EntitySpawner>
+public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
 {
     #region Internals
 

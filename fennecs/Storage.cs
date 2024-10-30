@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -88,6 +89,15 @@ internal interface IStorage
     /// Returns the element at position Row as a boxed object.
     /// </summary>
     IStrongBox Box(int row);
+    
+    /// <summary>
+    /// Gets the value at index as a boxed object.
+    /// </summary>
+    /// <remarks>
+    /// Value Types are copied, then boxed.
+    /// </remarks>
+    /// <throws><see cref="IndexOutOfRangeException"/>if the row index is out of range</throws>
+    object Get(int row);
 }
 
 /// <summary>
@@ -299,6 +309,15 @@ internal class Storage<T> : IStorage
     /// Value Types are copied, then boxed.
     /// </remarks>
     public IStrongBox Box(int row) => new StrongBox<T>(Span[row]);
+    
+    
+    /// <summary>
+    /// Gets the value at index as a boxed object.
+    /// </summary>
+    /// <remarks>
+    /// Value Types are copied, then boxed.
+    /// </remarks>
+    public object Get(int row) => Span[row]!;
     
     
     /// <summary>

@@ -1,11 +1,12 @@
-﻿using fennecs.pools;
+﻿using fennecs.CRUD;
+using fennecs.pools;
 
 namespace fennecs;
 
 /// <summary>
 /// Wraps a set of operations to be executed atomically on a set of Archetypes (usually those matching a Query).
 /// </summary>
-public readonly struct Batch : IDisposable, IAddRemoveComponent<Batch>
+public readonly struct Batch : IDisposable, IAddRemove<Batch>
 {
     private readonly World _world;
     private readonly Mask _mask;

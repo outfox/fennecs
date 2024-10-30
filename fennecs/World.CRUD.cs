@@ -1,4 +1,6 @@
-﻿namespace fennecs;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace fennecs;
 
 public partial class World
 {
@@ -6,6 +8,8 @@ public partial class World
     internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data) where T : notnull
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
+        
+        if (typeExpression.isWildcard) throw new ArgumentException("Cannot add a wildcard component");
 
         if (Mode == WorldMode.Deferred)
         {
@@ -18,7 +22,7 @@ public partial class World
         ref var meta = ref _meta[identity.Index];
         var oldArchetype = meta.Archetype;
 
-        if (oldArchetype.Signature.Matches(typeExpression)) throw new ArgumentException($"Entity {identity} already has a component of type {typeExpression}");
+        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} already has a component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -41,7 +45,7 @@ public partial class World
 
         var oldArchetype = meta.Archetype;
 
-        if (!oldArchetype.Signature.Matches(typeExpression)) throw new ArgumentException($"Entity {identity} does not have a component of type {typeExpression}");
+        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} does not have a component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -86,22 +90,24 @@ public partial class World
         return ref storage.Span[row];
     }
     
-/*
-    internal T GetComponent<T>(Identity identity, Match match) where T : class
+    internal bool GetComponent(Identity identity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
+        if (type.isWildcard) throw new ArgumentException("Cannot get a wildcard component", nameof(type));
+        
         AssertAlive(identity);
 
-        if (!HasComponent<T>(identity, match))
+        if (!HasComponent(identity, type))
         {
-           throw new InvalidOperationException($"Entity {identity} does not have a reference type component of type {typeof(T)}");
+            value = null;
+            return false;
         }
 
         var (table, row, _) = _meta[identity.Index];
-        var storage = table.GetStorage<T>(match);
-        return storage.Span[row];
+        var storage = table.GetStorage(type);
+        value = storage.Get(row);
+        return true;
     }
-*/
-
+    
     internal Signature GetSignature(Identity identity)
     {
         AssertAlive(identity);

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using fennecs.CRUD;
 
 namespace fennecs.tests;
 
@@ -298,7 +299,7 @@ public class EntityTests(ITestOutputHelper output)
         var other = world.Spawn();
         
         var entity = world.Spawn().Add(123);
-        var interfaceEntity = (IHasComponent) entity;
+        var interfaceEntity = (IHasTyped) entity;
         Assert.True(entity.Has<int>());
         
         entity.Add("123");

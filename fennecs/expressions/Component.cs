@@ -51,7 +51,7 @@ public readonly record struct Component
     public IStrongBox Box { get; }
     
     private World World { get; }
-    private TypeExpression Expression { get; }
+    internal TypeExpression Expression { get; }
     
     internal Component(TypeExpression expression, IStrongBox box, World world)
     {
