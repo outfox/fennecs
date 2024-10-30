@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Dynamic;
 
 namespace fennecs.CRUD;
 
@@ -12,7 +11,7 @@ public interface IAddRemoveBoxed<out SELF>
     /// Typeless API: Check if the entity/entities has a Component of a specific backing type, with optional match expression for relations.
     /// </summary>
     /// <remarks>
-    /// ⚠️ to Differentiate from its overloads for Object Links, use default or Match.Plain for match, or Wildcards like Match.Any, Match.Plain, etc.
+    /// ⚠️ To differentiate from its overloads for Object Links, use default or Match.Plain for match, or Wildcards like Match.Any, Match.Plain, etc.
     /// </remarks>
     public bool Has(Type type, Match match);
     
