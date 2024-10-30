@@ -315,7 +315,7 @@ public class IdentityTests(ITestOutputHelper output)
         using var world = new World();
         var identity = world.Spawn();
         identity.Add(t1);
-        Assert.Throws<ArgumentException>(() => identity.Add(t1));
+        Assert.Throws<InvalidOperationException>(() => identity.Add(t1));
     }
 
 
@@ -327,7 +327,7 @@ public class IdentityTests(ITestOutputHelper output)
         var identity = world.Spawn();
         identity.Add(t1);
         identity.Remove<T>();
-        Assert.Throws<ArgumentException>(() => identity.Remove<T>());
+        Assert.Throws<InvalidOperationException>(() => identity.Remove<T>());
     }
 
 
@@ -338,7 +338,7 @@ public class IdentityTests(ITestOutputHelper output)
     {
         using var world = new World();
         var identity = world.Spawn();
-        Assert.Throws<ArgumentException>(() => identity.Remove<T>());
+        Assert.Throws<InvalidOperationException>(() => identity.Remove<T>());
     }
 #pragma warning restore xUnit1026
 

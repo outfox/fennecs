@@ -1,5 +1,8 @@
 ﻿// SPDX-License-Identifier: MIT
 
+using System.Diagnostics.CodeAnalysis;
+using fennecs.CRUD;
+
 namespace fennecs;
 
 /// <summary>
@@ -15,7 +18,7 @@ namespace fennecs;
 /// <remarks>
 /// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
 /// </remarks>
-public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponent, IComparable<Entity>
+public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemoveBoxed<Entity>, IComparable<Entity>
 {
     #region Match Expressions
 
@@ -28,9 +31,9 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// </summary>
     /// <inheritdoc cref="Match.Any"/>
     public static Match Any => new(Identity.Entity);
-    
+
     #endregion
-    
+
     #region Internal State
 
     /// <summary>
@@ -47,6 +50,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// <summary>
     /// The World in which the Entity exists.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     internal readonly World _world;
 
 
@@ -58,7 +62,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     #endregion
 
 
-    #region CRUD
+    #region IAddRemoveComponent
 
     /// <summary>
     /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
@@ -74,12 +78,6 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
     public ref C Ref<C>(Match match) where C : struct => ref _world.GetComponent<C>(this, match);
 
-
-    /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
-    public ref C Ref<C>() => ref _world.GetComponent<C>(this, Match.Plain);
-
-    
-    
     /// <summary>
     /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the entity.
     /// </summary>
@@ -95,7 +93,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// <inheritdoc />
     public Entity Add<T>(Entity relation) where T : notnull, new() => Add(new T(), relation);
 
-    
+
     /// <inheritdoc cref="Add{R}(R,fennecs.Entity)"/>
     public Entity Add<R>(R value, Entity relation) where R : notnull
     {
@@ -134,7 +132,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// <typeparam name="T">Any value or reference component type.</typeparam>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(T data) where T : notnull => Add(data, default);
-    
+
 
     /// <summary>
     /// Removes a Component of a specific type from the current entity.
@@ -147,7 +145,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
         return this;
     }
 
-    
+
     /// <summary>
     /// Removes a relation of a specific type between the current entity and the target entity.
     /// </summary>
@@ -159,7 +157,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
         _world.RemoveComponent(Id, TypeExpression.Of<R>(new Relate(relation)));
         return this;
     }
-    
+
     /// <inheritdoc />
     public Entity Remove<L>(L linkedObject) where L : class => Remove(Link<L>.With(linkedObject));
 
@@ -184,34 +182,7 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// The entity builder struct still exists afterwards, but the entity is no longer alive and subsequent CRUD operations will throw.
     /// </remarks>
     public void Despawn() => _world.Despawn(this);
-
-
-    /// <summary>
-    /// Checks if the Entity has a Plain Component.
-    /// Same as calling <see cref="Has{T}()"/> with <see cref="Identity.Plain"/>
-    /// </summary>
-    public bool Has<T>() where T : notnull => _world.HasComponent<T>(Id, default);
-
     
-    /// <inheritdoc />
-    public bool Has<R>(Entity relation) where R : notnull => _world.HasComponent<R>(Id, new Relate(relation));
-
-    
-    /// <inheritdoc />
-    public bool Has<L>(L linkedObject) where L : class => Has(Link<L>.With(linkedObject));
-
-
-    /// <summary>
-    /// Checks if the Entity has a Component of a specific type.
-    /// Allows for a <see cref="Match"/> Expression to be specified (Wildcards)
-    /// </summary>
-    public bool Has<T>(Match match) => _world.HasComponent<T>(Id, match);
-
-    /// <summary>
-    /// Checks if the Entity has an Object Link of a specific type and specific target.
-    /// </summary>
-    public bool Has<T>(Link<T> link) where T : class => _world.HasComponent<T>(Id, link);
-
     /// <summary>
     /// Boxes all the Components on the entity into an array.
     /// Use sparingly, but don't be paranoid. Suggested uses: serialization and debugging.
@@ -223,8 +194,8 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// The values are re-boxed each time this getter is called.
     /// </remarks>
     public IReadOnlyList<Component> Components => _world.GetComponents(Id);
-    
-    
+
+
     /// <summary>
     /// Gets all Components of a specific type and match expression on the Entity.
     /// Supports relation Wildcards, for example:<ul>
@@ -241,21 +212,102 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
     /// <param name="match">match expression, supports wildcards</param>
     /// <typeparam name="T">backing type of the component</typeparam>
     /// <returns>array with all the component values stored for this entity</returns>
-    public T[] Get<T>(Match match) => _world.Get<T>(Id, match);  
-    
+    public T[] Get<T>(Match match) => _world.Get<T>(Id, match);
+
     #endregion
 
+    #region IHasComponent
 
+    /// <summary>
+    /// Checks if the Entity has a Plain Component.
+    /// Same as calling <see cref="Has{T}()"/> with <see cref="Identity.Plain"/>
+    /// </summary>
+    public bool Has<T>() where T : notnull => _world.HasComponent<T>(Id, default);
+
+
+    /// <inheritdoc />
+    public bool Has<R>(Entity relation) where R : notnull => _world.HasComponent<R>(Id, new Relate(relation));
+
+
+    /// <inheritdoc />
+    public bool Has<L>(L linkedObject) where L : class => Has(Link<L>.With(linkedObject));
+
+
+    /// <summary>
+    /// Checks if the Entity has a Component of a specific type.
+    /// Allows for a <see cref="Match"/> Expression to be specified (Wildcards)
+    /// </summary>
+    public bool Has<T>(Match match) => _world.HasComponent<T>(Id, match);
+
+    /// <summary>
+    /// Checks if the Entity has an Object Link of a specific type and specific target.
+    /// </summary>
+    public bool Has<T>(Link<T> link) where T : class => _world.HasComponent<T>(Id, link);
+    
+    #endregion
+    
+    #region IBoxedComponent
+
+    /// <inheritdoc />
+    public bool Has(Type type, Match match) => _world.HasComponent(this, TypeExpression.Of(type, match));
+    
+    
+    /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
+    public ref C Ref<C>() => ref _world.GetComponent<C>(this, Match.Plain);
+
+
+    /// <inheritdoc />
+    public bool Get([MaybeNullWhen(false)] out object value, Type type, Match match = default)
+    {
+        return _world.GetComponent(this, TypeExpression.Of(type, match), out value);
+    }
+
+
+    /// <inheritdoc />
+    public object? Get(Type type, Match match = default)
+    {
+        return _world.GetComponent(this, TypeExpression.Of(type, match), out var value) ? value : null;
+    }
+
+
+    /// <inheritdoc />
+    public void Set(object value, Match match = default)
+    {
+        _world.AddComponent(this, TypeExpression.Of(value.GetType(), match), value);
+    }
+
+    
+    /// <inheritdoc />
+    public Entity Clear(Type type, Match match = default)
+    {
+        var expression = TypeExpression.Of(type, match);
+        
+        if (!match.IsWildcard)
+        {
+            _world.RemoveComponent(this, expression);
+            return this;
+        }
+        
+        var components = Components.Where(c => expression.Matches(c.Expression)).ToArray();
+        foreach (var component in components)
+        {
+            _world.RemoveComponent(this, component.Expression);
+        }
+        return this;
+    }
+    
+    #endregion
+    
     #region Cast Operators and IEquatable<Entity>
 
     /// <summary>
     /// True if the Entity is alive in its world (and has a world).
     /// </summary>
     public static implicit operator bool(Entity entity) => entity.Alive;
-    
+
     /// <inheritdoc />
     public bool Equals(Entity other) => Id.Equals(other.Id) && Equals(_world, other._world);
-    
+
 
     /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(_world, Id);
@@ -286,6 +338,6 @@ public readonly record struct Entity : IAddRemoveComponent<Entity>, IHasComponen
 
         return sb.ToString();
     }
-    
+
     #endregion
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
+using fennecs.CRUD;
 using fennecs.pools;
 
 namespace fennecs;

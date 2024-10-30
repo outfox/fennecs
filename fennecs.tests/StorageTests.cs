@@ -114,12 +114,12 @@ public class StorageTests
             storage.Append(i * 1.337f);
         }
         Assert.Equal(10, storage.Count);
-        Assert.Equal(16, storage.Capacity);
+        //Assert.Equal(16, storage.Capacity); //This is not guaranteed based on how Arraypools work
         
         storage.Delete(3, 5);
         storage.Compact();
         Assert.Equal(5, storage.Count);
-        Assert.Equal(8, storage.Capacity);
+        //Assert.Equal(8, storage.Capacity); //This is not guaranteed based on how Arraypools work
     }
     
     
@@ -133,10 +133,10 @@ public class StorageTests
 
         storage.Delete(1);
         Assert.Equal(4, storage.Count);
-        Assert.Equal(8, storage.Capacity);
+        //Assert.Equal(8, storage.Capacity); //This is not guaranteed based on how Arraypools work
 
         storage.Compact(); // should internally resize down to 4
-        Assert.Equal(4, storage.Capacity);
+        //Assert.Equal(4, storage.Capacity); //This is not guaranteed based on how Arraypools work
         Assert.Equal(4, storage.Count);
 
         Assert.Equal(420, storage[0]);

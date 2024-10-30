@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -87,6 +89,15 @@ internal interface IStorage
     /// Returns the element at position Row as a boxed object.
     /// </summary>
     IStrongBox Box(int row);
+    
+    /// <summary>
+    /// Gets the value at index as a boxed object.
+    /// </summary>
+    /// <remarks>
+    /// Value Types are copied, then boxed.
+    /// </remarks>
+    /// <throws><see cref="IndexOutOfRangeException"/>if the row index is out of range</throws>
+    object Get(int row);
 }
 
 /// <summary>
@@ -95,9 +106,11 @@ internal interface IStorage
 /// <typeparam name="T">the type of the array elements</typeparam>
 internal class Storage<T> : IStorage
 {
-    private const int InitialCapacity = 2;
+    private const int InitialCapacity = 32;
         
-    private T[] _data = new T[InitialCapacity];
+    private static readonly ArrayPool<T> Pool = ArrayPool<T>.Create();
+    
+    private T[] _data = Pool.Rent(InitialCapacity);
 
     /// <summary>
     /// Replaces the value at the given index.
@@ -216,7 +229,11 @@ internal class Storage<T> : IStorage
     {
         var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)capacity);
         if (newSize <= _data.Length) return;
-        Array.Resize(ref _data, newSize);
+
+        var previous = _data;
+        _data = Pool.Rent(newSize);
+        previous.AsSpan(0, Count).CopyTo(_data);
+        Pool.Return(previous);
     }
 
     /// <summary>
@@ -225,7 +242,12 @@ internal class Storage<T> : IStorage
     public void Compact()
     {
         var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Max(InitialCapacity, Count));
-        Array.Resize(ref _data, newSize);
+        if (newSize == _data.Length) return; // nothing to do
+
+        var previous = _data;
+        _data = Pool.Rent(newSize);
+        previous.AsSpan(0, Count).CopyTo(_data);
+        Pool.Return(previous);
     }
 
 
@@ -238,7 +260,8 @@ internal class Storage<T> : IStorage
         destination.Append(Span);
         Clear();
 
-        // TODO: This is a potentially huge optimization, but it struggles with backfill logic. 
+        // TODO: This will get changed with Chunks, so chunks can be moved instead of copied. 
+        // TODO: This is a older, potentially huge optimization, but it struggles with backfill logic. 
         // (i.e. what if there's nothing to migrate yet, but we are going to need to backfill?)
         // (and what's the case for swap vs. copy?)
         // (and despite saving CPU on the copy, Meta updates will be much more expensive)
@@ -286,6 +309,15 @@ internal class Storage<T> : IStorage
     /// Value Types are copied, then boxed.
     /// </remarks>
     public IStrongBox Box(int row) => new StrongBox<T>(Span[row]);
+    
+    
+    /// <summary>
+    /// Gets the value at index as a boxed object.
+    /// </summary>
+    /// <remarks>
+    /// Value Types are copied, then boxed.
+    /// </remarks>
+    public object Get(int row) => Span[row]!;
     
     
     /// <summary>

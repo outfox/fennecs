@@ -129,6 +129,6 @@ public class ReflectionExtensionsTests
         var entity = world.Spawn();
         var baseInstance = new Derived1();
         entity.AddVirtual(baseInstance);
-        Assert.Throws<ArgumentException>(() => entity.AddVirtual(new Derived1()));
+        Assert.Throws<InvalidOperationException>(() => entity.AddVirtual(new Derived1()));
     }
 }

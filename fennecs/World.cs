@@ -97,7 +97,7 @@ public partial class World
     }
 
 
-    private bool HasComponent(Identity identity, TypeExpression typeExpression)
+    internal bool HasComponent(Identity identity, TypeExpression typeExpression)
     {
         var meta = _meta[identity.Index];
         return meta.Identity != default
