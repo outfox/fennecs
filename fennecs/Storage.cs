@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Buffers;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -97,7 +98,7 @@ internal class Storage<T> : IStorage
 {
     private const int InitialCapacity = 2;
         
-    private T[] _data = new T[InitialCapacity];
+    private T[] _data = ArrayPool<T>.Shared.Rent(InitialCapacity);
 
     /// <summary>
     /// Replaces the value at the given index.
@@ -216,7 +217,11 @@ internal class Storage<T> : IStorage
     {
         var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)capacity);
         if (newSize <= _data.Length) return;
-        Array.Resize(ref _data, newSize);
+
+        var previous = _data;
+        _data = ArrayPool<T>.Shared.Rent(newSize);
+        previous.AsSpan(0, Count).CopyTo(_data);
+        ArrayPool<T>.Shared.Return(previous);
     }
 
     /// <summary>
