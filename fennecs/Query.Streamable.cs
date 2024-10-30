@@ -3,7 +3,7 @@
 /// <summary>
 /// Stream Factory Methods
 /// </summary>
-public partial class Query : Streamable
+public sealed partial class Query : Streamable
 {
     /// <summary>
     /// Creates a Stream View of the Query with 1 Stream Type.
