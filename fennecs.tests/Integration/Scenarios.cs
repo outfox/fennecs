@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests.Integration;
+﻿using System.Buffers;
+
+namespace fennecs.tests.Integration;
 
 public class Scenarios
 {
@@ -11,15 +13,15 @@ public class Scenarios
     public void Can_Iterate_many_Entities(int count, int floatRate, int doubleRate, int stringRate, int shortRate)
     {
         using var world = new World();
-        
+
         var random = new Random(9001);
         var entities = new List<Entity>();
-        
+
         var floats = 0;
         var doubles = 0;
         var strings = 0;
         var shorts = 0;
-        
+
         for (var i = 1; i < count; i++)
         {
             var builder = world.Spawn().Add(count);
@@ -50,10 +52,10 @@ public class Scenarios
             entities.Add(builder);
         }
 
-        
+
         var floatsActual = world.Query<float>().Stream().Count;
         Assert.Equal(floats, floatsActual);
-        
+
         var doublesActual = world.Query<double>().Stream().Count;
         Assert.Equal(doubles, doublesActual);
 
@@ -68,5 +70,29 @@ public class Scenarios
 
         var shortsActual = world.Query().Has<ushort>(Match.Any).Compile().Count;
         Assert.Equal(shorts, shortsActual);
+    }
+
+    [Fact]
+    public void Not_influenced_by_junk_in_shared_ArrayPool()
+    {
+        // Store some junk in the shared array pool here, so it will get picked up later for a _limiter.
+        var rentedArrays = Enumerable.Range(0, 2)
+            .Select(_ =>
+            {
+                var rent = ArrayPool<int>.Shared.Rent(2);
+                rent[1] = 2;
+                return rent;
+            })
+            .ToList();
+
+        // Return out arrays, so fennecs can play with them later.
+        foreach (var rentedArray in rentedArrays) ArrayPool<int>.Shared.Return(rentedArray);
+
+        using var world = new World();
+        world.Spawn().Add<int>();
+
+        var count = 0;
+        world.Stream<int>().For((ref int _) => count++);
+        Assert.Equal(count, world.Count);
     }
 }
