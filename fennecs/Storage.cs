@@ -250,7 +250,8 @@ internal class Storage<T> : IStorage
         destination.Append(Span);
         Clear();
 
-        // TODO: This is a potentially huge optimization, but it struggles with backfill logic. 
+        // TODO: This will get changed with Chunks, so chunks can be moved instead of copied. 
+        // TODO: This is a older, potentially huge optimization, but it struggles with backfill logic. 
         // (i.e. what if there's nothing to migrate yet, but we are going to need to backfill?)
         // (and what's the case for swap vs. copy?)
         // (and despite saving CPU on the copy, Meta updates will be much more expensive)
