@@ -232,6 +232,7 @@ internal class Storage<T> : IStorage
     public void Compact()
     {
         var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Max(InitialCapacity, Count));
+        if (newSize == _data.Length) return; // nothing to do
 
         var previous = _data;
         _data = Pool.Rent(newSize);
