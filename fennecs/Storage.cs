@@ -96,9 +96,11 @@ internal interface IStorage
 /// <typeparam name="T">the type of the array elements</typeparam>
 internal class Storage<T> : IStorage
 {
-    private const int InitialCapacity = 2;
+    private const int InitialCapacity = 32;
         
-    private T[] _data = ArrayPool<T>.Shared.Rent(InitialCapacity);
+    private static readonly ArrayPool<T> Pool = ArrayPool<T>.Create();
+    
+    private T[] _data = Pool.Rent(InitialCapacity);
 
     /// <summary>
     /// Replaces the value at the given index.
@@ -219,9 +221,9 @@ internal class Storage<T> : IStorage
         if (newSize <= _data.Length) return;
 
         var previous = _data;
-        _data = ArrayPool<T>.Shared.Rent(newSize);
+        _data = Pool.Rent(newSize);
         previous.AsSpan(0, Count).CopyTo(_data);
-        ArrayPool<T>.Shared.Return(previous);
+        Pool.Return(previous);
     }
 
     /// <summary>
@@ -230,12 +232,11 @@ internal class Storage<T> : IStorage
     public void Compact()
     {
         var newSize = (int)BitOperations.RoundUpToPowerOf2((uint)Math.Max(InitialCapacity, Count));
-        if (newSize <= _data.Length) return;
 
         var previous = _data;
-        _data = ArrayPool<T>.Shared.Rent(newSize);
+        _data = Pool.Rent(newSize);
         previous.AsSpan(0, Count).CopyTo(_data);
-        ArrayPool<T>.Shared.Return(previous);
+        Pool.Return(previous);
     }
 
 

@@ -114,7 +114,7 @@ public class StorageTests
             storage.Append(i * 1.337f);
         }
         Assert.Equal(10, storage.Count);
-        Assert.Equal(16, storage.Capacity);
+        //Assert.Equal(16, storage.Capacity); //This is not guaranteed based on how Arraypools work
         
         storage.Delete(3, 5);
         storage.Compact();
