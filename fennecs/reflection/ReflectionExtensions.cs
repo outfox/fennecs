@@ -33,17 +33,21 @@ public static class ReflectionExtensions
     /// </remarks>
     public static T[] GetVirtual<T>(this Entity entity)
     {
-        var components = entity.Components;
-        var filtered = components.Where(c => c.Type.IsAssignableTo(typeof(T))).Select(c => c.Box.Value).Cast<T>().ToArray();
+        var filtered = entity.Components
+            .Where(c => c.Type.IsAssignableTo(typeof(T)))
+            .Select(c => c.Box.Value).Cast<T>().ToArray();
         return filtered;
     }
-    
-    
+
+
     /// <summary>
     /// Returns true if the entity has any components that are <see cref="Type.IsAssignableTo"/> to the Type Parameter <c>T</c>.
     /// </summary>
     /// <remarks>
     /// TODO: This call has room for optimization, and may benefit from match expression support.
     /// </remarks>
-    public static bool HasVirtual<T>(this Entity entity) => entity.GetVirtual<T>().Length > 0;
+    public static bool HasVirtual<T>(this Entity entity)
+    {
+        return entity.Components.Any(c => c.Type.IsAssignableTo(typeof(T)));
+    }
 }
