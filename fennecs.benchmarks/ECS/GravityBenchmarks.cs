@@ -319,7 +319,7 @@ public class GravityBenchmarks
 
             for (var i = vectorEnd; i < count; i++) // remaining elements
             {
-                p1[i] = p1[i] + p2[i] + dt1;
+                p1[i] = p1[i] + p2[i] * dt1;
             }
         }
     }
@@ -362,7 +362,7 @@ public class GravityBenchmarks
 
             for (; i < range.Item2; i++) // remaining elements
             {
-                p1[i] = p1[i] + p2[i] + dt1;
+                p1[i] = p1[i] + p2[i] * dt1;
             }
         }
     }
@@ -397,7 +397,7 @@ public class GravityBenchmarks
 
             for (; i < range.Item2; i++) // remaining elements
             {
-                p1[i] = p1[i] + p2[i] + dt1;
+                p1[i] = p1[i] + p2[i] * dt1;
             }
         }
     }
