@@ -19,7 +19,10 @@ public class CovariantRunners(ITestOutputHelper output)
         runner.For(delegate(ref DerivedClass t) { WriteRef(ref t);});
         //runner.For((BaseClass t) => WriteCovariant(t)); // ambiguous, can't compile
         //runner.For(delegate(BaseClass t) { WriteCovariant(t);}); // ambiguous, can't compile
-        runner.For((t) => WriteRef(ref t));
+
+        // ReSharper disable once ConvertClosureToMethodGroup
+        // ReSharper disable once RedundantLambdaSignatureParentheses
+        runner.For((t) => WriteCovariant(t));
     }
 
     private void WriteCovariant(BaseClass t)
