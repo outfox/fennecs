@@ -24,7 +24,7 @@ namespace Benchmark.ECS;
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [AnyCategoriesFilter("fennecs", "fennecs2")]
 // ReSharper disable once IdentifierTypo
-public class GravityBenchmarks
+public class TensorBenchmarks
 {
     private Stream<Component1, Component2> _query = null!;
     private World _world = null!;
