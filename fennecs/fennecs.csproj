@@ -51,11 +51,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\"/>
+        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\" />
         <None Include="../nuget/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Numerics.Tensors" Version="8.0.0" />
     </ItemGroup>
 </Project>

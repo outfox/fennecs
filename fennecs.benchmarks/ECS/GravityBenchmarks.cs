@@ -5,12 +5,15 @@ using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using CommandLine;
 using fennecs;
 using fennecs_Components;
 using fennecs.pools;
 
 namespace Benchmark.ECS;
+
+// JIT prefers non-compound assignments in .NET 8
+// ReSharper disable ConvertToCompoundAssignment
+
 
 [ShortRunJob]
 //[TailCallDiagnoser]
@@ -21,9 +24,9 @@ namespace Benchmark.ECS;
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [AnyCategoriesFilter("fennecs", "fennecs2")]
 // ReSharper disable once IdentifierTypo
-public class DorakuBenchmarks
+public class GravityBenchmarks
 {
-    private Stream<Component1, Component2, Component3> _query = null!;
+    private Stream<Component1, Component2> _query = null!;
     private World _world = null!;
 
     // ReSharper disable once MemberCanBePrivate.Global
@@ -38,7 +41,7 @@ public class DorakuBenchmarks
         PooledList<UniformWork<Component1, Component2, Component3>>.Rent().Dispose();
 
         _world = new World();
-        _query = _world.Query<Component1, Component2, Component3>().Stream();
+        _query = _world.Query<Component1, Component2>().Stream();
         for (var i = 0; i < entityCount; ++i)
         {
             for (var j = 0; j < entityPadding; ++j)
@@ -52,14 +55,11 @@ public class DorakuBenchmarks
                     case 1:
                         padding.Add<Component2>();
                         break;
-                    case 2:
-                        padding.Add<Component3>();
-                        break;
                 }
             }
 
             _world.Spawn().Add<Component1>()
-                .Add(new Component2 {Value = 1})
+                .Add(new Component2 {Value = 9.81f})
                 .Add(new Component3 {Value = 1});
         }
 
@@ -77,16 +77,21 @@ public class DorakuBenchmarks
     /// This could be a static anonymous delegate, but this way, we don't need to repeat ourselves
     /// and reduce the risk of errors when refactoring or unit testing.
     /// </summary>
-    private static void Workload(ref Component1 c1, ref Component2 c2, ref Component3 c3)
+    private static void Workload(ref Component1 c1, ref Component2 c2)
     {
-        c1.Value = c1.Value + c2.Value + c3.Value;
+        const float dt = 1f / 60.0f;
+        c1.Value = c1.Value + c2.Value * dt;
     }
 
     [BenchmarkCategory("fennecs")]
     [Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
-        _query.For(static delegate(ref Component1 c1, ref Component2 c2, ref Component3 c3) { c1.Value = c1.Value + c2.Value + c3.Value; });
+        _query.For(static delegate(ref Component1 c1, ref Component2 c2)
+        {
+            const float dt = 1f / 60.0f;
+            c1.Value = c1.Value + c2.Value * dt;
+        });
     }
 
 
@@ -102,7 +107,11 @@ public class DorakuBenchmarks
     //[Benchmark(Description = $"fennecs (Job)")]
     public void fennecs_Job()
     {
-        _query.Job(static delegate (ref Component1 c1, ref Component2 c2, ref Component3 c3) { c1.Value = c1.Value + c2.Value + c3.Value; });
+        _query.Job(static delegate(ref Component1 c1, ref Component2 c2)
+        {
+            const float dt = 1f / 60.0f;
+            c1.Value = c1.Value + c2.Value * dt;
+        });
     }
 
     [BenchmarkCategory("fennecs")]
@@ -209,23 +218,24 @@ public class DorakuBenchmarks
         _query.Raw(Raw_Workload_AdvSIMD);
     }
 
-    private static void Raw_Workload_Unoptimized(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_Unoptimized(Memory<Component1> c1V, Memory<Component2> c2V)
     {
         var c1S = c1V.Span;
         var c2S = c2V.Span;
-        var c3S = c3V.Span;
+
+        const float dt = 1f / 60.0f;
 
         for (var i = 0; i < c1S.Length; i++)
         {
-            c1S[i].Value = c1S[i].Value + c2S[i].Value + c3S[i].Value;
+            c1S[i].Value = c1S[i].Value + c2S[i].Value * dt;
         }
     }
 
-    private static void Raw_Workload_Unroll4(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_Unroll4(Memory<Component1> c1V, Memory<Component2> c2V)
     {
         var c1 = c1V.Span;
         var c2 = c2V.Span;
-        var c3 = c3V.Span;
+        const float dt = 1f / 60.0f;
 
         var i = 0;
         for (; i < c1.Length; i += 4)
@@ -233,24 +243,25 @@ public class DorakuBenchmarks
             var j = i + 1;
             var k = j + 1;
             var l = k + 1;
-            c1[i].Value = c1[i].Value + c2[i].Value + c3[i].Value;
-            c1[j].Value = c1[j].Value + c2[j].Value + c3[j].Value;
-            c1[k].Value = c1[k].Value + c2[k].Value + c3[k].Value;
-            c1[l].Value = c1[l].Value + c2[l].Value + c3[l].Value;
+            c1[i].Value = c1[i].Value + c2[i].Value * dt;
+            c1[j].Value = c1[j].Value + c2[j].Value * dt;
+            c1[k].Value = c1[k].Value + c2[k].Value * dt;
+            c1[l].Value = c1[l].Value + c2[l].Value * dt;
         }
 
         for (; i < c1.Length; i += 1)
         {
-            c1[i].Value = c1[i].Value + c2[i].Value + c3[i].Value;
+            c1[i].Value = c1[i].Value + c2[i].Value * dt;
         }
     }
 
-    private static void Raw_Workload_Unroll8(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_Unroll8(Memory<Component1> c1V, Memory<Component2> c2V)
     {
         var c1 = c1V.Span;
         var c2 = c2V.Span;
-        var c3 = c3V.Span;
 
+        const float dt = 1f / 60.0f;
+        
         var i = 0;
         for (; i < c1.Length; i += 8)
         {
@@ -261,36 +272,38 @@ public class DorakuBenchmarks
             var n = i + 5;
             var o = i + 6;
             var p = i + 7;
-
-            c1[i].Value = c1[i].Value + c2[i].Value + c3[i].Value;
-            c1[j].Value = c1[j].Value + c2[j].Value + c3[j].Value;
-            c1[k].Value = c1[k].Value + c2[k].Value + c3[k].Value;
-            c1[l].Value = c1[l].Value + c2[l].Value + c3[l].Value;
-            c1[m].Value = c1[m].Value + c2[m].Value + c3[m].Value;
-            c1[n].Value = c1[n].Value + c2[n].Value + c3[n].Value;
-            c1[o].Value = c1[o].Value + c2[o].Value + c3[o].Value;
-            c1[p].Value = c1[p].Value + c2[p].Value + c3[p].Value;
+            
+            // ReSharper disable ConvertToCompoundAssignment
+            c1[i].Value = c1[i].Value + c2[i].Value * dt;
+            c1[j].Value = c1[j].Value + c2[j].Value * dt;
+            c1[k].Value = c1[k].Value + c2[k].Value * dt;
+            c1[l].Value = c1[l].Value + c2[l].Value * dt;
+            c1[m].Value = c1[m].Value + c2[m].Value * dt;
+            c1[n].Value = c1[n].Value + c2[n].Value * dt;
+            c1[o].Value = c1[o].Value + c2[o].Value * dt;
+            c1[p].Value = c1[p].Value + c2[p].Value * dt;
         }
 
         for (; i < c1.Length; i += 1)
         {
-            c1[i].Value = c1[i].Value + c2[i].Value + c3[i].Value;
+            c1[i].Value = c1[i].Value + c2[i].Value * dt;
         }
     }
 
-    private static void Raw_Workload_AVX2(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_AVX2(Memory<Component1> c1V, Memory<Component2> c2V)
     {
         var count = c1V.Length;
 
         using var mem1 = c1V.Pin();
         using var mem2 = c2V.Pin();
-        using var mem3 = c3V.Pin();
+
+        var dt1 = 1f / 60.0f;
+        var dt = Vector256.Create(dt1);
 
         unsafe
         {
             var p1 = (float*) mem1.Pointer;
             var p2 = (float*) mem2.Pointer;
-            var p3 = (float*) mem3.Pointer;
 
             var vectorSize = Vector256<float>.Count;
             var vectorEnd = count - count % vectorSize;
@@ -298,52 +311,41 @@ public class DorakuBenchmarks
             {
                 var v1 = Avx.LoadVector256(p1 + i);
                 var v2 = Avx.LoadVector256(p2 + i);
-                var v3 = Avx.LoadVector256(p3 + i);
-                var sum = Avx.Add(v1, Avx.Add(v2, v3));
+                
+                var sum = Avx.Add(v1, Avx.Multiply(v2, dt));
 
                 Avx.Store(p1 + i, sum);
             }
 
             for (var i = vectorEnd; i < count; i++) // remaining elements
             {
-                p1[i] = p1[i] + p2[i] + p3[i];
+                p1[i] = p1[i] + p2[i] + dt1;
             }
         }
     }
 
-    private static void Raw_Workload_Tensor(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_Tensor(Memory<Component1> c1V, Memory<Component2> c2V)
     {
-        
         var c1I = MemoryMarshal.Cast<Component1, float>(c1V.Span);
         var c2I = MemoryMarshal.Cast<Component2, float>(c2V.Span);
-        var c3I = MemoryMarshal.Cast<Component3, float>(c3V.Span);
 
-        /*
-        var c1I = c1V.Span;
-        var c2I = c2V.Span;
-        var c3I = c3V.Span;
-        */
-        
-        //stackalloc float array
-        //Span<float> intermediate = stackalloc float[c1V.Length];
-
-        TensorPrimitives.Add(c2I, c1I, c1I);
-        TensorPrimitives.Add(c3I, c1I, c1I);
+        TensorPrimitives.MultiplyAdd(c2I, 1f/60.0f, c1I, c1I);
     }
 
-    private static void Raw_Workload_SSE2(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_SSE2(Memory<Component1> c1V, Memory<Component2> c2V)
     {
         (int Item1, int Item2) range = (0, c1V.Length);
 
         using var mem1 = c1V.Pin();
         using var mem2 = c2V.Pin();
-        using var mem3 = c3V.Pin();
+
+        var dt1 = 1f / 60.0f;
+        var dt = Vector128.Create(dt1);
 
         unsafe
         {
             var p1 = (float*) mem1.Pointer;
             var p2 = (float*) mem2.Pointer;
-            var p3 = (float*) mem3.Pointer;
 
             var vectorSize = Vector128<float>.Count;
             var i = range.Item1;
@@ -352,32 +354,33 @@ public class DorakuBenchmarks
             {
                 var v1 = Sse.LoadVector128(p1 + i);
                 var v2 = Sse.LoadVector128(p2 + i);
-                var v3 = Sse.LoadVector128(p3 + i);
-                var sum = Sse.Add(v1, Sse.Add(v2, v3));
+                
+                var sum = Sse.Add(v1, Sse.Multiply(v2, dt));    
 
                 Sse.Store(p1 + i, sum);
             }
 
             for (; i < range.Item2; i++) // remaining elements
             {
-                p1[i] = p1[i] + p2[i] + p3[i];
+                p1[i] = p1[i] + p2[i] + dt1;
             }
         }
     }
 
-    private static void Raw_Workload_AdvSIMD(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_AdvSIMD(Memory<Component1> c1V, Memory<Component2> c2V)
     {
         (int Item1, int Item2) range = (0, c1V.Length);
 
         using var mem1 = c1V.Pin();
         using var mem2 = c2V.Pin();
-        using var mem3 = c3V.Pin();
+
+        var dt1 = 1f / 60.0f;
+        var dt = Vector128.Create(dt1);
 
         unsafe
         {
             var p1 = (float*) mem1.Pointer;
             var p2 = (float*) mem2.Pointer;
-            var p3 = (float*) mem3.Pointer;
 
             var vectorSize = Vector128<float>.Count;
             var i = range.Item1;
@@ -386,15 +389,15 @@ public class DorakuBenchmarks
             {
                 var v1 = AdvSimd.LoadVector128(p1 + i);
                 var v2 = AdvSimd.LoadVector128(p2 + i);
-                var v3 = AdvSimd.LoadVector128(p3 + i);
-                var sum = AdvSimd.Add(v1, AdvSimd.Add(v2, v3));
+                
+                var sum = AdvSimd.Add(v1, AdvSimd.Multiply(v2, dt));
 
                 AdvSimd.Store(p1 + i, sum);
             }
 
             for (; i < range.Item2; i++) // remaining elements
             {
-                p1[i] = p1[i] + p2[i] + p3[i];
+                p1[i] = p1[i] + p2[i] + dt1;
             }
         }
     }
