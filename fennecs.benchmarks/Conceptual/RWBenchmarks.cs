@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using fennecs;
 
@@ -63,7 +64,7 @@ record struct MyVector(in Vector3 value) : Fox<Vector3>
 [ShortRunJob]
 public class RWBenchmarks
 {
-    [Params(1_000, 10_000, 100_000)]
+    [Params(1_000, 10_000)]
     public int count { get; set; }
 
     private BenchStream2<int, int> _stream;
@@ -83,11 +84,11 @@ public class RWBenchmarks
         });
     }
     [Benchmark]
-    public void OldRW()
+    public void OldEWR()
     {
         _stream.Old((in Entity entity, ref int a, ref int b) =>
         {
-            b += a + 1;
+            a += b + 1;
         });
     }
     [Benchmark]
@@ -110,7 +111,7 @@ public class RWBenchmarks
     }
 
     [Benchmark]
-    public void NewERW()
+    public void NewEWR()
     {
         _stream.New((entity, a, b) =>
         {
@@ -130,6 +131,14 @@ public class RWBenchmarks
 internal interface Fox<T>where T : notnull
 {
    T value { get; set; }
+}
+
+internal readonly ref struct EntityRef(ref Entity val)
+{
+    private readonly ref Entity _value = ref val;
+    public Entity read => _value;
+
+    public static implicit operator Entity(EntityRef self) => self._value;
 }
 
 internal readonly ref struct R<T>(ref T val) where T : notnull
@@ -179,9 +188,10 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     public readonly C1[] Data1 = new C1[Count];
     public readonly C2[] Data2 = new C2[Count];
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void New(ComponentActionEWR<C1, C2> action)
     {
-        for (var i = 0; i < Count; i++) action(entities[i], new(ref Data1[i], ref entities[i]), new(ref Data2[i]));
+        for (var i = 0; i < Count; i++) action(new(ref entities[i]), new(ref Data1[i], ref entities[i]), new(ref Data2[i]));
     }
     public void Old(EntityComponentAction<C1, C2> action)
     {
@@ -225,12 +235,12 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
 
 internal delegate void ComponentActionRead<C0, C1>(in C0 comp0, in C1 comp1);
 
-file delegate void ComponentActionER<C0>(Entity entity, R<C0> comp0) where C0 : notnull;
-file delegate void ComponentActionEW<C0>(Entity entity, RW<C0> comp0) where C0 : notnull;
+file delegate void ComponentActionER<C0>([In] Entity entity, R<C0> comp0) where C0 : notnull;
+file delegate void ComponentActionEW<C0>([In] Entity entity, RW<C0> comp0) where C0 : notnull;
 file delegate void ComponentActionW<C0>(RW<C0> comp0) where C0 : notnull;
 file delegate void ComponentActionR<C0>(R<C0> comp0) where C0 : notnull;
-internal delegate void ComponentActionEWW<C0, C1>(Entity entity, RW<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;
-internal delegate void ComponentActionEWR<C0, C1>(Entity entity, RW<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;
+internal delegate void ComponentActionEWW<C0, C1>([In] EntityRef entity, RW<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;
+internal delegate void ComponentActionEWR<C0, C1>([In] EntityRef entity, RW<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionWR<C0, C1>(RW<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionRW<C0, C1>(R<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionWW<C0, C1>(RW<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;
