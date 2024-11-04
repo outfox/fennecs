@@ -8,10 +8,6 @@ namespace Benchmark.Conceptual;
 public interface ITest
 { }
 
-public abstract record struct Fox<TWrapped>
-{
-    
-}
 record struct MyVector(Vector3 Value) : Fox<Vector3>
 {
     private Vector3 _value = Value;
