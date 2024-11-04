@@ -70,7 +70,7 @@ public class RWBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _stream = new BenchStream2<int, int>(count);
+        _stream = new(count);
     }
     
     [Benchmark]
@@ -181,7 +181,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     
     public void New(ComponentActionEWR<C1, C2> action)
     {
-        for (var i = 0; i < Count; i++) action(entities[i], new RW<C1>(ref Data1[i], ref entities[i]), new R<C2>(ref Data2[i]));
+        for (var i = 0; i < Count; i++) action(entities[i], new(ref Data1[i], ref entities[i]), new(ref Data2[i]));
     }
     public void Old(EntityComponentAction<C1, C2> action)
     {
@@ -198,7 +198,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     {
         for (var i = 0; i < Count; i++)
         {
-            action(new RW<C1>(ref Data1[i], ref entities[i]), new RW<C2>(ref Data2[i], ref entities[i]));
+            action(new(ref Data1[i], ref entities[i]), new(ref Data2[i], ref entities[i]));
         }
     }
     [OverloadResolutionPriority(1)]
@@ -206,20 +206,20 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     {
         for (var i = 0; i < Count; i++)
         {
-            action(new R<C1>(ref Data1[i]), new RW<C2>(ref Data2[i], ref entities[i]));
+            action(new(ref Data1[i]), new(ref Data2[i], ref entities[i]));
         }
     }
 
     [OverloadResolutionPriority(2)]
     public void New(ComponentActionWR<C1, C2> action)
     {
-        for (var i = 0; i < Count; i++) action(new RW<C1>(ref Data1[i], ref entities[i]), new R<C2>(ref Data2[i]));
+        for (var i = 0; i < Count; i++) action(new(ref Data1[i], ref entities[i]), new(ref Data2[i]));
     }
     
     [OverloadResolutionPriority(3)]
     public void New(ComponentActionRR<C1, C2> action)
     {
-        for (var i = 0; i < Count; i++) action(new R<C1>(ref Data1[i]), new R<C2>(ref Data2[i]));
+        for (var i = 0; i < Count; i++) action(new(ref Data1[i]), new(ref Data2[i]));
     }
 }
 
