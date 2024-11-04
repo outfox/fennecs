@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
+using Benchmark.Conceptual;
 using Benchmark.ECS;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
@@ -17,4 +18,4 @@ if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
 //BenchmarkRunner.Run<DorakuBenchmarks>(config);
-BenchmarkRunner.Run<TensorBenchmarks>(config);
+BenchmarkRunner.Run<RWBenchmarks>(config);
