@@ -8,9 +8,11 @@ namespace Benchmark.Conceptual;
 public interface ITest
 { }
 
-record struct MyVector(Vector3 Value) : Fox<Vector3>
+record struct MyInt(in int value) : Fox<int>;
+
+record struct MyVector(in Vector3 value) : Fox<Vector3>
 {
-    private Vector3 _value = Value;
+    private Vector3 _value = value;
 
     public float X
     {
@@ -30,7 +32,7 @@ record struct MyVector(Vector3 Value) : Fox<Vector3>
         set => _value.Z = value;
     }
 
-    public Vector3 Value
+    public Vector3 value
     {
         readonly get => _value;
         set => _value = value;
@@ -85,6 +87,15 @@ public class RWBenchmarks
             b.write++;
         });
     }
+
+    [Benchmark]
+    public void NewERW()
+    {
+        _stream.New((entity, a, b) =>
+        {
+            a.write++;
+        });
+    }
     [Benchmark]
     public void NewRW()
     {
@@ -95,27 +106,10 @@ public class RWBenchmarks
     }
 }
 
-internal interface Fox<out T>where T : notnull
+internal interface Fox<T>where T : notnull
 {
-   T Value { get; }
+   T value { get; set; }
 }
-
-internal readonly ref struct RFox<T, C>(ref T val) : Fox<C> where C : notnull where T : Fox<C>
-{
-    private readonly ref T _value = ref val;
-    public C Value => _value.Value;
-}
-
-internal readonly ref struct RWFox<T, C>(ref C val) : Fox<C> where C : notnull where T : Fox<C>
-{
-    private readonly ref C _value = ref val;
-    public C Value => _value;
-    public C Out
-    {
-        set => _value = value;
-    }
-}
-
 
 internal readonly ref struct R<T>(ref T val) where T : notnull
 {
@@ -220,5 +214,3 @@ internal delegate void ComponentActionWR<C0, C1>(RW<C0> comp0, R<C1> comp1) wher
 internal delegate void ComponentActionRW<C0, C1>(R<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionWW<C0, C1>(RW<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionRR<C0, C1>(R<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;
-
-internal delegate void ComponentActionFF<C0, I0, C1, I1>(RFox<C0, I0> comp0, RFox<C1, I1> comp1) where C0 : Fox<I0> where C1 : Fox<I1> where I1 : notnull where I0 : notnull;
