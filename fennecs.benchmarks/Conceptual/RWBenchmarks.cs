@@ -8,6 +8,27 @@ namespace Benchmark.Conceptual;
 public interface ITest
 { }
 
+#if !NET9_0_OR_GREATER
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    public sealed class OverloadResolutionPriorityAttribute : Attribute
+    {
+        /// <summary>
+        /// DUMMY REPLACEMENT FOR NET9_0 Attribute - does nothing.
+        /// Initializes a new instance of the <see cref="OverloadResolutionPriorityAttribute"/> class.
+        /// </summary>
+        /// <param name="priority">The priority of the attributed member. Higher numbers are prioritized, lower numbers are deprioritized. 0 is the default if no attribute is present.</param>
+        public OverloadResolutionPriorityAttribute(int priority)
+        {
+            Priority = priority;
+        }
+
+        /// <summary>
+        /// The priority of the member.
+        /// </summary>
+        public int Priority { get; }
+    }
+#endif
+
 record struct MyInt(in int value) : Fox<int>;
 
 record struct MyVector(in Vector3 value) : Fox<Vector3>
