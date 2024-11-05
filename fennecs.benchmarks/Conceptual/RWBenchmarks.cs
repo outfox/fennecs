@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using fennecs;
+using fennecs.events;
+using fennecs.storage;
 
 namespace Benchmark.Conceptual;
 
@@ -131,53 +133,6 @@ public class RWBenchmarks
 internal interface Fox<T>where T : notnull
 {
    T value { get; set; }
-}
-
-internal readonly ref struct EntityRef(ref Entity val)
-{
-    private readonly ref Entity _value = ref val;
-    public Entity read => _value;
-
-    public static implicit operator Entity(EntityRef self) => self._value;
-}
-
-internal readonly ref struct R<T>(ref T val) where T : notnull
-{
-    private readonly ref T _value = ref val;
-    public T read => _value;
-
-    public static implicit operator T(R<T> self) => self._value;
-}
-
-internal readonly ref struct RW<T>(ref T val, ref Entity entity) where T : notnull
-{
-    private readonly ref Entity _entity = ref entity;
-    private readonly ref T _value = ref val;
-    public T In => _value;
-    public T write
-    {
-        get => _value;
-        set
-        {
-            if (typeof(T).IsAssignableFrom(typeof(ITest)))
-            {
-                Console.WriteLine($"WTF + {_entity.ToString()}");
-            }
-            //TODO: Notify for change.
-            _value = value;
-        }
-    }
-    
-    public T Consume()
-    {
-        _entity.Remove<T>();
-        return _value;
-    }
-
-    private void Test(in int a)
-    {
-        
-    }
 }
 
 internal readonly record struct BenchStream2<C1, C2>(int Count) 
