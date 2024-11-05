@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using fennecs;
 using fennecs.events;
+using fennecs.pools;
 using fennecs.storage;
 
 namespace Benchmark.Conceptual;
@@ -66,7 +67,7 @@ record struct MyVector(in Vector3 value) : Fox<Vector3>
 [ShortRunJob]
 public class RWBenchmarks
 {
-    [Params(1_000, 10_000)]
+    [Params(1_000)]
     public int count { get; set; }
 
     private BenchStream2<int, int> _stream;
@@ -77,6 +78,14 @@ public class RWBenchmarks
     }
     
     [Benchmark]
+    public void OldNOP()
+    {
+        _stream.Old((in Entity entity, [In] ref int a, [In] ref int b) =>
+        {
+        });
+    }
+    
+    [Benchmark(Baseline = true)]
     public void OldWW()
     {
         _stream.Old((in Entity entity, ref int a, ref int b) =>
@@ -146,7 +155,9 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void New(ComponentActionEWR<C1, C2> action)
     {
-        for (var i = 0; i < Count; i++) action(new(ref entities[i]), new(ref Data1[i], ref entities[i]), new(ref Data2[i]));
+        var writtenEntities1 = PooledList<Entity>.Rent();
+        for (var i = 0; i < Count; i++) action(new(ref entities[i]), new(ref Data1[i], ref entities[i], ref writtenEntities1), new(ref Data2[i]));
+        writtenEntities1.Dispose();
     }
     public void Old(EntityComponentAction<C1, C2> action)
     {
@@ -161,24 +172,38 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(0)]
     public void New(ComponentActionWW<C1, C2> action)
     {
+        var writtenEntities1 = PooledList<Entity>.Rent();
+        var writtenEntities2 = PooledList<Entity>.Rent();
         for (var i = 0; i < Count; i++)
         {
-            action(new(ref Data1[i], ref entities[i]), new(ref Data2[i], ref entities[i]));
+            action(new(ref Data1[i], ref entities[i], ref writtenEntities1), new(ref Data2[i], ref entities[i], ref writtenEntities2));
         }
+        writtenEntities1.Dispose();
+        writtenEntities2.Dispose();
     }
     [OverloadResolutionPriority(1)]
     public void New(ComponentActionRW<C1, C2> action)
     {
+        var writtenEntities2 = PooledList<Entity>.Rent();
         for (var i = 0; i < Count; i++)
         {
-            action(new(ref Data1[i]), new(ref Data2[i], ref entities[i]));
+            action(new(ref Data1[i]), new(ref Data2[i], ref entities[i], ref writtenEntities2));
         }
+        writtenEntities2.Dispose();
     }
 
     [OverloadResolutionPriority(2)]
     public void New(ComponentActionWR<C1, C2> action)
     {
-        for (var i = 0; i < Count; i++) action(new(ref Data1[i], ref entities[i]), new(ref Data2[i]));
+        var writtenEntities1 = PooledList<Entity>.Rent();
+        var ref1 = new RW<C1>(ref Data1[0], ref entities[0], ref writtenEntities1);
+        for (var i = 0; i < Count; i++)
+        {
+            ref1._entity = ref entities[i];
+            ref1._value = ref Data1[i];
+            action(ref1, new(ref Data2[i]));
+        }
+        writtenEntities1.Dispose();
     }
     
     [OverloadResolutionPriority(3)]

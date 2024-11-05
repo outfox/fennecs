@@ -1,4 +1,4 @@
-﻿namespace fennecs.events;
+namespace fennecs.events;
 
 /// <summary>
 /// Interface handling events triggered when a component on an entity is modified.
@@ -12,12 +12,12 @@ public interface Modified<C> where C : notnull
     /// <summary>
     /// Takes a list of entities who had a component modified.
     /// </summary>
-    delegate void EntityHandler(Span<Entity> entities);
+    delegate void EntityHandler(ReadOnlySpan<Entity> entities);
 
     /// <summary>
     /// Takes a list of entities and their original and updated values.
     /// </summary>
-    delegate void EntityValueHandler(Span<Entity> entities, Span<C> original, Span<C> updated);
+    delegate void EntityValueHandler(ReadOnlySpan<Entity> entities, ReadOnlySpan<C> original, ReadOnlySpan<C> updated);
 
     /// <summary>
     /// Event triggered when a component is modified, providing the original and updated values.
@@ -40,7 +40,7 @@ public interface Modified<C> where C : notnull
     /// <summary>
     /// Called by Streams after feedback from RW&lt;C&gt; is processed.
     /// </summary>
-    internal static void Invoke(Span<Entity> entities, Span<C> original, Span<C> updated)
+    internal static void Invoke(ReadOnlySpan<Entity> entities, ReadOnlySpan<C> original, ReadOnlySpan<C> updated)
     {
         Entities?.Invoke(entities);
         Values?.Invoke(entities, original, updated);
