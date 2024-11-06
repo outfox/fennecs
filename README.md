@@ -31,7 +31,7 @@
          <a href="https://www.nuget.org/packages/fennecs/"><img alt="Nuget" src="https://img.shields.io/nuget/v/fennecs?color=blue"/></a>
          <a href="https://www.nuget.org/packages/fennecs/"><img alt="Downloads" src="https://img.shields.io/nuget/dt/fennecs"/></a>
          <a href="https://github.com/outfox/fennecs/actions"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/outfox/fennecs/xUnit.yml"/></a>
-         <a href="https://github.com/outfox/fennecs/issues"><img alt="Open Bugs" src="https://img.shields.io/github/issues-search/outfox/fennecs?color=green&query=is:open label:bug"/></a>
+         <a href="https://github.com/outfox/fennecs/issues"><img alt="Open Bugs" src="https://img.shields.io/github/issues-search/outfox/fennecs?label=Bugs&color=green&query=is:open label:bug"/></a>
       </th>
    </tr>
 </table>
