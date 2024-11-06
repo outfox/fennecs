@@ -17,10 +17,9 @@ internal static class Bit
     internal const ulong KeyNone = 0x0000_0000_0000_0000ul;
     internal const ulong KeyAny = 0x0000_F000_0000_0000ul;
 
-    internal const ulong KeyWild = 0x0000_D000_0000_0000ul;
-    
-    internal const ulong KeyTarget = 0x0000_1000_0000_0000ul;
-    internal const ulong KeyObject = 0x0000_2000_0000_0000ul;
+    internal const ulong KeyWild = 0x0000_1000_0000_0000ul;
+    internal const ulong KeyTarget = 0x0000_2000_0000_0000ul;
+    internal const ulong KeyObject = 0x0000_7000_0000_0000ul;
     internal const ulong KeyEntity = Entity;
 
     // For Typed objects (Object Links, Keyed Components)
