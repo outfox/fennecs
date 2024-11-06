@@ -94,6 +94,16 @@ public class RWBenchmarks
             b++;
         });
     }
+    
+    [Benchmark]
+    public void OldWRo()
+    {
+        _stream.Old((ref int a, ref readonly int b) =>
+        {
+            a += b;
+        });
+    }
+    
     [Benchmark]
     public void OldEWR()
     {
@@ -155,9 +165,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void New(ComponentActionEWR<C1, C2> action)
     {
-        var writtenEntities1 = PooledList<Entity>.Rent();
-        for (var i = 0; i < Count; i++) action(new(ref entities[i]), new(ref Data1[i], ref entities[i], ref writtenEntities1), new(ref Data2[i]));
-        writtenEntities1.Dispose();
+        for (var i = 0; i < Count; i++) action(new(ref entities[i]), new(ref Data1[i], ref entities[i]), new(ref Data2[i]));
     }
     public void Old(EntityComponentAction<C1, C2> action)
     {
@@ -172,38 +180,38 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(0)]
     public void New(ComponentActionWW<C1, C2> action)
     {
-        var writtenEntities1 = PooledList<Entity>.Rent();
-        var writtenEntities2 = PooledList<Entity>.Rent();
         for (var i = 0; i < Count; i++)
         {
-            action(new(ref Data1[i], ref entities[i], ref writtenEntities1), new(ref Data2[i], ref entities[i], ref writtenEntities2));
+            action(new(ref Data1[i], ref entities[i]), new(ref Data2[i], ref entities[i]));
         }
-        writtenEntities1.Dispose();
-        writtenEntities2.Dispose();
     }
     [OverloadResolutionPriority(1)]
     public void New(ComponentActionRW<C1, C2> action)
     {
-        var writtenEntities2 = PooledList<Entity>.Rent();
         for (var i = 0; i < Count; i++)
         {
-            action(new(ref Data1[i]), new(ref Data2[i], ref entities[i], ref writtenEntities2));
+            action(new(ref Data1[i]), new(ref Data2[i], ref entities[i]));
         }
-        writtenEntities2.Dispose();
     }
 
     [OverloadResolutionPriority(2)]
     public void New(ComponentActionWR<C1, C2> action)
     {
-        var writtenEntities1 = PooledList<Entity>.Rent();
-        var ref1 = new RW<C1>(ref Data1[0], ref entities[0], ref writtenEntities1);
         for (var i = 0; i < Count; i++)
         {
-            ref1._entity = ref entities[i];
-            ref1._value = ref Data1[i];
+            var ref1 = new RW<C1>(ref Data1[i], ref entities[i]);
             action(ref1, new(ref Data2[i]));
         }
-        writtenEntities1.Dispose();
+    }
+    
+    [OverloadResolutionPriority(2)]
+    public void NewRo(ComponentActionWR<C1, C2> action)
+    {
+        for (var i = 0; i < Count; i++)
+        {
+            var ref1 = new RW<C1>(ref Data1[i], ref entities[i]);
+            action(ref1, new(ref Data2[i]));
+        }
     }
     
     [OverloadResolutionPriority(3)]
@@ -211,13 +219,20 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     {
         for (var i = 0; i < Count; i++) action(new(ref Data1[i]), new(ref Data2[i]));
     }
+
+    public void Old(ComponentActionWRo<C1, C2> action)
+    {
+        for (var i = 0; i < Count; i++) action(ref Data1[i], ref Data2[i]);
+    }
 }
 
 internal delegate void ComponentActionRead<C0, C1>(in C0 comp0, in C1 comp1);
+internal delegate void ComponentActionWRo<C0, C1>(ref C0 comp0, ref readonly C1 comp1);
 
 file delegate void ComponentActionER<C0>([In] Entity entity, R<C0> comp0) where C0 : notnull;
 file delegate void ComponentActionEW<C0>([In] Entity entity, RW<C0> comp0) where C0 : notnull;
 file delegate void ComponentActionW<C0>(RW<C0> comp0) where C0 : notnull;
+
 file delegate void ComponentActionR<C0>(R<C0> comp0) where C0 : notnull;
 internal delegate void ComponentActionEWW<C0, C1>([In] EntityRef entity, RW<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionEWR<C0, C1>([In] EntityRef entity, RW<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;

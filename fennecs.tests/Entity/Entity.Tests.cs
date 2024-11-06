@@ -243,7 +243,62 @@ public class EntityTests(ITestOutputHelper output)
         Assert.False(entity.Has<float>(Match.Entity));
     }
 
+    [Fact]
+    public void Can_Read_Component_as_RW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
 
+        var component = entity.RW<int>();
+        
+        Assert.Equal(123, component.read);
+    }
+
+    
+    [Fact]
+    public void Can_Write_Component_as_RW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(0);
+
+        var component = entity.RW<int>();
+
+        component.write = 321;
+        Assert.Equal(321, entity.Ref<int>());
+
+        component.write += 123;
+        Assert.Equal(444, entity.Ref<int>());
+    }
+
+    
+    [Fact]
+    public void Can_Consume_Component_as_RW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(789);
+        
+        var component = entity.RW<int>();
+        Assert.Equal(789, component.consume);
+        Assert.False(entity.Has<int>());
+    }
+
+    
+    [Fact]
+    public void Can_Consume_Component_as_RW_Directly()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(789);
+        
+        var value = entity.RW<int>().consume;
+        Assert.Equal(789, value);
+        Assert.False(entity.Has<int>());
+    }
+
+    
     [Fact]
     public void Can_Get_Component_as_Ref()
     {
@@ -256,6 +311,15 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(456, entity.Ref<int>());
     }
 
+    [Fact]
+    public void Cannot_Get_Missing_Component_as_RW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        Assert.Throws<InvalidOperationException>(() => entity.RW<int>());
+    }
+
+    
     [Fact]
     public void Cannot_Get_Missing_Component_as_Ref()
     {

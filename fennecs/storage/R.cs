@@ -3,9 +3,9 @@ namespace fennecs.storage;
 /// <summary>
 /// Read-only access to a component.
 /// </summary>
-public readonly ref struct R<T>(ref T val) where T : notnull
+public readonly ref struct R<T>(ref readonly T val) where T : notnull
 {
-    private readonly ref T _value = ref val;
+    private readonly ref readonly T _value = ref val;
     
     /// <summary>
     /// Read access to the component's value.

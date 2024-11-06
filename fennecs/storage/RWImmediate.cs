@@ -1,14 +1,16 @@
-﻿using System.Runtime.InteropServices;
-using fennecs.events;
+﻿using fennecs.events;
 
 namespace fennecs.storage;
 
 /// <summary>
 /// Read-write access to a component.
 /// </summary>
-public readonly ref struct RW<T>(ref T value, ref readonly Entity entity) where T : notnull
+/// <remarks>
+/// This is a specialized version of <see cref="RW{T}"/> to meed the needs of <see cref="fennecs.Entity.RW{C}"/>
+/// </remarks>
+public readonly ref struct RWImmediate<T>(ref T value, Entity entity) where T : notnull
 {
-    private readonly ref readonly Entity _entity = ref entity;
+    private readonly Entity _entity = entity;
     private readonly ref T _value = ref value;
 
     /// <summary>

@@ -2,6 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using fennecs.CRUD;
+using fennecs.storage;
 
 namespace fennecs;
 
@@ -76,7 +77,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Match match) where C : struct => ref _world.GetComponent<C>(this, match);
+    public ref C Ref<C>(Match match = default) where C : notnull => ref _world.GetComponent<C>(this, match);
 
     /// <summary>
     /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the entity.
@@ -88,6 +89,12 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
     public ref L Ref<L>(Link<L> link) where L : class => ref _world.GetComponent<L>(this, link);
+    
+    /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
+    public RWImmediate<C> RW<C>(Match match = default) where C : notnull
+    {
+        return new(ref _world.GetComponent<C>(this, match), this);
+    }
 
 
     /// <inheritdoc />
@@ -95,9 +102,9 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
 
     /// <inheritdoc cref="Add{R}(R,fennecs.Entity)"/>
-    public Entity Add<R>(R value, Entity relation) where R : notnull
+    public Entity Add<CR>(CR value, Entity relation) where CR : notnull
     {
-        _world.AddComponent(Id, TypeExpression.Of<R>(relation), value);
+        _world.AddComponent(Id, TypeExpression.Of<CR>(relation), value);
         return this;
     }
 
@@ -252,9 +259,6 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     public bool Has(Type type, Match match) => _world.HasComponent(this, TypeExpression.Of(type, match));
     
     
-    /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
-    public ref C Ref<C>() => ref _world.GetComponent<C>(this, Match.Plain);
-
 
     /// <inheritdoc />
     public bool Get([MaybeNullWhen(false)] out object value, Type type, Match match = default)
