@@ -257,6 +257,25 @@ public class EntityTests(ITestOutputHelper output)
 
     
     [Fact]
+    public void Can_Read_Relation_as_RW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        
+        var other = world.Spawn();
+        var third = world.Spawn();
+        entity.Add(123, other);
+        entity.Add(345, third);
+
+        var component1 = entity.RW<int>(other);
+        Assert.Equal(123, component1.read);
+
+        var component2 = entity.RW<int>(third);
+        Assert.Equal(345, component2.read);
+    }
+
+    
+    [Fact]
     public void Can_Write_Value_Component_as_RW()
     {
         using var world = new World();
@@ -344,8 +363,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.False(entity.Has<int>());
     }
 
-
-
+    
     
     [Fact]
     public void Can_Get_Component_as_Ref()
@@ -365,6 +383,18 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         Assert.Throws<InvalidOperationException>(() => entity.RW<int>());
+    }
+
+    
+    [Fact]
+    public void Cannot_Get_Missing_Relation_as_RW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+
+        var target = world.Spawn();
+        Assert.Throws<InvalidOperationException>(() => entity.RW<int>(target));
     }
 
     

@@ -102,9 +102,9 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
 
     /// <inheritdoc cref="Add{R}(R,fennecs.Entity)"/>
-    public Entity Add<CR>(CR value, Entity relation) where CR : notnull
+    public Entity Add<CR>(CR component, Entity relation) where CR : notnull
     {
-        _world.AddComponent(Id, TypeExpression.Of<CR>(relation), value);
+        _world.AddComponent(Id, TypeExpression.Of<CR>(relation), component);
         return this;
     }
 
@@ -135,10 +135,10 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// <summary>
     /// Adds a Plain Component of a specific type, with specific data, to the current entity. 
     /// </summary>
-    /// <param name="data">The data associated with the relation.</param>
+    /// <param name="component">The data associated with the relation.</param>
     /// <typeparam name="T">Any value or reference component type.</typeparam>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
-    public Entity Add<T>(T data) where T : notnull => Add(data, default);
+    public Entity Add<T>(T component) where T : notnull => Add(component, default);
 
 
     /// <summary>

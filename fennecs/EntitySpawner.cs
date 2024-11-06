@@ -71,10 +71,10 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     
     
     /// <inheritdoc />
-    public EntitySpawner Add<R>(R value, Entity relation) where R : notnull
+    public EntitySpawner Add<R>(R component, Entity relation) where R : notnull
     {
         var type = TypeExpression.Of<R>(relation);
-        return AddComponent(type, value);
+        return AddComponent(type, component);
     }
     
     

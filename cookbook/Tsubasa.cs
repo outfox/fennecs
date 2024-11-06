@@ -20,14 +20,14 @@ foreach (var name in names)
     world.Spawn()
         .Add<Player>()
         .Add(name)
-        .Add<Talent>(data: false)
+        .Add<Talent>(component: false)
         .Add<Position>(RandomRadius(radius: 25));
 
 // Meet our Star!
 world.Spawn()
     .Add<Player>()
     .Add("Tsubasa")
-    .Add<Talent>(data: true)
+    .Add<Talent>(component: true)
     .Add<Position>(new Vector2(x: 0, y: 50));
 
 

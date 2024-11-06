@@ -15,7 +15,7 @@ public interface IAddRemove<out SELF>
     /// Add a Plain component with value of type C to the entity/entities.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Add<C>(C value) where C : notnull;
+    public SELF Add<C>(C component) where C : notnull;
 
     /// <summary>
     /// Add a newable Relation component backed by a value of type R to the entity/entities. (default value)
@@ -27,7 +27,7 @@ public interface IAddRemove<out SELF>
     /// Add a Relation component backed by a value of type R to the entity/entities.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Add<R>(R value, Entity relation) where R : notnull;
+    public SELF Add<R>(R component, Entity relation) where R : notnull;
 
 
     /// <summary>

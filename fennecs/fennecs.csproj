@@ -21,7 +21,7 @@
         <PackageTags>ecs, entity, component, system, game, gamedev, game-development, godot, monogame, flax, stride, entity-component, entity-component-system</PackageTags>
         <TargetFramework>net8.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <LangVersion>default</LangVersion>
+        <LangVersion>13</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
         <Configurations>Debug;Release</Configurations>
         <DebugType>embedded</DebugType>
