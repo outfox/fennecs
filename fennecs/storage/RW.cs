@@ -6,9 +6,10 @@ namespace fennecs.storage;
 /// <summary>
 /// Read-write access to a component.
 /// </summary>
-public readonly ref struct RW<T>(ref T value, ref readonly Entity entity) where T : notnull
+public readonly ref struct RW<T>(ref T value, ref readonly Entity entity, ref readonly Match match) where T : notnull
 {
     private readonly ref readonly Entity _entity = ref entity;
+    private readonly ref readonly Match _match = ref match;
     private readonly ref T _value = ref value;
 
     /// <summary>
@@ -62,8 +63,16 @@ public readonly ref struct RW<T>(ref T value, ref readonly Entity entity) where 
             T copy = _value;
             // Remove<T> usually moves another entity into the slot of the removed one in immediate mode
             // The structural change is so expensive that it's not worth optimizing this getter further.
-            _entity.Remove<T>(); 
+            _entity.Remove<T>(_match); 
             return copy;
         }
+    }
+    
+    /// <summary>
+    /// Removes the component from the entity.
+    /// </summary>
+    public void Remove()
+    {
+        _entity.Remove<T>(_match);
     }
 }

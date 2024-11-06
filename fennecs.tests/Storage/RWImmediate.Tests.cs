@@ -11,7 +11,7 @@ public class RWImmediateTests
         var entity = world.Spawn();
         
         var x = 1;
-        var rw = new RWImmediate<int>(ref x, entity);
+        var rw = new RWImmediate<int>(ref x, entity, default);
         
         Assert.Equal(1, rw.read);
     }
@@ -25,7 +25,7 @@ public class RWImmediateTests
         var x = 1;
         
         // ReSharper disable once UseObjectOrCollectionInitializer
-        var rw = new RWImmediate<int>(ref x, entity);
+        var rw = new RWImmediate<int>(ref x, entity, default);
         rw.write = 2; // user usually does not use initializer code
         
         Assert.Equal(2, rw.read);
@@ -40,7 +40,7 @@ public class RWImmediateTests
         var x = 77; // TODO: Implement this on the actual component
         entity.Add(x);
 
-        var rw = new RWImmediate<int>(ref x, entity);
+        var rw = new RWImmediate<int>(ref x, entity, default);
         
         Assert.Equal(77, rw.consume);
         Assert.False(entity.Has<int>());

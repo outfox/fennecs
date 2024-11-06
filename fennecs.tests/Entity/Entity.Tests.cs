@@ -257,7 +257,7 @@ public class EntityTests(ITestOutputHelper output)
 
     
     [Fact]
-    public void Can_Write_Component_as_RW()
+    public void Can_Write_Value_Component_as_RW()
     {
         using var world = new World();
         var entity = world.Spawn();
@@ -272,6 +272,39 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(444, entity.Ref<int>());
     }
 
+    
+    [Fact]
+    public void Can_Write_Ref_Component_as_RW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(new List<int>());
+
+        var component = entity.RW<List<int>>();
+
+        component.write = [420];
+        Assert.Equal([420], entity.Ref<List<int>>());
+
+        component.write.Add(69);
+        Assert.Equal([420, 69], entity.Ref<List<int>>());
+    }
+
+    
+    [Fact]
+    public void Can_Write_Component_as_RW_Directly()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(0);
+
+
+        entity.RW<int>().write = 321;
+        Assert.Equal(321, entity.Ref<int>());
+
+        entity.RW<int>().write += 123;
+        Assert.Equal(444, entity.Ref<int>());
+    }
+    
     
     [Fact]
     public void Can_Consume_Component_as_RW()
@@ -297,6 +330,21 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(789, value);
         Assert.False(entity.Has<int>());
     }
+
+    
+    [Fact]
+    public void Can_Remove_Component_as_RW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(789);
+        
+        var component = entity.RW<int>();
+        component.Remove();
+        Assert.False(entity.Has<int>());
+    }
+
+
 
     
     [Fact]

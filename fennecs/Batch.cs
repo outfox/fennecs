@@ -106,7 +106,7 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     public Batch Add<T>(Entity target) where T : notnull, new() => AddComponent<T>(new(), target);
     
     /// <inheritdoc />
-    public Batch Remove<T>() where T : notnull => RemoveComponent<T>(Match.Plain);
+    public Batch Remove<T>(Match match = default) where T : notnull => RemoveComponent<T>(match);
 
     /// <inheritdoc />
     public Batch Remove<R>(Entity relation) where R : notnull => RemoveComponent<R>(relation);

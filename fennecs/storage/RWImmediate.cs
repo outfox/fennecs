@@ -8,7 +8,7 @@ namespace fennecs.storage;
 /// <remarks>
 /// This is a specialized version of <see cref="RW{T}"/> to meed the needs of <see cref="fennecs.Entity.RW{C}"/>
 /// </remarks>
-public readonly ref struct RWImmediate<T>(ref T value, Entity entity) where T : notnull
+public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Match match) where T : notnull
 {
     private readonly Entity _entity = entity;
     private readonly ref T _value = ref value;
@@ -64,8 +64,14 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity) where T : 
             T copy = _value;
             // Remove<T> usually moves another entity into the slot of the removed one in immediate mode
             // The structural change is so expensive that it's not worth optimizing this getter further.
-            _entity.Remove<T>(); 
+            _entity.Remove<T>(match); 
             return copy;
         }
     }
+
+    /// <summary>
+    /// Removes the component from the entity.
+    /// </summary>
+    /// <inheritdoc cref="Entity.Remove{C}()"/>
+    public void Remove() => _entity.Remove<T>(match);
 }

@@ -91,9 +91,9 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     /// Removes the plain component of the given type from the Spawner.
     /// </summary>
     /// <returns>EntitySpawner (fluent interface)</returns>
-    public EntitySpawner Remove<T>() where T : notnull
+    public EntitySpawner Remove<T>(Match match = default) where T : notnull
     {
-        var type = Comp<T>.Plain.Expression;
+        var type = Comp<T>.Matching(match).Expression;
         return RemoveComponent(type);
     }
 

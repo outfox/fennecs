@@ -40,7 +40,7 @@ public interface IAddRemove<out SELF>
     /// Remove a Plain component of type C from the entity/entities.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Remove<C>() where C : notnull;
+    public SELF Remove<C>(Match match = default) where C : notnull;
 
     /// <summary>
     /// Remove a Relation component of type R with the specified relation from the entity/entities.

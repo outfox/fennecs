@@ -93,7 +93,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// <inheritdoc cref="Ref{C}(fennecs.Match)"/>
     public RWImmediate<C> RW<C>(Match match = default) where C : notnull
     {
-        return new(ref _world.GetComponent<C>(this, match), this);
+        return new(ref _world.GetComponent<C>(this, match), this, match);
     }
 
 
@@ -146,9 +146,9 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// </summary>
     /// <typeparam name="C">The type of the Component to be removed.</typeparam>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
-    public Entity Remove<C>() where C : notnull
+    public Entity Remove<C>(Match match = default) where C : notnull
     {
-        _world.RemoveComponent(Id, TypeExpression.Of<C>(Match.Plain));
+        _world.RemoveComponent(Id, TypeExpression.Of<C>(match));
         return this;
     }
 
