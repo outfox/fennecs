@@ -10,12 +10,15 @@ namespace Benchmark.Conceptual;
 [ShortRunJob]
 public class CollectionsBenchmarks
 {
-    [Params(1000)]
+    [Params(100, 1_000)]
     public int CollectionSize { get; set; }
 
     [Params(1, 2, 10, 100)]
     public int MissRatio { get; set; }
 
+    [Params(1_000_000)]
+    public int Attempts { get; set; }
+    
     private List<int> _list = null!;
     private SortedList<int, int> _sortedList = null!;
     private ImmutableList<int> _immutableList = null!;
@@ -35,8 +38,6 @@ public class CollectionsBenchmarks
     [GlobalSetup]
     public void SetUp()
     {
-        _random = new(69);
-
         _list = Enumerable.Range(0, CollectionSize).ToList();
         _immutableList = Enumerable.Range(0, CollectionSize).ToImmutableList();
         _sortedList = new();
@@ -47,11 +48,11 @@ public class CollectionsBenchmarks
         _frozenSet = Enumerable.Range(0, CollectionSize).ToFrozenSet();
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public bool LookupList()
     {
         var found = false;
-        for (var i = 0; i < CollectionSize; i++)
+        for (var i = 0; i < Attempts; i++)
             found ^= _list.Contains(_random.Next(CollectionSize * MissRatio));
         return found;
     }
@@ -60,7 +61,7 @@ public class CollectionsBenchmarks
     public bool LookupImmutableList()
     {
         var found = false;
-        for (var i = 0; i < CollectionSize; i++)
+        for (var i = 0; i < Attempts; i++)
             found ^= _immutableList.Contains(_random.Next(CollectionSize * MissRatio));
         return found;
     }
@@ -69,16 +70,16 @@ public class CollectionsBenchmarks
     public bool LookupSortedList()
     {
         var found = false;
-        for (var i = 0; i < CollectionSize; i++)
+        for (var i = 0; i < Attempts; i++)
             found ^= _sortedList.ContainsKey(_random.Next(CollectionSize * MissRatio));
         return found;
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public bool LookupHashSet()
     {
         var found = false;
-        for (var i = 0; i < CollectionSize; i++)
+        for (var i = 0; i < Attempts; i++)
             found ^= _hashSet.Contains(_random.Next(CollectionSize * MissRatio));
         return found;
     }
@@ -87,7 +88,7 @@ public class CollectionsBenchmarks
     public bool LookupImmutableSet()
     {
         var found = false;
-        for (var i = 0; i < CollectionSize; i++)
+        for (var i = 0; i < Attempts; i++)
             found ^= _immutableSet.Contains(_random.Next(CollectionSize * MissRatio));
         return found;
     }
@@ -96,7 +97,7 @@ public class CollectionsBenchmarks
     public bool LookupImmutableSortedSet()
     {
         var found = false;
-        for (var i = 0; i < CollectionSize; i++)
+        for (var i = 0; i < Attempts; i++)
             found ^= _immutableSortedSet.Contains(_random.Next(CollectionSize * MissRatio));
         return found;
     }
@@ -105,7 +106,7 @@ public class CollectionsBenchmarks
     public bool LookupFrozenSet()
     {
         var found = false;
-        for (var i = 0; i < CollectionSize; i++)
+        for (var i = 0; i < Attempts; i++)
             found ^= _frozenSet.Contains(_random.Next(CollectionSize * MissRatio));
         return found;
     }
