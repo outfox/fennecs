@@ -45,4 +45,13 @@ public interface Modified<C> where C : notnull
         Entities?.Invoke(entities);
         Values?.Invoke(entities, original, updated);
     }
+
+    /// <summary>
+    /// For testing purposes, clears the event handlers.
+    /// </summary>
+    internal static void Clear()
+    {
+        Entities = null;
+        Values = null;
+    }
 }

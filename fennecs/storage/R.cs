@@ -15,5 +15,5 @@ public readonly ref struct R<T>(ref readonly T val) where T : notnull
     /// <summary>
     /// Implicitly casts a <see cref="R{T}"/> to its underlying value.
     /// </summary>
-   public static implicit operator T(R<T> self) => self._value;
+    public static implicit operator T(R<T> self) => self._value;
 }

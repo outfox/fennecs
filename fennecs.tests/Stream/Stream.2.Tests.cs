@@ -6,6 +6,67 @@ namespace fennecs.tests.Stream;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Stream2Tests(ITestOutputHelper output)
 {
+    [Fact] public void Can_Use_RW_Inferred()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123).Add(890f);
+
+        var stream = world.Stream<int, float>();
+
+        stream.For(static (a, b) => {
+            Assert.Equal(123, a.read);
+            Assert.Equal(890f, b.read);
+            b.write = 456f;
+        });
+    }
+    
+    [Fact] public void Can_Use_WR_Inferred()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123).Add(890f);
+
+        var stream = world.Stream<int, float>();
+
+        stream.For(static (a, b) => {
+            Assert.Equal(123, a.read);
+            Assert.Equal(890f, b.read);
+        });
+    }
+    
+    [Fact] public void Can_Use_WW_Inferred()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123).Add(890f);
+
+        var stream = world.Stream<int, float>();
+
+        stream.For(static (a, b) => 
+        {
+            Assert.Equal(123, a.read);
+            Assert.Equal(890f, b.read);
+            a.write = 456;
+            b.write = 789f;
+        });
+    }
+
+    [Fact] public void Can_Use_RR_Inferred()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123).Add(890f);
+
+        var stream = world.Stream<int, float>();
+
+        stream.For(static (a, b) =>
+        {
+            Assert.Equal(123, a.read);
+            Assert.Equal(890f, b.read);
+        });
+    }
+
     [Fact]
     public void Can_Enumerate_Stream()
     {

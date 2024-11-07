@@ -26,7 +26,7 @@ public readonly ref struct RW<T>(ref T value, ref readonly Entity entity, ref re
         set
         {
             // Optimizes away the write and null checks if it's not modifiable.
-            if (typeof(T).IsAssignableFrom(typeof(Modified<T>)))
+            if (typeof(Modified<T>).IsAssignableFrom(typeof(T)))
             {
                 var original = _value;
                 _value = value;
@@ -35,7 +35,8 @@ public readonly ref struct RW<T>(ref T value, ref readonly Entity entity, ref re
                 //_writtenEntities?.Add(_entity);
                 //_writtenOriginals?.Add(original);
                 //_writtenUpdates?.Add(value);
-                
+
+                Modified<T>.Clear();
                 // TODO: Handle this in the outer scope, where the lists come from.
                 Modified<T>.Invoke([_entity], [original], [value]);
             }
@@ -75,4 +76,9 @@ public readonly ref struct RW<T>(ref T value, ref readonly Entity entity, ref re
     {
         _entity.Remove<T>(_match);
     }
+    
+    /// <summary>
+    /// Implicitly casts a <see cref="RW{T}"/> to its underlying value.
+    /// </summary>
+    public static implicit operator T(RW<T> self) => self._value;
 }

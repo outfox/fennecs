@@ -17,12 +17,12 @@ public class EventConceptTests
         }
     }
 
-    public interface IValue<T>
+    private interface IValue<T>
     {
         T Value { get; set; }
     }
 
-    public interface IModified<in C>
+    private interface IModified<in C>
     {
         static void Modified(C value)
         {
@@ -38,7 +38,7 @@ public class EventConceptTests
         }
     }
 
-    public record struct TestComponent(int Value) :
+    private record struct TestComponent(int Value) :
         IValue<int>,
         IAdded<TestComponent>,
         IModified<TestComponent>,

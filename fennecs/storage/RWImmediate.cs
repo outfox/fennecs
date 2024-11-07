@@ -27,7 +27,7 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Match matc
         set
         {
             // Optimizes away the write and null checks if it's not modifiable.
-            if (typeof(T).IsAssignableFrom(typeof(Modified<T>)))
+            if (typeof(Modified<T>).IsAssignableFrom(typeof(T)))
             {
                 var original = _value;
                 _value = value;

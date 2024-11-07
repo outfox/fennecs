@@ -13,4 +13,13 @@ public class RTests
         
         Assert.Equal(1, rw.read);
     }
+    
+    [Fact]
+    public void Implicitly_Casts_to_Value()
+    {
+        var x = 1;
+        var r = new R<int>(ref x);
+        
+        Assert.Equal(1, r);
+    }
 }

@@ -1,4 +1,5 @@
-﻿using fennecs.storage;
+﻿using fennecs.events;
+using fennecs.storage;
 
 namespace fennecs.tests.Storage;
 
@@ -15,6 +16,19 @@ public class RWTests
         var rw = new RW<int>(ref x, ref entity, ref match);
         
         Assert.Equal(1, rw.read);
+    }
+
+    [Fact]
+    public void Implicitly_Casts_to_Value()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        
+        var x = 1;
+        var match = default(Match);
+        var rw = new RW<int>(ref x, ref entity, ref match);
+        
+        Assert.Equal(1, rw);
     }
 
     [Fact]
@@ -100,5 +114,89 @@ public class RWTests
         
         entity.RW<int>(match).Remove();
         Assert.False(entity.Has<int>(match));
+    }
+    
+    
+    private struct Type69 : Modified<Type69>;
+
+    [Fact]
+    public void Triggers_Entities_on_Modified_Value()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(new Type69());
+
+        var match = default(Match);
+        var rw = entity.RW<Type69>(match);
+
+        var modified = false;
+        
+        Modified<Type69>.Entities += entities =>
+        {
+            Assert.Equal(1, entities.Length);
+            Assert.Equal(entity, entities[0]);
+            modified = true;
+        };
+        
+        rw.write = new();
+        Assert.True(modified);
+        
+        Modified<Type69>.Clear();
+    }
+
+    private class Type42 : Modified<Type42>;
+
+    [Fact]
+    public void Triggers_Entities_on_Modified_Reference()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(new Type42());
+
+        var match = default(Match);
+        var rw = entity.RW<Type42>(match);
+
+        var modified = false;
+        
+        Modified<Type42>.Entities += entities =>
+        {
+            Assert.Equal(1, entities.Length);
+            Assert.Equal(entity, entities[0]);
+            modified = true;
+        };
+        
+        rw.write = new();
+        Assert.True(modified);
+
+        Modified<Type42>.Clear();
+    }
+
+    [Fact]
+    public void Triggers_Values_on_Modified_Reference()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var original = new Type42();
+        entity.Add(original);
+
+        var match = default(Match);
+        var rw = entity.RW<Type42>(match);
+
+        var modified = false;
+        var updated = new Type42();
+        
+        Modified<Type42>.Values += (entities, originals, updateds) =>
+        {
+            Assert.Equal(1, entities.Length);
+            Assert.Equal(entity, entities[0]);
+            Assert.Equal(original, originals[0]);
+            Assert.Equal(updated, updateds[0]);
+            modified = true;
+        };
+        
+        rw.write = updated;
+        Assert.True(modified);
+        
+        Modified<Type42>.Clear();
     }
 }

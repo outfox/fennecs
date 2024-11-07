@@ -38,8 +38,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// Does this Archetype currently contain no Entities?
     /// </summary>
     public bool IsEmpty => Count == 0;
-    
-    
+
+    public ReadOnlySpan<Identity> Span => IdentityStorage.Span;
+
+
     /// <summary>
     /// The World this Archetype is a part of.
     /// </summary>
