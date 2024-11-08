@@ -3,7 +3,7 @@
 /// <summary>
 /// Entity-Like objects and references that allow adding, removing, cloning, and despawning.
 /// </summary>
-public interface IEntity : IAddRemove<Entity>
+public interface IEntity : IAddRemove<Entity>, IEquatable<Entity>
 {
     /// <summary>
     /// Despawn the Entity.

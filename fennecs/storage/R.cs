@@ -6,6 +6,8 @@ namespace fennecs.storage;
 public readonly ref struct R<T>(ref readonly T val) where T : notnull
 {
     private readonly ref readonly T _value = ref val;
+
+    //public Match Match => default;
     
     /// <summary>
     /// Read access to the component's value.

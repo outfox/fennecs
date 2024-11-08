@@ -69,7 +69,7 @@ public class Stream2Tests(ITestOutputHelper output)
         });
     }
 
-    [Fact] public void Can_Use_WW_With_Different_Types()
+    [Fact] public void Can_Use_WW_With_Different_Targets()
     {
         using var world = new World();
         var entity = world.Spawn();
@@ -94,6 +94,80 @@ public class Stream2Tests(ITestOutputHelper output)
             Assert.Equal(456, b.write);
             Assert.Equal(a.Match, target);
             Assert.Equal(b.Match, default);
+        });
+    }
+
+    [Fact]
+    public void Can_Use_EWW()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var target = world.Spawn();
+        entity.Add(123, target).Add(456);
+
+        var stream = world.Stream<int, int>(target, default);
+
+        stream.For((e, a, b) =>
+        {
+            Assert.Equal(123, a.write);
+            Assert.Equal(456, b.write);
+            Assert.Equal(a.Match, target);
+            Assert.Equal(b.Match, default);
+
+            Assert.True(e.Equals(entity));
+            Assert.True(e == entity);
+            Assert.True(entity == e);
+            Assert.Equal(e, entity);
+        });
+
+        var swapped = world.Stream<int, int>(default,target);
+
+        swapped.For((e, b, a) =>
+        {
+            Assert.Equal(123, a.write);
+            Assert.Equal(456, b.write);
+            Assert.Equal(a.Match, target);
+            Assert.Equal(b.Match, default);
+
+            Assert.True(e.Equals(entity));
+            Assert.True(e == entity);
+            Assert.True(entity == e);
+            Assert.Equal(e, entity);
+        });
+    }
+
+    [Fact]
+    public void Can_Use_ERR()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var target = world.Spawn();
+        entity.Add(123, target).Add(456);
+
+        var stream = world.Stream<int, int>(target, default);
+
+        stream.For((e, a, b) =>
+        {
+            Assert.Equal(123, a.read);
+            Assert.Equal(456, b.read);
+
+            Assert.True(e.Equals(entity));
+            Assert.True(e == entity);
+            Assert.True(entity == e);
+            Assert.Equal(e, entity);
+        });
+
+        var swapped = world.Stream<int, int>(default,target);
+
+        swapped.For((e, b, a) =>
+        {
+            Assert.Equal(123, a.read);
+            Assert.Equal(456, b.read);
+
+            Assert.True(e.Equals(entity));
+            Assert.True(e == entity);
+            Assert.True(entity == e);
+            Assert.Equal(e, entity);
         });
     }
 

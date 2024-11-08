@@ -13,6 +13,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <LangVersion>preview</LangVersion>
+        <PublishAot>true</PublishAot>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -28,9 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
-      <PackageReference Include="BenchmarkDotNet.Annotations" Version="0.14.0" />
-      <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.14.0" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.14.1-nightly.20241107.194" />
     </ItemGroup>
 
 </Project>

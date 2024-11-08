@@ -1,4 +1,5 @@
-﻿using fennecs.CRUD;
+﻿using System.Runtime.CompilerServices;
+using fennecs.CRUD;
 
 namespace fennecs.storage;
 
@@ -9,18 +10,15 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 {
     private readonly ref readonly Entity _entity = ref entity;
     
+    /// <inheritdoc />
+    public bool Equals(Entity other) => _entity.Equals(other);
+
     /// <summary>
     /// Implicitly casts a <see cref="EntityRef"/> to its underlying <see cref="fennecs.Entity"/>.
     /// (to store or compare with other Entities)
     /// </summary>
     public static implicit operator Entity(EntityRef self) => self._entity;
     
-    /// <summary>
-    /// Implicitly casts a <see cref="EntityRef"/> to its underlying <see cref="fennecs.Entity"/>.
-    /// (to store or compare with other Entities)
-    /// </summary>
-    public static implicit operator EntityRef(in Entity entity) => new(in entity);
-
     /// <inheritdoc />
     public Entity Add<C>() where C : notnull, new() => _entity.Add<C>();
 

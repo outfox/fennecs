@@ -20,7 +20,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     #region Component Stream.For
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b00)]
+    [OverloadResolutionPriority(0b_0000_0000)]
     public void For(ComponentActionWW<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -50,7 +50,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b01)]
+    [OverloadResolutionPriority(0b_0000_0001)]
     public void For(ComponentActionWR<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -80,7 +80,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b10)]
+    [OverloadResolutionPriority(0b_0000_0010)]
     public void For(ComponentActionRW<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -111,7 +111,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b11)]
+    [OverloadResolutionPriority(0b_0000_0011)]
     public void For(ComponentActionRR<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -144,7 +144,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     #region Entity Stream.For
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b00)]
+    [OverloadResolutionPriority(0b_0001_0000)]
     public void For(EntityComponentActionWW<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -176,7 +176,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b01)]
+    [OverloadResolutionPriority(0b_0001_0001)]
     public void For(EntityComponentActionWR<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -208,7 +208,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b10)]
+    [OverloadResolutionPriority(0b_0001_0010)]
     public void For(EntityComponentActionRW<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -240,7 +240,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b11)]
+    [OverloadResolutionPriority(0b_0001_0011)]
     public void For(EntityComponentActionRR<C0, C1> action)
     {
         using var worldLock = World.Lock();

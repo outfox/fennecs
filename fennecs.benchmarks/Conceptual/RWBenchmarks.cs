@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
 using fennecs;
 using fennecs.events;
 using fennecs.pools;
@@ -64,7 +65,9 @@ record struct MyVector(in Vector3 value) : Fox<Vector3>
     }
 }
 
-[ShortRunJob]
+//[ShortRunJob(RuntimeMoniker.Mono)]
+[ShortRunJob(RuntimeMoniker.Net90)]
+[ShortRunJob(RuntimeMoniker.NativeAot90)]
 public class RWBenchmarks
 {
     [Params(1_000)]
@@ -175,7 +178,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void New(ComponentActionEWR<C1, C2> action)
     {
-        var match = default(Match);
+        var match = default(TypeExpression);
         for (var i = 0; i < Count; i++) action(new(ref entities[i]), new(ref Data1[i], ref entities[i], ref match), new(ref Data2[i]));
     }
     public void Old(EntityComponentAction<C1, C2> action)
@@ -191,7 +194,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(0)]
     public void New(ComponentActionWW<C1, C2> action)
     {
-        var match = default(Match);
+        var match = default(TypeExpression);
         for (var i = 0; i < Count; i++)
         {
             action(new(ref Data1[i], ref entities[i], ref match), new(ref Data2[i], ref entities[i], ref match));
@@ -200,7 +203,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(1)]
     public void New(ComponentActionRW<C1, C2> action)
     {
-        var match = Match.Any;
+        var match = TypeExpression.Of<C2>(Match.Any);
         for (var i = 0; i < Count; i++)
         {
             var ref1 = new R<C1>(ref Data1[i]);
@@ -212,7 +215,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(1)]
     public void New(ComponentActionWR<C1, C2> action)
     {
-        var match = default(Match);
+        var match = default(TypeExpression);
         for (var i = 0; i < Count; i++)
         {
             var ref1 = new RW<C1>(ref Data1[i], ref entities[i], in match);
@@ -224,7 +227,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(2)]
     public void NewRo(ComponentActionWR<C1, C2> action)
     {
-        var match = Match.Any;
+        var match = TypeExpression.Of<C1>(Match.Any);
         for (var i = 0; i < Count; i++)
         {
             var ref1 = new RW<C1>(ref Data1[i], ref entities[i], ref match);
