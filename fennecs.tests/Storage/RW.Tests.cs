@@ -12,8 +12,8 @@ public class RWTests
         var entity = world.Spawn();
         
         var x = 1;
-        var match = default(Match);
-        var rw = new RW<int>(ref x, ref entity, ref match);
+        var type = TypeExpression.Of<int>(default);
+        var rw = new RW<int>(ref x, ref entity, ref type);
         
         Assert.Equal(1, rw.read);
     }
@@ -25,8 +25,8 @@ public class RWTests
         var entity = world.Spawn();
         
         var x = 1;
-        var match = default(Match);
-        var rw = new RW<int>(ref x, ref entity, ref match);
+        var type = TypeExpression.Of<int>(default);
+        var rw = new RW<int>(ref x, ref entity, ref type);
         
         Assert.Equal(1, rw);
     }
@@ -39,9 +39,9 @@ public class RWTests
         
         var x = 1;
         
-        var match = default(Match);
+        var type = TypeExpression.Of<int>(default);
         // ReSharper disable once UseObjectOrCollectionInitializer
-        var rw = new RW<int>(ref x, ref entity, ref match);
+        var rw = new RW<int>(ref x, ref entity, ref type);
         rw.write = 2; // user usually does not use initializer code
         
         Assert.Equal(2, rw.read);
@@ -56,8 +56,8 @@ public class RWTests
         var x = 77; // TODO: Implement this on the actual component
         entity.Add(x);
 
-        var match = default(Match);
-        var rw = new RW<int>(ref x, ref entity, ref match);
+        var type = TypeExpression.Of<int>(default);
+        var rw = new RW<int>(ref x, ref entity, ref type);
         
         Assert.Equal(77, rw.consume);
         Assert.False(entity.Has<int>());
@@ -73,13 +73,13 @@ public class RWTests
         var x = 77; // TODO: Implement this on the actual component
         entity.Add(x, target);
 
-        Match match = target;
-        Assert.True(entity.Has<int>(match));
+        var type = TypeExpression.Of<int>(target);
+        Assert.True(entity.Has<int>(target));
 
-        var rw = new RW<int>(ref x, ref entity, ref match);
+        var rw = new RW<int>(ref x, ref entity, ref type);
         
         Assert.Equal(77, rw.consume);
-        Assert.False(entity.Has<int>(match));
+        Assert.False(entity.Has<int>(target));
     }
 
     [Fact]
@@ -93,8 +93,9 @@ public class RWTests
 
         Assert.True(entity.Has<int>());
 
-        var plain = Match.Plain;
-        var rw = new RW<int>(ref x, ref entity, ref plain);
+        var type = TypeExpression.Of<int>(default);
+        
+        var rw = new RW<int>(ref x, ref entity, ref type);
         rw.Remove();
         Assert.False(entity.Has<int>());
     }

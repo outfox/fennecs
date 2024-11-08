@@ -1,16 +1,34 @@
-﻿using System.Runtime.InteropServices;
-using fennecs.events;
+﻿using fennecs.events;
 
 namespace fennecs.storage;
 
 /// <summary>
 /// Read-write access to a component.
 /// </summary>
-public readonly ref struct RW<T>(ref T value, ref readonly Entity entity, ref readonly Match match) where T : notnull
+public readonly ref struct RW<T> where T : notnull
 {
-    private readonly ref readonly Entity _entity = ref entity;
-    private readonly ref readonly Match _match = ref match;
-    private readonly ref T _value = ref value;
+    private readonly ref readonly Entity _entity;
+    private readonly ref readonly TypeExpression _expression;
+
+    private readonly ref T _value;
+
+    /// <summary>
+    /// Read-write access to a component.
+    /// </summary>
+    internal RW(ref T value, ref readonly Entity entity, ref readonly TypeExpression expression)
+    {
+        _entity = ref entity;
+        _expression = ref expression;
+        _value = ref value;
+    }
+
+    // TODO: Expose it publicly once TypeExpression is exposed.
+    internal TypeExpression Expression => _expression;
+
+    /// <summary>
+    /// The <see cref="Match"/> expression of this component.
+    /// </summary>
+    public Match Match => _expression.Match;
 
     /// <summary>
     /// Read access to the component's value.
@@ -64,7 +82,7 @@ public readonly ref struct RW<T>(ref T value, ref readonly Entity entity, ref re
             T copy = _value;
             // Remove<T> usually moves another entity into the slot of the removed one in immediate mode
             // The structural change is so expensive that it's not worth optimizing this getter further.
-            _entity.Remove<T>(_match); 
+            _entity.Remove<T>(_expression.Match); 
             return copy;
         }
     }
@@ -74,7 +92,7 @@ public readonly ref struct RW<T>(ref T value, ref readonly Entity entity, ref re
     /// </summary>
     public void Remove()
     {
-        _entity.Remove<T>(_match);
+        _entity.Remove<T>(_expression.Match);
     }
     
     /// <summary>

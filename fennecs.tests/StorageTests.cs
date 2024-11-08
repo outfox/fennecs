@@ -14,6 +14,13 @@ public class StorageTests
     }
 
     [Fact]
+    public void Storage_Retains_Expression()
+    {
+        Assert.Equal(TypeExpression.Of<ValueType>(default), new Storage<ValueType>(TypeExpression.Of<ValueType>(default)).Expression);
+        Assert.Equal(TypeExpression.Of<ReferenceType>(default), new Storage<ReferenceType>(TypeExpression.Of<ReferenceType>(default)).Expression);
+    }
+    
+    [Fact]
     public void Storage_Stores_Values()
     {
 #pragma warning disable CA1859
@@ -280,6 +287,7 @@ public class StorageTests
         var memory1 = storage.AsMemory();
         Assert.Equal(0, memory1.Length);
 
+        // ReSharper disable once RedundantArgumentDefaultValue
         storage.Append(1, 1);
         var memory2 = storage.AsMemory();
         Assert.Equal(1, memory2.Length);

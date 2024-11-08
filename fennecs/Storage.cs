@@ -1,5 +1,4 @@
 ﻿using System.Buffers;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -81,7 +80,7 @@ internal interface IStorage
     public static IStorage Instantiate(TypeExpression expression)
     {
         var storageType = typeof(Storage<>).MakeGenericType(expression.Type);
-        var instance = (IStorage) Activator.CreateInstance(storageType)!;
+        var instance = (IStorage) Activator.CreateInstance(storageType, expression)!;
         return instance;
     }
 
@@ -104,8 +103,12 @@ internal interface IStorage
 /// A front-end to System.Array for fast storage write and blit operations.
 /// </summary>
 /// <typeparam name="T">the type of the array elements</typeparam>
-internal class Storage<T> : IStorage
+internal class Storage<T>(TypeExpression expression) : IStorage
 {
+    public Storage() : this(TypeExpression.Of<T>(default)) { }
+    
+    public TypeExpression Expression { get; } = expression;
+    
     private const int InitialCapacity = 32;
         
     private static readonly ArrayPool<T> Pool = ArrayPool<T>.Create();

@@ -14,13 +14,14 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var stream = world.Stream<int, float>();
 
-        stream.For(static (a, b) => {
+        stream.For(static (a, b) =>
+        {
             Assert.Equal(123, a.read);
             Assert.Equal(890f, b.read);
             b.write = 456f;
         });
     }
-    
+
     [Fact] public void Can_Use_WR_Inferred()
     {
         using var world = new World();
@@ -29,12 +30,13 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var stream = world.Stream<int, float>();
 
-        stream.For(static (a, b) => {
+        stream.For(static (a, b) =>
+        {
             Assert.Equal(123, a.read);
             Assert.Equal(890f, b.read);
         });
     }
-    
+
     [Fact] public void Can_Use_WW_Inferred()
     {
         using var world = new World();
@@ -43,7 +45,7 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var stream = world.Stream<int, float>();
 
-        stream.For(static (a, b) => 
+        stream.For(static (a, b) =>
         {
             Assert.Equal(123, a.read);
             Assert.Equal(890f, b.read);
@@ -67,21 +69,49 @@ public class Stream2Tests(ITestOutputHelper output)
         });
     }
 
+    [Fact] public void Can_Use_WW_With_Different_Types()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        var target = world.Spawn();
+        entity.Add(123, target).Add(456);
+
+        var stream = world.Stream<int, int>(target, default);
+
+        stream.For((a, b) =>
+        {
+            Assert.Equal(123, a.write);
+            Assert.Equal(456, b.write);
+            Assert.Equal(a.Match, target);
+            Assert.Equal(b.Match, default);
+        });
+
+        var swapped = world.Stream<int, int>(default,target);
+
+        swapped.For((b, a) =>
+        {
+            Assert.Equal(123, a.write);
+            Assert.Equal(456, b.write);
+            Assert.Equal(a.Match, target);
+            Assert.Equal(b.Match, default);
+        });
+    }
+
     [Fact]
     public void Can_Enumerate_Stream()
     {
         using var world = new World();
         var arnold = world.Spawn().Add("Arnold").Add(1);
         var dolph = world.Spawn().Add("Dolph").Add(2);
-        
+
         List<(Entity, string, int)> list = [(arnold, "Arnold", 1), (dolph, "Dolph", 2)];
-        
+
         var stream = world.Stream<string, int>();
         foreach (var row in stream)
         {
             Assert.True(list.Remove(row));
         }
-        
+
         Assert.Empty(list);
     }
 
@@ -91,17 +121,18 @@ public class Stream2Tests(ITestOutputHelper output)
         using var world = new World();
         var arnold = world.Spawn().Add("Arnold").Add(1);
         var dolph = world.Spawn().Add("Dolph").Add(2);
-        
+
         List<object> list = [(arnold, "Arnold", 1), (dolph, "Dolph", 2)];
-        
+
         IEnumerable stream = world.Stream<string, int>();
         foreach (var row in stream)
         {
             Assert.True(list.Remove(row));
         }
-        
+
         Assert.Empty(list);
     }
+
 
     [Fact]
     public void Cannot_Structural_Change_While_Enumerating()
@@ -109,9 +140,9 @@ public class Stream2Tests(ITestOutputHelper output)
         using var world = new World();
         world.Spawn().Add("Arnold").Add(1);
         world.Spawn().Add("Dolph").Add(2);
-        
+
         var stream = world.Stream<string, int>();
-        
+
         Assert.Throws<InvalidOperationException>(() =>
         {
             foreach (var row in stream)
@@ -176,20 +207,20 @@ public class Stream2Tests(ITestOutputHelper output)
         });
 
         query.Job(6,
-        (int uniform, ref int index, ref string str) =>
-        {
-            Assert.Equal(index, index);
-            Assert.Equal("five", str);
-            str = uniform.ToString();
-        });
+            (int uniform, ref int index, ref string str) =>
+            {
+                Assert.Equal(index, index);
+                Assert.Equal("five", str);
+                str = uniform.ToString();
+            });
 
 
         query.For(7,
-        (int uniform, ref int _, ref string str) =>
-        {
-            Assert.Equal(6.ToString(), str);
-            str = uniform.ToString();
-        });
+            (int uniform, ref int _, ref string str) =>
+            {
+                Assert.Equal(6.ToString(), str);
+                str = uniform.ToString();
+            });
 
         query.Raw(8, (uniform, _, strings) =>
         {
@@ -560,7 +591,7 @@ public class Stream2Tests(ITestOutputHelper output)
             }
         });
     }
-    
+
     [Fact]
     private void Can_Loop_With_Entity()
     {
@@ -568,11 +599,11 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var e1 = world.Spawn().Add(123).Add<string>("123");
         var e2 = world.Spawn().Add(555).Add<string>("ralf");
-        
+
         var query = world.Query<int, string>().Stream();
 
         var found = new List<Entity>();
-        
+
         query.For((in Entity e, ref int _, ref string _) =>
         {
             found.Add(e);
@@ -583,7 +614,7 @@ public class Stream2Tests(ITestOutputHelper output)
         Assert.Contains(e2, found);
     }
 
-    
+
     [Fact]
     private void Can_Loop_With_Entity_and_Uniform()
     {
@@ -591,12 +622,12 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var e1 = world.Spawn().Add(123).Add<string>("123");
         var e2 = world.Spawn().Add(555).Add<string>("ralf");
-        
+
         var query = world.Query<int, string>().Stream();
 
         var found = new List<Entity>();
-        
-        query.For( 3.1415f, (float uniform, in Entity e, ref int _, ref string _) =>
+
+        query.For(3.1415f, (float uniform, in Entity e, ref int _, ref string _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -606,7 +637,7 @@ public class Stream2Tests(ITestOutputHelper output)
         Assert.Contains(e1, found);
         Assert.Contains(e2, found);
     }
-    
+
     [Fact]
     private void Can_Warmup()
     {
@@ -614,7 +645,7 @@ public class Stream2Tests(ITestOutputHelper output)
         var stream = world.Query<int, byte>().Stream();
         stream.Query.Warmup();
     }
-    
+
     [Fact]
     public void Cannot_Run_Job_on_Wildcard_Query()
     {
@@ -622,22 +653,22 @@ public class Stream2Tests(ITestOutputHelper output)
         world.Spawn().Add("jason").Add(123);
 
         var stream = world.Query<string, int>(Match.Any).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
 
         stream = world.Query<string, int>(Match.Entity).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
 
         stream = world.Query<string, int>(Match.Target).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
 
         stream = world.Query<string, int>(Match.Object).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
 
         stream = world.Query<string, int>(Match.Plain).Stream();
         var ran = false;
         stream.Job((ref string str, ref int _) =>
-        { 
-            output.WriteLine(str); 
+        {
+            output.WriteLine(str);
             ran = true;
         });
         Assert.True(ran);

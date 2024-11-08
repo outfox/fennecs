@@ -16,7 +16,8 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
 
-    #region New Stream.For
+
+    #region Component Stream.For
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     [OverloadResolutionPriority(0b00)]
@@ -33,15 +34,15 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
             {
                 var (s0, s1) = join.Select;
                 var span0 = s0.Span;
-                var match0 = default(Match);//s0.Match;
+                var type0 = s0.Expression;
                 var span1 = s1.Span;
-                var match1 = default(Match);//s1.Match;
+                var type1 = s1.Expression;
                 for (var i = 0; i < count; i++)
                 {
                     var entity = table[i];
                     action(
-                        new(ref span0[i], in entity, in match0), 
-                        new(ref span1[i], in entity, in match1)
+                        new(ref span0[i], in entity, in type0),
+                        new(ref span1[i], in entity, in type1)
                     );
                 }
             } while (join.Iterate());
@@ -63,14 +64,14 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
             {
                 var (s0, s1) = join.Select;
                 var span0 = s0.Span;
-                var match0 = default(Match);//s0.Match;
+                var type0 = s0.Expression;
                 var span1 = s1.Span;
-                //var match1 = default(Match);//s1.Match;
+                //var type1 = s1.Expression;
                 for (var i = 0; i < count; i++)
                 {
                     var entity = table[i];
                     action(
-                        new(ref span0[i], in entity, in match0), 
+                        new(ref span0[i], in entity, in type0),
                         new(in span1[i])
                     );
                 }
@@ -94,15 +95,15 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
                 var (s0, s1) = join.Select;
                 //var entities = table.Span;
                 var span0 = s0.Span;
-                //var match0 = default(Match);//s0.Match;
+                //var type0 = s0.Expression;
                 var span1 = s1.Span;
-                var match1 = default(Match);//s1.Match;
+                var type1 = s1.Expression;
                 for (var i = 0; i < count; i++)
                 {
                     var entity = table[i];
                     action(
-                        new(in span0[i]), 
-                        new(ref span1[i], in entity, in match1)
+                        new(in span0[i]),
+                        new(ref span1[i], in entity, in type1)
                     );
                 }
             } while (join.Iterate());
@@ -124,25 +125,157 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
             {
                 var (s0, s1) = join.Select;
                 var span0 = s0.Span;
-                //var match0 = default(Match);//s0.Match;
+                //var type0 = default(Match);//s0.Match;
                 var span1 = s1.Span;
-                //var match1 = default(Match);//s1.Match;
+                //var type1 = default(Match);//s1.Match;
                 for (var i = 0; i < count; i++)
                 {
                     action(
-                        new(in span0[i]), 
+                        new(in span0[i]),
                         new(in span1[i])
                     );
                 }
             } while (join.Iterate());
         }
     }
-    
+
     #endregion
 
-    
+    #region Entity Stream.For
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    [OverloadResolutionPriority(0b00)]
+    public void For(EntityComponentActionWW<C0, C1> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            var count = table.Count;
+            if (join.Empty) continue;
+            do
+            {
+                var entities = table.Span;
+                var (s0, s1) = join.Select;
+                var span0 = s0.Span;
+                var type0 = s0.Expression;
+                var span1 = s1.Span;
+                var type1 = s1.Expression;
+                for (var i = 0; i < count; i++)
+                {
+                    var entity = new Entity(World, entities[i]);
+                    action(
+                        new(in entity),
+                        new(ref span0[i], in entity, in type0),
+                        new(ref span1[i], in entity, in type1)
+                    );
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    [OverloadResolutionPriority(0b01)]
+    public void For(EntityComponentActionWR<C0, C1> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            var count = table.Count;
+            do
+            {
+                var entities = table.Span;
+                var (s0, s1) = join.Select;
+                var span0 = s0.Span;
+                var type0 = s0.Expression;
+                var span1 = s1.Span;
+                //var type1 = s1.Expression;
+                for (var i = 0; i < count; i++)
+                {
+                    var entity = new Entity(World, entities[i]);
+                    action(
+                        new(in entity),
+                        new(ref span0[i], in entity, in type0),
+                        new(in span1[i])
+                    );
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    [OverloadResolutionPriority(0b10)]
+    public void For(EntityComponentActionRW<C0, C1> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            var count = table.Count;
+            do
+            {
+                var entities = table.Span;
+                var (s0, s1) = join.Select;
+                var span0 = s0.Span;
+                //var type0 = s0.Expression;
+                var span1 = s1.Span;
+                var type1 = s1.Expression;
+                for (var i = 0; i < count; i++)
+                {
+                    var entity = new Entity(World, entities[i]); //FIXME: Unified entity resolves this!
+                    action(
+                        new(in entity),
+                        new(in span0[i]),
+                        new(ref span1[i], in entity, in type1)
+                    );
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    [OverloadResolutionPriority(0b11)]
+    public void For(EntityComponentActionRR<C0, C1> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            var count = table.Count;
+            do
+            {
+                var entities = table.Span;
+                var (s0, s1) = join.Select;
+                var span0 = s0.Span;
+                //var type0 = s0.Expression;
+                var span1 = s1.Span;
+                //var type1 = s1.Expression;
+                for (var i = 0; i < count; i++)
+                {
+                    var entity = new Entity(World, entities[i]); //FIXME: Unified entity resolves this!
+                    action(
+                        new(in entity),
+                        new(in span0[i]),
+                        new(in span1[i])
+                    );
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    #endregion
+
+
     #region Stream.For
-    
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(ComponentAction<C0, C1> action)
     {
@@ -159,7 +292,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
             } while (join.Iterate());
         }
     }
-    
+
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(U uniform, UniformComponentAction<U, C0, C1> action)
     {
@@ -227,13 +360,14 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
     #endregion
 
+
     #region Stream.Job
 
     /// <inheritdoc cref="Stream{C0}.Job"/>
     public void Job(ComponentAction<C0, C1> action)
     {
         AssertNoWildcards();
-        
+
         using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -329,6 +463,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
     #endregion
 
+
     #region Stream.Raw
 
     /// <inheritdoc cref="Stream{C0}.Raw"/>
@@ -396,6 +531,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
     #endregion
 
+
     #region IEnumerable
 
     /// <inheritdoc />
@@ -421,9 +557,10 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    
+
     #endregion
-    
+
+
     #region Unroll
 
     private static void Unroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
@@ -471,6 +608,8 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
             action(uniform, ref span0[i], ref span1[i]);
         }
     }
-    
+
     #endregion
+
+
 }
