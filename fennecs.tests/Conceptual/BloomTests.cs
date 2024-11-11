@@ -47,8 +47,6 @@ public class BloomTests(ITestOutputHelper output)
     {
 
         output.WriteLine($"Hardware: {Vector256.IsHardwareAccelerated}");
-        
-        Vector256<uint> bloom = default;
 
         var hash = Vector256<long>.Zero;
 

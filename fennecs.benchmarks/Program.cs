@@ -1,12 +1,19 @@
 ﻿using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
+using Benchmark;
 using Benchmark.Conceptual;
-using Benchmark.ECS;
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Environments;
+using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 
 
-var config = ManualConfig.Create(DefaultConfig.Instance).WithOptions(ConfigOptions.JoinSummary);
+var config = ManualConfig
+    .Create(DefaultConfig.Instance)
+    .WithOptions(ConfigOptions.JoinSummary)
+    .AddJob(Job.ShortRun.WithRuntime(CoreRuntime.Core90))
+    .AddJob(Job.ShortRun.WithRuntime(NativeAotRuntime.Net90))
+    .HideColumns("Job", "Error", "Median", "RatioSD");
 
 // Most relevant vectorization instruction sets, add other intrinsics as needed.
 // These are exclusions you can use to TURN OFF specific benchmarks based on the
@@ -16,6 +23,7 @@ if (!Avx.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Avx)));
 if (!Sse3.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse3)));
 if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
+
 
 //BenchmarkRunner.Run<DorakuBenchmarks>(config);
 BenchmarkRunner.Run<RWBenchmarks>(config);

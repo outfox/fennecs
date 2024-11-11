@@ -1,7 +1,7 @@
-﻿namespace Benchmark.ECS;
-
-using BenchmarkDotNet.Filters;
+﻿using BenchmarkDotNet.Filters;
 using BenchmarkDotNet.Running;
+
+namespace Benchmark;
 
 /// <summary>
 /// Excludes a given category from benchmarks

@@ -1,17 +1,11 @@
-﻿using System.Numerics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using fennecs;
-using fennecs.events;
-using fennecs.pools;
 using fennecs.storage;
 
 namespace Benchmark.Conceptual;
-
-public interface ITest
-{ }
 
 #if !NET9_0_OR_GREATER
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
@@ -34,40 +28,6 @@ public interface ITest
     }
 #endif
 
-record struct MyInt(in int value) : Fox<int>;
-
-record struct MyVector(in Vector3 value) : Fox<Vector3>
-{
-    private Vector3 _value = value;
-
-    public float X
-    {
-        get => _value.X;
-        set => _value.X = value;
-    }
-
-    public float Y
-    {
-        get => _value.Y;
-        set => _value.Y = value;
-    }
-
-    public float Z
-    {
-        get => _value.Z;
-        set => _value.Z = value;
-    }
-
-    public Vector3 value
-    {
-        readonly get => _value;
-        set => _value = value;
-    }
-}
-
-//[ShortRunJob(RuntimeMoniker.Mono)]
-[ShortRunJob(RuntimeMoniker.Net90)]
-[ShortRunJob(RuntimeMoniker.NativeAot90)]
 public class RWBenchmarks
 {
     [Params(1_000)]
@@ -79,15 +39,14 @@ public class RWBenchmarks
     {
         _stream = new(count);
     }
-    
+
     [Benchmark]
     public void OldNOP()
     {
         _stream.Old((in Entity entity, [In] ref int a, [In] ref int b) =>
-        {
-        });
+            { });
     }
-    
+
     [Benchmark(Baseline = true)]
     public void OldWW()
     {
@@ -97,7 +56,7 @@ public class RWBenchmarks
             b++;
         });
     }
-    
+
     [Benchmark]
     public void OldWRo()
     {
@@ -106,7 +65,7 @@ public class RWBenchmarks
             a += b;
         });
     }
-    
+
     [Benchmark]
     public void OldEWR()
     {
@@ -151,7 +110,7 @@ public class RWBenchmarks
             a.write++;
         });
     }
-    
+
     [Benchmark]
     public void NewRW()
     {
@@ -162,35 +121,37 @@ public class RWBenchmarks
     }
 }
 
-internal interface Fox<T>where T : notnull
+internal interface Fox<T> where T : notnull
 {
-   T value { get; set; }
+    T value { get; set; }
 }
 
-internal readonly record struct BenchStream2<C1, C2>(int Count) 
+internal readonly record struct BenchStream2<C1, C2>(int Count)
     where C1 : notnull
-    where C2 :  notnull 
+    where C2 : notnull
 {
     public readonly Entity[] entities = new Entity[Count];
     public readonly C1[] Data1 = new C1[Count];
     public readonly C2[] Data2 = new C2[Count];
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+
+
     public void New(ComponentActionEWR<C1, C2> action)
     {
         var match = default(TypeExpression);
         for (var i = 0; i < Count; i++) action(new(ref entities[i]), new(ref Data1[i], ref entities[i], ref match), new(ref Data2[i]));
     }
+
     public void Old(EntityComponentAction<C1, C2> action)
     {
         for (var i = 0; i < Count; i++) action(entities[i], ref Data1[i], ref Data2[i]);
     }
 
+
     public void Old2(ComponentActionRead<C1, C2> action)
     {
         for (var i = 0; i < Count; i++) action(in Data1[i], in Data2[i]);
     }
-    
+
     [OverloadResolutionPriority(0)]
     public void New(ComponentActionWW<C1, C2> action)
     {
@@ -223,7 +184,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
             action(ref1, ref2);
         }
     }
-    
+
     [OverloadResolutionPriority(2)]
     public void NewRo(ComponentActionWR<C1, C2> action)
     {
@@ -232,10 +193,10 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
         {
             var ref1 = new RW<C1>(ref Data1[i], ref entities[i], ref match);
             var ref2 = new R<C2>(ref Data2[i]);
-            action(ref1,  ref2);
+            action(ref1, ref2);
         }
     }
-    
+
     [OverloadResolutionPriority(3)]
     public void New(ComponentActionRR<C1, C2> action)
     {
@@ -248,6 +209,7 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
         }
     }
 
+
     public void Old(ComponentActionWRo<C1, C2> action)
     {
         for (var i = 0; i < Count; i++) action(ref Data1[i], ref Data2[i]);
@@ -256,7 +218,6 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
 
 internal delegate void ComponentActionRead<C0, C1>(in C0 comp0, in C1 comp1);
 internal delegate void ComponentActionWRo<C0, C1>(ref C0 comp0, ref readonly C1 comp1);
-
 internal delegate void ComponentActionEWR<C0, C1>([In] EntityRef entity, RW<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionWR<C0, C1>(RW<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionRW<C0, C1>(R<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;

@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Benchmark</RootNamespace>
-        <Configurations>Release;Debug</Configurations>
+        <Configurations>Release</Configurations>
         <Platforms>AnyCPU</Platforms>
         <IsPackable>false</IsPackable>
         <PackageId>fennecs.benchmarks</PackageId>
@@ -14,6 +14,7 @@
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <LangVersion>preview</LangVersion>
         <PublishAot>true</PublishAot>
+        <OptimizationPreference>Speed</OptimizationPreference>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -31,5 +32,4 @@
     <ItemGroup>
         <PackageReference Include="BenchmarkDotNet" Version="0.14.1-nightly.20241107.194" />
     </ItemGroup>
-
 </Project>
