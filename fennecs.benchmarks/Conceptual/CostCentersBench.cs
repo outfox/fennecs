@@ -37,7 +37,7 @@ public class CostCentersBench
     }
 
     [Benchmark]
-    public int SingleArchetype()
+    public int FewArchetypesManyEntities()
     {
         var output = 0;
         _streamOne.For((ref int value) => { output += value; });
@@ -45,7 +45,7 @@ public class CostCentersBench
     }
 
     [Benchmark]
-    public int ManyArchetypes()
+    public int ManyArchetypesFewEntities()
     {
         var output = 0;
         _streamMany.For((ref int value) => { output += value; });

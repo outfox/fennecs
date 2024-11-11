@@ -12,7 +12,6 @@ using fennecs.pools;
 
 namespace Benchmark.ECS;
 
-[ShortRunJob]
 //[TailCallDiagnoser]
 [ThreadingDiagnoser]
 [MemoryDiagnoser]
@@ -91,7 +90,7 @@ public class DorakuBenchmarks
 
 
     [BenchmarkCategory("fennecs")]
-    //[Benchmark(Description = "fennecs (For WL)")]
+    [Benchmark(Description = "fennecs (For WL)")]
     public void fennecs_For_WL()
     {
         _query.For(Workload);
@@ -99,7 +98,7 @@ public class DorakuBenchmarks
 
 
     [BenchmarkCategory("fennecs")]
-    //[Benchmark(Description = $"fennecs (Job)")]
+    [Benchmark(Description = $"fennecs (Job)")]
     public void fennecs_Job()
     {
         _query.Job(static delegate (ref Component1 c1, ref Component2 c2, ref Component3 c3) { c1.Value = c1.Value + c2.Value + c3.Value; });
@@ -317,15 +316,6 @@ public class DorakuBenchmarks
         var c1I = MemoryMarshal.Cast<Component1, float>(c1V.Span);
         var c2I = MemoryMarshal.Cast<Component2, float>(c2V.Span);
         var c3I = MemoryMarshal.Cast<Component3, float>(c3V.Span);
-
-        /*
-        var c1I = c1V.Span;
-        var c2I = c2V.Span;
-        var c3I = c3V.Span;
-        */
-        
-        //stackalloc float array
-        //Span<float> intermediate = stackalloc float[c1V.Length];
 
         TensorPrimitives.Add(c2I, c1I, c1I);
         TensorPrimitives.Add(c3I, c1I, c1I);

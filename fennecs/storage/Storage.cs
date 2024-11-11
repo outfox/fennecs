@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
-namespace fennecs;
+namespace fennecs.storage;
 
 /// <summary>
 /// Generic Storage Interface (with boxing).

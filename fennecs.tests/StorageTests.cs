@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests;
+﻿using fennecs.storage;
+
+namespace fennecs.tests;
 
 public class StorageTests
 {
