@@ -11,8 +11,18 @@ using BenchmarkDotNet.Running;
 var config = ManualConfig
     .Create(DefaultConfig.Instance)
     .WithOptions(ConfigOptions.JoinSummary)
-    .AddJob(Job.ShortRun.WithRuntime(CoreRuntime.Core90))
-    .AddJob(Job.ShortRun.WithRuntime(NativeAotRuntime.Net90))
+
+    .AddJob(
+        Job.ShortRun.WithId("Default")
+            .WithRuntime(CoreRuntime.Core90)
+    )
+    
+    /*
+    .AddJob(
+        Job.ShortRun.WithId("Native")
+            .WithRuntime(NativeAotRuntime.Net90)
+    )
+    */
     .HideColumns("Job", "Error", "Median", "RatioSD");
 
 // Most relevant vectorization instruction sets, add other intrinsics as needed.
@@ -25,5 +35,4 @@ if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
 
-//BenchmarkRunner.Run<DorakuBenchmarks>(config);
-BenchmarkRunner.Run<RWBenchmarks>(config);
+BenchmarkRunner.Run<CostCentersBench>(config);

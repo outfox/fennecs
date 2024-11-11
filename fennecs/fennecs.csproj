@@ -5,10 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.5.14-beta</Version>
+        <Version>0.6.0-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity-Component System</Product>
-        <Authors>Moritz Voss, Aaron Winter</Authors>
+        <Authors>Moritz Voss and Contributors</Authors>
         <Company>tiger.blue</Company>
         <Description>The tiny ECS that could!</Description>
         <Copyright>2024 Moritz Voss, 2022 Aaron Winter</Copyright>
@@ -34,6 +34,11 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+
+        <TieredPGO>true</TieredPGO>
+        <TieredCompilation>true</TieredCompilation>
+        <TieredCompilationQuickJit>false</TieredCompilationQuickJit>
+        <TieredCompilationQuickJitForLoops>false</TieredCompilationQuickJitForLoops>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

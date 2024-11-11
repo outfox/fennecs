@@ -12,24 +12,24 @@
         <PackageId>fennecs.benchmarks</PackageId>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>13</LangVersion>
         <PublishAot>true</PublishAot>
         <OptimizationPreference>Speed</OptimizationPreference>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <PlatformTarget>x64</PlatformTarget>
-    </PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <PlatformTarget>x64</PlatformTarget>
+        <PlatformTarget>x64</PlatformTarget>
+        <TieredPGO>true</TieredPGO>
+        <TieredCompilation>true</TieredCompilation>
+        <TieredCompilationQuickJit>true</TieredCompilationQuickJit>
+        <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\fennecs\fennecs.csproj" />
+        <ProjectReference Include="..\fennecs\fennecs.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.14.1-nightly.20241107.194" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.14.1-nightly.20241107.194"/>
     </ItemGroup>
 </Project>
