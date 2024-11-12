@@ -141,6 +141,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
     #endregion
 
+    
     #region Entity Stream.For
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>

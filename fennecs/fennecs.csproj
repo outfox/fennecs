@@ -3,6 +3,7 @@
     <PropertyGroup>
         <AssemblyName>fennecs</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
+        <IsPackable>true</IsPackable>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
         <Version>0.6.0-beta</Version>

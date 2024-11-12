@@ -12,42 +12,44 @@ namespace Benchmark.Conceptual;
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByParams)]
 public class ForStructuralVsStateful
 {
-    [Params(10_000)]
+    [Params(100_000)]
     public int Entities { get; set; }
-    
+
     [Params(0.9f, 0.5f, 0.1f)]
     public float Homogenity { get; set; }
-    
-    [Params(100, 1_000, 10_000)]
+
+    [Params(10_000)]
     public int Actions { get; set; }
-    
+
     private World _world = null!;
     private Stream<ushort> _stream = null!;
     private Random _random = null!;
 
     [GlobalSetup]
-    public void GlobaSetup()
+    public void GlobalSetup()
     {
         _world = new(Entities * 30);
 
         _stream = _world.Query<ushort>().Stream();
-        
-        _world.Spawn().Add(1).Despawn();
+
+        _world.Spawn().Add<ushort>(1).Despawn();
+        _world.Spawn().Add<ushort>(1);
+        _stream.Query.Remove<ushort>();
     }
-    
+
     [IterationSetup]
     public void IterationSetup()
     {
         Console.WriteLine("IterationSetup");
         _world.All.Despawn();
         if (_world.Count != 0) throw new("World is not empty!");
-        
+
         _random = new(69);
-        
+
         _world.Entity().Spawn(Entities);
         foreach (var entity in _world.All.ToArray())
         {
-            entity.Add((ushort) _random.Next((ushort) (Actions * Homogenity), Actions));
+            entity.Add((ushort)_random.Next((ushort)(Actions * Homogenity), Actions));
         }
     }
 
@@ -99,7 +101,7 @@ public class ForStructuralVsStateful
     {
         while (_stream.Count > 0)
         {
-            _stream.For(static delegate (RW<ushort> value)
+            _stream.For(static delegate(RW<ushort> value)
             {
                 value.write--;
                 if (value.read <= 0) value.Remove();
@@ -133,24 +135,21 @@ public class ForStructuralVsStateful
             {
                 if (value <= 0) return;
                 value--;
-                done = false; 
+                done = false;
             });
         }
         _stream.Query.Remove<ushort>();
         return _stream.Count;
     }
 
-    private record Done(bool done)
-    {
-        public bool done { get; set; } = done;
-    };
+    private record struct Flag(bool done);
 
     [Benchmark]
     public int CountDown_with_Raw_Loop()
     {
-        var done = new Done(false);
+        var flag = new Flag(false);
 
-        while (!done.done)
+        while (!flag.done)
         {
             _stream.Raw(values =>
                 {
@@ -162,7 +161,7 @@ public class ForStructuralVsStateful
                         localDone = false;
                         span[i]--;
                     }
-                    done.done = localDone;
+                    flag.done = localDone;
                 }
             );
         }
@@ -173,15 +172,15 @@ public class ForStructuralVsStateful
     [Benchmark]
     public int CountDown_with_Raw_SIMD()
     {
-        var done = new Done(false);
+        var flag = new Flag(false);
 
-        while (!done.done)
+        while (!flag.done)
         {
             _stream.Raw(values =>
             {
                 var count = values.Length;
                 var localDone = true;
-                
+
                 using var mem1 = values.Pin();
 
                 unsafe
@@ -190,6 +189,7 @@ public class ForStructuralVsStateful
 
                     var vectorSize = Vector256<ushort>.Count;
                     var vectorEnd = count - count % vectorSize;
+                    
                     for (var i = 0; i <= vectorEnd; i += vectorSize)
                     {
                         var v1 = Avx.LoadVector256(p1 + i);
@@ -197,10 +197,15 @@ public class ForStructuralVsStateful
                         Avx.Store(p1 + i, sum);
                         localDone &= sum == Vector256<ushort>.Zero;
                     }
+                    
+                    for (var i = vectorEnd; i < count; i++) // remaining elements
+                    {
+                        localDone &= p1[i] == 0;
+                        p1[i] -= 1;
+                    }
                 }
-                done.done = localDone;
-            }
-            );
+                flag.done = localDone;
+            });
         }
         _stream.Query.Remove<ushort>();
         return _stream.Count;

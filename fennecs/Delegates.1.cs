@@ -19,3 +19,10 @@ public delegate void EntityComponentActionW<C0>(EntityRef entity, RW<C0> comp0) 
 public delegate void EntityComponentActionR<C0>(EntityRef entity, R<C0> comp0) where C0 : notnull;
 
 #endregion
+
+
+#region Raw: Memory Actions
+public delegate void MemoryActionR<C0>(ReadOnlyMemory<C0> comp0);
+public delegate void MemoryActionW<C0>(Memory<C0> comp0);
+
+#endregion
