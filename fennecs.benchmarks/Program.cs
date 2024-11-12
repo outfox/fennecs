@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
 using Benchmark;
+using Benchmark.Conceptual;
 using Benchmark.ECS;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
@@ -14,8 +15,8 @@ var config = ManualConfig
     .HideColumns("Job", "Error", "Median", "RatioSD");
 
 var jobs = new List<Job>([
-    Job.ShortRun.WithId("Default").WithRuntime(CoreRuntime.Core90),
-    Job.ShortRun.WithId("Native").WithRuntime(NativeAotRuntime.Net90),
+    Job.MediumRun.WithId("Default").WithRuntime(CoreRuntime.Core90), 
+    //Job.ShortRun.WithId("Native").WithRuntime(NativeAotRuntime.Net90),
 ]);
 
 
@@ -31,4 +32,4 @@ if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
 
-BenchmarkRunner.Run<DorakuBenchmarks>(config);
+BenchmarkRunner.Run<ForStructuralVsStateful>(config);

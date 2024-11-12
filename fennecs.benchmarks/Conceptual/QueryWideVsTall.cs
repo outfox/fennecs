@@ -3,7 +3,7 @@ using fennecs;
 
 namespace Benchmark.Conceptual;
 
-public class CostCentersBench
+public class QueryWideVsTall
 {
     [Params(10000)]
     public int Count { get; set; }
