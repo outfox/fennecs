@@ -19,10 +19,6 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <PlatformTarget>x64</PlatformTarget>
-        <TieredPGO>true</TieredPGO>
-        <TieredCompilation>true</TieredCompilation>
-        <TieredCompilationQuickJit>true</TieredCompilationQuickJit>
-        <TieredCompilationQuickJitForLoops>true</TieredCompilationQuickJitForLoops>
     </PropertyGroup>
 
     <ItemGroup>

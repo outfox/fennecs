@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using fennecs.CRUD;
 using fennecs.pools;
 
@@ -12,7 +13,7 @@ namespace fennecs;
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>, IBatchBegin 
+public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>, IBatchBegin
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
@@ -20,8 +21,8 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
     /// </summary>
-    protected HashSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty 
-        ? Archetypes 
+    protected HashSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty
+        ? Archetypes
         : new(Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude)));
 
     /// <summary>
@@ -29,17 +30,17 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// </summary>
     /// <returns>fluent builder</returns>
     public Batch Batch() => Query.Batch();
-    
+
     /// <inheritdoc cref="fennecs.Query.Batch()"/>
     public Batch Batch(Batch.AddConflict add) => Query.Batch(add);
-    
+
     /// <inheritdoc cref="fennecs.Query.Batch()"/>
     public Batch Batch(Batch.RemoveConflict remove) => Query.Batch(remove);
 
     /// <inheritdoc cref="fennecs.Query.Batch()"/>
     public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => Query.Batch(add, remove);
-    
-    
+
+
     /// <summary>
     /// The number of entities that match the underlying Query.
     /// </summary>
@@ -66,12 +67,12 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// Subset Stream Filter - if not empty, only entities with these components will be included in the Stream. 
     /// </summary>
     public ImmutableSortedSet<Comp> Subset { get; init; } = [];
-    
+
     /// <summary>
     /// Exclude Stream Filter - any entities with these components will be excluded from the Stream. (none if empty)
     /// </summary>
     public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
-    
+
     /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
@@ -83,14 +84,134 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     protected static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
 
 
+    #region Component Stream.For
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    [OverloadResolutionPriority(0b_0000_0000)]
+    public void For(ComponentActionW<C0> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+            var count = table.Count;
+            if (join.Empty) continue;
+            do
+            {
+                var s0 = join.Select;
+                var span0 = s0.Span;
+                var type0 = s0.Expression;
+                for (var i = 0; i < count; i++)
+                {
+                    var entity = table[i];
+                    action(new(ref span0[i], in entity, in type0));
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    [OverloadResolutionPriority(0b_0000_0001)]
+    public void For(ComponentActionR<C0> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            var count = table.Count;
+            do
+            {
+                var s0 = join.Select;
+                var span0 = s0.Span;
+                var type0 = s0.Expression;
+
+                for (var i = 0; i < count; i++)
+                {
+                    action(new(ref span0[i]));
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    #endregion
+
+    
+    #region Entity Stream.For
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    [OverloadResolutionPriority(0b_0001_0000)]
+    public void For(EntityComponentActionW<C0> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+            var count = table.Count;
+            if (join.Empty) continue;
+            do
+            {
+                var entities = table.Span;
+                var s0 = join.Select;
+                var span0 = s0.Span;
+                var type0 = s0.Expression;
+
+                for (var i = 0; i < count; i++)
+                {
+                    var entity = new Entity(World, entities[i]);
+                    action(
+                        new(in entity),
+                        new(ref span0[i], in entity, in type0)
+                        );
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    [OverloadResolutionPriority(0b_0001_0001)]
+    public void For(EntityComponentActionR<C0> action)
+    {
+        using var worldLock = World.Lock();
+
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            var count = table.Count;
+            do
+            {
+                var entities = table.Span;
+                var s0 = join.Select;
+                var span0 = s0.Span;
+                var type0 = s0.Expression;
+                
+                for (var i = 0; i < count; i++)
+                {
+                    var entity = new Entity(World, entities[i]);
+                    action(
+                        new(in entity),
+                        new(ref span0[i])
+                    );
+                }
+            } while (join.Iterate());
+        }
+    }
+    
+    #endregion
+
+
     #region Stream.For
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(ComponentAction<C0> action)
     {
-        
+
         using var worldLock = World.Lock();
-        
+
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
@@ -114,7 +235,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     public void For<U>(U uniform, UniformComponentAction<U, C0> action)
     {
         using var worldLock = World.Lock();
-        
+
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
@@ -128,8 +249,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
             } while (join.Iterate());
         }
     }
-    
-    
+
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityComponentAction<C0> action)
@@ -171,10 +291,11 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
             } while (join.Iterate());
         }
     }
-    
+
     // #endregion Showcase
 
     #endregion
+
 
     #region Stream.Job
 
@@ -185,7 +306,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     public void Job(ComponentAction<C0> action)
     {
         AssertNoWildcards();
-            
+
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -236,7 +357,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
     {
         AssertNoWildcards();
-        
+
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
@@ -281,6 +402,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     }
 
     #endregion
+
 
     #region Stream.Raw
 
@@ -346,8 +468,10 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     }
 
     #endregion
-    
+
+
     #region Assertions
+
     /// <summary>
     /// Throws if the query has any Wildcards.
     /// </summary>
@@ -357,6 +481,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     }
 
     #endregion
+
 
     #region Blitters
 
@@ -378,14 +503,15 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
 
     #endregion
 
+
     #region Query Forwarding
-    
+
     /// <inheritdoc cref="fennecs.Query.Truncate"/>
     public void Truncate(int targetSize, Query.TruncateMode mode = default)
     {
         Query.Truncate(targetSize, mode);
     }
-    
+
     /// <inheritdoc cref="fennecs.Query.Despawn"/>
     public void Despawn()
     {
@@ -393,6 +519,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     }
 
     #endregion
+
 
     #region IEnumerable
 
@@ -420,4 +547,6 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion
+
+
 }

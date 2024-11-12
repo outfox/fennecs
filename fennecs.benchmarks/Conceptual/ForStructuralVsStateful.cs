@@ -4,6 +4,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Order;
 using fennecs;
+using fennecs.storage;
 
 namespace Benchmark.Conceptual;
 
@@ -59,6 +60,63 @@ public class ForStructuralVsStateful
             {
                 value--;
                 if (value <= 0) entity.Remove<ushort>();
+            });
+        }
+        return _stream.Count;
+    }
+
+    [Benchmark]
+    public int CountDown_NewFor_Structural_ChangeS()
+    {
+        while (_stream.Count > 0)
+        {
+            _stream.For(static (value) =>
+            {
+                value.write--;
+                if (value.read <= 0) value.Remove();
+            });
+        }
+        return _stream.Count;
+    }
+
+
+    [Benchmark]
+    public int CountDown_NewFor_Structural_Change()
+    {
+        while (_stream.Count > 0)
+        {
+            _stream.For((value) =>
+            {
+                value.write--;
+                if (value.read <= 0) value.Remove();
+            });
+        }
+        return _stream.Count;
+    }
+
+    [Benchmark]
+    public int CountDown_NewFor_Structural_ChangeSD()
+    {
+        while (_stream.Count > 0)
+        {
+            _stream.For(static delegate (RW<ushort> value)
+            {
+                value.write--;
+                if (value.read <= 0) value.Remove();
+            });
+        }
+        return _stream.Count;
+    }
+
+    [Benchmark]
+    public int CountDown_NewForEntity_Structural_Change()
+    {
+        while (_stream.Count > 0)
+        {
+            _stream.For((entity, value) =>
+            {
+                value.write--;
+                if (value.read <= 0) entity.Remove<ushort>();
             });
         }
         return _stream.Count;
