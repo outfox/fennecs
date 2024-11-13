@@ -5,50 +5,39 @@ namespace Benchmark.Conceptual;
 
 public class QueryWideVsTall
 {
-    [Params(10000)]
-    public int Count { get; set; }
+    [Params(1, 2, 3, 4, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000)]
+    public int Archetypes { get; set; }
+    
+    [Params(10_000)]
+    public int Entities { get; set; }
     
     private World _world = null!;
-    private Stream<int> _streamOne = null!;
-    private Stream<int> _streamMany = null!;
+    private Stream<int> _stream = null!;
+
+    private Random _valueRandom = null!;
     
     [GlobalSetup]
     public void Setup()
     {
-        _world = new(Count * 3);
+        _valueRandom = new(420);
         
-        for (var i = 0; i < Count; i++)
+        _world = new(Entities * 3);
+        
+        var unique = _world.Spawn();
+        for (var i = 0; i < Entities; i++)
         {
-            _world.Spawn().Add(i);
-        }
-
-        for (var i = 0; i < Count; i++)
-        {
-            var unique = _world.Spawn();
-            _world.Spawn().Add(i).Add("relation", unique);
+            if (i % (Entities / Archetypes) == 0) unique = _world.Spawn();
+            _world.Spawn().Add(_valueRandom.Next(Entities)).Add("relation", unique);
         }
         
-        _streamOne = _world.Query<int>().Not<string>(Match.Any).Stream();
-        _streamMany = _world.Query<int>().Has<string>(Match.Any).Stream();
-        
-        Console.WriteLine($"World: {_world.Count} Entities");
-        Console.WriteLine($"Stream One: {_streamOne.Count} Entities, {_streamOne.Query.Archetypes.Count} Archetypes");
-        Console.WriteLine($"Stream Many: {_streamMany.Count} Entities, {_streamMany.Query.Archetypes.Count} Archetypes");
+        _stream = _world.Query<int>().Has<string>(Match.Any).Stream();
     }
 
     [Benchmark]
-    public int FewArchetypesManyEntities()
+    public int SumOverAllEntities()
     {
         var output = 0;
-        _streamOne.For((ref int value) => { output += value; });
-        return output;
-    }
-
-    [Benchmark]
-    public int ManyArchetypesFewEntities()
-    {
-        var output = 0;
-        _streamMany.For((ref int value) => { output += value; });
+        _stream.For((ref int value) => { output += value; });
         return output;
     }
 }
