@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System.Numerics;
+using BenchmarkDotNet.Attributes;
 using fennecs;
 
 namespace Benchmark.Conceptual;
@@ -12,7 +13,8 @@ public class QueryWideVsTall
     public int Entities { get; set; }
     
     private World _world = null!;
-    private Stream<int> _stream = null!;
+    private Stream<int> _ints = null!;
+    private Stream<Matrix4x4> _mats = null!;
 
     private Random _valueRandom = null!;
     
@@ -27,17 +29,29 @@ public class QueryWideVsTall
         for (var i = 0; i < Entities; i++)
         {
             if (i % (Entities / Archetypes) == 0) unique = _world.Spawn();
-            _world.Spawn().Add(_valueRandom.Next(Entities)).Add("relation", unique);
+            var matrix = new Matrix4x4();
+            for (int j = 0; j < 16; j++) matrix[j /4, j % 4] = _valueRandom.NextSingle();
+            
+            _world.Spawn().Add(_valueRandom.Next(Entities)).Add(matrix).Add("relation", unique);
         }
         
-        _stream = _world.Query<int>().Has<string>(Match.Any).Stream();
+        _ints = _world.Query<int>().Has<string>(Match.Any).Stream();
+        _mats = _world.Query<Matrix4x4>().Has<string>(Match.Any).Stream();
     }
 
     [Benchmark]
-    public int SumOverAllEntities()
+    public int Sum()
     {
         var output = 0;
-        _stream.For((ref int value) => { output += value; });
+        _ints.For((ref int value) => { output += value; });
         return output;
+    }
+
+    [Benchmark]
+    public Vector4 MatrixMul()
+    {
+        var vector = Vector4.One;
+        _mats.For((ref Matrix4x4 matrix) => { vector = Vector4.Transform(vector, matrix); });
+        return vector;
     }
 }
