@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using fennecs.storage;
 
 namespace fennecs.tests.Stream;
 
@@ -34,6 +35,12 @@ public class Stream2Tests(ITestOutputHelper output)
         {
             Assert.Equal(123, a.read);
             Assert.Equal(890f, b.read);
+        });
+        
+        stream.For(static (a, b) =>
+        {
+            Assert.Equal(123, a.read);
+            Assert.Equal(890f, b.write);
         });
     }
 
