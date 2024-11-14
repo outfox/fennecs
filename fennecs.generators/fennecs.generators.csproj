@@ -11,6 +11,7 @@
 
         <RootNamespace>fennecs.generators</RootNamespace>
         <PackageId>fennecs.generators</PackageId>
+
     </PropertyGroup>
 
     <ItemGroup>

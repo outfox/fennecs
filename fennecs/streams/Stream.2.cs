@@ -9,7 +9,7 @@ namespace fennecs;
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
+public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     : Stream<C0>(Query, Match0), IEnumerable<(Entity, C0, C1)>
     where C0 : notnull
     where C1 : notnull

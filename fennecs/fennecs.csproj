@@ -31,10 +31,6 @@
         <Nullable>enable</Nullable>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-
-        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-        <CompilerGeneratedFilesOutputPath>generated</CompilerGeneratedFilesOutputPath>
-        <IsRoslynComponent>true</IsRoslynComponent>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -71,10 +67,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\fennecs.generators\fennecs.generators.csproj"
-                          OutputItemType="Analyzer"
-                          ReferenceOutputAssembly="false"
-                          SetTargetFramework="TargetFramework=netstandard2.0"/>
+        <ProjectReference Include="..\fennecs.generators\fennecs.generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" SetTargetFramework="TargetFramework=netstandard2.0" />
     </ItemGroup>
-
+    
 </Project>
