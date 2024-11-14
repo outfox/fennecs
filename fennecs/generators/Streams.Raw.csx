@@ -4,7 +4,7 @@ using System.Text;
 
 namespace fennecs.generators;
 
-public class Streams
+public class Streams_Raw
 {
     private readonly Dictionary<string, int> _types = new()
     {
@@ -53,7 +53,7 @@ public class Streams
 
             source.AppendLine(ClassFooter());                        
         }                           
-        context[$"Streams.g.cs"].Write($$"""{{source}}""");
+        context[$"Streams.Raw.g.cs"].Write($$"""{{source}}""");
     }
 
 
@@ -181,9 +181,9 @@ public class Streams
         return
             $$"""        
               
-                      /// <include file='XMLdoc.xml' path='members/member[@name="T:For{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
+                      /// <include file='XMLdoc.xml' path='members/member[@name="T:Raw{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
                       [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
-                      public void For{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
+                      public void Raw{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
                       {
                          using var worldLock = World.Lock();
               

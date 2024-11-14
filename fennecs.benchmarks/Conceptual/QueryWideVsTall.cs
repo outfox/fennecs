@@ -43,7 +43,7 @@ public class QueryWideVsTall
     public int Sum()
     {
         var output = 0;
-        _ints.For((ref int value) => { output += value; });
+        _ints.For(value => { output += value; });
         return output;
     }
 
@@ -51,7 +51,7 @@ public class QueryWideVsTall
     public Vector4 MatrixMul()
     {
         var vector = Vector4.One;
-        _mats.For((ref Matrix4x4 matrix) => { vector = Vector4.Transform(vector, matrix); });
+        _mats.For(matrix => { vector = Vector4.Transform(vector, matrix); });
         return vector;
     }
 }

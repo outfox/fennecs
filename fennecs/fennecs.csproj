@@ -34,12 +34,14 @@
 
     </PropertyGroup>
 
-    <!--
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="dotnet-codegencs.exe template run .\generators\Streams.csx -o generated" />
+    <Target Name="GenerateStreamRunners" BeforeTargets="CoreCompile" 
+            Inputs="$(Project)generators/Streams.For.csx;$(Project)generators/Streams.Job.csx;$(Project)generators/Streams.Raw.csx" 
+            Outputs="$(Project)generated/Streams.For.cs;$(Project)generated/Streams.Job.cs;$(Project)generated/Streams.Raw.cs">
+        <Exec Command="dotnet-codegencs template run ./generators/Streams.For.csx -o generated" />
+        <Exec Command="dotnet-codegencs template run ./generators/Streams.Job.csx -o generated" />
+        <Exec Command="dotnet-codegencs template run ./generators/Streams.Raw.csx -o generated" />
     </Target>
-    -->
-    
+
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
@@ -70,8 +72,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CodegenCS.MSBuild" Version="3.5.2" PrivateAssets="All"/>
-        <PackageReference Include="System.Numerics.Tensors" Version="9.0.0" PrivateAssets="All"/>
+        <!--<PackageReference Include="CodegenCS.MSBuild" Version="3.5.2" />-->
+        <PackageReference Include="System.Numerics.Tensors" Version="9.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="generated\" />
     </ItemGroup>
     
 </Project>
