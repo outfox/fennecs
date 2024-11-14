@@ -10,3 +10,5 @@ Temp
 *.Artifacts
 .dist
 *.old
+
+generated/

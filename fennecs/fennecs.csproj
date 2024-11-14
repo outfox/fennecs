@@ -34,10 +34,12 @@
 
     </PropertyGroup>
 
+    <!--
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="dotnet-codegencs.exe template run .\generators\Streams.csx -o generated" />
     </Target>
-
+    -->
+    
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
@@ -68,14 +70,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="generated\" />
+        <PackageReference Include="CodegenCS.MSBuild" Version="3.5.2" PrivateAssets="All"/>
     </ItemGroup>
-
-    <!-- Waiting on https://github.com/Drizin/CodegenCS/issues/36
-    <ItemGroup>
-        <PackageReference Include="CodegenCS.MSBuild" Version="3.5.2" PrivateAssets="All">
-        </PackageReference>
-    </ItemGroup>
-    -->
     
 </Project>

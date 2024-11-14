@@ -23,7 +23,7 @@ public class Streams
 
     //public  FormattableString Main() => $$"""{{{Class}}}""";
 
-    public void Main(ICodegenOutputFile writer)
+    public void Main(ICodegenContext context)
     {
         var source = new StringBuilder();
         
@@ -53,7 +53,7 @@ public class Streams
 
             source.AppendLine(ClassFooter());                        
         }                           
-        writer.Write($$"""{{source}}""");
+        context[$"Streams.g.cs"].Write($$"""{{source}}""");
     }
 
 
@@ -181,7 +181,7 @@ public class Streams
         return
             $$"""        
               
-                      /// <include file='../XMLdoc.xml' path='members/member[@name="T:For{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
+                      /// <include file='XMLdoc.xml' path='members/member[@name="T:For{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
                       [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
                       public void For{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
                       {

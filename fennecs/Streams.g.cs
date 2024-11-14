@@ -7,7 +7,7 @@ namespace fennecs;
 public partial record Stream<C0, C1>
 {
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
         public void For(Action<R<C0>, R<C1>> action)
         {
@@ -33,7 +33,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00000100_00000011)]
         public void For(Action<EntityRef, R<C0>, R<C1>> action)
         {
@@ -59,7 +59,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
         public void For<U>(U uniform, Action<U, R<C0>, R<C1>> action)
         {
@@ -85,7 +85,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00000100_00000011)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>> action)
         {
@@ -111,7 +111,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
         public void For(Action<R<C0>, RW<C1>> action)
         {
@@ -137,7 +137,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00000100_00000010)]
         public void For(Action<EntityRef, R<C0>, RW<C1>> action)
         {
@@ -163,7 +163,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
         public void For<U>(U uniform, Action<U, R<C0>, RW<C1>> action)
         {
@@ -189,7 +189,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00000100_00000010)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>> action)
         {
@@ -215,7 +215,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
         public void For(Action<RW<C0>, R<C1>> action)
         {
@@ -241,7 +241,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00000100_00000001)]
         public void For(Action<EntityRef, RW<C0>, R<C1>> action)
         {
@@ -267,7 +267,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
         public void For<U>(U uniform, Action<U, RW<C0>, R<C1>> action)
         {
@@ -293,7 +293,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00000100_00000001)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>> action)
         {
@@ -319,7 +319,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For(Action<RW<C0>, RW<C1>> action)
         {
@@ -345,7 +345,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00000100_00000000)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>> action)
         {
@@ -371,7 +371,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>> action)
         {
@@ -397,7 +397,7 @@ public partial record Stream<C0, C1>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00000100_00000000)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>> action)
         {
@@ -426,7 +426,7 @@ public partial record Stream<C0, C1>
 public partial record Stream<C0, C1, C2>
 {
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
         public void For(Action<R<C0>, R<C1>, R<C2>> action)
         {
@@ -452,7 +452,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00001000_00000111)]
         public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>> action)
         {
@@ -478,7 +478,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
         public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>> action)
         {
@@ -504,7 +504,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00001000_00000111)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>> action)
         {
@@ -530,7 +530,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
         public void For(Action<R<C0>, R<C1>, RW<C2>> action)
         {
@@ -556,7 +556,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00001000_00000110)]
         public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>> action)
         {
@@ -582,7 +582,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
         public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>> action)
         {
@@ -608,7 +608,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00001000_00000110)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>> action)
         {
@@ -634,7 +634,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
         public void For(Action<R<C0>, RW<C1>, R<C2>> action)
         {
@@ -660,7 +660,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00001000_00000101)]
         public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>> action)
         {
@@ -686,7 +686,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
         public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>> action)
         {
@@ -712,7 +712,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00001000_00000101)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>> action)
         {
@@ -738,7 +738,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
         public void For(Action<R<C0>, RW<C1>, RW<C2>> action)
         {
@@ -764,7 +764,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00001000_00000100)]
         public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>> action)
         {
@@ -790,7 +790,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
         public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>> action)
         {
@@ -816,7 +816,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00001000_00000100)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>> action)
         {
@@ -842,7 +842,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
         public void For(Action<RW<C0>, R<C1>, R<C2>> action)
         {
@@ -868,7 +868,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00001000_00000011)]
         public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>> action)
         {
@@ -894,7 +894,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
         public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>> action)
         {
@@ -920,7 +920,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00001000_00000011)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>> action)
         {
@@ -946,7 +946,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
         public void For(Action<RW<C0>, R<C1>, RW<C2>> action)
         {
@@ -972,7 +972,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00001000_00000010)]
         public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>> action)
         {
@@ -998,7 +998,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
         public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>> action)
         {
@@ -1024,7 +1024,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00001000_00000010)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>> action)
         {
@@ -1050,7 +1050,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
         public void For(Action<RW<C0>, RW<C1>, R<C2>> action)
         {
@@ -1076,7 +1076,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00001000_00000001)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>> action)
         {
@@ -1102,7 +1102,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>> action)
         {
@@ -1128,7 +1128,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00001000_00000001)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>> action)
         {
@@ -1154,7 +1154,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For(Action<RW<C0>, RW<C1>, RW<C2>> action)
         {
@@ -1180,7 +1180,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00001000_00000000)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>> action)
         {
@@ -1206,7 +1206,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>> action)
         {
@@ -1232,7 +1232,7 @@ public partial record Stream<C0, C1, C2>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00001000_00000000)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>> action)
         {
@@ -1261,7 +1261,7 @@ public partial record Stream<C0, C1, C2>
 public partial record Stream<C0, C1, C2, C3>
 {
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00001111)]
         public void For(Action<R<C0>, R<C1>, R<C2>, R<C3>> action)
         {
@@ -1287,7 +1287,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00001111)]
         public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>> action)
         {
@@ -1313,7 +1313,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001111)]
         public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>> action)
         {
@@ -1339,7 +1339,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00001111)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>> action)
         {
@@ -1365,7 +1365,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00001110)]
         public void For(Action<R<C0>, R<C1>, R<C2>, RW<C3>> action)
         {
@@ -1391,7 +1391,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00001110)]
         public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>> action)
         {
@@ -1417,7 +1417,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001110)]
         public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>> action)
         {
@@ -1443,7 +1443,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00001110)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>> action)
         {
@@ -1469,7 +1469,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00001101)]
         public void For(Action<R<C0>, R<C1>, RW<C2>, R<C3>> action)
         {
@@ -1495,7 +1495,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00001101)]
         public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>> action)
         {
@@ -1521,7 +1521,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001101)]
         public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>> action)
         {
@@ -1547,7 +1547,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00001101)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>> action)
         {
@@ -1573,7 +1573,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00001100)]
         public void For(Action<R<C0>, R<C1>, RW<C2>, RW<C3>> action)
         {
@@ -1599,7 +1599,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00001100)]
         public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
         {
@@ -1625,7 +1625,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001100)]
         public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
         {
@@ -1651,7 +1651,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00001100)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
         {
@@ -1677,7 +1677,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00001011)]
         public void For(Action<R<C0>, RW<C1>, R<C2>, R<C3>> action)
         {
@@ -1703,7 +1703,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00001011)]
         public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>> action)
         {
@@ -1729,7 +1729,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001011)]
         public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>> action)
         {
@@ -1755,7 +1755,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00001011)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>> action)
         {
@@ -1781,7 +1781,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00001010)]
         public void For(Action<R<C0>, RW<C1>, R<C2>, RW<C3>> action)
         {
@@ -1807,7 +1807,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00001010)]
         public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
         {
@@ -1833,7 +1833,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001010)]
         public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
         {
@@ -1859,7 +1859,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00001010)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
         {
@@ -1885,7 +1885,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00001001)]
         public void For(Action<R<C0>, RW<C1>, RW<C2>, R<C3>> action)
         {
@@ -1911,7 +1911,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00001001)]
         public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
         {
@@ -1937,7 +1937,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001001)]
         public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
         {
@@ -1963,7 +1963,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00001001)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
         {
@@ -1989,7 +1989,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00001000)]
         public void For(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2015,7 +2015,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00001000)]
         public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2041,7 +2041,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001000)]
         public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2067,7 +2067,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00001000)]
         public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2093,7 +2093,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
         public void For(Action<RW<C0>, R<C1>, R<C2>, R<C3>> action)
         {
@@ -2119,7 +2119,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00000111)]
         public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>> action)
         {
@@ -2145,7 +2145,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
         public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>> action)
         {
@@ -2171,7 +2171,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00000111)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>> action)
         {
@@ -2197,7 +2197,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
         public void For(Action<RW<C0>, R<C1>, R<C2>, RW<C3>> action)
         {
@@ -2223,7 +2223,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00000110)]
         public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
         {
@@ -2249,7 +2249,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
         public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
         {
@@ -2275,7 +2275,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00000110)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
         {
@@ -2301,7 +2301,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
         public void For(Action<RW<C0>, R<C1>, RW<C2>, R<C3>> action)
         {
@@ -2327,7 +2327,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00000101)]
         public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
         {
@@ -2353,7 +2353,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
         public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
         {
@@ -2379,7 +2379,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00000101)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
         {
@@ -2405,7 +2405,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
         public void For(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2431,7 +2431,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00000100)]
         public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2457,7 +2457,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
         public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2483,7 +2483,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00000100)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2509,7 +2509,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
         public void For(Action<RW<C0>, RW<C1>, R<C2>, R<C3>> action)
         {
@@ -2535,7 +2535,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00000011)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
         {
@@ -2561,7 +2561,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
         {
@@ -2587,7 +2587,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00000011)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
         {
@@ -2613,7 +2613,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
         public void For(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
         {
@@ -2639,7 +2639,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00000010)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
         {
@@ -2665,7 +2665,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
         {
@@ -2691,7 +2691,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00000010)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
         {
@@ -2717,7 +2717,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
         public void For(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
         {
@@ -2743,7 +2743,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00000001)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
         {
@@ -2769,7 +2769,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
         {
@@ -2795,7 +2795,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00000001)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
         {
@@ -2821,7 +2821,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2847,7 +2847,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         [OverloadResolutionPriority(0b_00010000_00000000)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2873,7 +2873,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
@@ -2899,7 +2899,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+        /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         [OverloadResolutionPriority(0b_00010000_00000000)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
