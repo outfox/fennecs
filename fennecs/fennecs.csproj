@@ -34,14 +34,24 @@
 
     </PropertyGroup>
 
-    <Target Name="GenerateStreamRunners" BeforeTargets="CoreCompile" 
-            Inputs="$(Project)generators/Streams.For.csx;$(Project)generators/Streams.Job.csx;$(Project)generators/Streams.Raw.csx" 
-            Outputs="$(Project)generated/Streams.For.cs;$(Project)generated/Streams.Job.cs;$(Project)generated/Streams.Raw.cs">
-        <Exec Command="dotnet-codegencs template run ./generators/Streams.For.csx -o generated" />
-        <Exec Command="dotnet-codegencs template run ./generators/Streams.Job.csx -o generated" />
-        <Exec Command="dotnet-codegencs template run ./generators/Streams.Raw.csx -o generated" />
-    </Target>
+    <PropertyGroup>
+        <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <StreamTemplate Include="generators\Streams.*.csx">
+            <OutputFile>generated\%(Filename).g.cs</OutputFile>
+        </StreamTemplate>
+    </ItemGroup>
 
+    <Target Name="GenerateStreamRunners"
+            BeforeTargets="CoreCompile"
+            Inputs="@(StreamTemplate)"
+            Outputs="@(StreamTemplate->'%(OutputFile)')">
+        <Exec Command="dotnet-codegencs template run %(StreamTemplate.Identity) -o generated"
+              WorkingDirectory="$(ProjectDir)"/>
+    </Target>
+    
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
@@ -63,7 +73,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\" />
+        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\"/>
         <None Include="../nuget/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>
@@ -77,7 +87,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="generated\" />
+        <Folder Include="generated\"/>
     </ItemGroup>
-    
+
 </Project>
