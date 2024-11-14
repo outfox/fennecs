@@ -181,7 +181,7 @@ public class Streams_For
         return
             $$"""        
               
-                      /// <include file='XMLdoc.xml' path='members/member[@name="T:Job{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
+                      /// <include file='../XMLdoc.xml' path='members/member[@name="T:Job{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
                       [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
                       public void Job{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
                       {
