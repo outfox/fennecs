@@ -31,8 +31,16 @@
         <Nullable>enable</Nullable>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>generated</CompilerGeneratedFilesOutputPath>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Compile Remove="generated\**" />
+        <Content Include="generated\**" />
+    </ItemGroup>
+    
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
