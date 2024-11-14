@@ -7,6 +7,26 @@ namespace fennecs.tests.Stream;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Stream3Tests(ITestOutputHelper output)
 {
+    
+    [Fact] public void Can_Use_RW_Inferred()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123).Add(890f).Add("ramen");
+
+        var stream = world.Stream<int, float, string>();
+
+        
+        stream.For(static (a, b, s) =>
+        {
+            Assert.Equal(123, a.read);
+            Assert.Equal(890f, b.read);
+            b.write = 456f;
+        });
+        
+    }
+
+    
     [Fact]
     public void Can_Enumerate_Stream()
     {
