@@ -8,30 +8,46 @@ namespace fennecs;
 
 #region For/Job: Component Actions
 
-public delegate void ComponentActionWWW<C0, C1, C2>(RW<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void ComponentActionWWR<C0, C1, C2>(RW<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void ComponentActionWRW<C0, C1, C2>(RW<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void ComponentActionWRR<C0, C1, C2>(RW<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void ComponentActionRWW<C0, C1, C2>(R<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void ComponentActionRWR<C0, C1, C2>(R<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void ComponentActionRRW<C0, C1, C2>(R<C0> comp0, R<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void ComponentActionRRR<C0, C1, C2>(R<C0> comp0, R<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionWWW<C0, C1, C2>(RW<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionWWR<C0, C1, C2>(RW<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionWRW<C0, C1, C2>(RW<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionWRR<C0, C1, C2>(RW<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionRWW<C0, C1, C2>(R<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionRWR<C0, C1, C2>(R<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionRRW<C0, C1, C2>(R<C0> comp0, R<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionRRR<C0, C1, C2>(R<C0> comp0, R<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
 
 #endregion
 
 
 #region For/Job: Entity Component Actions
 
-public delegate void EntityComponentActionWWW<C0, C1, C2>(EntityRef entity, RW<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void EntityComponentActionWWR<C0, C1, C2>(EntityRef entity, RW<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void EntityComponentActionWRW<C0, C1, C2>(EntityRef entity, RW<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void EntityComponentActionWRR<C0, C1, C2>(EntityRef entity, RW<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void EntityComponentActionRWW<C0, C1, C2>(EntityRef entity, R<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void EntityComponentActionRWR<C0, C1, C2>(EntityRef entity, R<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void EntityComponentActionRRW<C0, C1, C2>(EntityRef entity, R<C0> comp0, R<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
-public delegate void EntityComponentActionRRR<C0, C1, C2>(EntityRef entity, R<C0> comp0, R<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEWWW<C0, C1, C2>(EntityRef entity, RW<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEWWR<C0, C1, C2>(EntityRef entity, RW<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEWRW<C0, C1, C2>(EntityRef entity, RW<C0> comp0, R<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEWRR<C0, C1, C2>(EntityRef entity, RW<C0> comp0, R<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionERWW<C0, C1, C2>(EntityRef entity, R<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionERWR<C0, C1, C2>(EntityRef entity, R<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionERRW<C0, C1, C2>(EntityRef entity, R<C0> comp0, R<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionERRR<C0, C1, C2>(EntityRef entity, R<C0> comp0, R<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
 
 #endregion
+
+
+
+#region For/Job: Entity Component Actions
+
+public delegate void ActionEUWWW<in U, C0, C1, C2>(EntityRef entity, RW<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEUWWR<in U, C0, C1, C2>(EntityRef entity, RW<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEUWRW<in U, C0, C1, C2>(EntityRef entity, RW<C0> comp0, R<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEUWRR<in U, C0, C1, C2>(EntityRef entity, RW<C0> comp0, R<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEURWW<in U, C0, C1, C2>(EntityRef entity, R<C0> comp0, RW<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEURWR<in U, C0, C1, C2>(EntityRef entity, R<C0> comp0, RW<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEURRW<in U, C0, C1, C2>(EntityRef entity, R<C0> comp0, R<C1> comp1, RW<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+public delegate void ActionEURRR<in U, C0, C1, C2>(EntityRef entity, R<C0> comp0, R<C1> comp1, R<C2> comp2) where C0 : notnull where C1 : notnull where C2 : notnull;
+
+#endregion
+
 
 
 #region Raw: Memory Actions
