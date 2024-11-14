@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Benchmark</RootNamespace>
-        <Configurations>Release</Configurations>
+        <Configurations>Release;Debug</Configurations>
         <Platforms>AnyCPU</Platforms>
         <IsPackable>false</IsPackable>
         <PackageId>fennecs.benchmarks</PackageId>

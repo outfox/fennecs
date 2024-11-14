@@ -14,11 +14,11 @@ public class Streams
         //{ "Stream.4", typeof(Stream<,,,>) },
         //{ "Stream.5", typeof(Stream<,,,,>) },
 
-        //{ "Stream.1", 1 },
+        { "Stream.1", 1 },
         { "Stream.2", 2 },
         { "Stream.3", 3 },
         { "Stream.4", 4 },
-        //{ "Stream.5", 5 },
+        { "Stream.5", 5 },
     };
 
     //public  FormattableString Main() => $$"""{{{Class}}}""";
