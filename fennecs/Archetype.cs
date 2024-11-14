@@ -46,7 +46,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// The World this Archetype is a part of.
     /// </summary>
-    private readonly World _world;
+    internal readonly World World;
 
     /// <summary>
     /// The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
@@ -61,7 +61,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     internal Archetype(World world, Signature signature)
     {
-        _world = world;
+        World = world;
         Storages = new IStorage[signature.Count];
         
         Signature = signature;
@@ -174,7 +174,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             storage.Delete(Count-excess, excess);
         }
 
-        _world.Recycle(toDelete);
+        World.Recycle(toDelete);
         IdentityStorage.Delete(Count - excess, excess);
     }
 
@@ -191,7 +191,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         for (var i = 0; i < count; i++)
         {
             var identity = IdentityStorage[entry + i];
-            ref var meta = ref _world.GetEntityMeta(identity);
+            ref var meta = ref World.GetEntityMeta(identity);
             meta = new() { Identity = identity, Archetype = this, Row = entry + i };
         }
     }
@@ -255,7 +255,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         destination.PatchMetas(addedStart, addedCount);
 
         // Garbage collect own type.
-        if (IsEmpty) _world.DisposeArchetype(this);
+        if (IsEmpty) World.DisposeArchetype(this);
     }
 
 
@@ -353,7 +353,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         {
             var storage = Storages[index];
             if (storage == IdentityStorage) continue;
-            components.Add(new(expression, storage.Box(row), _world));
+            components.Add(new(expression, storage.Box(row), World));
         }
         
         return components.ToArray();
@@ -381,7 +381,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         for (var i = 0; i < Count; i++)
         {
             if (snapshot != Volatile.Read(ref Version)) throw new InvalidOperationException("Collection modified while enumerating.");
-            yield return new Entity(_world, IdentityStorage[i]);
+            yield return new Entity(World, IdentityStorage[i]);
         }
     }
 
@@ -404,7 +404,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// There's no bounds checking, so be sure to check against the Count property before using this method.
     /// (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
     /// </remarks>
-    public Entity this[int index] => new(_world, IdentityStorage[index]);
+    public Entity this[int index] => new(World, IdentityStorage[index]);
 
 
     #region Cross Joins
@@ -476,7 +476,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        using var worldLock = _world.Lock();
+        using var worldLock = World.Lock();
         
         var first = Count;
 
@@ -486,7 +486,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             storage.Append(values[i], count);
         }
 
-        using var identities = _world.SpawnBare(count);
+        using var identities = World.SpawnBare(count);
         IdentityStorage.Append(identities);
         PatchMetas(first, count);
     }

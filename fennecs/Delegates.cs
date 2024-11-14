@@ -10,7 +10,6 @@ public delegate void UniformEntitySpanAction<in U>(U uniform, Span<Entity> entit
 // Future: for inheritance?
 public delegate void CovariantAction<in C0>(C0 comp0);
 
-
 public delegate void ComponentAction<C0>(ref C0 comp0);
 public delegate void ComponentAction<C0, C1>(ref C0 comp0, ref C1 comp1);
 public delegate void ComponentAction<C0, C1, C2>(ref C0 comp0, ref C1 comp1, ref C2 comp2);

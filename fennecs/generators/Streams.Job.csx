@@ -4,7 +4,8 @@ using System.Text;
 
 namespace fennecs.generators;
 
-public class Streams_For
+
+public class Streams_Job
 {
     private readonly Dictionary<string, int> _types = new()
     {
@@ -107,11 +108,13 @@ public class Streams_For
     private static string Deconstruct(int width, string pattern)
     {
         var deconstruct = new StringBuilder();
+        deconstruct.Append($"job.World = table.World;");
+        deconstruct.Append($"job.MemoryE = table.GetStorage<Identity>().AsReadOnlyMemory(start, length);");
         //language=C#
         for (var i = 0; i < width; i++)
         {
-            deconstruct.Append($"var span{i} = s{i}.Span; ");
-            if (pattern[i] == 'W') deconstruct.Append($"var type{i} = s{i}.Expression; ");
+            deconstruct.Append($"job.Memory{i} = s{i}.AsMemory(start, length);");
+            deconstruct.Append($"job.Type{i} = s{i}.Expression;");
         }
         return deconstruct.ToString();
     }
@@ -167,45 +170,45 @@ public class Streams_For
             using fennecs.pools;
             using fennecs.storage;
             
+            // ReSharper disable InconsistentNaming
+            
             namespace fennecs;
             """;
 }
     
     private static string GenerateFor(bool entity, bool uniform, int width, int bits)
     {
-        // Stupid .NET Standard 2.0
-        // var pattern = $"{bits:b16}"[(16 - width)..16].Replace("0", "W").Replace("1", "R");
         var pattern = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
 
         //language=C#
         return
             $$"""        
-              
-                      /// <include file='../XMLdoc.xml' path='members/member[@name="T:Job{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
-                      [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
-                      public void Job{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
-                      {
-                         using var worldLock = World.Lock();
-              
-                         foreach (var table in Filtered)
+          
+                  /// <include file='../XMLdoc.xml' path='members/member[@name="T:Job{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
+                  [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
+                  public void Job{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
+                  {
+                     using var worldLock = World.Lock();
+          
+                     foreach (var table in Filtered)
+                     {
+                         var count = table.Count;
+                         using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
+                         if (join.Empty) continue;
+                         do
                          {
-                             var count = table.Count;
-                             using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
-                             if (join.Empty) continue;
-                             do
-                             {
-                                 var {{Select(width)}} = join.Select;
-                                 {{Deconstruct(width, pattern)}}
-                                 for (var i = 0; i < count; i++)
-                                 {   
-                                     var entity = table[i];
-                                     action({{Parameters(entity, uniform, pattern)}}); 
-                                 }
-                             } while (join.Iterate());
-                         }
-                      }
-                      
-                      
+                             var {{Select(width)}} = join.Select;
+                             {{Deconstruct(width, pattern)}}
+                             for (var i = 0; i < count; i++)
+                             {   
+                                 var entity = table[i];
+                                 action({{Parameters(entity, uniform, pattern)}}); 
+                             }
+                         } while (join.Iterate());
+                     }
+                  }
+                  
+                  
               """;
     }
 

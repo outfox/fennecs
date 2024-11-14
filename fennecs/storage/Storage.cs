@@ -348,8 +348,19 @@ internal class Storage<T>(TypeExpression expression) : IStorage
         Count += appendage.Length;
     }
 
+    /// <summary>
+    /// Returns a Memory handle to a section of the contained data.
+    /// </summary>
     public Memory<T> AsMemory(int start, int length) => _data.AsMemory(start, length);
 
+    /// <summary>
+    /// Returns a ReadOnlyMemory handle to a section of the contained data.
+    /// </summary>
+    public ReadOnlyMemory<T> AsReadOnlyMemory(int start, int length) => _data.AsMemory(start, length);
+
+    /// <summary>
+    /// Returns a Memory handle to the entire contained data.
+    /// </summary>
     public Memory<T> AsMemory() => _data.AsMemory(0, Count);
 
     /// <summary>

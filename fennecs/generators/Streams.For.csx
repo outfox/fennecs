@@ -173,12 +173,9 @@ public class Streams_For
     
     private static string GenerateFor(bool entity, bool uniform, int width, int bits)
     {
-        // Stupid .NET Standard 2.0
-        // var pattern = $"{bits:b16}"[(16 - width)..16].Replace("0", "W").Replace("1", "R");
         var pattern = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
-
-        //language=C#
-        return
+        
+        return //Language=C#
             $$"""        
               
                       /// <include file='../XMLdoc.xml' path='members/member[@name="T:For{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
@@ -189,9 +186,10 @@ public class Streams_For
               
                          foreach (var table in Filtered)
                          {
-                             var count = table.Count;
                              using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
                              if (join.Empty) continue;
+
+                             var count = table.Count;
                              do
                              {
                                  var {{Select(width)}} = join.Select;

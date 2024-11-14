@@ -15,9 +15,10 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var s0 = join.Select;
@@ -41,9 +42,10 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var s0 = join.Select;
@@ -67,9 +69,10 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var s0 = join.Select;
@@ -93,9 +96,10 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var s0 = join.Select;
@@ -119,9 +123,10 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var s0 = join.Select;
@@ -145,9 +150,10 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var s0 = join.Select;
@@ -171,9 +177,10 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var s0 = join.Select;
@@ -197,9 +204,10 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var s0 = join.Select;
@@ -226,9 +234,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -252,9 +261,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -278,9 +288,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -304,9 +315,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -330,9 +342,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -356,9 +369,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -382,9 +396,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -408,9 +423,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -434,9 +450,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -460,9 +477,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -486,9 +504,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -512,9 +531,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -538,9 +558,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -564,9 +585,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -590,9 +612,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -616,9 +639,10 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
@@ -645,9 +669,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -671,9 +696,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -697,9 +723,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -723,9 +750,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -749,9 +777,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -775,9 +804,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -801,9 +831,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -827,9 +858,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -853,9 +885,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -879,9 +912,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -905,9 +939,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -931,9 +966,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -957,9 +993,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -983,9 +1020,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1009,9 +1047,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1035,9 +1074,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1061,9 +1101,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1087,9 +1128,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1113,9 +1155,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1139,9 +1182,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1165,9 +1209,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1191,9 +1236,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1217,9 +1263,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1243,9 +1290,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1269,9 +1317,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1295,9 +1344,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1321,9 +1371,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1347,9 +1398,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1373,9 +1425,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1399,9 +1452,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1425,9 +1479,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1451,9 +1506,10 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
@@ -1480,9 +1536,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1506,9 +1563,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1532,9 +1590,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1558,9 +1617,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1584,9 +1644,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1610,9 +1671,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1636,9 +1698,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1662,9 +1725,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1688,9 +1752,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1714,9 +1779,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1740,9 +1806,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1766,9 +1833,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1792,9 +1860,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1818,9 +1887,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1844,9 +1914,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1870,9 +1941,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1896,9 +1968,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1922,9 +1995,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1948,9 +2022,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -1974,9 +2049,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2000,9 +2076,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2026,9 +2103,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2052,9 +2130,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2078,9 +2157,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2104,9 +2184,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2130,9 +2211,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2156,9 +2238,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2182,9 +2265,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2208,9 +2292,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2234,9 +2319,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2260,9 +2346,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2286,9 +2373,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2312,9 +2400,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2338,9 +2427,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2364,9 +2454,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2390,9 +2481,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2416,9 +2508,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2442,9 +2535,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2468,9 +2562,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2494,9 +2589,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2520,9 +2616,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2546,9 +2643,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2572,9 +2670,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2598,9 +2697,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2624,9 +2724,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2650,9 +2751,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2676,9 +2778,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2702,9 +2805,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2728,9 +2832,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2754,9 +2859,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2780,9 +2886,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2806,9 +2913,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2832,9 +2940,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2858,9 +2967,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2884,9 +2994,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2910,9 +3021,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2936,9 +3048,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2962,9 +3075,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -2988,9 +3102,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -3014,9 +3129,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -3040,9 +3156,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -3066,9 +3183,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -3092,9 +3210,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -3118,9 +3237,10 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
@@ -3147,9 +3267,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3173,9 +3294,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3199,9 +3321,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3225,9 +3348,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3251,9 +3375,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3277,9 +3402,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3303,9 +3429,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3329,9 +3456,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3355,9 +3483,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3381,9 +3510,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3407,9 +3537,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3433,9 +3564,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3459,9 +3591,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3485,9 +3618,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3511,9 +3645,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3537,9 +3672,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3563,9 +3699,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3589,9 +3726,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3615,9 +3753,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3641,9 +3780,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3667,9 +3807,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3693,9 +3834,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3719,9 +3861,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3745,9 +3888,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3771,9 +3915,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3797,9 +3942,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3823,9 +3969,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3849,9 +3996,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3875,9 +4023,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3901,9 +4050,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3927,9 +4077,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3953,9 +4104,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -3979,9 +4131,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4005,9 +4158,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4031,9 +4185,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4057,9 +4212,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4083,9 +4239,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4109,9 +4266,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4135,9 +4293,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4161,9 +4320,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4187,9 +4347,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4213,9 +4374,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4239,9 +4401,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4265,9 +4428,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4291,9 +4455,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4317,9 +4482,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4343,9 +4509,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4369,9 +4536,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4395,9 +4563,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4421,9 +4590,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4447,9 +4617,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4473,9 +4644,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4499,9 +4671,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4525,9 +4698,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4551,9 +4725,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4577,9 +4752,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4603,9 +4779,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4629,9 +4806,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4655,9 +4833,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4681,9 +4860,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4707,9 +4887,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4733,9 +4914,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4759,9 +4941,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4785,9 +4968,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4811,9 +4995,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4837,9 +5022,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4863,9 +5049,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4889,9 +5076,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4915,9 +5103,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4941,9 +5130,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4967,9 +5157,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -4993,9 +5184,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5019,9 +5211,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5045,9 +5238,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5071,9 +5265,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5097,9 +5292,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5123,9 +5319,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5149,9 +5346,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5175,9 +5373,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5201,9 +5400,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5227,9 +5427,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5253,9 +5454,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5279,9 +5481,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5305,9 +5508,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5331,9 +5535,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5357,9 +5562,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5383,9 +5589,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5409,9 +5616,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5435,9 +5643,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5461,9 +5670,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5487,9 +5697,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5513,9 +5724,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5539,9 +5751,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5565,9 +5778,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5591,9 +5805,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5617,9 +5832,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5643,9 +5859,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5669,9 +5886,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5695,9 +5913,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5721,9 +5940,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5747,9 +5967,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5773,9 +5994,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5799,9 +6021,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5825,9 +6048,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5851,9 +6075,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5877,9 +6102,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5903,9 +6129,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5929,9 +6156,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5955,9 +6183,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -5981,9 +6210,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6007,9 +6237,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6033,9 +6264,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6059,9 +6291,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6085,9 +6318,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6111,9 +6345,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6137,9 +6372,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6163,9 +6399,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6189,9 +6426,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6215,9 +6453,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6241,9 +6480,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6267,9 +6507,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6293,9 +6534,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6319,9 +6561,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6345,9 +6588,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6371,9 +6615,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6397,9 +6642,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6423,9 +6669,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
@@ -6449,9 +6696,10 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               var count = table.Count;
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
