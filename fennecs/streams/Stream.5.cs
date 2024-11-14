@@ -25,7 +25,7 @@ public partial record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Matc
 
     #region Stream.For
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(ComponentAction<C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
@@ -43,7 +43,7 @@ public partial record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Matc
     }
 
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
@@ -68,7 +68,7 @@ public partial record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Matc
     }
 
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityComponentAction<C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
@@ -93,7 +93,7 @@ public partial record Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Matc
     }
 
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();

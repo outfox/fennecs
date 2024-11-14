@@ -17,267 +17,9 @@ public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
 
 
-    #region Component Stream.For
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b_0000_0000)]
-    public void For(ComponentActionWW<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            var count = table.Count;
-            if (join.Empty) continue;
-            do
-            {
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                var type0 = s0.Expression;
-                var span1 = s1.Span;
-                var type1 = s1.Expression;
-                for (var i = 0; i < count; i++)
-                {
-                    var entity = table[i];
-                    action(
-                        new(ref span0[i], in entity, in type0),
-                        new(ref span1[i], in entity, in type1)
-                    );
-                }
-            } while (join.Iterate());
-        }
-    }
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b_0000_0001)]
-    public void For(ComponentActionWR<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-            var count = table.Count;
-            do
-            {
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                var type0 = s0.Expression;
-                var span1 = s1.Span;
-                //var type1 = s1.Expression;
-                for (var i = 0; i < count; i++)
-                {
-                    var entity = table[i];
-                    action(
-                        new(ref span0[i], in entity, in type0),
-                        new(in span1[i])
-                    );
-                }
-            } while (join.Iterate());
-        }
-    }
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b_0000_0010)]
-    public void For(ComponentActionRW<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-            var count = table.Count;
-            do
-            {
-                var (s0, s1) = join.Select;
-                //var entities = table.Span;
-                var span0 = s0.Span;
-                //var type0 = s0.Expression;
-                var span1 = s1.Span;
-                var type1 = s1.Expression;
-                for (var i = 0; i < count; i++)
-                {
-                    var entity = table[i];
-                    action(
-                        new(in span0[i]),
-                        new(ref span1[i], in entity, in type1)
-                    );
-                }
-            } while (join.Iterate());
-        }
-    }
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b_0000_0011)]
-    public void For(ComponentActionRR<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-            var count = table.Count;
-            do
-            {
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                //var type0 = default(Match);//s0.Match;
-                var span1 = s1.Span;
-                //var type1 = default(Match);//s1.Match;
-                for (var i = 0; i < count; i++)
-                {
-                    action(
-                        new(in span0[i]),
-                        new(in span1[i])
-                    );
-                }
-            } while (join.Iterate());
-        }
-    }
-
-    #endregion
-
-    
-    #region Entity Stream.For
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b_0001_0000)]
-    public void For(EntityComponentActionWW<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            var count = table.Count;
-            if (join.Empty) continue;
-            do
-            {
-                var entities = table.Span;
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                var type0 = s0.Expression;
-                var span1 = s1.Span;
-                var type1 = s1.Expression;
-                for (var i = 0; i < count; i++)
-                {
-                    var entity = new Entity(World, entities[i]);
-                    action(
-                        new(in entity),
-                        new(ref span0[i], in entity, in type0),
-                        new(ref span1[i], in entity, in type1)
-                    );
-                }
-            } while (join.Iterate());
-        }
-    }
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b_0001_0001)]
-    public void For(EntityComponentActionWR<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-            var count = table.Count;
-            do
-            {
-                var entities = table.Span;
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                var type0 = s0.Expression;
-                var span1 = s1.Span;
-                //var type1 = s1.Expression;
-                for (var i = 0; i < count; i++)
-                {
-                    var entity = new Entity(World, entities[i]);
-                    action(
-                        new(in entity),
-                        new(ref span0[i], in entity, in type0),
-                        new(in span1[i])
-                    );
-                }
-            } while (join.Iterate());
-        }
-    }
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b_0001_0010)]
-    public void For(EntityComponentActionRW<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-            var count = table.Count;
-            do
-            {
-                var entities = table.Span;
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                //var type0 = s0.Expression;
-                var span1 = s1.Span;
-                var type1 = s1.Expression;
-                for (var i = 0; i < count; i++)
-                {
-                    var entity = new Entity(World, entities[i]); //FIXME: Unified entity resolves this!
-                    action(
-                        new(in entity),
-                        new(in span0[i]),
-                        new(ref span1[i], in entity, in type1)
-                    );
-                }
-            } while (join.Iterate());
-        }
-    }
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    [OverloadResolutionPriority(0b_0001_0011)]
-    public void For(EntityComponentActionRR<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-            var count = table.Count;
-            do
-            {
-                var entities = table.Span;
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                //var type0 = s0.Expression;
-                var span1 = s1.Span;
-                //var type1 = s1.Expression;
-                for (var i = 0; i < count; i++)
-                {
-                    var entity = new Entity(World, entities[i]); //FIXME: Unified entity resolves this!
-                    action(
-                        new(in entity),
-                        new(in span0[i]),
-                        new(in span1[i])
-                    );
-                }
-            } while (join.Iterate());
-        }
-    }
-
-    #endregion
-
-
     #region Stream.For
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(ComponentAction<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -294,7 +36,7 @@ public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         }
     }
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(U uniform, UniformComponentAction<U, C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -316,7 +58,7 @@ public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityComponentAction<C0, C1> action)
     {
         using var worldLock = World.Lock();
@@ -338,7 +80,7 @@ public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1> action)
     {
         using var worldLock = World.Lock();

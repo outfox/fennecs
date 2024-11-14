@@ -8,7 +8,7 @@ namespace fennecs.tests.Stream;
 public class Stream3Tests(ITestOutputHelper output)
 {
     
-    [Fact] public void Can_Use_RW_Inferred()
+    [Fact] public void Can_Use_RWR_Inferred()
     {
         using var world = new World();
         var entity = world.Spawn();
@@ -16,12 +16,12 @@ public class Stream3Tests(ITestOutputHelper output)
 
         var stream = world.Stream<int, float, string>();
 
-        
         stream.For(static (a, b, s) =>
         {
             Assert.Equal(123, a.read);
             Assert.Equal(890f, b.read);
             b.write = 456f;
+            s.write = "dieter";
         });
         
     }
@@ -37,6 +37,7 @@ public class Stream3Tests(ITestOutputHelper output)
         List<(Entity, string, int, float)> list = [(arnold, "Arnold", 1, 7.0f), (dolph, "Dolph", 2, 8.0f)];
         
         var stream = world.Stream<string, int, float>();
+        
         foreach (var row in stream)
         {
             Assert.True(list.Remove(row));
