@@ -71,6 +71,7 @@
 
     <ItemGroup>
         <PackageReference Include="CodegenCS.MSBuild" Version="3.5.2" PrivateAssets="All"/>
+        <PackageReference Include="System.Numerics.Tensors" Version="9.0.0" PrivateAssets="All"/>
     </ItemGroup>
     
 </Project>

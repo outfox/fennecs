@@ -48,4 +48,7 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 
     /// <inheritdoc cref="Entity.Despawn"/>
     public void Despawn() => _entity.Despawn();
+
+    /// <inheritdoc />
+    public override string ToString() => _entity.ToString();
 }

@@ -7,7 +7,7 @@ internal class Work<C1> : IThreadPoolWorkItem
     public CountdownEvent CountDown = null!;
 
 
-    public void Execute()
+    public void Execute() 
     {
         foreach (ref var c in Memory1.Span) Action(ref c);
         CountDown.Signal();
