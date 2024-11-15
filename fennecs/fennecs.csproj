@@ -39,7 +39,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <StreamTemplate Include="generators\Streams.*.cs">
+        <StreamTemplate Include="generators\*.cs">
             <OutputFile>generated\%(Filename).g.cs</OutputFile>
         </StreamTemplate>
     </ItemGroup>
