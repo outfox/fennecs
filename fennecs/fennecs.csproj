@@ -48,7 +48,7 @@
             BeforeTargets="CoreCompile"
             Inputs="@(StreamTemplate)"
             Outputs="@(StreamTemplate->'%(OutputFile)')">
-        <Exec Command="dotnet-codegencs template run %(StreamTemplate.Identity) -o generated"
+        <Exec Command="dotnet tool run dotnet-codegencs template run %(StreamTemplate.Identity) -o generated"
               WorkingDirectory="$(ProjectDir)"/>
     </Target>
     

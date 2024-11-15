@@ -8,8 +8,8 @@ public class EventConceptTests
     }
 
     private static ITestOutputHelper _output = null!;
-
-    public interface IAdded<in T>
+    
+    private interface IAdded<in T>
     {
         static void Added(Entity entity, T value)
         {

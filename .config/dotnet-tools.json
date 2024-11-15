@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "dotnet-codegencs": {
+      "version": "3.5.0",
+      "commands": [
+        "dotnet-codegencs"
+      ],
+      "rollForward": false
+    }
+  }
+}
