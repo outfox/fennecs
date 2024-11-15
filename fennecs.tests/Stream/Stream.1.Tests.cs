@@ -4,6 +4,25 @@ namespace fennecs.tests.Stream;
 
 public class Stream1Tests(ITestOutputHelper output)
 {
+
+    [Fact]
+    public void Can_Run_New_Job()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold");
+        var dolph = world.Spawn().Add("Dolph");
+
+        List<(Entity, string)> list = [(arnold, "Arnold"), (dolph, "Dolph")];
+
+        var stream = world.Stream<string>();
+        stream.Job((e, str) =>
+        {
+            output.WriteLine(str.read);
+            output.WriteLine(e.ToString());
+        });
+    }
+
+
     [Fact]
     public void Can_Enumerate_Stream()
     {
