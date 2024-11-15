@@ -23,7 +23,7 @@ public class AliasingBenchmarks(Vector4[] testArray)
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     // ReSharper disable once MemberCanBePrivate.Global
-    [Params(1_000_000)] public int entityCount { get; set; } = 400_000;
+    [Params(1_000_000)] public int EntityCount { get; set; } = 400_000;
 
     private static readonly Random RandomV = new(1337);
     private static readonly Random RandomF = new(1337);
@@ -95,11 +95,11 @@ public class AliasingBenchmarks(Vector4[] testArray)
         if (!BitOperations.IsPow2(Unsafe.SizeOf<Vector4>())) Console.WriteLine("Vector4 is not power of 2");
         Console.WriteLine("...");
 
-        _world = new(entityCount * 3);
+        _world = new(EntityCount * 3);
 
         //testArray = new Vector4[entityCount];
 
-        for (var i = 0; i < entityCount; i++)
+        for (var i = 0; i < EntityCount; i++)
         {
             _world.Spawn().Add(new Vector4(RandomV.NextSingle(), RandomV.NextSingle(), RandomV.NextSingle(), RandomV.NextSingle()));
             _world.Spawn().Add<FoxVector4>(new Vector4(RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle(), RandomF.NextSingle()));
@@ -130,9 +130,9 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [BenchmarkCategory("Write")]
     public void Vector4_Write()
     {
-        _queryV4.For(UniformConstantVector, static (Vector4 uniform, ref Vector4 v) =>
+        _queryV4.For(UniformConstantVector, static (uniform,  v) =>
         {
-            v = uniform;
+            v.write = uniform;
         });
     }
 
@@ -140,9 +140,9 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [BenchmarkCategory("Write")]
     public void Vector4_Write_Job()
     {
-        _queryV4.Job(UniformConstantVector, static (Vector4 uniform, ref Vector4 v) =>
+        _queryV4.Job(UniformConstantVector, static (uniform, v) =>
         {
-            v = uniform;
+            v.write = uniform;
         });
     }
 
@@ -150,9 +150,9 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [BenchmarkCategory("Write")]
     public void FoxVector4_Write_Explicit_Ref()
     {
-        _queryF4.For(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.For(UniformConstantVector, static (uniform, v) =>
         {
-            v.Value = uniform;
+            v.write = uniform;
         });
     }
 
@@ -160,9 +160,9 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [BenchmarkCategory("Write")]
     public void FoxVector4_Write_Explicit_New()
     {
-        _queryF4.For(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.For(UniformConstantVector, static (uniform, v) =>
         {
-            v = new(uniform);
+            v.write = new FoxVector4(uniform);
         });
     }
 
@@ -170,9 +170,9 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [BenchmarkCategory("Write")]
     public void FoxVector4_Write_Implicit_New()
     {
-        _queryF4.For(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.For(UniformConstantVector, static (uniform, v) =>
         {
-            v = uniform;
+            v.write = uniform;
         });
     }
 
@@ -180,9 +180,9 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [BenchmarkCategory("Write")]
     public void FoxVector4_Write_Explicit_New_Job()
     {
-        _queryF4.Job(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.Job(UniformConstantVector, static (uniform, v) =>
         {
-            v = new(uniform);
+            v.write = new(uniform);
         });
     }
 
@@ -335,54 +335,54 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [Benchmark]
     public void Vector4_Subtract()
     {
-        _queryV4.For(UniformConstantVector, static (Vector4 uniform, ref Vector4 v) =>
+        _queryV4.For(UniformConstantVector, static (uniform, v) =>
         {
-            v = Vector4.Subtract(v, uniform);
+            v.write = Vector4.Subtract(v, uniform);
         });
     }
 
     [Benchmark]
     public void FoxVector4_Subtract_Explicit_New()
     {
-        _queryF4.For(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.For(UniformConstantVector, static (uniform, v) =>
         {
-            v = new(Vector4.Subtract(v.Value, uniform));
+            v.write = new FoxVector4(Vector4.Subtract(v.read.Value, uniform));
         });
     }
 
     [Benchmark]
     public void FoxVector4_Subtract_Explicit_Ref()
     {
-        _queryF4.For(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.For(UniformConstantVector, static (uniform, v) =>
         {
-            v.Value = Vector4.Subtract(v.Value, uniform);
+            v.write = Vector4.Subtract(v.read.Value, uniform);
         });
     }
 
     [Benchmark]
     public void FoxVector4_Subtract_Implicit_Ref()
     {
-        _queryF4.For(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.For(UniformConstantVector, static (uniform, v) =>
         {
-            v.Value = Vector4.Subtract(v.Value, uniform);
+            v.write = Vector4.Subtract(v.read, uniform);
         });
     }
 
     [Benchmark]
     public void FoxVector4_Subtract_Implicit_New()
     {
-        _queryF4.For(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.For(UniformConstantVector, static (uniform, v) =>
         {
-            v = Vector4.Subtract(v, uniform);
+            v.write = Vector4.Subtract(v.read, uniform);
         });
     }
 
     [Benchmark]
     public void Vector4_Subtract_Job()
     {
-        _queryV4.Job(UniformConstantVector, static (Vector4 uniform, ref Vector4 v) =>
+        _queryV4.Job(UniformConstantVector, static (uniform, v) =>
         {
-            v = Vector4.Subtract(v, uniform);
+            v.write = Vector4.Subtract(v, uniform);
         });
     }
 
@@ -390,9 +390,9 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [Benchmark]
     public void FoxVector4_Subtract_Explicit_New_Job()
     {
-        _queryF4.Job(UniformConstantVector, static (FoxVector4 uniform, ref FoxVector4 v) =>
+        _queryF4.Job(UniformConstantVector, static (uniform, v) =>
         {
-            v = new(Vector4.Subtract(v.Value, uniform));
+            v.write = new FoxVector4(Vector4.Subtract(v.read, uniform));
         });
     }
 

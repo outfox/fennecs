@@ -35,7 +35,7 @@ public readonly ref struct RW<T> where T : notnull
     /// Read access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public T read => _value;
+    public ref readonly T read => ref _value;
     
     /// <summary>
     /// Write access to the component's value.
@@ -50,7 +50,7 @@ public readonly ref struct RW<T> where T : notnull
             if (typeof(Modified<T>).IsAssignableFrom(typeof(T)))
             {
                 var original = _value;
-                _value = value;
+                _value =  value;
 
                 // TODO: Collect changes up into the Runner's outer scope instead, and process all at once there.
                 //_writtenEntities?.Add(_entity);

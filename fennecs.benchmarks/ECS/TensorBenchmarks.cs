@@ -8,6 +8,7 @@ using BenchmarkDotNet.Order;
 using fennecs;
 using fennecs_Components;
 using fennecs.pools;
+using fennecs.storage;
 
 namespace Benchmark.ECS;
 
@@ -77,20 +78,20 @@ public class TensorBenchmarks
     /// This could be a static anonymous delegate, but this way, we don't need to repeat ourselves
     /// and reduce the risk of errors when refactoring or unit testing.
     /// </summary>
-    private static void Workload(ref Component1 c1, ref Component2 c2)
+    private static void Workload(RW<Component1> c1, RW<Component2> c2)
     {
         const float dt = 1f / 60.0f;
-        c1.Value = c1.Value + c2.Value * dt;
+        c1.write = new Component1(c1.read.Value + c2.read.Value * dt);
     }
 
     [BenchmarkCategory("fennecs")]
     [Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
-        _query.For(static delegate(ref Component1 c1, ref Component2 c2)
+        _query.For(static(c1, c2) =>
         {
             const float dt = 1f / 60.0f;
-            c1.Value = c1.Value + c2.Value * dt;
+            c1.write = new Component1(c1.read.Value + c2.read.Value * dt);
         });
     }
 

@@ -2,6 +2,7 @@
 
 using fennecs;
 using Name = string;
+// ReSharper disable StringLiteralTypo
 
 if (!Console.IsOutputRedirected) Console.Clear();
 Console.WriteLine("School's out!");
@@ -57,31 +58,31 @@ do
 
     //  Update each player on the field.
     team.For((
-            ref Name playerName,
-            ref Position playerPosition,
-            ref Talent playerTalent
+            playerName,
+            playerPosition,
+            playerTalent
         )
         =>
     {
         ref var ballPosition = ref ball.Ref<Position>();
 
-        var direction = ballPosition.value - playerPosition.value;
+        var direction = ballPosition.Value - playerPosition.read;
         if (direction.LengthSquared() > 1f)
         {
             var dash = direction * (random.NextSingle() * .9f + 0.1f);
-            playerPosition += dash;
-            Console.WriteLine($"{playerName,15} runs towards the ball!" +
+            playerPosition.write += dash;
+            Console.WriteLine($"{playerName.read,15} runs towards the ball!" +
                               $" ... d = {direction.Length():f2}m");
             return;
         }
 
         ballPosition += RandomRadius(radius: 5, onCircle: true);
         kicked = true;
-        Console.WriteLine($">>>>> {playerName} kicks the ball!");
+        Console.WriteLine($">>>>> {playerName.read} kicks the ball!");
 
-        if (!playerTalent) return;
+        if (!playerTalent.read) return;
 
-        Console.WriteLine($"***** {playerName} scores!!!".ToUpper());
+        Console.WriteLine($"***** {playerName.read} scores!!!".ToUpper());
         goldenGoal = true;
     });
 } while (!goldenGoal);
@@ -113,20 +114,18 @@ internal struct Ball;
 
 
 // Component that represents a truthy value for a player's talent.
-internal readonly struct Talent(bool value)
+internal readonly record struct Talent(bool Value)
 {
-    private bool value { get; } = value;
     public static implicit operator Talent(bool value) => new(value);
-    public static implicit operator bool(Talent talent) => talent.value;
+    public static implicit operator bool(Talent talent) => talent.Value;
 }
 
 
 // Position component wrapping a Vector2.
-internal readonly struct Position(Vector2 value)
+internal readonly record struct Position(Vector2 Value)
 {
-    public Vector2 value { get; } = value;
-    public static implicit operator Vector2(Position other) => other.value;
+    public static implicit operator Vector2(Position other) => other.Value;
     public static implicit operator Position(Vector2 value) => new(value);
-    public override string ToString() => value.ToString();
+    public override string ToString() => Value.ToString();
 }
 #endregion

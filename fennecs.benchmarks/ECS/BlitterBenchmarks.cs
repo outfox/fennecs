@@ -55,7 +55,7 @@ public class BlitterBenchmarks
     public int NonBlittableJob()
     {
         _stream.Job("not blittable",
-            (string uniform, ref int _, ref string str) => { str = uniform; });
+            (uniform, _, str) => { str.write = uniform; });
         return _world.Count;
     }
 

@@ -34,9 +34,9 @@ var racers =
 Console.WriteLine($"Cars on the street: {racers.Count}");
 
 // Drivers, get ready! (mutative per-entity operation on Query)
-racers.For((in Entity raceCar, ref Driver driver, ref Model name) =>
+racers.For((raceCar, driver, name) =>
 {
-    driver.ReportForRace();
+    driver.read.ReportForRace();
     Console.WriteLine($"{driver}'s {name} is ready to race!");
     raceCar.Add<Ready>();
 });

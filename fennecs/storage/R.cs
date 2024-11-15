@@ -11,7 +11,7 @@ public readonly ref struct R<T>(ref readonly T val) where T : notnull
     /// Read access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public T read => _value;
+    public ref readonly T read => ref _value;
 
     /// <summary>
     /// Implicitly casts a <see cref="R{T}"/> to its underlying value.

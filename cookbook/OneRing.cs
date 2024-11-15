@@ -26,10 +26,10 @@ var ringsOfPower = world
     .Stream();
 
 // Use the Query to corrupt the Ring Bearers
-ringsOfPower.For((in Entity ring, ref RingBearer bearer, ref OneRing link) =>
+ringsOfPower.For((ring, bearer, link) =>
 {
-    bearer = bearer with { corrupted = true };
-    link.CallOut(ring, bearer);  // it calls out to its master!
+    bearer.write = bearer.write with { corrupted = true };
+    link.read.CallOut(ring, bearer);  // it calls out to its master!
 });
 
 Console.WriteLine("\nDirected by: Peter Foxen");
