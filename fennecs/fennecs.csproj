@@ -44,7 +44,7 @@
         </StreamTemplate>
     </ItemGroup>
 
-    <Target Name="GenerateStreamRunners"
+    <Target Name="GenerateCode"
             BeforeTargets="CoreCompile"
             Inputs="@(StreamTemplate)"
             Outputs="@(StreamTemplate->'%(OutputFile)')">
