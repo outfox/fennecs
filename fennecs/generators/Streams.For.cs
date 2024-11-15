@@ -100,7 +100,7 @@ file class StreamsForGenerator
         return deconstruct.ToString();
     }
 
-    private static string Parameters(bool entity, bool uniform, string pattern)
+    private static string InvocationParameters(bool entity, bool uniform, string pattern)
     {
         var parameters = new StringBuilder();
 
@@ -186,7 +186,7 @@ file class StreamsForGenerator
                                  for (var i = 0; i < count; i++)
                                  {   
                                      var entity = table[i];
-                                     action({{Parameters(entity, uniform, pattern)}}); 
+                                     action({{InvocationParameters(entity, uniform, pattern)}}); 
                                  }
                              } while (join.Iterate());
                          }

@@ -44,7 +44,7 @@ file class JobsGenerator
     {
         //var sb = 
         var readOnly = !write ? "ReadOnly" : "";
-        return $"{readOnly}Memory<C{index}> Memory{index} = null!;";
+        return $"internal {readOnly}Memory<C{index}> Memory{index} = null!;";
     }
     
     private FormattableString Memories(int width, string pattern)
@@ -54,6 +54,17 @@ file class JobsGenerator
         for (var i = 0; i < width; i++)
         {
             sb.AppendLine(Memory(pattern[i] == 'W', i).ToString());
+        }
+        return FormattableStringFactory.Create(sb.ToString());
+    }
+
+    private FormattableString Types(int width)
+    {
+        StringBuilder sb = new();
+        
+        for (var i = 0; i < width; i++)
+        {
+            sb.AppendLine($"internal TypeExpression Type{i} = default;");
         }
         return FormattableStringFactory.Create(sb.ToString());
     }
@@ -105,33 +116,18 @@ file class JobsGenerator
         return typeParams.ToString();
     }
 
-    private string Select(int width)
-    {
-        var select = new StringBuilder();
-        if (width > 1) select.Append("(");
-        //language=C#
-        for (var i = 0; i < width; i++)
-        {
-            select.Append($"s{i}");
-            if (i < width - 1) select.Append(", ");
-        }
-        if (width > 1) select.Append(")");
-        return select.ToString();
-    }
-
     private string Deconstruct(int width, string pattern)
     {
         var deconstruct = new StringBuilder();
         //language=C#
         for (var i = 0; i < width; i++)
         {
-            deconstruct.Append($"var span{i} = s{i}.Span; ");
-            if (pattern[i] == 'W') deconstruct.Append($"var type{i} = s{i}.Expression; ");
+            deconstruct.Append($"var span{i} = Memory{i}.Span; ");
         }
         return deconstruct.ToString();
     }
 
-    private string Parameters(bool entity, bool uniform, string pattern)
+    private string InvocationParameters(bool entity, bool uniform, string pattern)
     {
         var parameters = new StringBuilder();
 
@@ -139,7 +135,7 @@ file class JobsGenerator
         if (entity) parameters.Append("new(in entity), ");
 
         //language=C#
-        if (uniform) parameters.Append("uniform, ");
+        if (uniform) parameters.Append("Uniform, ");
 
         var index = 0;
         foreach (var p in pattern)
@@ -149,8 +145,8 @@ file class JobsGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in entity, in type{index})",
-                    'R' => $"new(ref span{index}[i])",
+                    'W' => $"new(ref span{index}[i], in entity, in Type{index})",
+                    'R' => $"new(in span{index}[i])",
                     _ => throw new NotImplementedException(),
                 }
             );
@@ -226,11 +222,13 @@ file class JobsGenerator
         var jobParams = JobParams(width, uniform);
         var constraints = JobConstraints(width);
         var actionParams = ActionParams(width, entity, uniform, accessors);
-
+        var invocationParams = InvocationParameters(entity, uniform, accessors);
         var memories = Memories(width, accessors);
+        var types = Types(width);
         var deconstruction = Deconstruct(width, accessors);
         var jobName = $"Job{(entity ? "E" : "")}{(uniform ? "U" : "")}{accessors}";
         var jobType = $"{jobName}<{jobParams}>";
+        var uniforms = uniform ? "public U Uniform = default!;" : "";
 
         return //Language=C#
             $$"""
@@ -240,11 +238,11 @@ file class JobsGenerator
                       public ReadOnlyMemory<Identity> MemoryE = null!;
                       public World World = null!;
                   
-                      // Memories
                       {{memories}}
                   
-                      // Types
-                      public TypeExpression Type0 = default;
+                      {{types}}
+                  
+                      {{uniforms}}
                   
                       public Action<{{actionParams}}> Action = null!;
                       public CountdownEvent CountDown = null!;
@@ -257,7 +255,7 @@ file class JobsGenerator
                           for (var i = 0; i < count; i++)
                           {
                               var entity = new Entity(World, identities[i]);
-                              Action({{actionParams}});
+                              Action({{invocationParams}});
                           }
                           CountDown.Signal();
                       }

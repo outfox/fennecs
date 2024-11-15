@@ -147,34 +147,6 @@ file class StreamsJobGenerator
         return deconstruct.ToString();
     }
 
-    private  string Parameters(bool entity, bool uniform, string pattern)
-    {
-        var parameters = new StringBuilder();
-
-        //language=C#
-        if (entity) parameters.Append("new(in entity), ");
-
-        //language=C#
-        if (uniform) parameters.Append("uniform, ");
-
-        var index = 0;
-        foreach (var p in pattern)
-        {
-            if (index != 0) parameters.Append(", ");
-            parameters.Append(
-                //language=C#
-                p switch
-                {
-                    'W' => $"new(ref span{index}[i], in entity, in type{index})",
-                    'R' => $"new(ref span{index}[i])",
-                    _ => throw new NotImplementedException(),
-                }
-            );
-            index++;
-        }
-        return parameters.ToString();
-    }
-
     private  string ClassHeader(int width)
     {
         //language=C#
