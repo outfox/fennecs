@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable file RedundantUsingDirective
+using System;
 using System.Collections.Generic;
 using System.Text;
 using CodegenCS;
@@ -6,13 +7,13 @@ using CodegenCS;
 namespace fennecs.generators;
 
 
-// ReSharper disable once UnusedType.Local
 /// <summary>
 /// Generator class for CodegenCS https://github.com/Drizin/CodegenCS
 /// </summary>
 /// <remarks>
 /// This is parsed as a CSX template in build target <b>"GenerateCode"</b>
 /// </remarks>
+// ReSharper disable once UnusedType.Local
 file class StreamsJobGenerator
 {
     private readonly Dictionary<string, int> _types = new()
@@ -67,7 +68,7 @@ file class StreamsJobGenerator
     }
 
 
-    private static string ActionParams(int width, bool entity, bool uniform, string pattern)
+    private  string ActionParams(int width, bool entity, bool uniform, string pattern)
     {
         var typeParams = new StringBuilder();
 
@@ -87,7 +88,7 @@ file class StreamsJobGenerator
         return typeParams.ToString();
     }
 
-    private static string TypeParams(int width)
+    private  string TypeParams(int width)
     {
         var typeParams = new StringBuilder();
 
@@ -100,7 +101,22 @@ file class StreamsJobGenerator
         return typeParams.ToString();
     }
 
-    private static string Select(int width)
+    private  string JobParams(int width, bool uniform)
+    {
+        var typeParams = new StringBuilder();
+        
+        if (uniform) typeParams.Append($"U, ");
+        
+        //language=C#
+        for (var i = 0; i < width; i++)
+        {
+            typeParams.Append($"C{i}");
+            if (i < width - 1) typeParams.Append(", ");
+        }
+        return typeParams.ToString();
+    }
+
+    private  string Select(int width)
     {
         var select = new StringBuilder();
         if (width > 1) select.Append("(");
@@ -114,21 +130,20 @@ file class StreamsJobGenerator
         return select.ToString();
     }
 
-    private static string Deconstruct(int width, string pattern)
+    private  string Deconstruct(int width, string accessors)
     {
         var deconstruct = new StringBuilder();
-        deconstruct.Append($"job.World = table.World;");
-        deconstruct.Append($"job.MemoryE = table.GetStorage<Identity>().AsReadOnlyMemory(start, length);");
         //language=C#
         for (var i = 0; i < width; i++)
         {
-            deconstruct.Append($"job.Memory{i} = s{i}.AsMemory(start, length);");
+            var access = accessors[i] == 'R' ? "ReadOnly" : ""; 
+            deconstruct.Append($"job.Memory{i} = s{i}.As{access}Memory(start, length);");
             deconstruct.Append($"job.Type{i} = s{i}.Expression;");
         }
         return deconstruct.ToString();
     }
 
-    private static string Parameters(bool entity, bool uniform, string pattern)
+    private  string Parameters(bool entity, bool uniform, string pattern)
     {
         var parameters = new StringBuilder();
 
@@ -156,7 +171,7 @@ file class StreamsJobGenerator
         return parameters.ToString();
     }
 
-    private static string ClassHeader(int width)
+    private  string ClassHeader(int width)
     {
         //language=C#
         return $$"""               
@@ -164,13 +179,13 @@ file class StreamsJobGenerator
                {
                """; 
     }
-    private static string ClassFooter()
+    private  string ClassFooter()
     {
         //language=C#
         return "}";
     }
     
-    private static string FileHeader()
+    private  string FileHeader()
     { 
         return 
             """
@@ -185,40 +200,70 @@ file class StreamsJobGenerator
             """;
 }
     
-    private static string GenerateFor(bool entity, bool uniform, int width, int bits)
+    private  string GenerateFor(bool entity, bool uniform, int width, int bits)
     {
-        var pattern = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
+        var accessors = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
+        var typeParams = TypeParams(width);
+        var jobParams = JobParams(width, uniform);
+        var actionParams = ActionParams(width, entity, uniform, accessors);
+
+        var jobName = $"Job{(entity ? "E" : "")}{(uniform ? "U" : "")}{accessors}";
+        var jobType = $"{jobName}<{jobParams}>";
 
         //language=C#
         return
             $$"""        
-          
-                  /// <include file='../XMLdoc.xml' path='members/member[@name="T:Job{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
-                  [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
-                  public void Job{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
+            /// <include file='../XMLdoc.xml' path='members/member[@name="T:{{jobName}}"]'/>
+            [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
+            public void Job{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{actionParams}}> action)
+            {
+              AssertNoWildcards();
+
+              using var worldLock = World.Lock();
+              var chunkSize = Math.Max(1, Count / Concurrency);
+
+              Countdown.Reset();
+
+              using var jobs = PooledList<{{jobType}}>.Rent();
+
+              foreach (var table in Filtered)
+              {
+                  using var join = table.CrossJoin<{{typeParams}}>(_streamTypes.AsSpan());
+                  if (join.Empty) continue;
+
+                  var count = table.Count; // storage.Length is the capacity, not the count.
+                  var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+                  do
                   {
-                     using var worldLock = World.Lock();
-          
-                     foreach (var table in Filtered)
-                     {
-                         var count = table.Count;
-                         using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
-                         if (join.Empty) continue;
-                         do
-                         {
-                             var {{Select(width)}} = join.Select;
-                             {{Deconstruct(width, pattern)}}
-                             for (var i = 0; i < count; i++)
-                             {   
-                                 var entity = table[i];
-                                 action({{Parameters(entity, uniform, pattern)}}); 
-                             }
-                         } while (join.Iterate());
-                     }
-                  }
-                  
-                  
-              """;
+                      for (var chunk = 0; chunk < partitions; chunk++)
+                      {
+                          Countdown.AddCount();
+
+                          var start = chunk * chunkSize;
+                          var length = Math.Min(chunkSize, count - start);
+
+                          var {{Select(width)}} = join.Select;
+
+                          var job = JobPool<{{jobType}}>.Rent();
+
+                          {{Deconstruct(width, accessors)}}
+
+                          job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                          job.Action = action;
+                          job.CountDown = Countdown;
+                          jobs.Add(job);
+
+                          ThreadPool.UnsafeQueueUserWorkItem(job, true);
+                      }
+                  } while (join.Iterate());
+              }
+
+              Countdown.Signal();
+              Countdown.Wait();
+
+              JobPool<{{jobType}}>.Return(jobs);
+            }
+            """;
     }
 
 }

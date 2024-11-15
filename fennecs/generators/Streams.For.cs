@@ -1,17 +1,18 @@
-﻿using System;
+﻿// ReSharper disable file RedundantUsingDirective
+using System;
 using System.Collections.Generic;
 using System.Text;
 using CodegenCS;
 
 namespace fennecs.generators;
 
-// ReSharper disable once UnusedType.Local
 /// <summary>
 /// Generator class for CodegenCS https://github.com/Drizin/CodegenCS
 /// </summary>
 /// <remarks>
 /// This is parsed as a CSX template in build target <b>"GenerateCode"</b>
 /// </remarks>
+// ReSharper disable once UnusedType.Local
 file class StreamsForGenerator
 {
     private readonly Dictionary<string, int> _types = new()

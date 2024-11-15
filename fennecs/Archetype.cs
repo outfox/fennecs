@@ -40,9 +40,11 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// </summary>
     public bool IsEmpty => Count == 0;
 
+    /// <summary>
+    /// Returns all the Entities in the Archetype as a Span.
+    /// </summary>
     public ReadOnlySpan<Identity> Span => IdentityStorage.Span;
-
-
+    
     /// <summary>
     /// The World this Archetype is a part of.
     /// </summary>
