@@ -27,6 +27,6 @@
 
     <ItemGroup>
         <PackageReference Include="System.Numerics.Tensors" Version="9.0.0" PrivateAssets="All"/>
-        <PackageReference Include="BenchmarkDotNet" Version="0.14.1-nightly.20241107.194"/>
+        <PackageReference Include="BenchmarkDotNet" Version="0.14.0"/>
     </ItemGroup>
 </Project>

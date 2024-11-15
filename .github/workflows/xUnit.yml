@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 9.0.x
     - name: Get Tools
-      run: dotnet tool install --global dotnet-codegencs --version 3.5.0
+      run: dotnet tool restore
     - name: Restore dependencies
       run: dotnet restore fennecs.tests/fennecs.tests.csproj
     - name: Build
