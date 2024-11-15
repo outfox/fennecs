@@ -20,12 +20,11 @@ file class JobsGenerator
     public void Main(ICodegenContext context)
     {
         var source = new StringBuilder();
-        
-        source.AppendLine(FileHeader());
-        
+
         foreach (var width in Enumerable.Range(1, 5))
         {
-            source.AppendLine(ClassHeader(width));
+            source.Clear();
+            source.AppendLine(FileHeader());
 
             var top = (1 << width) - 1;
             for (var bits = top; bits >= 0; bits--)
@@ -36,9 +35,8 @@ file class JobsGenerator
                 source.AppendLine(GenerateJobs(true, true, width, bits));
             }
 
-            source.AppendLine(ClassFooter());                        
+            context[$"Jobs.{width}.g.cs"].Write($"{source}");
         }                           
-        context["Jobs.g.cs"].Write($"{source}");
     }
     private FormattableString Memory(bool write, int index)
     {
@@ -154,25 +152,6 @@ file class JobsGenerator
         }
         return parameters.ToString();
     }
-
-    private string ClassHeader(int width)
-    {
-        //language=C#
-        return $$"""               
-               public partial record Stream<{{TypeParams(width)}}>
-               {
-               """;
-    }
-    private string ClassFooter()
-    {
-        //language=C#
-        return $$"""
-                 }
-                 
-                 
-                 """;
-    }
-    
     private string FileHeader()
     {
         return 
@@ -183,6 +162,9 @@ file class JobsGenerator
             using fennecs.storage;
             
             namespace fennecs;
+            
+            #pragma warning disable CS0414 // Field is assigned but its value is never used
+            // ReSharper disable file IdentifierTypo
             
             """;
 }
@@ -230,7 +212,8 @@ file class JobsGenerator
         var jobType = $"{jobName}<{jobParams}>";
         var uniforms = uniform ? "public U Uniform = default!;" : "";
 
-        return //Language=C#
+        return 
+            //Language=C#
             $$"""
                   internal record {{jobType}} : IThreadPoolWorkItem 
                       {{constraints}}

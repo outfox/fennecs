@@ -16,23 +16,6 @@ namespace fennecs.generators;
 // ReSharper disable once UnusedType.Local
 file class StreamsJobGenerator
 {
-    private readonly Dictionary<string, int> _types = new()
-    {
-        //{ "Stream.1", typeof(Stream<>) },
-        //{ "Stream.2", typeof(Stream<,>) },
-        //{ "Stream.3", typeof(Stream<,,>) },
-        //{ "Stream.4", typeof(Stream<,,,>) },
-        //{ "Stream.5", typeof(Stream<,,,,>) },
-
-        { "Stream.1", 1 },
-        //{ "Stream.2", 2 },
-        //{ "Stream.3", 3 },
-        //{ "Stream.4", 4 }, 
-        //{ "Stream.5", 5 },
-    };
- 
-    //public  FormattableString Main() => $$"""{{{Class}}}""";
-
     // ReSharper disable once UnusedMember.Local
     public void Main(ICodegenContext context)
     {
@@ -40,15 +23,8 @@ file class StreamsJobGenerator
         
         source.AppendLine(FileHeader());
         
-        foreach (var pair in _types)
+        foreach (var width in Enumerable.Range(1, 5))
         {
-            Console.WriteLine($"Processing {pair.Key}");
-            
-            //TODO: Load types at generator runtime
-            //var width = type.GetGenericArguments().Length;
-            
-            var (_, width) = (pair.Key, pair.Value);
-            
             source.AppendLine(ClassHeader(width));
 
             var top = (1 << width) - 1;
@@ -176,6 +152,8 @@ file class StreamsJobGenerator
             using fennecs.pools;
             using fennecs.storage;
             
+            #pragma warning disable CS0414 // Field is assigned but its value is never used
+            // ReSharper disable file IdentifierTypo
             // ReSharper disable InconsistentNaming
             
             namespace fennecs;
