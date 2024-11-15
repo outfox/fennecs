@@ -219,57 +219,57 @@ file class StreamsJobGenerator
         //language=C#
         return
             $$"""        
-            /// <include file='../XMLdoc.xml' path='members/member[@name="T:{{jobName}}"]'/>
-            [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
-            public void Job{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{actionParams}}> action)
-            {
-              AssertNoWildcards();
+                /// <include file='../XMLdoc.xml' path='members/member[@name="T:{{jobName}}"]'/>
+                [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
+                public void Job{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{actionParams}}> action)
+                {
+                  AssertNoWildcards();
 
-              using var worldLock = World.Lock();
-              var chunkSize = Math.Max(1, Count / Concurrency);
+                  using var worldLock = World.Lock();
+                  var chunkSize = Math.Max(1, Count / Concurrency);
 
-              Countdown.Reset();
+                  Countdown.Reset();
 
-              using var jobs = PooledList<{{jobType}}>.Rent();
+                  using var jobs = PooledList<{{jobType}}>.Rent();
 
-              foreach (var table in Filtered)
-              {
-                  using var join = table.CrossJoin<{{typeParams}}>(_streamTypes.AsSpan());
-                  if (join.Empty) continue;
-
-                  var count = table.Count; // storage.Length is the capacity, not the count.
-                  var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-                  do
+                  foreach (var table in Filtered)
                   {
-                      for (var chunk = 0; chunk < partitions; chunk++)
+                      using var join = table.CrossJoin<{{typeParams}}>(_streamTypes.AsSpan());
+                      if (join.Empty) continue;
+
+                      var count = table.Count; // storage.Length is the capacity, not the count.
+                      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+                      do
                       {
-                          Countdown.AddCount();
+                          for (var chunk = 0; chunk < partitions; chunk++)
+                          {
+                              Countdown.AddCount();
 
-                          var start = chunk * chunkSize;
-                          var length = Math.Min(chunkSize, count - start);
+                              var start = chunk * chunkSize;
+                              var length = Math.Min(chunkSize, count - start);
 
-                          var {{Select(width)}} = join.Select;
+                              var {{Select(width)}} = join.Select;
 
-                          var job = JobPool<{{jobType}}>.Rent();
+                              var job = JobPool<{{jobType}}>.Rent();
 
-                          {{Deconstruct(width, accessors, uniform)}}
+                              {{Deconstruct(width, accessors, uniform)}}
 
-                          job.World = table.World;
-                          job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-                          job.Action = action;
-                          job.CountDown = Countdown;
-                          jobs.Add(job);
+                              job.World = table.World;
+                              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                              job.Action = action;
+                              job.CountDown = Countdown;
+                              jobs.Add(job);
 
-                          ThreadPool.UnsafeQueueUserWorkItem(job, true);
-                      }
-                  } while (join.Iterate());
-              }
+                              ThreadPool.UnsafeQueueUserWorkItem(job, true);
+                          }
+                      } while (join.Iterate());
+                  }
 
-              Countdown.Signal();
-              Countdown.Wait();
+                  Countdown.Signal();
+                  Countdown.Wait();
 
-              JobPool<{{jobType}}>.Return(jobs);
-            }
+                  JobPool<{{jobType}}>.Return(jobs);
+                }
             """;
     }
 

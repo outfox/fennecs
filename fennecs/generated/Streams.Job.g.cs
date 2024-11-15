@@ -8,412 +8,412 @@ using fennecs.storage;
 namespace fennecs;
 public partial record Stream<C0>
 {
-/// <include file='../XMLdoc.xml' path='members/member[@name="T:JobR"]'/>
-[OverloadResolutionPriority(0b_00000000_00000001)]
-public void Job(Action<R<C0>> action)
-{
-  AssertNoWildcards();
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
+    public void Job(Action<R<C0>> action)
+    {
+      AssertNoWildcards();
 
-  using var worldLock = World.Lock();
-  var chunkSize = Math.Max(1, Count / Concurrency);
+      using var worldLock = World.Lock();
+      var chunkSize = Math.Max(1, Count / Concurrency);
 
-  Countdown.Reset();
+      Countdown.Reset();
 
-  using var jobs = PooledList<JobR<C0>>.Rent();
+      using var jobs = PooledList<JobR<C0>>.Rent();
 
-  foreach (var table in Filtered)
-  {
-      using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-      if (join.Empty) continue;
-
-      var count = table.Count; // storage.Length is the capacity, not the count.
-      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-      do
+      foreach (var table in Filtered)
       {
-          for (var chunk = 0; chunk < partitions; chunk++)
+          using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+          if (join.Empty) continue;
+
+          var count = table.Count; // storage.Length is the capacity, not the count.
+          var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+          do
           {
-              Countdown.AddCount();
+              for (var chunk = 0; chunk < partitions; chunk++)
+              {
+                  Countdown.AddCount();
 
-              var start = chunk * chunkSize;
-              var length = Math.Min(chunkSize, count - start);
+                  var start = chunk * chunkSize;
+                  var length = Math.Min(chunkSize, count - start);
 
-              var s0 = join.Select;
+                  var s0 = join.Select;
 
-              var job = JobPool<JobR<C0>>.Rent();
+                  var job = JobPool<JobR<C0>>.Rent();
 
-              job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
+                  job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
 
-              job.World = table.World;
-              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-              job.Action = action;
-              job.CountDown = Countdown;
-              jobs.Add(job);
+                  job.World = table.World;
+                  job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                  job.Action = action;
+                  job.CountDown = Countdown;
+                  jobs.Add(job);
 
-              ThreadPool.UnsafeQueueUserWorkItem(job, true);
-          }
-      } while (join.Iterate());
-  }
+                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
+              }
+          } while (join.Iterate());
+      }
 
-  Countdown.Signal();
-  Countdown.Wait();
+      Countdown.Signal();
+      Countdown.Wait();
 
-  JobPool<JobR<C0>>.Return(jobs);
-}
-/// <include file='../XMLdoc.xml' path='members/member[@name="T:JobER"]'/>
-[OverloadResolutionPriority(0b_00000010_00000001)]
-public void Job(Action<EntityRef, R<C0>> action)
-{
-  AssertNoWildcards();
+      JobPool<JobR<C0>>.Return(jobs);
+    }
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobER"]'/>
+    [OverloadResolutionPriority(0b_00000010_00000001)]
+    public void Job(Action<EntityRef, R<C0>> action)
+    {
+      AssertNoWildcards();
 
-  using var worldLock = World.Lock();
-  var chunkSize = Math.Max(1, Count / Concurrency);
+      using var worldLock = World.Lock();
+      var chunkSize = Math.Max(1, Count / Concurrency);
 
-  Countdown.Reset();
+      Countdown.Reset();
 
-  using var jobs = PooledList<JobER<C0>>.Rent();
+      using var jobs = PooledList<JobER<C0>>.Rent();
 
-  foreach (var table in Filtered)
-  {
-      using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-      if (join.Empty) continue;
-
-      var count = table.Count; // storage.Length is the capacity, not the count.
-      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-      do
+      foreach (var table in Filtered)
       {
-          for (var chunk = 0; chunk < partitions; chunk++)
+          using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+          if (join.Empty) continue;
+
+          var count = table.Count; // storage.Length is the capacity, not the count.
+          var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+          do
           {
-              Countdown.AddCount();
+              for (var chunk = 0; chunk < partitions; chunk++)
+              {
+                  Countdown.AddCount();
 
-              var start = chunk * chunkSize;
-              var length = Math.Min(chunkSize, count - start);
+                  var start = chunk * chunkSize;
+                  var length = Math.Min(chunkSize, count - start);
 
-              var s0 = join.Select;
+                  var s0 = join.Select;
 
-              var job = JobPool<JobER<C0>>.Rent();
+                  var job = JobPool<JobER<C0>>.Rent();
 
-              job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
+                  job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
 
-              job.World = table.World;
-              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-              job.Action = action;
-              job.CountDown = Countdown;
-              jobs.Add(job);
+                  job.World = table.World;
+                  job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                  job.Action = action;
+                  job.CountDown = Countdown;
+                  jobs.Add(job);
 
-              ThreadPool.UnsafeQueueUserWorkItem(job, true);
-          }
-      } while (join.Iterate());
-  }
+                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
+              }
+          } while (join.Iterate());
+      }
 
-  Countdown.Signal();
-  Countdown.Wait();
+      Countdown.Signal();
+      Countdown.Wait();
 
-  JobPool<JobER<C0>>.Return(jobs);
-}
-/// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUR"]'/>
-[OverloadResolutionPriority(0b_00000000_00000001)]
-public void Job<U>(U uniform, Action<U, R<C0>> action)
-{
-  AssertNoWildcards();
+      JobPool<JobER<C0>>.Return(jobs);
+    }
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
+    public void Job<U>(U uniform, Action<U, R<C0>> action)
+    {
+      AssertNoWildcards();
 
-  using var worldLock = World.Lock();
-  var chunkSize = Math.Max(1, Count / Concurrency);
+      using var worldLock = World.Lock();
+      var chunkSize = Math.Max(1, Count / Concurrency);
 
-  Countdown.Reset();
+      Countdown.Reset();
 
-  using var jobs = PooledList<JobUR<U, C0>>.Rent();
+      using var jobs = PooledList<JobUR<U, C0>>.Rent();
 
-  foreach (var table in Filtered)
-  {
-      using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-      if (join.Empty) continue;
-
-      var count = table.Count; // storage.Length is the capacity, not the count.
-      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-      do
+      foreach (var table in Filtered)
       {
-          for (var chunk = 0; chunk < partitions; chunk++)
+          using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+          if (join.Empty) continue;
+
+          var count = table.Count; // storage.Length is the capacity, not the count.
+          var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+          do
           {
-              Countdown.AddCount();
+              for (var chunk = 0; chunk < partitions; chunk++)
+              {
+                  Countdown.AddCount();
 
-              var start = chunk * chunkSize;
-              var length = Math.Min(chunkSize, count - start);
+                  var start = chunk * chunkSize;
+                  var length = Math.Min(chunkSize, count - start);
 
-              var s0 = join.Select;
+                  var s0 = join.Select;
 
-              var job = JobPool<JobUR<U, C0>>.Rent();
+                  var job = JobPool<JobUR<U, C0>>.Rent();
 
-              job.Uniform = uniform;job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
+                  job.Uniform = uniform;job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
 
-              job.World = table.World;
-              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-              job.Action = action;
-              job.CountDown = Countdown;
-              jobs.Add(job);
+                  job.World = table.World;
+                  job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                  job.Action = action;
+                  job.CountDown = Countdown;
+                  jobs.Add(job);
 
-              ThreadPool.UnsafeQueueUserWorkItem(job, true);
-          }
-      } while (join.Iterate());
-  }
+                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
+              }
+          } while (join.Iterate());
+      }
 
-  Countdown.Signal();
-  Countdown.Wait();
+      Countdown.Signal();
+      Countdown.Wait();
 
-  JobPool<JobUR<U, C0>>.Return(jobs);
-}
-/// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUR"]'/>
-[OverloadResolutionPriority(0b_00000010_00000001)]
-public void Job<U>(U uniform, Action<EntityRef, U, R<C0>> action)
-{
-  AssertNoWildcards();
+      JobPool<JobUR<U, C0>>.Return(jobs);
+    }
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUR"]'/>
+    [OverloadResolutionPriority(0b_00000010_00000001)]
+    public void Job<U>(U uniform, Action<EntityRef, U, R<C0>> action)
+    {
+      AssertNoWildcards();
 
-  using var worldLock = World.Lock();
-  var chunkSize = Math.Max(1, Count / Concurrency);
+      using var worldLock = World.Lock();
+      var chunkSize = Math.Max(1, Count / Concurrency);
 
-  Countdown.Reset();
+      Countdown.Reset();
 
-  using var jobs = PooledList<JobEUR<U, C0>>.Rent();
+      using var jobs = PooledList<JobEUR<U, C0>>.Rent();
 
-  foreach (var table in Filtered)
-  {
-      using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-      if (join.Empty) continue;
-
-      var count = table.Count; // storage.Length is the capacity, not the count.
-      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-      do
+      foreach (var table in Filtered)
       {
-          for (var chunk = 0; chunk < partitions; chunk++)
+          using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+          if (join.Empty) continue;
+
+          var count = table.Count; // storage.Length is the capacity, not the count.
+          var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+          do
           {
-              Countdown.AddCount();
+              for (var chunk = 0; chunk < partitions; chunk++)
+              {
+                  Countdown.AddCount();
 
-              var start = chunk * chunkSize;
-              var length = Math.Min(chunkSize, count - start);
+                  var start = chunk * chunkSize;
+                  var length = Math.Min(chunkSize, count - start);
 
-              var s0 = join.Select;
+                  var s0 = join.Select;
 
-              var job = JobPool<JobEUR<U, C0>>.Rent();
+                  var job = JobPool<JobEUR<U, C0>>.Rent();
 
-              job.Uniform = uniform;job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
+                  job.Uniform = uniform;job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
 
-              job.World = table.World;
-              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-              job.Action = action;
-              job.CountDown = Countdown;
-              jobs.Add(job);
+                  job.World = table.World;
+                  job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                  job.Action = action;
+                  job.CountDown = Countdown;
+                  jobs.Add(job);
 
-              ThreadPool.UnsafeQueueUserWorkItem(job, true);
-          }
-      } while (join.Iterate());
-  }
+                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
+              }
+          } while (join.Iterate());
+      }
 
-  Countdown.Signal();
-  Countdown.Wait();
+      Countdown.Signal();
+      Countdown.Wait();
 
-  JobPool<JobEUR<U, C0>>.Return(jobs);
-}
-/// <include file='../XMLdoc.xml' path='members/member[@name="T:JobW"]'/>
-[OverloadResolutionPriority(0b_00000000_00000000)]
-public void Job(Action<RW<C0>> action)
-{
-  AssertNoWildcards();
+      JobPool<JobEUR<U, C0>>.Return(jobs);
+    }
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
+    public void Job(Action<RW<C0>> action)
+    {
+      AssertNoWildcards();
 
-  using var worldLock = World.Lock();
-  var chunkSize = Math.Max(1, Count / Concurrency);
+      using var worldLock = World.Lock();
+      var chunkSize = Math.Max(1, Count / Concurrency);
 
-  Countdown.Reset();
+      Countdown.Reset();
 
-  using var jobs = PooledList<JobW<C0>>.Rent();
+      using var jobs = PooledList<JobW<C0>>.Rent();
 
-  foreach (var table in Filtered)
-  {
-      using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-      if (join.Empty) continue;
-
-      var count = table.Count; // storage.Length is the capacity, not the count.
-      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-      do
+      foreach (var table in Filtered)
       {
-          for (var chunk = 0; chunk < partitions; chunk++)
+          using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+          if (join.Empty) continue;
+
+          var count = table.Count; // storage.Length is the capacity, not the count.
+          var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+          do
           {
-              Countdown.AddCount();
+              for (var chunk = 0; chunk < partitions; chunk++)
+              {
+                  Countdown.AddCount();
 
-              var start = chunk * chunkSize;
-              var length = Math.Min(chunkSize, count - start);
+                  var start = chunk * chunkSize;
+                  var length = Math.Min(chunkSize, count - start);
 
-              var s0 = join.Select;
+                  var s0 = join.Select;
 
-              var job = JobPool<JobW<C0>>.Rent();
+                  var job = JobPool<JobW<C0>>.Rent();
 
-              job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
+                  job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
 
-              job.World = table.World;
-              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-              job.Action = action;
-              job.CountDown = Countdown;
-              jobs.Add(job);
+                  job.World = table.World;
+                  job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                  job.Action = action;
+                  job.CountDown = Countdown;
+                  jobs.Add(job);
 
-              ThreadPool.UnsafeQueueUserWorkItem(job, true);
-          }
-      } while (join.Iterate());
-  }
+                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
+              }
+          } while (join.Iterate());
+      }
 
-  Countdown.Signal();
-  Countdown.Wait();
+      Countdown.Signal();
+      Countdown.Wait();
 
-  JobPool<JobW<C0>>.Return(jobs);
-}
-/// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEW"]'/>
-[OverloadResolutionPriority(0b_00000010_00000000)]
-public void Job(Action<EntityRef, RW<C0>> action)
-{
-  AssertNoWildcards();
+      JobPool<JobW<C0>>.Return(jobs);
+    }
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEW"]'/>
+    [OverloadResolutionPriority(0b_00000010_00000000)]
+    public void Job(Action<EntityRef, RW<C0>> action)
+    {
+      AssertNoWildcards();
 
-  using var worldLock = World.Lock();
-  var chunkSize = Math.Max(1, Count / Concurrency);
+      using var worldLock = World.Lock();
+      var chunkSize = Math.Max(1, Count / Concurrency);
 
-  Countdown.Reset();
+      Countdown.Reset();
 
-  using var jobs = PooledList<JobEW<C0>>.Rent();
+      using var jobs = PooledList<JobEW<C0>>.Rent();
 
-  foreach (var table in Filtered)
-  {
-      using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-      if (join.Empty) continue;
-
-      var count = table.Count; // storage.Length is the capacity, not the count.
-      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-      do
+      foreach (var table in Filtered)
       {
-          for (var chunk = 0; chunk < partitions; chunk++)
+          using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+          if (join.Empty) continue;
+
+          var count = table.Count; // storage.Length is the capacity, not the count.
+          var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+          do
           {
-              Countdown.AddCount();
+              for (var chunk = 0; chunk < partitions; chunk++)
+              {
+                  Countdown.AddCount();
 
-              var start = chunk * chunkSize;
-              var length = Math.Min(chunkSize, count - start);
+                  var start = chunk * chunkSize;
+                  var length = Math.Min(chunkSize, count - start);
 
-              var s0 = join.Select;
+                  var s0 = join.Select;
 
-              var job = JobPool<JobEW<C0>>.Rent();
+                  var job = JobPool<JobEW<C0>>.Rent();
 
-              job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
+                  job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
 
-              job.World = table.World;
-              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-              job.Action = action;
-              job.CountDown = Countdown;
-              jobs.Add(job);
+                  job.World = table.World;
+                  job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                  job.Action = action;
+                  job.CountDown = Countdown;
+                  jobs.Add(job);
 
-              ThreadPool.UnsafeQueueUserWorkItem(job, true);
-          }
-      } while (join.Iterate());
-  }
+                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
+              }
+          } while (join.Iterate());
+      }
 
-  Countdown.Signal();
-  Countdown.Wait();
+      Countdown.Signal();
+      Countdown.Wait();
 
-  JobPool<JobEW<C0>>.Return(jobs);
-}
-/// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUW"]'/>
-[OverloadResolutionPriority(0b_00000000_00000000)]
-public void Job<U>(U uniform, Action<U, RW<C0>> action)
-{
-  AssertNoWildcards();
+      JobPool<JobEW<C0>>.Return(jobs);
+    }
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
+    public void Job<U>(U uniform, Action<U, RW<C0>> action)
+    {
+      AssertNoWildcards();
 
-  using var worldLock = World.Lock();
-  var chunkSize = Math.Max(1, Count / Concurrency);
+      using var worldLock = World.Lock();
+      var chunkSize = Math.Max(1, Count / Concurrency);
 
-  Countdown.Reset();
+      Countdown.Reset();
 
-  using var jobs = PooledList<JobUW<U, C0>>.Rent();
+      using var jobs = PooledList<JobUW<U, C0>>.Rent();
 
-  foreach (var table in Filtered)
-  {
-      using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-      if (join.Empty) continue;
-
-      var count = table.Count; // storage.Length is the capacity, not the count.
-      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-      do
+      foreach (var table in Filtered)
       {
-          for (var chunk = 0; chunk < partitions; chunk++)
+          using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+          if (join.Empty) continue;
+
+          var count = table.Count; // storage.Length is the capacity, not the count.
+          var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+          do
           {
-              Countdown.AddCount();
+              for (var chunk = 0; chunk < partitions; chunk++)
+              {
+                  Countdown.AddCount();
 
-              var start = chunk * chunkSize;
-              var length = Math.Min(chunkSize, count - start);
+                  var start = chunk * chunkSize;
+                  var length = Math.Min(chunkSize, count - start);
 
-              var s0 = join.Select;
+                  var s0 = join.Select;
 
-              var job = JobPool<JobUW<U, C0>>.Rent();
+                  var job = JobPool<JobUW<U, C0>>.Rent();
 
-              job.Uniform = uniform;job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
+                  job.Uniform = uniform;job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
 
-              job.World = table.World;
-              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-              job.Action = action;
-              job.CountDown = Countdown;
-              jobs.Add(job);
+                  job.World = table.World;
+                  job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                  job.Action = action;
+                  job.CountDown = Countdown;
+                  jobs.Add(job);
 
-              ThreadPool.UnsafeQueueUserWorkItem(job, true);
-          }
-      } while (join.Iterate());
-  }
+                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
+              }
+          } while (join.Iterate());
+      }
 
-  Countdown.Signal();
-  Countdown.Wait();
+      Countdown.Signal();
+      Countdown.Wait();
 
-  JobPool<JobUW<U, C0>>.Return(jobs);
-}
-/// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUW"]'/>
-[OverloadResolutionPriority(0b_00000010_00000000)]
-public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>> action)
-{
-  AssertNoWildcards();
+      JobPool<JobUW<U, C0>>.Return(jobs);
+    }
+    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUW"]'/>
+    [OverloadResolutionPriority(0b_00000010_00000000)]
+    public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>> action)
+    {
+      AssertNoWildcards();
 
-  using var worldLock = World.Lock();
-  var chunkSize = Math.Max(1, Count / Concurrency);
+      using var worldLock = World.Lock();
+      var chunkSize = Math.Max(1, Count / Concurrency);
 
-  Countdown.Reset();
+      Countdown.Reset();
 
-  using var jobs = PooledList<JobEUW<U, C0>>.Rent();
+      using var jobs = PooledList<JobEUW<U, C0>>.Rent();
 
-  foreach (var table in Filtered)
-  {
-      using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-      if (join.Empty) continue;
-
-      var count = table.Count; // storage.Length is the capacity, not the count.
-      var partitions = count / chunkSize + Math.Sign(count % chunkSize);
-      do
+      foreach (var table in Filtered)
       {
-          for (var chunk = 0; chunk < partitions; chunk++)
+          using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+          if (join.Empty) continue;
+
+          var count = table.Count; // storage.Length is the capacity, not the count.
+          var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+          do
           {
-              Countdown.AddCount();
+              for (var chunk = 0; chunk < partitions; chunk++)
+              {
+                  Countdown.AddCount();
 
-              var start = chunk * chunkSize;
-              var length = Math.Min(chunkSize, count - start);
+                  var start = chunk * chunkSize;
+                  var length = Math.Min(chunkSize, count - start);
 
-              var s0 = join.Select;
+                  var s0 = join.Select;
 
-              var job = JobPool<JobEUW<U, C0>>.Rent();
+                  var job = JobPool<JobEUW<U, C0>>.Rent();
 
-              job.Uniform = uniform;job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
+                  job.Uniform = uniform;job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
 
-              job.World = table.World;
-              job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
-              job.Action = action;
-              job.CountDown = Countdown;
-              jobs.Add(job);
+                  job.World = table.World;
+                  job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
+                  job.Action = action;
+                  job.CountDown = Countdown;
+                  jobs.Add(job);
 
-              ThreadPool.UnsafeQueueUserWorkItem(job, true);
-          }
-      } while (join.Iterate());
-  }
+                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
+              }
+          } while (join.Iterate());
+      }
 
-  Countdown.Signal();
-  Countdown.Wait();
+      Countdown.Signal();
+      Countdown.Wait();
 
-  JobPool<JobEUW<U, C0>>.Return(jobs);
-}
+      JobPool<JobEUW<U, C0>>.Return(jobs);
+    }
 }
