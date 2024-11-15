@@ -35,6 +35,7 @@ file class JobsGenerator
                 source.AppendLine(GenerateJobs(true, true, width, bits));
             }
 
+            context[$"Jobs.{width}.g.cs"].MultilineBehavior = CodegenTextWriter.MultilineBehaviorType.TrimLeftPadding;
             context[$"Jobs.{width}.g.cs"].Write($"{source}");
         }                           
     }
@@ -42,7 +43,7 @@ file class JobsGenerator
     {
         //var sb = 
         var readOnly = !write ? "ReadOnly" : "";
-        return $"internal {readOnly}Memory<C{index}> Memory{index} = null!;";
+        return $"    internal {readOnly}Memory<C{index}> Memory{index} = null!;";
     }
     
     private FormattableString Memories(int width, string pattern)
@@ -62,7 +63,7 @@ file class JobsGenerator
         
         for (var i = 0; i < width; i++)
         {
-            sb.AppendLine($"internal TypeExpression Type{i} = default;");
+            sb.AppendLine($"    internal TypeExpression Type{i} = default;");
         }
         return FormattableStringFactory.Create(sb.ToString());
     }
@@ -210,40 +211,40 @@ file class JobsGenerator
         var deconstruction = Deconstruct(width, accessors);
         var jobName = $"Job{(entity ? "E" : "")}{(uniform ? "U" : "")}{accessors}";
         var jobType = $"{jobName}<{jobParams}>";
-        var uniforms = uniform ? "public U Uniform = default!;" : "";
+        var uniforms = uniform ? "    internal U Uniform = default!;" : "";
 
         return 
             //Language=C#
             $$"""
-                  internal record {{jobType}} : IThreadPoolWorkItem 
-                      {{constraints}}
+              internal record {{jobType}} : IThreadPoolWorkItem 
+                  {{constraints}}
+              {
+                  public ReadOnlyMemory<Identity> MemoryE = null!;
+                  public World World = null!;
+              
+              {{memories}}
+              
+              {{types}}
+              
+              {{uniforms}}
+              
+                  public Action<{{actionParams}}> Action = null!;
+                  public CountdownEvent CountDown = null!;
+                  public void Execute() 
                   {
-                      public ReadOnlyMemory<Identity> MemoryE = null!;
-                      public World World = null!;
-                  
-                      {{memories}}
-                  
-                      {{types}}
-                  
-                      {{uniforms}}
-                  
-                      public Action<{{actionParams}}> Action = null!;
-                      public CountdownEvent CountDown = null!;
-                      public void Execute() 
+                      var identities = MemoryE.Span;
+                      {{deconstruction}}
+              
+                      var count = identities.Length;
+                      for (var i = 0; i < count; i++)
                       {
-                          var identities = MemoryE.Span;
-                          {{deconstruction}}
-                  
-                          var count = identities.Length;
-                          for (var i = 0; i < count; i++)
-                          {
-                              var entity = new Entity(World, identities[i]);
-                              Action({{invocationParams}});
-                          }
-                          CountDown.Signal();
+                          var entity = new Entity(World, identities[i]);
+                          Action({{invocationParams}});
                       }
+                      CountDown.Signal();
                   }
-                  
+              }
+              
               """;
     }
 }

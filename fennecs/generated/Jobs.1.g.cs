@@ -8,251 +8,251 @@ namespace fennecs;
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 // ReSharper disable file IdentifierTypo
 
-    internal record JobR<C0> : IThreadPoolWorkItem
-        where C0 : notnull
+internal record JobR<C0> : IThreadPoolWorkItem
+    where C0 : notnull
+{
+    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public World World = null!;
+
+    internal ReadOnlyMemory<C0> Memory0 = null!;
+
+
+    internal TypeExpression Type0 = default;
+
+
+
+
+    public Action<R<C0>> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public void Execute()
     {
-        public ReadOnlyMemory<Identity> MemoryE = null!;
-        public World World = null!;
+        var identities = MemoryE.Span;
+        var span0 = Memory0.Span;
 
-        internal ReadOnlyMemory<C0> Memory0 = null!;
-
-
-        internal TypeExpression Type0 = default;
-
-
-
-
-        public Action<R<C0>> Action = null!;
-        public CountdownEvent CountDown = null!;
-        public void Execute()
+        var count = identities.Length;
+        for (var i = 0; i < count; i++)
         {
-            var identities = MemoryE.Span;
-            var span0 = Memory0.Span;
-
-            var count = identities.Length;
-            for (var i = 0; i < count; i++)
-            {
-                var entity = new Entity(World, identities[i]);
-                Action(new(in span0[i]));
-            }
-            CountDown.Signal();
+            var entity = new Entity(World, identities[i]);
+            Action(new(in span0[i]));
         }
+        CountDown.Signal();
     }
+}
 
-    internal record JobER<C0> : IThreadPoolWorkItem
-        where C0 : notnull
+internal record JobER<C0> : IThreadPoolWorkItem
+    where C0 : notnull
+{
+    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public World World = null!;
+
+    internal ReadOnlyMemory<C0> Memory0 = null!;
+
+
+    internal TypeExpression Type0 = default;
+
+
+
+
+    public Action<EntityRef, R<C0>> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public void Execute()
     {
-        public ReadOnlyMemory<Identity> MemoryE = null!;
-        public World World = null!;
+        var identities = MemoryE.Span;
+        var span0 = Memory0.Span;
 
-        internal ReadOnlyMemory<C0> Memory0 = null!;
-
-
-        internal TypeExpression Type0 = default;
-
-
-
-
-        public Action<EntityRef, R<C0>> Action = null!;
-        public CountdownEvent CountDown = null!;
-        public void Execute()
+        var count = identities.Length;
+        for (var i = 0; i < count; i++)
         {
-            var identities = MemoryE.Span;
-            var span0 = Memory0.Span;
-
-            var count = identities.Length;
-            for (var i = 0; i < count; i++)
-            {
-                var entity = new Entity(World, identities[i]);
-                Action(new(in entity), new(in span0[i]));
-            }
-            CountDown.Signal();
+            var entity = new Entity(World, identities[i]);
+            Action(new(in entity), new(in span0[i]));
         }
+        CountDown.Signal();
     }
+}
 
-    internal record JobUR<U, C0> : IThreadPoolWorkItem
-        where C0 : notnull
+internal record JobUR<U, C0> : IThreadPoolWorkItem
+    where C0 : notnull
+{
+    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public World World = null!;
+
+    internal ReadOnlyMemory<C0> Memory0 = null!;
+
+
+    internal TypeExpression Type0 = default;
+
+
+    internal U Uniform = default!;
+
+    public Action<U, R<C0>> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public void Execute()
     {
-        public ReadOnlyMemory<Identity> MemoryE = null!;
-        public World World = null!;
+        var identities = MemoryE.Span;
+        var span0 = Memory0.Span;
 
-        internal ReadOnlyMemory<C0> Memory0 = null!;
-
-
-        internal TypeExpression Type0 = default;
-
-
-        public U Uniform = default!;
-
-        public Action<U, R<C0>> Action = null!;
-        public CountdownEvent CountDown = null!;
-        public void Execute()
+        var count = identities.Length;
+        for (var i = 0; i < count; i++)
         {
-            var identities = MemoryE.Span;
-            var span0 = Memory0.Span;
-
-            var count = identities.Length;
-            for (var i = 0; i < count; i++)
-            {
-                var entity = new Entity(World, identities[i]);
-                Action(Uniform, new(in span0[i]));
-            }
-            CountDown.Signal();
+            var entity = new Entity(World, identities[i]);
+            Action(Uniform, new(in span0[i]));
         }
+        CountDown.Signal();
     }
+}
 
-    internal record JobEUR<U, C0> : IThreadPoolWorkItem
-        where C0 : notnull
+internal record JobEUR<U, C0> : IThreadPoolWorkItem
+    where C0 : notnull
+{
+    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public World World = null!;
+
+    internal ReadOnlyMemory<C0> Memory0 = null!;
+
+
+    internal TypeExpression Type0 = default;
+
+
+    internal U Uniform = default!;
+
+    public Action<EntityRef, U, R<C0>> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public void Execute()
     {
-        public ReadOnlyMemory<Identity> MemoryE = null!;
-        public World World = null!;
+        var identities = MemoryE.Span;
+        var span0 = Memory0.Span;
 
-        internal ReadOnlyMemory<C0> Memory0 = null!;
-
-
-        internal TypeExpression Type0 = default;
-
-
-        public U Uniform = default!;
-
-        public Action<EntityRef, U, R<C0>> Action = null!;
-        public CountdownEvent CountDown = null!;
-        public void Execute()
+        var count = identities.Length;
+        for (var i = 0; i < count; i++)
         {
-            var identities = MemoryE.Span;
-            var span0 = Memory0.Span;
-
-            var count = identities.Length;
-            for (var i = 0; i < count; i++)
-            {
-                var entity = new Entity(World, identities[i]);
-                Action(new(in entity), Uniform, new(in span0[i]));
-            }
-            CountDown.Signal();
+            var entity = new Entity(World, identities[i]);
+            Action(new(in entity), Uniform, new(in span0[i]));
         }
+        CountDown.Signal();
     }
+}
 
-    internal record JobW<C0> : IThreadPoolWorkItem
-        where C0 : notnull
+internal record JobW<C0> : IThreadPoolWorkItem
+    where C0 : notnull
+{
+    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public World World = null!;
+
+    internal Memory<C0> Memory0 = null!;
+
+
+    internal TypeExpression Type0 = default;
+
+
+
+
+    public Action<RW<C0>> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public void Execute()
     {
-        public ReadOnlyMemory<Identity> MemoryE = null!;
-        public World World = null!;
+        var identities = MemoryE.Span;
+        var span0 = Memory0.Span;
 
-        internal Memory<C0> Memory0 = null!;
-
-
-        internal TypeExpression Type0 = default;
-
-
-
-
-        public Action<RW<C0>> Action = null!;
-        public CountdownEvent CountDown = null!;
-        public void Execute()
+        var count = identities.Length;
+        for (var i = 0; i < count; i++)
         {
-            var identities = MemoryE.Span;
-            var span0 = Memory0.Span;
-
-            var count = identities.Length;
-            for (var i = 0; i < count; i++)
-            {
-                var entity = new Entity(World, identities[i]);
-                Action(new(ref span0[i], in entity, in Type0));
-            }
-            CountDown.Signal();
+            var entity = new Entity(World, identities[i]);
+            Action(new(ref span0[i], in entity, in Type0));
         }
+        CountDown.Signal();
     }
+}
 
-    internal record JobEW<C0> : IThreadPoolWorkItem
-        where C0 : notnull
+internal record JobEW<C0> : IThreadPoolWorkItem
+    where C0 : notnull
+{
+    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public World World = null!;
+
+    internal Memory<C0> Memory0 = null!;
+
+
+    internal TypeExpression Type0 = default;
+
+
+
+
+    public Action<EntityRef, RW<C0>> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public void Execute()
     {
-        public ReadOnlyMemory<Identity> MemoryE = null!;
-        public World World = null!;
+        var identities = MemoryE.Span;
+        var span0 = Memory0.Span;
 
-        internal Memory<C0> Memory0 = null!;
-
-
-        internal TypeExpression Type0 = default;
-
-
-
-
-        public Action<EntityRef, RW<C0>> Action = null!;
-        public CountdownEvent CountDown = null!;
-        public void Execute()
+        var count = identities.Length;
+        for (var i = 0; i < count; i++)
         {
-            var identities = MemoryE.Span;
-            var span0 = Memory0.Span;
-
-            var count = identities.Length;
-            for (var i = 0; i < count; i++)
-            {
-                var entity = new Entity(World, identities[i]);
-                Action(new(in entity), new(ref span0[i], in entity, in Type0));
-            }
-            CountDown.Signal();
+            var entity = new Entity(World, identities[i]);
+            Action(new(in entity), new(ref span0[i], in entity, in Type0));
         }
+        CountDown.Signal();
     }
+}
 
-    internal record JobUW<U, C0> : IThreadPoolWorkItem
-        where C0 : notnull
+internal record JobUW<U, C0> : IThreadPoolWorkItem
+    where C0 : notnull
+{
+    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public World World = null!;
+
+    internal Memory<C0> Memory0 = null!;
+
+
+    internal TypeExpression Type0 = default;
+
+
+    internal U Uniform = default!;
+
+    public Action<U, RW<C0>> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public void Execute()
     {
-        public ReadOnlyMemory<Identity> MemoryE = null!;
-        public World World = null!;
+        var identities = MemoryE.Span;
+        var span0 = Memory0.Span;
 
-        internal Memory<C0> Memory0 = null!;
-
-
-        internal TypeExpression Type0 = default;
-
-
-        public U Uniform = default!;
-
-        public Action<U, RW<C0>> Action = null!;
-        public CountdownEvent CountDown = null!;
-        public void Execute()
+        var count = identities.Length;
+        for (var i = 0; i < count; i++)
         {
-            var identities = MemoryE.Span;
-            var span0 = Memory0.Span;
-
-            var count = identities.Length;
-            for (var i = 0; i < count; i++)
-            {
-                var entity = new Entity(World, identities[i]);
-                Action(Uniform, new(ref span0[i], in entity, in Type0));
-            }
-            CountDown.Signal();
+            var entity = new Entity(World, identities[i]);
+            Action(Uniform, new(ref span0[i], in entity, in Type0));
         }
+        CountDown.Signal();
     }
+}
 
-    internal record JobEUW<U, C0> : IThreadPoolWorkItem
-        where C0 : notnull
+internal record JobEUW<U, C0> : IThreadPoolWorkItem
+    where C0 : notnull
+{
+    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public World World = null!;
+
+    internal Memory<C0> Memory0 = null!;
+
+
+    internal TypeExpression Type0 = default;
+
+
+    internal U Uniform = default!;
+
+    public Action<EntityRef, U, RW<C0>> Action = null!;
+    public CountdownEvent CountDown = null!;
+    public void Execute()
     {
-        public ReadOnlyMemory<Identity> MemoryE = null!;
-        public World World = null!;
+        var identities = MemoryE.Span;
+        var span0 = Memory0.Span;
 
-        internal Memory<C0> Memory0 = null!;
-
-
-        internal TypeExpression Type0 = default;
-
-
-        public U Uniform = default!;
-
-        public Action<EntityRef, U, RW<C0>> Action = null!;
-        public CountdownEvent CountDown = null!;
-        public void Execute()
+        var count = identities.Length;
+        for (var i = 0; i < count; i++)
         {
-            var identities = MemoryE.Span;
-            var span0 = Memory0.Span;
-
-            var count = identities.Length;
-            for (var i = 0; i < count; i++)
-            {
-                var entity = new Entity(World, identities[i]);
-                Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0));
-            }
-            CountDown.Signal();
+            var entity = new Entity(World, identities[i]);
+            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0));
         }
+        CountDown.Signal();
     }
+}
 
