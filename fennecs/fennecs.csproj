@@ -39,7 +39,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <StreamTemplate Include="generators\Streams.*.csx">
+        <StreamTemplate Include="generators\Streams.*.cs">
             <OutputFile>generated\%(Filename).g.cs</OutputFile>
         </StreamTemplate>
     </ItemGroup>
@@ -82,7 +82,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!--<PackageReference Include="CodegenCS.MSBuild" Version="3.5.2" />-->
+        <PackageReference Include="CodegenCS.Core" Version="3.5.0" />
         <PackageReference Include="System.Numerics.Tensors" Version="9.0.0"/>
     </ItemGroup>
 

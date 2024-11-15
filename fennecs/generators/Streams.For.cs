@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CodegenCS;
 
 namespace fennecs.generators;
 
-public class Streams_Raw
+// ReSharper disable once UnusedType.Local
+file class StreamsForGenerator
 {
     private readonly Dictionary<string, int> _types = new()
     {
@@ -17,10 +19,10 @@ public class Streams_Raw
         { "Stream.1", 1 },
         { "Stream.2", 2 },
         { "Stream.3", 3 },
-        { "Stream.4", 4 },
+        { "Stream.4", 4 }, 
         { "Stream.5", 5 },
     };
-
+ 
     //public  FormattableString Main() => $$"""{{{Class}}}""";
 
     public void Main(ICodegenContext context)
@@ -53,7 +55,7 @@ public class Streams_Raw
 
             source.AppendLine(ClassFooter());                        
         }                           
-        context[$"Streams.Raw.g.cs"].Write($$"""{{source}}""");
+        context[$"Streams.For.g.cs"].Write($$"""{{source}}""");
     }
 
 
@@ -174,14 +176,13 @@ public class Streams_Raw
     private static string GenerateFor(bool entity, bool uniform, int width, int bits)
     {
         var pattern = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
-
-        //language=C#
-        return
+        
+        return //Language=C#
             $$"""        
               
-                      /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
+                      /// <include file='../XMLdoc.xml' path='members/member[@name="T:For{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
                       [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
-                      public void Raw{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
+                      public void For{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
                       {
                          using var worldLock = World.Lock();
               
@@ -189,7 +190,7 @@ public class Streams_Raw
                          {
                              using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
                              if (join.Empty) continue;
-                             
+
                              var count = table.Count;
                              do
                              {
