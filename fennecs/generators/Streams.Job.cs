@@ -115,24 +115,30 @@ file class StreamsJobGenerator
         }
         return typeParams.ToString();
     }
-
-    private  string Select(int width)
+    
+   private  string Select(int width)
     {
         var select = new StringBuilder();
         if (width > 1) select.Append("(");
+        
         //language=C#
         for (var i = 0; i < width; i++)
         {
             select.Append($"s{i}");
             if (i < width - 1) select.Append(", ");
         }
+        
         if (width > 1) select.Append(")");
         return select.ToString();
     }
 
-    private  string Deconstruct(int width, string accessors)
+    private  string Deconstruct(int width, string accessors, bool uniform)
     {
         var deconstruct = new StringBuilder();
+
+        //language=C#
+        if (uniform) deconstruct.Append($"job.Uniform = uniform;");
+        
         //language=C#
         for (var i = 0; i < width; i++)
         {
@@ -246,8 +252,9 @@ file class StreamsJobGenerator
 
                           var job = JobPool<{{jobType}}>.Rent();
 
-                          {{Deconstruct(width, accessors)}}
+                          {{Deconstruct(width, accessors, uniform)}}
 
+                          job.World = table.World;
                           job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
                           job.Action = action;
                           job.CountDown = Countdown;

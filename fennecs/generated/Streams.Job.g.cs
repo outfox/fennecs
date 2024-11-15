@@ -43,6 +43,7 @@ public void Job(Action<R<C0>> action)
 
               job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
 
+              job.World = table.World;
               job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
               job.Action = action;
               job.CountDown = Countdown;
@@ -93,6 +94,7 @@ public void Job(Action<EntityRef, R<C0>> action)
 
               job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
 
+              job.World = table.World;
               job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
               job.Action = action;
               job.CountDown = Countdown;
@@ -141,8 +143,9 @@ public void Job<U>(U uniform, Action<U, R<C0>> action)
 
               var job = JobPool<JobUR<U, C0>>.Rent();
 
-              job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
+              job.Uniform = uniform;job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
 
+              job.World = table.World;
               job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
               job.Action = action;
               job.CountDown = Countdown;
@@ -191,8 +194,9 @@ public void Job<U>(U uniform, Action<EntityRef, U, R<C0>> action)
 
               var job = JobPool<JobEUR<U, C0>>.Rent();
 
-              job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
+              job.Uniform = uniform;job.Memory0 = s0.AsReadOnlyMemory(start, length);job.Type0 = s0.Expression;
 
+              job.World = table.World;
               job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
               job.Action = action;
               job.CountDown = Countdown;
@@ -243,6 +247,7 @@ public void Job(Action<RW<C0>> action)
 
               job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
 
+              job.World = table.World;
               job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
               job.Action = action;
               job.CountDown = Countdown;
@@ -293,6 +298,7 @@ public void Job(Action<EntityRef, RW<C0>> action)
 
               job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
 
+              job.World = table.World;
               job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
               job.Action = action;
               job.CountDown = Countdown;
@@ -341,8 +347,9 @@ public void Job<U>(U uniform, Action<U, RW<C0>> action)
 
               var job = JobPool<JobUW<U, C0>>.Rent();
 
-              job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
+              job.Uniform = uniform;job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
 
+              job.World = table.World;
               job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
               job.Action = action;
               job.CountDown = Countdown;
@@ -391,8 +398,9 @@ public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>> action)
 
               var job = JobPool<JobEUW<U, C0>>.Rent();
 
-              job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
+              job.Uniform = uniform;job.Memory0 = s0.AsMemory(start, length);job.Type0 = s0.Expression;
 
+              job.World = table.World;
               job.MemoryE = table.GetStorage<Identity>(default).AsMemory(start, length);
               job.Action = action;
               job.CountDown = Countdown;
