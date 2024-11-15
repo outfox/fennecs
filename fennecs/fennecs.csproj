@@ -44,12 +44,8 @@
         </StreamTemplate>
     </ItemGroup>
 
-    <Target Name="GenerateCode"
-            BeforeTargets="CoreCompile"
-            Inputs="@(StreamTemplate)"
-            Outputs="@(StreamTemplate->'%(OutputFile)')">
-        <Exec Command="dotnet tool run dotnet-codegencs template run %(StreamTemplate.Identity) -o generated"
-              WorkingDirectory="$(ProjectDir)"/>
+    <Target Name="GenerateCode" BeforeTargets="CoreCompile" Inputs="@(StreamTemplate)" Outputs="@(StreamTemplate->'%(OutputFile)')">
+        <Exec Command="dotnet tool run dotnet-codegencs template run %(StreamTemplate.Identity) -o generated" WorkingDirectory="$(ProjectDir)" />
     </Target>
     
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -73,7 +69,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\"/>
+        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\" />
         <None Include="../nuget/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>
@@ -83,7 +79,7 @@
 
     <ItemGroup>
         <PackageReference Include="CodegenCS.Core" Version="3.5.0" />
-        <PackageReference Include="System.Numerics.Tensors" Version="9.0.0"/>
+        <PackageReference Include="System.Numerics.Tensors" Version="9.0.0" />
     </ItemGroup>
 
 </Project>

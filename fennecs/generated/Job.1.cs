@@ -11,7 +11,10 @@ internal record JobR<C0> : IThreadPoolWorkItem where C0 : notnull
     public ReadOnlyMemory<Identity> MemoryE = null!;
     public World World = null!;
     
+    // Memories
     public ReadOnlyMemory<C0> Memory0 = null!;
+    
+    // Types
     public TypeExpression Type0 = default;
     
     public Action<R<C0>> Action = null!;

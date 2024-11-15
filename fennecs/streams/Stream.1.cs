@@ -23,7 +23,7 @@ public partial record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entit
     /// </summary>
     protected HashSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty
         ? Archetypes
-        : new(Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude)));
+        : [..Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude))];
 
     /// <summary>
     /// Creates a builder for a Batch Operation on the Stream's underyling Query.
