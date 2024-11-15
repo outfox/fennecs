@@ -47,10 +47,8 @@ file class StreamsJobGenerator
             //TODO: Load types at generator runtime
             //var width = type.GetGenericArguments().Length;
             
-            var (name, width) = (pair.Key, pair.Value);
+            var (_, width) = (pair.Key, pair.Value);
             
-            var file =  name + ".generated.cs";
-
             source.AppendLine(ClassHeader(width));
 
             var top = (1 << width) - 1;
@@ -185,12 +183,18 @@ file class StreamsJobGenerator
                {
                """; 
     }
-    private  string ClassFooter()
+    
+    private static string ClassFooter()
     {
         //language=C#
-        return "}";
+        return $$"""
+                 }
+
+
+                 """;
     }
-    
+
+
     private  string FileHeader()
     { 
         return 
@@ -203,6 +207,7 @@ file class StreamsJobGenerator
             // ReSharper disable InconsistentNaming
             
             namespace fennecs;
+            
             """;
 }
     
@@ -270,6 +275,8 @@ file class StreamsJobGenerator
 
                   JobPool<{{jobType}}>.Return(jobs);
                 }
+                
+                
             """;
     }
 

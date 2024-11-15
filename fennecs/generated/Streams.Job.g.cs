@@ -6,6 +6,7 @@ using fennecs.storage;
 // ReSharper disable InconsistentNaming
 
 namespace fennecs;
+
 public partial record Stream<C0>
 {
     /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobR"]'/>
@@ -59,6 +60,8 @@ public partial record Stream<C0>
 
       JobPool<JobR<C0>>.Return(jobs);
     }
+
+
     /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobER"]'/>
     [OverloadResolutionPriority(0b_00000010_00000001)]
     public void Job(Action<EntityRef, R<C0>> action)
@@ -110,6 +113,8 @@ public partial record Stream<C0>
 
       JobPool<JobER<C0>>.Return(jobs);
     }
+
+
     /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUR"]'/>
     [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job<U>(U uniform, Action<U, R<C0>> action)
@@ -161,6 +166,8 @@ public partial record Stream<C0>
 
       JobPool<JobUR<U, C0>>.Return(jobs);
     }
+
+
     /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUR"]'/>
     [OverloadResolutionPriority(0b_00000010_00000001)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>> action)
@@ -212,6 +219,8 @@ public partial record Stream<C0>
 
       JobPool<JobEUR<U, C0>>.Return(jobs);
     }
+
+
     /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobW"]'/>
     [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job(Action<RW<C0>> action)
@@ -263,6 +272,8 @@ public partial record Stream<C0>
 
       JobPool<JobW<C0>>.Return(jobs);
     }
+
+
     /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEW"]'/>
     [OverloadResolutionPriority(0b_00000010_00000000)]
     public void Job(Action<EntityRef, RW<C0>> action)
@@ -314,6 +325,8 @@ public partial record Stream<C0>
 
       JobPool<JobEW<C0>>.Return(jobs);
     }
+
+
     /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUW"]'/>
     [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job<U>(U uniform, Action<U, RW<C0>> action)
@@ -365,6 +378,8 @@ public partial record Stream<C0>
 
       JobPool<JobUW<U, C0>>.Return(jobs);
     }
+
+
     /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUW"]'/>
     [OverloadResolutionPriority(0b_00000010_00000000)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>> action)
@@ -416,4 +431,8 @@ public partial record Stream<C0>
 
       JobPool<JobEUW<U, C0>>.Return(jobs);
     }
+
+
 }
+
+

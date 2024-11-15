@@ -4,6 +4,7 @@ using fennecs.pools;
 using fennecs.storage;
 
 namespace fennecs;
+
 public partial record Stream<C0>
 {
 
@@ -223,6 +224,8 @@ public partial record Stream<C0>
 
 
 }
+
+
 public partial record Stream<C0, C1>
 {
 
@@ -658,6 +661,8 @@ public partial record Stream<C0, C1>
 
 
 }
+
+
 public partial record Stream<C0, C1, C2>
 {
 
@@ -1525,6 +1530,8 @@ public partial record Stream<C0, C1, C2>
 
 
 }
+
+
 public partial record Stream<C0, C1, C2, C3>
 {
 
@@ -3256,6 +3263,8 @@ public partial record Stream<C0, C1, C2, C3>
 
 
 }
+
+
 public partial record Stream<C0, C1, C2, C3, C4>
 {
 
@@ -6715,3 +6724,5 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
 }
+
+
