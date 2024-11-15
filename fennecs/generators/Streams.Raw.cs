@@ -30,9 +30,9 @@ file class StreamsRawGenerator
             for (var bits = top; bits >= 0; bits--)
             {
                 source.AppendLine(GenerateFor(false, false, width, bits));
-                source.AppendLine(GenerateFor(true, false, width, bits));
+                //source.AppendLine(GenerateFor(true, false, width, bits));
                 source.AppendLine(GenerateFor(false, true, width, bits));
-                source.AppendLine(GenerateFor(true, true, width, bits));
+                //source.AppendLine(GenerateFor(true, true, width, bits));
             }
 
             source.AppendLine(ClassFooter());                        
@@ -54,7 +54,7 @@ file class StreamsRawGenerator
         //language=C#
         for (var i = 0; i < width; i++)
         {
-            var rw = pattern[i] == 'W' ? "RW" : "R";
+            var rw = pattern[i] == 'W' ? "Memory" : "ReadOnlyMemory";
             typeParams.Append($"{rw}<C{i}>");
             if (i < width - 1) typeParams.Append(", ");
         }
@@ -105,7 +105,7 @@ file class StreamsRawGenerator
         var parameters = new StringBuilder();
 
         //language=C#
-        if (entity) parameters.Append("new(in entity), ");
+        if (entity) parameters.Append("entities.AsReadOnlyMemory(), ");
 
         //language=C#
         if (uniform) parameters.Append("uniform, ");
@@ -118,8 +118,8 @@ file class StreamsRawGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in entity, in type{index})",
-                    'R' => $"new(ref span{index}[i])",
+                    'W' => $"s{index}.AsMemory()",
+                    'R' => $"s{index}.AsReadOnlyMemory()",
                     _ => throw new NotImplementedException(),
                 }
             );
@@ -168,8 +168,8 @@ file class StreamsRawGenerator
         return
             $$"""        
               
-                      /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
-                      [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
+                      /// <include file='../_docs.xml' path='members/member[@name="T:Raw{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
+                      [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits&255:b8}})]
                       public void Raw{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
                       {
                          using var worldLock = World.Lock();
@@ -179,16 +179,11 @@ file class StreamsRawGenerator
                              using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
                              if (join.Empty) continue;
                              
-                             var count = table.Count;
                              do
                              {
                                  var {{Select(width)}} = join.Select;
                                  {{Deconstruct(width, pattern)}}
-                                 for (var i = 0; i < count; i++)
-                                 {   
-                                     var entity = table[i];
-                                     action({{InvocationParameters(entity, uniform, pattern)}}); 
-                                 }
+                                 action({{InvocationParameters(entity, uniform, pattern)}}); 
                              } while (join.Iterate());
                          }
                       }

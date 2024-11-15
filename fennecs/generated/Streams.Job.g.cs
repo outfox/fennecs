@@ -11,8 +11,8 @@ namespace fennecs;
 
 public partial record Stream<C0>
 {
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobR"]'/>
+    [OverloadResolutionPriority(0b_00000010_00000001)]
     public void Job(Action<R<C0>> action)
     {
       AssertNoWildcards();
@@ -64,8 +64,8 @@ public partial record Stream<C0>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobER"]'/>
-    [OverloadResolutionPriority(0b_00000010_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobER"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job(Action<EntityRef, R<C0>> action)
     {
       AssertNoWildcards();
@@ -117,8 +117,8 @@ public partial record Stream<C0>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUR"]'/>
+    [OverloadResolutionPriority(0b_00000010_00000001)]
     public void Job<U>(U uniform, Action<U, R<C0>> action)
     {
       AssertNoWildcards();
@@ -170,8 +170,8 @@ public partial record Stream<C0>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUR"]'/>
-    [OverloadResolutionPriority(0b_00000010_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>> action)
     {
       AssertNoWildcards();
@@ -223,8 +223,8 @@ public partial record Stream<C0>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobW"]'/>
+    [OverloadResolutionPriority(0b_00000010_00000000)]
     public void Job(Action<RW<C0>> action)
     {
       AssertNoWildcards();
@@ -276,8 +276,8 @@ public partial record Stream<C0>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEW"]'/>
-    [OverloadResolutionPriority(0b_00000010_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job(Action<EntityRef, RW<C0>> action)
     {
       AssertNoWildcards();
@@ -329,8 +329,8 @@ public partial record Stream<C0>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUW"]'/>
+    [OverloadResolutionPriority(0b_00000010_00000000)]
     public void Job<U>(U uniform, Action<U, RW<C0>> action)
     {
       AssertNoWildcards();
@@ -382,8 +382,8 @@ public partial record Stream<C0>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUW"]'/>
-    [OverloadResolutionPriority(0b_00000010_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>> action)
     {
       AssertNoWildcards();
@@ -440,8 +440,8 @@ public partial record Stream<C0>
 
 public partial record Stream<C0, C1>
 {
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRR"]'/>
+    [OverloadResolutionPriority(0b_00000100_00000011)]
     public void Job(Action<R<C0>, R<C1>> action)
     {
       AssertNoWildcards();
@@ -493,8 +493,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERR"]'/>
-    [OverloadResolutionPriority(0b_00000100_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000011)]
     public void Job(Action<EntityRef, R<C0>, R<C1>> action)
     {
       AssertNoWildcards();
@@ -546,8 +546,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURR"]'/>
+    [OverloadResolutionPriority(0b_00000100_00000011)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>> action)
     {
       AssertNoWildcards();
@@ -599,8 +599,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURR"]'/>
-    [OverloadResolutionPriority(0b_00000100_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000011)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>> action)
     {
       AssertNoWildcards();
@@ -652,8 +652,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRW"]'/>
+    [OverloadResolutionPriority(0b_00000100_00000010)]
     public void Job(Action<R<C0>, RW<C1>> action)
     {
       AssertNoWildcards();
@@ -705,8 +705,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERW"]'/>
-    [OverloadResolutionPriority(0b_00000100_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000010)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>> action)
     {
       AssertNoWildcards();
@@ -758,8 +758,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURW"]'/>
+    [OverloadResolutionPriority(0b_00000100_00000010)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>> action)
     {
       AssertNoWildcards();
@@ -811,8 +811,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURW"]'/>
-    [OverloadResolutionPriority(0b_00000100_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000010)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>> action)
     {
       AssertNoWildcards();
@@ -864,8 +864,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWR"]'/>
+    [OverloadResolutionPriority(0b_00000100_00000001)]
     public void Job(Action<RW<C0>, R<C1>> action)
     {
       AssertNoWildcards();
@@ -917,8 +917,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWR"]'/>
-    [OverloadResolutionPriority(0b_00000100_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>> action)
     {
       AssertNoWildcards();
@@ -970,8 +970,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWR"]'/>
+    [OverloadResolutionPriority(0b_00000100_00000001)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>> action)
     {
       AssertNoWildcards();
@@ -1023,8 +1023,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWR"]'/>
-    [OverloadResolutionPriority(0b_00000100_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>> action)
     {
       AssertNoWildcards();
@@ -1076,8 +1076,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWW"]'/>
+    [OverloadResolutionPriority(0b_00000100_00000000)]
     public void Job(Action<RW<C0>, RW<C1>> action)
     {
       AssertNoWildcards();
@@ -1129,8 +1129,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWW"]'/>
-    [OverloadResolutionPriority(0b_00000100_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>> action)
     {
       AssertNoWildcards();
@@ -1182,8 +1182,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWW"]'/>
+    [OverloadResolutionPriority(0b_00000100_00000000)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>> action)
     {
       AssertNoWildcards();
@@ -1235,8 +1235,8 @@ public partial record Stream<C0, C1>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWW"]'/>
-    [OverloadResolutionPriority(0b_00000100_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>> action)
     {
       AssertNoWildcards();
@@ -1293,8 +1293,8 @@ public partial record Stream<C0, C1>
 
 public partial record Stream<C0, C1, C2>
 {
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRR"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000111)]
     public void Job(Action<R<C0>, R<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -1346,8 +1346,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRR"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000111)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -1399,8 +1399,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRR"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000111)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -1452,8 +1452,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRR"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000111)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -1505,8 +1505,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRW"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000110)]
     public void Job(Action<R<C0>, R<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -1558,8 +1558,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRW"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000110)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -1611,8 +1611,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRW"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000110)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -1664,8 +1664,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRW"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000110)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -1717,8 +1717,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWR"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000101)]
     public void Job(Action<R<C0>, RW<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -1770,8 +1770,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWR"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000101)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -1823,8 +1823,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWR"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000101)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -1876,8 +1876,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWR"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000101)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -1929,8 +1929,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWW"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000100)]
     public void Job(Action<R<C0>, RW<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -1982,8 +1982,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWW"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000100)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2035,8 +2035,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWW"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000100)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2088,8 +2088,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWW"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000100)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2141,8 +2141,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRR"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000011)]
     public void Job(Action<RW<C0>, R<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -2194,8 +2194,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRR"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000011)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -2247,8 +2247,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRR"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000011)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -2300,8 +2300,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRR"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000011)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -2353,8 +2353,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRW"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000010)]
     public void Job(Action<RW<C0>, R<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2406,8 +2406,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRW"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000010)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2459,8 +2459,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRW"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000010)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2512,8 +2512,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRW"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000010)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2565,8 +2565,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWR"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000001)]
     public void Job(Action<RW<C0>, RW<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -2618,8 +2618,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWR"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -2671,8 +2671,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWR"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000001)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -2724,8 +2724,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWR"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>> action)
     {
       AssertNoWildcards();
@@ -2777,8 +2777,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWW"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000000)]
     public void Job(Action<RW<C0>, RW<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2830,8 +2830,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWW"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2883,8 +2883,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWW"]'/>
+    [OverloadResolutionPriority(0b_00001000_00000000)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2936,8 +2936,8 @@ public partial record Stream<C0, C1, C2>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWW"]'/>
-    [OverloadResolutionPriority(0b_00001000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>> action)
     {
       AssertNoWildcards();
@@ -2994,8 +2994,8 @@ public partial record Stream<C0, C1, C2>
 
 public partial record Stream<C0, C1, C2, C3>
 {
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRRR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001111)]
     public void Job(Action<R<C0>, R<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3047,8 +3047,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRRR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001111)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3100,8 +3100,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRRR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001111)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3153,8 +3153,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRRR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001111)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3206,8 +3206,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRRW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001110)]
     public void Job(Action<R<C0>, R<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -3259,8 +3259,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRRW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001110)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -3312,8 +3312,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRRW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001110)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -3365,8 +3365,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRRW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001110)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -3418,8 +3418,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRWR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001101)]
     public void Job(Action<R<C0>, R<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3471,8 +3471,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRWR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001101)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3524,8 +3524,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRWR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001101)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3577,8 +3577,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRWR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001101)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3630,8 +3630,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRWW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001100)]
     public void Job(Action<R<C0>, R<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -3683,8 +3683,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRWW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001100)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -3736,8 +3736,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRWW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001100)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -3789,8 +3789,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRWW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001100)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -3842,8 +3842,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWRR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001011)]
     public void Job(Action<R<C0>, RW<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3895,8 +3895,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWRR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001011)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -3948,8 +3948,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWRR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001011)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4001,8 +4001,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWRR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001011)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4054,8 +4054,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWRW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001010)]
     public void Job(Action<R<C0>, RW<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4107,8 +4107,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWRW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001010)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4160,8 +4160,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWRW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001010)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4213,8 +4213,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWRW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001010)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4266,8 +4266,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWWR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001001)]
     public void Job(Action<R<C0>, RW<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4319,8 +4319,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWWR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001001)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4372,8 +4372,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWWR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001001)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4425,8 +4425,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWWR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001001)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4478,8 +4478,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWWW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001000)]
     public void Job(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4531,8 +4531,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWWW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001000)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4584,8 +4584,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWWW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00001000)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4637,8 +4637,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWWW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00001000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001000)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4690,8 +4690,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRRR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000111)]
     public void Job(Action<RW<C0>, R<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4743,8 +4743,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRRR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000111)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4796,8 +4796,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRRR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000111)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4849,8 +4849,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRRR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000111)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -4902,8 +4902,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRRW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000110)]
     public void Job(Action<RW<C0>, R<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -4955,8 +4955,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRRW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000110)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5008,8 +5008,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRRW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000110)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5061,8 +5061,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRRW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000110)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5114,8 +5114,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRWR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000101)]
     public void Job(Action<RW<C0>, R<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -5167,8 +5167,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRWR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000101)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -5220,8 +5220,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRWR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000101)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -5273,8 +5273,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRWR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000101)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -5326,8 +5326,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRWW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000100)]
     public void Job(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5379,8 +5379,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRWW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000100)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5432,8 +5432,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRWW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000100)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5485,8 +5485,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRWW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000100)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5538,8 +5538,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWRR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000011)]
     public void Job(Action<RW<C0>, RW<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -5591,8 +5591,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWRR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000011)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -5644,8 +5644,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWRR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000011)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -5697,8 +5697,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWRR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000011)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -5750,8 +5750,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWRW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000010)]
     public void Job(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5803,8 +5803,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWRW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000010)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5856,8 +5856,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWRW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000010)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5909,8 +5909,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWRW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000010)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -5962,8 +5962,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWWR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000001)]
     public void Job(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -6015,8 +6015,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWWR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -6068,8 +6068,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWWR"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000001)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -6121,8 +6121,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWWR"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
     {
       AssertNoWildcards();
@@ -6174,8 +6174,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWWW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000000)]
     public void Job(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -6227,8 +6227,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWWW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -6280,8 +6280,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWWW"]'/>
+    [OverloadResolutionPriority(0b_00010000_00000000)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -6333,8 +6333,8 @@ public partial record Stream<C0, C1, C2, C3>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWWW"]'/>
-    [OverloadResolutionPriority(0b_00010000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
     {
       AssertNoWildcards();
@@ -6391,8 +6391,8 @@ public partial record Stream<C0, C1, C2, C3>
 
 public partial record Stream<C0, C1, C2, C3, C4>
 {
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRRRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011111)]
     public void Job(Action<R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -6444,8 +6444,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRRRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011111)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -6497,8 +6497,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRRRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011111)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -6550,8 +6550,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRRRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011111)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -6603,8 +6603,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRRRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011110)]
     public void Job(Action<R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -6656,8 +6656,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRRRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011110)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -6709,8 +6709,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRRRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011110)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -6762,8 +6762,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRRRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011110)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -6815,8 +6815,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRRWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011101)]
     public void Job(Action<R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -6868,8 +6868,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRRWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011101)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -6921,8 +6921,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRRWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011101)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -6974,8 +6974,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRRWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011101)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7027,8 +7027,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRRWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011100)]
     public void Job(Action<R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7080,8 +7080,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRRWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011100)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7133,8 +7133,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRRWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011100)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7186,8 +7186,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRRWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011100)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7239,8 +7239,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRWRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011011)]
     public void Job(Action<R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7292,8 +7292,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRWRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011011)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7345,8 +7345,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRWRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011011)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7398,8 +7398,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRWRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011011)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7451,8 +7451,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRWRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011010)]
     public void Job(Action<R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7504,8 +7504,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRWRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011010)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7557,8 +7557,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRWRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011010)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7610,8 +7610,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRWRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011010)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7663,8 +7663,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRWWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011001)]
     public void Job(Action<R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7716,8 +7716,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRWWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011001)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7769,8 +7769,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRWWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011001)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7822,8 +7822,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRWWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011001)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -7875,8 +7875,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRRWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRRWWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011000)]
     public void Job(Action<R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7928,8 +7928,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERRWWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERRWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011000)]
     public void Job(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -7981,8 +7981,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURRWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00011000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURRWWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00011000)]
     public void Job<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8034,8 +8034,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURRWWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00011000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURRWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00011000)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8087,8 +8087,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWRRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010111)]
     public void Job(Action<R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8140,8 +8140,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWRRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010111)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8193,8 +8193,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWRRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010111)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8246,8 +8246,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWRRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010111)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8299,8 +8299,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWRRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010110)]
     public void Job(Action<R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8352,8 +8352,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWRRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010110)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8405,8 +8405,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWRRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010110)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8458,8 +8458,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWRRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010110)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8511,8 +8511,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWRWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010101)]
     public void Job(Action<R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8564,8 +8564,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWRWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010101)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8617,8 +8617,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWRWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010101)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8670,8 +8670,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWRWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010101)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8723,8 +8723,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWRWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010100)]
     public void Job(Action<R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8776,8 +8776,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWRWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010100)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8829,8 +8829,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWRWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010100)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8882,8 +8882,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWRWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010100)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -8935,8 +8935,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWWRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010011)]
     public void Job(Action<R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -8988,8 +8988,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWWRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010011)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9041,8 +9041,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWWRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010011)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9094,8 +9094,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWWRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010011)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9147,8 +9147,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWWRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010010)]
     public void Job(Action<R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -9200,8 +9200,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWWRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010010)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -9253,8 +9253,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWWRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010010)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -9306,8 +9306,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWWRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010010)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -9359,8 +9359,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWWWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010001)]
     public void Job(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9412,8 +9412,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWWWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010001)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9465,8 +9465,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWWWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010001)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9518,8 +9518,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWWWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010001)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9571,8 +9571,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobRWWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobRWWWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010000)]
     public void Job(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -9624,8 +9624,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobERWWWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobERWWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010000)]
     public void Job(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -9677,8 +9677,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobURWWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00010000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobURWWWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00010000)]
     public void Job<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -9730,8 +9730,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEURWWWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00010000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEURWWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00010000)]
     public void Job<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -9783,8 +9783,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRRRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001111)]
     public void Job(Action<RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9836,8 +9836,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRRRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001111)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9889,8 +9889,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRRRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001111)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9942,8 +9942,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRRRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001111)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -9995,8 +9995,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRRRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001110)]
     public void Job(Action<RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10048,8 +10048,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRRRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001110)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10101,8 +10101,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRRRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001110)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10154,8 +10154,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRRRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001110)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10207,8 +10207,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRRWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001101)]
     public void Job(Action<RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -10260,8 +10260,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRRWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001101)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -10313,8 +10313,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRRWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001101)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -10366,8 +10366,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRRWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001101)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -10419,8 +10419,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRRWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001100)]
     public void Job(Action<RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10472,8 +10472,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRRWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001100)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10525,8 +10525,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRRWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001100)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10578,8 +10578,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRRWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001100)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10631,8 +10631,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRWRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001011)]
     public void Job(Action<RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -10684,8 +10684,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRWRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001011)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -10737,8 +10737,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRWRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001011)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -10790,8 +10790,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRWRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001011)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -10843,8 +10843,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRWRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001010)]
     public void Job(Action<RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10896,8 +10896,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRWRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001010)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -10949,8 +10949,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRWRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001010)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11002,8 +11002,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRWRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001010)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11055,8 +11055,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRWWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001001)]
     public void Job(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11108,8 +11108,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRWWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001001)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11161,8 +11161,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRWWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001001)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11214,8 +11214,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRWWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001001)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11267,8 +11267,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWRWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWRWWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001000)]
     public void Job(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11320,8 +11320,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWRWWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWRWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001000)]
     public void Job(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11373,8 +11373,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWRWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00001000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWRWWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00001000)]
     public void Job<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11426,8 +11426,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWRWWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00001000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWRWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00001000)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11479,8 +11479,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWRRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000111)]
     public void Job(Action<RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11532,8 +11532,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWRRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000111)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11585,8 +11585,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWRRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWRRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000111)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11638,8 +11638,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWRRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000111)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWRRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000111)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11691,8 +11691,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWRRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000110)]
     public void Job(Action<RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11744,8 +11744,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWRRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000110)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11797,8 +11797,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWRRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWRRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000110)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11850,8 +11850,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWRRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000110)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWRRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000110)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -11903,8 +11903,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWRWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000101)]
     public void Job(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -11956,8 +11956,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWRWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000101)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12009,8 +12009,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWRWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWRWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000101)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12062,8 +12062,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWRWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000101)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWRWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000101)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12115,8 +12115,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWRWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000100)]
     public void Job(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -12168,8 +12168,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWRWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000100)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -12221,8 +12221,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWRWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWRWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000100)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -12274,8 +12274,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWRWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000100)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWRWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000100)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -12327,8 +12327,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWWRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000011)]
     public void Job(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12380,8 +12380,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWWRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000011)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12433,8 +12433,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWWRR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWWRR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000011)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12486,8 +12486,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWWRR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000011)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWWRR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000011)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12539,8 +12539,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWWRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000010)]
     public void Job(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -12592,8 +12592,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWWRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000010)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -12645,8 +12645,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWWRW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWWRW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000010)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -12698,8 +12698,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWWRW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000010)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWWRW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000010)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -12751,8 +12751,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWWWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000001)]
     public void Job(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12804,8 +12804,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWWWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12857,8 +12857,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWWWR"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWWWR"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000001)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12910,8 +12910,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWWWR"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000001)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWWWR"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000001)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
     {
       AssertNoWildcards();
@@ -12963,8 +12963,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobWWWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobWWWWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000000)]
     public void Job(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -13016,8 +13016,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEWWWWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEWWWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -13069,8 +13069,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobUWWWWW"]'/>
-    [OverloadResolutionPriority(0b_00000000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobUWWWWW"]'/>
+    [OverloadResolutionPriority(0b_00100000_00000000)]
     public void Job<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();
@@ -13122,8 +13122,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:JobEUWWWWW"]'/>
-    [OverloadResolutionPriority(0b_00100000_00000000)]
+    /// <include file='../_docs.xml' path='members/member[@name="T:JobEUWWWWW"]'/>
+    [OverloadResolutionPriority(0b_00000000_00000000)]
     public void Job<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
     {
       AssertNoWildcards();

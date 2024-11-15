@@ -167,8 +167,8 @@ file class StreamsForGenerator
         return //Language=C#
             $$"""        
               
-                      /// <include file='../XMLdoc.xml' path='members/member[@name="T:For{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
-                      [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
+                      /// <include file='../_docs.xml' path='members/member[@name="T:For{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
+                      [OverloadResolutionPriority(0b_{{(!entity ? 1 << width : 0)&255:b8}}_{{bits&255:b8}})]
                       public void For{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
                       {
                          using var worldLock = World.Lock();

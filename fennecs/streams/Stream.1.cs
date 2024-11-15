@@ -86,7 +86,7 @@ public partial record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entit
 
     #region Stream.For
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
     public void For(ComponentAction<C0> action)
     {
 
@@ -111,7 +111,7 @@ public partial record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entit
     /// </summary>
     /// <param name="action"><see cref="UniformComponentAction{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    // /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+    // /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(U uniform, UniformComponentAction<U, C0> action)
     {
         using var worldLock = World.Lock();
@@ -131,7 +131,7 @@ public partial record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entit
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+    /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityComponentAction<C0> action)
     {
         using var worldLock = World.Lock();
@@ -152,7 +152,7 @@ public partial record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entit
     }
 
 
-    /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+    /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(U uniform, UniformEntityComponentAction<U, C0> action)
     {
         using var worldLock = World.Lock();

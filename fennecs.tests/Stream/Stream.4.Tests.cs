@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Numerics;
+using fennecs.storage;
 
 namespace fennecs.tests.Stream;
 
@@ -7,6 +8,40 @@ namespace fennecs.tests.Stream;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Stream4Tests(ITestOutputHelper output)
 {
+    [Fact]
+    public void Can_Enumerate_Stream_NewJobRWWW()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold").Add(1).Add(7.0f).Add('x').Add(5d);
+        var dolph = world.Spawn().Add("Dolph").Add(2).Add(8.0f).Add('y').Add(6d);
+        
+        var stream = world.Stream<string, int, float, char>();
+        stream.Job((e, s, i, f, c) =>
+        {
+            s.write = "haha!";
+            output.WriteLine("" + s.read);
+            output.WriteLine(i);
+        });
+    }
+
+    [Fact]
+    public void Can_Enumerate_Stream_NewForRWWW()
+    {
+        using var world = new World();
+        var arnold = world.Spawn().Add("Arnold").Add(1).Add(7.0f).Add('x').Add(5d);
+        var dolph = world.Spawn().Add("Dolph").Add(2).Add(8.0f).Add('y').Add(6d);
+        
+        var stream = world.Stream<string, int, float, char>();
+        stream.For((e, s, i, f, c) =>
+        {
+            s.write = "haha!";
+            output.WriteLine(s.read);
+            var j = i.read;
+            output.WriteLine(""+i.read);
+        });
+    }
+
+
     [Fact]
     public void Can_Enumerate_Stream()
     {

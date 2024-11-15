@@ -174,8 +174,8 @@ file class StreamsJobGenerator
         //language=C#
         return
             $$"""        
-                /// <include file='../XMLdoc.xml' path='members/member[@name="T:{{jobName}}"]'/>
-                [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits:b8}})]
+                /// <include file='../_docs.xml' path='members/member[@name="T:{{jobName}}"]'/>
+                [OverloadResolutionPriority(0b_{{(!entity ? 1 << width : 0)&255:b8}}_{{bits&255:b8}})]
                 public void Job{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{actionParams}}> action)
                 {
                   AssertNoWildcards();

@@ -5,6 +5,7 @@ namespace fennecs.storage;
 /// <summary>
 /// Read-write access to a component.
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public readonly ref struct RW<T> where T : notnull
 {
     private readonly ref readonly Entity _entity;
@@ -33,11 +34,13 @@ public readonly ref struct RW<T> where T : notnull
     /// <summary>
     /// Read access to the component's value.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public T read => _value;
     
     /// <summary>
     /// Write access to the component's value.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public T write
     {
         get => _value;
@@ -74,6 +77,7 @@ public readonly ref struct RW<T> where T : notnull
     /// <para>Even though this is a structural change, it is still considered a "read" operation!</para>
     /// </remarks>
     /// <returns>the component value</returns>
+    // ReSharper disable once InconsistentNaming
     public T consume
     {
         get        
@@ -99,4 +103,12 @@ public readonly ref struct RW<T> where T : notnull
     /// Implicitly casts a <see cref="RW{T}"/> to its underlying value.
     /// </summary>
     public static implicit operator T(RW<T> self) => self._value;
+    
+    /// <summary>
+    /// Implicitly casts a <see cref="R"{T}"/> to a string for output, calling ToString() on its value.
+    /// </summary>
+    public static implicit operator string(RW<T> self) => self.ToString();
+    
+    /// <inheritdoc />
+    public override string ToString() => _value.ToString() ?? "null";
 }

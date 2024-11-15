@@ -7,9 +7,9 @@ namespace fennecs;
 public partial record Stream<C0>
 {
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw(Action<R<C0>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>> action)
         {
            using var worldLock = World.Lock();
 
@@ -18,52 +18,20 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]));
-                   }
+                   action(s0.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00000010_00000001)]
-        public void Raw(Action<EntityRef, R<C0>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var s0 = join.Select;
-                   var span0 = s0.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw<U>(U uniform, Action<U, R<C0>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>> action)
         {
            using var worldLock = World.Lock();
 
@@ -72,52 +40,20 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00000010_00000001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var s0 = join.Select;
-                   var span0 = s0.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw(Action<RW<C0>> action)
+        public void Raw(Action<Memory<C0>> action)
         {
            using var worldLock = World.Lock();
 
@@ -126,52 +62,20 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0));
-                   }
+                   action(s0.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00000010_00000000)]
-        public void Raw(Action<EntityRef, RW<C0>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var s0 = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>> action)
         {
            using var worldLock = World.Lock();
 
@@ -180,43 +84,11 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00000010_00000000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var s0 = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0));
-                   }
+                   action(uniform, s0.AsMemory());
                } while (join.Iterate());
            }
         }
@@ -228,9 +100,9 @@ public partial record Stream<C0>
 public partial record Stream<C0, C1>
 {
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
-        public void Raw(Action<R<C0>, R<C1>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>> action)
         {
            using var worldLock = World.Lock();
 
@@ -239,52 +111,20 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00000100_00000011)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>> action)
         {
            using var worldLock = World.Lock();
 
@@ -293,52 +133,20 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00000100_00000011)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
-        public void Raw(Action<R<C0>, RW<C1>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>> action)
         {
            using var worldLock = World.Lock();
 
@@ -347,52 +155,20 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00000100_00000010)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>> action)
         {
            using var worldLock = World.Lock();
 
@@ -401,52 +177,20 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00000100_00000010)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw(Action<RW<C0>, R<C1>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>> action)
         {
            using var worldLock = World.Lock();
 
@@ -455,52 +199,20 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00000100_00000001)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>> action)
         {
            using var worldLock = World.Lock();
 
@@ -509,52 +221,20 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00000100_00000001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw(Action<RW<C0>, RW<C1>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>> action)
         {
            using var worldLock = World.Lock();
 
@@ -563,52 +243,20 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00000100_00000000)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>> action)
         {
            using var worldLock = World.Lock();
 
@@ -617,43 +265,11 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00000100_00000000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory());
                } while (join.Iterate());
            }
         }
@@ -665,9 +281,9 @@ public partial record Stream<C0, C1>
 public partial record Stream<C0, C1, C2>
 {
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
-        public void Raw(Action<R<C0>, R<C1>, R<C2>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -676,52 +292,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000111)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, R<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -730,52 +314,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000111)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
-        public void Raw(Action<R<C0>, R<C1>, RW<C2>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -784,52 +336,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000110)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, RW<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -838,52 +358,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000110)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
-        public void Raw(Action<R<C0>, RW<C1>, R<C2>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -892,52 +380,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000101)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, R<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -946,52 +402,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000101)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
-        public void Raw(Action<R<C0>, RW<C1>, RW<C2>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1000,52 +424,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000100)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, RW<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1054,52 +446,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000100)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
-        public void Raw(Action<RW<C0>, R<C1>, R<C2>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1108,52 +468,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000011)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, R<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1162,52 +490,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000011)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
-        public void Raw(Action<RW<C0>, R<C1>, RW<C2>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1216,52 +512,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000010)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, RW<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1270,52 +534,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000010)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw(Action<RW<C0>, RW<C1>, R<C2>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1324,52 +556,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000001)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, R<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1378,52 +578,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw(Action<RW<C0>, RW<C1>, RW<C2>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, Memory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1432,52 +600,20 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000000)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, Memory<C2>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1486,43 +622,11 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00001000_00000000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsMemory());
                } while (join.Iterate());
            }
         }
@@ -1534,9 +638,9 @@ public partial record Stream<C0, C1, C2>
 public partial record Stream<C0, C1, C2, C3>
 {
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001111)]
-        public void Raw(Action<R<C0>, R<C1>, R<C2>, R<C3>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1545,52 +649,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001111)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001111)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1599,52 +671,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001111)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001110)]
-        public void Raw(Action<R<C0>, R<C1>, R<C2>, RW<C3>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1653,52 +693,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001110)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001110)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1707,52 +715,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001110)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001101)]
-        public void Raw(Action<R<C0>, R<C1>, RW<C2>, R<C3>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1761,52 +737,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001101)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001101)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1815,52 +759,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001101)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001100)]
-        public void Raw(Action<R<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1869,52 +781,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001100)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001100)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1923,52 +803,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001100)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001011)]
-        public void Raw(Action<R<C0>, RW<C1>, R<C2>, R<C3>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -1977,52 +825,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001011)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001011)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2031,52 +847,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001011)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001010)]
-        public void Raw(Action<R<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2085,52 +869,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001010)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001010)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2139,52 +891,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001010)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001001)]
-        public void Raw(Action<R<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2193,52 +913,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001001)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001001)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2247,52 +935,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001000)]
-        public void Raw(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2301,52 +957,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001000)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001000)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2355,52 +979,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00001000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
-        public void Raw(Action<RW<C0>, R<C1>, R<C2>, R<C3>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2409,52 +1001,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000111)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2463,52 +1023,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000111)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
-        public void Raw(Action<RW<C0>, R<C1>, R<C2>, RW<C3>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2517,52 +1045,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000110)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2571,52 +1067,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000110)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
-        public void Raw(Action<RW<C0>, R<C1>, RW<C2>, R<C3>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2625,52 +1089,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000101)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2679,52 +1111,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000101)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
-        public void Raw(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2733,52 +1133,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000100)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2787,52 +1155,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000100)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
-        public void Raw(Action<RW<C0>, RW<C1>, R<C2>, R<C3>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2841,52 +1177,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000011)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2895,52 +1199,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000011)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
-        public void Raw(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -2949,52 +1221,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000010)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3003,52 +1243,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000010)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3057,52 +1265,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000001)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3111,52 +1287,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, Memory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3165,52 +1309,20 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000000)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, Memory<C2>, Memory<C3>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3219,43 +1331,11 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00010000_00000000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory());
                } while (join.Iterate());
            }
         }
@@ -3267,9 +1347,9 @@ public partial record Stream<C0, C1, C2, C3>
 public partial record Stream<C0, C1, C2, C3, C4>
 {
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00011111)]
-        public void Raw(Action<R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3278,52 +1358,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011111)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00011111)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3332,52 +1380,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011111)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00011110)]
-        public void Raw(Action<R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3386,52 +1402,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011110)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00011110)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3440,52 +1424,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011110)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00011101)]
-        public void Raw(Action<R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3494,52 +1446,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011101)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00011101)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3548,52 +1468,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011101)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00011100)]
-        public void Raw(Action<R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3602,52 +1490,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011100)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00011100)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3656,52 +1512,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011100)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00011011)]
-        public void Raw(Action<R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3710,52 +1534,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011011)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00011011)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3764,52 +1556,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011011)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00011010)]
-        public void Raw(Action<R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3818,52 +1578,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011010)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00011010)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3872,52 +1600,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011010)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00011001)]
-        public void Raw(Action<R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3926,52 +1622,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011001)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00011001)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -3980,52 +1644,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00011000)]
-        public void Raw(Action<R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4034,52 +1666,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011000)]
-        public void Raw(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00011000)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4088,52 +1688,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00011000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00010111)]
-        public void Raw(Action<R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4142,52 +1710,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010111)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00010111)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4196,52 +1732,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010111)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00010110)]
-        public void Raw(Action<R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4250,52 +1754,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010110)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00010110)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4304,52 +1776,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010110)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00010101)]
-        public void Raw(Action<R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4358,52 +1798,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010101)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00010101)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4412,52 +1820,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010101)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00010100)]
-        public void Raw(Action<R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4466,52 +1842,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010100)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00010100)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4520,52 +1864,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010100)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00010011)]
-        public void Raw(Action<R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4574,52 +1886,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010011)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00010011)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4628,52 +1908,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010011)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00010010)]
-        public void Raw(Action<R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4682,52 +1930,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010010)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00010010)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4736,52 +1952,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010010)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00010001)]
-        public void Raw(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4790,52 +1974,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010001)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00010001)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4844,52 +1996,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00010000)]
-        public void Raw(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        public void Raw(Action<ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4898,52 +2018,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010000)]
-        public void Raw(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00010000)]
-        public void Raw<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, ReadOnlyMemory<C0>, Memory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -4952,52 +2040,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsReadOnlyMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00010000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001111)]
-        public void Raw(Action<RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5006,52 +2062,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001111)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001111)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5060,52 +2084,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001111)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001110)]
-        public void Raw(Action<RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5114,52 +2106,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001110)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001110)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5168,52 +2128,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001110)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001101)]
-        public void Raw(Action<RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5222,52 +2150,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001101)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001101)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5276,52 +2172,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001101)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001100)]
-        public void Raw(Action<RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5330,52 +2194,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001100)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001100)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, ReadOnlyMemory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5384,52 +2216,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001100)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001011)]
-        public void Raw(Action<RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5438,52 +2238,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001011)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001011)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5492,52 +2260,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001011)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001010)]
-        public void Raw(Action<RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5546,52 +2282,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001010)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001010)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5600,52 +2304,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001010)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001001)]
-        public void Raw(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5654,52 +2326,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001001)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001001)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5708,52 +2348,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00001000)]
-        public void Raw(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        public void Raw(Action<Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5762,52 +2370,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001000)]
-        public void Raw(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00001000)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, ReadOnlyMemory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5816,52 +2392,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsReadOnlyMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00001000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
-        public void Raw(Action<RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5870,52 +2414,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000111)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000111)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5924,52 +2436,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000111)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
-        public void Raw(Action<RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -5978,52 +2458,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000110)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000110)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6032,52 +2480,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000110)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
-        public void Raw(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6086,52 +2502,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000101)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000101)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6140,52 +2524,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000101)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
-        public void Raw(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6194,52 +2546,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000100)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000100)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, ReadOnlyMemory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6248,52 +2568,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsReadOnlyMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000100)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
-        public void Raw(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6302,52 +2590,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000011)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000011)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6356,52 +2612,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000011)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
-        public void Raw(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6410,52 +2634,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000010)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000010)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, Memory<C2>, ReadOnlyMemory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6464,52 +2656,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsReadOnlyMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000010)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, Memory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6518,52 +2678,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000001)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000001)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, Memory<C2>, Memory<C3>, ReadOnlyMemory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6572,52 +2700,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsReadOnlyMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000001)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:Raw"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        public void Raw(Action<Memory<C0>, Memory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6626,52 +2722,20 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }
 
 
 
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawE"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000000)]
-        public void Raw(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawU"]'/>
+        /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
         [OverloadResolutionPriority(0b_00000000_00000000)]
-        public void Raw<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        public void Raw<U>(U uniform, Action<U, Memory<C0>, Memory<C1>, Memory<C2>, Memory<C3>, Memory<C4>> action)
         {
            using var worldLock = World.Lock();
 
@@ -6680,43 +2744,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
-               var count = table.Count;
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
-               } while (join.Iterate());
-           }
-        }
-
-
-
-        /// <include file='../XMLdoc.xml' path='members/member[@name="T:RawEU"]'/>
-        [OverloadResolutionPriority(0b_00100000_00000000)]
-        public void Raw<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
-        {
-           using var worldLock = World.Lock();
-
-           foreach (var table in Filtered)
-           {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
-               if (join.Empty) continue;
-
-               var count = table.Count;
-               do
-               {
-                   var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
-                   for (var i = 0; i < count; i++)
-                   {
-                       var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
-                   }
+                   action(uniform, s0.AsMemory(), s1.AsMemory(), s2.AsMemory(), s3.AsMemory(), s4.AsMemory());
                } while (join.Iterate());
            }
         }

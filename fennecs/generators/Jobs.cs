@@ -102,20 +102,7 @@ file class JobsGenerator
         return typeParams.ToString();
     }
 
-    private string TypeParams(int width)
-    {
-        var typeParams = new StringBuilder();
-
-        //language=C#
-        for (var i = 0; i < width; i++)
-        {
-            typeParams.Append($"C{i}");
-            if (i < width - 1) typeParams.Append(", ");
-        }
-        return typeParams.ToString();
-    }
-
-    private string Deconstruct(int width, string pattern)
+    private string Deconstruct(int width)
     {
         var deconstruct = new StringBuilder();
         //language=C#
@@ -187,28 +174,27 @@ file class JobsGenerator
 
     private  string JobConstraints(int width)
     {
-        var contraints = new StringBuilder();
+        var constraints = new StringBuilder();
         
         //language=C#
         for (var i = 0; i < width; i++)
         {
-            contraints.Append($"where C{i} : notnull ");
+            constraints.Append($"where C{i} : notnull ");
         }
-        return contraints.ToString();
+        return constraints.ToString();
     }
 
     
     private string GenerateJobs(bool entity, bool uniform, int width, int bits)
     {
-        var accessors = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
-        var typeParams = TypeParams(width);
+        var accessors = $"{bits:b16}"[(16 - width)..].Replace("0", "W").Replace("1", "R");
         var jobParams = JobParams(width, uniform);
         var constraints = JobConstraints(width);
         var actionParams = ActionParams(width, entity, uniform, accessors);
         var invocationParams = InvocationParameters(entity, uniform, accessors);
         var memories = Memories(width, accessors);
         var types = Types(width);
-        var deconstruction = Deconstruct(width, accessors);
+        var deconstruction = Deconstruct(width);
         var jobName = $"Job{(entity ? "E" : "")}{(uniform ? "U" : "")}{accessors}";
         var jobType = $"{jobName}<{jobParams}>";
         var uniforms = uniform ? "    internal U Uniform = default!;" : "";

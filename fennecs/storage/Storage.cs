@@ -359,6 +359,11 @@ internal class Storage<T>(TypeExpression expression) : IStorage
     public ReadOnlyMemory<T> AsReadOnlyMemory(int start, int length) => _data.AsMemory(start, length);
 
     /// <summary>
+    /// Returns a ReadOnlyMemory handle to the entire contained data.
+    /// </summary>
+    public ReadOnlyMemory<T> AsReadOnlyMemory() => _data.AsMemory();
+
+    /// <summary>
     /// Returns a Memory handle to the entire contained data.
     /// </summary>
     public Memory<T> AsMemory() => _data.AsMemory(0, Count);

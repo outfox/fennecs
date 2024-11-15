@@ -164,7 +164,7 @@ public class QueryBuilder<C1>(World world, Match match1 = default)
     : QueryBuilderBase<QueryBuilder<C1>>(world, [TypeExpression.Of<C1>(match1)])
     where C1 : notnull
 {
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
+    /// <include file='_docs.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1> Stream() => Compile().Stream<C1>(match1);
 }
 
@@ -177,7 +177,7 @@ public class QueryBuilder<C1, C2>(World world, Match match1, Match match2)
     /// <inheritdoc cref="QueryBuilderBase{QB}"/>
     public QueryBuilder(World world, Match matchAll = default) : this(world, matchAll, matchAll) { }
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
+    /// <include file='_docs.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1, C2> Stream() => Compile().Stream<C1, C2>(match1, match2);
 }
 
@@ -191,7 +191,7 @@ public class QueryBuilder<C1, C2, C3>(World world, Match match1, Match match2, M
     /// <inheritdoc cref="QueryBuilderBase{QB}"/>
     public QueryBuilder(World world, Match matchAll = default) : this(world, matchAll, matchAll, matchAll) { }
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
+    /// <include file='_docs.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1, C2, C3> Stream() => Compile().Stream<C1, C2, C3>(match1, match2, match3);
 }
 
@@ -206,7 +206,7 @@ public class QueryBuilder<C1, C2, C3, C4>(World world, Match match1, Match match
     /// <inheritdoc cref="QueryBuilderBase{QB}"/>
     public QueryBuilder(World world, Match matchAll = default) : this(world, matchAll, matchAll, matchAll, matchAll) { }
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
+    /// <include file='_docs.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1, C2, C3, C4> Stream() => Compile().Stream<C1, C2, C3, C4>(match1, match2, match3, match4);
 }
 
@@ -222,6 +222,6 @@ public class QueryBuilder<C1, C2, C3, C4, C5>(World world, Match match1, Match m
     /// <inheritdoc cref="QueryBuilderBase{QB}"/>
     public QueryBuilder(World world, Match matchAll = default) : this(world, matchAll, matchAll, matchAll, matchAll, matchAll) { }
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:Stream"]'/>
+    /// <include file='_docs.xml' path='members/member[@name="T:Stream"]'/>
     public Stream<C1, C2, C3, C4, C5> Stream() => Compile().Stream<C1, C2, C3, C4, C5>(match1, match2, match3, match4, match5);
 }
