@@ -183,6 +183,7 @@ file class StreamsJobGenerator
                   using var worldLock = World.Lock();
                   var chunkSize = Math.Max(1, Count / Concurrency);
 
+                  Countdown = Countdown ?? new (0); 
                   Countdown.Reset();
 
                   using var jobs = PooledList<{{jobType}}>.Rent();

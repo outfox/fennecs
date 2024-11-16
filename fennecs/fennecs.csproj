@@ -31,11 +31,11 @@
         <Nullable>enable</Nullable>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-
     </PropertyGroup>
 
     <PropertyGroup>
         <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+        <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
     </PropertyGroup>
     
     <ItemGroup>

@@ -67,11 +67,26 @@ do
         ref var ballPosition = ref ball.Ref<Position>();
 
         var direction = ballPosition.Value - playerPosition.read;
+
+        /* TODO: Clean me up!
+        // Legal
+        var direction2 = ballPosition.Value - playerPosition.read.Value;
+        // Legal
+        var direction3 = playerPosition.read;
+        // Legal
+        var direction5 = playerPosition.read.Value;
+        // Legal
+        Vector2 direction4 = playerPosition.read;
+
+        // Go to jail!
+        //var direction666 = ballPosition.Value - playerPosition.read;
+        //var direction666 = ballPosition.Value - player
+        */
+          
         if (direction.LengthSquared() > 1f)
         {
             var dash = direction * (random.NextSingle() * .9f + 0.1f);
             playerPosition.write += dash;
-            //playerPosition._val += dash;
             
             Console.WriteLine($"{playerName.read,15} runs towards the ball!" +
                               $" ... d = {direction.Length():f2}m");
@@ -124,7 +139,7 @@ internal readonly record struct Talent(bool Value)
 
 
 // Position component wrapping a Vector2.
-internal readonly record struct Position(Vector2 Value)
+public readonly record struct Position(Vector2 Value) : FoxR<Vector2>
 {
     public static implicit operator Vector2(Position self) => self.Value;
     public static implicit operator Position(Vector2 value) => new(value);

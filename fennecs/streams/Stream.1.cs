@@ -13,25 +13,24 @@ namespace fennecs;
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public partial record Stream<C0>(Query Query, Match Match0) : 
-    Stream(Query),
+public partial record Stream<C0> : 
+    Stream,
     IEnumerable<(Entity, C0)>
     where C0 : notnull
 {
-    private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
-
-    #region Assertions
-
     /// <summary>
-    /// Throws if the query has any Wildcards.
+    /// A Stream is an accessor that allows for iteration over a Query's contents.
+    /// It exposes both the Runners as well as IEnumerable over a value tuple of the
+    /// Query's contents.
     /// </summary>
-    protected void AssertNoWildcards()
+    /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
+    internal Stream(Query Query, Match Match0) : base(Query)
     {
-        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {_streamTypes}");
+        this.Match0 = Match0;
+        _streamTypes = [TypeExpression.Of<C0>(Match0)];
     }
 
-    #endregion
-
+    public Match Match0 { get; init; }
 
     #region Blitters
 
@@ -80,4 +79,9 @@ public partial record Stream<C0>(Query Query, Match Match0) :
 
     #endregion
 
+    public void Deconstruct(out Query Query, out Match Match0)
+    {
+        Query = this.Query;
+        Match0 = this.Match0;
+    }
 }

@@ -9,14 +9,28 @@ namespace fennecs;
 /// <typeparam name="C1">stream type</typeparam>
 /// <typeparam name="C2">stream type</typeparam>
 /// // ReSharper disable once NotAccessedPositionalProperty.Global
-public partial record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1, Match Match2)
-    : Stream(Query), IEnumerable<(Entity, C0, C1, C2)>
+public partial record Stream<C0, C1, C2> : Stream, IEnumerable<(Entity, C0, C1, C2)>
     where C0 : notnull 
     where C1 : notnull 
     where C2 : notnull
 {
-    private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1), TypeExpression.Of<C2>(Match2)];
-    
+    /// <inheritdoc cref="Stream{C0}"/>
+    /// <typeparam name="C0">stream type</typeparam>
+    /// <typeparam name="C1">stream type</typeparam>
+    /// <typeparam name="C2">stream type</typeparam>
+    /// // ReSharper disable once NotAccessedPositionalProperty.Global
+    internal Stream(Query Query, Match Match0, Match Match1, Match Match2) : base(Query)
+    {
+        this.Match0 = Match0;
+        this.Match1 = Match1;
+        this.Match2 = Match2;
+        _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1), TypeExpression.Of<C2>(Match2)];
+    }
+
+    public Match Match0 { get; init; }
+    public Match Match1 { get; init; }
+    public Match Match2 { get; init; }
+
 
     #region Blitters
 
@@ -107,5 +121,13 @@ public partial record Stream<C0, C1, C2>(Query Query, Match Match0, Match Match1
         {
             action(uniform, ref span0[i], ref span1[i], ref span2[i]);
         }
+    }
+
+    public void Deconstruct(out Query Query, out Match Match0, out Match Match1, out Match Match2)
+    {
+        Query = this.Query;
+        Match0 = this.Match0;
+        Match1 = this.Match1;
+        Match2 = this.Match2;
     }
 }

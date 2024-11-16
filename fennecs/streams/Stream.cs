@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Reflection;
 using fennecs.CRUD;
 
 namespace fennecs;
@@ -8,12 +9,26 @@ namespace fennecs;
 /// </summary>
 public record Stream(Query Query) : IBatchBegin
 {
+    private protected ImmutableArray<TypeExpression> _streamTypes = [];
+
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
     /// </summary>
     protected HashSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty
         ? Archetypes
         : [..Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude))];
+
+    #region Concurrency
+    /// <summary>
+    /// Countdown signal for this stream when running Jobs.
+    /// </summary>
+    protected CountdownEvent Countdown = null!;
+    
+    /// <summary>
+    /// Processor count to use for this thread
+    /// </summary>
+    protected int Concurrency = Math.Max(2, Environment.ProcessorCount-2);
+    #endregion
 
     /// <summary>
     /// Creates a builder for a Batch Operation on the Stream's underyling Query.
@@ -79,5 +94,19 @@ public record Stream(Query Query) : IBatchBegin
     }
 
     #endregion
+
+    #region Assertions
+
+    /// <summary>
+    /// Throws if the query has any Wildcards.
+    /// </summary>
+    protected void AssertNoWildcards()
+    {
+        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {_streamTypes}");
+    }
+
+    #endregion
+
+
 
 }

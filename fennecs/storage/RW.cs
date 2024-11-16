@@ -11,7 +11,7 @@ public readonly ref struct RW<T> where T : notnull
     private readonly ref readonly Entity _entity;
     private readonly ref readonly TypeExpression _expression;
 
-    public readonly ref T _val;
+    public readonly ref T _value;
 
     /// <summary>
     /// Read-write access to a component.
@@ -20,7 +20,7 @@ public readonly ref struct RW<T> where T : notnull
     {
         _entity = ref entity;
         _expression = ref expression;
-        _val = ref value;
+        _value = ref value;
     }
 
     // TODO: Expose it publicly once TypeExpression is exposed.
@@ -35,13 +35,13 @@ public readonly ref struct RW<T> where T : notnull
     /// Read access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public ref readonly T read => ref _val;
+    public ref readonly T read => ref _value;
     
     /// <summary>
     /// Write access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public ref T write => ref _val;
+    public ref T write => ref _value;
     /*
         set
         {
@@ -82,7 +82,7 @@ public readonly ref struct RW<T> where T : notnull
         get        
         {
             // ReSharper disable once SuggestVarOrType_SimpleTypes
-            T copy = _val;
+            T copy = _value;
             // Remove<T> usually moves another entity into the slot of the removed one in immediate mode
             // The structural change is so expensive that it's not worth optimizing this getter further.
             _entity.Remove<T>(_expression.Match); 
@@ -101,14 +101,14 @@ public readonly ref struct RW<T> where T : notnull
     /// <summary>
     /// Implicitly casts a <see cref="RW{T}"/> to its underlying value.
     /// </summary>
-    public static implicit operator T(RW<T> self) => self._val;
+    public static explicit operator T(RW<T> self) => self._value;
 
     /// <summary>
     /// You found the cursed operator! It's a secret, and it's stroustrup.
     /// </summary>
     public static RW<T> operator <<(RW<T> self, T other)
     {
-        self._val = other;
+        self._value = other;
         return self;
     }
     
@@ -118,5 +118,5 @@ public readonly ref struct RW<T> where T : notnull
     public static implicit operator string(RW<T> self) => self.ToString();
     
     /// <inheritdoc />
-    public override string ToString() => _val.ToString() ?? "null";
+    public override string ToString() => _value.ToString() ?? "null";
 }

@@ -21,11 +21,12 @@ file class JobsGenerator
     {
         var source = new StringBuilder();
 
+        //source.Clear();
+        source.AppendLine(FileHeader());
+
+
         foreach (var width in Enumerable.Range(1, 5))
         {
-            source.Clear();
-            source.AppendLine(FileHeader());
-
             var top = (1 << width) - 1;
             for (var bits = top; bits >= 0; bits--)
             {
@@ -34,10 +35,8 @@ file class JobsGenerator
                 source.AppendLine(GenerateJobs(false, true, width, bits));
                 source.AppendLine(GenerateJobs(true, true, width, bits));
             }
-
-            context[$"Jobs.{width}.g.cs"].MultilineBehavior = CodegenTextWriter.MultilineBehaviorType.TrimLeftPadding;
-            context[$"Jobs.{width}.g.cs"].Write($"{source}");
         }                           
+        context[$"Jobs.g.cs"].Write($"{source}");
     }
     private FormattableString Memory(bool write, int index)
     {
