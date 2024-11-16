@@ -51,4 +51,28 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 
     /// <inheritdoc />
     public override string ToString() => _entity.ToString();
+
+    /// <inheritdoc />
+    public bool Has<C>() where C : notnull
+    {
+        return _entity.Has<C>();
+    }
+
+    /// <inheritdoc />
+    public bool Has<R1>(Entity relation) where R1 : notnull
+    {
+        return _entity.Has<R1>(relation);
+    }
+
+    /// <inheritdoc />
+    public bool Has<L>(L linkedObject) where L : class
+    {
+        return _entity.Has(linkedObject);
+    }
+
+    /// <inheritdoc />
+    public bool Has<L>(Link<L> link) where L : class
+    {
+        return _entity.Has(link);
+    }
 }

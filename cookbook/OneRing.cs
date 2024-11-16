@@ -28,14 +28,14 @@ var ringsOfPower = world
 // Use the Query to corrupt the Ring Bearers
 ringsOfPower.For((ring, bearer, link) =>
 {
-    bearer.write = bearer.write with { corrupted = true };
+    bearer.write.Corrupted = true;
     link.read.CallOut(ring, bearer);  // it calls out to its master!
 });
 
 Console.WriteLine("\nDirected by: Peter Foxen");
 
 // The Ring Bearer component represents the owner of a Ring of Power.
-internal record struct RingBearer(string race, bool corrupted = false);
+internal record struct RingBearer(string Race, bool Corrupted = false);
 
 //But they were, all of them, deceived, for another ring was made!
 internal class OneRing
@@ -47,7 +47,7 @@ internal class OneRing
     // Sample interaction for linked Entities to use
     public void CallOut(Entity ring, RingBearer bearer)
     {
-        if (bearer.corrupted)
-            Console.WriteLine($"{ring} corrupted its {bearer.race} bearer!");
+        if (bearer.Corrupted)
+            Console.WriteLine($"{ring} corrupted its {bearer.Race} bearer!");
     } 
 }

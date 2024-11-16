@@ -101,7 +101,7 @@ public readonly ref struct RW<T> where T : notnull
     /// <summary>
     /// Implicitly casts a <see cref="RW{T}"/> to its underlying value.
     /// </summary>
-    public static explicit operator T(RW<T> self) => self._value;
+    public static implicit operator T(RW<T> self) => self._value;
 
     /// <summary>
     /// You found the cursed operator! It's a secret, and it's stroustrup.
@@ -113,7 +113,7 @@ public readonly ref struct RW<T> where T : notnull
     }
     
     /// <summary>
-    /// Implicitly casts a <see cref="R"{T}"/> to a string for output, calling ToString() on its value.
+    /// Implicitly casts a <see cref="RW{T}"/> to a string for output, calling ToString() on its value.
     /// </summary>
     public static implicit operator string(RW<T> self) => self.ToString();
     

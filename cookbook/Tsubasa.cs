@@ -68,6 +68,7 @@ do
 
         var direction = ballPosition.Value - playerPosition.read;
 
+        
         /* TODO: Clean me up!
         // Legal
         var direction2 = ballPosition.Value - playerPosition.read.Value;

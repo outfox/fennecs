@@ -27,7 +27,7 @@ for (var i = 0; i < 5; i++)
 }
 
 // We query for their Locations; to pay them a visit;
-// and their Entity Id. It's a surprise tool that will help us later!
+// and their Entity id. It's a surprise tool that will help us later!
 var betrayingVipers = world.Query<Location>()
     .Has<Betrayed>(us)
     .Stream();
@@ -35,9 +35,9 @@ var betrayingVipers = world.Query<Location>()
 Console.WriteLine($"As we said, there were {betrayingVipers.Count} of them.");
 
 // They went into hiding around the world.
-betrayingVipers.For((ref Location location) =>
+betrayingVipers.For((location) =>
 {
-    location = $"hideout 0x{random.Next():x8}";
+    location.write = $"hideout 0x{random.Next():x8}";
     Console.WriteLine($"One hides in {location}.");
 });
 
@@ -53,19 +53,19 @@ Console.WriteLine("This is us (and our grudges): \n" + us);
 //    query.Despawn();
 //    query.Truncate(0);
 // -> visiting each entity personally
-betrayingVipers.For((in Entity them, ref Location theirLocation) =>
+betrayingVipers.For((them, theirLocation) =>
 {
     Console.WriteLine();
-    
-    ref var ourLocation = ref us.Ref<Location>();
-    ourLocation = theirLocation;
 
-    // Knock knock.
+    var ourLocation = us.RW<Location>();
+    ourLocation.write = theirLocation;
+
+    // Knock, knock.
     Console.WriteLine($"Suddenly, in {theirLocation}:");
     Console.WriteLine($"Oh, hello {them}!");
     Console.WriteLine("Remember us?"); 
     Console.WriteLine($"They do. They remember everything! " + 
-                      $"They admit their Betral is {them.Has<Betrayed>(us)}!");
+                      $"They admit their Betrayal is {them.Has<Betrayed>(us)}!");
     
     // Get our revenge.
     them.Despawn();
