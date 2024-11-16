@@ -11,7 +11,7 @@ public readonly ref struct RW<T> where T : notnull
     private readonly ref readonly Entity _entity;
     private readonly ref readonly TypeExpression _expression;
 
-    private readonly ref T _value;
+    public readonly ref T _val;
 
     /// <summary>
     /// Read-write access to a component.
@@ -20,7 +20,7 @@ public readonly ref struct RW<T> where T : notnull
     {
         _entity = ref entity;
         _expression = ref expression;
-        _value = ref value;
+        _val = ref value;
     }
 
     // TODO: Expose it publicly once TypeExpression is exposed.
@@ -35,15 +35,14 @@ public readonly ref struct RW<T> where T : notnull
     /// Read access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public ref readonly T read => ref _value;
+    public ref readonly T read => ref _val;
     
     /// <summary>
     /// Write access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public T write
-    {
-        get => _value;
+    public ref T write => ref _val;
+    /*
         set
         {
             // Optimizes away the write and null checks if it's not modifiable.
@@ -65,9 +64,9 @@ public readonly ref struct RW<T> where T : notnull
             {
                 _value = value;
             }
-        }
-    }
-    
+}
+            */
+
     /// <summary>
     /// Reads the value (creating a shallow copy) and removes the component from the entity.
     /// </summary>
@@ -83,7 +82,7 @@ public readonly ref struct RW<T> where T : notnull
         get        
         {
             // ReSharper disable once SuggestVarOrType_SimpleTypes
-            T copy = _value;
+            T copy = _val;
             // Remove<T> usually moves another entity into the slot of the removed one in immediate mode
             // The structural change is so expensive that it's not worth optimizing this getter further.
             _entity.Remove<T>(_expression.Match); 
@@ -102,7 +101,16 @@ public readonly ref struct RW<T> where T : notnull
     /// <summary>
     /// Implicitly casts a <see cref="RW{T}"/> to its underlying value.
     /// </summary>
-    public static implicit operator T(RW<T> self) => self._value;
+    public static implicit operator T(RW<T> self) => self._val;
+
+    /// <summary>
+    /// You found the cursed operator! It's a secret, and it's stroustrup.
+    /// </summary>
+    public static RW<T> operator <<(RW<T> self, T other)
+    {
+        self._val = other;
+        return self;
+    }
     
     /// <summary>
     /// Implicitly casts a <see cref="R"{T}"/> to a string for output, calling ToString() on its value.
@@ -110,5 +118,5 @@ public readonly ref struct RW<T> where T : notnull
     public static implicit operator string(RW<T> self) => self.ToString();
     
     /// <inheritdoc />
-    public override string ToString() => _value.ToString() ?? "null";
+    public override string ToString() => _val.ToString() ?? "null";
 }

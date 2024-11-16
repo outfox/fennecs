@@ -131,10 +131,10 @@ public class ForStructuralVsStateful
         while (!done)
         {
             done = true;
-            _stream.For((ref ushort value) =>
+            _stream.For((value) =>
             {
                 if (value <= 0) return;
-                value--;
+                value.write--;
                 done = false;
             });
         }

@@ -71,6 +71,8 @@ do
         {
             var dash = direction * (random.NextSingle() * .9f + 0.1f);
             playerPosition.write += dash;
+            //playerPosition._val += dash;
+            
             Console.WriteLine($"{playerName.read,15} runs towards the ball!" +
                               $" ... d = {direction.Length():f2}m");
             return;
@@ -124,7 +126,7 @@ internal readonly record struct Talent(bool Value)
 // Position component wrapping a Vector2.
 internal readonly record struct Position(Vector2 Value)
 {
-    public static implicit operator Vector2(Position other) => other.Value;
+    public static implicit operator Vector2(Position self) => self.Value;
     public static implicit operator Position(Vector2 value) => new(value);
     public override string ToString() => Value.ToString();
 }

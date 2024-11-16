@@ -3,9 +3,9 @@ namespace fennecs.storage;
 /// <summary>
 /// Read-only access to a component.
 /// </summary>
-public readonly ref struct R<T>(ref readonly T val) where T : notnull
+public readonly ref struct R<T>(ref readonly T value) where T : notnull
 {
-    private readonly ref readonly T _value = ref val;
+    private readonly ref readonly T _value = ref value;
 
     /// <summary>
     /// Read access to the component's value.
@@ -16,7 +16,7 @@ public readonly ref struct R<T>(ref readonly T val) where T : notnull
     /// <summary>
     /// Implicitly casts a <see cref="R{T}"/> to its underlying value.
     /// </summary>
-    public static implicit operator T(R<T> self) => self._value;
+    public static implicit operator T(R<T> self) => self.read;
 
     /// <summary>
     /// Implicitly casts a <see cref="R{T}"/> to a string for output, calling ToString() on its value.

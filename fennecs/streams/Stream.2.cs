@@ -9,12 +9,14 @@ namespace fennecs;
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
-    : Stream<C0>(Query, Match0), IEnumerable<(Entity, C0, C1)>
+public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1) :
+    Stream(Query),
+    IEnumerable<(Entity, C0, C1)>
     where C0 : notnull
     where C1 : notnull
 {
-    private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
+    private readonly ImmutableArray<TypeExpression> _streamTypes =
+        [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
 
 
     #region Blitters
@@ -51,7 +53,8 @@ public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
                 for (var index = 0; index < table.Count; index++)
                 {
                     yield return (table[index], s0[index], s1[index]);
-                    if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    if (table.Version != snapshot)
+                        throw new InvalidOperationException("Collection was modified during iteration.");
                 }
             } while (join.Iterate());
         }
@@ -113,6 +116,4 @@ public partial record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     }
 
     #endregion
-
-
 }

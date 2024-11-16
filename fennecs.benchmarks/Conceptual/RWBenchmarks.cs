@@ -119,6 +119,37 @@ public class RWBenchmarks
             b.write += a.read + 1;
         });
     }
+
+    [Benchmark]
+    public void NewNewRW()
+    {
+        _stream.New(static (a, b) =>
+        {
+            b.write = a + 1;
+        });
+
+        _stream.New(static (in Entity entity, in int a, RW<int> b) =>
+        {
+            b.write = a + 1;
+        });
+
+        _stream.New(static (in Entity entity, in int a, ref int b) =>
+        {
+            b = a + 1;
+        });
+
+        _stream.New(static (in Entity entity, in int a, out int b) =>
+        {
+            b = 3;
+        });
+
+        /*
+        _stream.New(static (e, a, b) =>
+        {
+            b.write += a + 1;
+        });
+        */
+    }
 }
 
 internal interface Fox<T> where T : notnull
@@ -135,10 +166,31 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     public readonly C2[] Data2 = new C2[Count];
 
 
-    public void New(ComponentActionEWR<C1, C2> action)
+    public void New(TestAction<C1, C2> action)
     {
         var match = default(TypeExpression);
-        for (var i = 0; i < Count; i++) action(new(ref entities[i]), new(ref Data1[i], ref entities[i], ref match), new(ref Data2[i]));
+        for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], new RW<C2>(ref Data2[i], ref entities[i], ref match));
+    }
+
+    [OverloadResolutionPriority(2)]
+    public void New(TestAction2<C1, C2> action)
+    {
+        var match = default(TypeExpression);
+        for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], ref Data2[i]);
+    }
+
+    [OverloadResolutionPriority(1)]
+    public void New(TestAction4<C1, C2> action)
+    {
+        var match = default(TypeExpression);
+        for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], out Data2[i]);
+    }
+
+    [OverloadResolutionPriority(5)]
+    public void New(TestAction3<C1, C2> action)
+    {
+        var match = default(TypeExpression);
+        for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], new RW<C2>(ref Data2[i], ref entities[i], ref match));
     }
 
     public void Old(EntityComponentAction<C1, C2> action)
@@ -216,6 +268,10 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     }
 }
 
+public delegate void TestAction<C0, C1>(in Entity entity, in C0 comp0, RW<C1> comp1) where C1 : notnull;
+public delegate void TestAction2<C0, C1>(in Entity entity, in C0 comp0, ref C1 comp1) where C1 : notnull;
+public delegate void TestAction4<C0, C1>(in Entity entity, in C0 comp0, out C1 comp1) where C1 : notnull;
+public delegate void TestAction3<C0, C1>(in Entity entity, in C0 comp0, in C1 comp1) where C1 : notnull;
 internal delegate void ComponentActionRead<C0, C1>(in C0 comp0, in C1 comp1);
 internal delegate void ComponentActionWRo<C0, C1>(ref C0 comp0, ref readonly C1 comp1);
 internal delegate void ComponentActionEWR<C0, C1>([In] EntityRef entity, RW<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;
