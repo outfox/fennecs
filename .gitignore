@@ -11,3 +11,4 @@ Temp
 .dist
 *.old
 
+generated/**
