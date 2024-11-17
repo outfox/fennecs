@@ -174,7 +174,7 @@ file class StreamsForGenerator
               
                          foreach (var table in Filtered)
                          {
-                             using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
+                             using var join = table.CrossJoin<{{TypeParams(width)}}>(StreamTypes.AsSpan());
                              if (join.Empty) continue;
                              
                              Span<bool> writes = stackalloc bool[{{width}}];
