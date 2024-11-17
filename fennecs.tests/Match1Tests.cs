@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests;
+﻿using fennecs.storage;
+
+namespace fennecs.tests;
 
 public class Match1Tests
 {
@@ -30,7 +32,7 @@ public class Match1Tests
         var query = _world.Query<string>(Match.Any).Stream();
 
         HashSet<string> seen = [];
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -49,7 +51,7 @@ public class Match1Tests
         var query = _world.Query<string>(Match.Plain).Stream();
 
         HashSet<string> seen = [];
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -66,7 +68,7 @@ public class Match1Tests
 
         HashSet<string> seen = [];
 
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -85,7 +87,7 @@ public class Match1Tests
 
         HashSet<string> seen = [];
 
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -102,7 +104,7 @@ public class Match1Tests
 
         HashSet<string> seen = [];
 
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -119,7 +121,7 @@ public class Match1Tests
 
         HashSet<string> seen = [];
 
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);

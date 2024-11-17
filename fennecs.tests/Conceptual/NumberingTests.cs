@@ -167,16 +167,8 @@ public class NumberingTests
         stream.Raw(
             action: indices =>
             {
-                var pin = indices.Pin();
-                foreach (ref var i in indices.WriteSpan()) {};
-            }
-        );
-
-        stream.Raw(
-            action: indices =>
-            {
-                var pin = indices.Pin();
-                //foreach (ref readonly var i in indices.Span) {};
+                var pin = indices.Memory.Pin();
+                foreach (ref var entry in indices.write) entry = index++;
             }
         );
 
@@ -196,9 +188,4 @@ public class NumberingTests
         var testRange = Enumerable.Range(0, count).Select(i => new Index(i)).ToArray();
         Assert.Equal(testRange, accumulator);
     }
-}
-
-public static class MemoryExtensions
-{
-    public static Span<T> WriteSpan<T>(this Memory<T> memory) => memory.Span;
 }

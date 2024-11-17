@@ -18,9 +18,9 @@ public sealed class ArchExample
         
         // Query and modify entities 
         var stream = world.Stream<Position, Velocity>(); // shorthand for world.Query<Pos, Vel>().Stream();
-        stream.For((ref Position pos, ref Velocity vel) => {
-            pos.X += vel.Dx;
-            pos.Y += vel.Dy;
+        stream.For((pos, vel) => {
+            pos.write.X += vel.read.Dx;
+            pos.write.Y += vel.read.Dy;
         });
     }
 }

@@ -1,4 +1,5 @@
-﻿using fennecs.events;
+﻿using System.Runtime.CompilerServices;
+using fennecs.events;
 
 namespace fennecs.storage;
 
@@ -101,6 +102,11 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
         return self;
     }
     
+    /// <summary>
+    /// Implicitly casts a <see cref="RW{T}"/> to a ForkmattableString for output, calling ToString() on its value.
+    /// </summary>
+    public static implicit operator FormattableString(RW<T> self) => FormattableStringFactory.Create(self.ToString());
+
     /// <inheritdoc />
     public override string ToString() => _value.ToString() ?? "null";
     

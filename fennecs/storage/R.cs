@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace fennecs.storage;
 
 /// <summary>
@@ -21,7 +23,7 @@ public readonly ref struct R<T>(ref readonly T value) : IEquatable<R<T>>, IEquat
     /// <summary>
     /// Implicitly casts a <see cref="R{T}"/> to a string for output, calling ToString() on its value.
     /// </summary>
-    public static implicit operator string(R<T> self) => self.ToString();
+    public static implicit operator FormattableString(R<T> self) => FormattableStringFactory.Create(self.ToString());
 
     /// <inheritdoc />
     public override string ToString() => _value.ToString() ?? "null";

@@ -92,7 +92,7 @@ public class Scenarios
         world.Spawn().Add<int>();
 
         var count = 0;
-        world.Stream<int>().For((ref int _) => count++);
+        world.Stream<int>().For((_) => count++);
         Assert.Equal(count, world.Count);
     }
 }
