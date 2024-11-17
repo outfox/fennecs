@@ -13,9 +13,9 @@ public record Stream(Query Query) : IBatchBegin
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
     /// </summary>
-    protected HashSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty
-        ? Archetypes
-        : [..Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude))];
+    protected HashSet<Archetype> Filtered => 0 == Subset.Count && 0 == Exclude.Count
+        ? Query.Archetypes
+        : [..Query.Archetypes.Where(a => (0 == Subset.Count || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude))];
 
 
     #region Concurrency
@@ -32,33 +32,31 @@ public record Stream(Query Query) : IBatchBegin
 
     #endregion
 
+    #region Batch Operations
 
     /// <summary>
-    /// Creates a builder for a Batch Operation on the Stream's underyling Query.
+    /// Creates a builder for a Batch Operation on the Stream's currently filtered Archetypes.
     /// </summary>
+    /// <remarks>If there is no filter, the Batch will affect all Archetypes in the Query.</remarks>
     /// <returns>fluent builder</returns>
-    public Batch Batch() => Query.Batch();
+    public Batch Batch() => Batch(default, default);
+    
+    /// <inheritdoc cref="fennecs.Query.Batch()"/>
+    public Batch Batch(Batch.AddConflict add) => Batch(add, default);
 
     /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add) => Query.Batch(add);
+    public Batch Batch(Batch.RemoveConflict remove) => Batch(default, remove);
 
     /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.RemoveConflict remove) => Query.Batch(remove);
+    public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => new(Filtered, World, Query.Mask.Clone(), add, remove);
 
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => Query.Batch(add, remove);
-
+    #endregion
 
     /// <summary>
     /// The number of entities that match the underlying Query.
     /// </summary>
     public int Count => Filtered.Sum(f => f.Count);
 
-
-    /// <summary>
-    /// The Archetypes that this Stream is iterating over.
-    /// </summary>
-    private HashSet<Archetype> Archetypes => Query.Archetypes;
 
     /// <summary>
     /// The World this Stream is associated with.
@@ -74,12 +72,12 @@ public record Stream(Query Query) : IBatchBegin
     /// <summary>
     /// Subset Stream Filter - if not empty, only entities with these components will be included in the Stream. 
     /// </summary>
-    public ImmutableSortedSet<Comp> Subset { get; init; } = [];
+    public HashSet<Comp> Subset { get; init; } = [];
 
     /// <summary>
     /// Exclude Stream Filter - any entities with these components will be excluded from the Stream. (none if empty)
     /// </summary>
-    public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
+    public HashSet<Comp> Exclude { get; init; } = [];
 
 
     #region Query Forwarding

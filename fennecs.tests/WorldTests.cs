@@ -273,7 +273,7 @@ public class WorldTests(ITestOutputHelper output)
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>(Match.Plain).Stream();
-        query.For(world, (World uniform, ref Identity _) =>
+        query.For(world, (uniform, _) =>
         {
             var entity = uniform.Spawn();
             Assert.True(entity.Id.IsEntity);
@@ -756,7 +756,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var quickCount = 0;
         quickStream.For(
-            (in Entity _, ref Predicted _) =>
+            (_, _) =>
             {
                 quickCount++;
             }
@@ -764,7 +764,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var queryCount = 0;
         queryStream.For(
-            (in Entity _, ref Predicted _) =>
+            (_, _) =>
             {
                 queryCount++;
             }
@@ -790,7 +790,7 @@ public class WorldTests(ITestOutputHelper output)
         
         var quickCount = 0;
         quickStream.For(
-            (in Entity _, ref Predicted _) =>
+            (_, _) =>
             {
                 quickCount++;
             }
@@ -798,7 +798,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var queryCount = 0;
         queryStream.For(
-            (in Entity _, ref Predicted _) =>
+            (_,_) =>
             {
                 queryCount++;
             }

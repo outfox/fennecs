@@ -41,9 +41,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     public bool IsEmpty => Count == 0;
 
     /// <summary>
-    /// Returns all the Entities in the Archetype as a Span.
+    /// Returns all the Entities in the Archetype as a ReadOnlySpan.
     /// </summary>
-    public ReadOnlySpan<Identity> Span => IdentityStorage.Span;
+    public ReadOnlySpan<Identity> Entities => IdentityStorage.Span;
     
     /// <summary>
     /// The World this Archetype is a part of.

@@ -30,5 +30,11 @@ public delegate void EntityComponentAction<C0, C1, C2>(in Entity entity, ref C0 
 public delegate void EntityComponentAction<C0, C1, C2, C3>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3); 
 public delegate void EntityComponentAction<C0, C1, C2, C3, C4>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 
+internal delegate void FennecsAction<in U, in C1, in C2, in C3, in C4>(U uniform, EntityRef entity, C1 accessor1, C2 accessor2, C3 accessor3, C4 accessor4)
+    where C1 : allows ref struct
+    where C2 : allows ref struct
+    where C3 : allows ref struct
+    where C4 : allows ref struct
+; 
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

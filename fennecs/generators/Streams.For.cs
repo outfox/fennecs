@@ -17,7 +17,7 @@ file class StreamsForGenerator
 {
     // ReSharper disable once UnusedMember.Local
     public void Main(ICodegenContext context)
-    {
+    { 
         var source = new StringBuilder();
         
         source.AppendLine(FileHeader());
@@ -26,21 +26,17 @@ file class StreamsForGenerator
         {
             source.AppendLine(ClassHeader(width));
 
-            var top = (1 << width) - 1;
-            for (var bits = top; bits >= 0; bits--)
-            {
-                source.AppendLine(GenerateFor(false, false, width, bits));
-                source.AppendLine(GenerateFor(true, false, width, bits));
-                source.AppendLine(GenerateFor(false, true, width, bits));
-                source.AppendLine(GenerateFor(true, true, width, bits));
-            }
+            source.AppendLine(GenerateFor(false, false, width));
+            source.AppendLine(GenerateFor(true, false, width));
+            source.AppendLine(GenerateFor(false, true, width));
+            source.AppendLine(GenerateFor(true, true, width));
 
             source.AppendLine(ClassFooter());                        
         }                           
         context["Streams.For.g.cs"].Write($"{source}");
     }
 
-    private static string ActionParams(int width, bool entity, bool uniform, string pattern)
+    private static string ActionParams(int width, bool entity, bool uniform)
     {
         var typeParams = new StringBuilder();
 
@@ -53,8 +49,7 @@ file class StreamsForGenerator
         //language=C#
         for (var i = 0; i < width; i++)
         {
-            var rw = pattern[i] == 'W' ? "RW" : "R";
-            typeParams.Append($"{rw}<C{i}>");
+            typeParams.Append($"RW<C{i}>");
             if (i < width - 1) typeParams.Append(", ");
         }
         return typeParams.ToString();
@@ -87,19 +82,19 @@ file class StreamsForGenerator
         return select.ToString();
     }
 
-    private static string Deconstruct(int width, string pattern)
+    private static string Deconstruct(int width)
     {
         var deconstruct = new StringBuilder();
         //language=C#
         for (var i = 0; i < width; i++)
         {
             deconstruct.Append($"var span{i} = s{i}.Span; ");
-            if (pattern[i] == 'W') deconstruct.Append($"var type{i} = s{i}.Expression; ");
+            deconstruct.Append($"var type{i} = s{i}.Expression; ");
         }
         return deconstruct.ToString();
     }
 
-    private static string InvocationParameters(bool entity, bool uniform, string pattern)
+    private static string InvocationParameters(bool entity, bool uniform, int width)
     {
         var parameters = new StringBuilder();
 
@@ -109,20 +104,10 @@ file class StreamsForGenerator
         //language=C#
         if (uniform) parameters.Append("uniform, ");
 
-        var index = 0;
-        foreach (var p in pattern)
+        for (var index = 0; index < width; index++)
         {
             if (index != 0) parameters.Append(", ");
-            parameters.Append(
-                //language=C#
-                p switch
-                {
-                    'W' => $"new(ref span{index}[i], ref writes[i], in entity, in type{index})",
-                    'R' => $"new(ref span{index}[i])",
-                    _ => throw new NotImplementedException(),
-                }
-            );
-            index++;
+            parameters.Append($"new(ref span{index}[i], ref writes[{index}], in entity, in type{index})");
         }
         return parameters.ToString();
     }
@@ -159,22 +144,19 @@ file class StreamsForGenerator
             """;
 }
     
-    private static string GenerateFor(bool entity, bool uniform, int width, int bits)
+    private static string GenerateFor(bool entity, bool uniform, int width)
     {
-        var pattern = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
-        
         return //Language=C#
             $$"""        
               
                       /// <include file='../_docs.xml' path='members/member[@name="T:For{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
-                      [OverloadResolutionPriority(0b_{{(!entity ? 1 << width : 0)&255:b8}}_{{bits&255:b8}})]
-                      public void For{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action)
+                      public void For{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform)}}> action)
                       {
                          using var worldLock = World.Lock();
               
                          foreach (var table in Filtered)
                          {
-                             using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
+                             using var join = table.CrossJoin<{{TypeParams(width)}}>(StreamTypes.AsSpan());
                              if (join.Empty) continue;
                              
                              Span<bool> writes = stackalloc bool[{{width}}];
@@ -183,18 +165,16 @@ file class StreamsForGenerator
                              do
                              {
                                  var {{Select(width)}} = join.Select;
-                                 {{Deconstruct(width, pattern)}}
+                                 {{Deconstruct(width)}}
                                  for (var i = 0; i < count; i++)
                                  {   
                                      var entity = table[i];
-                                     action({{InvocationParameters(entity, uniform, pattern)}}); 
+                                     action({{InvocationParameters(entity, uniform, width)}}); 
                                  }
                              } while (join.Iterate());
                          }
                       }
                       
-                      
               """;
     }
-
 }

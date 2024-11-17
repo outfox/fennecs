@@ -7,15 +7,14 @@ namespace fennecs.storage;
 /// Read-write access to a component.
 /// </summary>
 // ReSharper disable once InconsistentNaming
-public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : notnull
+public readonly ref struct RW<T> :IEquatable<RW<T>> where T : notnull 
 {
+    internal readonly ref T Value;
+    
     private readonly ref readonly Entity _entity;
     private readonly ref readonly TypeExpression _expression;
-
-    private readonly ref T _value;
-
     private readonly ref bool _modified;
-    
+
     /// <summary>
     /// Read-write access to a component.
     /// </summary>
@@ -24,7 +23,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
         _modified = ref modified;
         _entity = ref entity;
         _expression = ref expression;
-        _value = ref value;
+        Value = ref value;
     }
 
     // TODO: Expose it publicly once TypeExpression is exposed.
@@ -40,7 +39,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     /// Read access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public ref readonly T read => ref _value;
+    public ref readonly T read => ref Value;
     
     
     /// <summary>
@@ -53,7 +52,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
         {
             // JIT Optimizes away the write and type checks if it's not a modifiable type.
             if (typeof(Modified<T>).IsAssignableFrom(typeof(T))) _modified = true;
-            return ref _value;
+            return ref Value;
         }
     }
 
@@ -72,7 +71,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
         get        
         {
             // ReSharper disable once SuggestVarOrType_SimpleTypes
-            T copy = _value;
+            T copy = Value;
             // Remove<T> usually moves another entity into the slot of the removed one in immediate mode
             // The structural change is so expensive that it's not worth optimizing this getter further.
             _entity.Remove<T>(_expression.Match); 
@@ -93,21 +92,34 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     /// </summary>
     public static implicit operator T(RW<T> self) => self.read;
 
+    /// <inheritdoc cref="Equals(T)"/>
+    public static bool operator ==(RW<T> self, T other) => self.Value.Equals(other);
+
+    /// <inheritdoc cref="Equals(T)"/>
+    public static bool operator !=(RW<T> self, T other) => !(self == other);
+    
+    /// <inheritdoc cref="Equals(T)"/>
+    public static bool operator ==(RW<T> self, RW<T> other) => self.Equals(other);
+
+    /// <inheritdoc cref="Equals(T)"/>
+    public static bool operator !=(RW<T> self, RW<T> other) => !(self == other);
+
+
     /// <summary>
     /// You found the cursed operator! It's a secret, and it's stroustrup.
     /// </summary>
     public static RW<T> operator <<(RW<T> self, T other)
     {
-        self._value = other;
+        self.Value = other;
         return self;
     }
     
     /// <inheritdoc />
-    public override string ToString() => $"RW<{typeof(T)}>({_value.ToString()})";
+    public override string ToString() => $"RW<{typeof(T)}>({Value.ToString()})";
     
     /// <inheritdoc />
-    public bool Equals(RW<T> other) => _value.Equals(other._value);
+    public bool Equals(RW<T> other) => Value.Equals(other.Value);
 
     /// <inheritdoc />
-    public bool Equals(T? other) => _value.Equals(other);
+    public bool Equals(T? other) => Value.Equals(other);
 }

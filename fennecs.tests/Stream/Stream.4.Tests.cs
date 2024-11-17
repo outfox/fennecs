@@ -20,7 +20,7 @@ public class Stream4Tests(ITestOutputHelper output)
         {
             s.write = "haha!";
             output.WriteLine("" + s.read);
-            output.WriteLine(i);
+            output.WriteLine(i.ToString());
         });
     }
 

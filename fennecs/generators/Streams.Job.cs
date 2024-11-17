@@ -190,7 +190,7 @@ file class StreamsJobGenerator
 
                   foreach (var table in Filtered)
                   {
-                      using var join = table.CrossJoin<{{typeParams}}>(_streamTypes.AsSpan());
+                      using var join = table.CrossJoin<{{typeParams}}>(StreamTypes.AsSpan());
                       if (join.Empty) continue;
 
                       var count = table.Count; // storage.Length is the capacity, not the count.

@@ -7,7 +7,7 @@ namespace fennecs.events;
 /// Does not provide data about relations yet.
 /// </remarks>
 /// <typeparam name="C">any component type</typeparam>
-public interface Modified<C> where C : notnull
+public interface Modified<C> where C : notnull//, IEquatable<C> TODO: Implement this
 {
     /// <summary>
     /// Takes a list of entities who had a component modified.

@@ -102,26 +102,27 @@ public class DocumentationNBodyTests
         accumulator.Blit(new Acceleration { Value = Vector3.Zero });
         
         // Accumulate all forces (we have only 1 attractor stream, this will enumerate each sun 3 times)
-        accumulator.For((ref Acceleration acc, ref Body self, ref Body attractor) =>
+        accumulator.For((acc, self, attractor) =>
         {
             iterations1++;
 
             if (self == attractor) return; // (we are not attracted to ourselves) 
+
+            var distanceSquared = Vector3.DistanceSquared(attractor.read.position, self.read.position);
+            var direction = Vector3.Normalize(attractor.read.position - self.read.position);
+            acc.write.Value += direction * attractor.read.mass / distanceSquared / self.read.mass;
             
-            var distanceSquared = Vector3.DistanceSquared(attractor.position, self.position);
-            var direction = Vector3.Normalize(attractor.position - self.position);
-            acc.Value += direction * attractor.mass / distanceSquared / self.mass;
         });
         
         // NB! 3 bodies x 3 valid attractors
         Assert.Equal(bodyCount * bodyCount, iterations1);
 
         // Integrate forces, velocities, and positions
-        integrator.For(0.01f, (float dt, ref Acceleration accel, ref Velocity velocity, ref Position position) =>
+        integrator.For(0.01f, (dt, accel, velocity, position) =>
         {
             iterations2++;
-            velocity.Value += dt * accel.Value;
-            position.Value += dt * velocity.Value;
+            velocity.write.Value += dt * accel.read.Value;
+            position.write.Value += dt * velocity.read.Value;
         });
         
         Assert.Equal(bodyCount, iterations2);
@@ -129,10 +130,10 @@ public class DocumentationNBodyTests
         
         // Copy the Position back to the Body components of the same object
         // (the plain and relation components are backed by the same instances of Body!)
-        consolidator.For((ref Position position, ref Body body) =>
+        consolidator.For((position, body) =>
         {
             iterations3++;
-            body.position = position.Value;
+            body.write.position = position.read.Value;
         });
 
         Assert.Equal(bodyCount, iterations3);
