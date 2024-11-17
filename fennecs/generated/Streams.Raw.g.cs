@@ -15,7 +15,7 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -37,7 +37,7 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -59,7 +59,7 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -81,7 +81,7 @@ public partial record Stream<C0>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -108,7 +108,7 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -130,7 +130,7 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -152,7 +152,7 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -174,7 +174,7 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -196,7 +196,7 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -218,7 +218,7 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -240,7 +240,7 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -262,7 +262,7 @@ public partial record Stream<C0, C1>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -289,7 +289,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -311,7 +311,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -333,7 +333,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -355,7 +355,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -377,7 +377,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -399,7 +399,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -421,7 +421,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -443,7 +443,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -465,7 +465,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -487,7 +487,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -509,7 +509,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -531,7 +531,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -553,7 +553,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -575,7 +575,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -597,7 +597,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -619,7 +619,7 @@ public partial record Stream<C0, C1, C2>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -646,7 +646,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -668,7 +668,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -690,7 +690,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -712,7 +712,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -734,7 +734,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -756,7 +756,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -778,7 +778,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -800,7 +800,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -822,7 +822,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -844,7 +844,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -866,7 +866,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -888,7 +888,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -910,7 +910,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -932,7 +932,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -954,7 +954,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -976,7 +976,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -998,7 +998,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1020,7 +1020,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1042,7 +1042,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1064,7 +1064,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1086,7 +1086,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1108,7 +1108,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1130,7 +1130,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1152,7 +1152,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1174,7 +1174,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1196,7 +1196,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1218,7 +1218,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1240,7 +1240,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1262,7 +1262,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1284,7 +1284,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1306,7 +1306,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1328,7 +1328,7 @@ public partial record Stream<C0, C1, C2, C3>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1355,7 +1355,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1377,7 +1377,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1399,7 +1399,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1421,7 +1421,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1443,7 +1443,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1465,7 +1465,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1487,7 +1487,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1509,7 +1509,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1531,7 +1531,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1553,7 +1553,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1575,7 +1575,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1597,7 +1597,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1619,7 +1619,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1641,7 +1641,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1663,7 +1663,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1685,7 +1685,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1707,7 +1707,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1729,7 +1729,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1751,7 +1751,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1773,7 +1773,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1795,7 +1795,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1817,7 +1817,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1839,7 +1839,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1861,7 +1861,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1883,7 +1883,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1905,7 +1905,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1927,7 +1927,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1949,7 +1949,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1971,7 +1971,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -1993,7 +1993,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2015,7 +2015,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2037,7 +2037,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2059,7 +2059,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2081,7 +2081,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2103,7 +2103,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2125,7 +2125,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2147,7 +2147,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2169,7 +2169,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2191,7 +2191,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2213,7 +2213,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2235,7 +2235,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2257,7 +2257,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2279,7 +2279,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2301,7 +2301,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2323,7 +2323,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2345,7 +2345,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2367,7 +2367,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2389,7 +2389,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2411,7 +2411,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2433,7 +2433,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2455,7 +2455,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2477,7 +2477,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2499,7 +2499,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2521,7 +2521,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2543,7 +2543,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2565,7 +2565,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2587,7 +2587,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2609,7 +2609,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2631,7 +2631,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2653,7 +2653,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2675,7 +2675,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2697,7 +2697,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2719,7 +2719,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do
@@ -2741,7 +2741,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
                if (join.Empty) continue;
 
                do

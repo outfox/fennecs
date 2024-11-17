@@ -1,7 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
-using fennecs.pools;
 
 namespace fennecs;
 
@@ -16,20 +13,20 @@ public partial record Stream<C0, C1> :
     where C1 : notnull
 {
     /// <inheritdoc cref="Stream{C0}"/>
-    /// <typeparam name="C0">stream type</typeparam>
-    /// <typeparam name="C1">stream type</typeparam>
-    internal Stream(Query Query, Match Match0, Match Match1) : base(Query)
+    internal Stream(Query Query, Match match0, Match match1) : base(Query)
     {
-        this.Match0 = Match0;
-        this.Match1 = Match1;
-        _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
+        StreamTypes = [TypeExpression.Of<C0>(match0), TypeExpression.Of<C1>(match1)];
     }
-
-    public Match Match0 { get; init; }
-    public Match Match1 { get; init; }
 
 
     #region Blitters
+
+    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
+    public void Blit(C0 value, Match match = default)
+    {
+        var typeExpression = TypeExpression.Of<C0>(match);
+        foreach (var table in Filtered) table.Fill(typeExpression, value);
+    }
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
     public void Blit(C1 value, Match match = default)
@@ -50,11 +47,11 @@ public partial record Stream<C0, C1> :
     #region IEnumerable
 
     /// <inheritdoc />
-    public new IEnumerator<(Entity, C0, C1)> GetEnumerator()
+    public IEnumerator<(Entity, C0, C1)> GetEnumerator()
     {
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
             if (join.Empty) continue;
             var snapshot = table.Version;
             do
@@ -77,60 +74,4 @@ public partial record Stream<C0, C1> :
     #endregion
 
 
-    #region Unroll
-
-    private static void Unroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
-    {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
-        {
-            action(ref span0[i], ref span1[i]);
-            action(ref span0[i + 1], ref span1[i + 1]);
-            action(ref span0[i + 2], ref span1[i + 2]);
-            action(ref span0[i + 3], ref span1[i + 3]);
-
-            action(ref span0[i + 4], ref span1[i + 4]);
-            action(ref span0[i + 5], ref span1[i + 5]);
-            action(ref span0[i + 6], ref span1[i + 6]);
-            action(ref span0[i + 7], ref span1[i + 7]);
-        }
-
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
-            action(ref span0[i], ref span1[i]);
-        }
-    }
-
-    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<U, C0, C1> action, U uniform)
-    {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
-        {
-            action(uniform, ref span0[i], ref span1[i]);
-            action(uniform, ref span0[i + 1], ref span1[i + 1]);
-            action(uniform, ref span0[i + 2], ref span1[i + 2]);
-            action(uniform, ref span0[i + 3], ref span1[i + 3]);
-
-            action(uniform, ref span0[i + 4], ref span1[i + 4]);
-            action(uniform, ref span0[i + 5], ref span1[i + 5]);
-            action(uniform, ref span0[i + 6], ref span1[i + 6]);
-            action(uniform, ref span0[i + 7], ref span1[i + 7]);
-        }
-
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
-            action(uniform, ref span0[i], ref span1[i]);
-        }
-    }
-
-    #endregion
-
-    public void Deconstruct(out Query Query, out Match Match0, out Match Match1)
-    {
-        Query = this.Query;
-        Match0 = this.Match0;
-        Match1 = this.Match1;
-    }
 }

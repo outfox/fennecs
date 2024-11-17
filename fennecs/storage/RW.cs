@@ -91,7 +91,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     /// <summary>
     /// Implicitly casts a <see cref="RW{T}"/> to its underlying value.
     /// </summary>
-    public static implicit operator T(RW<T> self) => self._value;
+    public static implicit operator T(RW<T> self) => self.read;
 
     /// <summary>
     /// You found the cursed operator! It's a secret, and it's stroustrup.
@@ -102,13 +102,8 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
         return self;
     }
     
-    /// <summary>
-    /// Implicitly casts a <see cref="RW{T}"/> to a ForkmattableString for output, calling ToString() on its value.
-    /// </summary>
-    public static implicit operator FormattableString(RW<T> self) => FormattableStringFactory.Create(self.ToString());
-
     /// <inheritdoc />
-    public override string ToString() => _value.ToString() ?? "null";
+    public override string ToString() => $"RW<{typeof(T)}>({_value.ToString()})";
     
     /// <inheritdoc />
     public bool Equals(RW<T> other) => _value.Equals(other._value);

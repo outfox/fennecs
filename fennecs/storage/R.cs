@@ -18,15 +18,10 @@ public readonly ref struct R<T>(ref readonly T value) : IEquatable<R<T>>, IEquat
     /// <summary>
     /// Implicitly casts a <see cref="R{T}"/> to its underlying value.
     /// </summary>
-    public static implicit operator T(R<T> self) => self._value;
-
-    /// <summary>
-    /// Implicitly casts a <see cref="R{T}"/> to a string for output, calling ToString() on its value.
-    /// </summary>
-    public static implicit operator FormattableString(R<T> self) => FormattableStringFactory.Create(self.ToString());
+    public static implicit operator T(R<T> self) => self.read;
 
     /// <inheritdoc />
-    public override string ToString() => _value.ToString() ?? "null";
+    public override string ToString() => $"R<{typeof(T)}>({_value.ToString()})";
 
     /// <inheritdoc />
     public bool Equals(R<T> other) => _value.Equals(other._value);

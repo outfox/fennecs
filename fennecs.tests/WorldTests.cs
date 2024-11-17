@@ -89,12 +89,12 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>().Stream();
         Assert.Equal(count, query.Count);
 
-        query.For((ref int i, ref string s) =>
+        query.For((i, s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("hallo", s);
-            i++;
-            s = "correct.";
+            i.write++;
+            s.write = "correct.";
         });
     }
 
@@ -119,12 +119,12 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>().Stream();
         Assert.Equal(count * 2, query.Count);
 
-        query.For((ref int i, ref string s) =>
+        query.For((i, s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("hallo", s);
-            i++;
-            s = "correct.";
+            i.write++;
+            s.write = "correct.";
         });
     }
 
@@ -143,7 +143,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var query = world.Query<int>().Stream();
         Assert.Equal(count, query.Count);
-        query.For((ref int i) => Assert.Equal(666, i));
+        query.For((i) => Assert.Equal(666, i));
     }
 
 
@@ -164,7 +164,7 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>(Match.Plain, Match.Link("dieter")).Stream();
         Assert.Equal(count, query.Count);
 
-        query.For((ref int i, ref string s) =>
+        query.For((i, s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("dieter", s);
@@ -192,7 +192,7 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Equal(count, query.Count);
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
-        query.For((ref int i, ref string s) =>
+        query.For((i, s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("relation", s);

@@ -36,7 +36,7 @@ public class SortingTests(ITestOutputHelper output)
                 uniform: current,
                 action: (entity, uniform, layer) =>
                 {
-                    if (uniform == layer) output.WriteLine($"Hello from layer {layer}, {entity}");
+                    if (uniform == layer) output.WriteLine($"Hello from layer {layer.read}, {entity}");
                 });
         }
     }

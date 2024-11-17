@@ -13,7 +13,8 @@ public class RWTests
         
         var x = 1;
         var type = TypeExpression.Of<int>(default);
-        var rw = new RW<int>(ref x, ref entity, ref type);
+        var b = false;
+        var rw = new RW<int>(ref x, ref b, in entity, in type);
         
         Assert.Equal(1, rw.read);
     }
@@ -26,7 +27,8 @@ public class RWTests
         
         var x = 1;
         var type = TypeExpression.Of<int>(default);
-        var rw = new RW<int>(ref x, ref entity, ref type);
+        var b = false;
+        var rw = new RW<int>(ref x, ref b, in entity, in type);
         
         Assert.Equal(1, rw);
     }
@@ -40,8 +42,9 @@ public class RWTests
         var x = 1;
         
         var type = TypeExpression.Of<int>(default);
+        var b = false;
         // ReSharper disable once UseObjectOrCollectionInitializer
-        var rw = new RW<int>(ref x, ref entity, ref type);
+        var rw = new RW<int>(ref x, ref b, in entity, in type);
         rw.write = 2; // user usually does not use initializer code
         
         Assert.Equal(2, rw.read);
@@ -57,7 +60,8 @@ public class RWTests
         entity.Add(x);
 
         var type = TypeExpression.Of<int>(default);
-        var rw = new RW<int>(ref x, ref entity, ref type);
+        var b = false;
+        var rw = new RW<int>(ref x, ref b, in entity, in type);
         
         Assert.Equal(77, rw.consume);
         Assert.False(entity.Has<int>());
@@ -76,7 +80,8 @@ public class RWTests
         var type = TypeExpression.Of<int>(target);
         Assert.True(entity.Has<int>(target));
 
-        var rw = new RW<int>(ref x, ref entity, ref type);
+        var b = false;
+        var rw = new RW<int>(ref x, ref b, in entity, in type);
         
         Assert.Equal(77, rw.consume);
         Assert.False(entity.Has<int>(target));
@@ -88,14 +93,15 @@ public class RWTests
         using var world = new World();
         var entity = world.Spawn();
 
-        int x = 77;
+        var x = 77;
         entity.Add(x);
 
         Assert.True(entity.Has<int>());
 
         var type = TypeExpression.Of<int>(default);
         
-        var rw = new RW<int>(ref x, ref entity, ref type);
+        var b = false;
+        var rw = new RW<int>(ref x, ref b, in entity, in type);
         rw.Remove();
         Assert.False(entity.Has<int>());
     }
@@ -134,9 +140,9 @@ public class RWTests
         
         Modified<Type69>.Entities += entities =>
         {
+            modified = true;
             Assert.Equal(1, entities.Length);
             Assert.Equal(entity, entities[0]);
-            modified = true;
         };
         
         rw.write = new();
@@ -161,9 +167,9 @@ public class RWTests
         
         Modified<Type42>.Entities += entities =>
         {
+            modified = true;
             Assert.Equal(1, entities.Length);
             Assert.Equal(entity, entities[0]);
-            modified = true;
         };
         
         rw.write = new();
@@ -188,11 +194,11 @@ public class RWTests
         
         Modified<Type42>.Values += (entities, originals, updateds) =>
         {
+            modified = true;
             Assert.Equal(1, entities.Length);
             Assert.Equal(entity, entities[0]);
             Assert.Equal(original, originals[0]);
             Assert.Equal(updated, updateds[0]);
-            modified = true;
         };
         
         rw.write = updated;

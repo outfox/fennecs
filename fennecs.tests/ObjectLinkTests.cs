@@ -13,12 +13,12 @@ public class ObjectLinkTests(ITestOutputHelper output)
         world.Spawn().Add(Link.With(target));
 
         var runs = 0;
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             runs++;
             output.WriteLine(str);
             Assert.Equal(target, str);
-            Assert.True(ReferenceEquals(target, str));
+            Assert.True(ReferenceEquals(target, str.read));
         });
         Assert.Equal(1, runs);
     }
@@ -37,12 +37,12 @@ public class ObjectLinkTests(ITestOutputHelper output)
         entity.Add(Link.With(link));
 
         var runs = 0;
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             runs++;
             output.WriteLine(str);
             Assert.Equal(link, str);
-            Assert.True(ReferenceEquals(link, str));
+            Assert.True(ReferenceEquals(link, str.read));
         });
         Assert.Equal(1, runs);
     }
@@ -63,7 +63,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         entity.Remove<string>(target);
 
         var runs = 0;
-        query.For((ref string _) => { runs++; });
+        query.For((_) => { runs++; });
         Assert.Equal(0, runs);
     }
 
@@ -82,7 +82,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         world.RemoveComponent(entity, typeExpression);
 
         var runs = 0;
-        query.For((ref string _) => { runs++; });
+        query.For((_) => { runs++; });
         Assert.Equal(0, runs);
     }
 }

@@ -715,7 +715,7 @@ public class QueryTests
         query.Blit(Vector3.One);
         query.Blit(Vector4.One);
 
-        query.For((ref int i, ref string s, ref Vector2 v2, ref Vector3 v3, ref Vector4 v4) =>
+        query.For((i, s, v2, v3, v4) =>
         {
             Assert.Equal(69, i);
             Assert.Equal("test", s);

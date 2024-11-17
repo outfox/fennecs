@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Reflection;
 using fennecs.CRUD;
 
 namespace fennecs;
@@ -9,7 +8,7 @@ namespace fennecs;
 /// </summary>
 public record Stream(Query Query) : IBatchBegin
 {
-    private protected ImmutableArray<TypeExpression> _streamTypes = [];
+    protected private ImmutableArray<TypeExpression> StreamTypes = [];
 
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
@@ -18,17 +17,21 @@ public record Stream(Query Query) : IBatchBegin
         ? Archetypes
         : [..Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude))];
 
+
     #region Concurrency
+
     /// <summary>
     /// Countdown signal for this stream when running Jobs.
     /// </summary>
     protected CountdownEvent Countdown = null!;
-    
+
     /// <summary>
     /// Processor count to use for this thread
     /// </summary>
-    protected int Concurrency = Math.Max(2, Environment.ProcessorCount-2);
+    protected int Concurrency = Math.Max(2, Environment.ProcessorCount - 2);
+
     #endregion
+
 
     /// <summary>
     /// Creates a builder for a Batch Operation on the Stream's underyling Query.
@@ -55,7 +58,7 @@ public record Stream(Query Query) : IBatchBegin
     /// <summary>
     /// The Archetypes that this Stream is iterating over.
     /// </summary>
-    protected HashSet<Archetype> Archetypes => Query.Archetypes;
+    private HashSet<Archetype> Archetypes => Query.Archetypes;
 
     /// <summary>
     /// The World this Stream is associated with.
@@ -77,8 +80,8 @@ public record Stream(Query Query) : IBatchBegin
     /// Exclude Stream Filter - any entities with these components will be excluded from the Stream. (none if empty)
     /// </summary>
     public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
-    
-    
+
+
     #region Query Forwarding
 
     /// <inheritdoc cref="fennecs.Query.Truncate"/>
@@ -95,6 +98,7 @@ public record Stream(Query Query) : IBatchBegin
 
     #endregion
 
+
     #region Assertions
 
     /// <summary>
@@ -102,11 +106,93 @@ public record Stream(Query Query) : IBatchBegin
     /// </summary>
     protected void AssertNoWildcards()
     {
-        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {_streamTypes}");
+        if (StreamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {StreamTypes}");
     }
 
     #endregion
 
+
+    #region IEnumerator (Generic)
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the stream, with arbitrary component types.
+    /// </summary>
+    /// <remarks>
+    /// The iterator will be empty if the component types are not present in the stream.
+    /// </remarks>
+    public IEnumerator<(Entity, E0)> GetEnumerator<E0>() where E0 : notnull
+    {
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<E0>(StreamTypes.AsSpan());
+            if (join.Empty) continue;
+            var snapshot = table.Version;
+            do
+            {
+                var s0 = join.Select;
+                for (var index = 0; index < table.Count; index++)
+                {
+                    yield return (table[index], s0[index]);
+                    if (table.Version != snapshot)
+                        throw new InvalidOperationException("Collection was modified during iteration.");
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the stream, with arbitrary component types.
+    /// </summary>
+    /// <remarks>
+    /// The iterator will be empty if the component types are not present in the stream.
+    /// </remarks>
+    public IEnumerator<(Entity, E0, E1)> GetEnumerator<E0, E1>() where E0 : notnull where E1 : notnull
+    {
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<E0, E1>(StreamTypes.AsSpan());
+            if (join.Empty) continue;
+            var snapshot = table.Version;
+            do
+            {
+                var (s0, s1) = join.Select;
+                for (var index = 0; index < table.Count; index++)
+                {
+                    yield return (table[index], s0[index], s1[index]);
+                    if (table.Version != snapshot)
+                        throw new InvalidOperationException("Collection was modified during iteration.");
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the stream, with arbitrary component types.
+    /// </summary>
+    /// <remarks>
+    /// The iterator will be empty if the component types are not present in the stream.
+    /// </remarks>
+    public IEnumerator<(Entity, E0, E1, E2)> GetEnumerator<E0, E1, E2>() where E0 : notnull where E1 : notnull where E2 : notnull
+    {
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<E0, E1, E2>(StreamTypes.AsSpan());
+            if (join.Empty) continue;
+            var snapshot = table.Version;
+            do
+            {
+                var (s0, s1, s3) = join.Select;
+                for (var index = 0; index < table.Count; index++)
+                {
+                    yield return (table[index], s0[index], s1[index], s3[index]);
+                    if (table.Version != snapshot)
+                        throw new InvalidOperationException("Collection was modified during iteration.");
+                }
+            } while (join.Iterate());
+        }
+    }
+
+    #endregion
 
 
 }

@@ -76,7 +76,7 @@ public partial class World
     }
     */
     
-    internal ref T GetComponent<T>(Identity identity, Match match)
+    internal ref T GetComponent<T>(Identity identity, Match match) where T : notnull
     {
         AssertAlive(identity);
 
@@ -117,7 +117,7 @@ public partial class World
     }
     #endregion
 
-    internal T[] Get<T>(Identity id, Match match)
+    internal T[] Get<T>(Identity id, Match match) where T : notnull
     {
         var type = TypeExpression.Of<T>(match);
         var meta = _meta[id.Index];

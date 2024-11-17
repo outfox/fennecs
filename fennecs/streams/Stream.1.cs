@@ -1,8 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
-using fennecs.CRUD;
-using fennecs.pools;
 
 namespace fennecs;
 
@@ -13,7 +9,7 @@ namespace fennecs;
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public partial record Stream<C0> : 
+public partial record Stream<C0> :
     Stream,
     IEnumerable<(Entity, C0)>
     where C0 : notnull
@@ -23,14 +19,11 @@ public partial record Stream<C0> :
     /// It exposes both the Runners as well as IEnumerable over a value tuple of the
     /// Query's contents.
     /// </summary>
-    /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
-    internal Stream(Query Query, Match Match0) : base(Query)
+    internal Stream(Query Query, Match match0) : base(Query)
     {
-        this.Match0 = Match0;
-        _streamTypes = [TypeExpression.Of<C0>(Match0)];
+        StreamTypes = [TypeExpression.Of<C0>(match0)];
     }
 
-    public Match Match0 { get; init; }
 
     #region Blitters
 
@@ -52,6 +45,7 @@ public partial record Stream<C0> :
 
     #endregion
 
+
     #region IEnumerable
 
     /// <inheritdoc />
@@ -59,7 +53,7 @@ public partial record Stream<C0> :
     {
         foreach (var table in Filtered)
         {
-            using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+            using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
             if (join.Empty) continue;
             var snapshot = table.Version;
             do
@@ -79,9 +73,5 @@ public partial record Stream<C0> :
 
     #endregion
 
-    public void Deconstruct(out Query Query, out Match Match0)
-    {
-        Query = this.Query;
-        Match0 = this.Match0;
-    }
+
 }

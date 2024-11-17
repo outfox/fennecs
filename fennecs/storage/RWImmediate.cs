@@ -72,6 +72,6 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Match matc
     /// <summary>
     /// Removes the component from the entity.
     /// </summary>
-    /// <inheritdoc cref="Entity.Remove{C}()"/>
+    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Match)"/>
     public void Remove() => _entity.Remove<T>(match);
 }

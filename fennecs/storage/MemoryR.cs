@@ -6,16 +6,15 @@
 /// <remarks>
 /// You can get to the underlying <see cref="ReadOnlyMemory{T}"/> via property <see cref="ReadOnlyMemory"/>
 /// </remarks>
-public readonly record struct MemoryR<T>(ReadOnlyMemory<T> mem) where T : notnull
+/// <params name="ReadOnlyMemory">The underlying <see cref="ReadOnlyMemory{T}"/></params>
+public readonly record struct MemoryR<T>(ReadOnlyMemory<T> ReadOnlyMemory) where T : notnull
 {
-    /// <summary>
-    /// The underlying <see cref="ReadOnlyMemory{T}"/>
-    /// </summary>
-    public readonly ReadOnlyMemory<T> ReadOnlyMemory = mem;
-    
     /// <summary>
     /// Read-Only access to the component data at the given index.
     /// </summary>
+    /// <remarks>
+    /// When making a large numbers of reads, consider caching span <see cref="read"/> instead.
+    /// </remarks>
     public ref readonly T this[int index] => ref ReadOnlyMemory.Span[index];
     
     /// <summary>
@@ -27,4 +26,7 @@ public readonly record struct MemoryR<T>(ReadOnlyMemory<T> mem) where T : notnul
     /// Access the the memory as a <see cref="Span{T}"/>
     /// </summary>
     internal ReadOnlySpan<T> Span => ReadOnlyMemory.Span;
+    
+    /// <inheritdoc cref="ReadOnlyMemory{T}.Length"/>
+    public int Length => ReadOnlyMemory.Length;
 }

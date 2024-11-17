@@ -21,7 +21,7 @@ public class DocumentationExampleTests
         {
         }
         
-        query.Job(multiplier,(float uniform, ref Position pos) => { pos.Value *= uniform; });
+        query.Job(multiplier,(uniform, pos) => { pos.write.Value *= uniform; });
 
         var pos1 = world.GetComponent<Position>(entity1, Match.Plain);
         var expected = new Position(pos1.Value * multiplier);

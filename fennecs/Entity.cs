@@ -219,7 +219,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// <param name="match">match expression, supports wildcards</param>
     /// <typeparam name="T">backing type of the component</typeparam>
     /// <returns>array with all the component values stored for this entity</returns>
-    public T[] Get<T>(Match match) => _world.Get<T>(Id, match);
+    public T[] Get<T>(Match match) where T : notnull => _world.Get<T>(Id, match);
 
     #endregion
 

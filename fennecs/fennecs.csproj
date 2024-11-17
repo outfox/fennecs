@@ -49,12 +49,6 @@
         <Exec Command="dotnet tool run dotnet-codegencs template run %(StreamTemplate.Identity) -o generated" WorkingDirectory="$(ProjectDir)" />
     </Target>
 
-    <Target Name="SetupGeneratedFiles" BeforeTargets="CoreCompile" AfterTargets="GenerateCode">
-        <ItemGroup>
-            <Compile Include="generated\**\*.cs" />
-        </ItemGroup>
-    </Target>
-
     <ItemGroup>
         <Clean Include="generated\**\*" />
     </ItemGroup>
@@ -86,7 +80,6 @@
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
-        <None Remove="generated\**" />
     </ItemGroup>
 
     <ItemGroup>

@@ -86,7 +86,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     }
     
 
-    /// <inheritdoc cref="Entity.Remove{C}()"/>
+    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Match)"/>
     /// <summary>
     /// Removes the plain component of the given type from the Spawner.
     /// </summary>
@@ -97,7 +97,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
         return RemoveComponent(type);
     }
 
-    /// <inheritdoc cref="Entity.Remove{C}()"/>
+    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Match)"/>
     /// <summary>
     /// Removes the Relation component of the given type from the Spawner.
     /// </summary>
@@ -111,7 +111,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     /// <inheritdoc />
     public EntitySpawner Remove<L>(L linkedObject) where L : class => Remove(Link<L>.With(linkedObject));
     
-    /// <inheritdoc cref="Entity.Remove{C}()"/>
+    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Match)"/>
     /// <summary>
     /// Removes the Object Link component to the given Object from the Spawner.
     /// </summary>

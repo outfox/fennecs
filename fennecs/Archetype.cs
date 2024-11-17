@@ -84,8 +84,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    private void Match<T>(TypeExpression expression, PooledList<Storage<T>> result) 
-        //, ImmutableSortedSet<TypeExpression>? subset = default!, IImmutableSet<TypeExpression>? exclude = default!)
+    private void Match<T>(TypeExpression expression, PooledList<Storage<T>> result) where T : notnull
+    //, ImmutableSortedSet<TypeExpression>? subset = default!, IImmutableSet<TypeExpression>? exclude = default!)
     {
         foreach (var (type, index) in _storageIndices)
         {
@@ -100,7 +100,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal PooledList<Storage<T>> Match<T>(TypeExpression expression)
+    internal PooledList<Storage<T>> Match<T>(TypeExpression expression) where T : notnull
     {
         var result = PooledList<Storage<T>>.Rent();
         Match(expression, result);
@@ -292,7 +292,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal Storage<T> GetStorage<T>(Match match)
+    internal Storage<T> GetStorage<T>(Match match) where T : notnull
     {
         var type = TypeExpression.Of<T>(match);
         return (Storage<T>) GetStorage(type);
@@ -409,31 +409,31 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     #region Cross Joins
-    internal Cross.Join<C0> CrossJoin<C0>(ReadOnlySpan<TypeExpression> streamTypes)
+    internal Cross.Join<C0> CrossJoin<C0>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1> CrossJoin<C0, C1>(ReadOnlySpan<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1> CrossJoin<C0, C1>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull where C1 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ReadOnlySpan<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ReadOnlySpan<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ReadOnlySpan<TypeExpression> streamTypes)
+    internal Cross.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }

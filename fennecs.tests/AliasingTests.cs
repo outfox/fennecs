@@ -2,11 +2,7 @@
 {
     internal struct Weight(int kilograms) : Fox<int>
     {
-        public int Value
-        {
-            get => kilograms;
-            set => kilograms = value;
-        }
+        public int Value { get; set; } = kilograms;
         public static implicit operator Weight(int kilograms) => new(kilograms); 
     }
 
@@ -43,19 +39,19 @@
             
             var query = world.Query<Weight, Size>().Stream();
             
-            query.For(static (ref Weight weight, ref Size size) =>
+            query.For(static (weight, size) =>
             {
-                Assert.Equal(50, weight.Value);
-                Assert.Equal(150, size.Value);
+                Assert.Equal(50, weight.read);
+                Assert.Equal(150, size.read);
 
-                weight.Value = 61;
-                size.Value = 155;
+                weight.write = 61;
+                size.write = 155;
             });
 
-            query.For(static (ref Weight weight, ref Size size) =>
+            query.For(static (weight, size) =>
             {
-                Assert.Equal(61, weight.Value);
-                Assert.Equal(155, size.Value);
+                Assert.Equal(61, weight.read);
+                Assert.Equal(155, size.read);
             });
         }
     }

@@ -30,7 +30,7 @@ public class Match2Tests
         var query = _world.Query<string, float>(Match.Any, Match.Plain).Stream();
 
         HashSet<string> seen = [];
-        query.For((ref string str, ref float _) =>
+        query.For((str, _) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -49,7 +49,7 @@ public class Match2Tests
         var query = _world.Query<string, float>(Match.Plain, Match.Plain).Stream();
 
         HashSet<string> seen = [];
-        query.Job((ref string str, ref float _) =>
+        query.Job((str,_) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -66,7 +66,7 @@ public class Match2Tests
 
         HashSet<string> seen = [];
 
-        query.For((ref string str, ref float _) =>
+        query.For((str, _) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -85,7 +85,7 @@ public class Match2Tests
 
         HashSet<string> seen = [];
 
-        query.For((ref string str, ref float _) =>
+        query.For((str,_) =>
         {
             Assert.DoesNotContain(str, seen);
             seen.Add(str);
@@ -102,7 +102,7 @@ public class Match2Tests
 
         HashSet<string> seen = [];
 
-        query.For((ref string str, ref float _) =>
+        query.For((str, _) =>
         {
             lock (seen)
             {

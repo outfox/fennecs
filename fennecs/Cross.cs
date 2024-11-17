@@ -42,7 +42,7 @@ public static class Cross
     /// <summary>
     /// Cross-Joins the Archetype with a list of StreamTypes.
     /// </summary>
-    internal readonly struct Join<C0> : IDisposable
+    internal readonly struct Join<C0> : IDisposable where C0 : notnull
     {
         private readonly int[] _counter;
         private readonly int[] _limiter;
@@ -112,7 +112,7 @@ public static class Cross
     /// <summary>
     /// Cross-Joins the Archetype with a list of StreamTypes.
     /// </summary>
-    internal readonly struct Join<C0, C1> : IDisposable
+    internal readonly struct Join<C0, C1> : IDisposable where C0 : notnull where C1 : notnull
     {
         private readonly int[] _counter;
         private readonly int[] _limiter;
@@ -168,7 +168,7 @@ public static class Cross
     /// <summary>
     /// Cross-Joins the Archetype with a list of StreamTypes.
     /// </summary>
-    internal readonly struct Join<C0, C1, C2> : IDisposable
+    internal readonly struct Join<C0, C1, C2> : IDisposable where C0 : notnull where C1 : notnull where C2 : notnull
     {
         private readonly int[] _counter;
         private readonly int[] _limiter;
@@ -230,7 +230,7 @@ public static class Cross
     /// <summary>
     /// Cross-Joins the Archetype with a list of StreamTypes.
     /// </summary>
-    internal readonly struct Join<C0, C1, C2, C3> : IDisposable
+    internal readonly struct Join<C0, C1, C2, C3> : IDisposable where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
     {
         private readonly int[] _counter;
         private readonly int[] _limiter;
@@ -296,7 +296,7 @@ public static class Cross
     /// <summary>
     /// Cross-Joins the Archetype with a list of StreamTypes.
     /// </summary>
-    internal readonly struct Join<C0, C1, C2, C3, C4> : IDisposable
+    internal readonly struct Join<C0, C1, C2, C3, C4> : IDisposable where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
     {
         private readonly int[] _counter;
         private readonly int[] _limiter;

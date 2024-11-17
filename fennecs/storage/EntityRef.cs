@@ -75,4 +75,7 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
     {
         return _entity.Has(link);
     }
+    
+    /// <inheritdoc cref="Entity.Alive"/>
+    public bool Alive => _entity.Alive;
 }
