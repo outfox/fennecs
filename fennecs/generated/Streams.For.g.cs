@@ -9,13 +9,130 @@ public partial record Stream<C0>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00000010_00000001)]
+        public void For(Action<R<C0>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[1];
+
+               var count = table.Count;
+               do
+               {
+                   var s0 = join.Select;
+                   var span0 = s0.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For(Action<EntityRef, R<C0>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[1];
+
+               var count = table.Count;
+               do
+               {
+                   var s0 = join.Select;
+                   var span0 = s0.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00000010_00000001)]
+        public void For<U>(U uniform, Action<U, R<C0>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[1];
+
+               var count = table.Count;
+               do
+               {
+                   var s0 = join.Select;
+                   var span0 = s0.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[1];
+
+               var count = table.Count;
+               do
+               {
+                   var s0 = join.Select;
+                   var span0 = s0.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00000010_00000000)]
         public void For(Action<RW<C0>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[1];
@@ -28,21 +145,23 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[0], in entity, in type0));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For(Action<EntityRef, RW<C0>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[1];
@@ -55,21 +174,23 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[0], in entity, in type0));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00000010_00000000)]
         public void For<U>(U uniform, Action<U, RW<C0>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[1];
@@ -82,21 +203,23 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[0], in entity, in type0));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[1];
@@ -109,11 +232,12 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[0], in entity, in type0));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0));
                    }
                } while (join.Iterate());
            }
         }
+
 
 }
 
@@ -122,13 +246,362 @@ public partial record Stream<C0, C1>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00000100_00000011)]
+        public void For(Action<R<C0>, R<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000011)]
+        public void For(Action<EntityRef, R<C0>, R<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00000100_00000011)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000011)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00000100_00000010)]
+        public void For(Action<R<C0>, RW<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000010)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00000100_00000010)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000010)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00000100_00000001)]
+        public void For(Action<RW<C0>, R<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00000100_00000001)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00000100_00000000)]
         public void For(Action<RW<C0>, RW<C1>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[2];
@@ -141,21 +614,23 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[2];
@@ -168,21 +643,23 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00000100_00000000)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[2];
@@ -195,21 +672,23 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[2];
@@ -222,11 +701,12 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
         }
+
 
 }
 
@@ -235,13 +715,826 @@ public partial record Stream<C0, C1, C2>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000111)]
+        public void For(Action<R<C0>, R<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000111)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000111)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000111)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000110)]
+        public void For(Action<R<C0>, R<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000110)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000110)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000110)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000101)]
+        public void For(Action<R<C0>, RW<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000101)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000101)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000101)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000100)]
+        public void For(Action<R<C0>, RW<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000100)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000100)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000100)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000011)]
+        public void For(Action<RW<C0>, R<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000011)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000011)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000011)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000010)]
+        public void For(Action<RW<C0>, R<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000010)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000010)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000010)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000001)]
+        public void For(Action<RW<C0>, RW<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000001)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000000)]
         public void For(Action<RW<C0>, RW<C1>, RW<C2>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[3];
@@ -254,21 +1547,23 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[3];
@@ -281,21 +1576,23 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00001000_00000000)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[3];
@@ -308,21 +1605,23 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[3];
@@ -335,11 +1634,12 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
         }
+
 
 }
 
@@ -348,13 +1648,1754 @@ public partial record Stream<C0, C1, C2, C3>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001111)]
+        public void For(Action<R<C0>, R<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001111)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001111)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001111)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001110)]
+        public void For(Action<R<C0>, R<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001110)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001110)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001110)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001101)]
+        public void For(Action<R<C0>, R<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001101)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001101)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001101)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001100)]
+        public void For(Action<R<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001100)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001100)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001100)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001011)]
+        public void For(Action<R<C0>, RW<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001011)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001011)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001011)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001010)]
+        public void For(Action<R<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001010)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001010)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001010)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001001)]
+        public void For(Action<R<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001001)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001001)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001001)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001000)]
+        public void For(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001000)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00001000)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001000)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000111)]
+        public void For(Action<RW<C0>, R<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000111)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000111)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000111)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000110)]
+        public void For(Action<RW<C0>, R<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000110)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000110)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000110)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000101)]
+        public void For(Action<RW<C0>, R<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000101)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000101)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000101)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000100)]
+        public void For(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000100)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000100)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000100)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000011)]
+        public void For(Action<RW<C0>, RW<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000011)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000011)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000011)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000010)]
+        public void For(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000010)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000010)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000010)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000001)]
+        public void For(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000001)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000000)]
         public void For(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[4];
@@ -367,21 +3408,23 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2), new(ref span3[i], ref writes[3], in entity, in type3));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[4];
@@ -394,21 +3437,23 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2), new(ref span3[i], ref writes[3], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00010000_00000000)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[4];
@@ -421,21 +3466,23 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2), new(ref span3[i], ref writes[3], in entity, in type3));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[4];
@@ -448,11 +3495,12 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2), new(ref span3[i], ref writes[3], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
         }
+
 
 }
 
@@ -461,13 +3509,3610 @@ public partial record Stream<C0, C1, C2, C3, C4>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011111)]
+        public void For(Action<R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011111)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011111)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011111)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011110)]
+        public void For(Action<R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011110)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011110)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011110)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011101)]
+        public void For(Action<R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011101)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011101)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011101)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011100)]
+        public void For(Action<R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011100)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011100)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011100)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011011)]
+        public void For(Action<R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011011)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011011)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011011)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011010)]
+        public void For(Action<R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011010)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011010)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011010)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011001)]
+        public void For(Action<R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011001)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011001)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011001)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011000)]
+        public void For(Action<R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011000)]
+        public void For(Action<EntityRef, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00011000)]
+        public void For<U>(U uniform, Action<U, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00011000)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010111)]
+        public void For(Action<R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010111)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010111)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010111)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010110)]
+        public void For(Action<R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010110)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010110)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010110)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010101)]
+        public void For(Action<R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010101)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010101)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010101)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010100)]
+        public void For(Action<R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010100)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010100)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010100)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010011)]
+        public void For(Action<R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010011)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010011)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010011)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010010)]
+        public void For(Action<R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010010)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010010)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010010)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010001)]
+        public void For(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010001)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010001)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010001)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010000)]
+        public void For(Action<R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010000)]
+        public void For(Action<EntityRef, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00010000)]
+        public void For<U>(U uniform, Action<U, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00010000)]
+        public void For<U>(U uniform, Action<EntityRef, U, R<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001111)]
+        public void For(Action<RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001111)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001111)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001111)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001110)]
+        public void For(Action<RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001110)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001110)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001110)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001101)]
+        public void For(Action<RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001101)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001101)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001101)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001100)]
+        public void For(Action<RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001100)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001100)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001100)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001011)]
+        public void For(Action<RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001011)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001011)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001011)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001010)]
+        public void For(Action<RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001010)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001010)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001010)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001001)]
+        public void For(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001001)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001001)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001001)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001000)]
+        public void For(Action<RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001000)]
+        public void For(Action<EntityRef, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00001000)]
+        public void For<U>(U uniform, Action<U, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00001000)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, R<C1>, RW<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000111)]
+        public void For(Action<RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000111)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000111)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000111)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000110)]
+        public void For(Action<RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000110)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000110)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000110)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000101)]
+        public void For(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000101)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000101)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000101)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000100)]
+        public void For(Action<RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000100)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000100)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000100)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, R<C2>, RW<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000011)]
+        public void For(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000011)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000011)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000011)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000010)]
+        public void For(Action<RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000010)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000010)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000010)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, R<C3>, RW<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000001)]
+        public void For(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000001)]
+        public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000001)]
+        public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, R<C4>> action)
+        {
+           using var worldLock = World.Lock();
+
+           foreach (var table in Filtered)
+           {
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
+               if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
+
+               var count = table.Count;
+               do
+               {
+                   var (s0, s1, s2, s3, s4) = join.Select;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   for (var i = 0; i < count; i++)
+                   {
+                       var entity = table[i];
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                   }
+               } while (join.Iterate());
+           }
+        }
+
+
+
+        /// <include file='../_docs.xml' path='members/member[@name="T:For"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000000)]
         public void For(Action<RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[5];
@@ -480,21 +7125,23 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2), new(ref span3[i], ref writes[3], in entity, in type3), new(ref span4[i], ref writes[4], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForE"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For(Action<EntityRef, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[5];
@@ -507,21 +7154,23 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2), new(ref span3[i], ref writes[3], in entity, in type3), new(ref span4[i], ref writes[4], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForU"]'/>
+        [OverloadResolutionPriority(0b_00100000_00000000)]
         public void For<U>(U uniform, Action<U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[5];
@@ -534,21 +7183,23 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2), new(ref span3[i], ref writes[3], in entity, in type3), new(ref span4[i], ref writes[4], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
         }
 
 
+
         /// <include file='../_docs.xml' path='members/member[@name="T:ForEU"]'/>
+        [OverloadResolutionPriority(0b_00000000_00000000)]
         public void For<U>(U uniform, Action<EntityRef, U, RW<C0>, RW<C1>, RW<C2>, RW<C3>, RW<C4>> action)
         {
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)
            {
-               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(StreamTypes.AsSpan());
+               using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
                Span<bool> writes = stackalloc bool[5];
@@ -561,11 +7212,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[0], in entity, in type0), new(ref span1[i], ref writes[1], in entity, in type1), new(ref span2[i], ref writes[2], in entity, in type2), new(ref span3[i], ref writes[3], in entity, in type3), new(ref span4[i], ref writes[4], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
         }
+
 
 }
 
