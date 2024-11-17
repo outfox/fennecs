@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace fennecs.tests.Stream;
 
@@ -19,7 +20,11 @@ public class Stream1Tests(ITestOutputHelper output)
         {
             output.WriteLine(str.read);
             output.WriteLine(e.ToString());
+            
+            list.Remove(((Entity) e, str.read));
         });
+        
+        Assert.Empty(list);
     }
 
 
@@ -91,9 +96,9 @@ public class Stream1Tests(ITestOutputHelper output)
 
         List<string> list = ["Arnold", "Dolph"];
 
-        stream.For((ref string c0) =>
+        stream.For((c0) =>
         {
-            list.Remove(c0);
+            list.Remove(c0.read);
         });
 
         Assert.Empty(list);
@@ -111,9 +116,9 @@ public class Stream1Tests(ITestOutputHelper output)
 
         List<string> list = ["Arnold", "Dolph"];
 
-        stream.For((ref string c0) =>
+        stream.For((c0) =>
         {
-            Assert.True(list.Remove(c0));
+            Assert.True(list.Remove(c0.read));
         });
 
         Assert.Empty(list);
@@ -131,16 +136,16 @@ public class Stream1Tests(ITestOutputHelper output)
         world.Spawn().Add("Dolph").Add(678);
 
         List<string> list = ["Arnold", "Dolph"];
-        stream1.For((ref string c0) =>
+        stream1.For((c0) =>
         {
-            Assert.True(list.Remove(c0));
+            Assert.True(list.Remove(c0.read));
         });
         Assert.Empty(list);
 
         List<int> list2 = [123, 678];
-        stream2.For((ref int c0) =>
+        stream2.For((c0) =>
         {
-            Assert.True(list2.Remove(c0));
+            Assert.True(list2.Remove(c0.read));
         });
         Assert.Empty(list2);
     }
@@ -164,23 +169,23 @@ public class Stream1Tests(ITestOutputHelper output)
     public void Cannot_Run_Job_on_Wildcard_Query()
     {
         using var world = new World();
-        world.Spawn().Add("jason");
+        world.Spawn().Add(FormattableStringFactory.Create("jason"));
 
-        var stream = world.Query<string>(Match.Any).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        var stream = world.Query<FormattableString>(Match.Any).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<string>(Match.Entity).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        stream = world.Query<FormattableString>(Match.Entity).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<string>(Match.Target).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        stream = world.Query<FormattableString>(Match.Target).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<string>(Match.Object).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        stream = world.Query<FormattableString>(Match.Object).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<string>(Match.Plain).Stream();
+        stream = world.Query<FormattableString>(Match.Plain).Stream();
         var ran = false;
-        stream.Job((ref string str) =>
+        stream.Job((str) =>
         {
             output.WriteLine(str);
             ran = true;

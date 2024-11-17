@@ -18,8 +18,10 @@ public class NumberingTests
 
     
     // ReSharper disable once NotAccessedPositionalProperty.Local
-    private record struct Index(int Value)
+    private record struct Index(int Value) : Fox<int>
     {
+        public static implicit operator Index(int self) => new (self);
+
         public static IEnumerator<Index> Ascending(int from = 0, int to = int.MaxValue)
         {
             while (from < to) yield return new(from++);
@@ -38,10 +40,10 @@ public class NumberingTests
         
         stream.For(
             uniform: Index.Ascending(from: 0),
-            action: static (IEnumerator<Index> enumerator, ref Index index) =>
+            action: static (enumerator, index) =>
             {
                 enumerator.MoveNext();
-                index = enumerator.Current;
+                index.write = enumerator.Current;
             }
         );
         
@@ -65,10 +67,10 @@ public class NumberingTests
 
         stream.For(
             uniform: range,
-            action: static (IEnumerator<Index> enumerator, ref Index index) =>
+            action: static (range, index) =>
             {
-                enumerator.MoveNext();
-                index = enumerator.Current;
+                range.MoveNext();
+                index.write = range.Current;
             }
         );
 
@@ -90,9 +92,9 @@ public class NumberingTests
         var lazyQueue = new Queue<int>(Enumerable.Range(0, count));
         stream.For(
             uniform: lazyQueue,
-            action: static (Queue<int> queue, ref Index index) =>
+            action: static (queue, index) =>
             {
-                index.Value = queue.Dequeue();
+                index.write = queue.Dequeue();
             }
         );
         
@@ -111,7 +113,7 @@ public class NumberingTests
         var stream = Setup(count1, count2);
 
         var queue = new Queue<Index>(Enumerable.Range(0, stream.Count).Select(i => new Index(i)));
-        stream.For((ref Index index) => index = queue.Dequeue());
+        stream.For((index) => index.write = queue.Dequeue());
 
         VerifyCountAndOrder(stream, count1+count2);
     }
@@ -128,7 +130,24 @@ public class NumberingTests
         var stream = Setup(count1, count2);
 
         var i = 0;
-        stream.For((ref Index index) => index = new(i++));
+        stream.For((index) => index.write = new(i++));
+
+        VerifyCountAndOrder(stream, count1+count2);
+    }
+
+
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(1, 0)]
+    [InlineData(2, 20)]
+    [InlineData(1000, 500)]
+    [InlineData(99_999, 12_345)]
+    public void NumberingEntitiesWithRawNakedClosure(int count1, int count2)
+    {
+        var stream = Setup(count1, count2);
+
+        var i = 0;
+        stream.For((index) => index.write = ++i);
 
         VerifyCountAndOrder(stream, count1+count2);
     }
@@ -148,7 +167,16 @@ public class NumberingTests
         stream.Raw(
             action: indices =>
             {
-                foreach (ref var i in indices.Span) i = new Index(index++);
+                var pin = indices.Pin();
+                foreach (ref var i in indices.WriteSpan()) {};
+            }
+        );
+
+        stream.Raw(
+            action: indices =>
+            {
+                var pin = indices.Pin();
+                //foreach (ref readonly var i in indices.Span) {};
             }
         );
 
@@ -168,4 +196,9 @@ public class NumberingTests
         var testRange = Enumerable.Range(0, count).Select(i => new Index(i)).ToArray();
         Assert.Equal(testRange, accumulator);
     }
+}
+
+public static class MemoryExtensions
+{
+    public static Span<T> WriteSpan<T>(this Memory<T> memory) => memory.Span;
 }

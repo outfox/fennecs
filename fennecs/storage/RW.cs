@@ -6,18 +6,21 @@ namespace fennecs.storage;
 /// Read-write access to a component.
 /// </summary>
 // ReSharper disable once InconsistentNaming
-public readonly ref struct RW<T> where T : notnull
+public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : notnull
 {
     private readonly ref readonly Entity _entity;
     private readonly ref readonly TypeExpression _expression;
 
-    public readonly ref T _value;
+    private readonly ref T _value;
 
+    private readonly ref bool _modified;
+    
     /// <summary>
     /// Read-write access to a component.
     /// </summary>
-    internal RW(ref T value, ref readonly Entity entity, ref readonly TypeExpression expression)
+    internal RW(ref T value, ref bool modified, ref readonly Entity entity, ref readonly TypeExpression expression)
     {
+        _modified = ref modified;
         _entity = ref entity;
         _expression = ref expression;
         _value = ref value;
@@ -31,41 +34,27 @@ public readonly ref struct RW<T> where T : notnull
     /// </summary>
     public Match Match => _expression.Match;
 
+    
     /// <summary>
     /// Read access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
     public ref readonly T read => ref _value;
     
+    
     /// <summary>
     /// Write access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public ref T write => ref _value;
-    /*
-        set
+    public ref T write
+    {
+        get
         {
-            // Optimizes away the write and null checks if it's not modifiable.
-            if (typeof(Modified<T>).IsAssignableFrom(typeof(T)))
-            {
-                var original = _value;
-                _value =  value;
-
-                // TODO: Collect changes up into the Runner's outer scope instead, and process all at once there.
-                //_writtenEntities?.Add(_entity);
-                //_writtenOriginals?.Add(original);
-                //_writtenUpdates?.Add(value);
-
-                Modified<T>.Clear();
-                // TODO: Handle this in the outer scope, where the lists come from.
-                Modified<T>.Invoke([_entity], [original], [value]);
-            }
-            else
-            {
-                _value = value;
-            }
-}
-            */
+            // JIT Optimizes away the write and type checks if it's not a modifiable type.
+            if (typeof(Modified<T>).IsAssignableFrom(typeof(T))) _modified = true;
+            return ref _value;
+        }
+    }
 
     /// <summary>
     /// Reads the value (creating a shallow copy) and removes the component from the entity.
@@ -112,11 +101,12 @@ public readonly ref struct RW<T> where T : notnull
         return self;
     }
     
-    /// <summary>
-    /// Implicitly casts a <see cref="RW{T}"/> to a string for output, calling ToString() on its value.
-    /// </summary>
-    public static implicit operator string(RW<T> self) => self.ToString();
-    
     /// <inheritdoc />
     public override string ToString() => _value.ToString() ?? "null";
+    
+    /// <inheritdoc />
+    public bool Equals(RW<T> other) => _value.Equals(other._value);
+
+    /// <inheritdoc />
+    public bool Equals(T? other) => _value.Equals(other);
 }

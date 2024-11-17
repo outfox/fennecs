@@ -54,7 +54,7 @@ file class StreamsRawGenerator
         //language=C#
         for (var i = 0; i < width; i++)
         {
-            var rw = pattern[i] == 'W' ? "Memory" : "ReadOnlyMemory";
+            var rw = pattern[i] == 'W' ? "MemoryRW" : "MemoryR";
             typeParams.Append($"{rw}<C{i}>");
             if (i < width - 1) typeParams.Append(", ");
         }

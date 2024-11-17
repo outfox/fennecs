@@ -40,7 +40,6 @@ file class StreamsForGenerator
         context["Streams.For.g.cs"].Write($"{source}");
     }
 
-
     private static string ActionParams(int width, bool entity, bool uniform, string pattern)
     {
         var typeParams = new StringBuilder();
@@ -118,7 +117,7 @@ file class StreamsForGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in entity, in type{index})",
+                    'W' => $"new(ref span{index}[i], ref writes[i], in entity, in type{index})",
                     'R' => $"new(ref span{index}[i])",
                     _ => throw new NotImplementedException(),
                 }
@@ -177,7 +176,9 @@ file class StreamsForGenerator
                          {
                              using var join = table.CrossJoin<{{TypeParams(width)}}>(_streamTypes.AsSpan());
                              if (join.Empty) continue;
-
+                             
+                             Span<bool> writes = stackalloc bool[{{width}}];
+              
                              var count = table.Count;
                              do
                              {

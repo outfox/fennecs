@@ -16,7 +16,7 @@ public class SortingTests(ITestOutputHelper output)
 
         foreach (var group in groups)
         {
-            world.Stream<string>(group).For((ref string message) => output.WriteLine(message));
+            world.Stream<string>(group).For((message) => output.WriteLine(message));
         }
     }
 
@@ -34,7 +34,7 @@ public class SortingTests(ITestOutputHelper output)
         {
             world.Stream<int>().For(
                 uniform: current,
-                action: (int uniform, in Entity entity, ref int layer) =>
+                action: (entity, uniform, layer) =>
                 {
                     if (uniform == layer) output.WriteLine($"Hello from layer {layer}, {entity}");
                 });

@@ -11,7 +11,7 @@ namespace fennecs;
 /// is it still a Fox? <i>(Don't answer that. It's obviously a Fox!)</i>
 /// </remarks>
 /// <typeparam name="T">any type, let the compiler sort'em out</typeparam>
-public interface Fox<T>
+public interface Fox<T> where T: notnull
 {
     /// <summary>
     /// The semantically wrapped value of the <see cref="Fox{T}"/>.
@@ -30,7 +30,7 @@ public interface Fox<T>
 /// is it still a Fox? <i>(Don't answer that. It's obviously a Fox!)</i>
 /// </remarks>
 /// <typeparam name="T">any type, let the compiler sort'em out</typeparam>
-public interface FoxR<T>
+public interface FoxR<T> where T: notnull
 {
     /// <summary>
     /// The semantically wrapped value of the <see cref="Fox{T}"/>.

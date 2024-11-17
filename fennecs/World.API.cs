@@ -152,7 +152,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     public void DespawnAllWith<T>(Match match = default)
     {
         var query = Query<Identity>().Has<T>(match).Stream();
-        query.Raw(delegate(Memory<Identity> entities)
+        query.Raw(entities =>
         {
             //TODO: This is not good. Need to untangle the types here.
             foreach (var identity in entities.Span) DespawnImpl(new(this, identity));

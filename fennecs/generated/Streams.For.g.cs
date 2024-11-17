@@ -19,6 +19,8 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[1];
+
                var count = table.Count;
                do
                {
@@ -45,6 +47,8 @@ public partial record Stream<C0>
            {
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[1];
 
                var count = table.Count;
                do
@@ -73,6 +77,8 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[1];
+
                var count = table.Count;
                do
                {
@@ -99,6 +105,8 @@ public partial record Stream<C0>
            {
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[1];
 
                var count = table.Count;
                do
@@ -127,6 +135,8 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[1];
+
                var count = table.Count;
                do
                {
@@ -135,7 +145,7 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0));
                    }
                } while (join.Iterate());
            }
@@ -154,6 +164,8 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[1];
+
                var count = table.Count;
                do
                {
@@ -162,7 +174,7 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0));
                    }
                } while (join.Iterate());
            }
@@ -181,6 +193,8 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[1];
+
                var count = table.Count;
                do
                {
@@ -189,7 +203,7 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0));
                    }
                } while (join.Iterate());
            }
@@ -208,6 +222,8 @@ public partial record Stream<C0>
                using var join = table.CrossJoin<C0>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[1];
+
                var count = table.Count;
                do
                {
@@ -216,7 +232,7 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0));
                    }
                } while (join.Iterate());
            }
@@ -239,6 +255,8 @@ public partial record Stream<C0, C1>
            {
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
 
                var count = table.Count;
                do
@@ -267,6 +285,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -293,6 +313,8 @@ public partial record Stream<C0, C1>
            {
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[2];
 
                var count = table.Count;
                do
@@ -321,6 +343,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -348,6 +372,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -356,7 +382,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
@@ -375,6 +401,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -383,7 +411,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
@@ -402,6 +430,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -410,7 +440,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
@@ -429,6 +459,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -437,7 +469,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
@@ -456,6 +488,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -464,7 +498,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
                    }
                } while (join.Iterate());
            }
@@ -483,6 +517,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -491,7 +527,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
                    }
                } while (join.Iterate());
            }
@@ -510,6 +546,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -518,7 +556,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
                    }
                } while (join.Iterate());
            }
@@ -537,6 +575,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -545,7 +585,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
                    }
                } while (join.Iterate());
            }
@@ -564,6 +604,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -572,7 +614,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
@@ -591,6 +633,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -599,7 +643,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
@@ -618,6 +662,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -626,7 +672,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
@@ -645,6 +691,8 @@ public partial record Stream<C0, C1>
                using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[2];
+
                var count = table.Count;
                do
                {
@@ -653,7 +701,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
                    }
                } while (join.Iterate());
            }
@@ -676,6 +724,8 @@ public partial record Stream<C0, C1, C2>
            {
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
 
                var count = table.Count;
                do
@@ -704,6 +754,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -730,6 +782,8 @@ public partial record Stream<C0, C1, C2>
            {
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[3];
 
                var count = table.Count;
                do
@@ -758,6 +812,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -785,6 +841,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -793,7 +851,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -812,6 +870,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -820,7 +880,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -839,6 +899,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -847,7 +909,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -866,6 +928,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -874,7 +938,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -893,6 +957,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -901,7 +967,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -920,6 +986,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -928,7 +996,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -947,6 +1015,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -955,7 +1025,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -974,6 +1044,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -982,7 +1054,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1001,6 +1073,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1009,7 +1083,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1028,6 +1102,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1036,7 +1112,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1055,6 +1131,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1063,7 +1141,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1082,6 +1160,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1090,7 +1170,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1109,6 +1189,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1117,7 +1199,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1136,6 +1218,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1144,7 +1228,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1163,6 +1247,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1171,7 +1257,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1190,6 +1276,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1198,7 +1286,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1217,6 +1305,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1225,7 +1315,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1244,6 +1334,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1252,7 +1344,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1271,6 +1363,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1279,7 +1373,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1298,6 +1392,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1306,7 +1402,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1325,6 +1421,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1333,7 +1431,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1352,6 +1450,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1360,7 +1460,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1379,6 +1479,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1387,7 +1489,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1406,6 +1508,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1414,7 +1518,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
                    }
                } while (join.Iterate());
            }
@@ -1433,6 +1537,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1441,7 +1547,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1460,6 +1566,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1468,7 +1576,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1487,6 +1595,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1495,7 +1605,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1514,6 +1624,8 @@ public partial record Stream<C0, C1, C2>
                using var join = table.CrossJoin<C0, C1, C2>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[3];
+
                var count = table.Count;
                do
                {
@@ -1522,7 +1634,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
                    }
                } while (join.Iterate());
            }
@@ -1545,6 +1657,8 @@ public partial record Stream<C0, C1, C2, C3>
            {
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
 
                var count = table.Count;
                do
@@ -1573,6 +1687,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1599,6 +1715,8 @@ public partial record Stream<C0, C1, C2, C3>
            {
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[4];
 
                var count = table.Count;
                do
@@ -1627,6 +1745,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1654,6 +1774,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1662,7 +1784,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -1681,6 +1803,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1689,7 +1813,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -1708,6 +1832,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1716,7 +1842,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -1735,6 +1861,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1743,7 +1871,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -1762,6 +1890,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1770,7 +1900,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -1789,6 +1919,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1797,7 +1929,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -1816,6 +1948,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1824,7 +1958,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -1843,6 +1977,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1851,7 +1987,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -1870,6 +2006,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1878,7 +2016,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -1897,6 +2035,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1905,7 +2045,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -1924,6 +2064,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1932,7 +2074,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -1951,6 +2093,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1959,7 +2103,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -1978,6 +2122,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -1986,7 +2132,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2005,6 +2151,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2013,7 +2161,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2032,6 +2180,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2040,7 +2190,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2059,6 +2209,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2067,7 +2219,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2086,6 +2238,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2094,7 +2248,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2113,6 +2267,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2121,7 +2277,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2140,6 +2296,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2148,7 +2306,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2167,6 +2325,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2175,7 +2335,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2194,6 +2354,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2202,7 +2364,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2221,6 +2383,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2229,7 +2393,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2248,6 +2412,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2256,7 +2422,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2275,6 +2441,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2283,7 +2451,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2302,6 +2470,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2310,7 +2480,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2329,6 +2499,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2337,7 +2509,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2356,6 +2528,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2364,7 +2538,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2383,6 +2557,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2391,7 +2567,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2410,6 +2586,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2418,7 +2596,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2437,6 +2615,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2445,7 +2625,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2464,6 +2644,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2472,7 +2654,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2491,6 +2673,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2499,7 +2683,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2518,6 +2702,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2526,7 +2712,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2545,6 +2731,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2553,7 +2741,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2572,6 +2760,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2580,7 +2770,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2599,6 +2789,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2607,7 +2799,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2626,6 +2818,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2634,7 +2828,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2653,6 +2847,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2661,7 +2857,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2680,6 +2876,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2688,7 +2886,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2707,6 +2905,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2715,7 +2915,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2734,6 +2934,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2742,7 +2944,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2761,6 +2963,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2769,7 +2973,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2788,6 +2992,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2796,7 +3002,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2815,6 +3021,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2823,7 +3031,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2842,6 +3050,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2850,7 +3060,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2869,6 +3079,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2877,7 +3089,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2896,6 +3108,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2904,7 +3118,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2923,6 +3137,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2931,7 +3147,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -2950,6 +3166,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2958,7 +3176,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -2977,6 +3195,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -2985,7 +3205,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -3004,6 +3224,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3012,7 +3234,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -3031,6 +3253,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3039,7 +3263,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -3058,6 +3282,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3066,7 +3292,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -3085,6 +3311,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3093,7 +3321,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -3112,6 +3340,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3120,7 +3350,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -3139,6 +3369,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3147,7 +3379,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
                    }
                } while (join.Iterate());
            }
@@ -3166,6 +3398,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3174,7 +3408,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -3193,6 +3427,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3201,7 +3437,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -3220,6 +3456,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3228,7 +3466,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -3247,6 +3485,8 @@ public partial record Stream<C0, C1, C2, C3>
                using var join = table.CrossJoin<C0, C1, C2, C3>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[4];
+
                var count = table.Count;
                do
                {
@@ -3255,7 +3495,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
                    }
                } while (join.Iterate());
            }
@@ -3278,6 +3518,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
            {
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
 
                var count = table.Count;
                do
@@ -3306,6 +3548,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3332,6 +3576,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
            {
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
+
+               Span<bool> writes = stackalloc bool[5];
 
                var count = table.Count;
                do
@@ -3360,6 +3606,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3387,6 +3635,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3395,7 +3645,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3414,6 +3664,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3422,7 +3674,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3441,6 +3693,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3449,7 +3703,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3468,6 +3722,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3476,7 +3732,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3495,6 +3751,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3503,7 +3761,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3522,6 +3780,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3530,7 +3790,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3549,6 +3809,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3557,7 +3819,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3576,6 +3838,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3584,7 +3848,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3603,6 +3867,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3611,7 +3877,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3630,6 +3896,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3638,7 +3906,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3657,6 +3925,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3665,7 +3935,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3684,6 +3954,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3692,7 +3964,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3711,6 +3983,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3719,7 +3993,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3738,6 +4012,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3746,7 +4022,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3765,6 +4041,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3773,7 +4051,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3792,6 +4070,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3800,7 +4080,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3819,6 +4099,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3827,7 +4109,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3846,6 +4128,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3854,7 +4138,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3873,6 +4157,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3881,7 +4167,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3900,6 +4186,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3908,7 +4196,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -3927,6 +4215,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3935,7 +4225,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3954,6 +4244,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3962,7 +4254,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -3981,6 +4273,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -3989,7 +4283,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4008,6 +4302,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4016,7 +4312,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4035,6 +4331,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4043,7 +4341,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4062,6 +4360,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4070,7 +4370,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4089,6 +4389,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4097,7 +4399,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4116,6 +4418,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4124,7 +4428,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4143,6 +4447,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4151,7 +4457,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4170,6 +4476,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4178,7 +4486,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4197,6 +4505,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4205,7 +4515,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4224,6 +4534,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4232,7 +4544,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4251,6 +4563,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4259,7 +4573,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4278,6 +4592,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4286,7 +4602,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4305,6 +4621,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4313,7 +4631,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4332,6 +4650,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4340,7 +4660,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4359,6 +4679,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4367,7 +4689,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4386,6 +4708,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4394,7 +4718,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4413,6 +4737,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4421,7 +4747,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4440,6 +4766,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4448,7 +4776,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4467,6 +4795,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4475,7 +4805,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4494,6 +4824,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4502,7 +4834,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4521,6 +4853,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4529,7 +4863,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4548,6 +4882,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4556,7 +4892,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4575,6 +4911,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4583,7 +4921,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4602,6 +4940,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4610,7 +4950,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4629,6 +4969,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4637,7 +4979,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4656,6 +4998,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4664,7 +5008,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4683,6 +5027,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4691,7 +5037,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4710,6 +5056,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4718,7 +5066,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4737,6 +5085,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4745,7 +5095,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4764,6 +5114,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4772,7 +5124,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4791,6 +5143,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4799,7 +5153,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4818,6 +5172,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4826,7 +5182,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4845,6 +5201,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4853,7 +5211,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4872,6 +5230,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4880,7 +5240,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -4899,6 +5259,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4907,7 +5269,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4926,6 +5288,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4934,7 +5298,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4953,6 +5317,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4961,7 +5327,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -4980,6 +5346,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -4988,7 +5356,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5007,6 +5375,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5015,7 +5385,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5034,6 +5404,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5042,7 +5414,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5061,6 +5433,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5069,7 +5443,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5088,6 +5462,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5096,7 +5472,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5115,6 +5491,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5123,7 +5501,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5142,6 +5520,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5150,7 +5530,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5169,6 +5549,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5177,7 +5559,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5196,6 +5578,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5204,7 +5588,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5223,6 +5607,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5231,7 +5617,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5250,6 +5636,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5258,7 +5646,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5277,6 +5665,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5285,7 +5675,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5304,6 +5694,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5312,7 +5704,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5331,6 +5723,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5339,7 +5733,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5358,6 +5752,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5366,7 +5762,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5385,6 +5781,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5393,7 +5791,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5412,6 +5810,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5420,7 +5820,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5439,6 +5839,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5447,7 +5849,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5466,6 +5868,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5474,7 +5878,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5493,6 +5897,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5501,7 +5907,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5520,6 +5926,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5528,7 +5936,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5547,6 +5955,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5555,7 +5965,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5574,6 +5984,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5582,7 +5994,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5601,6 +6013,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5609,7 +6023,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5628,6 +6042,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5636,7 +6052,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5655,6 +6071,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5663,7 +6081,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5682,6 +6100,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5690,7 +6110,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5709,6 +6129,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5717,7 +6139,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5736,6 +6158,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5744,7 +6168,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5763,6 +6187,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5771,7 +6197,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5790,6 +6216,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5798,7 +6226,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5817,6 +6245,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5825,7 +6255,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5844,6 +6274,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5852,7 +6284,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -5871,6 +6303,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5879,7 +6313,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5898,6 +6332,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5906,7 +6342,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5925,6 +6361,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5933,7 +6371,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5952,6 +6390,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5960,7 +6400,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -5979,6 +6419,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -5987,7 +6429,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6006,6 +6448,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6014,7 +6458,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6033,6 +6477,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6041,7 +6487,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6060,6 +6506,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6068,7 +6516,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6087,6 +6535,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6095,7 +6545,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6114,6 +6564,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6122,7 +6574,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6141,6 +6593,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6149,7 +6603,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6168,6 +6622,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6176,7 +6632,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6195,6 +6651,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6203,7 +6661,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6222,6 +6680,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6230,7 +6690,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6249,6 +6709,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6257,7 +6719,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6276,6 +6738,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6284,7 +6748,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6303,6 +6767,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6311,7 +6777,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6330,6 +6796,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6338,7 +6806,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6357,6 +6825,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6365,7 +6835,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6384,6 +6854,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6392,7 +6864,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6411,6 +6883,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6419,7 +6893,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6438,6 +6912,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6446,7 +6922,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6465,6 +6941,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6473,7 +6951,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6492,6 +6970,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6500,7 +6980,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6519,6 +6999,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6527,7 +7009,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6546,6 +7028,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6554,7 +7038,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6573,6 +7057,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6581,7 +7067,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6600,6 +7086,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6608,7 +7096,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
                    }
                } while (join.Iterate());
            }
@@ -6627,6 +7115,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6635,7 +7125,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6654,6 +7144,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6662,7 +7154,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6681,6 +7173,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6689,7 +7183,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }
@@ -6708,6 +7202,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
                using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
                if (join.Empty) continue;
 
+               Span<bool> writes = stackalloc bool[5];
+
                var count = table.Count;
                do
                {
@@ -6716,7 +7212,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], in entity, in type0), new(ref span1[i], in entity, in type1), new(ref span2[i], in entity, in type2), new(ref span3[i], in entity, in type3), new(ref span4[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
                    }
                } while (join.Iterate());
            }

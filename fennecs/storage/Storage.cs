@@ -103,7 +103,7 @@ internal interface IStorage
 /// A front-end to System.Array for fast storage write and blit operations.
 /// </summary>
 /// <typeparam name="T">the type of the array elements</typeparam>
-internal class Storage<T>(TypeExpression expression) : IStorage
+internal class Storage<T>(TypeExpression expression) : IStorage where T : notnull
 {
     public Storage() : this(TypeExpression.Of<T>(default)) { }
     
@@ -351,22 +351,22 @@ internal class Storage<T>(TypeExpression expression) : IStorage
     /// <summary>
     /// Returns a Memory handle to a section of the contained data.
     /// </summary>
-    public Memory<T> AsMemory(int start, int length) => _data.AsMemory(start, length);
+    public MemoryRW<T> AsMemory(int start, int length) => new(_data.AsMemory(start, length));
 
     /// <summary>
     /// Returns a ReadOnlyMemory handle to a section of the contained data.
     /// </summary>
-    public ReadOnlyMemory<T> AsReadOnlyMemory(int start, int length) => _data.AsMemory(start, length);
+    public MemoryR<T> AsReadOnlyMemory(int start, int length) => new(_data.AsMemory(start, length));
 
     /// <summary>
     /// Returns a ReadOnlyMemory handle to the entire contained data.
     /// </summary>
-    public ReadOnlyMemory<T> AsReadOnlyMemory() => _data.AsMemory();
+    public MemoryR<T> AsReadOnlyMemory() => new(_data.AsMemory());
 
     /// <summary>
     /// Returns a Memory handle to the entire contained data.
     /// </summary>
-    public Memory<T> AsMemory() => _data.AsMemory(0, Count);
+    public MemoryRW<T> AsMemory() => new(_data.AsMemory(0, Count));
 
     /// <summary>
     /// Returns a span representation of the actually contained data.
@@ -381,7 +381,7 @@ internal class Storage<T>(TypeExpression expression) : IStorage
     /// <remarks>
     /// Allows inspection of the entire array, not just the used elements.
     /// </remarks>
-    internal T this[int index] => _data[index];
+    internal ref T this[int index] => ref _data[index];
 
     /// <summary>
     /// Cast to <see cref="Span{T}"/> implicitly.

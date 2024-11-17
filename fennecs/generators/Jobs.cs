@@ -41,8 +41,8 @@ file class JobsGenerator
     private FormattableString Memory(bool write, int index)
     {
         //var sb = 
-        var readOnly = !write ? "ReadOnly" : "";
-        return $"    internal {readOnly}Memory<C{index}> Memory{index} = null!;";
+        var w = write ? "W" : "";
+        return $"    internal MemoryR{w}<C{index}> Memory{index} = default!;";
     }
     
     private FormattableString Memories(int width, string pattern)
@@ -130,7 +130,7 @@ file class JobsGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in entity, in Type{index})",
+                    'W' => $"new(ref span{index}[i], ref writes[i], in entity, in Type{index})",
                     'R' => $"new(in span{index}[i])",
                     _ => throw new NotImplementedException(),
                 }
@@ -204,7 +204,7 @@ file class JobsGenerator
               internal record {{jobType}} : IThreadPoolWorkItem 
                   {{constraints}}
               {
-                  public ReadOnlyMemory<Identity> MemoryE = null!;
+                  public MemoryR<Identity> MemoryE= default!;
                   public World World = null!;
               
               {{memories}}
@@ -220,11 +220,14 @@ file class JobsGenerator
                       var identities = MemoryE.Span;
                       {{deconstruction}}
               
+                      Span<bool> writes = stackalloc bool[{{width}}];
                       var count = identities.Length;
                       for (var i = 0; i < count; i++)
                       {
-                          var entity = new Entity(World, identities[i]);
-                          Action({{invocationParams}});
+                         
+                         var entity = new Entity(World, identities[i]);
+                         Action({{invocationParams}});
+                         
                       }
                       CountDown.Signal();
                   }

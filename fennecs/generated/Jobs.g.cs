@@ -11,10 +11,10 @@ namespace fennecs;
 internal record JobR<C0> : IThreadPoolWorkItem
     where C0 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
+    internal MemoryR<C0> Memory0 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -29,11 +29,14 @@ internal record JobR<C0> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span;
 
+        Span<bool> writes = stackalloc bool[1];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]));
+
         }
         CountDown.Signal();
     }
@@ -42,10 +45,10 @@ internal record JobR<C0> : IThreadPoolWorkItem
 internal record JobER<C0> : IThreadPoolWorkItem
     where C0 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
+    internal MemoryR<C0> Memory0 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -60,11 +63,14 @@ internal record JobER<C0> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span;
 
+        Span<bool> writes = stackalloc bool[1];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]));
+
         }
         CountDown.Signal();
     }
@@ -73,10 +79,10 @@ internal record JobER<C0> : IThreadPoolWorkItem
 internal record JobUR<U, C0> : IThreadPoolWorkItem
     where C0 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
+    internal MemoryR<C0> Memory0 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -91,11 +97,14 @@ internal record JobUR<U, C0> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span;
 
+        Span<bool> writes = stackalloc bool[1];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]));
+
         }
         CountDown.Signal();
     }
@@ -104,10 +113,10 @@ internal record JobUR<U, C0> : IThreadPoolWorkItem
 internal record JobEUR<U, C0> : IThreadPoolWorkItem
     where C0 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
+    internal MemoryR<C0> Memory0 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -122,11 +131,14 @@ internal record JobEUR<U, C0> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span;
 
+        Span<bool> writes = stackalloc bool[1];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]));
+
         }
         CountDown.Signal();
     }
@@ -135,10 +147,10 @@ internal record JobEUR<U, C0> : IThreadPoolWorkItem
 internal record JobW<C0> : IThreadPoolWorkItem
     where C0 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -153,11 +165,14 @@ internal record JobW<C0> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span;
 
+        Span<bool> writes = stackalloc bool[1];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0));
+
         }
         CountDown.Signal();
     }
@@ -166,10 +181,10 @@ internal record JobW<C0> : IThreadPoolWorkItem
 internal record JobEW<C0> : IThreadPoolWorkItem
     where C0 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -184,11 +199,14 @@ internal record JobEW<C0> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span;
 
+        Span<bool> writes = stackalloc bool[1];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0));
+
         }
         CountDown.Signal();
     }
@@ -197,10 +215,10 @@ internal record JobEW<C0> : IThreadPoolWorkItem
 internal record JobUW<U, C0> : IThreadPoolWorkItem
     where C0 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -215,11 +233,14 @@ internal record JobUW<U, C0> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span;
 
+        Span<bool> writes = stackalloc bool[1];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0));
+
         }
         CountDown.Signal();
     }
@@ -228,10 +249,10 @@ internal record JobUW<U, C0> : IThreadPoolWorkItem
 internal record JobEUW<U, C0> : IThreadPoolWorkItem
     where C0 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -246,11 +267,14 @@ internal record JobEUW<U, C0> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span;
 
+        Span<bool> writes = stackalloc bool[1];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0));
+
         }
         CountDown.Signal();
     }
@@ -259,11 +283,11 @@ internal record JobEUW<U, C0> : IThreadPoolWorkItem
 internal record JobRR<C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -279,11 +303,14 @@ internal record JobRR<C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]));
+
         }
         CountDown.Signal();
     }
@@ -292,11 +319,11 @@ internal record JobRR<C0, C1> : IThreadPoolWorkItem
 internal record JobERR<C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -312,11 +339,14 @@ internal record JobERR<C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]));
+
         }
         CountDown.Signal();
     }
@@ -325,11 +355,11 @@ internal record JobERR<C0, C1> : IThreadPoolWorkItem
 internal record JobURR<U, C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -345,11 +375,14 @@ internal record JobURR<U, C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]));
+
         }
         CountDown.Signal();
     }
@@ -358,11 +391,11 @@ internal record JobURR<U, C0, C1> : IThreadPoolWorkItem
 internal record JobEURR<U, C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -378,11 +411,14 @@ internal record JobEURR<U, C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]));
+
         }
         CountDown.Signal();
     }
@@ -391,11 +427,11 @@ internal record JobEURR<U, C0, C1> : IThreadPoolWorkItem
 internal record JobRW<C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -411,11 +447,14 @@ internal record JobRW<C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1));
+
         }
         CountDown.Signal();
     }
@@ -424,11 +463,11 @@ internal record JobRW<C0, C1> : IThreadPoolWorkItem
 internal record JobERW<C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -444,11 +483,14 @@ internal record JobERW<C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1));
+
         }
         CountDown.Signal();
     }
@@ -457,11 +499,11 @@ internal record JobERW<C0, C1> : IThreadPoolWorkItem
 internal record JobURW<U, C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -477,11 +519,14 @@ internal record JobURW<U, C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1));
+
         }
         CountDown.Signal();
     }
@@ -490,11 +535,11 @@ internal record JobURW<U, C0, C1> : IThreadPoolWorkItem
 internal record JobEURW<U, C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -510,11 +555,14 @@ internal record JobEURW<U, C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1));
+
         }
         CountDown.Signal();
     }
@@ -523,11 +571,11 @@ internal record JobEURW<U, C0, C1> : IThreadPoolWorkItem
 internal record JobWR<C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -543,11 +591,14 @@ internal record JobWR<C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]));
+
         }
         CountDown.Signal();
     }
@@ -556,11 +607,11 @@ internal record JobWR<C0, C1> : IThreadPoolWorkItem
 internal record JobEWR<C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -576,11 +627,14 @@ internal record JobEWR<C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]));
+
         }
         CountDown.Signal();
     }
@@ -589,11 +643,11 @@ internal record JobEWR<C0, C1> : IThreadPoolWorkItem
 internal record JobUWR<U, C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -609,11 +663,14 @@ internal record JobUWR<U, C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]));
+
         }
         CountDown.Signal();
     }
@@ -622,11 +679,11 @@ internal record JobUWR<U, C0, C1> : IThreadPoolWorkItem
 internal record JobEUWR<U, C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -642,11 +699,14 @@ internal record JobEUWR<U, C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]));
+
         }
         CountDown.Signal();
     }
@@ -655,11 +715,11 @@ internal record JobEUWR<U, C0, C1> : IThreadPoolWorkItem
 internal record JobWW<C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -675,11 +735,14 @@ internal record JobWW<C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1));
+
         }
         CountDown.Signal();
     }
@@ -688,11 +751,11 @@ internal record JobWW<C0, C1> : IThreadPoolWorkItem
 internal record JobEWW<C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -708,11 +771,14 @@ internal record JobEWW<C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1));
+
         }
         CountDown.Signal();
     }
@@ -721,11 +787,11 @@ internal record JobEWW<C0, C1> : IThreadPoolWorkItem
 internal record JobUWW<U, C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -741,11 +807,14 @@ internal record JobUWW<U, C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1));
+
         }
         CountDown.Signal();
     }
@@ -754,11 +823,11 @@ internal record JobUWW<U, C0, C1> : IThreadPoolWorkItem
 internal record JobEUWW<U, C0, C1> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -774,11 +843,14 @@ internal record JobEUWW<U, C0, C1> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
+        Span<bool> writes = stackalloc bool[2];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1));
+
         }
         CountDown.Signal();
     }
@@ -787,12 +859,12 @@ internal record JobEUWW<U, C0, C1> : IThreadPoolWorkItem
 internal record JobRRR<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -809,11 +881,14 @@ internal record JobRRR<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -822,12 +897,12 @@ internal record JobRRR<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobERRR<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -844,11 +919,14 @@ internal record JobERRR<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -857,12 +935,12 @@ internal record JobERRR<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobURRR<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -879,11 +957,14 @@ internal record JobURRR<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -892,12 +973,12 @@ internal record JobURRR<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEURRR<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -914,11 +995,14 @@ internal record JobEURRR<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -927,12 +1011,12 @@ internal record JobEURRR<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobRRW<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -949,11 +1033,14 @@ internal record JobRRW<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -962,12 +1049,12 @@ internal record JobRRW<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobERRW<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -984,11 +1071,14 @@ internal record JobERRW<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -997,12 +1087,12 @@ internal record JobERRW<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobURRW<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1019,11 +1109,14 @@ internal record JobURRW<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1032,12 +1125,12 @@ internal record JobURRW<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEURRW<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1054,11 +1147,14 @@ internal record JobEURRW<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1067,12 +1163,12 @@ internal record JobEURRW<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobRWR<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1089,11 +1185,14 @@ internal record JobRWR<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1102,12 +1201,12 @@ internal record JobRWR<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobERWR<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1124,11 +1223,14 @@ internal record JobERWR<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1137,12 +1239,12 @@ internal record JobERWR<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobURWR<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1159,11 +1261,14 @@ internal record JobURWR<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1172,12 +1277,12 @@ internal record JobURWR<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEURWR<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1194,11 +1299,14 @@ internal record JobEURWR<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1207,12 +1315,12 @@ internal record JobEURWR<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobRWW<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1229,11 +1337,14 @@ internal record JobRWW<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1242,12 +1353,12 @@ internal record JobRWW<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobERWW<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1264,11 +1375,14 @@ internal record JobERWW<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1277,12 +1391,12 @@ internal record JobERWW<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobURWW<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1299,11 +1413,14 @@ internal record JobURWW<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1312,12 +1429,12 @@ internal record JobURWW<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEURWW<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1334,11 +1451,14 @@ internal record JobEURWW<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1347,12 +1467,12 @@ internal record JobEURWW<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobWRR<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1369,11 +1489,14 @@ internal record JobWRR<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1382,12 +1505,12 @@ internal record JobWRR<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEWRR<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1404,11 +1527,14 @@ internal record JobEWRR<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1417,12 +1543,12 @@ internal record JobEWRR<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobUWRR<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1439,11 +1565,14 @@ internal record JobUWRR<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1452,12 +1581,12 @@ internal record JobUWRR<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEUWRR<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1474,11 +1603,14 @@ internal record JobEUWRR<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1487,12 +1619,12 @@ internal record JobEUWRR<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobWRW<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1509,11 +1641,14 @@ internal record JobWRW<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1522,12 +1657,12 @@ internal record JobWRW<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEWRW<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1544,11 +1679,14 @@ internal record JobEWRW<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1557,12 +1695,12 @@ internal record JobEWRW<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobUWRW<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1579,11 +1717,14 @@ internal record JobUWRW<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1592,12 +1733,12 @@ internal record JobUWRW<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEUWRW<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1614,11 +1755,14 @@ internal record JobEUWRW<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1627,12 +1771,12 @@ internal record JobEUWRW<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobWWR<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1649,11 +1793,14 @@ internal record JobWWR<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1662,12 +1809,12 @@ internal record JobWWR<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEWWR<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1684,11 +1831,14 @@ internal record JobEWWR<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1697,12 +1847,12 @@ internal record JobEWWR<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobUWWR<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1719,11 +1869,14 @@ internal record JobUWWR<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1732,12 +1885,12 @@ internal record JobUWWR<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEUWWR<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1754,11 +1907,14 @@ internal record JobEUWWR<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]));
+
         }
         CountDown.Signal();
     }
@@ -1767,12 +1923,12 @@ internal record JobEUWWR<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobWWW<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1789,11 +1945,14 @@ internal record JobWWW<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1802,12 +1961,12 @@ internal record JobWWW<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEWWW<C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1824,11 +1983,14 @@ internal record JobEWWW<C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1837,12 +1999,12 @@ internal record JobEWWW<C0, C1, C2> : IThreadPoolWorkItem
 internal record JobUWWW<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1859,11 +2021,14 @@ internal record JobUWWW<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1872,12 +2037,12 @@ internal record JobUWWW<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobEUWWW<U, C0, C1, C2> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1894,11 +2059,14 @@ internal record JobEUWWW<U, C0, C1, C2> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
+        Span<bool> writes = stackalloc bool[3];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2));
+
         }
         CountDown.Signal();
     }
@@ -1907,13 +2075,13 @@ internal record JobEUWWW<U, C0, C1, C2> : IThreadPoolWorkItem
 internal record JobRRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1931,11 +2099,14 @@ internal record JobRRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -1944,13 +2115,13 @@ internal record JobRRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobERRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -1968,11 +2139,14 @@ internal record JobERRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -1981,13 +2155,13 @@ internal record JobERRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobURRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2005,11 +2179,14 @@ internal record JobURRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2018,13 +2195,13 @@ internal record JobURRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEURRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2042,11 +2219,14 @@ internal record JobEURRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2055,13 +2235,13 @@ internal record JobEURRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobRRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2079,11 +2259,14 @@ internal record JobRRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2092,13 +2275,13 @@ internal record JobRRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobERRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2116,11 +2299,14 @@ internal record JobERRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2129,13 +2315,13 @@ internal record JobERRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobURRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2153,11 +2339,14 @@ internal record JobURRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2166,13 +2355,13 @@ internal record JobURRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEURRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2190,11 +2379,14 @@ internal record JobEURRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2203,13 +2395,13 @@ internal record JobEURRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobRRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2227,11 +2419,14 @@ internal record JobRRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2240,13 +2435,13 @@ internal record JobRRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobERRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2264,11 +2459,14 @@ internal record JobERRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2277,13 +2475,13 @@ internal record JobERRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobURRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2301,11 +2499,14 @@ internal record JobURRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2314,13 +2515,13 @@ internal record JobURRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEURRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2338,11 +2539,14 @@ internal record JobEURRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2351,13 +2555,13 @@ internal record JobEURRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobRRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2375,11 +2579,14 @@ internal record JobRRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2388,13 +2595,13 @@ internal record JobRRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobERRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2412,11 +2619,14 @@ internal record JobERRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2425,13 +2635,13 @@ internal record JobERRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobURRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2449,11 +2659,14 @@ internal record JobURRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2462,13 +2675,13 @@ internal record JobURRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEURRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2486,11 +2699,14 @@ internal record JobEURRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2499,13 +2715,13 @@ internal record JobEURRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobRWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2523,11 +2739,14 @@ internal record JobRWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2536,13 +2755,13 @@ internal record JobRWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobERWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2560,11 +2779,14 @@ internal record JobERWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2573,13 +2795,13 @@ internal record JobERWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobURWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2597,11 +2819,14 @@ internal record JobURWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2610,13 +2835,13 @@ internal record JobURWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEURWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2634,11 +2859,14 @@ internal record JobEURWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2647,13 +2875,13 @@ internal record JobEURWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobRWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2671,11 +2899,14 @@ internal record JobRWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2684,13 +2915,13 @@ internal record JobRWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobERWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2708,11 +2939,14 @@ internal record JobERWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2721,13 +2955,13 @@ internal record JobERWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobURWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2745,11 +2979,14 @@ internal record JobURWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2758,13 +2995,13 @@ internal record JobURWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEURWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2782,11 +3019,14 @@ internal record JobEURWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2795,13 +3035,13 @@ internal record JobEURWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobRWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2819,11 +3059,14 @@ internal record JobRWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2832,13 +3075,13 @@ internal record JobRWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobERWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2856,11 +3099,14 @@ internal record JobERWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2869,13 +3115,13 @@ internal record JobERWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobURWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2893,11 +3139,14 @@ internal record JobURWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2906,13 +3155,13 @@ internal record JobURWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEURWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2930,11 +3179,14 @@ internal record JobEURWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -2943,13 +3195,13 @@ internal record JobEURWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobRWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -2967,11 +3219,14 @@ internal record JobRWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -2980,13 +3235,13 @@ internal record JobRWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobERWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3004,11 +3259,14 @@ internal record JobERWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3017,13 +3275,13 @@ internal record JobERWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobURWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3041,11 +3299,14 @@ internal record JobURWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3054,13 +3315,13 @@ internal record JobURWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEURWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3078,11 +3339,14 @@ internal record JobEURWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3091,13 +3355,13 @@ internal record JobEURWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobWRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3115,11 +3379,14 @@ internal record JobWRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3128,13 +3395,13 @@ internal record JobWRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEWRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3152,11 +3419,14 @@ internal record JobEWRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3165,13 +3435,13 @@ internal record JobEWRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobUWRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3189,11 +3459,14 @@ internal record JobUWRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3202,13 +3475,13 @@ internal record JobUWRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEUWRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3226,11 +3499,14 @@ internal record JobEUWRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3239,13 +3515,13 @@ internal record JobEUWRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobWRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3263,11 +3539,14 @@ internal record JobWRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3276,13 +3555,13 @@ internal record JobWRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEWRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3300,11 +3579,14 @@ internal record JobEWRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3313,13 +3595,13 @@ internal record JobEWRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobUWRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3337,11 +3619,14 @@ internal record JobUWRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3350,13 +3635,13 @@ internal record JobUWRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEUWRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3374,11 +3659,14 @@ internal record JobEUWRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3387,13 +3675,13 @@ internal record JobEUWRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobWRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3411,11 +3699,14 @@ internal record JobWRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3424,13 +3715,13 @@ internal record JobWRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEWRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3448,11 +3739,14 @@ internal record JobEWRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3461,13 +3755,13 @@ internal record JobEWRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobUWRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3485,11 +3779,14 @@ internal record JobUWRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3498,13 +3795,13 @@ internal record JobUWRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEUWRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3522,11 +3819,14 @@ internal record JobEUWRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3535,13 +3835,13 @@ internal record JobEUWRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobWRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3559,11 +3859,14 @@ internal record JobWRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3572,13 +3875,13 @@ internal record JobWRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEWRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3596,11 +3899,14 @@ internal record JobEWRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3609,13 +3915,13 @@ internal record JobEWRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobUWRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3633,11 +3939,14 @@ internal record JobUWRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3646,13 +3955,13 @@ internal record JobUWRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEUWRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3670,11 +3979,14 @@ internal record JobEUWRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3683,13 +3995,13 @@ internal record JobEUWRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobWWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3707,11 +4019,14 @@ internal record JobWWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3720,13 +4035,13 @@ internal record JobWWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEWWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3744,11 +4059,14 @@ internal record JobEWWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3757,13 +4075,13 @@ internal record JobEWWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobUWWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3781,11 +4099,14 @@ internal record JobUWWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3794,13 +4115,13 @@ internal record JobUWWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEUWWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3818,11 +4139,14 @@ internal record JobEUWWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -3831,13 +4155,13 @@ internal record JobEUWWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobWWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3855,11 +4179,14 @@ internal record JobWWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3868,13 +4195,13 @@ internal record JobWWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEWWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3892,11 +4219,14 @@ internal record JobEWWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3905,13 +4235,13 @@ internal record JobEWWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobUWWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3929,11 +4259,14 @@ internal record JobUWWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3942,13 +4275,13 @@ internal record JobUWWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEUWWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -3966,11 +4299,14 @@ internal record JobEUWWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -3979,13 +4315,13 @@ internal record JobEUWWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobWWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4003,11 +4339,14 @@ internal record JobWWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -4016,13 +4355,13 @@ internal record JobWWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEWWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4040,11 +4379,14 @@ internal record JobEWWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -4053,13 +4395,13 @@ internal record JobEWWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobUWWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4077,11 +4419,14 @@ internal record JobUWWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -4090,13 +4435,13 @@ internal record JobUWWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEUWWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4114,11 +4459,14 @@ internal record JobEUWWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]));
+
         }
         CountDown.Signal();
     }
@@ -4127,13 +4475,13 @@ internal record JobEUWWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobWWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4151,11 +4499,14 @@ internal record JobWWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -4164,13 +4515,13 @@ internal record JobWWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEWWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4188,11 +4539,14 @@ internal record JobEWWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -4201,13 +4555,13 @@ internal record JobEWWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobUWWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4225,11 +4579,14 @@ internal record JobUWWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -4238,13 +4595,13 @@ internal record JobUWWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobEUWWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4262,11 +4619,14 @@ internal record JobEUWWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
+        Span<bool> writes = stackalloc bool[4];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3));
+
         }
         CountDown.Signal();
     }
@@ -4275,14 +4635,14 @@ internal record JobEUWWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 internal record JobRRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4301,11 +4661,14 @@ internal record JobRRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4314,14 +4677,14 @@ internal record JobRRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4340,11 +4703,14 @@ internal record JobERRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4353,14 +4719,14 @@ internal record JobERRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4379,11 +4745,14 @@ internal record JobURRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4392,14 +4761,14 @@ internal record JobURRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4418,11 +4787,14 @@ internal record JobEURRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4431,14 +4803,14 @@ internal record JobEURRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4457,11 +4829,14 @@ internal record JobRRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -4470,14 +4845,14 @@ internal record JobRRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4496,11 +4871,14 @@ internal record JobERRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -4509,14 +4887,14 @@ internal record JobERRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4535,11 +4913,14 @@ internal record JobURRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -4548,14 +4929,14 @@ internal record JobURRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4574,11 +4955,14 @@ internal record JobEURRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -4587,14 +4971,14 @@ internal record JobEURRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4613,11 +4997,14 @@ internal record JobRRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4626,14 +5013,14 @@ internal record JobRRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4652,11 +5039,14 @@ internal record JobERRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4665,14 +5055,14 @@ internal record JobERRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4691,11 +5081,14 @@ internal record JobURRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4704,14 +5097,14 @@ internal record JobURRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4730,11 +5123,14 @@ internal record JobEURRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4743,14 +5139,14 @@ internal record JobEURRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4769,11 +5165,14 @@ internal record JobRRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -4782,14 +5181,14 @@ internal record JobRRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4808,11 +5207,14 @@ internal record JobERRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -4821,14 +5223,14 @@ internal record JobERRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4847,11 +5249,14 @@ internal record JobURRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -4860,14 +5265,14 @@ internal record JobURRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4886,11 +5291,14 @@ internal record JobEURRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -4899,14 +5307,14 @@ internal record JobEURRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4925,11 +5333,14 @@ internal record JobRRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4938,14 +5349,14 @@ internal record JobRRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -4964,11 +5375,14 @@ internal record JobERRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -4977,14 +5391,14 @@ internal record JobERRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5003,11 +5417,14 @@ internal record JobURRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5016,14 +5433,14 @@ internal record JobURRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5042,11 +5459,14 @@ internal record JobEURRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5055,14 +5475,14 @@ internal record JobEURRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5081,11 +5501,14 @@ internal record JobRRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5094,14 +5517,14 @@ internal record JobRRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5120,11 +5543,14 @@ internal record JobERRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5133,14 +5559,14 @@ internal record JobERRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5159,11 +5585,14 @@ internal record JobURRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5172,14 +5601,14 @@ internal record JobURRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5198,11 +5627,14 @@ internal record JobEURRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5211,14 +5643,14 @@ internal record JobEURRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5237,11 +5669,14 @@ internal record JobRRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5250,14 +5685,14 @@ internal record JobRRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5276,11 +5711,14 @@ internal record JobERRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5289,14 +5727,14 @@ internal record JobERRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5315,11 +5753,14 @@ internal record JobURRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5328,14 +5769,14 @@ internal record JobURRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5354,11 +5795,14 @@ internal record JobEURRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5367,14 +5811,14 @@ internal record JobEURRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5393,11 +5837,14 @@ internal record JobRRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5406,14 +5853,14 @@ internal record JobRRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5432,11 +5879,14 @@ internal record JobERRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5445,14 +5895,14 @@ internal record JobERRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5471,11 +5921,14 @@ internal record JobURRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5484,14 +5937,14 @@ internal record JobURRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5510,11 +5963,14 @@ internal record JobEURRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5523,14 +5979,14 @@ internal record JobEURRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5549,11 +6005,14 @@ internal record JobRWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5562,14 +6021,14 @@ internal record JobRWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5588,11 +6047,14 @@ internal record JobERWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5601,14 +6063,14 @@ internal record JobERWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5627,11 +6089,14 @@ internal record JobURWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5640,14 +6105,14 @@ internal record JobURWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5666,11 +6131,14 @@ internal record JobEURWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5679,14 +6147,14 @@ internal record JobEURWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5705,11 +6173,14 @@ internal record JobRWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5718,14 +6189,14 @@ internal record JobRWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5744,11 +6215,14 @@ internal record JobERWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5757,14 +6231,14 @@ internal record JobERWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5783,11 +6257,14 @@ internal record JobURWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5796,14 +6273,14 @@ internal record JobURWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5822,11 +6299,14 @@ internal record JobEURWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -5835,14 +6315,14 @@ internal record JobEURWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5861,11 +6341,14 @@ internal record JobRWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5874,14 +6357,14 @@ internal record JobRWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5900,11 +6383,14 @@ internal record JobERWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5913,14 +6399,14 @@ internal record JobERWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5939,11 +6425,14 @@ internal record JobURWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5952,14 +6441,14 @@ internal record JobURWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -5978,11 +6467,14 @@ internal record JobEURWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -5991,14 +6483,14 @@ internal record JobEURWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6017,11 +6509,14 @@ internal record JobRWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6030,14 +6525,14 @@ internal record JobRWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6056,11 +6551,14 @@ internal record JobERWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6069,14 +6567,14 @@ internal record JobERWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6095,11 +6593,14 @@ internal record JobURWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6108,14 +6609,14 @@ internal record JobURWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6134,11 +6635,14 @@ internal record JobEURWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6147,14 +6651,14 @@ internal record JobEURWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6173,11 +6677,14 @@ internal record JobRWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6186,14 +6693,14 @@ internal record JobRWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6212,11 +6719,14 @@ internal record JobERWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6225,14 +6735,14 @@ internal record JobERWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6251,11 +6761,14 @@ internal record JobURWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6264,14 +6777,14 @@ internal record JobURWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6290,11 +6803,14 @@ internal record JobEURWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6303,14 +6819,14 @@ internal record JobEURWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6329,11 +6845,14 @@ internal record JobRWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6342,14 +6861,14 @@ internal record JobRWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6368,11 +6887,14 @@ internal record JobERWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6381,14 +6903,14 @@ internal record JobERWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6407,11 +6929,14 @@ internal record JobURWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6420,14 +6945,14 @@ internal record JobURWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6446,11 +6971,14 @@ internal record JobEURWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6459,14 +6987,14 @@ internal record JobEURWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6485,11 +7013,14 @@ internal record JobRWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6498,14 +7029,14 @@ internal record JobRWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6524,11 +7055,14 @@ internal record JobERWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6537,14 +7071,14 @@ internal record JobERWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6563,11 +7097,14 @@ internal record JobURWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6576,14 +7113,14 @@ internal record JobURWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6602,11 +7139,14 @@ internal record JobEURWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6615,14 +7155,14 @@ internal record JobEURWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobRWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6641,11 +7181,14 @@ internal record JobRWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6654,14 +7197,14 @@ internal record JobRWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobERWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6680,11 +7223,14 @@ internal record JobERWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6693,14 +7239,14 @@ internal record JobERWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobURWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6719,11 +7265,14 @@ internal record JobURWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6732,14 +7281,14 @@ internal record JobURWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEURWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal ReadOnlyMemory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryR<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6758,11 +7307,14 @@ internal record JobEURWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(in span0[i]), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6771,14 +7323,14 @@ internal record JobEURWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6797,11 +7349,14 @@ internal record JobWRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6810,14 +7365,14 @@ internal record JobWRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6836,11 +7391,14 @@ internal record JobEWRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6849,14 +7407,14 @@ internal record JobEWRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6875,11 +7433,14 @@ internal record JobUWRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6888,14 +7449,14 @@ internal record JobUWRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6914,11 +7475,14 @@ internal record JobEUWRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -6927,14 +7491,14 @@ internal record JobEUWRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6953,11 +7517,14 @@ internal record JobWRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -6966,14 +7533,14 @@ internal record JobWRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -6992,11 +7559,14 @@ internal record JobEWRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7005,14 +7575,14 @@ internal record JobEWRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7031,11 +7601,14 @@ internal record JobUWRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7044,14 +7617,14 @@ internal record JobUWRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7070,11 +7643,14 @@ internal record JobEUWRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7083,14 +7659,14 @@ internal record JobEUWRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7109,11 +7685,14 @@ internal record JobWRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7122,14 +7701,14 @@ internal record JobWRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7148,11 +7727,14 @@ internal record JobEWRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7161,14 +7743,14 @@ internal record JobEWRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7187,11 +7769,14 @@ internal record JobUWRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7200,14 +7785,14 @@ internal record JobUWRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7226,11 +7811,14 @@ internal record JobEUWRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7239,14 +7827,14 @@ internal record JobEUWRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7265,11 +7853,14 @@ internal record JobWRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7278,14 +7869,14 @@ internal record JobWRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7304,11 +7895,14 @@ internal record JobEWRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7317,14 +7911,14 @@ internal record JobEWRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7343,11 +7937,14 @@ internal record JobUWRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7356,14 +7953,14 @@ internal record JobUWRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7382,11 +7979,14 @@ internal record JobEUWRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7395,14 +7995,14 @@ internal record JobEUWRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7421,11 +8021,14 @@ internal record JobWRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7434,14 +8037,14 @@ internal record JobWRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7460,11 +8063,14 @@ internal record JobEWRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7473,14 +8079,14 @@ internal record JobEWRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7499,11 +8105,14 @@ internal record JobUWRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7512,14 +8121,14 @@ internal record JobUWRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7538,11 +8147,14 @@ internal record JobEUWRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7551,14 +8163,14 @@ internal record JobEUWRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7577,11 +8189,14 @@ internal record JobWRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7590,14 +8205,14 @@ internal record JobWRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7616,11 +8231,14 @@ internal record JobEWRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7629,14 +8247,14 @@ internal record JobEWRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7655,11 +8273,14 @@ internal record JobUWRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7668,14 +8289,14 @@ internal record JobUWRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7694,11 +8315,14 @@ internal record JobEUWRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7707,14 +8331,14 @@ internal record JobEUWRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7733,11 +8357,14 @@ internal record JobWRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7746,14 +8373,14 @@ internal record JobWRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7772,11 +8399,14 @@ internal record JobEWRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7785,14 +8415,14 @@ internal record JobEWRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7811,11 +8441,14 @@ internal record JobUWRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7824,14 +8457,14 @@ internal record JobUWRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7850,11 +8483,14 @@ internal record JobEUWRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -7863,14 +8499,14 @@ internal record JobEUWRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7889,11 +8525,14 @@ internal record JobWRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7902,14 +8541,14 @@ internal record JobWRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7928,11 +8567,14 @@ internal record JobEWRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7941,14 +8583,14 @@ internal record JobEWRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -7967,11 +8609,14 @@ internal record JobUWRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -7980,14 +8625,14 @@ internal record JobUWRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal ReadOnlyMemory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryR<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8006,11 +8651,14 @@ internal record JobEUWRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(in span1[i]), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8019,14 +8667,14 @@ internal record JobEUWRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8045,11 +8693,14 @@ internal record JobWWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8058,14 +8709,14 @@ internal record JobWWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8084,11 +8735,14 @@ internal record JobEWWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8097,14 +8751,14 @@ internal record JobEWWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8123,11 +8777,14 @@ internal record JobUWWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8136,14 +8793,14 @@ internal record JobUWWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8162,11 +8819,14 @@ internal record JobEUWWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8175,14 +8835,14 @@ internal record JobEUWWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8201,11 +8861,14 @@ internal record JobWWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8214,14 +8877,14 @@ internal record JobWWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8240,11 +8903,14 @@ internal record JobEWWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8253,14 +8919,14 @@ internal record JobEWWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8279,11 +8945,14 @@ internal record JobUWWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8292,14 +8961,14 @@ internal record JobUWWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8318,11 +8987,14 @@ internal record JobEUWWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8331,14 +9003,14 @@ internal record JobEUWWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8357,11 +9029,14 @@ internal record JobWWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8370,14 +9045,14 @@ internal record JobWWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8396,11 +9071,14 @@ internal record JobEWWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8409,14 +9087,14 @@ internal record JobEWWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8435,11 +9113,14 @@ internal record JobUWWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8448,14 +9129,14 @@ internal record JobUWWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8474,11 +9155,14 @@ internal record JobEUWWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8487,14 +9171,14 @@ internal record JobEUWWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8513,11 +9197,14 @@ internal record JobWWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8526,14 +9213,14 @@ internal record JobWWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8552,11 +9239,14 @@ internal record JobEWWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8565,14 +9255,14 @@ internal record JobEWWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8591,11 +9281,14 @@ internal record JobUWWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8604,14 +9297,14 @@ internal record JobUWWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal ReadOnlyMemory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryR<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8630,11 +9323,14 @@ internal record JobEUWWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(in span2[i]), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8643,14 +9339,14 @@ internal record JobEUWWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8669,11 +9365,14 @@ internal record JobWWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8682,14 +9381,14 @@ internal record JobWWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8708,11 +9407,14 @@ internal record JobEWWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8721,14 +9423,14 @@ internal record JobEWWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8747,11 +9449,14 @@ internal record JobUWWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8760,14 +9465,14 @@ internal record JobUWWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8786,11 +9491,14 @@ internal record JobEUWWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8799,14 +9507,14 @@ internal record JobEUWWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8825,11 +9533,14 @@ internal record JobWWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8838,14 +9549,14 @@ internal record JobWWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8864,11 +9575,14 @@ internal record JobEWWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8877,14 +9591,14 @@ internal record JobEWWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8903,11 +9617,14 @@ internal record JobUWWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8916,14 +9633,14 @@ internal record JobUWWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal ReadOnlyMemory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryR<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8942,11 +9659,14 @@ internal record JobEUWWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(in span3[i]), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -8955,14 +9675,14 @@ internal record JobEUWWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -8981,11 +9701,14 @@ internal record JobWWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -8994,14 +9717,14 @@ internal record JobWWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -9020,11 +9743,14 @@ internal record JobEWWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -9033,14 +9759,14 @@ internal record JobEWWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -9059,11 +9785,14 @@ internal record JobUWWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -9072,14 +9801,14 @@ internal record JobUWWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal ReadOnlyMemory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryR<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -9098,11 +9827,14 @@ internal record JobEUWWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(in span4[i]));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(in span4[i]));
+
         }
         CountDown.Signal();
     }
@@ -9111,14 +9843,14 @@ internal record JobEUWWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobWWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -9137,11 +9869,14 @@ internal record JobWWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -9150,14 +9885,14 @@ internal record JobWWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEWWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -9176,11 +9911,14 @@ internal record JobEWWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -9189,14 +9927,14 @@ internal record JobEWWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobUWWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -9215,11 +9953,14 @@ internal record JobUWWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }
@@ -9228,14 +9969,14 @@ internal record JobUWWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 internal record JobEUWWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
     where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
 {
-    public ReadOnlyMemory<Identity> MemoryE = null!;
+    public MemoryR<Identity> MemoryE= default!;
     public World World = null!;
 
-    internal Memory<C0> Memory0 = null!;
-    internal Memory<C1> Memory1 = null!;
-    internal Memory<C2> Memory2 = null!;
-    internal Memory<C3> Memory3 = null!;
-    internal Memory<C4> Memory4 = null!;
+    internal MemoryRW<C0> Memory0 = default!;
+    internal MemoryRW<C1> Memory1 = default!;
+    internal MemoryRW<C2> Memory2 = default!;
+    internal MemoryRW<C3> Memory3 = default!;
+    internal MemoryRW<C4> Memory4 = default!;
 
 
     internal TypeExpression Type0 = default;
@@ -9254,11 +9995,14 @@ internal record JobEUWWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var identities = MemoryE.Span;
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
+        Span<bool> writes = stackalloc bool[5];
         var count = identities.Length;
         for (var i = 0; i < count; i++)
         {
-            var entity = new Entity(World, identities[i]);
-            Action(new(in entity), Uniform, new(ref span0[i], in entity, in Type0), new(ref span1[i], in entity, in Type1), new(ref span2[i], in entity, in Type2), new(ref span3[i], in entity, in Type3), new(ref span4[i], in entity, in Type4));
+
+           var entity = new Entity(World, identities[i]);
+           Action(new(in entity), Uniform, new(ref span0[i], ref writes[i], in entity, in Type0), new(ref span1[i], ref writes[i], in entity, in Type1), new(ref span2[i], ref writes[i], in entity, in Type2), new(ref span3[i], ref writes[i], in entity, in Type3), new(ref span4[i], ref writes[i], in entity, in Type4));
+
         }
         CountDown.Signal();
     }

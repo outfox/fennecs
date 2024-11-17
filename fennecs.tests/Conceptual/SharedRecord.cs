@@ -2,7 +2,7 @@
 
 public class SharedRecord(ITestOutputHelper output)
 {
-    record SharedData(int Value)
+    private record SharedData(int Value)
     {
         public int Value { get; set; } = Value;
     }
@@ -16,16 +16,16 @@ public class SharedRecord(ITestOutputHelper output)
         var sharedData = new SharedData(42);     // shared instance
         world.Entity().Add(sharedData).Spawn(5); // add it to 5 fresh entities
 
-        stream.For((ref SharedData data) =>
+        stream.For((data) =>
         {
-            data.Value++; // increments value once for each entity in query!
+            data.write.Value++; // increments value once for each entity in query!
             output.WriteLine(data.ToString());
         });
 
         sharedData.Value++; // increment outside of runner
         output.WriteLine("");
 
-        stream.For((ref SharedData data) =>
+        stream.For((data) =>
         {
             output.WriteLine(data.ToString());
         });
