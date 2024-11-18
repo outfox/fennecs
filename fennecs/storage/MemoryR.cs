@@ -25,7 +25,7 @@ public readonly record struct MemoryR<T>(ReadOnlyMemory<T> ReadOnlyMemory) where
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>
     /// </summary>
-    internal ReadOnlySpan<T> Span => ReadOnlyMemory.Span;
+    public ReadOnlySpan<T> Span => ReadOnlyMemory.Span;
     
     /// <inheritdoc cref="ReadOnlyMemory{T}.Length"/>
     public int Length => ReadOnlyMemory.Length;

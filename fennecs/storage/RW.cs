@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using fennecs.events;
 
 namespace fennecs.storage;
@@ -7,7 +8,7 @@ namespace fennecs.storage;
 /// Read-write access to a component.
 /// </summary>
 // ReSharper disable once InconsistentNaming
-public readonly ref struct RW<T> :IEquatable<RW<T>> where T : notnull 
+public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : notnull 
 {
     internal readonly ref T Value;
     
@@ -92,34 +93,63 @@ public readonly ref struct RW<T> :IEquatable<RW<T>> where T : notnull
     /// </summary>
     public static implicit operator T(RW<T> self) => self.read;
 
-    /// <inheritdoc cref="Equals(T)"/>
-    public static bool operator ==(RW<T> self, T other) => self.Value.Equals(other);
+    #region Equality Operators
 
-    /// <inheritdoc cref="Equals(T)"/>
-    public static bool operator !=(RW<T> self, T other) => !(self == other);
+    /// <summary>
+    /// Equality comparison (Value)
+    /// </summary>
+    public static bool operator ==(RW<T> self, T otherValue) => self.Value.Equals(otherValue);
+
+    /// <summary>
+    /// Inequality comparison (Value)
+    /// </summary>
+    public static bool operator !=(RW<T> self, T otherValue) => !(self == otherValue);
     
-    /// <inheritdoc cref="Equals(T)"/>
+    /// <summary>
+    /// Equality comparison (Component)
+    /// </summary>
+    [OverloadResolutionPriority(9001)]
     public static bool operator ==(RW<T> self, RW<T> other) => self.Equals(other);
 
     /// <inheritdoc cref="Equals(T)"/>
+    [OverloadResolutionPriority(9001)]
     public static bool operator !=(RW<T> self, RW<T> other) => !(self == other);
 
+    /// <inheritdoc cref="Equals(T)"/>
+    public static bool operator ==(RW<T> self, R<T> other) => self.Value.Equals(other.read);
+
+    /// <inheritdoc cref="Equals(T)"/>
+    public static bool operator !=(RW<T> self, R<T> other) => !other.Equals(self);
+
+    #endregion
+
+    #region IEquatable
+    /// <inheritdoc />
+    public bool Equals(RW<T> other) => Expression == other.Expression;
 
     /// <summary>
-    /// You found the cursed operator! It's a secret, and it's stroustrup.
+    /// Equality comparison comparing the value of the <see cref="RW{T}"/> to the given value.
     /// </summary>
-    public static RW<T> operator <<(RW<T> self, T other)
+    public bool Equals(T? otherValue) => Value.Equals(otherValue);
+
+    /// <inheritdoc />
+    public override bool Equals([NotNullWhen(true)] object? obj) 
     {
-        self.Value = other;
-        return self;
+        return obj != null && Value.Equals(obj);
     }
+    #endregion
+    /// <inheritdoc />
+    public override int GetHashCode() => Value.GetHashCode();
     
     /// <inheritdoc />
     public override string ToString() => $"RW<{typeof(T)}>({Value.ToString()})";
     
-    /// <inheritdoc />
-    public bool Equals(RW<T> other) => Value.Equals(other.Value);
-
-    /// <inheritdoc />
-    public bool Equals(T? other) => Value.Equals(other);
+    /// <summary>
+    /// You found the cursed operator! It's a secret, between you, Bjarne Stroustrup, and the gods.
+    /// </summary>
+    public static RW<T> operator <<(RW<T> self, T otherValue)
+    {
+        self.Value = otherValue;
+        return self;
+    }
 }

@@ -31,7 +31,7 @@ public readonly record struct MemoryRW<T>(Memory<T> Memory) where T : notnull
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>
     /// </summary>
-    internal Span<T> Span => Memory.Span;
+    public Span<T> Span => Memory.Span;
     
     /// <inheritdoc cref="Memory{T}.Length"/>
     public int Length => Memory.Length;

@@ -107,7 +107,7 @@ public class DocumentationNBodyTests
             iterations1++;
 
             if (self == attractor) return; // (we are not attracted to ourselves) 
-
+            
             var distanceSquared = Vector3.DistanceSquared(attractor.read.position, self.read.position);
             var direction = Vector3.Normalize(attractor.read.position - self.read.position);
             acc.write.Value += direction * attractor.read.mass / distanceSquared / self.read.mass;
@@ -161,4 +161,7 @@ public class DocumentationNBodyTests
         force3 += Vector3.Normalize(p2 - p3) * body2.mass / Vector3.DistanceSquared(p2, p3) / body3.mass;
         Assert.Equal(force3, sun3.Ref<Acceleration>().Value);
     }
+
+
+    public record Faction(string Value);
 }

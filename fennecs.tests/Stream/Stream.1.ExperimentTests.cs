@@ -101,10 +101,10 @@ public class Stream1TestsExperiment
                 .Add("one");
         }
 
-        query.For((ref string str) =>
+        query.For((str) =>
         {
             Assert.Equal("one", str);
-            str = "two";
+            str.write = "two";
         });
 
         query.Raw(strings =>
@@ -116,29 +116,29 @@ public class Stream1TestsExperiment
             }
         });
 
-        query.Job((ref string str) =>
+        query.Job((str) =>
         {
             Assert.Equal("three", str);
-            str = "four";
+            str.write = "four";
         });
 
-        query.Job((ref string str) =>
+        query.Job((str) =>
         {
             Assert.Equal("four", str);
-            str = "five";
+            str.write = "five";
         });
 
-        query.Job(6, (int uniform, ref string str) =>
+        query.Job(6, (uniform, str) =>
         {
             Assert.Equal("five", str);
-            str = uniform.ToString();
+            str.write = uniform.ToString();
         });
 
 
-        query.For(7, (int uniform, ref string str) =>
+        query.For(7, (uniform, str) =>
         {
             Assert.Equal(6.ToString(), str);
-            str = uniform.ToString();
+            str.write = uniform.ToString();
         });
 
         query.Raw(8, (uniform, strings) =>
@@ -159,7 +159,7 @@ public class Stream1TestsExperiment
             }
         });
 
-        query.For((ref string str) => { Assert.Equal(9.ToString(), str); });
+        query.For((str) => { Assert.Equal(9.ToString(), str); });
     }
 
 
@@ -184,9 +184,7 @@ public class Stream1TestsExperiment
         {
             Assert.Equal(index, query.Count);
 
-            entities.Add(
-                world.Spawn()
-                    .Add(index)
+            entities.Add(world.Spawn().Add(index)
             );
         }
 
@@ -370,17 +368,17 @@ public class Stream1TestsExperiment
         var query = world.Query<int>().Stream();
 
         var processed = 0;
-        query.Job((ref int index) =>
+        query.Job((index) =>
         {
             Interlocked.Increment(ref processed);
-            index = 123;
+            index.write = 123;
         });
 
         Assert.Equal(count, processed);
 
-        query.Job((ref int index) =>
+        query.Job((index) =>
         {
-            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfNegative(index.read);
             Assert.Equal(123, index);
         });
     }
@@ -405,17 +403,17 @@ public class Stream1TestsExperiment
         var query = world.Query<int>(Match.Plain).Stream();
 
         var processed = 0;
-        query.Job((ref int index) =>
+        query.Job((index) =>
         {
             Interlocked.Increment(ref processed);
-            index = 123;
+            index.write = 123;
         });
 
         Assert.Equal(count, processed);
 
-        query.Job((ref int index) =>
+        query.Job((index) =>
         {
-            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfNegative(index.read);
             Assert.Equal(123, index);
         });
     }
@@ -495,10 +493,10 @@ public class Stream1TestsExperiment
         });
 
         var index = 0;
-        query.For((ref long value) => { Assert.Equal(index++, value); });
+        query.For((value) => { Assert.Equal(index++, value.read); });
 
         var index2 = 0;
-        query.For(1337, (int _, ref long value) => { Assert.Equal(index2++, value); });
+        query.For(1337, (_, value) => { Assert.Equal(index2++, value.read); });
     }
 
     [Fact]
@@ -513,7 +511,7 @@ public class Stream1TestsExperiment
 
         var found = new List<Entity>();
 
-        query.For((in Entity e, ref int _) =>
+        query.For((e, _) =>
         {
             found.Add(e);
         });
@@ -536,7 +534,7 @@ public class Stream1TestsExperiment
 
         var found = new List<Entity>();
 
-        query.For(3.1415f, (float uniform, in Entity e, ref int _) =>
+        query.For(3.1415f, (e, uniform, _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
