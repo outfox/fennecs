@@ -544,12 +544,4 @@ public class Stream1TestsExperiment
         Assert.Contains(e1, found);
         Assert.Contains(e2, found);
     }
-
-    [Fact]
-    private void Can_Warmup()
-    {
-        using var world = new World();
-        var stream = world.Query<int>().Stream();
-        stream.Query.Warmup();
-    }
 }

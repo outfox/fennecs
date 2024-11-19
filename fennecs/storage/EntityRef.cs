@@ -8,7 +8,7 @@ namespace fennecs.storage;
 /// </summary>
 public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 {
-    private readonly ref readonly Entity _entity = ref entity;
+    internal readonly ref readonly Entity _entity = ref entity;
     
     /// <inheritdoc />
     public bool Equals(Entity other) => _entity.Equals(other);

@@ -62,14 +62,6 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
         Archetypes.Remove(archetype);
     }
 
-    /// <summary>
-    /// Allocates and Pre-Initializes internal data structures for <see cref="Work{C1}"/>
-    /// </summary>
-    /// <remarks>
-    /// This is only needed for benchmark situations and debugging where allocations
-    /// might otherwise be made happen lazily only as the actual workload starts.
-    /// </remarks>
-    public Query Warmup() => this;
 
     #region Internals
     
@@ -99,6 +91,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
 
     #endregion
 
+    
     #region IEnumerable<Entity>
 
     /// <summary>
@@ -373,15 +366,15 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// </summary>
     public void Dispose()
     {
-        ObjectDisposedException.ThrowIf(disposed, this);
+        ObjectDisposedException.ThrowIf(Disposed, this);
 
-        disposed = true;
+        Disposed = true;
 
         World.RemoveQuery(this);
         Mask.Dispose();
     }
 
-    private bool disposed { get; set; }
+    private bool Disposed { get; set; }
 
     #endregion
 }

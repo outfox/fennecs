@@ -18,7 +18,7 @@ public class Stream1Tests(ITestOutputHelper output)
         {
             output.WriteLine(str.read);
             output.WriteLine(e.ToString());
-            lock(list) Assert.True(list.Remove(((Entity) e, str.read)));
+            lock(list) Assert.True(list.Remove((e._entity, str.read)));
         });
         
         Assert.Empty(list);
@@ -72,7 +72,7 @@ public class Stream1Tests(ITestOutputHelper output)
         var stream = world.Stream<string>();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            foreach (var row in stream)
+            foreach (var _ in stream)
             {
                 world.Spawn().Add("Sylvester");
             }

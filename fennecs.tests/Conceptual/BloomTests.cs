@@ -104,6 +104,8 @@ public class BloomTests(ITestOutputHelper output)
         {
             output.WriteLine($"{slot}: {hash[slot]:b64}");
         }
+        
+        output.WriteLine($"Bloom: {bloom}");
     }
 
 }

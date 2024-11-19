@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using fennecs.pools;
 using fennecs.storage;
 
-namespace fennecs;
+namespace fennecs.jobs;
 
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 // ReSharper disable file IdentifierTypo

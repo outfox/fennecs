@@ -718,14 +718,6 @@ public class Stream2Tests(ITestOutputHelper output)
     }
 
     [Fact]
-    private void Can_Warmup()
-    {
-        using var world = new World();
-        var stream = world.Query<int, byte>().Stream();
-        stream.Query.Warmup();
-    }
-
-    [Fact]
     public void Cannot_Run_Job_on_Wildcard_Query()
     {
         using var world = new World();
