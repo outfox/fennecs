@@ -130,7 +130,7 @@ file class JobsGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in Type{index}, in entity, ref writes[i])",
+                    'W' => $"new(ref span{index}[i], in Type{index}, in entity, ref writes[{index}])",
                     'R' => $"new(in span{index}[i], in Type{index}, in entity)",
                     _ => throw new NotImplementedException(),
                 }

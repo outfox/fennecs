@@ -30,10 +30,10 @@ file class StreamsJobGenerator
             var top = (1 << width) - 1;
             for (var bits = top; bits >= 0; bits--)
             {
-                source.AppendLine(GenerateFor(false, false, width, bits));
-                source.AppendLine(GenerateFor(true, false, width, bits));
-                source.AppendLine(GenerateFor(false, true, width, bits));
-                source.AppendLine(GenerateFor(true, true, width, bits));
+                source.AppendLine(GenerateJob(false, false, width, bits));
+                source.AppendLine(GenerateJob(true, false, width, bits));
+                source.AppendLine(GenerateJob(false, true, width, bits));
+                source.AppendLine(GenerateJob(true, true, width, bits));
             }
 
             source.AppendLine(ClassFooter());                        
@@ -161,7 +161,7 @@ file class StreamsJobGenerator
             """;
 }
     
-    private  string GenerateFor(bool entity, bool uniform, int width, int bits)
+    private  string GenerateJob(bool entity, bool uniform, int width, int bits)
     {
         var accessors = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
         var typeParams = TypeParams(width);
@@ -203,7 +203,7 @@ file class StreamsJobGenerator
                               Countdown.AddCount();
 
                               var start = chunk * chunkSize;
-                              var length = Math.Min(chunkSize, count - start);
+                              var length = Math.Min(chunkSize, count - start); 
 
                               var {{Select(width)}} = join.Select;
 

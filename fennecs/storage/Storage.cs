@@ -320,7 +320,7 @@ internal class Storage<T>(TypeExpression expression) : IStorage where T : notnul
     /// <remarks>
     /// Value Types are copied, then boxed.
     /// </remarks>
-    public object Get(int row) => Span[row]!;
+    public object Get(int row) => Span[row];
     
     
     /// <summary>

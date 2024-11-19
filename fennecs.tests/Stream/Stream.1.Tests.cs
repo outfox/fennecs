@@ -1,12 +1,9 @@
 ﻿using System.Collections;
-using System.Runtime.CompilerServices;
-using fennecs.storage;
 
 namespace fennecs.tests.Stream;
 
 public class Stream1Tests(ITestOutputHelper output)
 {
-
     [Fact]
     public void Can_Run_New_Job()
     {
@@ -15,14 +12,13 @@ public class Stream1Tests(ITestOutputHelper output)
         var dolph = world.Spawn().Add("Dolph");
 
         List<(Entity, string)> list = [(arnold, "Arnold"), (dolph, "Dolph")];
-
+        
         var stream = world.Stream<string>();
         stream.Job((e, str) =>
         {
             output.WriteLine(str.read);
             output.WriteLine(e.ToString());
-            
-            list.Remove(((Entity) e, str.read));
+            lock(list) Assert.True(list.Remove(((Entity) e, str.read)));
         });
         
         Assert.Empty(list);
@@ -41,7 +37,7 @@ public class Stream1Tests(ITestOutputHelper output)
         var stream = world.Stream<string>();
         foreach (var row in stream)
         {
-            Assert.True(list.Remove(row));
+            lock (list) Assert.True(list.Remove(row));
         }
 
         Assert.Empty(list);
@@ -60,7 +56,7 @@ public class Stream1Tests(ITestOutputHelper output)
         IEnumerable stream = world.Stream<string>();
         foreach (var row in stream)
         {
-            Assert.True(list.Remove(row));
+            lock (list) Assert.True(list.Remove(row));
         }
 
         Assert.Empty(list);
@@ -99,7 +95,7 @@ public class Stream1Tests(ITestOutputHelper output)
 
         stream.For((c0) =>
         {
-            list.Remove(c0.read);
+            Assert.True(list.Remove(c0.read));
         });
 
         Assert.Empty(list);
