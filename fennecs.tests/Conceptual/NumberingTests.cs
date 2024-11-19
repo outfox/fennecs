@@ -147,7 +147,7 @@ public class NumberingTests
         var stream = Setup(count1, count2);
 
         var i = 0;
-        stream.For((index) => index.write = ++i);
+        stream.For((index) => index.write = i++);
 
         VerifyCountAndOrder(stream, count1+count2);
     }
