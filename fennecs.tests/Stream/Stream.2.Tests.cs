@@ -258,10 +258,10 @@ public class Stream2Tests(ITestOutputHelper output)
                 .Add("one");
         }
 
-        query.For((ref int _, ref string str) =>
+        query.For((_, str) =>
         {
             Assert.Equal("one", str);
-            str = "two";
+            str.write = "two";
         });
 
         query.Raw((integers, strings) =>
@@ -270,37 +270,35 @@ public class Stream2Tests(ITestOutputHelper output)
             {
                 Assert.Equal(i, integers.Span[i]);
                 Assert.Equal("two", strings.Span[i]);
-                strings.Span[i] = "three";
+                strings.write[i] = "three";
             }
         });
 
-        query.Job((ref int _, ref string str) =>
+        query.Job((_, str) =>
         {
             Assert.Equal("three", str);
-            str = "four";
+            str.write = "four";
         });
 
-        query.Job((ref int index, ref string str) =>
+        query.Job((index, str) =>
         {
-            Assert.Equal(index, index);
-            Assert.Equal("four", str);
-            str = "five";
+            Assert.Equal("four", str); 
+            str.write = "five";
         });
 
         query.Job(6,
-            (int uniform, ref int index, ref string str) =>
+            (uniform, index, str) =>
             {
-                Assert.Equal(index, index);
                 Assert.Equal("five", str);
-                str = uniform.ToString();
+                str.write = uniform.ToString();
             });
 
 
         query.For(7,
-            (int uniform, ref int _, ref string str) =>
+            (uniform,_, str) =>
             {
                 Assert.Equal(6.ToString(), str);
-                str = uniform.ToString();
+                str.write = uniform.ToString();
             });
 
         query.Raw(8, (uniform, _, strings) =>
@@ -308,7 +306,7 @@ public class Stream2Tests(ITestOutputHelper output)
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(7.ToString(), strings.Span[i]);
-                strings.Span[i] = uniform.ToString();
+                strings.write[i] = uniform.ToString();
             }
         });
 
@@ -317,11 +315,11 @@ public class Stream2Tests(ITestOutputHelper output)
             for (var i = 0; i < count; i++)
             {
                 Assert.Equal(8.ToString(), c1.Span[i]);
-                c1.Span[i] = uniform.ToString();
+                c1.write[i] = uniform.ToString();
             }
         });
 
-        query.For((ref int _, ref string str) => { Assert.Equal(9.ToString(), str); });
+        query.For((_, str) => { Assert.Equal(9.ToString(), str); });
     }
 
 
@@ -576,19 +574,19 @@ public class Stream2Tests(ITestOutputHelper output)
         var query = world.Query<int, string>().Stream();
 
         var processed = 0;
-        query.Job((ref int index, ref string str) =>
+        query.Job((index, str) =>
         {
             Interlocked.Increment(ref processed);
-            index = 123;
+            index.write = 123;
             Assert.Equal("I'll stay", str);
-            str = "fools";
+            str.write = "fools";
         });
 
         Assert.Equal(count, processed);
 
-        query.Job((ref int index, ref string str) =>
+        query.Job((index, str) =>
         {
-            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfNegative(index.read);
             Assert.Equal(123, index);
             Assert.Equal("fools", str);
         });
@@ -615,19 +613,19 @@ public class Stream2Tests(ITestOutputHelper output)
         var query = world.Query<int, string>().Stream();
 
         var processed = 0;
-        query.Job((ref int index, ref string str) =>
+        query.Job((index, str) =>
         {
             Interlocked.Increment(ref processed);
-            index = 123;
+            index.write = 123;
             Assert.Equal("I'll stay", str);
-            str = "fools";
+            str.write = "fools";
         });
 
         Assert.Equal(count, processed);
 
-        query.Job((ref int index, ref string str) =>
+        query.Job((index, str) =>
         {
-            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfNegative(index.read);
             Assert.Equal(123, index);
             Assert.Equal("fools", str);
         });
@@ -659,7 +657,7 @@ public class Stream2Tests(ITestOutputHelper output)
             {
                 Assert.Equal(i, integers.Span[i]);
                 Assert.Equal(0.1f, floats.Span[i]);
-                floats.Span[i] = integers.Span[i];
+                floats.write[i] = integers.Span[i];
             }
         });
 
@@ -685,7 +683,7 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        query.For((in Entity e, ref int _, ref string _) =>
+        query.For((e, _, _) =>
         {
             found.Add(e);
         });
@@ -708,7 +706,7 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        query.For(3.1415f, (float uniform, in Entity e, ref int _, ref string _) =>
+        query.For(3.1415f, (e, uniform, _,  _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -734,20 +732,20 @@ public class Stream2Tests(ITestOutputHelper output)
         world.Spawn().Add("jason").Add(123);
 
         var stream = world.Query<string, int>(Match.Any).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((str, _) => { output.WriteLine(str); }));
 
         stream = world.Query<string, int>(Match.Entity).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((str, _) => { output.WriteLine(str); }));
 
         stream = world.Query<string, int>(Match.Target).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((str, _) => { output.WriteLine(str); }));
 
         stream = world.Query<string, int>(Match.Object).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((str, _) => { output.WriteLine(str); }));
 
         stream = world.Query<string, int>(Match.Plain).Stream();
         var ran = false;
-        stream.Job((ref string str, ref int _) =>
+        stream.Job((str, _) =>
         {
             output.WriteLine(str);
             ran = true;

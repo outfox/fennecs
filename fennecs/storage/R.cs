@@ -6,6 +6,7 @@ namespace fennecs.storage;
 /// <summary>
 /// Read-only access to a component.
 /// </summary>
+
 public readonly ref struct R<T> : IEquatable<R<T>>, IEquatable<T> where T : notnull
 {
     internal readonly ref readonly T Value;

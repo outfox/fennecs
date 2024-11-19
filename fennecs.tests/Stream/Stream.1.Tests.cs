@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
+using fennecs.storage;
 
 namespace fennecs.tests.Stream;
 
@@ -169,21 +170,21 @@ public class Stream1Tests(ITestOutputHelper output)
     public void Cannot_Run_Job_on_Wildcard_Query()
     {
         using var world = new World();
-        world.Spawn().Add(FormattableStringFactory.Create("jason"));
+        world.Spawn().Add("jason");
 
-        var stream = world.Query<FormattableString>(Match.Any).Stream();
+        var stream = world.Query<string>(Match.Any).Stream();
+        Assert.Throws<InvalidOperationException>(() => stream.Job(str => { output.WriteLine(str); }));
+
+        stream = world.Query<string>(Match.Entity).Stream();
         Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<FormattableString>(Match.Entity).Stream();
+        stream = world.Query<string>(Match.Target).Stream();
         Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<FormattableString>(Match.Target).Stream();
+        stream = world.Query<string>(Match.Object).Stream();
         Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<FormattableString>(Match.Object).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
-
-        stream = world.Query<FormattableString>(Match.Plain).Stream();
+        stream = world.Query<string>(Match.Plain).Stream();
         var ran = false;
         stream.Job((str) =>
         {
