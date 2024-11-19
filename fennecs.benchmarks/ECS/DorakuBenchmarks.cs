@@ -83,7 +83,7 @@ public class DorakuBenchmarks
     [Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
-        _query.For(static delegate(RW<Component1> c1, R<Component2> c2, R<Component3> c3) { c1.write.Value = c1.read.Value + c2.read.Value + c3.read.Value; });
+        _query.For(static delegate(RW<Component1> c1, R<Component2> c2, R<Component3> c3) { c1.write.Value += c2.read.Value + c3.read.Value; });
     }
 
 

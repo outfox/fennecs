@@ -117,8 +117,8 @@ file class StreamsForGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in type{index}, in entity, ref writes[{index}])",
-                    'R' => $"new(in span{index}[i], in type{index}, in entity)",
+                    'W' => $"new(ref span{index}[i], in type{index}, in entity, ref write{index})",
+                    'R' => $"new(in span{index}[i])",
                     _ => throw new NotImplementedException(),
                 }
             );
@@ -177,7 +177,7 @@ file class StreamsForGenerator
                              using var join = table.CrossJoin<{{TypeParams(width)}}>(StreamTypes.AsSpan());
                              if (join.Empty) continue;
                              
-                             Span<bool> writes = stackalloc bool[{{width}}];
+                             {{Writes(width)}}
               
                              var count = table.Count;
                              do
@@ -197,4 +197,13 @@ file class StreamsForGenerator
               """;
     }
 
+    private static string Writes(int width)
+    {
+        var writes = new StringBuilder();
+        for (var i = 0; i < width; i++)
+        {
+            writes.Append($"bool write{i} = false; ");
+        }
+        return writes.ToString();
+    }
 }

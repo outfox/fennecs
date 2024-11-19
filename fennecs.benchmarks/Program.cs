@@ -2,6 +2,7 @@
 using System.Runtime.Intrinsics.X86;
 using Benchmark;
 using Benchmark.Conceptual;
+using Benchmark.ECS;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
@@ -32,4 +33,4 @@ if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
 
-BenchmarkRunner.Run<QueryWideVsTall>(config);
+BenchmarkRunner.Run<DorakuBenchmarks>(config);

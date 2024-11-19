@@ -11,20 +11,20 @@ public readonly ref struct R<T> : IEquatable<R<T>>, IEquatable<T> where T : notn
 {
     internal readonly ref readonly T Value;
 
-    private readonly ref readonly Entity _entity;
-    private readonly ref readonly TypeExpression _expression;
+    //private readonly ref readonly Entity _entity;
+    //private readonly ref readonly TypeExpression _expression;
 
     /// <summary>
     /// Read-only access to a component.
     /// </summary>
-    internal R(in T value, in TypeExpression expression, in Entity entity)
+    internal R(in T value/*, in TypeExpression expression, in Entity entity*/)
     {
-        _entity = ref entity;
-        _expression = ref expression;
+        //_entity = ref entity;
+        //_expression = ref expression;
         Value = ref value;
     }
 
-    internal TypeExpression Expression => _expression;
+    //internal TypeExpression Expression => _expression;
     
     /// <summary>
     /// Read access to the component's value.

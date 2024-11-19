@@ -131,7 +131,7 @@ file class JobsGenerator
                 p switch
                 {
                     'W' => $"new(ref span{index}[i], in Type{index}, in entity, ref writes[{index}])",
-                    'R' => $"new(in span{index}[i], in Type{index}, in entity)",
+                    'R' => $"new(in span{index}[i])",
                     _ => throw new NotImplementedException(),
                 }
             );
