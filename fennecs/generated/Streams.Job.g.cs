@@ -20,7 +20,8 @@ public partial record Stream<C0>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobR<C0>>.Rent();
@@ -74,7 +75,8 @@ public partial record Stream<C0>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobER<C0>>.Rent();
@@ -128,7 +130,8 @@ public partial record Stream<C0>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUR<U, C0>>.Rent();
@@ -182,7 +185,8 @@ public partial record Stream<C0>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUR<U, C0>>.Rent();
@@ -236,7 +240,8 @@ public partial record Stream<C0>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobW<C0>>.Rent();
@@ -290,7 +295,8 @@ public partial record Stream<C0>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEW<C0>>.Rent();
@@ -344,7 +350,8 @@ public partial record Stream<C0>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUW<U, C0>>.Rent();
@@ -398,7 +405,8 @@ public partial record Stream<C0>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUW<U, C0>>.Rent();
@@ -457,7 +465,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRR<C0, C1>>.Rent();
@@ -511,7 +520,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERR<C0, C1>>.Rent();
@@ -565,7 +575,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURR<U, C0, C1>>.Rent();
@@ -619,7 +630,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURR<U, C0, C1>>.Rent();
@@ -673,7 +685,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRW<C0, C1>>.Rent();
@@ -727,7 +740,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERW<C0, C1>>.Rent();
@@ -781,7 +795,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURW<U, C0, C1>>.Rent();
@@ -835,7 +850,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURW<U, C0, C1>>.Rent();
@@ -889,7 +905,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWR<C0, C1>>.Rent();
@@ -943,7 +960,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWR<C0, C1>>.Rent();
@@ -997,7 +1015,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWR<U, C0, C1>>.Rent();
@@ -1051,7 +1070,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWR<U, C0, C1>>.Rent();
@@ -1105,7 +1125,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWW<C0, C1>>.Rent();
@@ -1159,7 +1180,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWW<C0, C1>>.Rent();
@@ -1213,7 +1235,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWW<U, C0, C1>>.Rent();
@@ -1267,7 +1290,8 @@ public partial record Stream<C0, C1>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWW<U, C0, C1>>.Rent();
@@ -1326,7 +1350,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRR<C0, C1, C2>>.Rent();
@@ -1380,7 +1405,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRR<C0, C1, C2>>.Rent();
@@ -1434,7 +1460,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRR<U, C0, C1, C2>>.Rent();
@@ -1488,7 +1515,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRR<U, C0, C1, C2>>.Rent();
@@ -1542,7 +1570,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRW<C0, C1, C2>>.Rent();
@@ -1596,7 +1625,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRW<C0, C1, C2>>.Rent();
@@ -1650,7 +1680,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRW<U, C0, C1, C2>>.Rent();
@@ -1704,7 +1735,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRW<U, C0, C1, C2>>.Rent();
@@ -1758,7 +1790,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWR<C0, C1, C2>>.Rent();
@@ -1812,7 +1845,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWR<C0, C1, C2>>.Rent();
@@ -1866,7 +1900,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWR<U, C0, C1, C2>>.Rent();
@@ -1920,7 +1955,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWR<U, C0, C1, C2>>.Rent();
@@ -1974,7 +2010,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWW<C0, C1, C2>>.Rent();
@@ -2028,7 +2065,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWW<C0, C1, C2>>.Rent();
@@ -2082,7 +2120,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWW<U, C0, C1, C2>>.Rent();
@@ -2136,7 +2175,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWW<U, C0, C1, C2>>.Rent();
@@ -2190,7 +2230,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRR<C0, C1, C2>>.Rent();
@@ -2244,7 +2285,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRR<C0, C1, C2>>.Rent();
@@ -2298,7 +2340,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRR<U, C0, C1, C2>>.Rent();
@@ -2352,7 +2395,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRR<U, C0, C1, C2>>.Rent();
@@ -2406,7 +2450,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRW<C0, C1, C2>>.Rent();
@@ -2460,7 +2505,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRW<C0, C1, C2>>.Rent();
@@ -2514,7 +2560,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRW<U, C0, C1, C2>>.Rent();
@@ -2568,7 +2615,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRW<U, C0, C1, C2>>.Rent();
@@ -2622,7 +2670,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWR<C0, C1, C2>>.Rent();
@@ -2676,7 +2725,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWR<C0, C1, C2>>.Rent();
@@ -2730,7 +2780,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWR<U, C0, C1, C2>>.Rent();
@@ -2784,7 +2835,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWR<U, C0, C1, C2>>.Rent();
@@ -2838,7 +2890,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWW<C0, C1, C2>>.Rent();
@@ -2892,7 +2945,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWW<C0, C1, C2>>.Rent();
@@ -2946,7 +3000,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWW<U, C0, C1, C2>>.Rent();
@@ -3000,7 +3055,8 @@ public partial record Stream<C0, C1, C2>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWW<U, C0, C1, C2>>.Rent();
@@ -3059,7 +3115,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRRR<C0, C1, C2, C3>>.Rent();
@@ -3113,7 +3170,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRRR<C0, C1, C2, C3>>.Rent();
@@ -3167,7 +3225,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRRR<U, C0, C1, C2, C3>>.Rent();
@@ -3221,7 +3280,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRRR<U, C0, C1, C2, C3>>.Rent();
@@ -3275,7 +3335,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRRW<C0, C1, C2, C3>>.Rent();
@@ -3329,7 +3390,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRRW<C0, C1, C2, C3>>.Rent();
@@ -3383,7 +3445,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRRW<U, C0, C1, C2, C3>>.Rent();
@@ -3437,7 +3500,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRRW<U, C0, C1, C2, C3>>.Rent();
@@ -3491,7 +3555,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRWR<C0, C1, C2, C3>>.Rent();
@@ -3545,7 +3610,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRWR<C0, C1, C2, C3>>.Rent();
@@ -3599,7 +3665,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRWR<U, C0, C1, C2, C3>>.Rent();
@@ -3653,7 +3720,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRWR<U, C0, C1, C2, C3>>.Rent();
@@ -3707,7 +3775,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRWW<C0, C1, C2, C3>>.Rent();
@@ -3761,7 +3830,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRWW<C0, C1, C2, C3>>.Rent();
@@ -3815,7 +3885,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRWW<U, C0, C1, C2, C3>>.Rent();
@@ -3869,7 +3940,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRWW<U, C0, C1, C2, C3>>.Rent();
@@ -3923,7 +3995,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWRR<C0, C1, C2, C3>>.Rent();
@@ -3977,7 +4050,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWRR<C0, C1, C2, C3>>.Rent();
@@ -4031,7 +4105,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWRR<U, C0, C1, C2, C3>>.Rent();
@@ -4085,7 +4160,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWRR<U, C0, C1, C2, C3>>.Rent();
@@ -4139,7 +4215,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWRW<C0, C1, C2, C3>>.Rent();
@@ -4193,7 +4270,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWRW<C0, C1, C2, C3>>.Rent();
@@ -4247,7 +4325,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWRW<U, C0, C1, C2, C3>>.Rent();
@@ -4301,7 +4380,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWRW<U, C0, C1, C2, C3>>.Rent();
@@ -4355,7 +4435,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWWR<C0, C1, C2, C3>>.Rent();
@@ -4409,7 +4490,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWWR<C0, C1, C2, C3>>.Rent();
@@ -4463,7 +4545,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWWR<U, C0, C1, C2, C3>>.Rent();
@@ -4517,7 +4600,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWWR<U, C0, C1, C2, C3>>.Rent();
@@ -4571,7 +4655,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWWW<C0, C1, C2, C3>>.Rent();
@@ -4625,7 +4710,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWWW<C0, C1, C2, C3>>.Rent();
@@ -4679,7 +4765,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWWW<U, C0, C1, C2, C3>>.Rent();
@@ -4733,7 +4820,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWWW<U, C0, C1, C2, C3>>.Rent();
@@ -4787,7 +4875,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRRR<C0, C1, C2, C3>>.Rent();
@@ -4841,7 +4930,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRRR<C0, C1, C2, C3>>.Rent();
@@ -4895,7 +4985,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRRR<U, C0, C1, C2, C3>>.Rent();
@@ -4949,7 +5040,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRRR<U, C0, C1, C2, C3>>.Rent();
@@ -5003,7 +5095,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRRW<C0, C1, C2, C3>>.Rent();
@@ -5057,7 +5150,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRRW<C0, C1, C2, C3>>.Rent();
@@ -5111,7 +5205,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRRW<U, C0, C1, C2, C3>>.Rent();
@@ -5165,7 +5260,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRRW<U, C0, C1, C2, C3>>.Rent();
@@ -5219,7 +5315,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRWR<C0, C1, C2, C3>>.Rent();
@@ -5273,7 +5370,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRWR<C0, C1, C2, C3>>.Rent();
@@ -5327,7 +5425,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRWR<U, C0, C1, C2, C3>>.Rent();
@@ -5381,7 +5480,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRWR<U, C0, C1, C2, C3>>.Rent();
@@ -5435,7 +5535,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRWW<C0, C1, C2, C3>>.Rent();
@@ -5489,7 +5590,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRWW<C0, C1, C2, C3>>.Rent();
@@ -5543,7 +5645,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRWW<U, C0, C1, C2, C3>>.Rent();
@@ -5597,7 +5700,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRWW<U, C0, C1, C2, C3>>.Rent();
@@ -5651,7 +5755,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWRR<C0, C1, C2, C3>>.Rent();
@@ -5705,7 +5810,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWRR<C0, C1, C2, C3>>.Rent();
@@ -5759,7 +5865,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWRR<U, C0, C1, C2, C3>>.Rent();
@@ -5813,7 +5920,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWRR<U, C0, C1, C2, C3>>.Rent();
@@ -5867,7 +5975,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWRW<C0, C1, C2, C3>>.Rent();
@@ -5921,7 +6030,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWRW<C0, C1, C2, C3>>.Rent();
@@ -5975,7 +6085,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWRW<U, C0, C1, C2, C3>>.Rent();
@@ -6029,7 +6140,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWRW<U, C0, C1, C2, C3>>.Rent();
@@ -6083,7 +6195,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWWR<C0, C1, C2, C3>>.Rent();
@@ -6137,7 +6250,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWWR<C0, C1, C2, C3>>.Rent();
@@ -6191,7 +6305,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWWR<U, C0, C1, C2, C3>>.Rent();
@@ -6245,7 +6360,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWWR<U, C0, C1, C2, C3>>.Rent();
@@ -6299,7 +6415,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWWW<C0, C1, C2, C3>>.Rent();
@@ -6353,7 +6470,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWWW<C0, C1, C2, C3>>.Rent();
@@ -6407,7 +6525,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWWW<U, C0, C1, C2, C3>>.Rent();
@@ -6461,7 +6580,8 @@ public partial record Stream<C0, C1, C2, C3>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWWW<U, C0, C1, C2, C3>>.Rent();
@@ -6520,7 +6640,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRRRR<C0, C1, C2, C3, C4>>.Rent();
@@ -6574,7 +6695,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRRRR<C0, C1, C2, C3, C4>>.Rent();
@@ -6628,7 +6750,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRRRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -6682,7 +6805,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRRRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -6736,7 +6860,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRRRW<C0, C1, C2, C3, C4>>.Rent();
@@ -6790,7 +6915,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRRRW<C0, C1, C2, C3, C4>>.Rent();
@@ -6844,7 +6970,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRRRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -6898,7 +7025,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRRRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -6952,7 +7080,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRRWR<C0, C1, C2, C3, C4>>.Rent();
@@ -7006,7 +7135,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRRWR<C0, C1, C2, C3, C4>>.Rent();
@@ -7060,7 +7190,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRRWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7114,7 +7245,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRRWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7168,7 +7300,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRRWW<C0, C1, C2, C3, C4>>.Rent();
@@ -7222,7 +7355,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRRWW<C0, C1, C2, C3, C4>>.Rent();
@@ -7276,7 +7410,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRRWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7330,7 +7465,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRRWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7384,7 +7520,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRWRR<C0, C1, C2, C3, C4>>.Rent();
@@ -7438,7 +7575,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRWRR<C0, C1, C2, C3, C4>>.Rent();
@@ -7492,7 +7630,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRWRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7546,7 +7685,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRWRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7600,7 +7740,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRWRW<C0, C1, C2, C3, C4>>.Rent();
@@ -7654,7 +7795,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRWRW<C0, C1, C2, C3, C4>>.Rent();
@@ -7708,7 +7850,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRWRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7762,7 +7905,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRWRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7816,7 +7960,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRWWR<C0, C1, C2, C3, C4>>.Rent();
@@ -7870,7 +8015,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRWWR<C0, C1, C2, C3, C4>>.Rent();
@@ -7924,7 +8070,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRWWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -7978,7 +8125,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRWWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8032,7 +8180,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRRWWW<C0, C1, C2, C3, C4>>.Rent();
@@ -8086,7 +8235,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERRWWW<C0, C1, C2, C3, C4>>.Rent();
@@ -8140,7 +8290,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURRWWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8194,7 +8345,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURRWWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8248,7 +8400,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWRRR<C0, C1, C2, C3, C4>>.Rent();
@@ -8302,7 +8455,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWRRR<C0, C1, C2, C3, C4>>.Rent();
@@ -8356,7 +8510,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWRRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8410,7 +8565,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWRRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8464,7 +8620,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWRRW<C0, C1, C2, C3, C4>>.Rent();
@@ -8518,7 +8675,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWRRW<C0, C1, C2, C3, C4>>.Rent();
@@ -8572,7 +8730,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWRRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8626,7 +8785,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWRRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8680,7 +8840,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWRWR<C0, C1, C2, C3, C4>>.Rent();
@@ -8734,7 +8895,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWRWR<C0, C1, C2, C3, C4>>.Rent();
@@ -8788,7 +8950,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWRWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8842,7 +9005,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWRWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -8896,7 +9060,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWRWW<C0, C1, C2, C3, C4>>.Rent();
@@ -8950,7 +9115,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWRWW<C0, C1, C2, C3, C4>>.Rent();
@@ -9004,7 +9170,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWRWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9058,7 +9225,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWRWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9112,7 +9280,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWWRR<C0, C1, C2, C3, C4>>.Rent();
@@ -9166,7 +9335,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWWRR<C0, C1, C2, C3, C4>>.Rent();
@@ -9220,7 +9390,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWWRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9274,7 +9445,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWWRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9328,7 +9500,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWWRW<C0, C1, C2, C3, C4>>.Rent();
@@ -9382,7 +9555,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWWRW<C0, C1, C2, C3, C4>>.Rent();
@@ -9436,7 +9610,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWWRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9490,7 +9665,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWWRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9544,7 +9720,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWWWR<C0, C1, C2, C3, C4>>.Rent();
@@ -9598,7 +9775,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWWWR<C0, C1, C2, C3, C4>>.Rent();
@@ -9652,7 +9830,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWWWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9706,7 +9885,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWWWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9760,7 +9940,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobRWWWW<C0, C1, C2, C3, C4>>.Rent();
@@ -9814,7 +9995,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobERWWWW<C0, C1, C2, C3, C4>>.Rent();
@@ -9868,7 +10050,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobURWWWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9922,7 +10105,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEURWWWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -9976,7 +10160,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRRRR<C0, C1, C2, C3, C4>>.Rent();
@@ -10030,7 +10215,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRRRR<C0, C1, C2, C3, C4>>.Rent();
@@ -10084,7 +10270,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRRRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -10138,7 +10325,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRRRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -10192,7 +10380,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRRRW<C0, C1, C2, C3, C4>>.Rent();
@@ -10246,7 +10435,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRRRW<C0, C1, C2, C3, C4>>.Rent();
@@ -10300,7 +10490,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRRRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -10354,7 +10545,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRRRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -10408,7 +10600,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRRWR<C0, C1, C2, C3, C4>>.Rent();
@@ -10462,7 +10655,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRRWR<C0, C1, C2, C3, C4>>.Rent();
@@ -10516,7 +10710,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRRWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -10570,7 +10765,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRRWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -10624,7 +10820,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRRWW<C0, C1, C2, C3, C4>>.Rent();
@@ -10678,7 +10875,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRRWW<C0, C1, C2, C3, C4>>.Rent();
@@ -10732,7 +10930,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRRWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -10786,7 +10985,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRRWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -10840,7 +11040,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRWRR<C0, C1, C2, C3, C4>>.Rent();
@@ -10894,7 +11095,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRWRR<C0, C1, C2, C3, C4>>.Rent();
@@ -10948,7 +11150,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRWRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11002,7 +11205,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRWRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11056,7 +11260,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRWRW<C0, C1, C2, C3, C4>>.Rent();
@@ -11110,7 +11315,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRWRW<C0, C1, C2, C3, C4>>.Rent();
@@ -11164,7 +11370,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRWRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11218,7 +11425,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRWRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11272,7 +11480,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRWWR<C0, C1, C2, C3, C4>>.Rent();
@@ -11326,7 +11535,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRWWR<C0, C1, C2, C3, C4>>.Rent();
@@ -11380,7 +11590,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRWWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11434,7 +11645,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRWWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11488,7 +11700,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWRWWW<C0, C1, C2, C3, C4>>.Rent();
@@ -11542,7 +11755,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWRWWW<C0, C1, C2, C3, C4>>.Rent();
@@ -11596,7 +11810,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWRWWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11650,7 +11865,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWRWWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11704,7 +11920,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWRRR<C0, C1, C2, C3, C4>>.Rent();
@@ -11758,7 +11975,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWRRR<C0, C1, C2, C3, C4>>.Rent();
@@ -11812,7 +12030,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWRRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11866,7 +12085,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWRRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -11920,7 +12140,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWRRW<C0, C1, C2, C3, C4>>.Rent();
@@ -11974,7 +12195,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWRRW<C0, C1, C2, C3, C4>>.Rent();
@@ -12028,7 +12250,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWRRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12082,7 +12305,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWRRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12136,7 +12360,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWRWR<C0, C1, C2, C3, C4>>.Rent();
@@ -12190,7 +12415,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWRWR<C0, C1, C2, C3, C4>>.Rent();
@@ -12244,7 +12470,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWRWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12298,7 +12525,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWRWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12352,7 +12580,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWRWW<C0, C1, C2, C3, C4>>.Rent();
@@ -12406,7 +12635,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWRWW<C0, C1, C2, C3, C4>>.Rent();
@@ -12460,7 +12690,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWRWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12514,7 +12745,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWRWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12568,7 +12800,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWWRR<C0, C1, C2, C3, C4>>.Rent();
@@ -12622,7 +12855,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWWRR<C0, C1, C2, C3, C4>>.Rent();
@@ -12676,7 +12910,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWWRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12730,7 +12965,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWWRR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12784,7 +13020,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWWRW<C0, C1, C2, C3, C4>>.Rent();
@@ -12838,7 +13075,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWWRW<C0, C1, C2, C3, C4>>.Rent();
@@ -12892,7 +13130,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWWRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -12946,7 +13185,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWWRW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -13000,7 +13240,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWWWR<C0, C1, C2, C3, C4>>.Rent();
@@ -13054,7 +13295,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWWWR<C0, C1, C2, C3, C4>>.Rent();
@@ -13108,7 +13350,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWWWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -13162,7 +13405,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWWWR<U, C0, C1, C2, C3, C4>>.Rent();
@@ -13216,7 +13460,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobWWWWW<C0, C1, C2, C3, C4>>.Rent();
@@ -13270,7 +13515,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEWWWWW<C0, C1, C2, C3, C4>>.Rent();
@@ -13324,7 +13570,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobUWWWWW<U, C0, C1, C2, C3, C4>>.Rent();
@@ -13378,7 +13625,8 @@ public partial record Stream<C0, C1, C2, C3, C4>
       using var worldLock = World.Lock();
       var chunkSize = Math.Max(1, Count / Concurrency);
 
-      Countdown = Countdown ?? new (0);
+      Countdown = Countdown ?? new (1);
+
       Countdown.Reset();
 
       using var jobs = PooledList<JobEUWWWWW<U, C0, C1, C2, C3, C4>>.Rent();
