@@ -54,21 +54,7 @@ public class ForStructuralVsStateful
     }
 
     [Benchmark]
-    public int CountDown_with_Structural_Change()
-    {
-        while (_stream.Count > 0)
-        {
-            _stream.For((in Entity entity, ref ushort value) =>
-            {
-                value--;
-                if (value <= 0) entity.Remove<ushort>();
-            });
-        }
-        return _stream.Count;
-    }
-
-    [Benchmark]
-    public int CountDown_NewFor_Structural_ChangeS()
+    public int CountDown_For_Structural_Change()
     {
         while (_stream.Count > 0)
         {
@@ -154,7 +140,7 @@ public class ForStructuralVsStateful
             _stream.Raw(values =>
                 {
                     var localDone = true;
-                    var span = values.Span;
+                    var span = values.write;
                     for (var i = 0; i < span.Length; i++)
                     {
                         if (span[i] <= 0) continue;
@@ -181,7 +167,7 @@ public class ForStructuralVsStateful
                 var count = values.Length;
                 var localDone = true;
 
-                using var mem1 = values.Pin();
+                using var mem1 = values.Memory.Pin();
 
                 unsafe
                 {

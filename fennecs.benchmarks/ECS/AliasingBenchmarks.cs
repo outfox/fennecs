@@ -107,13 +107,10 @@ public class AliasingBenchmarks(Vector4[] testArray)
         }
 
         _queryV4 = _world.Query<Vector4>().Stream();
-        _queryV4.Query.Warmup();
 
         _queryF4 = _world.Query<FoxVector4>().Stream();
-        _queryF4.Query.Warmup();
 
         _query128 = _world.Query<FoxVector4Simd>().Stream();
-        _query128.Query.Warmup();
     }
 
 
@@ -234,7 +231,7 @@ public class AliasingBenchmarks(Vector4[] testArray)
     {
         _queryV4.Raw(UniformConstantVector, static (uniform, mem) =>
         {
-            using var handle = mem.Pin();
+            using var handle = mem.Memory.Pin();
             unsafe
             {
                 var length = mem.Length * sizeof(Vector4) / sizeof(float);
@@ -268,7 +265,7 @@ public class AliasingBenchmarks(Vector4[] testArray)
     {
         _queryV4.Raw(UniformConstantVector, static (uniform, mem) =>
         {
-            using var handle = mem.Pin();
+            using var handle = mem.Memory.Pin();
             unsafe
             {
                 var length = mem.Length * sizeof(Vector4) / sizeof(float);
@@ -300,7 +297,7 @@ public class AliasingBenchmarks(Vector4[] testArray)
     {
         _queryF4.Raw(new FoxVector4(UniformConstantVector), static (uniform, mem) =>
         {
-            using var handle = mem.Pin();
+            using var handle = mem.Memory.Pin();
             unsafe
             {
                 var length = mem.Length * sizeof(FoxVector4) / sizeof(float);

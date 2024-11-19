@@ -262,10 +262,11 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(3)]
     public void New(ComponentActionRR<C1, C2> action)
     {
+        var match = default(TypeExpression);
         for (var i = 0; i < Count; i++)
         {
-            var ref1 = new R<C1>(ref Data1[i]);
-            var ref2 = new R<C2>(ref Data2[i]);
+            var ref1 = new R<C1>(in Data1[i], in match, in entities[i]);
+            var ref2 = new R<C2>(in Data2[i], in match, in entities[i]);
             action(ref1, ref2);
             //action(new(ref Data1[i]), new(ref Data2[i]));
         }

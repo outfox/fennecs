@@ -9,6 +9,7 @@ using CommandLine;
 using fennecs;
 using fennecs_Components;
 using fennecs.pools;
+using fennecs.storage;
 
 namespace Benchmark.ECS;
 
@@ -34,8 +35,6 @@ public class DorakuBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        PooledList<UniformWork<Component1, Component2, Component3>>.Rent().Dispose();
-
         _world = new World();
         _query = _world.Query<Component1, Component2, Component3>().Stream();
         for (var i = 0; i < entityCount; ++i)
@@ -62,7 +61,6 @@ public class DorakuBenchmarks
                 .Add(new Component3 {Value = 1});
         }
 
-        _query.Query.Warmup();
         _query.Job(Workload);
     }
 
@@ -76,16 +74,16 @@ public class DorakuBenchmarks
     /// This could be a static anonymous delegate, but this way, we don't need to repeat ourselves
     /// and reduce the risk of errors when refactoring or unit testing.
     /// </summary>
-    private static void Workload(ref Component1 c1, ref Component2 c2, ref Component3 c3)
+    private static void Workload(RW<Component1> c1,R<Component2> c2, R<Component3> c3)
     {
-        c1.Value = c1.Value + c2.Value + c3.Value;
+        c1.write.Value = c1.read.Value + c2.read.Value + c3.read.Value;
     }
 
     [BenchmarkCategory("fennecs")]
     [Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
-        _query.For(static delegate(ref Component1 c1, ref Component2 c2, ref Component3 c3) { c1.Value = c1.Value + c2.Value + c3.Value; });
+        _query.For(static delegate(RW<Component1> c1, R<Component2> c2, R<Component3> c3) { c1.write.Value = c1.read.Value + c2.read.Value + c3.read.Value; });
     }
 
 
@@ -101,7 +99,7 @@ public class DorakuBenchmarks
     [Benchmark(Description = $"fennecs (Job)")]
     public void fennecs_Job()
     {
-        _query.Job(static delegate (ref Component1 c1, ref Component2 c2, ref Component3 c3) { c1.Value = c1.Value + c2.Value + c3.Value; });
+        _query.Job(static delegate (RW<Component1> c1, R<Component2> c2, R<Component3> c3) { c1.write.Value = c1.read.Value + c2.read.Value + c3.read.Value; });
     }
 
     [BenchmarkCategory("fennecs")]
@@ -208,7 +206,7 @@ public class DorakuBenchmarks
         _query.Raw(Raw_Workload_AdvSIMD);
     }
 
-    private static void Raw_Workload_Unoptimized(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_Unoptimized(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
     {
         var c1S = c1V.Span;
         var c2S = c2V.Span;
@@ -220,7 +218,7 @@ public class DorakuBenchmarks
         }
     }
 
-    private static void Raw_Workload_Unroll4(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_Unroll4(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
     {
         var c1 = c1V.Span;
         var c2 = c2V.Span;
@@ -244,7 +242,7 @@ public class DorakuBenchmarks
         }
     }
 
-    private static void Raw_Workload_Unroll8(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_Unroll8(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
     {
         var c1 = c1V.Span;
         var c2 = c2V.Span;
@@ -277,13 +275,13 @@ public class DorakuBenchmarks
         }
     }
 
-    private static void Raw_Workload_AVX2(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_AVX2(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
     {
         var count = c1V.Length;
 
-        using var mem1 = c1V.Pin();
-        using var mem2 = c2V.Pin();
-        using var mem3 = c3V.Pin();
+        using var mem1 = c1V.Memory.Pin();
+        using var mem2 = c2V.ReadOnlyMemory.Pin();
+        using var mem3 = c3V.ReadOnlyMemory.Pin();
 
         unsafe
         {
@@ -310,7 +308,7 @@ public class DorakuBenchmarks
         }
     }
 
-    private static void Raw_Workload_Tensor(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_Tensor(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
     {
         
         var c1I = MemoryMarshal.Cast<Component1, float>(c1V.Span);
@@ -321,13 +319,13 @@ public class DorakuBenchmarks
         TensorPrimitives.Add(c3I, c1I, c1I);
     }
 
-    private static void Raw_Workload_SSE2(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_SSE2(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
     {
         (int Item1, int Item2) range = (0, c1V.Length);
 
-        using var mem1 = c1V.Pin();
-        using var mem2 = c2V.Pin();
-        using var mem3 = c3V.Pin();
+        using var mem1 = c1V.Memory.Pin();
+        using var mem2 = c2V.ReadOnlyMemory.Pin();
+        using var mem3 = c3V.ReadOnlyMemory.Pin();
 
         unsafe
         {
@@ -355,13 +353,13 @@ public class DorakuBenchmarks
         }
     }
 
-    private static void Raw_Workload_AdvSIMD(Memory<Component1> c1V, Memory<Component2> c2V, Memory<Component3> c3V)
+    private static void Raw_Workload_AdvSIMD(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
     {
         (int Item1, int Item2) range = (0, c1V.Length);
 
-        using var mem1 = c1V.Pin();
-        using var mem2 = c2V.Pin();
-        using var mem3 = c3V.Pin();
+        using var mem1 = c1V.Memory.Pin();
+        using var mem2 = c2V.ReadOnlyMemory.Pin();
+        using var mem3 = c3V.ReadOnlyMemory.Pin();
 
         unsafe
         {

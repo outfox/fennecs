@@ -8,7 +8,7 @@ namespace Benchmark.Conceptual;
 
 public class TensorPrimitivesBench
 {
-    private float[] _source, _destination;
+    private float[] _source = null!, _destination = null!;
 
     [GlobalSetup]
     public void Setup()

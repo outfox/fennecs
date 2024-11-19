@@ -7,7 +7,6 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
 using fennecs;
 using fennecs_Components;
-using fennecs.pools;
 using fennecs.storage;
 
 namespace Benchmark.ECS;
@@ -39,8 +38,6 @@ public class TensorBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        PooledList<UniformWork<Component1, Component2, Component3>>.Rent().Dispose();
-
         _world = new World();
         _query = _world.Query<Component1, Component2>().Stream();
         for (var i = 0; i < entityCount; ++i)
@@ -64,7 +61,6 @@ public class TensorBenchmarks
                 .Add(new Component3 {Value = 1});
         }
 
-        _query.Query.Warmup();
         _query.Job(Workload);
     }
 
@@ -105,13 +101,13 @@ public class TensorBenchmarks
 
 
     [BenchmarkCategory("fennecs")]
-    //[Benchmark(Description = $"fennecs (Job)")]
+    [Benchmark(Description = $"fennecs (Job)")]
     public void fennecs_Job()
     {
-        _query.Job(static delegate(ref Component1 c1, ref Component2 c2)
+        _query.Job(static (c1, c2) =>
         {
             const float dt = 1f / 60.0f;
-            c1.Value = c1.Value + c2.Value * dt;
+            c1.write.Value = c1.read.Value + c2.read.Value * dt;
         });
     }
 
@@ -219,7 +215,7 @@ public class TensorBenchmarks
         _query.Raw(Raw_Workload_AdvSIMD);
     }
 
-    private static void Raw_Workload_Unoptimized(Memory<Component1> c1V, Memory<Component2> c2V)
+    private static void Raw_Workload_Unoptimized(MemoryRW<Component1> c1V, MemoryRW<Component2> c2V)
     {
         var c1S = c1V.Span;
         var c2S = c2V.Span;
@@ -232,7 +228,7 @@ public class TensorBenchmarks
         }
     }
 
-    private static void Raw_Workload_Unroll4(Memory<Component1> c1V, Memory<Component2> c2V)
+    private static void Raw_Workload_Unroll4(MemoryRW<Component1> c1V, MemoryRW<Component2> c2V)
     {
         var c1 = c1V.Span;
         var c2 = c2V.Span;
@@ -256,7 +252,7 @@ public class TensorBenchmarks
         }
     }
 
-    private static void Raw_Workload_Unroll8(Memory<Component1> c1V, Memory<Component2> c2V)
+    private static void Raw_Workload_Unroll8(MemoryRW<Component1> c1V, MemoryRW<Component2> c2V)
     {
         var c1 = c1V.Span;
         var c2 = c2V.Span;
@@ -291,12 +287,12 @@ public class TensorBenchmarks
         }
     }
 
-    private static void Raw_Workload_AVX2(Memory<Component1> c1V, Memory<Component2> c2V)
+    private static void Raw_Workload_AVX2(MemoryRW<Component1> c1V, MemoryRW<Component2> c2V)
     {
         var count = c1V.Length;
 
-        using var mem1 = c1V.Pin();
-        using var mem2 = c2V.Pin();
+        using var mem1 = c1V.Memory.Pin();
+        using var mem2 = c2V.Memory.Pin();
 
         var dt1 = 1f / 60.0f;
         var dt = Vector256.Create(dt1);
@@ -325,20 +321,20 @@ public class TensorBenchmarks
         }
     }
 
-    private static void Raw_Workload_Tensor(Memory<Component1> c1V, Memory<Component2> c2V)
+    private static void Raw_Workload_Tensor(MemoryRW<Component1> c1V, MemoryRW<Component2> c2V)
     {
-        var c1I = MemoryMarshal.Cast<Component1, float>(c1V.Span);
-        var c2I = MemoryMarshal.Cast<Component2, float>(c2V.Span);
+        var c1I = MemoryMarshal.Cast<Component1, float>(c1V.write);
+        var c2I = MemoryMarshal.Cast<Component2, float>(c2V.read);
 
         TensorPrimitives.MultiplyAdd(c2I, 1f/60.0f, c1I, c1I);
     }
 
-    private static void Raw_Workload_SSE2(Memory<Component1> c1V, Memory<Component2> c2V)
+    private static void Raw_Workload_SSE2(MemoryRW<Component1> c1V, MemoryR<Component2> c2V)
     {
         (int Item1, int Item2) range = (0, c1V.Length);
 
-        using var mem1 = c1V.Pin();
-        using var mem2 = c2V.Pin();
+        using var mem1 = c1V.Memory.Pin();
+        using var mem2 = c2V.ReadOnlyMemory.Pin();
 
         var dt1 = 1f / 60.0f;
         var dt = Vector128.Create(dt1);
@@ -368,12 +364,12 @@ public class TensorBenchmarks
         }
     }
 
-    private static void Raw_Workload_AdvSIMD(Memory<Component1> c1V, Memory<Component2> c2V)
+    private static void Raw_Workload_AdvSIMD(MemoryRW<Component1> c1V, MemoryR<Component2> c2V)
     {
         (int Item1, int Item2) range = (0, c1V.Length);
 
-        using var mem1 = c1V.Pin();
-        using var mem2 = c2V.Pin();
+        using var mem1 = c1V.Memory.Pin();
+        using var mem2 = c2V.ReadOnlyMemory.Pin();
 
         var dt1 = 1f / 60.0f;
         var dt = Vector128.Create(dt1);

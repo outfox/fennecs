@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using BenchmarkDotNet.Attributes;
 using fennecs;
+using fennecs.storage;
 
 namespace Benchmark.ECS;
 
@@ -55,40 +56,40 @@ public class SimpleEntityBenchmarks
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Delegate_Chunk1k()
     {
-        _streamV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _streamV3.Job(delegate (RW<Vector3> v) { v.write = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Delegate_Chunk4k()
     {
-        _streamV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _streamV3.Job(delegate (RW<Vector3> v) { v.write = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     public void CrossProduct_Single_ECS_Lambda()
     {
-        _streamV3.For((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
+        _streamV3.For(static (v) => { v.write = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Lambda()
     {
-        _streamV3.Job((ref Vector3 v) => { v = Vector3.Cross(v, UniformConstantVector); });
+        _streamV3.Job(static (v) => { v.write = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     public void CrossProduct_Single_ECS_Delegate()
     {
-        _streamV3.For(delegate (ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _streamV3.For(delegate (RW<Vector3> v) { v.write= Vector3.Cross(v, UniformConstantVector); });
     }
 
 
     [Benchmark(Baseline = true)]
     public void CrossProduct_Single_ECS_Raw()
     {
-        _streamV3.Raw(delegate(Memory<Vector3> vectors)
+        _streamV3.Raw(static vectors =>
         {
-            foreach (ref var v in vectors.Span)
+            foreach (ref var v in vectors.write)
             {
                 v = Vector3.Cross(v, UniformConstantVector);
             }
@@ -98,9 +99,9 @@ public class SimpleEntityBenchmarks
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Raw()
     {
-        _streamV3.Raw(delegate(Memory<Vector3> vectors)
+        _streamV3.Raw(static (vectors) =>
         {
-            foreach (ref var v in vectors.Span)
+            foreach (ref var v in vectors.write)
             {
                 v = Vector3.Cross(v, UniformConstantVector);
             }
@@ -110,6 +111,6 @@ public class SimpleEntityBenchmarks
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Delegate_Archetype()
     {
-        _streamV3.Job(delegate(ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _streamV3.Job(static (v) => { v.write = Vector3.Cross(v, UniformConstantVector); });
     }
 }

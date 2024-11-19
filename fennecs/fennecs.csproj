@@ -16,7 +16,7 @@
         <Authors>Moritz Voss and Contributors</Authors>
         <Company>tiger.blue</Company>
         <Description>The tiny ECS that could!</Description>
-        <Copyright>2024 Moritz Voss, 2022 Aaron Winter</Copyright>
+        <Copyright>2024 Moritz Voss and Contributors</Copyright>
         <PackageProjectUrl>https://fennecs.tech</PackageProjectUrl>
         <RepositoryUrl>https://github.com/outfox/fennecs</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
