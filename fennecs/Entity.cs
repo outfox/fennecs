@@ -267,11 +267,13 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     }
 
 
+    
     /// <inheritdoc />
     public object? Get(Type type, Match match = default)
     {
         return _world.GetComponent(this, TypeExpression.Of(type, match), out var value) ? value : null;
     }
+    
 
 
     /// <inheritdoc />

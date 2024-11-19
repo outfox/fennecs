@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
-namespace fennecs;
+namespace fennecs.future;
 
 /// <summary>
 /// A dictionary backed by a pair of lists, for fast enumeration.
