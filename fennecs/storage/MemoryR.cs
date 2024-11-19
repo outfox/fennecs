@@ -1,4 +1,6 @@
-﻿namespace fennecs.storage;
+﻿using System.Runtime.CompilerServices;
+
+namespace fennecs.storage;
 
 /// <summary>
 /// Read-Only memory region, contiguously contains component data.

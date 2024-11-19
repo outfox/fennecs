@@ -3,7 +3,7 @@
 public class RefStructUniforTests
 {
     [Fact]
-    public void Can_Use_RefStruct_Uniform()
+    public void For_allows_RefStruct_Uniform()
     {
         using var world = new World();
         var entity = world.Spawn();
@@ -15,12 +15,34 @@ public class RefStructUniforTests
 
         stream.For(uniform, static (u, i) =>
         {
-            i.write = u[0]; 
+            i.write = u[0];
             Assert.Equal(1, i);
-            i.write = u[1]; 
+            i.write = u[1];
             Assert.Equal(2, i);
-            i.write = u[2]; 
+            i.write = u[2];
             Assert.Equal(3, i);
+        });
+    }
+
+    [Fact]
+    public void Raw_allows_RefStruct_Uniform()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+
+        var stream = world.Query<int>().Stream();
+
+        Span<short> uniform = [1, 2, 3];
+
+        stream.Raw(uniform, static (u, i) =>
+        {
+            i.write[0] = u[0];
+            Assert.Equal(1, i.read[0]);
+            i.write[0] = u[1];
+            Assert.Equal(2, i.read[0]);
+            i.write[0] = u[2];
+            Assert.Equal(3, i.read[0]);
         });
     }
 }
