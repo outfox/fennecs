@@ -361,7 +361,7 @@ internal class Storage<T>(TypeExpression expression) : IStorage where T : notnul
     /// <summary>
     /// Returns a ReadOnlyMemory handle to the entire contained data.
     /// </summary>
-    public MemoryR<T> AsReadOnlyMemory() => new(_data.AsMemory());
+    public MemoryR<T> AsReadOnlyMemory() => new(_data.AsMemory(0, Count));
 
     /// <summary>
     /// Returns a Memory handle to the entire contained data.
