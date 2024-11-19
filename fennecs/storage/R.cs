@@ -6,10 +6,25 @@ namespace fennecs.storage;
 /// <summary>
 /// Read-only access to a component.
 /// </summary>
-public readonly ref struct R<T>(ref readonly T value) : IEquatable<R<T>>, IEquatable<T> where T : notnull
+public readonly ref struct R<T> : IEquatable<R<T>>, IEquatable<T> where T : notnull
 {
-    internal readonly ref readonly T Value = ref value;
+    internal readonly ref readonly T Value;
 
+    private readonly ref readonly Entity _entity;
+    private readonly ref readonly TypeExpression _expression;
+
+    /// <summary>
+    /// Read-only access to a component.
+    /// </summary>
+    internal R(in T value, in TypeExpression expression, in Entity entity)
+    {
+        _entity = ref entity;
+        _expression = ref expression;
+        Value = ref value;
+    }
+
+    internal TypeExpression Expression => _expression;
+    
     /// <summary>
     /// Read access to the component's value.
     /// </summary>
@@ -31,11 +46,9 @@ public readonly ref struct R<T>(ref readonly T value) : IEquatable<R<T>>, IEquat
     public static bool operator !=(R<T> self, T other) => !(self == other);
 
     /// <inheritdoc cref="Equals(T)"/>
-    [OverloadResolutionPriority(9001)]
     public static bool operator ==(R<T> self, R<T> other) => self.Equals(other);
 
     /// <inheritdoc cref="Equals(T)"/>
-    [OverloadResolutionPriority(9001)]
     public static bool operator !=(R<T> self, R<T> other) => !(self == other);
 
     
@@ -43,7 +56,7 @@ public readonly ref struct R<T>(ref readonly T value) : IEquatable<R<T>>, IEquat
     public static bool operator ==(R<T> other, RW<T> self) => self.Value.Equals(other.Value);
 
     /// <inheritdoc cref="Equals(T)"/>
-    public static bool operator !=(R<T> self, RW<T> other) => !self.Equals(other);
+    public static bool operator !=(R<T> self, RW<T> other) => self.Value.Equals(other.Value);
 
     
     #endregion

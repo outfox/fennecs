@@ -25,11 +25,11 @@ public partial record Stream<C0>
                do
                {
                    var s0 = join.Select;
-                   var span0 = s0.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]));
+                       action(new(in span0[i], in type0, in entity));
                    }
                } while (join.Iterate());
            }
@@ -54,11 +54,11 @@ public partial record Stream<C0>
                do
                {
                    var s0 = join.Select;
-                   var span0 = s0.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity));
                    }
                } while (join.Iterate());
            }
@@ -83,11 +83,11 @@ public partial record Stream<C0>
                do
                {
                    var s0 = join.Select;
-                   var span0 = s0.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]));
+                       action(uniform, new(in span0[i], in type0, in entity));
                    }
                } while (join.Iterate());
            }
@@ -112,11 +112,11 @@ public partial record Stream<C0>
                do
                {
                    var s0 = join.Select;
-                   var span0 = s0.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity));
                    }
                } while (join.Iterate());
            }
@@ -145,7 +145,7 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -174,7 +174,7 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -203,7 +203,7 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -232,7 +232,7 @@ public partial record Stream<C0>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -262,11 +262,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity));
                    }
                } while (join.Iterate());
            }
@@ -291,11 +291,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity));
                    }
                } while (join.Iterate());
            }
@@ -320,11 +320,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity));
                    }
                } while (join.Iterate());
            }
@@ -349,11 +349,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity));
                    }
                } while (join.Iterate());
            }
@@ -378,11 +378,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -407,11 +407,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -436,11 +436,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -465,11 +465,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -494,11 +494,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity));
                    }
                } while (join.Iterate());
            }
@@ -523,11 +523,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity));
                    }
                } while (join.Iterate());
            }
@@ -552,11 +552,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity));
                    }
                } while (join.Iterate());
            }
@@ -581,11 +581,11 @@ public partial record Stream<C0, C1>
                do
                {
                    var (s0, s1) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity));
                    }
                } while (join.Iterate());
            }
@@ -614,7 +614,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -643,7 +643,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -672,7 +672,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -701,7 +701,7 @@ public partial record Stream<C0, C1>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -731,11 +731,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -760,11 +760,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -789,11 +789,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -818,11 +818,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -847,11 +847,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -876,11 +876,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -905,11 +905,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -934,11 +934,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -963,11 +963,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -992,11 +992,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1021,11 +1021,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1050,11 +1050,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1079,11 +1079,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1108,11 +1108,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1137,11 +1137,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1166,11 +1166,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1195,11 +1195,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1224,11 +1224,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1253,11 +1253,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1282,11 +1282,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1311,11 +1311,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1340,11 +1340,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1369,11 +1369,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1398,11 +1398,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1427,11 +1427,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1456,11 +1456,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1485,11 +1485,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1514,11 +1514,11 @@ public partial record Stream<C0, C1, C2>
                do
                {
                    var (s0, s1, s2) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1547,7 +1547,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1576,7 +1576,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1605,7 +1605,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1634,7 +1634,7 @@ public partial record Stream<C0, C1, C2>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1664,11 +1664,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1693,11 +1693,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1722,11 +1722,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1751,11 +1751,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1780,11 +1780,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1809,11 +1809,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1838,11 +1838,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1867,11 +1867,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -1896,11 +1896,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1925,11 +1925,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1954,11 +1954,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -1983,11 +1983,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2012,11 +2012,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2041,11 +2041,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2070,11 +2070,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2099,11 +2099,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2128,11 +2128,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2157,11 +2157,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2186,11 +2186,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2215,11 +2215,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2244,11 +2244,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2273,11 +2273,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2302,11 +2302,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2331,11 +2331,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2360,11 +2360,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2389,11 +2389,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2418,11 +2418,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2447,11 +2447,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2476,11 +2476,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2505,11 +2505,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2534,11 +2534,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2563,11 +2563,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2592,11 +2592,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2621,11 +2621,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2650,11 +2650,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2679,11 +2679,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2708,11 +2708,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2737,11 +2737,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2766,11 +2766,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2795,11 +2795,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2824,11 +2824,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2853,11 +2853,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2882,11 +2882,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2911,11 +2911,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -2940,11 +2940,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2969,11 +2969,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -2998,11 +2998,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3027,11 +3027,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3056,11 +3056,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3085,11 +3085,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3114,11 +3114,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3143,11 +3143,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3172,11 +3172,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3201,11 +3201,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3230,11 +3230,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3259,11 +3259,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3288,11 +3288,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3317,11 +3317,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3346,11 +3346,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3375,11 +3375,11 @@ public partial record Stream<C0, C1, C2, C3>
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3408,7 +3408,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3437,7 +3437,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3466,7 +3466,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3495,7 +3495,7 @@ public partial record Stream<C0, C1, C2, C3>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3525,11 +3525,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3554,11 +3554,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3583,11 +3583,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3612,11 +3612,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3641,11 +3641,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3670,11 +3670,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3699,11 +3699,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3728,11 +3728,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3757,11 +3757,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3786,11 +3786,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3815,11 +3815,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3844,11 +3844,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -3873,11 +3873,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3902,11 +3902,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3931,11 +3931,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3960,11 +3960,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -3989,11 +3989,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4018,11 +4018,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4047,11 +4047,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4076,11 +4076,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4105,11 +4105,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4134,11 +4134,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4163,11 +4163,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4192,11 +4192,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4221,11 +4221,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4250,11 +4250,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4279,11 +4279,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4308,11 +4308,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4337,11 +4337,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4366,11 +4366,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4395,11 +4395,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4424,11 +4424,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4453,11 +4453,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4482,11 +4482,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4511,11 +4511,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4540,11 +4540,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4569,11 +4569,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4598,11 +4598,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4627,11 +4627,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4656,11 +4656,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4685,11 +4685,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4714,11 +4714,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4743,11 +4743,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4772,11 +4772,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4801,11 +4801,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4830,11 +4830,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4859,11 +4859,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4888,11 +4888,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -4917,11 +4917,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4946,11 +4946,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -4975,11 +4975,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5004,11 +5004,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5033,11 +5033,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5062,11 +5062,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5091,11 +5091,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5120,11 +5120,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5149,11 +5149,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5178,11 +5178,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5207,11 +5207,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5236,11 +5236,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5265,11 +5265,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5294,11 +5294,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5323,11 +5323,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5352,11 +5352,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i]), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(in span0[i], in type0, in entity), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5381,11 +5381,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5410,11 +5410,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5439,11 +5439,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5468,11 +5468,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5497,11 +5497,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5526,11 +5526,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5555,11 +5555,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5584,11 +5584,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5613,11 +5613,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5642,11 +5642,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5671,11 +5671,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5700,11 +5700,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5729,11 +5729,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5758,11 +5758,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5787,11 +5787,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5816,11 +5816,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5845,11 +5845,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5874,11 +5874,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5903,11 +5903,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5932,11 +5932,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -5961,11 +5961,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -5990,11 +5990,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6019,11 +6019,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6048,11 +6048,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6077,11 +6077,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6106,11 +6106,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6135,11 +6135,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6164,11 +6164,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6193,11 +6193,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6222,11 +6222,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6251,11 +6251,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6280,11 +6280,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i]), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(in span1[i], in type1, in entity), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6309,11 +6309,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6338,11 +6338,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6367,11 +6367,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6396,11 +6396,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6425,11 +6425,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6454,11 +6454,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6483,11 +6483,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6512,11 +6512,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6541,11 +6541,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6570,11 +6570,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6599,11 +6599,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6628,11 +6628,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6657,11 +6657,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6686,11 +6686,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6715,11 +6715,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6744,11 +6744,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i]), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(in span2[i], in type2, in entity), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6773,11 +6773,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6802,11 +6802,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6831,11 +6831,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6860,11 +6860,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -6889,11 +6889,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6918,11 +6918,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6947,11 +6947,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -6976,11 +6976,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var span4 = s4.Span; var type4 = s4.Expression;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i]), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(in span3[i], in type3, in entity), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -7005,11 +7005,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -7034,11 +7034,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -7063,11 +7063,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -7092,11 +7092,11 @@ public partial record Stream<C0, C1, C2, C3, C4>
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
-                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span;
+                   var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i]));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(in span4[i], in type4, in entity));
                    }
                } while (join.Iterate());
            }
@@ -7125,7 +7125,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -7154,7 +7154,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -7183,7 +7183,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }
@@ -7212,7 +7212,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
                    for (var i = 0; i < count; i++)
                    {
                        var entity = table[i];
-                       action(new(in entity), uniform, new(ref span0[i], ref writes[i], in entity, in type0), new(ref span1[i], ref writes[i], in entity, in type1), new(ref span2[i], ref writes[i], in entity, in type2), new(ref span3[i], ref writes[i], in entity, in type3), new(ref span4[i], ref writes[i], in entity, in type4));
+                       action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref writes[i]), new(ref span1[i], in type1, in entity, ref writes[i]), new(ref span2[i], in type2, in entity, ref writes[i]), new(ref span3[i], in type3, in entity, ref writes[i]), new(ref span4[i], in type4, in entity, ref writes[i]));
                    }
                } while (join.Iterate());
            }

@@ -19,7 +19,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     /// <summary>
     /// Read-write access to a component.
     /// </summary>
-    internal RW(ref T value, ref bool modified, ref readonly Entity entity, ref readonly TypeExpression expression)
+    internal RW(ref T value, ref readonly TypeExpression expression, ref readonly Entity entity, ref bool modified)
     {
         _modified = ref modified;
         _entity = ref entity;
@@ -108,11 +108,9 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     /// <summary>
     /// Equality comparison (Component)
     /// </summary>
-    [OverloadResolutionPriority(9001)]
     public static bool operator ==(RW<T> self, RW<T> other) => self.Equals(other);
 
     /// <inheritdoc cref="Equals(T)"/>
-    [OverloadResolutionPriority(9001)]
     public static bool operator !=(RW<T> self, RW<T> other) => !(self == other);
 
     /// <inheritdoc cref="Equals(T)"/>

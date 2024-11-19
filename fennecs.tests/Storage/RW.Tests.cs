@@ -14,7 +14,7 @@ public class RWTests
         var x = 1;
         var type = TypeExpression.Of<int>(default);
         var b = false;
-        var rw = new RW<int>(ref x, ref b, in entity, in type);
+        var rw = new RW<int>(ref x, in type, in entity, ref b);
         
         Assert.Equal(1, rw.read);
     }
@@ -28,7 +28,7 @@ public class RWTests
         var x = 1;
         var type = TypeExpression.Of<int>(default);
         var b = false;
-        var rw = new RW<int>(ref x, ref b, in entity, in type);
+        var rw = new RW<int>(ref x, in type, in entity, ref b);
         
         Assert.Equal(1, rw);
     }
@@ -44,7 +44,7 @@ public class RWTests
         var type = TypeExpression.Of<int>(default);
         var b = false;
         // ReSharper disable once UseObjectOrCollectionInitializer
-        var rw = new RW<int>(ref x, ref b, in entity, in type);
+        var rw = new RW<int>(ref x, in type, in entity, ref b);
         rw.write = 2; // user usually does not use initializer code
         
         Assert.Equal(2, rw.read);
@@ -61,7 +61,7 @@ public class RWTests
 
         var type = TypeExpression.Of<int>(default);
         var b = false;
-        var rw = new RW<int>(ref x, ref b, in entity, in type);
+        var rw = new RW<int>(ref x, in type, in entity, ref b);
         
         Assert.Equal(77, rw.consume);
         Assert.False(entity.Has<int>());
@@ -81,7 +81,7 @@ public class RWTests
         Assert.True(entity.Has<int>(target));
 
         var b = false;
-        var rw = new RW<int>(ref x, ref b, in entity, in type);
+        var rw = new RW<int>(ref x, in type, in entity, ref b);
         
         Assert.Equal(77, rw.consume);
         Assert.False(entity.Has<int>(target));
@@ -101,7 +101,7 @@ public class RWTests
         var type = TypeExpression.Of<int>(default);
         
         var b = false;
-        var rw = new RW<int>(ref x, ref b, in entity, in type);
+        var rw = new RW<int>(ref x, in type, in entity, ref b);
         rw.Remove();
         Assert.False(entity.Has<int>());
     }

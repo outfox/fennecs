@@ -11,13 +11,11 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <PlatformTarget>x64</PlatformTarget>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug|AnyCPU' ">
       <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <PlatformTarget>x64</PlatformTarget>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release|AnyCPU' ">
       <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     </PropertyGroup>
 

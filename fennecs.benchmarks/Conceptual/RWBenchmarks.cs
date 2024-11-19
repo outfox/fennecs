@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
+using CodegenCS;
 using fennecs;
 using fennecs.storage;
 
@@ -169,7 +170,8 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     public void New(TestAction<C1, C2> action)
     {
         var match = default(TypeExpression);
-        for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], new RW<C2>(ref Data2[i], ref entities[i], ref match));
+        var written = false;
+        for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], new RW<C2>(ref Data2[i], in match, in entities[i], ref written));
     }
 
     [OverloadResolutionPriority(2)]
@@ -190,7 +192,8 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     public void New(TestAction3<C1, C2> action)
     {
         var match = default(TypeExpression);
-        for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], new RW<C2>(ref Data2[i], ref entities[i], ref match));
+        var written = false;
+        for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], new RW<C2>(ref Data2[i], in match, in entities[i], ref written));
     }
 
     public void Old(EntityComponentAction<C1, C2> action)
@@ -208,19 +211,24 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     public void New(ComponentActionWW<C1, C2> action)
     {
         var match = default(TypeExpression);
+        var written1 = false;
+        var written2 = false;
+
         for (var i = 0; i < Count; i++)
         {
-            action(new(ref Data1[i], ref entities[i], ref match), new(ref Data2[i], ref entities[i], ref match));
+            action(new(ref Data1[i], in match, in entities[i], ref written1), new(ref Data2[i], in match, in entities[i], ref written2));
         }
     }
     [OverloadResolutionPriority(1)]
     public void New(ComponentActionRW<C1, C2> action)
     {
         var match = TypeExpression.Of<C2>(Match.Any);
+        var written1 = false;
+        var written2 = false;
         for (var i = 0; i < Count; i++)
         {
-            var ref1 = new R<C1>(ref Data1[i]);
-            var ref2 = new RW<C2>(ref Data2[i], ref entities[i], ref match);
+            var ref1 = new R<C1>(in Data1[i], in match, in entities[i]);
+            var ref2 = new RW<C2>(ref Data2[i], in match, in entities[i], ref written2);
             action(ref1, ref2);
         }
     }
@@ -229,10 +237,11 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     public void New(ComponentActionWR<C1, C2> action)
     {
         var match = default(TypeExpression);
+        var written1 = false;
         for (var i = 0; i < Count; i++)
         {
-            var ref1 = new RW<C1>(ref Data1[i], ref entities[i], in match);
-            var ref2 = new R<C2>(ref Data2[i]);
+            var ref1 = new RW<C1>(ref Data1[i], in match, in entities[i], ref written1);
+            var ref2 = new R<C2>(in Data2[i], in match, in entities[i]);
             action(ref1, ref2);
         }
     }
@@ -241,10 +250,11 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     public void NewRo(ComponentActionWR<C1, C2> action)
     {
         var match = TypeExpression.Of<C1>(Match.Any);
+        var written1 = false;
         for (var i = 0; i < Count; i++)
         {
-            var ref1 = new RW<C1>(ref Data1[i], ref entities[i], ref match);
-            var ref2 = new R<C2>(ref Data2[i]);
+            var ref1 = new RW<C1>(ref Data1[i], ref match, in entities[i], ref written1);
+            var ref2 = new R<C2>(in Data2[i], in match, in entities[i]);
             action(ref1, ref2);
         }
     }

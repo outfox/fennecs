@@ -94,7 +94,7 @@ file class StreamsForGenerator
         for (var i = 0; i < width; i++)
         {
             deconstruct.Append($"var span{i} = s{i}.Span; ");
-            if (pattern[i] == 'W') deconstruct.Append($"var type{i} = s{i}.Expression; ");
+            deconstruct.Append($"var type{i} = s{i}.Expression; ");
         }
         return deconstruct.ToString();
     }
@@ -117,8 +117,8 @@ file class StreamsForGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], ref writes[i], in entity, in type{index})",
-                    'R' => $"new(ref span{index}[i])",
+                    'W' => $"new(ref span{index}[i], in type{index}, in entity, ref writes[i])",
+                    'R' => $"new(in span{index}[i], in type{index}, in entity)",
                     _ => throw new NotImplementedException(),
                 }
             );
