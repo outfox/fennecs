@@ -40,15 +40,20 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     /// Read access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public ref readonly T read => ref Value;
-    
-    
+    public ref readonly T read
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => ref Value;
+    }
+
+
     /// <summary>
     /// Write access to the component's value.
     /// </summary>
     // ReSharper disable once InconsistentNaming
     public ref T write
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
             // JIT Optimizes away the write and type checks if it's not a modifiable type.

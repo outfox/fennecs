@@ -218,16 +218,15 @@ file class JobsGenerator
                   public void Execute() 
                   {
                       var identities = MemoryE.Span;
+                      var count = identities.Length;
+                      
                       {{deconstruction}}
               
                       Span<bool> writes = stackalloc bool[{{width}}];
-                      var count = identities.Length;
                       for (var i = 0; i < count; i++)
                       {
-                         
                          var entity = new Entity(World, identities[i]);
                          Action({{invocationParams}});
-                         
                       }
                       CountDown.Signal();
                   }

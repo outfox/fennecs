@@ -177,14 +177,12 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(2)]
     public void New(TestAction2<C1, C2> action)
     {
-        var match = default(TypeExpression);
         for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], ref Data2[i]);
     }
 
     [OverloadResolutionPriority(1)]
     public void New(TestAction4<C1, C2> action)
     {
-        var match = default(TypeExpression);
         for (var i = 0; i < Count; i++) action(in entities[i], in Data1[i], out Data2[i]);
     }
 
@@ -223,7 +221,6 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     public void New(ComponentActionRW<C1, C2> action)
     {
         var match = TypeExpression.Of<C2>(Match.Any);
-        var written1 = false;
         var written2 = false;
         for (var i = 0; i < Count; i++)
         {
@@ -262,7 +259,6 @@ internal readonly record struct BenchStream2<C1, C2>(int Count)
     [OverloadResolutionPriority(3)]
     public void New(ComponentActionRR<C1, C2> action)
     {
-        var match = default(TypeExpression);
         for (var i = 0; i < Count; i++)
         {
             var ref1 = new R<C1>(in Data1[i]);

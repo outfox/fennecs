@@ -3,8 +3,18 @@ using fennecs;
 
 namespace fennecs_Components
 {
-    internal record struct Component1(float Value);
-    internal record struct Component2(float Value);
-    internal record struct Component3(float Value);
+    internal struct Component1(int value)
+    {
+        public int Value = value;
+    }
+    internal struct Component2(int value)
+    {
+        public int Value = value;
+    }
+    internal struct Component3(int value)
+    {
+        public int Value = value;
+    }
+        
 }
     

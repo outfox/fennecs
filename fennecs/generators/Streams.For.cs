@@ -117,7 +117,7 @@ file class StreamsForGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in type{index}, in entity, ref write{index})",
+                    'W' => $"new(ref span{index}[i], in type{index}, in entity, ref bc{index})",
                     'R' => $"new(in span{index}[i])",
                     _ => throw new NotImplementedException(),
                 }
@@ -177,16 +177,18 @@ file class StreamsForGenerator
                              using var join = table.CrossJoin<{{TypeParams(width)}}>(StreamTypes.AsSpan());
                              if (join.Empty) continue;
                              
-                             {{Writes(width)}}
+                             {{BackChannels(width)}}
               
-                             var count = table.Count;
+                             var entities = table.Entities; 
+                             var count = table.Entities.Length;
+                             
                              do
                              {
                                  var {{Select(width)}} = join.Select;
                                  {{Deconstruct(width, pattern)}}
                                  for (var i = 0; i < count; i++)
                                  {   
-                                     var entity = table[i];
+                                     var entity = new Entity(World, entities[i]);    
                                      action({{InvocationParameters(entity, uniform, pattern)}}); 
                                  }
                              } while (join.Iterate());
@@ -197,12 +199,13 @@ file class StreamsForGenerator
               """;
     }
 
-    private static string Writes(int width)
+    private static string BackChannels(int width)
     {
         var writes = new StringBuilder();
         for (var i = 0; i < width; i++)
         {
-            writes.Append($"bool write{i} = false; ");
+            //writes.Append($"ushort bc{i}; ");
+            writes.Append($"bool bc{i} = false; ");
         }
         return writes.ToString();
     }

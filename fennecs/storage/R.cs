@@ -9,7 +9,10 @@ namespace fennecs.storage;
 
 public readonly ref struct R<T> : IEquatable<R<T>>, IEquatable<T> where T : notnull
 {
-    internal readonly ref readonly T Value;
+    /// <summary>
+    /// Read-only access to component's value.
+    /// </summary>
+    public readonly ref readonly T read;
 
     //private readonly ref readonly Entity _entity;
     //private readonly ref readonly TypeExpression _expression;
@@ -17,20 +20,14 @@ public readonly ref struct R<T> : IEquatable<R<T>>, IEquatable<T> where T : notn
     /// <summary>
     /// Read-only access to a component.
     /// </summary>
-    internal R(in T value/*, in TypeExpression expression, in Entity entity*/)
+    internal R(ref readonly T read)
     {
+        this.read = ref read;
         //_entity = ref entity;
         //_expression = ref expression;
-        Value = ref value;
     }
 
     //internal TypeExpression Expression => _expression;
-    
-    /// <summary>
-    /// Read access to the component's value.
-    /// </summary>
-    // ReSharper disable once InconsistentNaming
-    public ref readonly T read => ref Value;
 
     /// <summary>
     /// Implicitly casts a <see cref="R{T}"/> to its underlying value.
@@ -54,10 +51,10 @@ public readonly ref struct R<T> : IEquatable<R<T>>, IEquatable<T> where T : notn
 
     
     /// <inheritdoc cref="Equals(T)"/>
-    public static bool operator ==(R<T> other, RW<T> self) => self.Value.Equals(other.Value);
+    public static bool operator ==(R<T> other, RW<T> self) => self.Value.Equals(other.read);
 
     /// <inheritdoc cref="Equals(T)"/>
-    public static bool operator !=(R<T> self, RW<T> other) => self.Value.Equals(other.Value);
+    public static bool operator !=(R<T> self, RW<T> other) => self.read.Equals(other.Value);
 
     
     #endregion
@@ -65,22 +62,22 @@ public readonly ref struct R<T> : IEquatable<R<T>>, IEquatable<T> where T : notn
     #region IEquatable
 
     /// <inheritdoc />
-    public bool Equals(R<T> other) => Value.Equals(other.Value);
+    public bool Equals(R<T> other) => read.Equals(other.read);
 
     /// <inheritdoc />
-    public bool Equals(T? other) => other != null && Value.Equals(other);
+    public bool Equals(T? other) => other != null && read.Equals(other);
 
     /// <inheritdoc />
     public override bool Equals([NotNullWhen(true)] object? obj)
     {
-        return obj != null && obj.Equals(Value);
+        return obj != null && obj.Equals(read);
     }
 
     #endregion
     
     /// <inheritdoc />
-    public override int GetHashCode() => Value.GetHashCode();
+    public override int GetHashCode() => read.GetHashCode();
     /// <inheritdoc />
-    public override string ToString() => $"R<{typeof(T)}>({Value.ToString()})";
+    public override string ToString() => $"R<{typeof(T)}>({read.ToString()})";
     
 }

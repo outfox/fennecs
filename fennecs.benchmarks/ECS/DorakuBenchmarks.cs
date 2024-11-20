@@ -76,14 +76,48 @@ public class DorakuBenchmarks
     /// </summary>
     private static void Workload(RW<Component1> c1,R<Component2> c2, R<Component3> c3)
     {
-        c1.write.Value = c1.read.Value + c2.read.Value + c3.read.Value;
+        c1.write.Value = c1.write.Value + c2.read.Value + c3.read.Value;
+    }
+
+    [BenchmarkCategory("fennecs")]
+    [Benchmark(Description = "fennecs (For SD)")]
+    public void fennecs_ForSD()
+    {
+        _query.For(static delegate(RW<Component1> c1, R<Component2> c2, R<Component3> c3) { c1.write.Value += c2.read.Value + c3.read.Value; });
+    }
+
+    [BenchmarkCategory("fennecs")]
+    [Benchmark(Description = "fennecs (For in Future)")]
+    public void fennecs_For_InFuture()
+    {
+        _query.For((in Stream<Component1,Component2,Component3>.EntityFuture future) =>
+        {
+            future.Component0.Value += future.Component1.Value + future.Component2.Value;
+        });
+    }
+
+    [BenchmarkCategory("fennecs")]
+    [Benchmark(Description = "fennecs (For Future)")]
+    public void fennecs_ForFuture()
+    {
+        _query.For((future) =>
+        {
+            future.Component0.Value += future.Component1.Value + future.Component2.Value;
+        });
     }
 
     [BenchmarkCategory("fennecs")]
     [Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
-        _query.For(static delegate(RW<Component1> c1, R<Component2> c2, R<Component3> c3) { c1.write.Value += c2.read.Value + c3.read.Value; });
+        _query.For(static (c1, c2, c3) => { c1.write.Value += c2.write.Value + c3.write.Value; });
+    }
+
+    [BenchmarkCategory("fennecs")]
+    [Benchmark(Description = "fennecs (For NC)")]
+    public void fennecs_ForNC()
+    {
+        _query.For(static (c1, c2, c3) => { c1.write.Value = c1.write.Value + c2.read.Value + c3.read.Value; });
     }
 
 
@@ -157,9 +191,9 @@ public class DorakuBenchmarks
         _query.Raw(Raw_Workload_AVX2);
     }
 
-
+    
     [BenchmarkCategory("fennecs", "Tensor")]
-    [Benchmark(Description = "fennecs (Raw Tensor)")]
+    //[Benchmark(Description = "fennecs (Raw Tensor)")]
     public void fennecs_Raw_Tenor()
     {
         // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
@@ -285,18 +319,18 @@ public class DorakuBenchmarks
 
         unsafe
         {
-            var p1 = (float*) mem1.Pointer;
-            var p2 = (float*) mem2.Pointer;
-            var p3 = (float*) mem3.Pointer;
+            var p1 = (int*) mem1.Pointer;
+            var p2 = (int*) mem2.Pointer;
+            var p3 = (int*) mem3.Pointer;
 
-            var vectorSize = Vector256<float>.Count;
+            var vectorSize = Vector256<int>.Count;
             var vectorEnd = count - count % vectorSize;
             for (var i = 0; i <= vectorEnd; i += vectorSize)
             {
                 var v1 = Avx.LoadVector256(p1 + i);
                 var v2 = Avx.LoadVector256(p2 + i);
                 var v3 = Avx.LoadVector256(p3 + i);
-                var sum = Avx.Add(v1, Avx.Add(v2, v3));
+                var sum = Avx2.Add(v1, Avx2.Add(v2, v3));
 
                 Avx.Store(p1 + i, sum);
             }
@@ -329,21 +363,21 @@ public class DorakuBenchmarks
 
         unsafe
         {
-            var p1 = (float*) mem1.Pointer;
-            var p2 = (float*) mem2.Pointer;
-            var p3 = (float*) mem3.Pointer;
+            var p1 = (int*) mem1.Pointer;
+            var p2 = (int*) mem2.Pointer;
+            var p3 = (int*) mem3.Pointer;
 
-            var vectorSize = Vector128<float>.Count;
+            var vectorSize = Vector128<int>.Count;
             var i = range.Item1;
             var vectorEnd = range.Item2 - vectorSize;
             for (; i <= vectorEnd; i += vectorSize)
             {
-                var v1 = Sse.LoadVector128(p1 + i);
-                var v2 = Sse.LoadVector128(p2 + i);
-                var v3 = Sse.LoadVector128(p3 + i);
-                var sum = Sse.Add(v1, Sse.Add(v2, v3));
+                var v1 = Sse2.LoadVector128(p1 + i);
+                var v2 = Sse2.LoadVector128(p2 + i);
+                var v3 = Sse2.LoadVector128(p3 + i);
+                var sum = Sse2.Add(v1, Sse2.Add(v2, v3));
 
-                Sse.Store(p1 + i, sum);
+                Sse2.Store(p1 + i, sum);
             }
 
             for (; i < range.Item2; i++) // remaining elements
@@ -363,11 +397,11 @@ public class DorakuBenchmarks
 
         unsafe
         {
-            var p1 = (float*) mem1.Pointer;
-            var p2 = (float*) mem2.Pointer;
-            var p3 = (float*) mem3.Pointer;
+            var p1 = (int*) mem1.Pointer;
+            var p2 = (int*) mem2.Pointer;
+            var p3 = (int*) mem3.Pointer;
 
-            var vectorSize = Vector128<float>.Count;
+            var vectorSize = Vector128<int>.Count;
             var i = range.Item1;
             var vectorEnd = range.Item2 - vectorSize;
             for (; i <= vectorEnd; i += vectorSize)

@@ -12,7 +12,7 @@ using BenchmarkDotNet.Running;
 var config = ManualConfig
     .Create(DefaultConfig.Instance)
     .WithOptions(ConfigOptions.JoinSummary)
-    .HideColumns("Job", "Error", "Median", "RatioSD");
+    .HideColumns("Job", "Error", "Median", "entityPadding", "RatioSD", "Completed Work Items", "Lock Contentions", "Alloc Ratio");
 
 var jobs = new List<Job>([
     Job.ShortRun.WithId("Default").WithRuntime(CoreRuntime.Core90), 
