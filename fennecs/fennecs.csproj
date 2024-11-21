@@ -31,7 +31,7 @@
         <Nullable>enable</Nullable>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        
+        <UseWindowsThreadPool>true</UseWindowsThreadPool>
     </PropertyGroup>
 
     <PropertyGroup>

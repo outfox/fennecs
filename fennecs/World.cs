@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -41,6 +40,8 @@ public partial class World
     private readonly object _modeChangeLock = new();
     private int _locks;
 
+    internal static int Concurrency => Environment.ProcessorCount-2;
+    
     internal WorldMode Mode { get; private set; } = WorldMode.Immediate;
 
 

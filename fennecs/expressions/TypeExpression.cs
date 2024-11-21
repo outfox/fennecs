@@ -22,7 +22,7 @@ namespace fennecs;
 /// <para> If <see cref="fennecs.Identity.Object"/>, the type expression acts as a Wildcard 
 ///   expression that matches ONLY entity-object relations.</para>
 /// </remarks>
-internal readonly record struct TypeExpression : IComparable<TypeExpression>
+public readonly record struct TypeExpression : IComparable<TypeExpression>
 {
     //private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId, default)
     //{ }

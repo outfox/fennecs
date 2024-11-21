@@ -8,7 +8,7 @@ namespace fennecs.storage;
 /// <summary>
 /// Generic Storage Interface (with boxing).
 /// </summary>
-internal interface IStorage
+public interface IStorage
 {
     /// <summary>
     /// The number of elements currently stored.
@@ -103,17 +103,27 @@ internal interface IStorage
 /// A front-end to System.Array for fast storage write and blit operations.
 /// </summary>
 /// <typeparam name="T">the type of the array elements</typeparam>
-internal class Storage<T>(TypeExpression expression) : IStorage where T : notnull
+public class Storage<T> : IStorage where T : notnull
 {
     public Storage() : this(TypeExpression.Of<T>(default)) { }
     
-    public TypeExpression Expression { get; } = expression;
+    public TypeExpression Expression { get; }
     
     private const int InitialCapacity = 32;
         
     private static readonly ArrayPool<T> Pool = ArrayPool<T>.Create();
     
     private T[] _data = Pool.Rent(InitialCapacity);
+
+    /// <summary>
+    /// A front-end to System.Array for fast storage write and blit operations.
+    /// </summary>
+    /// <typeparam name="T">the type of the array elements</typeparam>
+    public Storage(TypeExpression expression)
+    {
+        using var _ = PooledList<Storage<T>>.Rent();        
+        Expression = expression;
+    }
 
     /// <summary>
     /// Replaces the value at the given index.
@@ -351,27 +361,36 @@ internal class Storage<T>(TypeExpression expression) : IStorage where T : notnul
     /// <summary>
     /// Returns a Memory handle to a section of the contained data.
     /// </summary>
-    public MemoryRW<T> AsMemory(int start, int length) => new(_data.AsMemory(start, length));
-
+    public Memory<T> ActualMemory() => _data.AsMemory(0, Count);
+    
+    //public ReadOnlyMemory<T> ActualMemory() => _data.AsMemory(0, Count);
+    
     /// <summary>
     /// Returns a ReadOnlyMemory handle to a section of the contained data.
     /// </summary>
-    public MemoryR<T> AsReadOnlyMemory(int start, int length) => new(_data.AsMemory(start, length));
+    public MemoryR<T> AsReadOnlyMemory(int start, int length) => new(this, start, length);
 
     /// <summary>
     /// Returns a ReadOnlyMemory handle to the entire contained data.
     /// </summary>
-    public MemoryR<T> AsReadOnlyMemory() => new(_data.AsMemory(0, Count));
+    public MemoryR<T> AsReadOnlyMemory() => new(this, 0, Count);
 
     /// <summary>
     /// Returns a Memory handle to the entire contained data.
     /// </summary>
-    public MemoryRW<T> AsMemory() => new(_data.AsMemory(0, Count));
+    public MemoryRW<T> AsMemory() => new(this, 0, Count);
+
+    /// <summary>
+    /// Returns a Memory handle to the entire contained data.
+    /// </summary>
+    public MemoryRW<T> AsMemory(int start, int count) => new(this, start, count);
 
     /// <summary>
     /// Returns a span representation of the actually contained data.
     /// </summary>
     public Span<T> Span => _data.AsSpan(0, Count);
+
+    public Span<T> FastSpan(int start, int count) => _data.AsSpan(start, count);
 
     private Span<T> FullSpan => _data.AsSpan();
 

@@ -9,7 +9,7 @@ namespace fennecs;
 /// <c>ImmutableSortedSet&lt;TypeExpression&gt;</c> whose hash code is a combination of its elements' hashes.
 /// TODO: Maybe can be simplified to just use the underlying <c>ImmutableSortedSet</c> directly.
 /// </summary>
-internal readonly record struct Signature : IEnumerable<TypeExpression>, IComparable<Signature>
+public readonly record struct Signature : IEnumerable<TypeExpression>, IComparable<Signature>
 {
     private readonly ImmutableSortedSet<TypeExpression> _set = ImmutableSortedSet<TypeExpression>.Empty;
     

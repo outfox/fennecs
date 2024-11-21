@@ -19,7 +19,7 @@ public partial record Stream<C0>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -55,10 +55,12 @@ public partial record Stream<C0>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -74,7 +76,7 @@ public partial record Stream<C0>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -110,10 +112,12 @@ public partial record Stream<C0>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -129,7 +133,7 @@ public partial record Stream<C0>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -165,10 +169,12 @@ public partial record Stream<C0>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -184,7 +190,7 @@ public partial record Stream<C0>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -220,10 +226,12 @@ public partial record Stream<C0>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -239,7 +247,7 @@ public partial record Stream<C0>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -275,10 +283,12 @@ public partial record Stream<C0>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -294,7 +304,7 @@ public partial record Stream<C0>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -330,10 +340,12 @@ public partial record Stream<C0>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -349,7 +361,7 @@ public partial record Stream<C0>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -385,10 +397,12 @@ public partial record Stream<C0>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -404,7 +418,7 @@ public partial record Stream<C0>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -440,10 +454,12 @@ public partial record Stream<C0>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -464,7 +480,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -500,10 +516,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -519,7 +537,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -555,10 +573,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -574,7 +594,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -610,10 +630,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -629,7 +651,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -665,10 +687,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -684,7 +708,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -720,10 +744,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -739,7 +765,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -775,10 +801,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -794,7 +822,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -830,10 +858,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -849,7 +879,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -885,10 +915,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -904,7 +936,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -940,10 +972,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -959,7 +993,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -995,10 +1029,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1014,7 +1050,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1050,10 +1086,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1069,7 +1107,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1105,10 +1143,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1124,7 +1164,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1160,10 +1200,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1179,7 +1221,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1215,10 +1257,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1234,7 +1278,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1270,10 +1314,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1289,7 +1335,7 @@ public partial record Stream<C0, C1>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1325,10 +1371,12 @@ public partial record Stream<C0, C1>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1349,7 +1397,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1385,10 +1433,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1404,7 +1454,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1440,10 +1490,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1459,7 +1511,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1495,10 +1547,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1514,7 +1568,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1550,10 +1604,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1569,7 +1625,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1605,10 +1661,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1624,7 +1682,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1660,10 +1718,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1679,7 +1739,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1715,10 +1775,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1734,7 +1796,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1770,10 +1832,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1789,7 +1853,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1825,10 +1889,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1844,7 +1910,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1880,10 +1946,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1899,7 +1967,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1935,10 +2003,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -1954,7 +2024,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -1990,10 +2060,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2009,7 +2081,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2045,10 +2117,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2064,7 +2138,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2100,10 +2174,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2119,7 +2195,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2155,10 +2231,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2174,7 +2252,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2210,10 +2288,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2229,7 +2309,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2265,10 +2345,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2284,7 +2366,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2320,10 +2402,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2339,7 +2423,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2375,10 +2459,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2394,7 +2480,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2430,10 +2516,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2449,7 +2537,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2485,10 +2573,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2504,7 +2594,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2540,10 +2630,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2559,7 +2651,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2595,10 +2687,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2614,7 +2708,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2650,10 +2744,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2669,7 +2765,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2705,10 +2801,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2724,7 +2822,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2760,10 +2858,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2779,7 +2879,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2815,10 +2915,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2834,7 +2936,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2870,10 +2972,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2889,7 +2993,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2925,10 +3029,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2944,7 +3050,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -2980,10 +3086,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -2999,7 +3107,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3035,10 +3143,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3054,7 +3164,7 @@ public partial record Stream<C0, C1, C2>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3090,10 +3200,12 @@ public partial record Stream<C0, C1, C2>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3114,7 +3226,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3150,10 +3262,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3169,7 +3283,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3205,10 +3319,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3224,7 +3340,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3260,10 +3376,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3279,7 +3397,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3315,10 +3433,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3334,7 +3454,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3370,10 +3490,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3389,7 +3511,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3425,10 +3547,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3444,7 +3568,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3480,10 +3604,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3499,7 +3625,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3535,10 +3661,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3554,7 +3682,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3590,10 +3718,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3609,7 +3739,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3645,10 +3775,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3664,7 +3796,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3700,10 +3832,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3719,7 +3853,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3755,10 +3889,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3774,7 +3910,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3810,10 +3946,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3829,7 +3967,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3865,10 +4003,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3884,7 +4024,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3920,10 +4060,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3939,7 +4081,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -3975,10 +4117,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -3994,7 +4138,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4030,10 +4174,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4049,7 +4195,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4085,10 +4231,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4104,7 +4252,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4140,10 +4288,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4159,7 +4309,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4195,10 +4345,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4214,7 +4366,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4250,10 +4402,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4269,7 +4423,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4305,10 +4459,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4324,7 +4480,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4360,10 +4516,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4379,7 +4537,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4415,10 +4573,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4434,7 +4594,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4470,10 +4630,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4489,7 +4651,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4525,10 +4687,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4544,7 +4708,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4580,10 +4744,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4599,7 +4765,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4635,10 +4801,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4654,7 +4822,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4690,10 +4858,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4709,7 +4879,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4745,10 +4915,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4764,7 +4936,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4800,10 +4972,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4819,7 +4993,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4855,10 +5029,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4874,7 +5050,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4910,10 +5086,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4929,7 +5107,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -4965,10 +5143,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -4984,7 +5164,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5020,10 +5200,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5039,7 +5221,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5075,10 +5257,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5094,7 +5278,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5130,10 +5314,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5149,7 +5335,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5185,10 +5371,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5204,7 +5392,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5240,10 +5428,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5259,7 +5449,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5295,10 +5485,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5314,7 +5506,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5350,10 +5542,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5369,7 +5563,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5405,10 +5599,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5424,7 +5620,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5460,10 +5656,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5479,7 +5677,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5515,10 +5713,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5534,7 +5734,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5570,10 +5770,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5589,7 +5791,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5625,10 +5827,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5644,7 +5848,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5680,10 +5884,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5699,7 +5905,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5735,10 +5941,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5754,7 +5962,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5790,10 +5998,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5809,7 +6019,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5845,10 +6055,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5864,7 +6076,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5900,10 +6112,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5919,7 +6133,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -5955,10 +6169,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -5974,7 +6190,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6010,10 +6226,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6029,7 +6247,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6065,10 +6283,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6084,7 +6304,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6120,10 +6340,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6139,7 +6361,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6175,10 +6397,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6194,7 +6418,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6230,10 +6454,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6249,7 +6475,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6285,10 +6511,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6304,7 +6532,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6340,10 +6568,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6359,7 +6589,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6395,10 +6625,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6414,7 +6646,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6450,10 +6682,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6469,7 +6703,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6505,10 +6739,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6524,7 +6760,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6560,10 +6796,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6579,7 +6817,7 @@ public partial record Stream<C0, C1, C2, C3>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6615,10 +6853,12 @@ public partial record Stream<C0, C1, C2, C3>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6639,7 +6879,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6675,10 +6915,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6694,7 +6936,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6730,10 +6972,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6749,7 +6993,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6785,10 +7029,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6804,7 +7050,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6840,10 +7086,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6859,7 +7107,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6895,10 +7143,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6914,7 +7164,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -6950,10 +7200,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -6969,7 +7221,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7005,10 +7257,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7024,7 +7278,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7060,10 +7314,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7079,7 +7335,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7115,10 +7371,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7134,7 +7392,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7170,10 +7428,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7189,7 +7449,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7225,10 +7485,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7244,7 +7506,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7280,10 +7542,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7299,7 +7563,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7335,10 +7599,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7354,7 +7620,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7390,10 +7656,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7409,7 +7677,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7445,10 +7713,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7464,7 +7734,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7500,10 +7770,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7519,7 +7791,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7555,10 +7827,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7574,7 +7848,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7610,10 +7884,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7629,7 +7905,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7665,10 +7941,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7684,7 +7962,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7720,10 +7998,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7739,7 +8019,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7775,10 +8055,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7794,7 +8076,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7830,10 +8112,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7849,7 +8133,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7885,10 +8169,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7904,7 +8190,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7940,10 +8226,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -7959,7 +8247,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -7995,10 +8283,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8014,7 +8304,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8050,10 +8340,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8069,7 +8361,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8105,10 +8397,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8124,7 +8418,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8160,10 +8454,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8179,7 +8475,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8215,10 +8511,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8234,7 +8532,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8270,10 +8568,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8289,7 +8589,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8325,10 +8625,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8344,7 +8646,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8380,10 +8682,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8399,7 +8703,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8435,10 +8739,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8454,7 +8760,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8490,10 +8796,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8509,7 +8817,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8545,10 +8853,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8564,7 +8874,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8600,10 +8910,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8619,7 +8931,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8655,10 +8967,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8674,7 +8988,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8710,10 +9024,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8729,7 +9045,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8765,10 +9081,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8784,7 +9102,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8820,10 +9138,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8839,7 +9159,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8875,10 +9195,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8894,7 +9216,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8930,10 +9252,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -8949,7 +9273,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -8985,10 +9309,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9004,7 +9330,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9040,10 +9366,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9059,7 +9387,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9095,10 +9423,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9114,7 +9444,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9150,10 +9480,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9169,7 +9501,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9205,10 +9537,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9224,7 +9558,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9260,10 +9594,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9279,7 +9615,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9315,10 +9651,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9334,7 +9672,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9370,10 +9708,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9389,7 +9729,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9425,10 +9765,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9444,7 +9786,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9480,10 +9822,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9499,7 +9843,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9535,10 +9879,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9554,7 +9900,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9590,10 +9936,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9609,7 +9957,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9645,10 +9993,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9664,7 +10014,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9700,10 +10050,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9719,7 +10071,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9755,10 +10107,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9774,7 +10128,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9810,10 +10164,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9829,7 +10185,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9865,10 +10221,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9884,7 +10242,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9920,10 +10278,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9939,7 +10299,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -9975,10 +10335,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -9994,7 +10356,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10030,10 +10392,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10049,7 +10413,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10085,10 +10449,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10104,7 +10470,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10140,10 +10506,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10159,7 +10527,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10195,10 +10563,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10214,7 +10584,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10250,10 +10620,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10269,7 +10641,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10305,10 +10677,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10324,7 +10698,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10360,10 +10734,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10379,7 +10755,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10415,10 +10791,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10434,7 +10812,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10470,10 +10848,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10489,7 +10869,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10525,10 +10905,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10544,7 +10926,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10580,10 +10962,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10599,7 +10983,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10635,10 +11019,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10654,7 +11040,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10690,10 +11076,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10709,7 +11097,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10745,10 +11133,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10764,7 +11154,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10800,10 +11190,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10819,7 +11211,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10855,10 +11247,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10874,7 +11268,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10910,10 +11304,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10929,7 +11325,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -10965,10 +11361,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -10984,7 +11382,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11020,10 +11418,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11039,7 +11439,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11075,10 +11475,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11094,7 +11496,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11130,10 +11532,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11149,7 +11553,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11185,10 +11589,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11204,7 +11610,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11240,10 +11646,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11259,7 +11667,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11295,10 +11703,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11314,7 +11724,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11350,10 +11760,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11369,7 +11781,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11405,10 +11817,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11424,7 +11838,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11460,10 +11874,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11479,7 +11895,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11515,10 +11931,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11534,7 +11952,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11570,10 +11988,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11589,7 +12009,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11625,10 +12045,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11644,7 +12066,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11680,10 +12102,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11699,7 +12123,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11735,10 +12159,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11754,7 +12180,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11790,10 +12216,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11809,7 +12237,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11845,10 +12273,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11864,7 +12294,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11900,10 +12330,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11919,7 +12351,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -11955,10 +12387,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -11974,7 +12408,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12010,10 +12444,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12029,7 +12465,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12065,10 +12501,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12084,7 +12522,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12120,10 +12558,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12139,7 +12579,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12175,10 +12615,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12194,7 +12636,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12230,10 +12672,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12249,7 +12693,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12285,10 +12729,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12304,7 +12750,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12340,10 +12786,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12359,7 +12807,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12395,10 +12843,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12414,7 +12864,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12450,10 +12900,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12469,7 +12921,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12505,10 +12957,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12524,7 +12978,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12560,10 +13014,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12579,7 +13035,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12615,10 +13071,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12634,7 +13092,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12670,10 +13128,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12689,7 +13149,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12725,10 +13185,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12744,7 +13206,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12780,10 +13242,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12799,7 +13263,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12835,10 +13299,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12854,7 +13320,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12890,10 +13356,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12909,7 +13377,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -12945,10 +13413,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -12964,7 +13434,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13000,10 +13470,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13019,7 +13491,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13055,10 +13527,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13074,7 +13548,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13110,10 +13584,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13129,7 +13605,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13165,10 +13641,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13184,7 +13662,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13220,10 +13698,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13239,7 +13719,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13275,10 +13755,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13294,7 +13776,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13330,10 +13812,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13349,7 +13833,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13385,10 +13869,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13404,7 +13890,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13440,10 +13926,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13459,7 +13947,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13495,10 +13983,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13514,7 +14004,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13550,10 +14040,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13569,7 +14061,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13605,10 +14097,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();
@@ -13624,7 +14118,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
       AssertNoWildcards();
 
       using var worldLock = World.Lock();
-      var chunkSize = Math.Max(1, Count / Concurrency);
+      var chunkSize = Math.Max(1, Count / World.Concurrency);
 
       Countdown = Countdown ?? new (1);
 
@@ -13660,10 +14154,12 @@ public partial record Stream<C0, C1, C2, C3, C4>
                   job.CountDown = Countdown;
                   jobs.Add(job);
 
-                  ThreadPool.UnsafeQueueUserWorkItem(job, true);
               }
           } while (join.Iterate());
       }
+
+      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+      jobs[0].Execute();
 
       Countdown.Signal();
       Countdown.Wait();

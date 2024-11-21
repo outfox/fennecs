@@ -24,13 +24,14 @@ public partial record Stream<C0>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]));
                    }
                } while (join.Iterate());
@@ -55,13 +56,14 @@ public partial record Stream<C0>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]));
                    }
                } while (join.Iterate());
@@ -86,13 +88,14 @@ public partial record Stream<C0>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]));
                    }
                } while (join.Iterate());
@@ -117,13 +120,14 @@ public partial record Stream<C0>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]));
                    }
                } while (join.Iterate());
@@ -148,13 +152,14 @@ public partial record Stream<C0>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0));
                    }
                } while (join.Iterate());
@@ -179,13 +184,14 @@ public partial record Stream<C0>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0));
                    }
                } while (join.Iterate());
@@ -210,13 +216,14 @@ public partial record Stream<C0>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0));
                    }
                } while (join.Iterate());
@@ -241,13 +248,14 @@ public partial record Stream<C0>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var s0 = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0));
                    }
                } while (join.Iterate());
@@ -277,13 +285,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]));
                    }
                } while (join.Iterate());
@@ -308,13 +317,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]));
                    }
                } while (join.Iterate());
@@ -339,13 +349,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]));
                    }
                } while (join.Iterate());
@@ -370,13 +381,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]));
                    }
                } while (join.Iterate());
@@ -401,13 +413,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1));
                    }
                } while (join.Iterate());
@@ -432,13 +445,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1));
                    }
                } while (join.Iterate());
@@ -463,13 +477,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1));
                    }
                } while (join.Iterate());
@@ -494,13 +509,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1));
                    }
                } while (join.Iterate());
@@ -525,13 +541,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]));
                    }
                } while (join.Iterate());
@@ -556,13 +573,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]));
                    }
                } while (join.Iterate());
@@ -587,13 +605,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]));
                    }
                } while (join.Iterate());
@@ -618,13 +637,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]));
                    }
                } while (join.Iterate());
@@ -649,13 +669,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1));
                    }
                } while (join.Iterate());
@@ -680,13 +701,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1));
                    }
                } while (join.Iterate());
@@ -711,13 +733,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1));
                    }
                } while (join.Iterate());
@@ -742,13 +765,14 @@ public partial record Stream<C0, C1>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1));
                    }
                } while (join.Iterate());
@@ -778,13 +802,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -809,13 +834,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -840,13 +866,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -871,13 +898,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -902,13 +930,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -933,13 +962,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -964,13 +994,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -995,13 +1026,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1026,13 +1058,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1057,13 +1090,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1088,13 +1122,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1119,13 +1154,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1150,13 +1186,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1181,13 +1218,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1212,13 +1250,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1243,13 +1282,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1274,13 +1314,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1305,13 +1346,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1336,13 +1378,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1367,13 +1410,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1398,13 +1442,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1429,13 +1474,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1460,13 +1506,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1491,13 +1538,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1522,13 +1570,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1553,13 +1602,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1584,13 +1634,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1615,13 +1666,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]));
                    }
                } while (join.Iterate());
@@ -1646,13 +1698,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1677,13 +1730,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1708,13 +1762,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1739,13 +1794,14 @@ public partial record Stream<C0, C1, C2>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2));
                    }
                } while (join.Iterate());
@@ -1775,13 +1831,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -1806,13 +1863,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -1837,13 +1895,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -1868,13 +1927,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -1899,13 +1959,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -1930,13 +1991,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -1961,13 +2023,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -1992,13 +2055,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2023,13 +2087,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2054,13 +2119,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2085,13 +2151,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2116,13 +2183,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2147,13 +2215,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2178,13 +2247,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2209,13 +2279,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2240,13 +2311,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2271,13 +2343,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2302,13 +2375,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2333,13 +2407,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2364,13 +2439,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2395,13 +2471,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2426,13 +2503,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2457,13 +2535,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2488,13 +2567,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2519,13 +2599,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2550,13 +2631,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2581,13 +2663,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2612,13 +2695,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2643,13 +2727,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2674,13 +2759,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2705,13 +2791,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2736,13 +2823,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2767,13 +2855,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2798,13 +2887,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2829,13 +2919,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2860,13 +2951,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -2891,13 +2983,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2922,13 +3015,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2953,13 +3047,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -2984,13 +3079,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3015,13 +3111,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3046,13 +3143,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3077,13 +3175,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3108,13 +3207,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3139,13 +3239,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3170,13 +3271,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3201,13 +3303,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3232,13 +3335,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3263,13 +3367,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3294,13 +3399,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3325,13 +3431,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3356,13 +3463,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3387,13 +3495,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3418,13 +3527,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3449,13 +3559,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3480,13 +3591,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3511,13 +3623,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3542,13 +3655,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3573,13 +3687,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3604,13 +3719,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]));
                    }
                } while (join.Iterate());
@@ -3635,13 +3751,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3666,13 +3783,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3697,13 +3815,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3728,13 +3847,14 @@ public partial record Stream<C0, C1, C2, C3>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3));
                    }
                } while (join.Iterate());
@@ -3764,13 +3884,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -3795,13 +3916,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -3826,13 +3948,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -3857,13 +3980,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -3888,13 +4012,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -3919,13 +4044,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -3950,13 +4076,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -3981,13 +4108,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4012,13 +4140,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4043,13 +4172,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4074,13 +4204,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4105,13 +4236,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4136,13 +4268,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4167,13 +4300,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4198,13 +4332,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4229,13 +4364,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4260,13 +4396,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4291,13 +4428,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4322,13 +4460,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4353,13 +4492,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4384,13 +4524,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4415,13 +4556,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4446,13 +4588,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4477,13 +4620,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4508,13 +4652,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4539,13 +4684,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4570,13 +4716,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4601,13 +4748,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4632,13 +4780,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4663,13 +4812,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4694,13 +4844,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4725,13 +4876,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4756,13 +4908,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4787,13 +4940,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4818,13 +4972,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4849,13 +5004,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -4880,13 +5036,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4911,13 +5068,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4942,13 +5100,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -4973,13 +5132,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5004,13 +5164,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5035,13 +5196,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5066,13 +5228,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5097,13 +5260,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5128,13 +5292,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5159,13 +5324,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5190,13 +5356,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5221,13 +5388,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5252,13 +5420,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5283,13 +5452,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5314,13 +5484,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5345,13 +5516,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5376,13 +5548,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5407,13 +5580,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5438,13 +5612,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5469,13 +5644,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5500,13 +5676,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5531,13 +5708,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5562,13 +5740,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5593,13 +5772,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5624,13 +5804,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5655,13 +5836,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5686,13 +5868,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5717,13 +5900,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(in span0[i]), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5748,13 +5932,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5779,13 +5964,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5810,13 +5996,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5841,13 +6028,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -5872,13 +6060,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5903,13 +6092,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5934,13 +6124,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5965,13 +6156,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -5996,13 +6188,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6027,13 +6220,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6058,13 +6252,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6089,13 +6284,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6120,13 +6316,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6151,13 +6348,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6182,13 +6380,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6213,13 +6412,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6244,13 +6444,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6275,13 +6476,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6306,13 +6508,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6337,13 +6540,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6368,13 +6572,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6399,13 +6604,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6430,13 +6636,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6461,13 +6668,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6492,13 +6700,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6523,13 +6732,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6554,13 +6764,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6585,13 +6796,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6616,13 +6828,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6647,13 +6860,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6678,13 +6892,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6709,13 +6924,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(in span1[i]), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6740,13 +6956,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6771,13 +6988,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6802,13 +7020,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6833,13 +7052,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -6864,13 +7084,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6895,13 +7116,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6926,13 +7148,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6957,13 +7180,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -6988,13 +7212,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7019,13 +7244,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7050,13 +7276,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7081,13 +7308,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7112,13 +7340,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7143,13 +7372,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7174,13 +7404,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7205,13 +7436,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(in span2[i]), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7236,13 +7468,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7267,13 +7500,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7298,13 +7532,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7329,13 +7564,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7360,13 +7596,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7391,13 +7628,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7422,13 +7660,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7453,13 +7692,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(in span3[i]), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7484,13 +7724,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7515,13 +7756,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7546,13 +7788,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7577,13 +7820,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(in span4[i]));
                    }
                } while (join.Iterate());
@@ -7608,13 +7852,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7639,13 +7884,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7670,13 +7916,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());
@@ -7701,13 +7948,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
                var entities = table.Entities;
                var count = table.Entities.Length;
 
+               var entity = default(Entity);
                do
                {
                    var (s0, s1, s2, s3, s4) = join.Select;
                    var span0 = s0.Span; var type0 = s0.Expression; var span1 = s1.Span; var type1 = s1.Expression; var span2 = s2.Span; var type2 = s2.Expression; var span3 = s3.Span; var type3 = s3.Expression; var span4 = s4.Span; var type4 = s4.Expression;
                    for (var i = 0; i < count; i++)
                    {
-                       var entity = new Entity(World, entities[i]);
+                       //var entity = new Entity(World, entities[i]);
                        action(new(in entity), uniform, new(ref span0[i], in type0, in entity, ref bc0), new(ref span1[i], in type1, in entity, ref bc1), new(ref span2[i], in type2, in entity, ref bc2), new(ref span3[i], in type3, in entity, ref bc3), new(ref span4[i], in type4, in entity, ref bc4));
                    }
                } while (join.Iterate());

@@ -182,7 +182,7 @@ file class StreamsJobGenerator
                   AssertNoWildcards();
 
                   using var worldLock = World.Lock();
-                  var chunkSize = Math.Max(1, Count / Concurrency);
+                  var chunkSize = Math.Max(1, Count / World.Concurrency);
 
                   Countdown = Countdown ?? new (1);
              
@@ -218,11 +218,13 @@ file class StreamsJobGenerator
                               job.CountDown = Countdown;
                               jobs.Add(job);
 
-                              ThreadPool.UnsafeQueueUserWorkItem(job, true);
                           }
                       } while (join.Iterate());
                   }
 
+                  for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+                  jobs[0].Execute();
+            
                   Countdown.Signal();
                   Countdown.Wait();
 

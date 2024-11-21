@@ -13,7 +13,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <LangVersion>13</LangVersion>
-        <PublishAot>true</PublishAot>
+        <!--<PublishAot>true</PublishAot>-->
         <OptimizationPreference>Speed</OptimizationPreference>
     </PropertyGroup>
 

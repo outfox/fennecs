@@ -9,6 +9,81 @@ using fennecs.run;
 
 using var world = new World();
 
+var stream = world.Query<Comp1, Comp2, Comp3>().Stream();
+
+SpawnEntities(1_000_000);
+
+WarmUp();
+
+//BenchmarkJob();
+BenchmarkRaw();
+BenchmarkFuture();
+
+return;
+
+
+void BenchmarkRaw()
+{
+    stream.Raw(static (comp1, comp2, comp3) =>
+    {
+        var m1 = comp1.Memory.Span;
+        var m2 = comp2.ReadOnlyMemory.Span;
+        var m3 = comp3.ReadOnlyMemory.Span;
+        for (var i = 0; i < m1.Length; i++)
+        {
+            m1[i].Value = m1[i].Value + m2[i].Value + m3[i].Value;
+        }
+    });
+}
+
+void BenchmarkFuture()
+{
+    stream.RawFuture( (m1, m2, m3) =>
+    {
+        for (var i = 0; i < m1.Length; i++)
+        {
+            m1[i].Value = m1[i].Value + m2[i].Value + m3[i].Value;
+        }
+    });
+}
+
+
+void BenchmarkJob()
+{
+    stream.Job(static (comp1, comp2, comp3) =>
+    {
+        comp1.write.Value += comp2.read.Value + comp3.read.Value;
+    });
+}
+
+
+
+void SpawnEntities(int count)
+{
+    for (var i = 0; i < count; i++)
+        world.Spawn().Add<Comp1>()
+            .Add(new Comp2 {Value = i})
+            .Add(new Comp3 {Value = i/3});
+}
+
+void WarmUp()
+{
+    stream.Raw(static (comp1, comp2, comp3) =>
+    {
+        var m1 = comp1.Memory.Span;
+        var m2 = comp2.ReadOnlyMemory.Span;
+        var m3 = comp3.ReadOnlyMemory.Span;
+        for (var i = 0; i < m1.Length; i++)
+        {
+            m1[i].Value = m1[i].Value + m2[i].Value + m3[i].Value;
+        }
+    });
+}
+
+
+record struct Comp1(int Value);
+record struct Comp2(int Value);
+record struct Comp3(int Value);
 /*
 var config = ManualConfig
     .Create(DefaultConfig.Instance)

@@ -42,6 +42,7 @@ file class JobsGenerator
     {
         //var sb = 
         var w = write ? "W" : "";
+        //return $"    internal Storage<C{index}> Storage{index} = default!;";
         return $"    internal MemoryR{w}<C{index}> Memory{index} = default!;";
     }
     
@@ -67,19 +68,6 @@ file class JobsGenerator
         return FormattableStringFactory.Create(sb.ToString());
     }
 
-    /*
-    private string GenerateJobs(bool entity, bool uniform, int width, int bits)
-    {
-        var accessors = $"{bits:b16}".Substring(16 - width).Replace("0", "W").Replace("1", "R");
-        var typeParams = TypeParams(width);
-        var jobParams = JobParams(width, uniform);
-        var actionParams = ActionParams(width, entity, uniform, accessors);
-
-        var jobName = $"Job{(entity ? "E" : "")}{(uniform ? "U" : "")}{accessors}";
-        var jobType = $"{jobName}<{jobParams}>";
-    };
-    */
-    
     
     private string ActionParams(int width, bool entity, bool uniform, string pattern)
     {
@@ -130,7 +118,7 @@ file class JobsGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in Type{index}, in entity, ref writes[{index}])",
+                    'W' => $"new(ref span{index}[i], in Type{index}, in entity, ref bc{index})",
                     'R' => $"new(in span{index}[i])",
                     _ => throw new NotImplementedException(),
                 }
@@ -183,6 +171,17 @@ file class JobsGenerator
         return constraints.ToString();
     }
 
+    private static string BackChannels(int width)
+    {
+        var writes = new StringBuilder();
+        for (var i = 0; i < width; i++)
+        {
+            //writes.Append($"ushort bc{i}; ");
+            writes.Append($"bool bc{i} = false; ");
+        }
+        return writes.ToString();
+    }
+
     
     private string GenerateJobs(bool entity, bool uniform, int width, int bits)
     {
@@ -190,6 +189,7 @@ file class JobsGenerator
         var jobParams = JobParams(width, uniform);
         var constraints = JobConstraints(width);
         var actionParams = ActionParams(width, entity, uniform, accessors);
+        var backChannels = BackChannels(width);
         var invocationParams = InvocationParameters(entity, uniform, accessors);
         var memories = Memories(width, accessors);
         var types = Types(width);
@@ -222,7 +222,8 @@ file class JobsGenerator
                       
                       {{deconstruction}}
               
-                      Span<bool> writes = stackalloc bool[{{width}}];
+                      {{backChannels}}
+                      
                       for (var i = 0; i < count; i++)
                       {
                          var entity = new Entity(World, identities[i]);

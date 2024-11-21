@@ -27,11 +27,19 @@ public class DorakuBenchmarks
     private World _world = null!;
 
     // ReSharper disable once MemberCanBePrivate.Global
-    [Params(100_000)] public int entityCount { get; set; } = 100_000;
+    [Params(10_000, 100_000, 1_000_000)] public int entityCount { get; set; } = 0;
 
     // ReSharper disable once MemberCanBePrivate.Global
-    [Params(10)] public int entityPadding { get; set; } = 10;
+    [Params(10)] public int entityPadding { get; set; } = 00;
 
+    private class WarmupJob : IThreadPoolWorkItem
+    {
+        public void Execute()
+        {
+            Thread.Sleep(1);
+        }
+    }
+    
     [GlobalSetup]
     public void Setup()
     {
@@ -61,6 +69,7 @@ public class DorakuBenchmarks
                 .Add(new Component3 {Value = 1});
         }
 
+        fennecs_RawFuture();
         _query.Job(Workload);
     }
 
@@ -80,30 +89,10 @@ public class DorakuBenchmarks
     }
 
     [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = "fennecs (For SD)")]
+    //[Benchmark(Description = "fennecs (For SD)")]
     public void fennecs_ForSD()
     {
         _query.For(static delegate(RW<Component1> c1, R<Component2> c2, R<Component3> c3) { c1.write.Value += c2.read.Value + c3.read.Value; });
-    }
-
-    [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = "fennecs (For in Future)")]
-    public void fennecs_For_InFuture()
-    {
-        _query.For((in Stream<Component1,Component2,Component3>.EntityFuture future) =>
-        {
-            future.Component0.Value += future.Component1.Value + future.Component2.Value;
-        });
-    }
-
-    [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = "fennecs (For Future)")]
-    public void fennecs_ForFuture()
-    {
-        _query.For((future) =>
-        {
-            future.Component0.Value += future.Component1.Value + future.Component2.Value;
-        });
     }
 
     [BenchmarkCategory("fennecs")]
@@ -114,7 +103,7 @@ public class DorakuBenchmarks
     }
 
     [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = "fennecs (For NC)")]
+    //[Benchmark(Description = "fennecs (For NC)")]
     public void fennecs_ForNC()
     {
         _query.For(static (c1, c2, c3) => { c1.write.Value = c1.write.Value + c2.read.Value + c3.read.Value; });
@@ -122,7 +111,21 @@ public class DorakuBenchmarks
 
 
     [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = "fennecs (For WL)")]
+    [Benchmark(Description = "fennecs (Raw Future)")]
+    public void fennecs_RawFuture()
+    {
+        _query.RawFuture(static (m1, m2, m3) =>
+        {
+            for (var i = 0; i < m1.Length; i++)
+            {
+                m1[i].Value = m1[i].Value + m2[i].Value + m3[i].Value;
+            }
+        });
+    }
+
+
+    [BenchmarkCategory("fennecs")]
+    //[Benchmark(Description = "fennecs (For WL)")]
     public void fennecs_For_WL()
     {
         _query.For(Workload);
@@ -209,7 +212,7 @@ public class DorakuBenchmarks
     }
 
     [BenchmarkCategory("fennecs", nameof(Sse2))]
-    [Benchmark(Description = "fennecs (Raw SSE2)")]
+    //[Benchmark(Description = "fennecs (Raw SSE2)")]
     public void fennecs_Raw_SSE2()
     {
         // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)

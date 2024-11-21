@@ -182,13 +182,14 @@ file class StreamsForGenerator
                              var entities = table.Entities; 
                              var count = table.Entities.Length;
                              
+                             var entity = default(Entity);
                              do
                              {
                                  var {{Select(width)}} = join.Select;
                                  {{Deconstruct(width, pattern)}}
                                  for (var i = 0; i < count; i++)
                                  {   
-                                     var entity = new Entity(World, entities[i]);    
+                                     //var entity = new Entity(World, entities[i]);    
                                      action({{InvocationParameters(entity, uniform, pattern)}}); 
                                  }
                              } while (join.Iterate());
