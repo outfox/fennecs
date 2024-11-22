@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\fennecs\fennecs.csproj" />
-        <PackageReference Include="BenchmarkDotNet" Version="0.14.1-nightly.20241115.196" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
     </ItemGroup>
 
 </Project>
