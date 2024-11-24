@@ -14,14 +14,12 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     
     private readonly ref readonly Entity _entity;
     private readonly ref readonly TypeExpression _expression;
-    private readonly ref bool _modified;
 
     /// <summary>
     /// Read-write access to a component.
     /// </summary>
-    internal RW(ref T value, ref readonly TypeExpression expression, ref readonly Entity entity, ref bool modified)
+    internal RW(ref T value, ref readonly TypeExpression expression, ref readonly Entity entity)
     {
-        _modified = ref modified;
         _entity = ref entity;
         _expression = ref expression;
         Value = ref value;
@@ -54,12 +52,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     public ref T write
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get
-        {
-            // JIT Optimizes away the write and type checks if it's not a modifiable type.
-            if (typeof(Modified<T>).IsAssignableFrom(typeof(T))) _modified = true;
-            return ref Value;
-        }
+        get => ref Value;
     }
 
     /// <summary>

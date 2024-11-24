@@ -13,8 +13,7 @@ public class RWTests
         
         var x = 1;
         var type = TypeExpression.Of<int>(default);
-        var b = false;
-        var rw = new RW<int>(ref x, in type, in entity, ref b);
+        var rw = new RW<int>(ref x, in type, in entity);
         
         Assert.Equal(1, rw.read);
     }
@@ -27,8 +26,7 @@ public class RWTests
         
         var x = 1;
         var type = TypeExpression.Of<int>(default);
-        var b = false;
-        var rw = new RW<int>(ref x, in type, in entity, ref b);
+        var rw = new RW<int>(ref x, in type, in entity);
         
         Assert.Equal(1, rw);
     }
@@ -42,9 +40,8 @@ public class RWTests
         var x = 1;
         
         var type = TypeExpression.Of<int>(default);
-        var b = false;
         // ReSharper disable once UseObjectOrCollectionInitializer
-        var rw = new RW<int>(ref x, in type, in entity, ref b);
+        var rw = new RW<int>(ref x, in type, in entity);
         rw.write = 2; // user usually does not use initializer code
         
         Assert.Equal(2, rw.read);
@@ -60,8 +57,7 @@ public class RWTests
         entity.Add(x);
 
         var type = TypeExpression.Of<int>(default);
-        var b = false;
-        var rw = new RW<int>(ref x, in type, in entity, ref b);
+        var rw = new RW<int>(ref x, in type, in entity);
         
         Assert.Equal(77, rw.consume);
         Assert.False(entity.Has<int>());
@@ -80,8 +76,7 @@ public class RWTests
         var type = TypeExpression.Of<int>(target);
         Assert.True(entity.Has<int>(target));
 
-        var b = false;
-        var rw = new RW<int>(ref x, in type, in entity, ref b);
+        var rw = new RW<int>(ref x, in type, in entity);
         
         Assert.Equal(77, rw.consume);
         Assert.False(entity.Has<int>(target));
@@ -99,9 +94,8 @@ public class RWTests
         Assert.True(entity.Has<int>());
 
         var type = TypeExpression.Of<int>(default);
-        
-        var b = false;
-        var rw = new RW<int>(ref x, in type, in entity, ref b);
+
+        var rw = new RW<int>(ref x, in type, in entity);
         rw.Remove();
         Assert.False(entity.Has<int>());
     }

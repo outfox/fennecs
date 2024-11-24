@@ -13,7 +13,7 @@ public class RefStructUniformTests
 
         Span<short> uniform = [1, 2, 3];
 
-        stream.For(uniform, static (u, i) =>
+        stream.For(uniform, static ([RW] u, i) =>
         {
             i.write = u[0];
             Assert.Equal(1, i);
@@ -35,7 +35,7 @@ public class RefStructUniformTests
 
         Span<short> uniform = [1, 2, 3];
 
-        stream.Raw(uniform, static (Span<short> u, Span<int> i) =>
+        stream.Raw(uniform, static (u, i) =>
         {
             i[0] = u[0];
             Assert.Equal(1, i[0]);

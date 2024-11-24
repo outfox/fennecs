@@ -117,7 +117,7 @@ file class StreamsForGenerator
                 //language=C#
                 p switch
                 {
-                    'W' => $"new(ref span{index}[i], in type{index}, in entity, ref bc{index})",
+                    'W' => $"new(ref span{index}[i], in type{index}, in entity)",
                     'R' => $"new(in span{index}[i])",
                     _ => throw new NotImplementedException(),
                 }
