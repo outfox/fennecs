@@ -171,17 +171,6 @@ file class JobsGenerator
         return constraints.ToString();
     }
 
-    private static string BackChannels(int width)
-    {
-        var writes = new StringBuilder();
-        for (var i = 0; i < width; i++)
-        {
-            //writes.Append($"ushort bc{i}; ");
-            writes.Append($"bool bc{i} = false; ");
-        }
-        return writes.ToString();
-    }
-
     
     private string GenerateJobs(bool entity, bool uniform, int width, int bits)
     {
@@ -189,7 +178,6 @@ file class JobsGenerator
         var jobParams = JobParams(width, uniform);
         var constraints = JobConstraints(width);
         var actionParams = ActionParams(width, entity, uniform, accessors);
-        var backChannels = BackChannels(width);
         var invocationParams = InvocationParameters(entity, uniform, accessors);
         var memories = Memories(width, accessors);
         var types = Types(width);
@@ -222,8 +210,6 @@ file class JobsGenerator
                       
                       {{deconstruction}}
               
-                      {{backChannels}}
-                      
                       for (var i = 0; i < count; i++)
                       {
                          var entity = new Entity(World, identities[i]);

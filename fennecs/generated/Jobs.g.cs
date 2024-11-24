@@ -31,8 +31,6 @@ internal record JobR<C0> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span;
 
-        bool bc0 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -64,8 +62,6 @@ internal record JobER<C0> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span;
-
-        bool bc0 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -99,8 +95,6 @@ internal record JobUR<U, C0> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span;
 
-        bool bc0 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -132,8 +126,6 @@ internal record JobEUR<U, C0> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span;
-
-        bool bc0 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -167,8 +159,6 @@ internal record JobW<C0> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span;
 
-        bool bc0 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -200,8 +190,6 @@ internal record JobEW<C0> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span;
-
-        bool bc0 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -235,8 +223,6 @@ internal record JobUW<U, C0> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span;
 
-        bool bc0 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -268,8 +254,6 @@ internal record JobEUW<U, C0> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span;
-
-        bool bc0 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -305,8 +289,6 @@ internal record JobRR<C0, C1> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
-        bool bc0 = false; bool bc1 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -340,8 +322,6 @@ internal record JobERR<C0, C1> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
-
-        bool bc0 = false; bool bc1 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -377,8 +357,6 @@ internal record JobURR<U, C0, C1> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
-        bool bc0 = false; bool bc1 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -412,8 +390,6 @@ internal record JobEURR<U, C0, C1> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
-
-        bool bc0 = false; bool bc1 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -449,8 +425,6 @@ internal record JobRW<C0, C1> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
-        bool bc0 = false; bool bc1 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -484,8 +458,6 @@ internal record JobERW<C0, C1> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
-
-        bool bc0 = false; bool bc1 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -521,8 +493,6 @@ internal record JobURW<U, C0, C1> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
-        bool bc0 = false; bool bc1 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -556,8 +526,6 @@ internal record JobEURW<U, C0, C1> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
-
-        bool bc0 = false; bool bc1 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -593,8 +561,6 @@ internal record JobWR<C0, C1> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
-        bool bc0 = false; bool bc1 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -628,8 +594,6 @@ internal record JobEWR<C0, C1> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
-
-        bool bc0 = false; bool bc1 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -665,8 +629,6 @@ internal record JobUWR<U, C0, C1> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
-        bool bc0 = false; bool bc1 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -700,8 +662,6 @@ internal record JobEUWR<U, C0, C1> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
-
-        bool bc0 = false; bool bc1 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -737,8 +697,6 @@ internal record JobWW<C0, C1> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
-        bool bc0 = false; bool bc1 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -772,8 +730,6 @@ internal record JobEWW<C0, C1> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
-
-        bool bc0 = false; bool bc1 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -809,8 +765,6 @@ internal record JobUWW<U, C0, C1> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
 
-        bool bc0 = false; bool bc1 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -844,8 +798,6 @@ internal record JobEUWW<U, C0, C1> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span;
-
-        bool bc0 = false; bool bc1 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -883,8 +835,6 @@ internal record JobRRR<C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -920,8 +870,6 @@ internal record JobERRR<C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -959,8 +907,6 @@ internal record JobURRR<U, C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -996,8 +942,6 @@ internal record JobEURRR<U, C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1035,8 +979,6 @@ internal record JobRRW<C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1072,8 +1014,6 @@ internal record JobERRW<C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1111,8 +1051,6 @@ internal record JobURRW<U, C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1148,8 +1086,6 @@ internal record JobEURRW<U, C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1187,8 +1123,6 @@ internal record JobRWR<C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1224,8 +1158,6 @@ internal record JobERWR<C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1263,8 +1195,6 @@ internal record JobURWR<U, C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1300,8 +1230,6 @@ internal record JobEURWR<U, C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1339,8 +1267,6 @@ internal record JobRWW<C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1376,8 +1302,6 @@ internal record JobERWW<C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1415,8 +1339,6 @@ internal record JobURWW<U, C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1452,8 +1374,6 @@ internal record JobEURWW<U, C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1491,8 +1411,6 @@ internal record JobWRR<C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1528,8 +1446,6 @@ internal record JobEWRR<C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1567,8 +1483,6 @@ internal record JobUWRR<U, C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1604,8 +1518,6 @@ internal record JobEUWRR<U, C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1643,8 +1555,6 @@ internal record JobWRW<C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1680,8 +1590,6 @@ internal record JobEWRW<C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1719,8 +1627,6 @@ internal record JobUWRW<U, C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1756,8 +1662,6 @@ internal record JobEUWRW<U, C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1795,8 +1699,6 @@ internal record JobWWR<C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1832,8 +1734,6 @@ internal record JobEWWR<C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1871,8 +1771,6 @@ internal record JobUWWR<U, C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1908,8 +1806,6 @@ internal record JobEUWWR<U, C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -1947,8 +1843,6 @@ internal record JobWWW<C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -1984,8 +1878,6 @@ internal record JobEWWW<C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2023,8 +1915,6 @@ internal record JobUWWW<U, C0, C1, C2> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2060,8 +1950,6 @@ internal record JobEUWWW<U, C0, C1, C2> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2101,8 +1989,6 @@ internal record JobRRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2140,8 +2026,6 @@ internal record JobERRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2181,8 +2065,6 @@ internal record JobURRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2220,8 +2102,6 @@ internal record JobEURRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2261,8 +2141,6 @@ internal record JobRRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2300,8 +2178,6 @@ internal record JobERRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2341,8 +2217,6 @@ internal record JobURRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2380,8 +2254,6 @@ internal record JobEURRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2421,8 +2293,6 @@ internal record JobRRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2460,8 +2330,6 @@ internal record JobERRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2501,8 +2369,6 @@ internal record JobURRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2540,8 +2406,6 @@ internal record JobEURRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2581,8 +2445,6 @@ internal record JobRRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2620,8 +2482,6 @@ internal record JobERRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2661,8 +2521,6 @@ internal record JobURRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2700,8 +2558,6 @@ internal record JobEURRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2741,8 +2597,6 @@ internal record JobRWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2780,8 +2634,6 @@ internal record JobERWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2821,8 +2673,6 @@ internal record JobURWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2860,8 +2710,6 @@ internal record JobEURWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2901,8 +2749,6 @@ internal record JobRWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -2940,8 +2786,6 @@ internal record JobERWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -2981,8 +2825,6 @@ internal record JobURWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3020,8 +2862,6 @@ internal record JobEURWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3061,8 +2901,6 @@ internal record JobRWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3100,8 +2938,6 @@ internal record JobERWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3141,8 +2977,6 @@ internal record JobURWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3180,8 +3014,6 @@ internal record JobEURWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3221,8 +3053,6 @@ internal record JobRWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3260,8 +3090,6 @@ internal record JobERWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3301,8 +3129,6 @@ internal record JobURWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3340,8 +3166,6 @@ internal record JobEURWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3381,8 +3205,6 @@ internal record JobWRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3420,8 +3242,6 @@ internal record JobEWRRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3461,8 +3281,6 @@ internal record JobUWRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3500,8 +3318,6 @@ internal record JobEUWRRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3541,8 +3357,6 @@ internal record JobWRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3580,8 +3394,6 @@ internal record JobEWRRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3621,8 +3433,6 @@ internal record JobUWRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3660,8 +3470,6 @@ internal record JobEUWRRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3701,8 +3509,6 @@ internal record JobWRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3740,8 +3546,6 @@ internal record JobEWRWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3781,8 +3585,6 @@ internal record JobUWRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3820,8 +3622,6 @@ internal record JobEUWRWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3861,8 +3661,6 @@ internal record JobWRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3900,8 +3698,6 @@ internal record JobEWRWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -3941,8 +3737,6 @@ internal record JobUWRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -3980,8 +3774,6 @@ internal record JobEUWRWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4021,8 +3813,6 @@ internal record JobWWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4060,8 +3850,6 @@ internal record JobEWWRR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4101,8 +3889,6 @@ internal record JobUWWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4140,8 +3926,6 @@ internal record JobEUWWRR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4181,8 +3965,6 @@ internal record JobWWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4220,8 +4002,6 @@ internal record JobEWWRW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4261,8 +4041,6 @@ internal record JobUWWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4300,8 +4078,6 @@ internal record JobEUWWRW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4341,8 +4117,6 @@ internal record JobWWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4380,8 +4154,6 @@ internal record JobEWWWR<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4421,8 +4193,6 @@ internal record JobUWWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4460,8 +4230,6 @@ internal record JobEUWWWR<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4501,8 +4269,6 @@ internal record JobWWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4540,8 +4306,6 @@ internal record JobEWWWW<C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4581,8 +4345,6 @@ internal record JobUWWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4620,8 +4382,6 @@ internal record JobEUWWWW<U, C0, C1, C2, C3> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4663,8 +4423,6 @@ internal record JobRRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4704,8 +4462,6 @@ internal record JobERRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4747,8 +4503,6 @@ internal record JobURRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4788,8 +4542,6 @@ internal record JobEURRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4831,8 +4583,6 @@ internal record JobRRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4872,8 +4622,6 @@ internal record JobERRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4915,8 +4663,6 @@ internal record JobURRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -4956,8 +4702,6 @@ internal record JobEURRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -4999,8 +4743,6 @@ internal record JobRRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5040,8 +4782,6 @@ internal record JobERRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5083,8 +4823,6 @@ internal record JobURRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5124,8 +4862,6 @@ internal record JobEURRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5167,8 +4903,6 @@ internal record JobRRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5208,8 +4942,6 @@ internal record JobERRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5251,8 +4983,6 @@ internal record JobURRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5292,8 +5022,6 @@ internal record JobEURRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5335,8 +5063,6 @@ internal record JobRRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5376,8 +5102,6 @@ internal record JobERRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5419,8 +5143,6 @@ internal record JobURRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5460,8 +5182,6 @@ internal record JobEURRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5503,8 +5223,6 @@ internal record JobRRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5544,8 +5262,6 @@ internal record JobERRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5587,8 +5303,6 @@ internal record JobURRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5628,8 +5342,6 @@ internal record JobEURRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5671,8 +5383,6 @@ internal record JobRRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5712,8 +5422,6 @@ internal record JobERRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5755,8 +5463,6 @@ internal record JobURRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5796,8 +5502,6 @@ internal record JobEURRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5839,8 +5543,6 @@ internal record JobRRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5880,8 +5582,6 @@ internal record JobERRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -5923,8 +5623,6 @@ internal record JobURRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -5964,8 +5662,6 @@ internal record JobEURRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6007,8 +5703,6 @@ internal record JobRWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6048,8 +5742,6 @@ internal record JobERWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6091,8 +5783,6 @@ internal record JobURWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6132,8 +5822,6 @@ internal record JobEURWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6175,8 +5863,6 @@ internal record JobRWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6216,8 +5902,6 @@ internal record JobERWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6259,8 +5943,6 @@ internal record JobURWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6300,8 +5982,6 @@ internal record JobEURWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6343,8 +6023,6 @@ internal record JobRWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6384,8 +6062,6 @@ internal record JobERWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6427,8 +6103,6 @@ internal record JobURWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6468,8 +6142,6 @@ internal record JobEURWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6511,8 +6183,6 @@ internal record JobRWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6552,8 +6222,6 @@ internal record JobERWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6595,8 +6263,6 @@ internal record JobURWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6636,8 +6302,6 @@ internal record JobEURWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6679,8 +6343,6 @@ internal record JobRWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6720,8 +6382,6 @@ internal record JobERWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6763,8 +6423,6 @@ internal record JobURWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6804,8 +6462,6 @@ internal record JobEURWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6847,8 +6503,6 @@ internal record JobRWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6888,8 +6542,6 @@ internal record JobERWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -6931,8 +6583,6 @@ internal record JobURWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -6972,8 +6622,6 @@ internal record JobEURWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7015,8 +6663,6 @@ internal record JobRWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7056,8 +6702,6 @@ internal record JobERWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7099,8 +6743,6 @@ internal record JobURWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7140,8 +6782,6 @@ internal record JobEURWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7183,8 +6823,6 @@ internal record JobRWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7224,8 +6862,6 @@ internal record JobERWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7267,8 +6903,6 @@ internal record JobURWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7308,8 +6942,6 @@ internal record JobEURWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7351,8 +6983,6 @@ internal record JobWRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7392,8 +7022,6 @@ internal record JobEWRRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7435,8 +7063,6 @@ internal record JobUWRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7476,8 +7102,6 @@ internal record JobEUWRRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7519,8 +7143,6 @@ internal record JobWRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7560,8 +7182,6 @@ internal record JobEWRRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7603,8 +7223,6 @@ internal record JobUWRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7644,8 +7262,6 @@ internal record JobEUWRRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7687,8 +7303,6 @@ internal record JobWRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7728,8 +7342,6 @@ internal record JobEWRRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7771,8 +7383,6 @@ internal record JobUWRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7812,8 +7422,6 @@ internal record JobEUWRRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7855,8 +7463,6 @@ internal record JobWRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7896,8 +7502,6 @@ internal record JobEWRRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -7939,8 +7543,6 @@ internal record JobUWRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -7980,8 +7582,6 @@ internal record JobEUWRRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8023,8 +7623,6 @@ internal record JobWRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8064,8 +7662,6 @@ internal record JobEWRWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8107,8 +7703,6 @@ internal record JobUWRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8148,8 +7742,6 @@ internal record JobEUWRWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8191,8 +7783,6 @@ internal record JobWRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8232,8 +7822,6 @@ internal record JobEWRWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8275,8 +7863,6 @@ internal record JobUWRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8316,8 +7902,6 @@ internal record JobEUWRWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8359,8 +7943,6 @@ internal record JobWRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8400,8 +7982,6 @@ internal record JobEWRWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8443,8 +8023,6 @@ internal record JobUWRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8484,8 +8062,6 @@ internal record JobEUWRWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8527,8 +8103,6 @@ internal record JobWRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8568,8 +8142,6 @@ internal record JobEWRWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8611,8 +8183,6 @@ internal record JobUWRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8652,8 +8222,6 @@ internal record JobEUWRWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8695,8 +8263,6 @@ internal record JobWWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8736,8 +8302,6 @@ internal record JobEWWRRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8779,8 +8343,6 @@ internal record JobUWWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8820,8 +8382,6 @@ internal record JobEUWWRRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8863,8 +8423,6 @@ internal record JobWWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8904,8 +8462,6 @@ internal record JobEWWRRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -8947,8 +8503,6 @@ internal record JobUWWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -8988,8 +8542,6 @@ internal record JobEUWWRRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9031,8 +8583,6 @@ internal record JobWWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9072,8 +8622,6 @@ internal record JobEWWRWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9115,8 +8663,6 @@ internal record JobUWWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9156,8 +8702,6 @@ internal record JobEUWWRWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9199,8 +8743,6 @@ internal record JobWWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9240,8 +8782,6 @@ internal record JobEWWRWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9283,8 +8823,6 @@ internal record JobUWWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9324,8 +8862,6 @@ internal record JobEUWWRWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9367,8 +8903,6 @@ internal record JobWWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9408,8 +8942,6 @@ internal record JobEWWWRR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9451,8 +8983,6 @@ internal record JobUWWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9492,8 +9022,6 @@ internal record JobEUWWWRR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9535,8 +9063,6 @@ internal record JobWWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9576,8 +9102,6 @@ internal record JobEWWWRW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9619,8 +9143,6 @@ internal record JobUWWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9660,8 +9182,6 @@ internal record JobEUWWWRW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9703,8 +9223,6 @@ internal record JobWWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9744,8 +9262,6 @@ internal record JobEWWWWR<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9787,8 +9303,6 @@ internal record JobUWWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9828,8 +9342,6 @@ internal record JobEUWWWWR<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9871,8 +9383,6 @@ internal record JobWWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9912,8 +9422,6 @@ internal record JobEWWWWW<C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
@@ -9955,8 +9463,6 @@ internal record JobUWWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
 
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
-
         for (var i = 0; i < count; i++)
         {
            var entity = new Entity(World, identities[i]);
@@ -9996,8 +9502,6 @@ internal record JobEUWWWWW<U, C0, C1, C2, C3, C4> : IThreadPoolWorkItem
         var count = identities.Length;
 
         var span0 = Memory0.Span; var span1 = Memory1.Span; var span2 = Memory2.Span; var span3 = Memory3.Span; var span4 = Memory4.Span;
-
-        bool bc0 = false; bool bc1 = false; bool bc2 = false; bool bc3 = false; bool bc4 = false;
 
         for (var i = 0; i < count; i++)
         {
