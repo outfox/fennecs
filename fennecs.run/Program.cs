@@ -70,9 +70,9 @@ void WarmUp()
 {
     stream.Raw(static (comp1, comp2, comp3) =>
     {
-        var m1 = comp1.Memory.Span;
-        var m2 = comp2.ReadOnlyMemory.Span;
-        var m3 = comp3.ReadOnlyMemory.Span;
+        var m1 = comp1;
+        var m2 = comp2;
+        var m3 = comp3;
         for (var i = 0; i < m1.Length; i++)
         {
             m1[i].Value = m1[i].Value + m2[i].Value + m3[i].Value;
