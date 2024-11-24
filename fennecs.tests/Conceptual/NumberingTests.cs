@@ -179,7 +179,7 @@ public class NumberingTests
     {
         // Check that the entities are numbered correctly.
         var accumulator = new List<Index>();
-        stream.Raw(accumulator.AddRange);
+        stream.Raw((span) =>accumulator.AddRange(span));
         var testRange = Enumerable.Range(0, count).Select(i => new Index(i)).ToArray();
         Assert.Equal(testRange, accumulator);
     }

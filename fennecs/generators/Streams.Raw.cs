@@ -104,9 +104,9 @@ file class StreamsRawGenerator
             if (index != 0) parameters.Append(", ");
             parameters.Append(
                 //language=C#
-                p switch
+                p switch 
                 {
-                    'R' => $"s{index}.ReadOnlySpan",
+                    'R' => $"s{index}.ReadOnlySpan", 
                     'W' => $"s{index}.Span",
                     _ => throw new NotImplementedException(),
                 }
@@ -157,7 +157,7 @@ file class StreamsRawGenerator
             $$"""        
               
                       /// <include file='../_docs.xml' path='members/member[@name="T:Raw{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
-                      [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits&255:b8}})]
+                      {{(bits == 0 ? "[OverloadResolutionPriority(9001)]" : "")}}
                       public void Raw{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action) {{(uniform ? "where U : allows ref struct" : "")}}
                       {
                          using var worldLock = World.Lock();

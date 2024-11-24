@@ -1,4 +1,5 @@
-﻿namespace fennecs.tests.Stream;
+﻿using fennecs.future;
+namespace fennecs.tests.Stream;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -111,8 +112,8 @@ public class Stream1TestsExperiment
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal("two", strings.Span[i]);
-                strings.write[i] = "three";
+                Assert.Equal("two", strings[i]); 
+                strings[i] = "three";
             }
         });
 
@@ -145,8 +146,8 @@ public class Stream1TestsExperiment
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(7.ToString(), strings.Span[i]);
-                strings.write[i] = uniform.ToString();
+                Assert.Equal(7.ToString(), strings[i]);
+                strings[i] = uniform.ToString();
             }
         });
 
@@ -154,8 +155,8 @@ public class Stream1TestsExperiment
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(8.ToString(), c1.Span[i]);
-                c1.write[i] = uniform.ToString();
+                Assert.Equal(8.ToString(), c1[i]);
+                c1[i] = uniform.ToString();
             }
         });
 
@@ -442,9 +443,9 @@ public class Stream1TestsExperiment
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(i, integers.read[i]);
-                Assert.Equal(0, floats.read[i]);
-                floats.write[i] = integers.read[i];
+                Assert.Equal(i, integers[i]);
+                Assert.Equal(0, floats[i]);
+                floats[i] = integers[i];
             }
         });
 
@@ -452,8 +453,8 @@ public class Stream1TestsExperiment
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(i, integers.read[i]);
-                Assert.Equal(i, floats.read[i]);
+                Assert.Equal(i, integers[i]);
+                Assert.Equal(i, floats[i]);
             }
         });
     }
@@ -481,7 +482,7 @@ public class Stream1TestsExperiment
 
         query.Raw(longs =>
         {
-            foreach (ref var i in longs.write) i = processed++;
+            foreach (ref var i in longs) i = processed++;
         });
 
         Assert.Equal(count, processed);
@@ -489,7 +490,7 @@ public class Stream1TestsExperiment
         query.Raw(longs =>
         {
             Assert.Equal(count, longs.Length);
-            for (var i = 0; i < count; i++) Assert.Equal(i, longs.Span[i]);
+            for (var i = 0; i < count; i++) Assert.Equal(i, longs[i]);
         });
 
         var index = 0;

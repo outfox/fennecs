@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using fennecs.storage;
 
 namespace fennecs.tests.Stream;
 
@@ -268,9 +267,9 @@ public class Stream2Tests(ITestOutputHelper output)
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(i, integers.Span[i]);
-                Assert.Equal("two", strings.Span[i]);
-                strings.write[i] = "three";
+                Assert.Equal(i, integers[i]);
+                Assert.Equal("two", strings[i]);
+                strings[i] = "three";
             }
         });
 
@@ -280,14 +279,14 @@ public class Stream2Tests(ITestOutputHelper output)
             str.write = "four";
         });
 
-        query.Job((index, str) =>
+        query.Job((_, str) =>
         {
             Assert.Equal("four", str); 
             str.write = "five";
         });
 
         query.Job(6,
-            (uniform, index, str) =>
+            (uniform, _, str) =>
             {
                 Assert.Equal("five", str);
                 str.write = uniform.ToString();
@@ -305,8 +304,8 @@ public class Stream2Tests(ITestOutputHelper output)
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(7.ToString(), strings.Span[i]);
-                strings.write[i] = uniform.ToString();
+                Assert.Equal(7.ToString(), strings[i]);
+                strings[i] = uniform.ToString();
             }
         });
 
@@ -314,8 +313,8 @@ public class Stream2Tests(ITestOutputHelper output)
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(8.ToString(), c1.Span[i]);
-                c1.write[i] = uniform.ToString();
+                Assert.Equal(8.ToString(), c1[i]);
+                c1[i] = uniform.ToString();
             }
         });
 
@@ -655,9 +654,9 @@ public class Stream2Tests(ITestOutputHelper output)
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(i, integers.Span[i]);
-                Assert.Equal(0.1f, floats.Span[i]);
-                floats.write[i] = integers.Span[i];
+                Assert.Equal(i, integers[i]);
+                Assert.Equal(0.1f, floats[i]);
+                floats[i] = integers[i];
             }
         });
 
@@ -665,8 +664,8 @@ public class Stream2Tests(ITestOutputHelper output)
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(i, integers.Span[i]);
-                Assert.Equal(i, floats.Span[i]);
+                Assert.Equal(i, integers[i]);
+                Assert.Equal(i, floats[i]);
             }
         });
     }

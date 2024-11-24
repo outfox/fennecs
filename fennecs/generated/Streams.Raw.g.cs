@@ -8,7 +8,7 @@ public partial record Stream<C0>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw(Action<ReadOnlySpan<C0>> action)
         {
            using var worldLock = World.Lock();
@@ -29,7 +29,7 @@ public partial record Stream<C0>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -50,7 +50,7 @@ public partial record Stream<C0>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw(Action<Span<C0>> action)
         {
            using var worldLock = World.Lock();
@@ -71,7 +71,7 @@ public partial record Stream<C0>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw<U>(U uniform, Action<U, Span<C0>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -97,7 +97,7 @@ public partial record Stream<C0, C1>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000011)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>> action)
         {
            using var worldLock = World.Lock();
@@ -118,7 +118,7 @@ public partial record Stream<C0, C1>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000011)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -139,7 +139,7 @@ public partial record Stream<C0, C1>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000010)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>> action)
         {
            using var worldLock = World.Lock();
@@ -160,7 +160,7 @@ public partial record Stream<C0, C1>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000010)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -181,7 +181,7 @@ public partial record Stream<C0, C1>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>> action)
         {
            using var worldLock = World.Lock();
@@ -202,7 +202,7 @@ public partial record Stream<C0, C1>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -223,7 +223,7 @@ public partial record Stream<C0, C1>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw(Action<Span<C0>, Span<C1>> action)
         {
            using var worldLock = World.Lock();
@@ -244,7 +244,7 @@ public partial record Stream<C0, C1>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -270,7 +270,7 @@ public partial record Stream<C0, C1, C2>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000111)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>> action)
         {
            using var worldLock = World.Lock();
@@ -291,7 +291,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000111)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -312,7 +312,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000110)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>> action)
         {
            using var worldLock = World.Lock();
@@ -333,7 +333,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000110)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -354,7 +354,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000101)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>> action)
         {
            using var worldLock = World.Lock();
@@ -375,7 +375,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000101)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -396,7 +396,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000100)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, Span<C2>> action)
         {
            using var worldLock = World.Lock();
@@ -417,7 +417,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000100)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, Span<C2>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -438,7 +438,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000011)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>> action)
         {
            using var worldLock = World.Lock();
@@ -459,7 +459,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000011)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -480,7 +480,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000010)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, Span<C2>> action)
         {
            using var worldLock = World.Lock();
@@ -501,7 +501,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000010)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, Span<C2>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -522,7 +522,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw(Action<Span<C0>, Span<C1>, ReadOnlySpan<C2>> action)
         {
            using var worldLock = World.Lock();
@@ -543,7 +543,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, ReadOnlySpan<C2>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -564,7 +564,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw(Action<Span<C0>, Span<C1>, Span<C2>> action)
         {
            using var worldLock = World.Lock();
@@ -585,7 +585,7 @@ public partial record Stream<C0, C1, C2>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, Span<C2>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -611,7 +611,7 @@ public partial record Stream<C0, C1, C2, C3>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001111)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -632,7 +632,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001111)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -653,7 +653,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001110)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -674,7 +674,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001110)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -695,7 +695,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001101)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -716,7 +716,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001101)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -737,7 +737,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001100)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -758,7 +758,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001100)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -779,7 +779,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001011)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -800,7 +800,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001011)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -821,7 +821,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001010)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -842,7 +842,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001010)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -863,7 +863,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001001)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -884,7 +884,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001001)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -905,7 +905,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001000)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, Span<C2>, Span<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -926,7 +926,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001000)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, Span<C2>, Span<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -947,7 +947,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000111)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -968,7 +968,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000111)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -989,7 +989,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000110)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -1010,7 +1010,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000110)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1031,7 +1031,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000101)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -1052,7 +1052,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000101)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1073,7 +1073,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000100)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -1094,7 +1094,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000100)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1115,7 +1115,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000011)]
+
         public void Raw(Action<Span<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -1136,7 +1136,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000011)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1157,7 +1157,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000010)]
+
         public void Raw(Action<Span<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -1178,7 +1178,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000010)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1199,7 +1199,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw(Action<Span<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -1220,7 +1220,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1241,7 +1241,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw(Action<Span<C0>, Span<C1>, Span<C2>, Span<C3>> action)
         {
            using var worldLock = World.Lock();
@@ -1262,7 +1262,7 @@ public partial record Stream<C0, C1, C2, C3>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, Span<C2>, Span<C3>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1288,7 +1288,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 {
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011111)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1309,7 +1309,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011111)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1330,7 +1330,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011110)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1351,7 +1351,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011110)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1372,7 +1372,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011101)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1393,7 +1393,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011101)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1414,7 +1414,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011100)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1435,7 +1435,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011100)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1456,7 +1456,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011011)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1477,7 +1477,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011011)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1498,7 +1498,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011010)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1519,7 +1519,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011010)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1540,7 +1540,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011001)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1561,7 +1561,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011001)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1582,7 +1582,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011000)]
+
         public void Raw(Action<ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1603,7 +1603,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00011000)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1624,7 +1624,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010111)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1645,7 +1645,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010111)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1666,7 +1666,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010110)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1687,7 +1687,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010110)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1708,7 +1708,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010101)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1729,7 +1729,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010101)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1750,7 +1750,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010100)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1771,7 +1771,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010100)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1792,7 +1792,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010011)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1813,7 +1813,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010011)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1834,7 +1834,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010010)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1855,7 +1855,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010010)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1876,7 +1876,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010001)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, Span<C2>, Span<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1897,7 +1897,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010001)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, Span<C2>, Span<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1918,7 +1918,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010000)]
+
         public void Raw(Action<ReadOnlySpan<C0>, Span<C1>, Span<C2>, Span<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1939,7 +1939,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00010000)]
+
         public void Raw<U>(U uniform, Action<U, ReadOnlySpan<C0>, Span<C1>, Span<C2>, Span<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -1960,7 +1960,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001111)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -1981,7 +1981,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001111)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2002,7 +2002,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001110)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2023,7 +2023,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001110)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2044,7 +2044,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001101)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2065,7 +2065,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001101)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2086,7 +2086,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001100)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2107,7 +2107,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001100)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, ReadOnlySpan<C2>, Span<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2128,7 +2128,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001011)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2149,7 +2149,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001011)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2170,7 +2170,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001010)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2191,7 +2191,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001010)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, Span<C2>, ReadOnlySpan<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2212,7 +2212,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001001)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2233,7 +2233,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001001)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2254,7 +2254,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001000)]
+
         public void Raw(Action<Span<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2275,7 +2275,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00001000)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, ReadOnlySpan<C1>, Span<C2>, Span<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2296,7 +2296,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000111)]
+
         public void Raw(Action<Span<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2317,7 +2317,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000111)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2338,7 +2338,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000110)]
+
         public void Raw(Action<Span<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2359,7 +2359,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000110)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, ReadOnlySpan<C2>, ReadOnlySpan<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2380,7 +2380,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000101)]
+
         public void Raw(Action<Span<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2401,7 +2401,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000101)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2422,7 +2422,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000100)]
+
         public void Raw(Action<Span<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2443,7 +2443,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000100)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, ReadOnlySpan<C2>, Span<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2464,7 +2464,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000011)]
+
         public void Raw(Action<Span<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2485,7 +2485,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000011)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2506,7 +2506,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000010)]
+
         public void Raw(Action<Span<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2527,7 +2527,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000010)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, Span<C2>, ReadOnlySpan<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2548,7 +2548,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw(Action<Span<C0>, Span<C1>, Span<C2>, Span<C3>, ReadOnlySpan<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2569,7 +2569,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000001)]
+
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, Span<C2>, Span<C3>, ReadOnlySpan<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
@@ -2590,7 +2590,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:Raw"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw(Action<Span<C0>, Span<C1>, Span<C2>, Span<C3>, Span<C4>> action)
         {
            using var worldLock = World.Lock();
@@ -2611,7 +2611,7 @@ public partial record Stream<C0, C1, C2, C3, C4>
 
 
         /// <include file='../_docs.xml' path='members/member[@name="T:RawU"]'/>
-        [OverloadResolutionPriority(0b_00000000_00000000)]
+        [OverloadResolutionPriority(9001)]
         public void Raw<U>(U uniform, Action<U, Span<C0>, Span<C1>, Span<C2>, Span<C3>, Span<C4>> action) where U : allows ref struct
         {
            using var worldLock = World.Lock();
