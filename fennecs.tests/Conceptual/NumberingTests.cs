@@ -164,7 +164,7 @@ public class NumberingTests
         var stream = Setup(count1, count2);
 
         var index = 0;
-        stream.Raw(
+        stream.Mem(
             action: indices =>
             {
                 var pin = indices.Memory.Pin();
@@ -179,12 +179,7 @@ public class NumberingTests
     {
         // Check that the entities are numbered correctly.
         var accumulator = new List<Index>();
-        stream.Raw(
-            action: indices =>
-            {
-                accumulator.AddRange(indices.Span);
-            }
-        );
+        stream.Raw(accumulator.AddRange);
         var testRange = Enumerable.Range(0, count).Select(i => new Index(i)).ToArray();
         Assert.Equal(testRange, accumulator);
     }

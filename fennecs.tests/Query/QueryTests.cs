@@ -81,10 +81,10 @@ public class QueryTests
             .Has<int>()
             .Stream();
 
-        query.Raw(memory =>
+        query.Raw(span =>
         {
-            Assert.True(memory.Length == 2);
-            foreach (var pos in memory.Span) Assert.Equal(p2, pos);
+            Assert.True(span.Length == 2);
+            foreach (var pos in span) Assert.Equal(p2, pos);
         });
     }
 
@@ -104,10 +104,10 @@ public class QueryTests
             .Not<int>()
             .Stream();
 
-        query.Raw(memory =>
+        query.Raw(span =>
         {
-            Assert.True(memory.Length == 1);
-            foreach (var pos in memory.Span) Assert.Equal(p1, pos);
+            Assert.True(span.Length == 1);
+            foreach (var pos in span) Assert.Equal(p1, pos);
         });
     }
 
@@ -134,7 +134,7 @@ public class QueryTests
         {
             count++;
             Assert.Equal(1, mp.Length);
-            var identity = me.Span[0];
+            var identity = me[0];
             Assert.Equal(alice, identity);
         });
         Assert.Equal(1, count);
@@ -160,9 +160,9 @@ public class QueryTests
         {
             count++;
             Assert.Equal(1, mp.Length);
-            var identity = me.Span[0];
+            var identity = me[0];
             Assert.Equal(charlie, identity);
-            var pos = mp.Span[0];
+            var pos = mp[0];
             Assert.Equal(pos, p3);
         });
         Assert.Equal(1, count);
@@ -192,16 +192,16 @@ public class QueryTests
             Assert.Equal(1, mp.Length);
             for (var index = 0; index < me.Length; index++)
             {
-                var identity = me.Span[index];
+                var identity = me[index];
                 count++;
                 if (identity == charlie)
                 {
-                    var pos = mp.Span[index];
+                    var pos = mp[index];
                     Assert.Equal(pos, p3);
                 }
                 else if (identity == eve)
                 {
-                    var pos = mp.Span[index];
+                    var pos = mp[index];
                     Assert.Equal(pos, p2);
                 }
                 else
@@ -242,11 +242,11 @@ public class QueryTests
             Assert.Equal(1, mp.Length);
             for (var index = 0; index < me.Length; index++)
             {
-                var identity = me.Span[index];
+                var identity = me[index];
                 count++;
                 if (identity == bob)
                 {
-                    var pos = mp.Span[index];
+                    var pos = mp[index];
                     Assert.Equal(pos, p2);
                 }
                 else
@@ -286,21 +286,21 @@ public class QueryTests
             Assert.Equal(2, mp.Length);
             for (var index = 0; index < me.Length; index++)
             {
-                var identity = me.Span[index];
+                var identity = me[index];
                 count++;
 
                 if (identity == alice)
                 {
-                    var pos = mp.Span[0];
+                    var pos = mp[0];
                     Assert.Equal(pos, p1);
-                    var integer = mi.Span[index];
+                    var integer = mi[index];
                     Assert.Equal(0, integer);
                 }
                 else if (identity == eve)
                 {
-                    var pos = mp.Span[index];
+                    var pos = mp[index];
                     Assert.Equal(pos, p1);
-                    var i = mi.Span[index];
+                    var i = mi[index];
                     Assert.Equal(888, i);
                 }
                 else

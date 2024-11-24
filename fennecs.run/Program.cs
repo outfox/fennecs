@@ -24,7 +24,7 @@ return;
 
 void BenchmarkRaw()
 {
-    stream.Raw(static (comp1, comp2, comp3) =>
+    stream.Mem(static (comp1, comp2, comp3) =>
     {
         var m1 = comp1.Memory.Span;
         var m2 = comp2.ReadOnlyMemory.Span;
@@ -38,7 +38,7 @@ void BenchmarkRaw()
 
 void BenchmarkFuture()
 {
-    stream.RawFuture( (m1, m2, m3) =>
+    stream.Raw( (Span<Comp1> m1, ReadOnlySpan<Comp2> m2, ReadOnlySpan<Comp3> m3) =>
     {
         for (var i = 0; i < m1.Length; i++)
         {

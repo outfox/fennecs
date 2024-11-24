@@ -114,7 +114,9 @@ public class Storage<T> : IStorage where T : notnull
     private static readonly ArrayPool<T> Pool = ArrayPool<T>.Create();
     
     private T[] _data = Pool.Rent(InitialCapacity);
+    private T[]? _read = Pool.Rent(InitialCapacity);
 
+    
     /// <summary>
     /// A front-end to System.Array for fast storage write and blit operations.
     /// </summary>
@@ -123,6 +125,9 @@ public class Storage<T> : IStorage where T : notnull
     {
         using var _ = PooledList<Storage<T>>.Rent();        
         Expression = expression;
+        
+        _data = Pool.Rent(InitialCapacity);
+        _read = typeof(fennecs.events.Commit).IsAssignableFrom(typeof(T)) ? Pool.Rent(InitialCapacity) : _data;
     }
 
     /// <summary>
@@ -389,6 +394,11 @@ public class Storage<T> : IStorage where T : notnull
     /// Returns a span representation of the actually contained data.
     /// </summary>
     public Span<T> Span => _data.AsSpan(0, Count);
+
+    /// <summary>
+    /// Returns a span representation of the actually contained data.
+    /// </summary>
+    public ReadOnlySpan<T> ReadOnlySpan => _data.AsSpan()[..Count];
 
     public Span<T> FastSpan(int start, int count) => _data.AsSpan(start, count);
 

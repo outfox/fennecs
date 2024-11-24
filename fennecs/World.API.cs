@@ -155,7 +155,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
         query.Raw(entities =>
         {
             //TODO: This is not good. Need to untangle the types here.
-            foreach (var identity in entities.Span) DespawnImpl(new(this, identity));
+            foreach (var identity in entities) DespawnImpl(new(this, identity));
         });
     }
 

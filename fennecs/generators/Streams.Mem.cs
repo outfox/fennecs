@@ -13,7 +13,7 @@ namespace fennecs.generators;
 /// This is parsed as a CSX template in build target <b>"GenerateCode"</b>
 /// </remarks>
 // ReSharper disable once UnusedType.Local
-file class StreamsRawGenerator
+file class StreamsMemGenerator
 {
     // ReSharper disable once UnusedMember.Local
     public void Main(ICodegenContext context)
@@ -37,7 +37,7 @@ file class StreamsRawGenerator
 
             source.AppendLine(ClassFooter());                        
         }                           
-        context[$"Streams.Raw.g.cs"].Write($$"""{{source}}""");
+        context[$"Streams.Mem.g.cs"].Write($$"""{{source}}""");
     }
 
 
@@ -54,7 +54,7 @@ file class StreamsRawGenerator
         //language=C#
         for (var i = 0; i < width; i++)
         {
-            var rw = pattern[i] == 'W' ? "Span" : "ReadOnlySpan";
+            var rw = pattern[i] == 'W' ? "MemoryRW" : "MemoryR";
             typeParams.Append($"{rw}<C{i}>");
             if (i < width - 1) typeParams.Append(", ");
         }
@@ -88,12 +88,24 @@ file class StreamsRawGenerator
         return select.ToString();
     }
 
+    private static string Deconstruct(int width, string pattern)
+    {
+        var deconstruct = new StringBuilder();
+        //language=C#
+        for (var i = 0; i < width; i++)
+        {
+            deconstruct.Append($"var span{i} = s{i}.Span; ");
+            if (pattern[i] == 'W') deconstruct.Append($"var type{i} = s{i}.Expression; ");
+        }
+        return deconstruct.ToString();
+    }
+
     private static string InvocationParameters(bool entity, bool uniform, string pattern)
     {
         var parameters = new StringBuilder();
 
         //language=C#
-        if (entity) parameters.Append("entities.ReadOnlySpan, ");
+        if (entity) parameters.Append("entities.AsReadOnlyMemory(), ");
 
         //language=C#
         if (uniform) parameters.Append("uniform, ");
@@ -106,8 +118,8 @@ file class StreamsRawGenerator
                 //language=C#
                 p switch
                 {
-                    'R' => $"s{index}.ReadOnlySpan",
-                    'W' => $"s{index}.Span",
+                    'W' => $"s{index}.AsMemory()",
+                    'R' => $"s{index}.AsReadOnlyMemory()",
                     _ => throw new NotImplementedException(),
                 }
             );
@@ -156,9 +168,9 @@ file class StreamsRawGenerator
         return
             $$"""        
               
-                      /// <include file='../_docs.xml' path='members/member[@name="T:Raw{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
+                      /// <include file='../_docs.xml' path='members/member[@name="T:Mem{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
                       [OverloadResolutionPriority(0b_{{(entity ? 1 << width : 0)&255:b8}}_{{bits&255:b8}})]
-                      public void Raw{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action) {{(uniform ? "where U : allows ref struct" : "")}}
+                      public void Mem{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action) {{(uniform ? "where U : allows ref struct" : "")}}
                       {
                          using var worldLock = World.Lock();
               
@@ -170,6 +182,7 @@ file class StreamsRawGenerator
                              do
                              {
                                  var {{Select(width)}} = join.Select;
+                                 {{Deconstruct(width, pattern)}}
                                  action({{InvocationParameters(entity, uniform, pattern)}}); 
                              } while (join.Iterate());
                          }
