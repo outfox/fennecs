@@ -280,3 +280,5 @@ internal delegate void ComponentActionRW<C0, C1>(R<C0> comp0, RW<C1> comp1) wher
 internal delegate void ComponentActionWWref<C0, C1>(ref readonly RW<C0> comp0, ref readonly RW<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionWW<C0, C1>(RW<C0> comp0, RW<C1> comp1) where C0 : notnull where C1 : notnull;
 internal delegate void ComponentActionRR<C0, C1>(R<C0> comp0, R<C1> comp1) where C0 : notnull where C1 : notnull;
+
+public delegate void EntityComponentAction<C0, C1>(in Entity entity, ref C0 comp0, ref C1 comp1);

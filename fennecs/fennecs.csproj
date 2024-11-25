@@ -84,6 +84,10 @@
 
     <ItemGroup>
         <PackageReference Include="CodegenCS.Core" Version="3.5.0" />
+        <PackageReference Include="ErrorProne.NET.Structs" Version="0.6.1-beta.1">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="System.Numerics.Tensors" Version="9.0.0" />
     </ItemGroup>
 

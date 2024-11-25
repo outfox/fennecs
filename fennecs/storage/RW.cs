@@ -134,6 +134,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
         return obj != null && Value.Equals(obj);
     }
     #endregion
+    
     /// <inheritdoc />
     public override int GetHashCode() => Value.GetHashCode();
     

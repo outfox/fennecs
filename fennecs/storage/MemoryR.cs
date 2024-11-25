@@ -36,12 +36,12 @@ public readonly record struct MemoryR<T> where T : notnull
     /// <summary>
     /// Access the the memory as a <see cref="ReadOnlySpan{T}"/>
     /// </summary>
-    public ReadOnlySpan<T> read => storage.SubSpan(start, length);
+    public ReadOnlySpan<T> read => storage.ReadOnlySpan[start..length];
     
     /// <summary>
-    /// Access the the memory as a <see cref="Span{T}"/>
+    /// Access the the memory as a <see cref="ReadOnlySpan{T}"/>
     /// </summary>
-    public ReadOnlySpan<T> Span => storage.SubSpan(start, length);
+    public ReadOnlySpan<T> Span => storage.ReadOnlySpan[start..length];
     
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>

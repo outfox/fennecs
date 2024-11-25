@@ -157,11 +157,11 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// Removes a relation of a specific type between the current entity and the target entity.
     /// </summary>
     /// <param name="relation">target of the relation.</param>
-    /// <typeparam name="R">backing type of the relation to be removed.</typeparam>
+    /// <typeparam name="R1">backing type of the relation to be removed.</typeparam>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
-    public Entity Remove<R>(Entity relation) where R : notnull
+    public Entity Remove<R1>(Entity relation) where R1 : notnull
     {
-        _world.RemoveComponent(Id, TypeExpression.Of<R>(new Relate(relation)));
+        _world.RemoveComponent(Id, TypeExpression.Of<R1>(new Relate(relation)));
         return this;
     }
 
@@ -233,7 +233,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
 
     /// <inheritdoc />
-    public bool Has<R>(Entity relation) where R : notnull => _world.HasComponent<R>(Id, new Relate(relation));
+    public bool Has<R1>(Entity relation) where R1 : notnull => _world.HasComponent<R1>(Id, new Relate(relation));
 
 
     /// <inheritdoc />

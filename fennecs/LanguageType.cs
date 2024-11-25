@@ -52,9 +52,9 @@ internal class LanguageType
     }
 
 
-    private struct Any;
+    private readonly struct Any;
 
-    private struct None;
+    private readonly struct None;
 
     private static readonly ConcurrentDictionary<Type, TypeFlags> CachedFlags = new();
     public static TypeFlags Flags(Type type)
