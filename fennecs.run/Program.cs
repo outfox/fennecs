@@ -68,7 +68,7 @@ void SpawnEntities(int count)
 
 void WarmUp()
 {
-    stream.Raw(static (comp1, comp2, comp3) =>
+    stream.Raw(static (Span<Comp1> comp1, Span<Comp2> comp2, Span<Comp3> comp3) =>
     {
         var m1 = comp1;
         var m2 = comp2;

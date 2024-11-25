@@ -26,6 +26,7 @@ foreach (var job in jobs) config.AddJob(job);
 // Most relevant vectorization instruction sets, add other intrinsics as needed.
 // These are exclusions you can use to TURN OFF specific benchmarks based on the
 // supported feature of the system.
+if (!Avx512F.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Avx512F)));
 if (!Avx2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Avx2)));
 if (!Avx.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Avx)));
 if (!Sse3.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse3)));

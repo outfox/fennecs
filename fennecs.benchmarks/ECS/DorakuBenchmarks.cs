@@ -1,14 +1,16 @@
-﻿using System.Numerics.Tensors;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
+using System.Numerics.Tensors;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using CommandLine;
 using fennecs;
 using fennecs_Components;
-using fennecs.pools;
 using fennecs.storage;
 
 namespace Benchmark.ECS;
@@ -24,10 +26,11 @@ namespace Benchmark.ECS;
 public class DorakuBenchmarks
 {
     private Stream<Component1, Component2, Component3> _query = null!;
+    private Stream<Position, Velocity, Acceleration> _queryPVA = null!;
     private World _world = null!;
 
     // ReSharper disable once MemberCanBePrivate.Global
-    [Params(10_000, 100_000, 1_000_000)] public int entityCount { get; set; } = 0;
+    [Params(100_000)] public int entityCount { get; set; } = 0;
 
     // ReSharper disable once MemberCanBePrivate.Global
     [Params(10)] public int entityPadding { get; set; } = 00;
@@ -45,31 +48,25 @@ public class DorakuBenchmarks
     {
         _world = new World();
         _query = _world.Query<Component1, Component2, Component3>().Stream();
+        _queryPVA = _world.Query<Position, Velocity, Acceleration>().Stream();
+        
         for (var i = 0; i < entityCount; ++i)
         {
-            for (var j = 0; j < entityPadding; ++j)
-            {
-                var padding = _world.Spawn();
-                switch (j % 3)
-                {
-                    case 0:
-                        padding.Add<Component1>();
-                        break;
-                    case 1:
-                        padding.Add<Component2>();
-                        break;
-                    case 2:
-                        padding.Add<Component3>();
-                        break;
-                }
-            }
-
             _world.Spawn().Add<Component1>()
-                .Add(new Component2 { Value = 1 })
-                .Add(new Component3 { Value = 1 });
+                .Add(new Component2 {Value = 1})
+                .Add(new Component3 {Value = 1});
         }
 
-        fennecs_RawFuture();
+        var rnd = new Random(1337);
+        for (var i = 0; i < entityCount; ++i)
+        {
+            _world.Spawn().Add<Position>()
+                .Add(new Velocity {Value = new(rnd.NextSingle(), rnd.NextSingle(), rnd.NextSingle())})
+                .Add(new Acceleration {Value = new(rnd.NextSingle(), rnd.NextSingle(), rnd.NextSingle())});
+        }
+
+        fennecs_Raw();
+        fennecs_Raw_Tensor_Generic();
         _query.Job(Workload);
     }
 
@@ -99,7 +96,7 @@ public class DorakuBenchmarks
     }
 
     [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = "fennecs (For)", Baseline = true)]
+    //[Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
         _query.For(static (c1, c2, c3) => { c1.write.Value += c2.write.Value + c3.write.Value; });
@@ -114,20 +111,6 @@ public class DorakuBenchmarks
 
 
     [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = "fennecs (Raw Future)")]
-    public void fennecs_RawFuture()
-    {
-        _query.RawFuture(static (m1, m2, m3) =>
-        {
-            for (var i = 0; i < m1.write.Length; i++)
-            {
-                m1.write[i].Value = m1.write[i].Value + m2.read[i].Value + m3.read[i].Value;
-            }
-        });
-    }
-
-
-    [BenchmarkCategory("fennecs")]
     //[Benchmark(Description = "fennecs (For WL)")]
     public void fennecs_For_WL()
     {
@@ -136,7 +119,7 @@ public class DorakuBenchmarks
 
 
     [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = $"fennecs (Job)")]
+    //[Benchmark(Description = $"fennecs (Job)")]
     public void fennecs_Job()
     {
         _query.Job(static delegate(RW<Component1> c1, R<Component2> c2, R<Component3> c3)
@@ -146,46 +129,56 @@ public class DorakuBenchmarks
     }
 
     [BenchmarkCategory("fennecs")]
-    [Benchmark(Description = "fennecs (Raw)")]
+    //[Benchmark(Description = "fennecs (Raw)")]
     public void fennecs_Raw()
     {
         _query.Raw(Raw_Workload_Unoptimized);
     }
 
     [BenchmarkCategory("fennecs")]
-    //[Benchmark(Description = "fennecs (Raw U4)")]
-    public void fennecs_Raw_Unroll4()
+    //[Benchmark(Description = "fennecs (Raw Compound)")]
+    public void fennecs_Raw2()
     {
-        // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
-        // Raw runners are intended to process data or transfer it via the fastest available means,
-        // Example use cases:
-        //  - transfer buffers to/from GPUs or Game Engines
-        //  - Disk, Database, or Network I/O
-        //  - SIMD calculations
-        //  - snapshotting / copying / rollback / compression / decompression / diffing / permutation
-
-        // As example / reference & benchmark, we calculate using an unrolled loop
-        _query.Raw(Raw_Workload_Unroll4);
+        _query.Raw(Raw_Workload_Unoptimized_Compound);
     }
 
     [BenchmarkCategory("fennecs")]
-    //[Benchmark(Description = "fennecs (Raw U8)")]
-    public void fennecs_Raw_Unroll8()
+    [Benchmark(Description = "fennecs (Integrate For)")]
+    public void fennecs_For_PVA()
     {
-        // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
-        // Raw runners are intended to process data or transfer it via the fastest available means,
-        // Example use cases:
-        //  - transfer buffers to/from GPUs or Game Engines
-        //  - Disk, Database, or Network I/O
-        //  - SIMD calculations
-        //  - snapshotting / copying / rollback / compression / decompression / diffing / permutation
+        _queryPVA.For(1.0f/60f, Integrate);
+    }
 
-        // As example / reference & benchmark, we calculate using an unrolled loop
-        _query.Raw(Raw_Workload_Unroll8);
+    [BenchmarkCategory("fennecs", nameof(Avx512F))]
+    [Benchmark(Description = "fennecs (Integrate Raw AVX512 FMA)")]
+    public void fennecs_Raw_AVX512()
+    {
+        _queryPVA.Raw(1.0f/60f, Integrate_AVX512_FMA);
     }
 
     [BenchmarkCategory("fennecs", nameof(Avx2))]
-    [Benchmark(Description = "fennecs (Mem AVX2)")]
+    [Benchmark(Description = "fennecs (Integrate Raw AVX2)")]
+    public void fennecs_Raw_AVXPVA()
+    {
+        _queryPVA.Raw(1.0f/60f, Integrate_AVX2);
+    }
+
+    [BenchmarkCategory("fennecs")]
+    [Benchmark(Description = "fennecs (Integrate Raw FMA)")]
+    public void fennecs_Raw_FMA()
+    {
+        _queryPVA.Raw(1.0f/60f, Integrate_Raw_FMA);
+    }
+
+    [BenchmarkCategory("fennecs")]
+    [Benchmark(Description = "fennecs (Integrate For FMA)")]
+    public void fennecs_For_FMA()
+    {
+        _queryPVA.For(1.0f/60f, Integrate_FMA);
+    }
+
+    [BenchmarkCategory("fennecs", nameof(Avx2))]
+    //[Benchmark(Description = "fennecs (Mem AVX2)")]
     public void fennecs_Mem_AVX2()
     {
         // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
@@ -197,11 +190,11 @@ public class DorakuBenchmarks
         //  - snapshotting / copying / rollback / compression / decompression / diffing / permutation
 
         // As example / reference & benchmark, we vectorized our calculation here using AVX2
-        _query.Raw(Mem_Workload_AVX2);
+        _query.Mem(Mem_Workload_AVX2);
     }
 
     [BenchmarkCategory("fennecs", nameof(Avx2))]
-    [Benchmark(Description = "fennecs (Raw AVX2)")]
+    //[Benchmark(Description = "fennecs (Raw AVX2)")]
     public void fennecs_Raw_AVX2()
     {
         // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
@@ -213,13 +206,13 @@ public class DorakuBenchmarks
         //  - snapshotting / copying / rollback / compression / decompression / diffing / permutation
 
         // As example / reference & benchmark, we vectorized our calculation here using AVX2
-        _query.RawFuture(FutureRawWorkloadAvx2);
+        _query.Raw(Raw_Workload_AVX2);
     }
 
 
     [BenchmarkCategory("fennecs", "Tensor")]
     //[Benchmark(Description = "fennecs (Raw Tensor)")]
-    public void fennecs_Raw_Tenor()
+    public void fennecs_Raw_Tensor()
     {
         // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
         // Raw runners are intended to process data or transfer it via the fastest available means,
@@ -231,6 +224,40 @@ public class DorakuBenchmarks
 
         // As example / reference & benchmark, we vectorized our calculation here using AVX2
         _query.Raw(Raw_Workload_Tensor);
+    }
+
+    
+
+    [BenchmarkCategory("fennecs", "Tensor")]
+    //[Benchmark(Description = "fennecs (Raw Tensor Unsafe)")]
+    public void fennecs_Raw_Tensor_Unsafe()
+    {
+        // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
+        // Raw runners are intended to process data or transfer it via the fastest available means,
+        // Example use cases:
+        //  - transfer buffers to/from GPUs or Game Engines
+        //  - Disk, Database, or Network I/O
+        //  - SIMD calculations
+        //  - snapshotting / copying / rollback / compression / decompression / diffing / permutation
+
+        // As example / reference & benchmark, we vectorized our calculation here using AVX2
+        _query.Raw(Raw_Workload_Tensor_Unsafe);
+    }
+
+    [BenchmarkCategory("fennecs", "Tensor")]
+    //[Benchmark(Description = "fennecs (Raw Tensor Generic)")]
+    public void fennecs_Raw_Tensor_Generic()
+    {
+        // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
+        // Raw runners are intended to process data or transfer it via the fastest available means,
+        // Example use cases:
+        //  - transfer buffers to/from GPUs or Game Engines
+        //  - Disk, Database, or Network I/O
+        //  - SIMD calculations
+        //  - snapshotting / copying / rollback / compression / decompression / diffing / permutation
+
+        // As example / reference & benchmark, we vectorized our calculation here using AVX2
+        _query.Raw(Raw_Workload_Tensor_Generic<int, Component1, Component2, Component3>);
     }
 
     [BenchmarkCategory("fennecs", nameof(Sse2))]
@@ -250,7 +277,7 @@ public class DorakuBenchmarks
     }
 
     [BenchmarkCategory("fennecs", nameof(AdvSimd))]
-    [Benchmark(Description = "fennecs (Raw AdvSIMD)")]
+    //[Benchmark(Description = "fennecs (Raw AdvSIMD)")]
     public void fennecs_Raw_AdvSIMD()
     {
         // fennecs guarantees contiguous memory access in the form of Query<>.Raw(MemoryAction<>)
@@ -265,127 +292,43 @@ public class DorakuBenchmarks
         _query.Raw(Raw_Workload_AdvSIMD);
     }
 
-    private static void Raw_Workload_Unoptimized(MemoryRW<Component1> c1V, MemoryR<Component2> c2V,
-        MemoryR<Component3> c3V)
+    private static void Raw_Workload_Unoptimized(Span<Component1> c1S, ReadOnlySpan<Component2> c2S,
+        ReadOnlySpan<Component3> c3S)
     {
-        var c1S = c1V.Span;
-        var c2S = c2V.Span;
-        var c3S = c3V.Span;
-
         for (var i = 0; i < c1S.Length; i++)
         {
             c1S[i].Value = c1S[i].Value + c2S[i].Value + c3S[i].Value;
         }
     }
 
-    private static void Raw_Workload_Unroll4(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
+    
+    private static void Raw_Workload_Unoptimized_Compound(Span<Component1> c1S, ReadOnlySpan<Component2> c2S,
+        ReadOnlySpan<Component3> c3S)
     {
-        var c1 = c1V.Span;
-        var c2 = c2V.Span;
-        var c3 = c3V.Span;
-
-        var i = 0;
-        for (; i < c1.Length; i += 4)
+        for (var i = 0; i < c1S.Length; i++)
         {
-            var j = i + 1;
-            var k = j + 1;
-            var l = k + 1;
-            c1[i].Value = c1[i].Value + c2[i].Value + c3[i].Value;
-            c1[j].Value = c1[j].Value + c2[j].Value + c3[j].Value;
-            c1[k].Value = c1[k].Value + c2[k].Value + c3[k].Value;
-            c1[l].Value = c1[l].Value + c2[l].Value + c3[l].Value;
-        }
-
-        for (; i < c1.Length; i += 1)
-        {
-            c1[i].Value = c1[i].Value + c2[i].Value + c3[i].Value;
+            c1S[i].Value += c2S[i].Value + c3S[i].Value;
         }
     }
 
-    private static void Raw_Workload_Unroll8(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
-    {
-        var c1 = c1V.Span;
-        var c2 = c2V.Span;
-        var c3 = c3V.Span;
-
-        var i = 0;
-        for (; i < c1.Length; i += 8)
-        {
-            var j = i + 1;
-            var k = i + 2;
-            var l = i + 3;
-            var m = i + 4;
-            var n = i + 5;
-            var o = i + 6;
-            var p = i + 7;
-
-            c1[i].Value = c1[i].Value + c2[i].Value + c3[i].Value;
-            c1[j].Value = c1[j].Value + c2[j].Value + c3[j].Value;
-            c1[k].Value = c1[k].Value + c2[k].Value + c3[k].Value;
-            c1[l].Value = c1[l].Value + c2[l].Value + c3[l].Value;
-            c1[m].Value = c1[m].Value + c2[m].Value + c3[m].Value;
-            c1[n].Value = c1[n].Value + c2[n].Value + c3[n].Value;
-            c1[o].Value = c1[o].Value + c2[o].Value + c3[o].Value;
-            c1[p].Value = c1[p].Value + c2[p].Value + c3[p].Value;
-        }
-
-        for (; i < c1.Length; i += 1)
-        {
-            c1[i].Value = c1[i].Value + c2[i].Value + c3[i].Value;
-        }
-    }
-
-    private static void Mem_Workload_AVX2(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
+    
+    private static void Raw_Workload_AVX2(Span<Component1> c1V, ReadOnlySpan<Component2> c2V, ReadOnlySpan<Component3> c3V)
     {
         var count = c1V.Length;
 
-        using var mem1 = c1V.Memory.Pin();
-        using var mem2 = c2V.ReadOnlyMemory.Pin();
-        using var mem3 = c3V.ReadOnlyMemory.Pin();
-
         unsafe
         {
-            var p1 = (int*)mem1.Pointer;
-            var p2 = (int*)mem2.Pointer;
-            var p3 = (int*)mem3.Pointer;
-
-            var vectorSize = Vector256<int>.Count;
-            var vectorEnd = count - count % vectorSize;
-            for (var i = 0; i <= vectorEnd; i += vectorSize)
+            fixed (Component1* c1 = c1V)
+            fixed (Component2* c2 = c2V)
+            fixed (Component3* c3 = c3V)
             {
-                var v1 = Avx.LoadVector256(p1 + i);
-                var v2 = Avx.LoadVector256(p2 + i);
-                var v3 = Avx.LoadVector256(p3 + i);
-                var sum = Avx2.Add(v1, Avx2.Add(v2, v3));
-
-                Avx.Store(p1 + i, sum);
-            }
-
-            for (var i = vectorEnd; i < count; i++) // remaining elements
-            {
-                p1[i] = p1[i] + p2[i] + p3[i];
-            }
-        }
-    }
-
-    private static void FutureRawWorkloadAvx2(SpanRW<Component1> span1, SpanR<Component2> span2, SpanR<Component3> span3)
-    {
-        unsafe
-        {
-            fixed (Component1* sp1 = span1.write)
-            fixed (Component2* sp2 = span2.read)
-            fixed (Component3* sp3 = span3.read) 
-            {
-                var count = span1.Length;
-
-                var p1 = (int*)sp1;
-                var p2 = (int*)sp2;
-                var p3 = (int*)sp3;
-
+                var p1 = (int*) c1;
+                var p2 = (int*) c2;
+                var p3 = (int*) c3;
 
                 var vectorSize = Vector256<int>.Count;
                 var vectorEnd = count - count % vectorSize;
-                for (var i = 0; i <= vectorEnd; i += vectorSize)
+                for (var i = 0; i < vectorEnd; i += vectorSize)
                 {
                     var v1 = Avx.LoadVector256(p1 + i);
                     var v2 = Avx.LoadVector256(p2 + i);
@@ -403,80 +346,374 @@ public class DorakuBenchmarks
         }
     }
 
-    private static void Raw_Workload_Tensor(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
+    private static void Integrate(float deltaTime, RW<Position> pos, RW<Velocity> vel, R<Acceleration> acc)
     {
-        var c1I = MemoryMarshal.Cast<Component1, float>(c1V.Span);
-        var c2I = MemoryMarshal.Cast<Component2, float>(c2V.Span);
-        var c3I = MemoryMarshal.Cast<Component3, float>(c3V.Span);
-
-        TensorPrimitives.Add(c2I, c1I, c1I);
-        TensorPrimitives.Add(c3I, c1I, c1I);
+        vel.write.Value += acc.read.Value * deltaTime;
+        pos.write.Value += vel.write.Value * deltaTime;
     }
 
-    private static void Raw_Workload_SSE2(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
+    private static void Integrate_FMA(float deltaTime, RW<Position> pos, RW<Velocity> vel, R<Acceleration> acc)
     {
-        (int Item1, int Item2) range = (0, c1V.Length);
+        var dt = Vector3.Create(deltaTime);
+        vel.write.Value = Vector3.FusedMultiplyAdd( acc.read.Value, dt, vel.write.Value );
+        pos.write.Value = Vector3.FusedMultiplyAdd( vel.write.Value, dt, pos.write.Value );
+    }
 
-        using var mem1 = c1V.Memory.Pin();
-        using var mem2 = c2V.ReadOnlyMemory.Pin();
-        using var mem3 = c3V.ReadOnlyMemory.Pin();
+    private static void Integrate_Raw_FMA(float deltaTime, Span<Position> pos, Span<Velocity> vel, ReadOnlySpan<Acceleration> acc)
+    {
+        var dt = Vector3.Create(deltaTime);
+        for (var i = 0; i < pos.Length; i++)
+        {
+            vel[i] = new(Vector3.FusedMultiplyAdd( acc[i].Value, dt, vel[i].Value ));
+            pos[i] = new(Vector3.FusedMultiplyAdd( vel[i].Value, dt, pos[i].Value ));
+        }
+    }
+
+    private static void Integrate_AVX2(float deltaTime, Span<Position> pos, Span<Velocity> vel, ReadOnlySpan<Acceleration> acc)
+    {
+        var count = pos.Length;
+        var dt = Vector256.Create(deltaTime);
+        
+        unsafe
+        {
+            fixed (Position* pw = pos)
+            fixed (Velocity* vw = vel)
+            fixed (Acceleration* ar = acc)
+            {
+                var p0 = (float*) pw;
+                var v0 = (float*) vw;
+                var a0 = (float*) ar;
+
+                var vectorSize = Vector256<float>.Count;
+                var vectorEnd = count - count % vectorSize;
+                for (var i = 0; i < vectorEnd; i += vectorSize)
+                {
+                    
+                    var p = Avx.LoadVector256(p0 + i);
+                    var v = Avx.LoadVector256(v0 + i);
+                    var a = Avx.LoadVector256(a0 + i);
+                    
+                    var accI = Avx.Multiply(a, dt);
+                    var velV = Avx.Add(v, accI);
+                    Avx.Store(v0 + i, velV);
+                    
+                    var velI = Avx.Multiply(velV, dt);
+                    var posV = Avx.Add(p, velI);
+                    Avx.Store(p0 + i, posV);
+                }
+
+                for (var i = vectorEnd; i < count; i++) // remaining elements
+                {
+                    v0[i] += a0[i] * deltaTime;
+                    p0[i] += v0[i] * deltaTime;
+                }
+            }
+        }
+    }
+
+
+    private static void Integrate_AVX512_FMA(float deltaTime, Span<Position> pos, Span<Velocity> vel, ReadOnlySpan<Acceleration> acc)
+    {
+        var count = pos.Length;
+        var dt = Vector512.Create(deltaTime);
+        
+        unsafe
+        {
+            fixed (Position* pw = pos)
+            fixed (Velocity* vw = vel)
+            fixed (Acceleration* ar = acc)
+            {
+                var p0 = (float*) pw;
+                var v0 = (float*) vw;
+                var a0 = (float*) ar;
+
+                var vectorSize = Vector512<float>.Count;
+                var vectorEnd = count - count % vectorSize;
+                for (var i = 0; i < vectorEnd; i += vectorSize)
+                {
+                    var p = Avx512F.LoadVector512(p0 + i);
+                    var v = Avx512F.LoadVector512(v0 + i);
+                    var a = Avx512F.LoadVector512(a0 + i);
+        
+                    // v = v + (a * dt)
+                    var velV = Avx512F.FusedMultiplyAdd(a, dt, v);
+                    Avx512F.Store(v0 + i, velV);
+
+                    // p = p + (v * dt)
+                    var posV = Avx512F.FusedMultiplyAdd(velV, dt, p);
+                    Avx512F.Store(p0 + i, posV);
+                }
+
+                for (var i = vectorEnd; i < count; i++) // remaining elements
+                {
+                    v0[i] += a0[i] * deltaTime;
+                    p0[i] += v0[i] * deltaTime;
+                }
+            }
+        }
+    }
+
+
+    private static void Mem_Workload_AVX2(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
+    {
+        var count = c1V.Length;
+
+        var c1 = c1V.Memory.Pin();
+        var c2 = c2V.ReadOnlyMemory.Pin();
+        var c3 = c3V.ReadOnlyMemory.Pin();
 
         unsafe
         {
-            var p1 = (int*)mem1.Pointer;
-            var p2 = (int*)mem2.Pointer;
-            var p3 = (int*)mem3.Pointer;
+            var p1 = (int*) c1.Pointer;
+            var p2 = (int*) c2.Pointer;
+            var p3 = (int*) c3.Pointer;
 
-            var vectorSize = Vector128<int>.Count;
-            var i = range.Item1;
-            var vectorEnd = range.Item2 - vectorSize;
-            for (; i <= vectorEnd; i += vectorSize)
+            var vectorSize = Vector256<int>.Count;
+            var vectorEnd = count - count % vectorSize;
+            for (var i = 0; i < vectorEnd; i += vectorSize)
             {
-                var v1 = Sse2.LoadVector128(p1 + i);
-                var v2 = Sse2.LoadVector128(p2 + i);
-                var v3 = Sse2.LoadVector128(p3 + i);
-                var sum = Sse2.Add(v1, Sse2.Add(v2, v3));
+                var v1 = Avx.LoadVector256(p1 + i);
+                var v2 = Avx.LoadVector256(p2 + i);
+                var v3 = Avx.LoadVector256(p3 + i);
+                var sum = Avx2.Add(v1, Avx2.Add(v2, v3));
 
-                Sse2.Store(p1 + i, sum);
+                Avx.Store(p1 + i, sum);
             }
 
-            for (; i < range.Item2; i++) // remaining elements
+            for (var i = vectorEnd; i < count; i++) // remaining elements
             {
                 p1[i] = p1[i] + p2[i] + p3[i];
             }
         }
     }
 
-    private static void Raw_Workload_AdvSIMD(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
+    private static void Mem_Workload_AVX2_Unsafer(MemoryRW<Component1> c1V, MemoryR<Component2> c2V, MemoryR<Component3> c3V)
     {
-        (int Item1, int Item2) range = (0, c1V.Length);
-
-        using var mem1 = c1V.Memory.Pin();
-        using var mem2 = c2V.ReadOnlyMemory.Pin();
-        using var mem3 = c3V.ReadOnlyMemory.Pin();
+        var count = c1V.Length;
 
         unsafe
         {
-            var p1 = (int*)mem1.Pointer;
-            var p2 = (int*)mem2.Pointer;
-            var p3 = (int*)mem3.Pointer;
+            var c1 = c1V.Memory.Pin();
+            var c2 = c2V.ReadOnlyMemory.Pin();
+            var c3 = c3V.ReadOnlyMemory.Pin();
 
-            var vectorSize = Vector128<int>.Count;
-            var i = range.Item1;
-            var vectorEnd = range.Item2 - vectorSize;
-            for (; i <= vectorEnd; i += vectorSize)
+            var p1 = (int*) c1.Pointer;
+            var p2 = (int*) c2.Pointer;
+            var p3 = (int*) c3.Pointer;
+
+            var vectorSize = Vector256<int>.Count;
+            var vectorEnd = count - count % vectorSize;
+            for (var i = 0; i < vectorEnd; i += vectorSize)
             {
-                var v1 = AdvSimd.LoadVector128(p1 + i);
-                var v2 = AdvSimd.LoadVector128(p2 + i);
-                var v3 = AdvSimd.LoadVector128(p3 + i);
-                var sum = AdvSimd.Add(v1, AdvSimd.Add(v2, v3));
+                var v1 = Avx.LoadVector256(p1 + i);
+                var v2 = Avx.LoadVector256(p2 + i);
+                var v3 = Avx.LoadVector256(p3 + i);
+                var sum = Avx2.Add(v1, Avx2.Add(v2, v3));
 
-                AdvSimd.Store(p1 + i, sum);
+                Avx.Store(p1 + i, sum);
             }
 
-            for (; i < range.Item2; i++) // remaining elements
+            for (var i = vectorEnd; i < count; i++) // remaining elements
             {
                 p1[i] = p1[i] + p2[i] + p3[i];
+            }
+        }
+    }
+
+    private static void FutureRawWorkloadAvx2(Span<Component1> span1, ReadOnlySpan<Component2> span2,
+        ReadOnlySpan<Component3> span3)
+    {
+        unsafe
+        {
+            fixed (Component1* sp1 = span1)
+            fixed (Component2* sp2 = span2)
+            fixed (Component3* sp3 = span3)
+            {
+                var count = span1.Length;
+
+                var p1 = (int*) sp1;
+                var p2 = (int*) sp2;
+                var p3 = (int*) sp3;
+
+
+                var vectorSize = Vector256<int>.Count;
+                var vectorEnd = count - count % vectorSize;
+                for (var i = 0; i < vectorEnd; i += vectorSize)
+                {
+                    var v1 = Avx.LoadVector256(p1 + i);
+                    var v2 = Avx.LoadVector256(p2 + i);
+                    var v3 = Avx.LoadVector256(p3 + i);
+                    var sum = Avx2.Add(v1, Avx2.Add(v2, v3));
+
+                    Avx.Store(p1 + i, sum);
+                }
+
+                for (var i = vectorEnd; i < count; i++) // remaining elements
+                {
+                    p1[i] = p1[i] + p2[i] + p3[i];
+                }
+            }
+        }
+    }
+
+    private void Raw_Workload_Tensor<T1, T2, T3>(Span<T1> c1V, ReadOnlySpan<T2> c2V, ReadOnlySpan<T3> c3V)
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+    {
+        var c1I = MemoryMarshal.Cast<T1, int>(c1V);
+        var c2I = MemoryMarshal.Cast<T2, int>(c2V);
+        var c3I = MemoryMarshal.Cast<T3, int>(c3V);
+
+        TensorPrimitives.Add(c2I, c1I, c1I);
+        TensorPrimitives.Add(c3I, c1I, c1I);
+    }
+
+    private void Raw_Workload_Tensor_Create<T1, T2, T3>(Span<T1> c1V, ReadOnlySpan<T2> c2V, ReadOnlySpan<T3> c3V)
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+    {
+        unsafe
+        {
+            fixed (T1* c1 = c1V)
+            fixed (T2* c2 = c2V)
+            fixed (T3* c3 = c3V)
+            {
+                var c1I = MemoryMarshal.CreateSpan(ref Unsafe.AsRef<int>(c1), c1V.Length * sizeof(T1) / sizeof(int));
+                var c2I = MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef<int>(c2), c2V.Length * sizeof(T2) / sizeof(int));
+                var c3I = MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef<int>(c3), c3V.Length * sizeof(T3) / sizeof(int));
+                /*
+                var c1I = new Span<int>(c1, c1V.Length * sizeof(T1) / sizeof(int));
+                var c2I = new ReadOnlySpan<int>(c2, c2V.Length * sizeof(T2) / sizeof(int));
+                var c3I = new ReadOnlySpan<int>(c3, c3V.Length * sizeof(T3) / sizeof(int));
+                */
+                TensorPrimitives.Add(c2I, c1I, c1I);
+                TensorPrimitives.Add(c3I, c1I, c1I);
+            }
+        }
+    }
+
+    private void Raw_Workload_Tensor_Unsafe<T1, T2, T3>(Span<T1> c1V, ReadOnlySpan<T2> c2V, ReadOnlySpan<T3> c3V)
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+    {
+        unsafe
+        {
+            fixed (T1* c1 = c1V)
+            fixed (T2* c2 = c2V)
+            fixed (T3* c3 = c3V)
+            {
+                var c1I = new Span<int>(c1, c1V.Length * sizeof(T1) / sizeof(int));
+                var c2I = new ReadOnlySpan<int>(c2, c2V.Length * sizeof(T2) / sizeof(int));
+                var c3I = new ReadOnlySpan<int>(c3, c3V.Length * sizeof(T3) / sizeof(int));
+                
+                TensorPrimitives.Add(c2I, c1I, c1I);
+                TensorPrimitives.Add(c3I, c1I, c1I);
+            }
+        }
+
+    }
+
+    private void Raw_Workload_Tensor_Generic<PRIM, T1, T2, T3>(Span<T1> c1V, ReadOnlySpan<T2> c2V, ReadOnlySpan<T3> c3V)
+        where T1 : unmanaged, Fox<PRIM>
+        where T2 : unmanaged, Fox<PRIM>
+        where T3 : unmanaged, Fox<PRIM>
+        where PRIM : unmanaged, IAdditionOperators<PRIM,PRIM,PRIM>, IAdditiveIdentity<PRIM,PRIM>
+    {
+        Debug.Assert(c1V.Length == c2V.Length, "c1V and c2V must have the same length");
+        Debug.Assert(c1V.Length == c3V.Length, "c1V and c3V must have the same length");
+        
+        unsafe
+        {
+            Debug.Assert(sizeof(T1) == sizeof(PRIM), "T1 is not memory size congruent with PRIM");
+            Debug.Assert(sizeof(T2) == sizeof(PRIM), "T2 is not memory size congruent with PRIM");
+            Debug.Assert(sizeof(T3) == sizeof(PRIM), "T3 is not memory size congruent with PRIM");
+            
+            fixed (T1* c1 = c1V)
+            fixed (T2* c2 = c2V)
+            fixed (T3* c3 = c3V)
+            {
+                var c1I = new Span<PRIM>(c1, c1V.Length * sizeof(T1) / sizeof(PRIM));
+                var c2I = new ReadOnlySpan<PRIM>(c2, c2V.Length * sizeof(T2) / sizeof(PRIM));
+                var c3I = new ReadOnlySpan<PRIM>(c3, c3V.Length * sizeof(T3) / sizeof(PRIM));
+                
+                TensorPrimitives.Add(c2I, c1I, c1I);
+                TensorPrimitives.Add(c3I, c1I, c1I);
+            }
+        }
+    }
+
+
+    private static void Raw_Workload_SSE2(Span<Component1> c1V, ReadOnlySpan<Component2> c2V, ReadOnlySpan<Component3> c3V)
+    {
+        (int Item1, int Item2) range = (0, c1V.Length);
+
+        unsafe
+        {
+            fixed (Component1* c1 = c1V)
+            fixed (Component2* c2 = c2V)
+            fixed (Component3* c3 = c3V)
+            {
+                var p1 = (int*) c1;
+                var p2 = (int*) c2;
+                var p3 = (int*) c3;
+
+                var vectorSize = Vector128<int>.Count;
+                var i = range.Item1;
+                var vectorEnd = range.Item2 - vectorSize;
+                for (; i < vectorEnd; i += vectorSize)
+                {
+                    var v1 = Sse2.LoadVector128(p1 + i);
+                    var v2 = Sse2.LoadVector128(p2 + i);
+                    var v3 = Sse2.LoadVector128(p3 + i);
+                    var sum = Sse2.Add(v1, Sse2.Add(v2, v3));
+
+                    Sse2.Store(p1 + i, sum);
+                }
+
+                for (; i < range.Item2; i++) // remaining elements
+                {
+                    p1[i] = p1[i] + p2[i] + p3[i];
+                }
+            }
+        }
+    }
+
+    private static void Raw_Workload_AdvSIMD(Span<Component1> c1V, ReadOnlySpan<Component2> c2V, ReadOnlySpan<Component3> c3V)
+    {
+        (int Item1, int Item2) range = (0, c1V.Length);
+
+        var count = c1V.Length;
+
+        unsafe
+        {
+            fixed (Component1* c1 = c1V)
+            fixed (Component2* c2 = c2V)
+            fixed (Component3* c3 = c3V)
+            {
+                var p1 = (int*) c1;
+                var p2 = (int*) c2;
+                var p3 = (int*) c3;
+
+                var vectorSize = Vector128<int>.Count;
+                var i = range.Item1;
+                var vectorEnd = range.Item2 - vectorSize;
+                for (; i < vectorEnd; i += vectorSize)
+                {
+                    var v1 = AdvSimd.LoadVector128(p1 + i);
+                    var v2 = AdvSimd.LoadVector128(p2 + i);
+                    var v3 = AdvSimd.LoadVector128(p3 + i);
+                    var sum = AdvSimd.Add(v1, AdvSimd.Add(v2, v3));
+
+                    AdvSimd.Store(p1 + i, sum);
+                }
+
+                for (; i < range.Item2; i++) // remaining elements
+                {
+                    p1[i] = p1[i] + p2[i] + p3[i];
+                }
             }
         }
     }

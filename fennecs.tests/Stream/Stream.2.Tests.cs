@@ -263,7 +263,7 @@ public class Stream2Tests(ITestOutputHelper output)
             str.write = "two";
         });
 
-        query.Raw((integers, strings) =>
+        query.Raw((ReadOnlySpan<int> integers, Span<string> strings) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -300,7 +300,7 @@ public class Stream2Tests(ITestOutputHelper output)
                 str.write = uniform.ToString();
             });
 
-        query.Raw(8, (uniform, _, strings) =>
+        query.Raw(8, (int uniform, Span<int> _, Span<string> strings) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -309,12 +309,12 @@ public class Stream2Tests(ITestOutputHelper output)
             }
         });
 
-        query.Raw(9, (uniform, _, c1) =>
+        query.Raw(9, (int uniform, Span<int> _, Span<string> strings) =>
         {
             for (var i = 0; i < count; i++)
             {
-                Assert.Equal(8.ToString(), c1[i]);
-                c1[i] = uniform.ToString();
+                Assert.Equal(8.ToString(), strings[i]);
+                strings[i] = uniform.ToString();
             }
         });
 
@@ -650,7 +650,7 @@ public class Stream2Tests(ITestOutputHelper output)
 
         var query = world.Query<int, float>().Stream();
 
-        query.Raw((integers, floats) =>
+        query.Raw((ReadOnlySpan<int> integers, Span<float> floats) =>
         {
             for (var i = 0; i < count; i++)
             {

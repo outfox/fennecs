@@ -87,9 +87,9 @@ public class SimpleEntityBenchmarks
     [Benchmark(Baseline = true)]
     public void CrossProduct_Single_ECS_Raw()
     {
-        _streamV3.Raw(static vectors =>
+        _streamV3.Raw(static (Span<Vector3> vectors) =>
         {
-            foreach (ref var v in vectors.write)
+            foreach (ref var v in vectors)
             {
                 v = Vector3.Cross(v, UniformConstantVector);
             }
@@ -99,9 +99,9 @@ public class SimpleEntityBenchmarks
     [Benchmark]
     public void CrossProduct_Parallel_ECS_Raw()
     {
-        _streamV3.Raw(static (vectors) =>
+        _streamV3.Raw(static (Span<Vector3> vectors) =>
         {
-            foreach (ref var v in vectors.write)
+            foreach (ref var v in vectors)
             {
                 v = Vector3.Cross(v, UniformConstantVector);
             }

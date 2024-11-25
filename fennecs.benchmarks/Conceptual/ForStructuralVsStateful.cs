@@ -137,15 +137,14 @@ public class ForStructuralVsStateful
 
         while (!flag.done)
         {
-            _stream.Raw(values =>
+            _stream.Raw((Span<ushort> values) =>
                 {
                     var localDone = true;
-                    var span = values.write;
-                    for (var i = 0; i < span.Length; i++)
+                    for (var i = 0; i < values.Length; i++)
                     {
-                        if (span[i] <= 0) continue;
+                        if (values[i] <= 0) continue;
                         localDone = false;
-                        span[i]--;
+                        values[i]--;
                     }
                     flag.done = localDone;
                 }
@@ -167,27 +166,26 @@ public class ForStructuralVsStateful
                 var count = values.Length;
                 var localDone = true;
 
-                using var mem1 = values.Memory.Pin();
-
                 unsafe
                 {
-                    var p1 = (ushort*)mem1.Pointer;
-
-                    var vectorSize = Vector256<ushort>.Count;
-                    var vectorEnd = count - count % vectorSize;
-                    
-                    for (var i = 0; i <= vectorEnd; i += vectorSize)
+                    fixed(ushort* p1 = values)
                     {
-                        var v1 = Avx.LoadVector256(p1 + i);
-                        var sum = Avx2.SubtractSaturate(v1, Vector256<ushort>.One);
-                        Avx.Store(p1 + i, sum);
-                        localDone &= sum == Vector256<ushort>.Zero;
-                    }
+                        var vectorSize = Vector256<ushort>.Count;
+                        var vectorEnd = count - count % vectorSize;
                     
-                    for (var i = vectorEnd; i < count; i++) // remaining elements
-                    {
-                        localDone &= p1[i] == 0;
-                        p1[i] -= 1;
+                        for (var i = 0; i <= vectorEnd; i += vectorSize)
+                        {
+                            var v1 = Avx.LoadVector256(p1 + i);
+                            var sum = Avx2.SubtractSaturate(v1, Vector256<ushort>.One);
+                            Avx.Store(p1 + i, sum);
+                            localDone &= sum == Vector256<ushort>.Zero;
+                        }
+                    
+                        for (var i = vectorEnd; i < count; i++) // remaining elements
+                        {
+                            localDone &= p1[i] == 0;
+                            p1[i] -= 1;
+                        }
                     }
                 }
                 flag.done = localDone;

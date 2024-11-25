@@ -211,7 +211,7 @@ public class AliasingBenchmarks(Vector4[] testArray)
     {
         _queryV4.Raw(UniformConstantVector, static (uniform, v) =>
         {
-            v.Span.Fill(uniform);
+            v.Fill(uniform);
         });
     }
 
@@ -221,7 +221,7 @@ public class AliasingBenchmarks(Vector4[] testArray)
     {
         _queryF4.Raw(UniformConstantVector, static (uniform, v) =>
         {
-            v.Span.Fill(uniform);
+            v.Fill(uniform);
         });
     }
 
@@ -231,28 +231,30 @@ public class AliasingBenchmarks(Vector4[] testArray)
     {
         _queryV4.Raw(UniformConstantVector, static (uniform, mem) =>
         {
-            using var handle = mem.Memory.Pin();
             unsafe
             {
-                var length = mem.Length * sizeof(Vector4) / sizeof(float);
-
-                var p1 = (float*)handle.Pointer;
-
-                var uHalf = uniform.AsVector128();
-                var u256 = Vector256.Create(uHalf, uHalf);
-
-                var vectorSize = Vector256<float>.Count;
-                var vectorEnd = length / vectorSize * vectorSize;
-
-                for (var i = 0; i < length; i += vectorSize)
+                fixed (Vector4* handle = mem)
                 {
-                    var addr = p1 + i;
-                    Avx.Store(addr, u256);
-                }
+                    var length = mem.Length * sizeof(Vector4) / sizeof(float);
 
-                for (var i = vectorEnd; i < length; i++) // remaining elements
-                {
-                    p1[i] = uniform[i % 4];
+                    var p1 = (float*)handle;
+
+                    var uHalf = uniform.AsVector128();
+                    var u256 = Vector256.Create(uHalf, uHalf);
+
+                    var vectorSize = Vector256<float>.Count;
+                    var vectorEnd = length / vectorSize * vectorSize;
+
+                    for (var i = 0; i < length; i += vectorSize)
+                    {
+                        var addr = p1 + i;
+                        Avx.Store(addr, u256);
+                    }
+
+                    for (var i = vectorEnd; i < length; i++) // remaining elements
+                    {
+                        p1[i] = uniform[i % 4];
+                    }
                 }
             }
         });
@@ -265,27 +267,29 @@ public class AliasingBenchmarks(Vector4[] testArray)
     {
         _queryV4.Raw(UniformConstantVector, static (uniform, mem) =>
         {
-            using var handle = mem.Memory.Pin();
             unsafe
             {
-                var length = mem.Length * sizeof(Vector4) / sizeof(float);
-
-                var p1 = (float*)handle.Pointer;
-
-                var u128 = uniform.AsVector128();
-
-                var vectorSize = Vector128<float>.Count;
-                var vectorEnd = length / vectorSize * vectorSize;
-
-                for (var i = 0; i < length; i += vectorSize)
+                fixed (Vector4* handle = mem)
                 {
-                    var addr = p1 + i;
-                    Sse.Store(addr, u128);
-                }
+                    var length = mem.Length * sizeof(Vector4) / sizeof(float);
 
-                for (var i = vectorEnd; i < length; i++) // remaining elements
-                {
-                    p1[i] = uniform[i % 4];
+                    var p1 = (float*) handle;
+
+                    var u128 = uniform.AsVector128();
+
+                    var vectorSize = Vector128<float>.Count;
+                    var vectorEnd = length / vectorSize * vectorSize;
+
+                    for (var i = 0; i < length; i += vectorSize)
+                    {
+                        var addr = p1 + i;
+                        Sse.Store(addr, u128);
+                    }
+
+                    for (var i = vectorEnd; i < length; i++) // remaining elements
+                    {
+                        p1[i] = uniform[i % 4];
+                    }
                 }
             }
         });
@@ -297,28 +301,30 @@ public class AliasingBenchmarks(Vector4[] testArray)
     {
         _queryF4.Raw(new FoxVector4(UniformConstantVector), static (uniform, mem) =>
         {
-            using var handle = mem.Memory.Pin();
             unsafe
             {
-                var length = mem.Length * sizeof(FoxVector4) / sizeof(float);
-
-                var p1 = (float*)handle.Pointer;
-
-                var uHalf = uniform.Value.AsVector128();
-                var u256 = Vector256.Create(uHalf, uHalf);
-
-                var vectorSize = Vector256<float>.Count;
-                var vectorEnd = length / vectorSize * vectorSize;
-
-                for (var i = 0; i < length; i += vectorSize)
+                fixed (FoxVector4* handle = mem)
                 {
-                    var addr = p1 + i;
-                    Avx.Store(addr, u256);
-                }
+                    var length = mem.Length * sizeof(Vector4) / sizeof(float);
 
-                for (var i = vectorEnd; i < length; i++) // remaining elements
-                {
-                    p1[i] = uniform.Value[i % 4];
+                    var p1 = (float*) handle;
+
+                    var uHalf = uniform.Value.AsVector128();
+                    var u256 = Vector256.Create(uHalf, uHalf);
+
+                    var vectorSize = Vector256<float>.Count;
+                    var vectorEnd = length / vectorSize * vectorSize;
+
+                    for (var i = 0; i < length; i += vectorSize)
+                    {
+                        var addr = p1 + i;
+                        Avx.Store(addr, u256);
+                    }
+
+                    for (var i = vectorEnd; i < length; i++) // remaining elements
+                    {
+                        p1[i] = uniform.Value[i % 4];
+                    }
                 }
             }
         });

@@ -1,5 +1,4 @@
-﻿using fennecs.future;
-namespace fennecs.tests.Stream;
+﻿namespace fennecs.tests.Stream;
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -108,7 +107,7 @@ public class Stream1TestsExperiment
             str.write = "two";
         });
 
-        query.Raw(strings =>
+        query.Raw((Span<string> strings) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -142,7 +141,7 @@ public class Stream1TestsExperiment
             str.write = uniform.ToString();
         });
 
-        query.Raw(8, (uniform, strings) =>
+        query.Raw(8, (int uniform, Span<string> strings) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -151,7 +150,7 @@ public class Stream1TestsExperiment
             }
         });
 
-        query.Raw(9, (uniform, c1) =>
+        query.Raw(9, (int uniform, Span<string> c1) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -439,7 +438,7 @@ public class Stream1TestsExperiment
 
         var query = world.Query<int, float>().Stream();
 
-        query.Raw((integers, floats) =>
+        query.Raw((ReadOnlySpan<int> integers, Span<float> floats) =>
         {
             for (var i = 0; i < count; i++)
             {
@@ -480,7 +479,7 @@ public class Stream1TestsExperiment
 
         var processed = 0;
 
-        query.Raw(longs =>
+        query.Raw((Span<long> longs) =>
         {
             foreach (ref var i in longs) i = processed++;
         });

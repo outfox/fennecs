@@ -157,7 +157,7 @@ file class StreamsRawGenerator
             $$"""        
               
                       /// <include file='../_docs.xml' path='members/member[@name="T:Raw{{(entity ? "E" : "")}}{{(uniform ? "U" : "")}}"]'/>
-                      {{(bits == 0 ? "[OverloadResolutionPriority(9001)]" : "")}}
+                      {{(bits == 0 ? "" : $"[OverloadResolutionPriority({bits})]")}}
                       public void Raw{{(uniform ? "<U>(U uniform, " : "(")}}Action<{{ActionParams(width, entity, uniform, pattern)}}> action) {{(uniform ? "where U : allows ref struct" : "")}}
                       {
                          using var worldLock = World.Lock();
