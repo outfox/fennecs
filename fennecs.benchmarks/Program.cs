@@ -1,17 +1,19 @@
 ﻿using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
 using Benchmark;
-using Benchmark.Conceptual;
 using Benchmark.ECS;
+using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 
 
 var config = ManualConfig
     .Create(DefaultConfig.Instance)
     .WithOptions(ConfigOptions.JoinSummary)
+    .WithSummaryStyle(SummaryStyle.Default.WithRatioStyle(RatioStyle.Trend))
     .HideColumns("Job", "Error", "Median", "entityPadding", "RatioSD", "Completed Work Items", "Lock Contentions", "Alloc Ratio");
 
 var jobs = new List<Job>([
@@ -34,4 +36,4 @@ if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
 
-BenchmarkRunner.Run<DorakuBenchmarks>(config);
+BenchmarkRunner.Run<MatrixMul>(config);

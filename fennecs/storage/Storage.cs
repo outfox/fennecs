@@ -400,8 +400,8 @@ public class Storage<T> : IStorage where T : notnull
     /// </summary>
     public ReadOnlySpan<T> ReadOnlySpan => _data.AsSpan()[..Count];
 
-    public Span<T> FastSpan(int start, int count) => _data.AsSpan(start, count);
-
+    internal Span<T> SubSpan(int start, int count) => _data.AsSpan(start, count);
+    
     private Span<T> FullSpan => _data.AsSpan();
 
     /// <summary>

@@ -35,12 +35,12 @@ public partial class World
 
     #region Locking & Deferred Operations
 
-    private readonly object _spawnLock = new();
+    private readonly Lock _spawnLock = new();
 
-    private readonly object _modeChangeLock = new();
+    private readonly Lock _modeChangeLock = new();
     private int _locks;
 
-    internal static int Concurrency => Environment.ProcessorCount-2;
+    internal static int Concurrency => Math.Max(1, Environment.ProcessorCount-2);
     
     internal WorldMode Mode { get; private set; } = WorldMode.Immediate;
 

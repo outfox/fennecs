@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
@@ -31,9 +30,6 @@ public class DorakuBenchmarks
 
     // ReSharper disable once MemberCanBePrivate.Global
     [Params(100_000)] public int entityCount { get; set; } = 0;
-
-    // ReSharper disable once MemberCanBePrivate.Global
-    [Params(10)] public int entityPadding { get; set; } = 00;
 
     private class WarmupJob : IThreadPoolWorkItem
     {
@@ -96,7 +92,7 @@ public class DorakuBenchmarks
     }
 
     [BenchmarkCategory("fennecs")]
-    //[Benchmark(Description = "fennecs (For)", Baseline = true)]
+    [Benchmark(Description = "fennecs (For)", Baseline = true)]
     public void fennecs_For()
     {
         _query.For(static (c1, c2, c3) => { c1.write.Value += c2.write.Value + c3.write.Value; });
@@ -147,6 +143,13 @@ public class DorakuBenchmarks
     public void fennecs_For_PVA()
     {
         _queryPVA.For(1.0f/60f, Integrate);
+    }
+
+    [BenchmarkCategory("fennecs")]
+    [Benchmark(Description = "fennecs (Integrate Job)")]
+    public void fennecs_Job_PVA()
+    {
+        _queryPVA.Job(1.0f/60f, Integrate);
     }
 
     [BenchmarkCategory("fennecs", nameof(Avx512F))]

@@ -35,17 +35,17 @@ public readonly record struct MemoryRW<T> where T : notnull
     /// <summary>
     /// Access the the memory as a <see cref="ReadOnlySpan{T}"/>
     /// </summary>
-    public ReadOnlySpan<T> read => storage.FastSpan(start, length);
+    public ReadOnlySpan<T> read => storage.SubSpan(start, length);
     
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>
     /// </summary>
-    public Span<T> write => storage.FastSpan(start, length);
+    public Span<T> write => storage.SubSpan(start, length);
 
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>
     /// </summary>
-    public Span<T> Span => storage.FastSpan(start, length);
+    public Span<T> Span => storage.SubSpan(start, length);
     
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>
