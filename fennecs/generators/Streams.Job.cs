@@ -222,12 +222,15 @@ file class StreamsJobGenerator
                       } while (join.Iterate());
                   }
 
-                  for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-                  jobs[0].Execute();
+                  if (jobs.Count > 0)
+                  {
+                        for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+                        jobs[0].Execute();
+                        
+                        Countdown.Signal();
+                        Countdown.Wait();
+                  }
             
-                  Countdown.Signal();
-                  Countdown.Wait();
-
                   JobPool<{{jobType}}>.Return(jobs);
                 }
                 

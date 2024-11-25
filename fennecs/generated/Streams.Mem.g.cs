@@ -77,7 +77,6 @@ public partial record Stream<C0>
         [OverloadResolutionPriority(0b_00000000_00000000)]
         public void Mem<U>(U uniform, Action<U, MemoryRW<C0>> action) where U : allows ref struct
         {
-            
            using var worldLock = World.Lock();
 
            foreach (var table in Filtered)

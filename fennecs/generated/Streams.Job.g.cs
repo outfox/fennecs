@@ -59,11 +59,14 @@ public partial record Stream<C0>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobR<C0>>.Return(jobs);
     }
@@ -116,11 +119,14 @@ public partial record Stream<C0>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobER<C0>>.Return(jobs);
     }
@@ -173,11 +179,14 @@ public partial record Stream<C0>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUR<U, C0>>.Return(jobs);
     }
@@ -230,11 +239,14 @@ public partial record Stream<C0>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUR<U, C0>>.Return(jobs);
     }
@@ -287,11 +299,14 @@ public partial record Stream<C0>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobW<C0>>.Return(jobs);
     }
@@ -344,11 +359,14 @@ public partial record Stream<C0>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEW<C0>>.Return(jobs);
     }
@@ -401,11 +419,14 @@ public partial record Stream<C0>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUW<U, C0>>.Return(jobs);
     }
@@ -458,11 +479,14 @@ public partial record Stream<C0>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUW<U, C0>>.Return(jobs);
     }
@@ -520,11 +544,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRR<C0, C1>>.Return(jobs);
     }
@@ -577,11 +604,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERR<C0, C1>>.Return(jobs);
     }
@@ -634,11 +664,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURR<U, C0, C1>>.Return(jobs);
     }
@@ -691,11 +724,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURR<U, C0, C1>>.Return(jobs);
     }
@@ -748,11 +784,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRW<C0, C1>>.Return(jobs);
     }
@@ -805,11 +844,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERW<C0, C1>>.Return(jobs);
     }
@@ -862,11 +904,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURW<U, C0, C1>>.Return(jobs);
     }
@@ -919,11 +964,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURW<U, C0, C1>>.Return(jobs);
     }
@@ -976,11 +1024,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWR<C0, C1>>.Return(jobs);
     }
@@ -1033,11 +1084,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWR<C0, C1>>.Return(jobs);
     }
@@ -1090,11 +1144,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWR<U, C0, C1>>.Return(jobs);
     }
@@ -1147,11 +1204,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWR<U, C0, C1>>.Return(jobs);
     }
@@ -1204,11 +1264,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWW<C0, C1>>.Return(jobs);
     }
@@ -1261,11 +1324,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWW<C0, C1>>.Return(jobs);
     }
@@ -1318,11 +1384,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWW<U, C0, C1>>.Return(jobs);
     }
@@ -1375,11 +1444,14 @@ public partial record Stream<C0, C1>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWW<U, C0, C1>>.Return(jobs);
     }
@@ -1437,11 +1509,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRR<C0, C1, C2>>.Return(jobs);
     }
@@ -1494,11 +1569,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRR<C0, C1, C2>>.Return(jobs);
     }
@@ -1551,11 +1629,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRR<U, C0, C1, C2>>.Return(jobs);
     }
@@ -1608,11 +1689,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRR<U, C0, C1, C2>>.Return(jobs);
     }
@@ -1665,11 +1749,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRW<C0, C1, C2>>.Return(jobs);
     }
@@ -1722,11 +1809,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRW<C0, C1, C2>>.Return(jobs);
     }
@@ -1779,11 +1869,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRW<U, C0, C1, C2>>.Return(jobs);
     }
@@ -1836,11 +1929,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRW<U, C0, C1, C2>>.Return(jobs);
     }
@@ -1893,11 +1989,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWR<C0, C1, C2>>.Return(jobs);
     }
@@ -1950,11 +2049,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWR<C0, C1, C2>>.Return(jobs);
     }
@@ -2007,11 +2109,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWR<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2064,11 +2169,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWR<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2121,11 +2229,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWW<C0, C1, C2>>.Return(jobs);
     }
@@ -2178,11 +2289,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWW<C0, C1, C2>>.Return(jobs);
     }
@@ -2235,11 +2349,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWW<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2292,11 +2409,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWW<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2349,11 +2469,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRR<C0, C1, C2>>.Return(jobs);
     }
@@ -2406,11 +2529,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRR<C0, C1, C2>>.Return(jobs);
     }
@@ -2463,11 +2589,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRR<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2520,11 +2649,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRR<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2577,11 +2709,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRW<C0, C1, C2>>.Return(jobs);
     }
@@ -2634,11 +2769,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRW<C0, C1, C2>>.Return(jobs);
     }
@@ -2691,11 +2829,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRW<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2748,11 +2889,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRW<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2805,11 +2949,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWR<C0, C1, C2>>.Return(jobs);
     }
@@ -2862,11 +3009,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWR<C0, C1, C2>>.Return(jobs);
     }
@@ -2919,11 +3069,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWR<U, C0, C1, C2>>.Return(jobs);
     }
@@ -2976,11 +3129,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWR<U, C0, C1, C2>>.Return(jobs);
     }
@@ -3033,11 +3189,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWW<C0, C1, C2>>.Return(jobs);
     }
@@ -3090,11 +3249,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWW<C0, C1, C2>>.Return(jobs);
     }
@@ -3147,11 +3309,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWW<U, C0, C1, C2>>.Return(jobs);
     }
@@ -3204,11 +3369,14 @@ public partial record Stream<C0, C1, C2>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWW<U, C0, C1, C2>>.Return(jobs);
     }
@@ -3266,11 +3434,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRRR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3323,11 +3494,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRRR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3380,11 +3554,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRRR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3437,11 +3614,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRRR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3494,11 +3674,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRRW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3551,11 +3734,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRRW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3608,11 +3794,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRRW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3665,11 +3854,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRRW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3722,11 +3914,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRWR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3779,11 +3974,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRWR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3836,11 +4034,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRWR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3893,11 +4094,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRWR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -3950,11 +4154,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRWW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4007,11 +4214,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRWW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4064,11 +4274,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRWW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4121,11 +4334,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRWW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4178,11 +4394,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWRR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4235,11 +4454,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWRR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4292,11 +4514,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWRR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4349,11 +4574,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWRR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4406,11 +4634,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWRW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4463,11 +4694,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWRW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4520,11 +4754,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWRW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4577,11 +4814,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWRW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4634,11 +4874,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWWR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4691,11 +4934,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWWR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4748,11 +4994,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWWR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4805,11 +5054,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWWR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4862,11 +5114,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWWW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4919,11 +5174,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWWW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -4976,11 +5234,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWWW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5033,11 +5294,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWWW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5090,11 +5354,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRRR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5147,11 +5414,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRRR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5204,11 +5474,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRRR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5261,11 +5534,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRRR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5318,11 +5594,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRRW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5375,11 +5654,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRRW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5432,11 +5714,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRRW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5489,11 +5774,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRRW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5546,11 +5834,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRWR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5603,11 +5894,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRWR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5660,11 +5954,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRWR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5717,11 +6014,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRWR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5774,11 +6074,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRWW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5831,11 +6134,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRWW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5888,11 +6194,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRWW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -5945,11 +6254,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRWW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6002,11 +6314,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWRR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6059,11 +6374,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWRR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6116,11 +6434,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWRR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6173,11 +6494,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWRR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6230,11 +6554,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWRW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6287,11 +6614,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWRW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6344,11 +6674,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWRW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6401,11 +6734,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWRW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6458,11 +6794,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWWR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6515,11 +6854,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWWR<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6572,11 +6914,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWWR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6629,11 +6974,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWWR<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6686,11 +7034,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWWW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6743,11 +7094,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWWW<C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6800,11 +7154,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWWW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6857,11 +7214,14 @@ public partial record Stream<C0, C1, C2, C3>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWWW<U, C0, C1, C2, C3>>.Return(jobs);
     }
@@ -6919,11 +7279,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRRRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -6976,11 +7339,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRRRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7033,11 +7399,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRRRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7090,11 +7459,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRRRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7147,11 +7519,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRRRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7204,11 +7579,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRRRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7261,11 +7639,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRRRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7318,11 +7699,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRRRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7375,11 +7759,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRRWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7432,11 +7819,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRRWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7489,11 +7879,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRRWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7546,11 +7939,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRRWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7603,11 +7999,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRRWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7660,11 +8059,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRRWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7717,11 +8119,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRRWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7774,11 +8179,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRRWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7831,11 +8239,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRWRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7888,11 +8299,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRWRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -7945,11 +8359,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRWRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8002,11 +8419,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRWRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8059,11 +8479,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRWRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8116,11 +8539,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRWRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8173,11 +8599,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRWRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8230,11 +8659,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRWRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8287,11 +8719,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRWWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8344,11 +8779,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRWWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8401,11 +8839,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRWWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8458,11 +8899,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRWWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8515,11 +8959,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRRWWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8572,11 +9019,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERRWWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8629,11 +9079,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURRWWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8686,11 +9139,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURRWWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8743,11 +9199,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWRRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8800,11 +9259,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWRRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8857,11 +9319,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWRRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8914,11 +9379,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWRRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -8971,11 +9439,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWRRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9028,11 +9499,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWRRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9085,11 +9559,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWRRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9142,11 +9619,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWRRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9199,11 +9679,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWRWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9256,11 +9739,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWRWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9313,11 +9799,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWRWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9370,11 +9859,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWRWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9427,11 +9919,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWRWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9484,11 +9979,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWRWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9541,11 +10039,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWRWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9598,11 +10099,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWRWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9655,11 +10159,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWWRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9712,11 +10219,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWWRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9769,11 +10279,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWWRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9826,11 +10339,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWWRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9883,11 +10399,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWWRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9940,11 +10459,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWWRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -9997,11 +10519,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWWRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10054,11 +10579,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWWRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10111,11 +10639,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWWWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10168,11 +10699,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWWWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10225,11 +10759,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWWWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10282,11 +10819,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWWWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10339,11 +10879,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobRWWWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10396,11 +10939,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobERWWWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10453,11 +10999,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobURWWWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10510,11 +11059,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEURWWWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10567,11 +11119,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRRRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10624,11 +11179,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRRRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10681,11 +11239,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRRRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10738,11 +11299,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRRRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10795,11 +11359,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRRRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10852,11 +11419,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRRRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10909,11 +11479,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRRRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -10966,11 +11539,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRRRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11023,11 +11599,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRRWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11080,11 +11659,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRRWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11137,11 +11719,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRRWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11194,11 +11779,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRRWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11251,11 +11839,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRRWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11308,11 +11899,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRRWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11365,11 +11959,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRRWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11422,11 +12019,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRRWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11479,11 +12079,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRWRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11536,11 +12139,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRWRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11593,11 +12199,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRWRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11650,11 +12259,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRWRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11707,11 +12319,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRWRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11764,11 +12379,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRWRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11821,11 +12439,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRWRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11878,11 +12499,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRWRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11935,11 +12559,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRWWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -11992,11 +12619,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRWWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12049,11 +12679,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRWWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12106,11 +12739,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRWWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12163,11 +12799,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWRWWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12220,11 +12859,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWRWWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12277,11 +12919,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWRWWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12334,11 +12979,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWRWWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12391,11 +13039,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWRRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12448,11 +13099,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWRRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12505,11 +13159,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWRRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12562,11 +13219,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWRRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12619,11 +13279,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWRRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12676,11 +13339,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWRRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12733,11 +13399,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWRRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12790,11 +13459,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWRRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12847,11 +13519,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWRWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12904,11 +13579,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWRWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -12961,11 +13639,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWRWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13018,11 +13699,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWRWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13075,11 +13759,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWRWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13132,11 +13819,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWRWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13189,11 +13879,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWRWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13246,11 +13939,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWRWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13303,11 +13999,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWWRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13360,11 +14059,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWWRR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13417,11 +14119,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWWRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13474,11 +14179,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWWRR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13531,11 +14239,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWWRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13588,11 +14299,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWWRW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13645,11 +14359,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWWRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13702,11 +14419,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWWRW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13759,11 +14479,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWWWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13816,11 +14539,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWWWR<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13873,11 +14599,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWWWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13930,11 +14659,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWWWR<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -13987,11 +14719,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobWWWWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -14044,11 +14779,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEWWWWW<C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -14101,11 +14839,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobUWWWWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -14158,11 +14899,14 @@ public partial record Stream<C0, C1, C2, C3, C4>
           } while (join.Iterate());
       }
 
-      for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
-      jobs[0].Execute();
+      if (jobs.Count > 0)
+      {
+            for (var i = 1; i < jobs.Count; i++) ThreadPool.UnsafeQueueUserWorkItem(jobs[i], true);
+            jobs[0].Execute();
 
-      Countdown.Signal();
-      Countdown.Wait();
+            Countdown.Signal();
+            Countdown.Wait();
+      }
 
       JobPool<JobEUWWWWW<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
