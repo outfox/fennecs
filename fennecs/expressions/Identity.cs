@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace fennecs;
@@ -15,12 +16,26 @@ public readonly record struct Identity : IComparable<Identity>
 
     //Identity Components
     [FieldOffset(0)] internal readonly int Index;
-    [FieldOffset(4)] internal readonly ushort Generation;
-    [FieldOffset(4)] internal readonly TypeID Decoration;
+    [FieldOffset(4)] internal readonly byte WorldId;
+    
+    [FieldOffset(5)] internal readonly byte EntityFlags;
+    [FieldOffset(6)] internal readonly short Generation;
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
-    [FieldOffset(4)] internal readonly uint DWordHigh;
+    [FieldOffset(8)] internal readonly uint DWordHigh;
+
+
+    /// <summary>
+    /// <c>null</c> equivalent for Entity.
+    /// </summary>
+    public static readonly Identity None = default;
+
+    
+    /// <summary>
+    /// The World this Entity belongs to.
+    /// </summary>
+    public World World => World.Get(WorldId);
 
 
     // Entity Reference.
@@ -29,7 +44,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// Falsy if it is a virtual concept or a tracked object.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>
-    public bool IsEntity => Index > 0 && Decoration > 0;
+    public bool IsEntity => Index > 0 && Generation > 0;
 
     // Tracked Object Reference.
     /// <summary>
@@ -37,7 +52,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// Falsy if it is a virtual concept or an actual Entity.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>
-    public bool IsObject => Decoration < 0;
+    public bool IsObject => Generation < 0;
 
     // Wildcard Entities, such as Any, Object, Entity, or Relation.
     /// <summary>
@@ -45,7 +60,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// Falsy if it is an actual Entity or a tracked object.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>
-    public bool IsWildcard => Decoration == 0 && Index < 0;
+    public bool IsWildcard => Generation == 0 && Index < 0;
 
 
     #region IComparable/IEquatable Implementation
@@ -75,10 +90,10 @@ public readonly record struct Identity : IComparable<Identity>
     #endregion
 
 
-    internal Type Type => Decoration switch
+    internal Type Type => Generation switch
     {
         // Decoration is Type Id
-        <= 0 => LanguageType.Resolve(Math.Abs(Decoration)),
+        <= 0 => LanguageType.Resolve(Math.Abs(Generation)),
         // Decoration is Generation
         _ => typeof(Identity),
     };
@@ -92,14 +107,23 @@ public readonly record struct Identity : IComparable<Identity>
     /// <param name="item">target item (an instance of object)</param>
     /// <typeparam name="T">type of the item (becomes the backing type of the object link)</typeparam>
     /// <returns></returns>
-    internal static Identity Of<T>(T item) where T : class => new(item != null! ? item.GetHashCode() : 0, LanguageType<T>.TargetId);
+    internal static Identity Of<T>(T item) where T : class => new(item != null! ? item.GetHashCode() : 0, LanguageType<T>.LinkId);
     
-    
-    internal Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)
+    internal Identity(int index, short decoration = 1) : this((uint) index | (ulong) decoration << 32) { }
+
+    //internal Identity(int index, byte world, short decoration = 1) : this((uint) index | (ulong) decoration << 32) { }
+
+    /// <summary>
+    /// Create a new Identity, Generation 1, in the given World. Called by IdentityPool.
+    /// </summary>
+    internal Identity(byte world, int index, short generation = 1)
     {
+        // 0xgggg_E0ww_iiii_iiii
+        Value = (ulong) generation << 48 | BaseTag | (ulong) world << 32 | (uint) index;   
     }
-
-
+    
+    private const ulong BaseTag = 0x0000_E000_0000_0000u;
+    
     internal Identity(ulong value)
     {
         Value = value;
@@ -112,8 +136,8 @@ public readonly record struct Identity : IComparable<Identity>
         {
             if (!IsEntity) throw new InvalidOperationException("Cannot reuse virtual Identities");
 
-            var generationWrappedStartingAtOne = (TypeID) (Generation % (TypeID.MaxValue - 1) + 1);
-            return new Identity(Index, generationWrappedStartingAtOne);
+            var generationWrappedStartingAtOne = (short) (Generation % (short.MaxValue - 1) + 1);
+            return new Identity(WorldId, Index, generationWrappedStartingAtOne);
         }
     }
     #endregion

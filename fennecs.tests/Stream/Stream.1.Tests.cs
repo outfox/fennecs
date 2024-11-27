@@ -18,7 +18,7 @@ public class Stream1Tests(ITestOutputHelper output)
         {
             output.WriteLine(str.read);
             output.WriteLine(e.ToString());
-            lock(list) Assert.True(list.Remove((e._entity, str.read)));
+            lock(list) Assert.True(list.Remove((e.Entity, str.read)));
         });
         
         Assert.Empty(list);

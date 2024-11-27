@@ -4,78 +4,78 @@ using fennecs.CRUD;
 namespace fennecs.storage;
 
 /// <summary>
-/// A fast, reference to an Entity. Implicitly casts to and from <see cref="Entity"/>, and exposes <see cref="IAddRemove{T}"/> methods and others.
+/// A fast, reference to an Entity. Implicitly casts to and from <see cref="fennecs.Entity"/>, and exposes <see cref="IAddRemove{T}"/> methods and others.
 /// </summary>
 public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 {
-    internal readonly ref readonly Entity _entity = ref entity;
+    internal readonly ref readonly Entity Entity = ref entity;
     
     /// <inheritdoc />
-    public bool Equals(Entity other) => _entity.Equals(other);
+    public bool Equals(Entity other) => Entity.Equals(other);
 
     /// <summary>
     /// Implicitly casts a <see cref="EntityRef"/> to its underlying <see cref="fennecs.Entity"/>.
     /// (to store or compare with other Entities)
     /// </summary>
-    public static implicit operator Entity(EntityRef self) => self._entity;
+    public static implicit operator Entity(EntityRef self) => self.Entity;
     
     /// <inheritdoc />
-    public Entity Add<C>() where C : notnull, new() => _entity.Add<C>();
+    public Entity Add<C>() where C : notnull, new() => Entity.Add<C>();
 
     /// <inheritdoc />
-    public Entity Add<C>(C component) where C : notnull => _entity.Add(component);
+    public Entity Add<C>(C component) where C : notnull => Entity.Add(component);
 
     /// <inheritdoc />
-    public Entity Add<T>(Entity target) where T : notnull, new() => _entity.Add(target);
+    public Entity Add<T>(Entity target) where T : notnull, new() => Entity.Add(target);
 
     /// <inheritdoc />
-    public Entity Add<R1>(R1 component, Entity relation) where R1 : notnull => _entity.Add(component, relation);
+    public Entity Add<R1>(R1 component, Entity relation) where R1 : notnull => Entity.Add(component, relation);
 
     /// <inheritdoc />
-    public Entity Add<L>(Link<L> link) where L : class => _entity.Add(link);
+    public Entity Add<L>(Link<L> link) where L : class => Entity.Add(link);
 
     /// <inheritdoc />
-    public Entity Remove<C>(Match match = default) where C : notnull => _entity.Remove<C>(match);
+    public Entity Remove<C>(Match match = default) where C : notnull => Entity.Remove<C>(match);
 
     /// <inheritdoc />
-    public Entity Remove<R1>(Entity relation) where R1 : notnull => _entity.Remove<R1>(relation);
+    public Entity Remove<R1>(Entity relation) where R1 : notnull => Entity.Remove<R1>(relation);
 
     /// <inheritdoc />
-    public Entity Remove<L>(L linkedObject) where L : class => _entity.Remove(linkedObject);
+    public Entity Remove<L>(L linkedObject) where L : class => Entity.Remove(linkedObject);
 
     /// <inheritdoc />
-    public Entity Remove<L>(Link<L> link) where L : class => _entity.Remove(link);
+    public Entity Remove<L>(Link<L> link) where L : class => Entity.Remove(link);
 
     /// <inheritdoc cref="Entity.Despawn"/>
-    public void Despawn() => _entity.Despawn();
+    public void Despawn() => Entity.Despawn();
 
     /// <inheritdoc />
-    public override string ToString() => _entity.ToString();
+    public override string ToString() => Entity.ToString();
 
     /// <inheritdoc />
     public bool Has<C>() where C : notnull
     {
-        return _entity.Has<C>();
+        return Entity.Has<C>();
     }
 
     /// <inheritdoc />
     public bool Has<R1>(Entity relation) where R1 : notnull
     {
-        return _entity.Has<R1>(relation);
+        return Entity.Has<R1>(relation);
     }
 
     /// <inheritdoc />
     public bool Has<L>(L linkedObject) where L : class
     {
-        return _entity.Has(linkedObject);
+        return Entity.Has(linkedObject);
     }
 
     /// <inheritdoc />
     public bool Has<L>(Link<L> link) where L : class
     {
-        return _entity.Has(link);
+        return Entity.Has(link);
     }
     
     /// <inheritdoc cref="Entity.Alive"/>
-    public bool Alive => _entity.Alive;
+    public bool Alive => Entity.Alive;
 }

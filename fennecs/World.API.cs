@@ -8,6 +8,10 @@ namespace fennecs;
 /// <summary>
 /// A fennecs.World contains Entities, their Components, compiled Queries, and manages the lifecycles of these objects.
 /// </summary>
+/// <remarks>
+/// There can only be 255 Worlds at a time, numbered from 1 to 255 (inclusive).
+/// Disposing a World will free its ID.
+/// </remarks>
 public partial class World : IDisposable, IEnumerable<Entity>
 {
     #region Config
@@ -20,6 +24,12 @@ public partial class World : IDisposable, IEnumerable<Entity>
         /// Flags denoting this World's Garbage Collection Strategy.
         /// </summary>
         public GCAction GCBehaviour { get; init; } = GCAction.DefaultBeta;
+
+        /// <summary>
+        /// The ID of this World.
+        /// </summary>
+        private readonly byte _id;
+        
     #endregion
     
     /// <summary>
@@ -130,7 +140,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// The number of living entities in the World.
     /// </summary>
-    public int Count => _identityPool.Count;
+    public int Count => _identityPool.Alive;
 
     /// <summary>
     /// All Queries that exist in this World.
@@ -200,6 +210,16 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
     #region Lifecycle & Locking
 
+    private static readonly Queue<byte> WorldIds = new(Enumerable.Range(1, byte.MaxValue).Select(i => (byte) i));
+    private static readonly World[] Worlds = new World[byte.MaxValue];
+    
+    
+    /// <summary>
+    /// Get a World by its ID.
+    /// </summary>
+    internal static World Get(int id) => Worlds[id];
+    
+    
     /// <summary>
     /// Create a new World.
     /// </summary>
@@ -208,12 +228,16 @@ public partial class World : IDisposable, IEnumerable<Entity>
     {
         Name = nameof(World);
         
-        _identityPool = new(initialCapacity);
+        if (!WorldIds.TryDequeue(out _id)) throw new InvalidOperationException($"Ran out of World IDs constructing {Name}. Dispose some Worlds first.");
+        
+        _identityPool = new(_id, initialCapacity);
 
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
         _root = GetArchetype(new(Comp<Identity>.Plain.Expression));
+        
+        Worlds[_id] = this;
     }
 
 
@@ -259,11 +283,16 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
 
     /// <summary>
-    /// Disposes of the World. Currently, a no-op.
+    /// Disposes of the World and frees its ID.
     /// </summary>
     public void Dispose()
     {
         //TODO: Dispose all Object Links, Queries, etc.?
+        
+        WorldIds.Enqueue(_id);
+        Worlds[_id] = null!;
+        
+        System.GC.SuppressFinalize(this);
     }
 
 

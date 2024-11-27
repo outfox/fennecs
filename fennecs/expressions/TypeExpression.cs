@@ -27,7 +27,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     //private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId, default)
     //{ }
     
-    public TypeExpression(Identity Identity, TypeID TypeId, TypeFlags Flags)
+    public TypeExpression(Identity Identity, short TypeId, TypeFlags Flags)
     {
         this.Identity = Identity;
         this.TypeId = TypeId;
@@ -60,7 +60,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     public Type Type => LanguageType.Resolve(TypeId);
 
     public Identity Identity { get; init; }
-    public TypeID TypeId { get; }
+    public short TypeId { get; }
     public TypeFlags Flags { get; }
     
 

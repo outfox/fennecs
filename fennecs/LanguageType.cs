@@ -1,5 +1,5 @@
-﻿global using TypeID = short;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -9,18 +9,18 @@ namespace fennecs;
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 internal class LanguageType
 {
-    internal protected static Type Resolve(TypeID typeId) => Types[typeId];
+    protected internal static Type Resolve(short typeId) => Types[typeId];
 
     // Shared ID counter
-    protected static TypeID Counter;
+    protected static short Counter;
 
-    protected static readonly ConcurrentDictionary<TypeID, Type> Types = new();
-    protected static readonly ConcurrentDictionary<Type, TypeID> Ids = new();
+    protected static readonly ConcurrentDictionary<short, Type> Types = new();
+    protected static readonly ConcurrentDictionary<Type, short> Ids = new();
 
-    protected static readonly object RegistryLock = new();
+    protected static readonly Lock RegistryLock = new();
 
 
-    internal protected static TypeID Identify(Type type)
+    protected internal static short Identify(Type type)
     {
         // Query the registry directly for a fast response.
         if (Ids.TryGetValue(type, out var id)) return id;
@@ -47,8 +47,8 @@ internal class LanguageType
         // Register the last (MaxValue) ID as Any type, reserved used for future Wildcards and as a
         // simple stopgap for when all TypeIDs are exhausted, raising an Exception the type initializer
         // of LanguageType<T> (the same way as any other type collision)
-        Types[TypeID.MaxValue] = typeof(Any);
-        Ids[typeof(Any)] = TypeID.MaxValue;
+        Types[short.MaxValue] = typeof(Any);
+        Ids[typeof(Any)] = short.MaxValue;
     }
 
 
@@ -90,23 +90,23 @@ internal class LanguageType
 internal class LanguageType<T> : LanguageType
 {
     // ReSharper disable once StaticMemberInGenericType (we indeed want this unique for each T)
-    public static readonly TypeID Id;
-
-
+    public static readonly short Id;
+    
     static LanguageType()
     {
         lock (RegistryLock)
         {
             Id = ++Counter;
+            Debug.Assert(Id < 4096, "Too many componenttypes registered.");
             Types.TryAdd(Id, typeof(T));
             Ids.TryAdd(typeof(T), Id);
         }
     }
-
-
-    //FIXME: This collides with certain Entity types and generations.
-    public static TypeID TargetId => (TypeID)(-Id);
+    
+    //FIXME: This constrains the number of legal component types quite a bit. (to max 4096)
+    public static ulong LinkId => 0x0000_0FFF_0000_0000u & (ulong) Id << 32;
 }
+
 
 internal static class TypeFlagExtensions
 {

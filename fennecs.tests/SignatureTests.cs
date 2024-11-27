@@ -53,7 +53,7 @@ public class SignatureTests
     public static IEnumerable<object[]> AddCases()
     {
         yield return [TypeExpression.Of<int>(Match.Plain)];
-        yield return [TypeExpression.Of<float>(new(new(id: 123)))];
+        yield return [TypeExpression.Of<float>(new(new(index: 123)))];
         yield return [TypeExpression.Of<Thread>(Match.Plain)];
     }
 
