@@ -16,10 +16,10 @@ public readonly record struct Identity : IComparable<Identity>
 
     //Identity Components
     [FieldOffset(0)] internal readonly int Index;
-    [FieldOffset(4)] internal readonly byte WorldId;
+    [FieldOffset(4)] internal readonly byte WorldIndex;
     
     [FieldOffset(5)] internal readonly byte EntityFlags;
-    [FieldOffset(6)] internal readonly short Generation;
+    [FieldOffset(6)] internal readonly ushort Generation;
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
@@ -35,7 +35,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// <summary>
     /// The World this Entity belongs to.
     /// </summary>
-    public World World => World.Get(WorldId);
+    public World World => World.Get(WorldIndex);
 
 
     // Entity Reference.
@@ -90,132 +90,44 @@ public readonly record struct Identity : IComparable<Identity>
     #endregion
 
 
-    internal Type Type => Generation switch
-    {
-        // Decoration is Type Id
-        <= 0 => LanguageType.Resolve(Math.Abs(Generation)),
-        // Decoration is Generation
-        _ => typeof(Identity),
-    };
+    internal Type Type => typeof(Identity);
 
 
     #region Constructors / Creators
     /// <summary>
-    /// Create an Identity for a tracked object and the backing Object Link type.
-    /// Used to set targets of Object Links. 
-    /// </summary>
-    /// <param name="item">target item (an instance of object)</param>
-    /// <typeparam name="T">type of the item (becomes the backing type of the object link)</typeparam>
-    /// <returns></returns>
-    internal static Identity Of<T>(T item) where T : class => new(item != null! ? item.GetHashCode() : 0, LanguageType<T>.LinkId);
-    
-    internal Identity(int index, short decoration = 1) : this((uint) index | (ulong) decoration << 32) { }
-
-    //internal Identity(int index, byte world, short decoration = 1) : this((uint) index | (ulong) decoration << 32) { }
-
-    /// <summary>
     /// Create a new Identity, Generation 1, in the given World. Called by IdentityPool.
     /// </summary>
-    internal Identity(byte world, int index, short generation = 1)
+    internal Identity(World.Id worldId, int index, short generation = 1)
     {
         // 0xgggg_E0ww_iiii_iiii
-        Value = (ulong) generation << 48 | BaseTag | (ulong) world << 32 | (uint) index;   
+        Value = (ulong) generation << 48 | BaseTag | worldId.Bits | (uint) index;   
     }
     
-    private const ulong BaseTag = 0x0000_E000_0000_0000u;
+    internal const ulong BaseTag = 0x0000_E000_0000_0000u;
     
-    internal Identity(ulong value)
+    
+    internal Identity(ulong key, ushort generation)
     {
-        Value = value;
+        Value = key | (ulong) generation << 48;
     }
-
 
     internal Identity Successor
     {
         get
         {
-            if (!IsEntity) throw new InvalidOperationException("Cannot reuse virtual Identities");
-
-            var generationWrappedStartingAtOne = (short) (Generation % (short.MaxValue - 1) + 1);
-            return new Identity(WorldId, Index, generationWrappedStartingAtOne);
+            var generationWrappedStartingAtOne = (ushort) (Generation % (ushort.MaxValue - 1) + 1);
+            return new(Value, generationWrappedStartingAtOne);
         }
     }
+
+    /// <summary>
+    /// Is this Entity alive in its World?
+    /// </summary>
+    public bool Alive => World.IsAlive(this);
+
+    public Key Key => new(Value);
+
     #endregion
-
-
-    /// <inheritdoc />
-    public override string ToString()
-    {
-        if (Equals(default))
-            return "[None]";
-
-        if (Equals(new(-1, 0)))
-            return "wildcard[Any]";
-
-        if (Equals(new(-2, 0)))
-            return "wildcard[Target]";
-
-        if (Equals(new(-3, 0)))
-            return "wildcard[Entity]";
-
-        if (Equals(new(-4, 0)))
-            return "wildcard[Object]";
-
-        if (IsObject)
-            return $"O-<{Type}>#{Index:X8}";
-
-        if (IsEntity)
-            return $"E-{Index:x8}:{Generation:D5}";
-
-        return $"?-{Value:x16}";
-    }
-    
-    #region Wildcards
-
-    /// <summary>
-    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
-    /// </para>
-    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
-    /// </para>
-    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
-    /// </summary>
-    /// <remarks>
-    /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for
-    /// each matching component. While querying is efficient, this increases the number of operations per entity.</para>
-    /// <para>This is an intentional feature, and <c>Match.Any</c> is the default as usually the same backing types are not re-used across
-    /// relations or links; but if they are, the user likely wants their Query to enumerate all of them.</para>
-    /// <para>This effect is more pronounced in large archetypes with many matching components, potentially
-    /// multiplying the workload significantly. However, for smaller archetypes or simpler tasks, impacts are minimal.</para>
-    /// <para>Risks and considerations include:</para>
-    /// <ul>
-    /// <li>Repeated enumeration: Entities matching a wildcard are processed multiple times, for each matching
-    /// component type combination.</li>
-    /// <li>Complex queries: Especially in Archetypes where Entities match multiple components, multiple wildcards
-    /// can create a cartesian product effect, significantly increasing complexity and workload.</li>
-    /// <li>Use wildcards deliberately and sparingly.</li>
-    /// </ul>
-    /// </remarks>
-    public static Identity Any => new(-1, 0); // or prefer default ?
-
-    /// <summary>
-    /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Match"/>.
-    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
-    /// </para>
-    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
-    /// </summary>
-    /// <inheritdoc cref="Any"/>
-    public static Identity Target => new(-2, 0);
-
-    /// <summary>
-    /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
-    /// </para>
-    /// <para>Use it freely in filter expressions to match any component type. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
-    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
-    /// </para>
-    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
-    /// </summary>
-    /// <inheritdoc cref="Any"/>
-    public static Identity Object => new(-4, 0);
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
@@ -225,21 +137,8 @@ public readonly record struct Identity : IComparable<Identity>
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Identity Entity => new(-3, 0);
+    public static readonly Key Any = new((ulong) Key.Kind.Entity);
 
-    /// <summary>
-    /// <para>
-    /// <c>default</c><br/>In Query Matching; matches ONLY Plain Components, i.e. those without a Relation Target.
-    /// </para>
-    /// <para>
-    /// Since it's specific, this Match Expression is always free and has no enumeration cost.
-    /// </para>
-    /// </summary>
-    /// <remarks>
-    /// Not a wildcard. Formerly known as "None", as plain components without a target
-    /// can only exist once per Entity (same as components with a particular target).
-    /// </remarks>
-    public static Identity Plain => default;
-    
-    #endregion
+    /// <inheritdoc />
+    public override string ToString() => $"E-{WorldIndex:d3}-{Index:x8} gen{Generation:D5}";
 }

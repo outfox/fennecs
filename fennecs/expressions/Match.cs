@@ -7,11 +7,11 @@
 /// Match's static readonly constants differentiate between Plain Components, Entity-Entity Relations, and Entity-Object Relations.
 /// The class offers a set of Wildcards for matching combinations of the above in <see cref="Query">Queries</see>; as opposed to filtering for only a specific target.
 /// </para>
-public readonly record struct Match 
+public readonly record struct Match
 {
-    internal Identity Value { get; }
+    private readonly ulong _value;
     
-    internal Match(Identity Value) => this.Value = Value;
+    internal Match(Key key) => _value = key.Value;
 
     /// <summary>
     /// <para>
@@ -19,7 +19,7 @@ public readonly record struct Match
     /// </para>
     /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// </summary>
-    public static Match Relation(Entity other) => new(other.Id);
+    public static Match Relation(Identity other) => new(other.Key);
     
     /// <summary>
     /// <para>
@@ -106,11 +106,11 @@ public readonly record struct Match
     //public static implicit operator Match(Identity value) => new(value);
     
     //TODO Maybe not even needed...
-    internal bool IsWildcard => Value.IsWildcard;
-    internal bool IsEntity => Value.IsEntity;
-    internal bool IsObject => Value.IsObject;
+    internal bool IsWildcard => Key.IsWildcard;
+    internal bool IsEntity => Key.IsEntity;
+    internal bool IsObject => Key.IsObject;
 
 
     /// <inheritdoc/>
-    public override string ToString() => Value.ToString();
+    public override string ToString() => Key.ToString();
 }

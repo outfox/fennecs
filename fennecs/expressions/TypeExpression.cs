@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 
 namespace fennecs;
 
@@ -12,7 +13,7 @@ namespace fennecs;
 /// </summary>
 /// <remarks>
 /// <para>If <see cref="fennecs.Identity.Plain"/>, the type expression matches a plain Component of its <see cref="Type"/>.</para>
-/// <para>If a specific <see cref="Identity"/> (e.g. <see cref="Identity.IsEntity"/> or <see cref="Identity.IsObject"/> are true), the type expression represents a relation targeting that Entity.</para>
+/// <para>If a specific <see cref="Key"/> (e.g. <see cref="Identity.IsEntity"/> or <see cref="Identity.IsObject"/> are true), the type expression represents a relation targeting that Entity.</para>
 /// <para>If <see cref="fennecs.Identity.Any"/>, the type expression acts as a Wildcard 
 ///   expression that matches any target, INCLUDING <see cref="fennecs.Identity.Plain"/>.</para>
 /// <para> If <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
@@ -22,24 +23,34 @@ namespace fennecs;
 /// <para> If <see cref="fennecs.Identity.Object"/>, the type expression acts as a Wildcard 
 ///   expression that matches ONLY entity-object relations.</para>
 /// </remarks>
+[StructLayout(LayoutKind.Explicit)]
 public readonly record struct TypeExpression : IComparable<TypeExpression>
 {
+    [field: FieldOffset(0)] 
+    public Identity Key { get; init; }
+    
+    [field: FieldOffset(6)] 
+    public short TypeId { get; }
+    
+    //public TypeFlags Flags { get; }
+    
+    
     //private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId, default)
     //{ }
     
     public TypeExpression(Identity Identity, short TypeId, TypeFlags Flags)
     {
-        this.Identity = Identity;
+        this.Key = Identity;
         this.TypeId = TypeId;
-        this.Flags = Flags;
+        //this.Flags = Flags;
     }
 
-    internal bool isUnmanaged => Flags.HasFlag(TypeFlags.Unmanaged);
-    internal int SIMDsize => (int)(Flags & TypeFlags.SIMDSize);
+    //internal bool isUnmanaged => Flags.HasFlag(TypeFlags.Unmanaged);
+    //internal int SIMDsize => (int)(Flags & TypeFlags.SIMDSize);
     
-    internal Relate Relation => new(Identity);
+    internal Relate Relation => new(Key);
 
-    internal Match Match => new(Identity);
+    internal Match Match => new(Key);
 
 
     /// <summary>
@@ -58,10 +69,6 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// Get the backing Component type that this <see cref="TypeExpression"/> represents.
     /// </summary>
     public Type Type => LanguageType.Resolve(TypeId);
-
-    public Identity Identity { get; init; }
-    public short TypeId { get; }
-    public TypeFlags Flags { get; }
     
 
 
@@ -115,7 +122,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// Non-Commutative: <br/><c>Match.Plain</c> doesn't match wildcard <c>Match.Any</c>, but <c>Match.Any</c> <i><b>does</b> match</i> <c>Match.Plain</c>.
     /// </para>
     /// <para>
-    /// Pseudo-Commutative: <br/><see cref="Identity"/> <c>E-0000007b:00456</c> matches itself, as well as the three wildcards <c>Match.Target</c>, <c>Match.Entity</c>, and <c>Match.Any</c>. Vice versa, it is also matched by all of them! 
+    /// Pseudo-Commutative: <br/><see cref="Key"/> <c>E-0000007b:00456</c> matches itself, as well as the three wildcards <c>Match.Target</c>, <c>Match.Entity</c>, and <c>Match.Any</c>. Vice versa, it is also matched by all of them! 
     /// </para>
     /// </example>
     /// <param name="other">another type expression</param>
@@ -173,7 +180,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <typeparam name="T">The backing type for which to generate the expression.</typeparam>
     /// <param name="match">The target entity, with a default of <see cref="fennecs.Identity.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of<T>(Match match) => new(match.Value, LanguageType<T>.Id, LanguageType.FlagsOf<T>());
+    public static TypeExpression Of<T>(Match match) => new(match.Key, LanguageType<T>.Id, LanguageType.FlagsOf<T>());
 
 
     /// <summary>
@@ -198,7 +205,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <param name="type">The Component type.</param>
     /// <param name="match">The target entity, with a default of <see cref="fennecs.Identity.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of(Type type, Match match) => new(match.Value, LanguageType.Identify(type), LanguageType.Flags(type));
+    public static TypeExpression Of(Type type, Match match) => new(match.Key, LanguageType.Identify(type), LanguageType.Flags(type));
 
 
     /// <inheritdoc cref="object.ToString"/>
@@ -221,19 +228,19 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// </remarks>
     public ImmutableHashSet<TypeExpression> Expand()
     {
-        if (Match == Match.Any) return [this with { Identity = default }, this with { Identity = Identity.Entity }, this with { Identity = Identity.Object }, this with { Identity = Identity.Target }];
+        if (Match == Match.Any) return [this with { Key = default }, this with { Key = Identity.Entity }, this with { Key = Identity.Object }, this with { Key = Identity.Target }];
 
-        if (Match == Match.Target) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Entity }, this with { Identity = Identity.Object }];
+        if (Match == Match.Target) return [this with { Key = Identity.Any }, this with { Key = Identity.Entity }, this with { Key = Identity.Object }];
 
-        if (Match == Match.Entity) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Target }];
+        if (Match == Match.Entity) return [this with { Key = Identity.Any }, this with { Key = Identity.Target }];
 
-        if (Match == Match.Object) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Target }];
+        if (Match == Match.Object) return [this with { Key = Identity.Any }, this with { Key = Identity.Target }];
 
-        if (Match.IsObject) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Target }, this with { Identity = Identity.Object }];
+        if (Match.IsObject) return [this with { Key = Identity.Any }, this with { Key = Identity.Target }, this with { Key = Identity.Object }];
 
-        if (Match.IsEntity) return [this with { Identity = Identity.Any }, this with { Identity = Identity.Target }, this with { Identity = Identity.Entity }];
+        if (Match.IsEntity) return [this with { Key = Identity.Any }, this with { Key = Identity.Target }, this with { Key = Identity.Entity }];
 
-        return [this with { Identity = Identity.Any }];
+        return [this with { Key = Identity.Any }];
     }
 
 
@@ -246,7 +253,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
             return typeComparison;
         }
 
-        var identityComparison = Identity.CompareTo(other.Identity);
+        var identityComparison = Key.CompareTo(other.Key);
         return identityComparison;
     }
 }

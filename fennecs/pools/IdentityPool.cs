@@ -16,11 +16,11 @@ internal sealed class IdentityPool
 
     private readonly Queue<Identity> _recycled;
 
-    private readonly byte _worldId;
+    private readonly World.Id _worldId;
 
     private int NewIndex => ++Created;
 
-    public IdentityPool(byte worldId, int initialCapacity)
+    public IdentityPool(World.Id worldId, int initialCapacity)
     {
         _worldId = worldId;
         _recycled = new(initialCapacity * 2);
@@ -32,7 +32,7 @@ internal sealed class IdentityPool
     { 
         return _recycled.TryDequeue(out var recycledIdentity)
             ? recycledIdentity
-            : new(NewIndex, _worldId);
+            : new(_worldId, NewIndex);
     }
 
     internal PooledList<Identity> Spawn(int count)

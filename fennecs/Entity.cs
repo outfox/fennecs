@@ -31,7 +31,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Match.Any"/>
-    public static Match Any => new(Identity.Entity);
+    public static Match Any => new(Identity.Any);
 
     #endregion
 
@@ -327,7 +327,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// Is this Entity Alive in its World?
     /// </summary>
     public bool Alive => _world != null && _world.IsAlive(Id);
-
+    
     /// <inheritdoc/>
     public override string ToString()
     {

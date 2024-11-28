@@ -134,7 +134,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </summary>
     /// <param name="identity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    internal bool IsAlive(Identity identity) => identity == _meta[identity.Index].Identity;
+    internal bool IsAlive(Identity identity) => identity.Generation > 0 ? identity == _meta[identity.Index].Identity : _meta[identity.Index].Identity != default;
 
 
     /// <summary>
@@ -217,7 +217,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Get a World by its ID.
     /// </summary>
-    internal static World Get(int id) => Worlds[id];
+    internal static World Get(Id id) => Worlds[id.Index];
     
     
     /// <summary>
@@ -226,9 +226,9 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
     public World(int initialCapacity = 4096)
     {
-        Name = nameof(World);
-        
         if (!WorldIds.TryDequeue(out _id)) throw new InvalidOperationException($"Ran out of World IDs constructing {Name}. Dispose some Worlds first.");
+        
+        Name = $"{nameof(World)}-{_id:d3}";
         
         _identityPool = new(_id, initialCapacity);
 
@@ -319,6 +319,20 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
     #endregion
 
+    #region Indexers
+    internal Identity this[int index] => _meta[index].Identity;
+    
+    internal Identity this[LiveEntity live]
+    {
+        get
+        {
+            var result = _meta[live.Index].Identity;
+            Debug.Assert(result != default, $"LiveEntity {live} is no longer alive in ${Name}.");
+            return result; // == default ? throw new ObjectDisposedException($"LiveEntity {live} is no longer alive in ${Name}.") : result;
+        }
+    }
+
+    #endregion
     #region Debug Tools
 
     /// <inheritdoc />

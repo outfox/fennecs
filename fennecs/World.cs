@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -257,4 +258,30 @@ public partial class World
 
     #endregion
 
+    /// <summary>
+    /// A unique ID for a World.
+    /// </summary>
+    public readonly record struct Id
+    {
+        private readonly byte _id;
+
+        private Id(byte id)
+        {
+            Debug.Assert(id is > 0, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
+            Bits = (ulong) id << 32;
+            _id = id;
+        }
+
+        /// <summary>
+        /// Casts a byte to an Id.
+        /// </summary>
+        public static implicit operator Id(byte id) => new(id);
+        
+        private int Index => _id;
+        
+        internal readonly ulong Bits;
+        
+        /// <inheritdoc />
+        public override string ToString() => $"{_id:d3}";
+    }
 }
