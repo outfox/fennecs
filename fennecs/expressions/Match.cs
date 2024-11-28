@@ -1,7 +1,9 @@
-﻿namespace fennecs;
+﻿using System.Diagnostics;
+
+namespace fennecs;
 
 /// <summary>
-/// Match Expressions
+/// Used to match against secondary Keys in Type Expressions (e.g. Queries, Streams, Filters, Masks).
 /// </summary>
 /// <para>
 /// Match's static readonly constants differentiate between Plain Components, Entity-Entity Relations, and Entity-Object Relations.
@@ -10,6 +12,29 @@
 public readonly record struct Match
 {
     private readonly ulong _value;
+
+    private enum Wildcard : ulong
+    {
+        /// <summary>
+        /// wildcard (any Object Link)
+        /// </summary>
+        Link = 0x0000_A000_0000_0000u,
+
+        /// <summary>
+        /// wildcard (any Entity relation)
+        /// </summary>
+        Entity = 0x0000_B000_0000_0000u,
+
+        /// <summary>
+        /// wildcard (anything except Plain)
+        /// </summary>
+        Target = 0x0000_C000_0000_0000u,
+        
+        /// <summary>
+        /// wildcard (anything, including Plain)
+        /// </summary>
+        Any = 0x0000_F000_0000_0000u,
+    }
     
     internal Match(Key key) => _value = key.Value;
 
@@ -21,13 +46,6 @@ public readonly record struct Match
     /// </summary>
     public static Match Relation(Identity other) => new(other.Key);
     
-    /// <summary>
-    /// <para>
-    /// Match Expression to match only a specific Object Link (Entity-Object).
-    /// </para>
-    /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
-    /// </summary>
-    public static Match Link<T>(T link) where T : class => new(Identity.Of(link));
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
@@ -51,7 +69,8 @@ public readonly record struct Match
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    public static Match Any => new(Identity.Any); // or prefer default ?
+    public static readonly Match Any = new(new((ulong) Wildcard.Any));
+    //public static Match Any => new(Identity.Any); // or prefer default ?
 
     /// <summary>
     /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Match"/>.
@@ -60,7 +79,7 @@ public readonly record struct Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Target => new(Identity.Target);
+    public static readonly Match Target = new(new((ulong) Wildcard.Target));
     
     /// <summary>
     /// <para>Wildcard match expression for Entity iteration. <br/>This matches all <b>Entity-Object</b> Links of the given Stream Type.
@@ -71,7 +90,7 @@ public readonly record struct Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Object => new(Identity.Object);
+    public static readonly Match Link = new(new((ulong) Wildcard.Link));
 
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all <b>Entity-Entity</b> Relations of the given Stream Type.
@@ -81,7 +100,7 @@ public readonly record struct Match
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static Match Entity => new(Identity.Entity);
+    public static Match Entity => new(new((ulong) Wildcard.Entity));
 
 
     /// <summary>
@@ -92,7 +111,7 @@ public readonly record struct Match
     /// <para>This expression does not result in multiple enumeration, because it's not technically a Wildcard - there can only be one plain component per type on an Entity.</para>
     /// </summary>
     /// <inheritdoc cref="Plain"/>
-    public static Match Plain => new(Identity.Plain);
+    public static Match Plain => new(new(default));
     
 
     /// <summary>
@@ -101,16 +120,36 @@ public readonly record struct Match
     /// <param name="value"></param>
     /// <returns></returns>
     //public static implicit operator Match(Identity value) => new(value);
-    public static implicit operator Match(Entity value) => new(value);
-
-    //public static implicit operator Match(Identity value) => new(value);
-    
-    //TODO Maybe not even needed...
-    internal bool IsWildcard => Key.IsWildcard;
-    internal bool IsEntity => Key.IsEntity;
-    internal bool IsObject => Key.IsObject;
+    public static implicit operator Match(Identity value) => new(value.Key);
 
 
     /// <inheritdoc/>
-    public override string ToString() => Key.ToString();
+    public override string ToString()
+    {
+        return _value switch
+        {
+            (ulong) Wildcard.Any => "wildcard[Any]",
+            (ulong) Wildcard.Target => "wildcard[Target]",
+            (ulong) Wildcard.Entity => "wildcard[Entity]",
+            (ulong) Wildcard.Link => "wildcard[Link]",
+            _ => new Key(_value).ToString(),
+        };
+    }
+
+    /// <summary>
+    /// Is this Match Expression a Wildcard?
+    /// </summary>
+    public bool IsWildcard => _value switch
+    {
+        (ulong) Wildcard.Any => true,
+        (ulong) Wildcard.Target => true,
+        (ulong) Wildcard.Entity => true,
+        (ulong) Wildcard.Link => true,
+        _ => false,
+    };
+
+    public Key Key => IsWildcard ? throw new InvalidOperationException("Cannot get Key of a Wildcard Match Expression.") : new Key(_value);
+
+    public bool IsLink => _value == (ulong) Wildcard.Link || new Key(_value).IsLink;
+    public bool IsEntity => _value == (ulong) Wildcard.Entity || new Key(_value).IsEntity;
 }

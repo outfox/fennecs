@@ -328,7 +328,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
         {
             var result = _meta[live.Index].Identity;
             Debug.Assert(result != default, $"LiveEntity {live} is no longer alive in ${Name}.");
-            return result; // == default ? throw new ObjectDisposedException($"LiveEntity {live} is no longer alive in ${Name}.") : result;
+            return result; 
         }
     }
 

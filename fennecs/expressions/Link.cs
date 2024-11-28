@@ -16,7 +16,7 @@ public static class Link
     /// <summary>
     /// Match Expressiont to match Any Object Link.
     /// </summary>
-    public static Match Any => Match.Object;
+    public static Match Any => Match.Link;
     
     
     /// <summary>

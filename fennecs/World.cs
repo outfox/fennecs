@@ -29,7 +29,7 @@ public partial class World
     private readonly Dictionary<Signature, Archetype> _typeGraph = new();
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
-    private readonly Dictionary<Relate, HashSet<TypeExpression>> _typesByRelationTarget = new();
+    private readonly Dictionary<Key, HashSet<TypeExpression>> _typesByRelationTarget = new();
 
     #endregion
 
@@ -135,7 +135,7 @@ public partial class World
     private void DespawnDependencies(Entity entity)
     {
         // Find identity-identity relation reverse lookup (if applicable)
-        if (!_typesByRelationTarget.TryGetValue(Relate.To(entity), out var types)) return;
+        if (!_typesByRelationTarget.TryGetValue(new(entity.Id), out var types)) return;
 
         // Collect Archetypes that have any of these relations
         var toMigrate = _archetypes.Where(a => a.Signature.Matches(types)).ToList();
@@ -221,10 +221,10 @@ public partial class World
 
             if (!type.isRelation) continue;
 
-            if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
+            if (!_typesByRelationTarget.TryGetValue(type.Key, out var typeSet))
             {
                 typeSet = [];
-                _typesByRelationTarget[type.Relation] = typeSet;
+                _typesByRelationTarget[type.Key] = typeSet;
             }
 
             typeSet.Add(type);
@@ -277,7 +277,7 @@ public partial class World
         /// </summary>
         public static implicit operator Id(byte id) => new(id);
         
-        private int Index => _id;
+         internal int Index => _id;
         
         internal readonly ulong Bits;
         
