@@ -21,11 +21,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     internal readonly Signature Signature;
     
     /// <summary>
-    /// Expanded Signature with all Wildcards resolved for fast, set-level matching.
-    /// </summary>
-    internal readonly Signature MatchSignature;
-
-    /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
     /// </summary>
     private IStorage[] Storages { get; }
@@ -67,7 +62,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         Storages = new IStorage[signature.Count];
         
         Signature = signature;
-        MatchSignature = signature.Expand();
+        //MatchSignature = signature.Expand();
 
         // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
         for (var index = 0; index < signature.Count; index++)
@@ -80,27 +75,22 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         // Get quick lookup for Identity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
+        IdentityStorage = GetStorage<Identity>(default);
     }
 
 
-    private void Match<T>(TypeExpression expression, PooledList<Storage<T>> result) where T : notnull
-    //, ImmutableSortedSet<TypeExpression>? subset = default!, IImmutableSet<TypeExpression>? exclude = default!)
+    private void Match<T>(MatchExpression expression, PooledList<Storage<T>> result) where T : notnull
     {
         foreach (var (type, index) in _storageIndices)
         {
-            //if (subset != null && !subset.Contains(type)) continue;
-            //if (exclude != null && exclude.Contains(type)) continue;
-
-            if (expression.Matches(type))
-            {
-                result.Add((Storage<T>) Storages[index]);
-            }
+            if (!expression.Matches(type)) continue;
+            
+            result.Add((Storage<T>) Storages[index]);
         }
     }
 
 
-    internal PooledList<Storage<T>> Match<T>(TypeExpression expression) where T : notnull
+    internal PooledList<Storage<T>> Match<T>(MatchExpression expression) where T : notnull
     {
         var result = PooledList<Storage<T>>.Rent();
         Match(expression, result);
@@ -108,33 +98,29 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
     
-    internal bool Matches(TypeExpression type)
-    {
-        var yes = MatchSignature.Matches(type);
-        return yes;
-    }
+    internal bool Matches(MatchExpression match) => Signature.Matches(match);
 
 
     // A method that checks if a given Mask parameter matches certain criteria using boolean logic and short circuiting.
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.
-        var matchesNot = !MatchSignature.Matches(mask.NotTypes);
+        var matchesNot = !Signature.Matches(mask.NotTypes);
         if (!matchesNot) return false;
 
         //If already matching, no need to check any further. 
-        var matchesHas = MatchSignature.IsSupersetOf(mask.HasTypes);
+        var matchesHas = Signature.IsSupersetOf(mask.HasTypes);
         if (!matchesHas) return false;
 
         //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
         var matchesAny = mask.AnyTypes.Count == 0;
-        matchesAny |= MatchSignature.Matches(mask.AnyTypes);
+        matchesAny |= Signature.Matches(mask.AnyTypes);
 
         return matchesHas && matchesNot && matchesAny;
     }
 
 
-    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> matchTypes) => MatchSignature.IsSupersetOf(matchTypes);
+    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> types) => Signature.IsSupersetOf(types);
 
     /// <summary>
     /// Remove one or more Entities and all associated Component data from the Archetype.
@@ -292,9 +278,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal Storage<T> GetStorage<T>(Match match) where T : notnull
+    internal Storage<T> GetStorage<T>(Key key) where T : notnull
     {
-        var type = TypeExpression.Of<T>(match);
+        var type = TypeExpression.Of<T>(key);
         return (Storage<T>) GetStorage(type);
     }
 

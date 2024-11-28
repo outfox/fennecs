@@ -164,20 +164,4 @@ public readonly record struct Signature : IEnumerable<TypeExpression>, IComparab
 
     /// <inheritdoc cref="Enumerable.ElementAt{TSource}(System.Collections.Generic.IEnumerable{TSource},System.Index)"/>
     public TypeExpression this[int index] => _set.ElementAt(index);
-    
-    
-
-
-    /// <summary>
-    /// Create a copy of set with its Wildcards expanded.
-    /// </summary>
-    internal Signature Expand()
-    {
-        var expanded = _set.ToBuilder();
-
-        var expansions = _set.SelectMany(type => type.Expand());
-        expanded.UnionWith(expansions);
-        
-        return new(expanded.ToImmutable());
-    }
 }
