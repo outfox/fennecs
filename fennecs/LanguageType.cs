@@ -85,6 +85,10 @@ internal class LanguageType
         CachedFlags.TryAdd(typeof(T), flags);
         return flags;
     }
+
+    public static ulong LinkId(object link) => LinkMask & (ulong) Identify(link.GetType()) << 32;
+
+    protected const ulong LinkMask = 0x0000_0FFF_0000_0000u;
 }
 
 internal class LanguageType<T> : LanguageType
@@ -104,7 +108,7 @@ internal class LanguageType<T> : LanguageType
     }
     
     //FIXME: This constrains the number of legal component types quite a bit. (to max 4096)
-    public static ulong LinkId => 0x0000_0FFF_0000_0000u & (ulong) Id << 32;
+    public static ulong LinkId => LinkMask & (ulong) Id << 32;
 }
 
 

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace fennecs;
@@ -19,7 +18,21 @@ public readonly record struct Key
     }
 
     internal Key(Identity identity) => Value = identity.Value & KeyMask;
+
     
+    /// <summary>
+    /// Create a Key for a tracked object and the backing Object Link type.
+    /// </summary>
+    public Key(object link)
+    {
+        LanguageType.LinkId(link);
+        Value = (ulong) Kind.Link | LanguageType.LinkId(link) | (uint) link.GetHashCode();
+    }
+
+
+    /// <summary>
+    /// Category / Kind of the Key.
+    /// </summary>
     public Kind Category => (Kind) (Value & CategoryMask);
 
 
@@ -27,13 +40,19 @@ public readonly record struct Key
     /// Create a Key for an Entity-Entity relationship.
     /// Used to set targets of Object Links. 
     /// </summary>
-    public static Key Of(Entity entity) => new(entity.Id.Value & KeyMask); /* KeyCategory already set by Entity*/
+    public static Key Of(Identity entity) => entity.Key; /* KeyCategory already set by Entity*/
 
     /// <summary>
     /// Create a Key for a tracked object and the backing Object Link type.
     /// Used to set targets of Object Links. 
     /// </summary>
     public static Key Of<L>(L link) where L : class => new((ulong) Kind.Link | LanguageType<L>.LinkId | (uint) link.GetHashCode());
+
+    /// <summary>
+    /// Create a Key for a tracked object and the backing Object Link type.
+    /// Used to set targets of Object Links. 
+    /// </summary>
+    public static Key Of(object link) => new(link);
 
     internal const ulong HeaderMask = 0xFFFF_0000_0000_0000u;
     internal const ulong KeyMask = ~0xFFFF_0000_0000_0000u;
