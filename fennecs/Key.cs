@@ -80,6 +80,11 @@ public readonly record struct Key
 
         _ => $"?-{Value:x16}"
     };
+    
+    /// <summary>
+    /// Implicit cast to Match term for use in Match Expressions.
+    /// </summary>
+    public static implicit operator Match(Key self) => new(self);
 }
 
 /// <summary>

@@ -11,27 +11,22 @@ namespace fennecs;
 [SkipLocalsInit]
 public readonly record struct MatchExpression
 {
-    [FieldOffset(0)]
-    private readonly ulong _value;
-
     [field: FieldOffset(0)] 
     private Match Match { get; init; }
     
     [field: FieldOffset(6)] 
-    internal short TypeId { get; }
+    private short TypeId { get; }
     
     internal static MatchExpression Of<T>(Match match) => new(match, LanguageType<T>.Id);
+    internal static MatchExpression Of<T>(Key key) => new(key, LanguageType<T>.Id);
+
     internal static MatchExpression Of(Type type, Match match) => new(match, LanguageType.Identify(type));
+    internal static MatchExpression Of(Type type, Key key) => new(key, LanguageType.Identify(type));
+
 
     private MatchExpression(Match match, short typeId)
     {
-        _value = match.Value;
-        TypeId = typeId;
-    }
-    
-    private MatchExpression(Key key, short typeId)
-    {
-        _value = key.Value;
+        Match = match;
         TypeId = typeId;
     }
     
@@ -108,6 +103,34 @@ public readonly record struct MatchExpression
         return Match == new Match(other.Key);
     }
    
+    /// <summary>
+    /// TODO: Remove me.
+    /// A method to check if a TypeExpression matches any of the given type expressions in an IEnumerable.
+    /// Does this <see cref="TypeExpression"/> match any of the given type expressions?
+    /// </summary>
+    /// <param name="other">a collection of type expressions</param>
+    /// <returns>true if matched</returns>
+    public bool Matches(IEnumerable<TypeExpression> other)
+    {
+        var self = this;
+
+        //TODO: HUGE OPTIMIZATION POTENTIAL! (set comparison is way faster than linear search, etc.) FIXME!!
+        foreach (var type in other)
+        {
+            if (self.Matches(type)) return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Fast O(1) Matching against (expanded) Signature.
+    /// </summary>
+    /// <remarks>
+    /// The other signature must be a Wildcard-Expanded signature.
+    /// </remarks>
+    public bool Matches(Signature expandedSignature) => expandedSignature.Matches(this);
+
 
     /// <summary>
     /// Expands this TypeExpression into a set of TypeExpressions that that are Equivalent but unique.
@@ -167,5 +190,11 @@ public readonly record struct MatchExpression
 
         return [this with { Match = Match.Any }];
     }
-   
+
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return Match != default ? $"<{LanguageType.Resolve(TypeId)}> >> {Match}" : $"<{LanguageType.Resolve(TypeId)}> (plain)";
+    }
 }
