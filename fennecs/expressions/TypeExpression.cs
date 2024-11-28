@@ -19,30 +19,18 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     private readonly ulong _value;
     
     [field: FieldOffset(0)] 
-    internal Match Match { get; init; }
+    internal Key Key { get; }
     
     [field: FieldOffset(6)] 
     internal short TypeId { get; }
     
     
-    public TypeExpression(Match match, short typeId)
+    public TypeExpression(Key key, short typeId)
     {
         Debug.Assert(typeId != 0, "TypeId must be non-zero");
-        Match = match;
+        Key = key;
         TypeId = typeId;
     }
-
-    /// <summary>
-    /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
-    /// </summary>
-    public bool isRelation => Match != Match.Plain;
-
-
-    /// <summary>
-    ///  Is this TypeExpression a Wildcard expression? See <see cref="Cross"/>.
-    /// </summary>
-    public bool isWildcard => Match.IsWildcard;
-
 
     /// <summary>
     /// Get the backing Component type that this <see cref="TypeExpression"/> represents.
@@ -80,62 +68,6 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// </remarks>
     public bool Matches(Signature expandedSignature) => expandedSignature.Matches(this);
 
-
-    /// <summary>
-    /// Match against another TypeExpression; used for Query Matching.
-    /// Examines the Type and Target fields of either and decides whether the other TypeExpression is a match.
-    /// <para>
-    /// See also: <see cref="fennecs.Identity.Plain"/>, <see cref="fennecs.Identity.Target"/>, <see cref="fennecs.Identity.Entity"/>, <see cref="fennecs.Identity.Object"/>, <see cref="fennecs.Identity.Any"/>
-    /// </para>
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// ⚠️ This comparison is non-commutative; the order of the operands matters!
-    /// </para>
-    /// <para>
-    /// You must handle matching the commuted case(s) in your code if needed.
-    /// </para>
-    /// </remarks>
-    /// <example>
-    /// <para>
-    /// Non-Commutative: <br/><c>Match.Plain</c> doesn't match wildcard <c>Match.Any</c>, but <c>Match.Any</c> <i><b>does</b> match</i> <c>Match.Plain</c>.
-    /// </para>
-    /// <para>
-    /// Pseudo-Commutative: <br/><see cref="Key"/> <c>E-0000007b:00456</c> matches itself, as well as the three wildcards <c>Match.Target</c>, <c>Match.Entity</c>, and <c>Match.Any</c>. Vice versa, it is also matched by all of them! 
-    /// </para>
-    /// </example>
-    /// <param name="other">another type expression</param>
-    /// <seealso cref="fennecs.Identity.Plain"/>
-    /// <seealso cref="fennecs.Identity.Target"/>
-    /// <seealso cref="fennecs.Identity.Entity"/>
-    /// <seealso cref="fennecs.Identity.Object"/>
-    /// <seealso cref="fennecs.Identity.Any"/>
-    /// <seealso cref="Match.Relation"/>
-    /// <seealso cref="Match.Link{T}"/>
-    /// <returns>true if the other expression is matched by this expression</returns>
-    public bool Matches(TypeExpression other)
-    {
-        // Reject if Types are incompatible. 
-        if (TypeId != other.TypeId) return false;
-
-        // Match.None matches only None. (plain Components)
-        if (Match == Match.Plain) return other.Match == Match.Plain;
-
-        // Match.Any matches everything; relations and pure Components (target == none).
-        if (Match == Match.Any) return true;
-
-        // Match.Target matches all Entity-Target Relations.
-        if (Match == Match.Target) return other.Match != Match.Plain;
-
-        // Match.Relation matches only Entity-Entity relations.
-        if (Match == Match.Entity) return other.Match.IsEntity;
-
-        // Match.Object matches only Entity-Object relations.
-        if (Match == Match.Link) return other.Match.IsLink;
-
-        // Direct match?
-        return Match == other.Match;
-    }
 
     /// <summary>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and target entity.
@@ -190,36 +122,8 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <inheritdoc cref="object.ToString"/>
     public override string ToString()
     {
-        if (isWildcard || isRelation) return $"<{LanguageType.Resolve(TypeId)}> >> {Match}";
+        if (isWildcard || isRelation) return $"<{LanguageType.Resolve(TypeId)}> >> {Key}";
         return $"<{LanguageType.Resolve(TypeId)}>";
-    }
-
-    /// <summary>
-    /// Expands this TypeExpression into a set of TypeExpressions that that are Equivalent but unique.
-    /// </summary>
-    /// <remarks>
-    /// <ul>
-    /// <li>wild Any -> [ wild Plain, wild Entity, wild Object ]</li>
-    /// <li>wild Target -> [ wild Entity, wild Object ]</li>
-    /// <li>specific Object -> [ wild Object ] </li>
-    /// <li>specific Entity -> [ wild Entity ]</li>
-    /// </ul>
-    /// </remarks>
-    public ImmutableHashSet<TypeExpression> Expand()
-    {
-        if (Match == Match.Any) return [this with { Match = default }, this with { Match = Match.Entity }, this with { Match = Match.Link }, this with { Match = Match.Target }];
-
-        if (Match == Match.Target) return [this with { Match = Match.Any }, this with { Match = Match.Entity }, this with { Match = Match.Link }];
-
-        if (Match == Match.Entity) return [this with { Match = Match.Any }, this with { Match = Match.Target }];
-
-        if (Match == Match.Link) return [this with { Match = Match.Any }, this with { Match = Match.Target }];
-
-        if (Match.IsLink) return [this with { Match = Match.Any }, this with { Match = Match.Target }, this with { Match = Match.Link }];
-
-        if (Match.IsEntity) return [this with { Match = Match.Any }, this with { Match = Match.Target }, this with { Match = Match.Entity }];
-
-        return [this with { Match = Match.Any }];
     }
 
 

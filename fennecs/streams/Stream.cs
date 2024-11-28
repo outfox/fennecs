@@ -4,8 +4,18 @@ using fennecs.CRUD;
 namespace fennecs;
 
 /// <summary>
-/// Base type for Streams.
+/// Base type for Streams. A Stream is a zip-view over a Query's results.
 /// </summary>
+/// <remarks>
+/// Typical Concrete Streams are: 
+/// <ul>
+/// <li><see cref="Stream{C0}"/></li>
+/// <li><see cref="Stream{C0, C1}"/></li>
+/// <li><see cref="Stream{C0, C1, C2}"/></li>
+/// <li><see cref="Stream{C0, C1, C2, C3}"/></li>
+/// <li><see cref="Stream{C0, C1, C2, C3, C4}"/></li>
+/// </ul>
+/// </remarks>
 public record Stream(Query Query) : IBatchBegin
 {
     protected private ImmutableArray<TypeExpression> StreamTypes = [];

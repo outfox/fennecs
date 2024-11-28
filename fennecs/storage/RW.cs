@@ -31,7 +31,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     /// <summary>
     /// The <see cref="Match"/> expression of this component.
     /// </summary>
-    public Match Match => _expression.Match;
+    public Match Match => _expression.Key;
 
     
     /// <summary>
@@ -73,7 +73,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
             T copy = Value;
             // Remove<T> usually moves another entity into the slot of the removed one in immediate mode
             // The structural change is so expensive that it's not worth optimizing this getter further.
-            _entity.Remove<T>(_expression.Match); 
+            _entity.Remove<T>(_expression.Key); 
             return copy;
         }
     }
@@ -83,7 +83,7 @@ public readonly ref struct RW<T> : IEquatable<RW<T>>, IEquatable<T> where T : no
     /// </summary>
     public void Remove()
     {
-        _entity.Remove<T>(_expression.Match);
+        _entity.Remove<T>(_expression.Key);
     }
     
     /// <summary>

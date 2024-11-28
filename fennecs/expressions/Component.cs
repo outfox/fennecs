@@ -17,12 +17,12 @@ public readonly record struct Component
     /// <remarks>
     /// If targetEntity is despawned, Component instances involving relations with that Entity already in existence remain unaffected.
     /// </remarks>
-    public bool isRelation => Expression.Match.IsEntity;
+    public bool isRelation => Expression.Key.IsEntity;
     
     /// <summary>
     /// Is this Component a Link? (if true, the Value is the linked Object)
     /// </summary>
-    public bool isLink => Expression.Match.IsObject;
+    public bool isLink => Expression.Key.IsObject;
     
     /// <summary>
     /// The Entity target of this Component, if it is a Relation.
