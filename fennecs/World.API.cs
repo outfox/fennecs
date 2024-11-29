@@ -86,7 +86,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Universal Query, matching all Entities in the World.
     /// </summary>
-    public Query All => CompileQuery(new Mask().Has(TypeExpression.Of<Entity>(Match.Plain)));
+    public Query All => CompileQuery(new Mask().Has(MatchExpression.Of<Entity>(default)));
     
     #endregion
     
@@ -199,7 +199,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
         {
             foreach (var entity in identities)
             {
-                DespawnDependencies(new(this, entity));
+                DespawnDependencies(entity);
                 _meta[entity.Index] = default;
             }
             _entityPool.Recycle(identities);

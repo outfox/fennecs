@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿/*
+using System.Runtime.CompilerServices;
 
 namespace fennecs;
 
@@ -18,3 +19,4 @@ public static class ObjectExtensions
     /// </summary>
     public static Key Key<T>(this T self) where T : class => new(self);
 }
+*/

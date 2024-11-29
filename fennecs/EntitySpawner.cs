@@ -51,75 +51,32 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     #endregion
 
     
-    /// <inheritdoc cref="Entity.Add{T}()"/>
-    /// <summary> Adds a component of the given type to the Spawner's configuration state.
-    /// If the EntitySpawner already contains a component of the same type, it will be replaced.
-    /// </summary>
-    /// <returns>EntitySpawner (fluent interface)</returns>
-    public EntitySpawner Add<T>(T component) where T : notnull
+    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(fennecs.Key)" />
+    public EntitySpawner Add<T>(T component, Key key = default) where T : notnull
     {
-        var type = Comp<T>.Plain.Expression;
+        var type = TypeExpression.Of<T>(key);
         return AddComponent(type, component);
     }
 
-    /// <inheritdoc />
-    public EntitySpawner Add<T>(Entity target) where T : notnull, new() => Add(new T(), target);
-
-
-    /// <inheritdoc />
-    public EntitySpawner Add<C>() where C : notnull, new() => Add(new C());
-    
-    
-    /// <inheritdoc />
-    public EntitySpawner Add<R>(R component, Entity relation) where R : notnull
-    {
-        var type = TypeExpression.Of<R>(relation);
-        return AddComponent(type, component);
-    }
-    
-    
-    /// <inheritdoc cref="Entity.Add{T}(Link{T})"/>
-    public EntitySpawner Add<T>(Link<T> target) where T : class
-    {
-        var type = TypeExpression.Of<T>(target);
-        return AddComponent(type, target.Object);
-    }
+    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(C,fennecs.Key)" />
+    public EntitySpawner Add<C>(Key key = default) where C : notnull, new() => Add(new C(), key);
     
 
-    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Match)"/>
-    /// <summary>
-    /// Removes the plain component of the given type from the Spawner.
-    /// </summary>
-    /// <returns>EntitySpawner (fluent interface)</returns>
-    public EntitySpawner Remove<T>(Match match = default) where T : notnull
+    /// <inheritdoc cref="IAddRemove{SELF}.Relate{R}(fennecs.Entity)" />
+    public EntitySpawner Relate<T>(Entity target) where T : notnull, new() => Add(new T(), target.Key);
+
+    /// <inheritdoc cref="IAddRemove{SELF}.Relate{R}(fennecs.Entity)" />
+    public EntitySpawner Relate<T>(T component, Entity target) where T : notnull => Add(component, target.Key);
+
+
+    
+    /// <inheritdoc cref="IAddRemove{SELF}.Remove{R}(fennecs.Key)" />
+    public EntitySpawner Remove<T>(Key match = default) where T : notnull
     {
         var type = Comp<T>.Matching(match).Expression;
         return RemoveComponent(type);
     }
 
-    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Match)"/>
-    /// <summary>
-    /// Removes the Relation component of the given type from the Spawner.
-    /// </summary>
-    /// <returns>EntitySpawner (fluent interface)</returns>
-    public EntitySpawner Remove<T>(Entity entity) where T : notnull
-    {
-        var type = TypeExpression.Of<T>(entity);
-        return RemoveComponent(type);
-    }
-    
-    /// <inheritdoc />
-    public EntitySpawner Remove<L>(L linkedObject) where L : class => Remove(Link<L>.With(linkedObject));
-    
-    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Match)"/>
-    /// <summary>
-    /// Removes the Object Link component to the given Object from the Spawner.
-    /// </summary>
-    /// <returns>EntitySpawner (fluent interface)</returns>
-    public EntitySpawner Remove<L>(Link<L> link) where L : class
-    {
-        return RemoveComponent(link.TypeExpression);
-    }
     
     /// <summary>
     /// Spawns <c>count</c> entities with the configured components.
