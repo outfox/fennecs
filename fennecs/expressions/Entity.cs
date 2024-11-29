@@ -9,7 +9,7 @@ namespace fennecs;
 /// Entity: An object in the fennecs World, that can have any number of Components.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public readonly record struct Entity : IComparable<Entity>, IEntity
+public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<Entity>
 {
     [FieldOffset(0)] internal readonly ulong Value;
 
@@ -116,6 +116,41 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     public Entity Add<C>(C component, Key key = default) where C : notnull
     {
         World.AddComponent(this, TypeExpression.Of<C>(key), component);
+        return this;
+    }
+
+    /// <inheritdoc />
+    public Entity Add<C>(Key key = default) where C : notnull, new()
+    {
+        World.AddComponent<C>(this, TypeExpression.Of<C>(key), new());
+        return this;
+    }
+
+    /// <inheritdoc />
+    public Entity Relate<C>(C component, Entity target) where C : notnull
+    {
+        World.AddComponent(this, TypeExpression.Of<C>(target.Key), component);
+        return this;
+    }
+
+    /// <inheritdoc />
+    public Entity Unrelate<C>(Entity target) where C : notnull
+    {
+        World.RemoveComponent(this, TypeExpression.Of<C>(target.Key));
+        return this;
+    }
+
+    /// <inheritdoc />
+    public Entity Link<L>(L link) where L : class
+    {
+        World.AddComponent(this, TypeExpression.Of<L>(Key.Of(link)), link);
+        return this;
+    }
+
+    /// <inheritdoc />
+    public Entity Unlink<L>(L link) where L : class
+    {
+        World.RemoveComponent(this, TypeExpression.Of<L>(Key.Of(link)));
         return this;
     }
 
