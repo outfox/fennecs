@@ -75,7 +75,7 @@
             <br/>Delegate for Query runner actions that take references to Component data.
         </summary>
         <remarks>
-            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Entity component and <c>World.On(Entity)</c> to perform entity operations.
             Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
         </remarks>
     </member>
@@ -87,7 +87,7 @@
             <br/>Delegate for Query runner actions that take references to Component data and a uniform value.
         </summary>
         <remarks>
-            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            There's no EntityAction variant of <c>Query.Job</c>, but you can use the Entity component and <c>World.On(Entity)</c> to perform entity operations.
             Generally, structural changes are deferred and executed single-threaded after the Job runner returns. Consider using <c>Query.Batch</c> instead to keep your Jobs running as fast as they can.
         </remarks>
     </member>
@@ -99,7 +99,7 @@
             <br/>Delegate for Query runner actions that take Memory structs with component data.
         </summary>
         <remarks>
-            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Entity component and <c>World.On(Entity)</c> to perform entity operations.
         </remarks>
     </member>
 
@@ -110,7 +110,7 @@
             <br/>Delegate for Query runner actions that take Memory structs with component data and a uniform value.
         </summary>
         <remarks>
-            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Identity component and <c>World.On(Identity)</c> to perform entity operations.
+            There's no EntityAction variant of <c>Query.Raw</c>, but you can use the Entity component and <c>World.On(Entity)</c> to perform entity operations.
         </remarks>
     </member>
 </members>

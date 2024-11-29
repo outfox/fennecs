@@ -56,9 +56,9 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
 
     /// <summary>
-    /// The Identity of the Entity.
+    /// The Entity of the Entity.
     /// </summary>
-    internal readonly Identity Id;
+    internal readonly Entity Id;
 
     #endregion
 
@@ -227,7 +227,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
     /// <summary>
     /// Checks if the Entity has a Plain Component.
-    /// Same as calling <see cref="Has{T}()"/> with <see cref="Identity.Plain"/>
+    /// Same as calling <see cref="Has{T}()"/> with <see cref="Entity.Plain"/>
     /// </summary>
     public bool Has<T>() where T : notnull => _world.HasComponent<T>(Id, default);
 

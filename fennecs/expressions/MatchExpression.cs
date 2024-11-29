@@ -61,7 +61,7 @@ public readonly record struct MatchExpression
     /// Match against another TypeExpression; used for Query Matching.
     /// Examines the Type and Target fields of either and decides whether the other TypeExpression is a match.
     /// <para>
-    /// See also: <see cref="fennecs.Identity.Plain"/>, <see cref="fennecs.Identity.Target"/>, <see cref="Entity"/>, <see cref="fennecs.Identity.Object"/>, <see cref="fennecs.Identity.Any"/>
+    /// See also: <see cref="fennecs.Entity.Plain"/>, <see cref="fennecs.Entity.Target"/>, <see cref="Entity"/>, <see cref="fennecs.Entity.Object"/>, <see cref="fennecs.Entity.Any"/>
     /// </para>
     /// </summary>
     /// <remarks>
@@ -81,11 +81,11 @@ public readonly record struct MatchExpression
     /// </para>
     /// </example>
     /// <param name="other">another type expression</param>
-    /// <seealso cref="fennecs.Identity.Plain"/>
-    /// <seealso cref="fennecs.Identity.Target"/>
+    /// <seealso cref="fennecs.Entity.Plain"/>
+    /// <seealso cref="fennecs.Entity.Target"/>
     /// <seealso cref="Entity"/>
-    /// <seealso cref="fennecs.Identity.Object"/>
-    /// <seealso cref="fennecs.Identity.Any"/>
+    /// <seealso cref="fennecs.Entity.Object"/>
+    /// <seealso cref="fennecs.Entity.Any"/>
     /// <seealso cref="Match.Relation"/>
     /// <seealso cref="Match.Link{T}"/>
     /// <returns>true if the other expression is matched by this expression</returns>
@@ -118,7 +118,7 @@ public readonly record struct MatchExpression
     /// Match against another TypeExpression; used for Query Matching.
     /// Examines the Type and Target fields of either and decides whether the other TypeExpression is a match.
     /// <para>
-    /// See also: <see cref="fennecs.Identity.Plain"/>, <see cref="fennecs.Identity.Target"/>, <see cref="Entity"/>, <see cref="fennecs.Identity.Object"/>, <see cref="fennecs.Identity.Any"/>
+    /// See also: <see cref="fennecs.Entity.Plain"/>, <see cref="fennecs.Entity.Target"/>, <see cref="Entity"/>, <see cref="fennecs.Entity.Object"/>, <see cref="fennecs.Entity.Any"/>
     /// </para>
     /// </summary>
     /// <remarks>
@@ -138,11 +138,11 @@ public readonly record struct MatchExpression
     /// </para>
     /// </example>
     /// <param name="other">another type expression</param>
-    /// <seealso cref="fennecs.Identity.Plain"/>
-    /// <seealso cref="fennecs.Identity.Target"/>
+    /// <seealso cref="fennecs.Entity.Plain"/>
+    /// <seealso cref="fennecs.Entity.Target"/>
     /// <seealso cref="Entity"/>
-    /// <seealso cref="fennecs.Identity.Object"/>
-    /// <seealso cref="fennecs.Identity.Any"/>
+    /// <seealso cref="fennecs.Entity.Object"/>
+    /// <seealso cref="fennecs.Entity.Any"/>
     /// <seealso cref="Match.Relation"/>
     /// <seealso cref="Match.Link{T}"/>
     /// <returns>true if the other expression is matched by this expression</returns>

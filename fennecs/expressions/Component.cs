@@ -28,7 +28,7 @@ public readonly record struct Component
     /// The Entity target of this Component, if it is a Relation.
     /// </summary>
     /// <exception cref="InvalidOperationException">if the Component is not a Relation</exception>
-    public Identity targetEntity
+    public Entity targetEntity
     {
         get
         {

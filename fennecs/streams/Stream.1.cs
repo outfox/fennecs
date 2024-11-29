@@ -36,7 +36,7 @@ public partial record Stream<C0> :
     /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
     /// </remarks>
     /// <param name="value">a component value</param>
-    /// <param name="match">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
+    /// <param name="match">default for Plain components, Entity for Relations, Entity.Of(Object) for ObjectLinks </param>
     public void Blit(C0 value, Match match = default)
     {
         foreach (var table in Filtered) table.Fill(match, value);

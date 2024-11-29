@@ -25,7 +25,7 @@ public partial class World
     private readonly Dictionary<TypeExpression, EntityComponentEvent> _componentAdded = new();
     private readonly Dictionary<TypeExpression, EntityEvent> _componentRemoved = new();
     
-    public EntityComponentEvent<T> ComponentAdded<T>(Identity match)
+    public EntityComponentEvent<T> ComponentAdded<T>(Entity match)
     {
         var type = TypeExpression.Of<T>(match);
         if (!_componentAdded.TryGetValue(type, out var worldEvent))
@@ -35,7 +35,7 @@ public partial class World
         return (EntityComponentEvent<T>) worldEvent;
     }
 
-    public EntityEvent ComponentRemoved<T>(Identity match = default)
+    public EntityEvent ComponentRemoved<T>(Entity match = default)
     {
         var type = TypeExpression.Of<T>(match);
         if (_componentRemoved.TryGetValue(type, out var worldEvent)) return worldEvent;

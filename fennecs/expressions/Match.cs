@@ -44,7 +44,7 @@ public readonly record struct Match
     /// </para>
     /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// </summary>
-    public static Match Relation(Identity other) => new(other.Key);
+    public static Match Relation(Entity other) => new(other.Key);
     
 
     /// <summary>
@@ -70,7 +70,7 @@ public readonly record struct Match
     /// </ul>
     /// </remarks>
     public static Match Any { get; }  = new(new((ulong) Wildcard.Any));
-    //public static Match Any => new(Identity.Any); // or prefer default ?
+    //public static Match Any => new(Entity.Any); // or prefer default ?
 
     /// <summary>
     /// <b>Wildcard match expression for Entity iteration.</b><br/>Matches any non-plain Components of the given Stream Type, i.e. any with a <see cref="TypeExpression.Key"/>.
@@ -115,12 +115,12 @@ public readonly record struct Match
     
 
     /// <summary>
-    /// <para>Implicitly convert an <see cref="Identity"/> to a <see cref="Match"/> for use in filter expressions.</para>
+    /// <para>Implicitly convert an <see cref="Entity"/> to a <see cref="Match"/> for use in filter expressions.</para>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    //public static implicit operator Match(Identity value) => new(value);
-    public static implicit operator Match(Identity value) => new(value.Key);
+    //public static implicit operator Match(Entity value) => new(value);
+    public static implicit operator Match(Entity value) => new(value.Key);
 
 
     /// <inheritdoc/>

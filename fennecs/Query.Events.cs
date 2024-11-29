@@ -28,7 +28,7 @@ public partial class Query
         return queryEvent;
     }
 
-    public QueryEntityEvent EntitiesExited<T>(Identity match = default)
+    public QueryEntityEvent EntitiesExited<T>(Entity match = default)
     {
         var type = TypeExpression.Of<T>(match);
         if (_entityLeft.TryGetValue(type, out var queryEvent)) return queryEvent;

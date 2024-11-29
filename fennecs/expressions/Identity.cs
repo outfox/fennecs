@@ -6,15 +6,15 @@ using System.Runtime.InteropServices;
 namespace fennecs;
 
 /// <summary>
-/// Refers to an identity:
+/// Refers to an entity:
 /// real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public readonly record struct Identity : IComparable<Identity>
+public readonly record struct Entity : IComparable<Entity>
 {
     [FieldOffset(0)] internal readonly ulong Value;
 
-    //Identity Components
+    //Entity Components
     [FieldOffset(0)] internal readonly int Index; //IDEA: Can use top 1~2 bits for special state, e.g. disabled, hidden, etc.
     [FieldOffset(4)] internal readonly byte WorldIndex;
     
@@ -29,7 +29,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// <summary>
     /// <c>null</c> equivalent for Entity.
     /// </summary>
-    public static readonly Identity None = default;
+    public static readonly Entity None = default;
 
     
     /// <summary>
@@ -40,25 +40,25 @@ public readonly record struct Identity : IComparable<Identity>
 
     // Entity Reference.
     /// <summary>
-    /// Truthy if the Identity represents an actual Entity.
+    /// Truthy if the Entity represents an actual Entity.
     /// Falsy if it is a virtual concept or a tracked object.
-    /// Falsy if it is the <c>default</c> Identity.
+    /// Falsy if it is the <c>default</c> Entity.
     /// </summary>
     public bool IsEntity => Index > 0 && Generation > 0;
 
     // Tracked Object Reference.
     /// <summary>
-    /// Truthy if the Identity represents a tracked object.
+    /// Truthy if the Entity represents a tracked object.
     /// Falsy if it is a virtual concept or an actual Entity.
-    /// Falsy if it is the <c>default</c> Identity.
+    /// Falsy if it is the <c>default</c> Entity.
     /// </summary>
     public bool IsObject => Generation < 0;
 
     // Wildcard Entities, such as Any, Object, Entity, or Relation.
     /// <summary>
-    /// Truthy if the Identity represents a virtual concept (see <see cref="Cross"/>).
+    /// Truthy if the Entity represents a virtual concept (see <see cref="Cross"/>).
     /// Falsy if it is an actual Entity or a tracked object.
-    /// Falsy if it is the <c>default</c> Identity.
+    /// Falsy if it is the <c>default</c> Entity.
     /// </summary>
     public bool IsWildcard => Generation == 0 && Index < 0;
 
@@ -66,17 +66,17 @@ public readonly record struct Identity : IComparable<Identity>
     #region IComparable/IEquatable Implementation
 
     /// <inheritdoc cref="IEquatable{T}"/>
-    public bool Equals(Identity other) => Value == other.Value;
+    public bool Equals(Entity other) => Value == other.Value;
 
     /// <inheritdoc cref="IComparable{T}"/>
-    public int CompareTo(Identity other) => Value.CompareTo(other.Value);
+    public int CompareTo(Entity other) => Value.CompareTo(other.Value);
 
     /// <summary>
-    /// Casts an Entity to its Identity. (extracting the appropriatefield)
+    /// Casts an Entity to its Entity. (extracting the appropriatefield)
     /// </summary>
     /// <param name="entity">an Entity</param>
-    /// <returns>the Identity</returns>
-    public static implicit operator Identity(Entity entity) => entity.Id;
+    /// <returns>the Entity</returns>
+    public static implicit operator Entity(Entity entity) => entity.Id;
     
 
     /// <inheritdoc />
@@ -90,14 +90,14 @@ public readonly record struct Identity : IComparable<Identity>
     #endregion
 
 
-    internal Type Type => typeof(Identity);
+    internal Type Type => typeof(Entity);
 
 
     #region Constructors / Creators
     /// <summary>
-    /// Create a new Identity, Generation 1, in the given World. Called by IdentityPool.
+    /// Create a new Entity, Generation 1, in the given World. Called by EntityPool.
     /// </summary>
-    internal Identity(World.Id worldId, int index, short generation = 1)
+    internal Entity(World.Id worldId, int index, short generation = 1)
     {
         // 0xgggg_E0ww_iiii_iiii
         Value = (ulong) generation << 48 | BaseFlag | worldId.Bits | (uint) index;   
@@ -106,12 +106,12 @@ public readonly record struct Identity : IComparable<Identity>
     internal const ulong BaseFlag = 0x0000_E000_0000_0000u;
     
     
-    internal Identity(ulong key, ushort generation)
+    internal Entity(ulong key, ushort generation)
     {
         Value = key | (ulong) generation << 48;
     }
 
-    internal Identity Successor
+    internal Entity Successor
     {
         get
         {

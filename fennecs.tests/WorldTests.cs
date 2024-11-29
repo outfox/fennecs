@@ -317,8 +317,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().Add(444, target2);
         }
 
-        var query1 = world.Query<Identity>(Match.Plain).Has<int>(target1).Stream();
-        var query2 = world.Query<Identity>(Match.Plain).Has<int>(target2).Stream();
+        var query1 = world.Query<Entity>(Match.Plain).Has<int>(target1).Stream();
+        var query2 = world.Query<Entity>(Match.Plain).Has<int>(target2).Stream();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);
@@ -332,9 +332,9 @@ public class WorldTests(ITestOutputHelper output)
     public void Added_Newable_Class_is_not_Null()
     {
         using var world = new World();
-        var identity = world.Spawn().Add<NewableClass>().Id;
-        Assert.True(world.HasComponent<NewableClass>(identity, Match.Plain));
-        Assert.NotNull(world.GetComponent<NewableClass>(identity, Match.Plain));
+        var entity = world.Spawn().Add<NewableClass>().Id;
+        Assert.True(world.HasComponent<NewableClass>(entity, Match.Plain));
+        Assert.NotNull(world.GetComponent<NewableClass>(entity, Match.Plain));
     }
 
 
@@ -342,9 +342,9 @@ public class WorldTests(ITestOutputHelper output)
     public void Added_Newable_Struct_is_default()
     {
         using var world = new World();
-        var identity = world.Spawn().Add<NewableStruct>().Id;
-        Assert.True(world.HasComponent<NewableStruct>(identity, Match.Plain));
-        Assert.Equal(default, world.GetComponent<NewableStruct>(identity, Match.Plain));
+        var entity = world.Spawn().Add<NewableStruct>().Id;
+        Assert.True(world.HasComponent<NewableStruct>(entity, Match.Plain));
+        Assert.Equal(default, world.GetComponent<NewableStruct>(entity, Match.Plain));
     }
 
 
@@ -352,9 +352,9 @@ public class WorldTests(ITestOutputHelper output)
     public void Can_add_Non_Newable()
     {
         using var world = new World();
-        var identity = world.Spawn().Add<string>("12").Id;
-        Assert.True(world.HasComponent<string>(identity, Match.Plain));
-        Assert.NotNull(world.GetComponent<string>(identity, Match.Plain));
+        var entity = world.Spawn().Add<string>("12").Id;
+        Assert.True(world.HasComponent<string>(entity, Match.Plain));
+        Assert.NotNull(world.GetComponent<string>(entity, Match.Plain));
     }
 
 
@@ -537,9 +537,9 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var other = world.Spawn();
-        var data = new Identity(123);
+        var data = new Entity(123);
         entity.Add(data, other);
-        Assert.True(entity.Has<Identity>(other));
+        Assert.True(entity.Has<Entity>(other));
     }
 
 
@@ -553,7 +553,7 @@ public class WorldTests(ITestOutputHelper output)
 
 
     [Fact]
-    private void Can_Despawn_With_Identity()
+    private void Can_Despawn_With_Entity()
     {
         using var world = new World();
         var entity = world.Spawn();
@@ -568,7 +568,7 @@ public class WorldTests(ITestOutputHelper output)
     [InlineData(1)]
     [InlineData(69)]
     [InlineData(420)]
-    private void Can_Despawn_With_Identity_Span(int entityCount)
+    private void Can_Despawn_With_Entity_Span(int entityCount)
     {
         using var world = new World();
         var entities = new Entity[entityCount];

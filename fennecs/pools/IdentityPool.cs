@@ -3,24 +3,24 @@
 namespace fennecs.pools;
 
 /// <summary>
-/// Generation and Identity management for Entities
+/// Generation and Entity management for Entities
 /// </summary>
 /// <remarks>
 /// Not thread-safe (yet?). This is the responsibility of the World that uses the pool.
 /// </remarks>
-internal sealed class IdentityPool
+internal sealed class EntityPool
 {
     internal int Created { get; private set; }
 
     internal int Alive => Created - _recycled.Count;
 
-    private readonly Queue<Identity> _recycled;
+    private readonly Queue<Entity> _recycled;
 
     private readonly World.Id _worldId;
 
     private int NewIndex => ++Created;
 
-    public IdentityPool(World.Id worldId, int initialCapacity)
+    public EntityPool(World.Id worldId, int initialCapacity)
     {
         _worldId = worldId;
         _recycled = new(initialCapacity * 2);
@@ -28,16 +28,16 @@ internal sealed class IdentityPool
     }
 
 
-    internal Identity Spawn()
+    internal Entity Spawn()
     { 
-        return _recycled.TryDequeue(out var recycledIdentity)
-            ? recycledIdentity
+        return _recycled.TryDequeue(out var recycledEntity)
+            ? recycledEntity
             : new(_worldId, NewIndex);
     }
 
-    internal PooledList<Identity> Spawn(int count)
+    internal PooledList<Entity> Spawn(int count)
     {
-        var identities = PooledList<Identity>.Rent();
+        var identities = PooledList<Entity>.Rent();
         var recycled = _recycled.Count;
 
         if (recycled <= count)
@@ -66,10 +66,10 @@ internal sealed class IdentityPool
     }
 
 
-    internal void Recycle(Identity identity) => _recycled.Enqueue(identity.Successor);
+    internal void Recycle(Entity entity) => _recycled.Enqueue(entity.Successor);
 
-    internal void Recycle(ReadOnlySpan<Identity> toDelete)
+    internal void Recycle(ReadOnlySpan<Entity> toDelete)
     {
-        foreach (var identity in toDelete) Recycle(identity);
+        foreach (var entity in toDelete) Recycle(entity);
     }
 }

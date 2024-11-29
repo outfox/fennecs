@@ -134,13 +134,13 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </summary>
     /// <param name="entity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    internal bool IsAlive(Entity entity) => identity.Generation > 0 ? identity == _meta[identity.Index].Identity : _meta[identity.Index].Identity != default;
+    internal bool IsAlive(Entity entity) => entity.Generation > 0 ? entity == _meta[entity.Index].Entity : _meta[entity.Index].Entity != default;
 
 
     /// <summary>
     /// The number of living entities in the World.
     /// </summary>
-    public int Count => _identityPool.Alive;
+    public int Count => _entityPool.Alive;
 
     /// <summary>
     /// All Queries that exist in this World.
@@ -161,11 +161,11 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </param>
     public void DespawnAllWith<T>(Match match = default)
     {
-        var query = Query<Identity>().Has<T>(match).Stream();
+        var query = Query<Entity>().Has<T>(match).Stream();
         query.Raw(entities =>
         {
             //TODO: This is not good. Need to untangle the types here.
-            foreach (var identity in entities) DespawnImpl(new(this, identity));
+            foreach (var entity in entities) DespawnImpl(new(this, entity));
         });
     }
 
@@ -193,16 +193,16 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// MUST BE REMOVED FROM ITS ARCHETYPE STORAGE! (used by Archetype.Truncate)
     /// </remarks>
     /// <param name="identities">the entities to despawn (remove)</param>
-    internal void Recycle(ReadOnlySpan<Identity> identities)
+    internal void Recycle(ReadOnlySpan<Entity> identities)
     {
         lock (_spawnLock)
         {
-            foreach (var identity in identities)
+            foreach (var entity in identities)
             {
-                DespawnDependencies(new(this, identity));
-                _meta[identity.Index] = default;
+                DespawnDependencies(new(this, entity));
+                _meta[entity.Index] = default;
             }
-            _identityPool.Recycle(identities);
+            _entityPool.Recycle(identities);
         }
     }
     #endregion
@@ -230,12 +230,12 @@ public partial class World : IDisposable, IEnumerable<Entity>
         
         Name = $"{nameof(World)}-{_id:d3}";
         
-        _identityPool = new(_id, initialCapacity);
+        _entityPool = new(_id, initialCapacity);
 
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new(Comp<Identity>.Plain.Expression));
+        _root = GetArchetype(new(Comp<Entity>.Plain.Expression));
         
         Worlds[_id] = this;
     }
@@ -320,13 +320,13 @@ public partial class World : IDisposable, IEnumerable<Entity>
     #endregion
 
     #region Indexers
-    internal Identity this[int index] => _meta[index].Identity;
+    internal Entity this[int index] => _meta[index].Entity;
     
-    internal Identity this[LiveEntity live]
+    internal Entity this[LiveEntity live]
     {
         get
         {
-            var result = _meta[live.Index].Identity;
+            var result = _meta[live.Index].Entity;
             Debug.Assert(result != default, $"LiveEntity {live} is no longer alive in ${Name}.");
             return result; 
         }

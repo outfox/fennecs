@@ -192,7 +192,7 @@ file class JobsGenerator
               internal record {{jobType}} : IThreadPoolWorkItem 
                   {{constraints}}
               {
-                  public MemoryR<Identity> MemoryE= default!;
+                  public MemoryR<Entity> MemoryE= default!;
                   public World World = null!;
               
               {{memories}}

@@ -17,7 +17,7 @@ public readonly record struct Key
         Value = value;
     }
 
-    internal Key(Identity identity) => Value = identity.Value & KeyMask;
+    internal Key(Entity entity) => Value = entity.Value & KeyMask;
 
     
     /// <summary>
@@ -40,7 +40,7 @@ public readonly record struct Key
     /// Create a Key for an Entity-Entity relationship.
     /// Used to set targets of Object Links. 
     /// </summary>
-    public static Key Of(Identity entity) => entity.Key; /* KeyCategory already set by Entity*/
+    public static Key Of(Entity entity) => entity.Key; /* KeyCategory already set by Entity*/
 
     /// <summary>
     /// Create a Key for a tracked object and the backing Object Link type.
@@ -107,7 +107,7 @@ public readonly record struct Key
 }
 
 /// <summary>
-/// A LiveEntity is a special Identity that's guaranteed to be alive.
+/// A LiveEntity is a special Entity that's guaranteed to be alive.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
 public readonly ref struct LiveEntity
@@ -131,7 +131,7 @@ public readonly ref struct LiveEntity
     /// <summary>
     /// An Entity that is currently alive, for the purpose of being used as a relation key.
     /// </summary>
-    internal LiveEntity(Identity id)
+    internal LiveEntity(Entity id)
     {
         Debug.Assert(id.Alive, $"Cannot create LiveEntity from dead-Entity {id}!");
         Raw = id.Value & Key.KeyMask;
@@ -147,7 +147,7 @@ public readonly ref struct LiveEntity
     /// </summary>
     /// <param name="self">a LiveEntity</param>
     /// <returns>the entity</returns>
-    public static implicit operator Identity(LiveEntity self) => self.World[self];
+    public static implicit operator Entity(LiveEntity self) => self.World[self];
 
     /// <summary>
     /// Returns the actual World this LiveEntity refers to.

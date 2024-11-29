@@ -76,8 +76,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         // Get quick lookup for Entity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
-        // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(default);
+        // TypeExpression may have been created before the first TE of Entity.
+        EntityStorage = GetStorage<Entity>(default);
     }
 
 
@@ -156,12 +156,12 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         var excess = Math.Clamp(Count - maxEntityCount, 0, Count);
         if (excess <= 0) return;
         
-        var toDelete = ((ReadOnlySpan<Identity>)IdentityStorage.Span).Slice(Count - excess, excess);
+        var toDelete = ((ReadOnlySpan<Entity>)EntityStorage.Span).Slice(Count - excess, excess);
 
         foreach (var storage in Storages)
         {
             // HACK... 
-            if (storage == IdentityStorage) continue;
+            if (storage == EntityStorage) continue;
             
             //Must call before World removes Dependencies (can have dependencies in same archetype!)
             //TODO: Urgently needs unit test to rule out dangerous conflicts!
@@ -169,7 +169,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         }
 
         World.Recycle(toDelete);
-        IdentityStorage.Delete(Count - excess, excess);
+        EntityStorage.Delete(Count - excess, excess);
     }
 
     /// <summary>
@@ -184,9 +184,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     {
         for (var i = 0; i < count; i++)
         {
-            var identity = IdentityStorage[entry + i];
-            ref var meta = ref World.GetEntityMeta(identity);
-            meta = new() { Identity = identity, Archetype = this, Row = entry + i };
+            var entity = EntityStorage[entry + i];
+            ref var meta = ref World.GetEntityMeta(entity);
+            meta = new() { Entity = entity, Archetype = this, Row = entry + i };
         }
     }
 
@@ -375,13 +375,13 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     internal Component[] GetRow(int row)
     {
-        // -1 because we skip IdentityStorage
+        // -1 because we skip EntityStorage
         using var components = PooledList<Component>.Rent();
         
         foreach (var (expression, index) in _storageIndices)
         {
             var storage = Storages[index];
-            if (storage == IdentityStorage) continue;
+            if (storage == EntityStorage) continue;
             components.Add(new(expression, storage.Box(row), World));
         }
         
@@ -410,7 +410,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         for (var i = 0; i < Count; i++)
         {
             if (snapshot != Volatile.Read(ref Version)) throw new InvalidOperationException("Collection modified while enumerating.");
-            yield return new Entity(World, IdentityStorage[i]);
+            yield return new Entity(World, EntityStorage[i]);
         }
     }
 
@@ -433,7 +433,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// There's no bounds checking, so be sure to check against the Count property before using this method.
     /// (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
     /// </remarks>
-    public Entity this[int index] => new(World, IdentityStorage[index]);
+    public Entity this[int index] => new(World, EntityStorage[index]);
 
 
     #region Cross Joins
@@ -516,7 +516,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         }
 
         using var identities = World.SpawnBare(count);
-        IdentityStorage.Append(identities);
+        EntityStorage.Append(identities);
         PatchMetas(first, count);
     }
     

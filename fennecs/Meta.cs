@@ -21,5 +21,5 @@ internal readonly record struct Meta(Archetype Archetype, int Row, Entity Entity
     /// <summary>
     /// Entity Entity
     /// </summary>
-    public Entity Entity { get; init; } = Identity;
+    public Entity Entity { get; init; } = Entity;
 }

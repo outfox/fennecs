@@ -213,7 +213,7 @@ file class StreamsJobGenerator
                               {{Deconstruct(width, accessors, uniform)}}
 
                               job.World = table.World;
-                              job.MemoryE = table.GetStorage<Identity>(default).AsReadOnlyMemory(start, length);
+                              job.MemoryE = table.GetStorage<Entity>(default).AsReadOnlyMemory(start, length);
                               job.Action = action;
                               job.CountDown = Countdown;
                               jobs.Add(job);

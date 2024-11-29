@@ -11,13 +11,13 @@ public partial class World
 {
     #region World State & Storage
 
-    private readonly IdentityPool _identityPool;
+    private readonly EntityPool _entityPool;
 
     private Meta[] _meta;
 
     private readonly Guid _guid = Guid.NewGuid();
 
-    // "Identity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
+    // "Entity" Archetype; all living Entities. (TODO: maybe change into publicly accessible "all" Query)
     private readonly Archetype _root;
     private readonly List<Archetype> _archetypes = [];
     
@@ -71,39 +71,39 @@ public partial class World
 
     #region CRUD
 
-    private Identity NewEntity()
+    private Entity NewEntity()
     {
         lock (_spawnLock)
         {
-            var identity = _identityPool.Spawn();
+            var entity = _entityPool.Spawn();
 
             // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
-            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)(_identityPool.Created + 1)));
+            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)(_entityPool.Created + 1)));
 
-            _meta[identity.Index] = new(_root, _root.Count, identity);
-            _root.IdentityStorage.Append(identity);
+            _meta[entity.Index] = new(_root, _root.Count, entity);
+            _root.EntityStorage.Append(entity);
             _root.Invalidate();
 
-            return identity;
+            return entity;
         }
     }
 
-    internal PooledList<Identity> SpawnBare(int count)
+    internal PooledList<Entity> SpawnBare(int count)
     {
         lock (_spawnLock)
         {
-            var identities = _identityPool.Spawn(count);
-            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)_identityPool.Created + 1));
+            var identities = _entityPool.Spawn(count);
+            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)_entityPool.Created + 1));
             return identities;
         }
     }
 
 
-    internal bool HasComponent(Identity identity, TypeExpression typeExpression)
+    internal bool HasComponent(Entity entity, TypeExpression typeExpression)
     {
-        var meta = _meta[identity.Index];
-        return meta.Identity != default
-               && meta.Identity == identity
+        var meta = _meta[entity.Index];
+        return meta.Entity != default
+               && meta.Entity == entity
                && typeExpression.Matches(meta.Archetype.MatchSignature);
     }
 
@@ -114,7 +114,7 @@ public partial class World
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Identity = entity });
+            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Entity = entity });
             return;
         }
 
@@ -125,7 +125,7 @@ public partial class World
 
         DespawnDependencies(entity);
 
-        _identityPool.Recycle(entity);
+        _entityPool.Recycle(entity);
 
         // Patch Meta
         _meta[entity.Id.Index] = default;
@@ -134,7 +134,7 @@ public partial class World
 
     private void DespawnDependencies(Entity entity)
     {
-        // Find identity-identity relation reverse lookup (if applicable)
+        // Find entity-entity relation reverse lookup (if applicable)
         if (!_typesByRelationTarget.TryGetValue(new(entity.Id), out var types)) return;
 
         // Collect Archetypes that have any of these relations
@@ -186,7 +186,7 @@ public partial class World
     }
 
 
-    internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
+    internal ref Meta GetEntityMeta(Entity entity) => ref _meta[entity.Index];
 
 
     private Archetype GetArchetype(Signature types)
@@ -234,7 +234,7 @@ public partial class World
         return table;
     }
 
-    internal IReadOnlyList<Component> GetComponents(Identity id)
+    internal IReadOnlyList<Component> GetComponents(Entity id)
     {
         var archetype = _meta[id.Index].Archetype;
         return archetype.GetRow(_meta[id.Index].Row);
@@ -249,11 +249,11 @@ public partial class World
     #region Assert Helpers
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void AssertAlive(Identity identity)
+    private void AssertAlive(Entity entity)
     {
-        if (IsAlive(identity)) return;
+        if (IsAlive(entity)) return;
 
-        throw new ObjectDisposedException($"Identity {identity} is no longer alive.");
+        throw new ObjectDisposedException($"Entity {entity} is no longer alive.");
     }
 
     #endregion

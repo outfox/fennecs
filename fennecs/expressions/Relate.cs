@@ -5,9 +5,9 @@
 /// </summary>
 internal readonly record struct Relate
 {
-    private Identity Value { get; }
+    private Entity Value { get; }
     
-    internal Relate(Identity identity) => Value = identity;
+    internal Relate(Entity entity) => Value = entity;
     
     /// <summary>
     /// Create a Relation expression to the Target entity.
@@ -20,7 +20,7 @@ internal readonly record struct Relate
     public static implicit operator Relate(Entity entity) => new(entity.Id);
 
     /// <summary>
-    /// Implicit conversion from Identity to Generic Target.
+    /// Implicit conversion from Entity to Generic Target.
     /// </summary>
     public static implicit operator Match(Relate self)
     {

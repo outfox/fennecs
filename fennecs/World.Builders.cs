@@ -17,7 +17,7 @@ public partial class World
     /// <remarks>
     /// <para>
     /// This and other builder with type Parameters tracks Match Expressions for potential Stream Types.
-    /// They default to <see cref="Identity.Any"/>, but can be customized using the appropriate overloads.
+    /// They default to <see cref="Entity.Any"/>, but can be customized using the appropriate overloads.
     /// You may also narrow the matching down using additional Query Expressions.
     /// </para>
     /// <para>

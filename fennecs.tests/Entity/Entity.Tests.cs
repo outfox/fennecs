@@ -14,7 +14,7 @@ public class EntityTests(ITestOutputHelper output)
         var builder = new Entity(world, entity);
         builder.Add<int>(target);
         Assert.True(entity.Has<int>(target));
-        Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
+        Assert.False(entity.Has<int>(new Entity(world, new Entity(9001))));
     }
 
 
@@ -27,7 +27,7 @@ public class EntityTests(ITestOutputHelper output)
         var builder = new Entity(world, entity);
         builder.Add(123, target);
         Assert.True(entity.Has<int>(target));
-        Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
+        Assert.False(entity.Has<int>(new Entity(world, new Entity(9001))));
     }
 
 
@@ -65,9 +65,9 @@ public class EntityTests(ITestOutputHelper output)
     public void Entity_Is_Comparable()
     {
         using var world = new World();
-        var entity1 = new Entity(null!, new Identity(1));
-        var entity2 = new Entity(null!, new Identity(2));
-        var entity3 = new Entity(null!, new Identity(3));
+        var entity1 = new Entity(null!, new Entity(1));
+        var entity2 = new Entity(null!, new Entity(2));
+        var entity3 = new Entity(null!, new Entity(3));
 
         Assert.True(entity1.CompareTo(entity2) < 0);
         Assert.True(entity2.CompareTo(entity3) < 0);
@@ -117,7 +117,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world1 = new World();
         using var world2 = new World();
         var entity1 = world2.Spawn();
-        var entity2 = new Entity(null!, new Identity(2));
+        var entity2 = new Entity(null!, new Entity(2));
         Assert.NotEqual(entity1, entity2);
         Assert.True(entity1 != entity2);
         Assert.True(entity2 != entity1);
@@ -151,12 +151,12 @@ public class EntityTests(ITestOutputHelper output)
 
 
     [Fact]
-    public void Entity_Decays_to_Identity()
+    public void Entity_Decays_to_Entity()
     {
         using var world = new World();
         var entity = world.Spawn();
-        Identity identity = entity;
-        Assert.Equal(entity.Id, identity);
+        Entity entity = entity;
+        Assert.Equal(entity.Id, entity);
     }
 
     

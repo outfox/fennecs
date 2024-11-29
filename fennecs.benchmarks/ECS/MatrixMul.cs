@@ -19,7 +19,7 @@ public class MatrixMul
     private Stream<Matrix4x4> _query = null!;
     private World _world = null!;
     
-    private Matrix4x4 _transform = Matrix4x4.Identity;
+    private Matrix4x4 _transform = Matrix4x4.Entity;
 
     // ReSharper disable once MemberCanBePrivate.Global
     [Params(100_000)] public int EntityCount { get; set; } = 0;

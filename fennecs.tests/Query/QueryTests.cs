@@ -45,7 +45,7 @@ public class QueryTests
         for (var i = 0; i < 2345; i++)
         {
             var entity = world.Spawn().Add(i);
-            entities.Add(identity);
+            entities.Add(entity);
         }
 
         var query = world.Query<int>().Compile();
@@ -56,9 +56,9 @@ public class QueryTests
         while (entities.Count > 0)
         {
             var index = random.Next(entities.Count);
-            var identity = entities[index];
-            world.Despawn(identity);
-            Assert.False(query.Contains(identity));
+            var entity = entities[index];
+            world.Despawn(entity);
+            Assert.False(query.Contains(entity));
             entities.RemoveAt(index);
         }
 
@@ -125,7 +125,7 @@ public class QueryTests
         /*var charlie = */
         world.Spawn().Add(p3).Add(222, bob);
 
-        var query = world.Query<Identity, Vector3>(Match.Plain, default)
+        var query = world.Query<Entity, Vector3>(Match.Plain, default)
             .Any<int>(Match.Plain)
             .Stream();
 
@@ -134,8 +134,8 @@ public class QueryTests
         {
             count++;
             Assert.Equal(1, mp.Length);
-            var identity = me[0];
-            Assert.Equal(alice, identity);
+            var entity = me[0];
+            Assert.Equal(alice, entity);
         });
         Assert.Equal(1, count);
     }
@@ -153,15 +153,15 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).Add(111, alice);
         var charlie = world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain).Any<int>(eve).Stream();
+        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain).Any<int>(eve).Stream();
 
         var count = 0;
         query.Raw((me, mp) =>
         {
             count++;
             Assert.Equal(1, mp.Length);
-            var identity = me[0];
-            Assert.Equal(charlie, identity);
+            var entity = me[0];
+            Assert.Equal(charlie, entity);
             var pos = mp[0];
             Assert.Equal(pos, p3);
         });
@@ -181,7 +181,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).Add(111, alice);
         var charlie = world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain)
             .Any<int>(eve)
             .Any<int>(alice)
             .Stream();
@@ -192,21 +192,21 @@ public class QueryTests
             Assert.Equal(1, mp.Length);
             for (var index = 0; index < me.Length; index++)
             {
-                var identity = me[index];
+                var entity = me[index];
                 count++;
-                if (identity == charlie)
+                if (entity == charlie)
                 {
                     var pos = mp[index];
                     Assert.Equal(pos, p3);
                 }
-                else if (identity == eve)
+                else if (entity == eve)
                 {
                     var pos = mp[index];
                     Assert.Equal(pos, p2);
                 }
                 else
                 {
-                    Assert.Fail("Unexpected identity");
+                    Assert.Fail("Unexpected entity");
                 }
             }
         });
@@ -231,7 +231,7 @@ public class QueryTests
         /*var charlie = */
         world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain)
             .Not<int>(bob)
             .Any<int>(alice)
             .Stream();
@@ -242,16 +242,16 @@ public class QueryTests
             Assert.Equal(1, mp.Length);
             for (var index = 0; index < me.Length; index++)
             {
-                var identity = me[index];
+                var entity = me[index];
                 count++;
-                if (identity == bob)
+                if (entity == bob)
                 {
                     var pos = mp[index];
                     Assert.Equal(pos, p2);
                 }
                 else
                 {
-                    Assert.Fail("Unexpected identity");
+                    Assert.Fail("Unexpected entity");
                 }
             }
         });
@@ -276,7 +276,7 @@ public class QueryTests
         world.Spawn().Add(p3).Add(555, bob);
         world.Spawn().Add(p3).Add(666, eve);
 
-        var query = world.Query<Identity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
             .Not<int>(bob)
             .Stream();
 
@@ -286,17 +286,17 @@ public class QueryTests
             Assert.Equal(2, mp.Length);
             for (var index = 0; index < me.Length; index++)
             {
-                var identity = me[index];
+                var entity = me[index];
                 count++;
 
-                if (identity == alice)
+                if (entity == alice)
                 {
                     var pos = mp[0];
                     Assert.Equal(pos, p1);
                     var integer = mi[index];
                     Assert.Equal(0, integer);
                 }
-                else if (identity == eve)
+                else if (entity == eve)
                 {
                     var pos = mp[index];
                     Assert.Equal(pos, p1);
@@ -305,7 +305,7 @@ public class QueryTests
                 }
                 else
                 {
-                    Assert.Fail($"Unexpected identity {identity}");
+                    Assert.Fail($"Unexpected entity {entity}");
                 }
             }
         });
@@ -323,17 +323,17 @@ public class QueryTests
         var query1A = world.Query().Compile();
         var query1B = world.Query().Compile();
 
-        var query2A = world.Query<Identity>(Match.Plain).Compile();
-        var query2B = world.Query<Identity>(Match.Plain).Compile();
+        var query2A = world.Query<Entity>(Match.Plain).Compile();
+        var query2B = world.Query<Entity>(Match.Plain).Compile();
 
         var query3A = world.Query().Has<int>().Compile();
         var query3B = world.Query().Has<int>().Compile();
 
-        var query4A = world.Query<Identity>(Match.Plain).Not<int>().Compile();
-        var query4B = world.Query<Identity>(Match.Plain).Not<int>().Compile();
+        var query4A = world.Query<Entity>(Match.Plain).Not<int>().Compile();
+        var query4B = world.Query<Entity>(Match.Plain).Not<int>().Compile();
 
-        var query5A = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Compile();
-        var query5B = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Compile();
+        var query5A = world.Query<Entity>(Match.Plain).Any<int>().Any<float>().Compile();
+        var query5B = world.Query<Entity>(Match.Plain).Any<int>().Any<float>().Compile();
 
         Assert.Equal(query1A, query1B);
         Assert.True(ReferenceEquals(query1A, query1B));
@@ -514,7 +514,7 @@ public class QueryTests
     public void Filtered_Enumerator_Filters()
     {
         using var world = new World();
-        var query = world.Query<Identity, int>(Match.Plain, Match.Any).Compile();
+        var query = world.Query<Entity, int>(Match.Plain, Match.Any).Compile();
 
         var entity1 = world.Spawn().Add(444);
         var entity2 = world.Spawn().Add(555, entity1);

@@ -68,11 +68,11 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// </summary>
     public bool IsLink => Key.IsLink;
 
-    public Identity TargetEntity
+    public Entity TargetEntity
     {
         get
         {
-            if (IsRelation) return new Identity(new LiveEntity(Key));
+            if (IsRelation) return new Entity(new LiveEntity(Key));
         }
     }
 }

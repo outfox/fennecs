@@ -46,7 +46,7 @@
 
     <Target Name="GenerateCode" BeforeTargets="PrepareForBuild" Inputs="@(StreamTemplate)" Outputs="@(StreamTemplate->'%(OutputFile)')">
         <MakeDir Directories="$(ProjectDir)generated" />
-        <Exec Command="dotnet tool run dotnet-codegencs template run %(StreamTemplate.Identity) -o generated" WorkingDirectory="$(ProjectDir)" />
+        <Exec Command="dotnet tool run dotnet-codegencs template run %(StreamTemplate.Entity) -o generated" WorkingDirectory="$(ProjectDir)" />
     </Target>
 
     <ItemGroup>
