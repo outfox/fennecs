@@ -4,6 +4,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text;
 using System.Runtime.CompilerServices;
+using fennecs.CRUD;
 using fennecs.pools;
 using fennecs.storage;
 
@@ -14,7 +15,7 @@ namespace fennecs;
 /// <summary>
 /// A storage of a class of Entities with a fixed set of Components, its <see cref="Signature"/>.
 /// </summary>
-public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
+public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHasTyped
 {
     /// <summary>
     /// The TypeExpressions that define this Archetype.
@@ -103,8 +104,19 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
     
-    internal bool Matches(MatchExpression match) => Signature.Matches(match);
+    
+    /// <summary>
+    /// Does this Archetype contain a storage of the given TypeExpression?
+    /// </summary>
+    public bool Has(TypeExpression typeExpression) => _storageIndices.ContainsKey(typeExpression);
 
+
+    /// <summary>
+    /// Does this Archetype contain a storage of the given Type & Key?
+    /// </summary>
+    public bool Has<T>(Key key = default) where T : notnull=> _storageIndices.ContainsKey(TypeExpression.Of<T>(key));
+    
+    internal bool Matches(MatchExpression expression) => Signature.Matches(expression);
 
     // A method that checks if a given Mask parameter matches certain criteria using boolean logic and short circuiting.
     // ReSharper disable once ConvertIfStatementToReturnStatement
@@ -410,7 +422,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         for (var i = 0; i < Count; i++)
         {
             if (snapshot != Volatile.Read(ref Version)) throw new InvalidOperationException("Collection modified while enumerating.");
-            yield return new Entity(World, EntityStorage[i]);
+            yield return EntityStorage[i];
         }
     }
 
@@ -433,7 +445,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// There's no bounds checking, so be sure to check against the Count property before using this method.
     /// (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
     /// </remarks>
-    public Entity this[int index] => new(World, EntityStorage[index]);
+    public Entity this[int index] => EntityStorage[index];
 
 
     #region Cross Joins

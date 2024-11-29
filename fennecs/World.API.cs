@@ -97,7 +97,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
     /// </summary>
     /// <returns>an Entity to operate on</returns>
-    public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
+    public Entity Spawn() => NewEntity(); //TODO: Check if semantically legal to spawn in Deferred mode.
 
 
     /// <summary>
@@ -165,7 +165,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
         query.Raw(entities =>
         {
             //TODO: This is not good. Need to untangle the types here.
-            foreach (var entity in entities) DespawnImpl(new(this, entity));
+            foreach (var entity in entities) DespawnImpl(entity);
         });
     }
 

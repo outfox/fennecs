@@ -17,22 +17,22 @@ public readonly record struct Component
     /// <remarks>
     /// If targetEntity is despawned, Component instances involving relations with that Entity already in existence remain unaffected.
     /// </remarks>
-    public bool isRelation => Expression.Key.IsEntity;
+    public bool IsRelation => Expression.Key.IsEntity;
     
     /// <summary>
     /// Is this Component a Link? (if true, the Value is the linked Object)
     /// </summary>
-    public bool isLink => Expression.Key.IsLink;
+    public bool IsLink => Expression.Key.IsLink;
     
     /// <summary>
     /// The Entity target of this Component, if it is a Relation.
     /// </summary>
     /// <exception cref="InvalidOperationException">if the Component is not a Relation</exception>
-    public Entity targetEntity
+    public Entity TargetEntity
     {
         get
         {
-            if (Expression.Key.IsEntity) return new(World, Expression.TargetEntity);
+            if (Expression.Key.IsEntity) return Expression.TargetEntity;
             throw new InvalidOperationException("Component is not a relation.");
         }
     }
@@ -101,7 +101,7 @@ public readonly record struct Comp
     /// <summary>
     /// Creates a Comp expression for a specific type, potentially determined at runtime.
     /// </summary>
-    public static Comp Virtual(Type type, Match match = default) => new(TypeExpression.Of(type, match));
+    public static Comp Virtual(Type type, Key key = default) => new(TypeExpression.Of(type, key));
 }
 
 /// <summary>

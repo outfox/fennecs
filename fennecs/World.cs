@@ -104,7 +104,7 @@ public partial class World
         var meta = _meta[entity.Index];
         return meta.Entity != default
                && meta.Entity == entity
-               && typeExpression.Matches(meta.Archetype.MatchSignature);
+               && meta.Archetype.Has(typeExpression);
     }
 
 
@@ -118,7 +118,7 @@ public partial class World
             return;
         }
 
-        ref var meta = ref _meta[entity.Id.Index];
+        ref var meta = ref _meta[entity.Index];
 
         var table = meta.Archetype;
         table.Delete(meta.Row);
@@ -128,20 +128,20 @@ public partial class World
         _entityPool.Recycle(entity);
 
         // Patch Meta
-        _meta[entity.Id.Index] = default;
+        _meta[entity.Index] = default;
     }
 
 
     private void DespawnDependencies(Entity entity)
     {
         // Find entity-entity relation reverse lookup (if applicable)
-        if (!_typesByRelationTarget.TryGetValue(new(entity.Id), out var types)) return;
+        if (!_typesByRelationTarget.TryGetValue(entity.Key, out var types)) return;
 
         // Collect Archetypes that have any of these relations
-        var toMigrate = _archetypes.Where(a => a.Signature.Matches(types)).ToList();
+        var toMigrate = _archetypes.Where(a => a.Signature.Overlaps(types)).ToList();
 
         // Do not change the home archetype of the entity (relating to entities having a relation with themselves)
-        var homeArchetype = _meta[entity.Id.Index].Archetype;
+        var homeArchetype = _meta[entity.Index].Archetype;
 
         // And migrate them to a new Archetype without the relation
         foreach (var archetype in toMigrate)
@@ -157,7 +157,7 @@ public partial class World
         }
 
         // No longer tracking this Entity
-        _typesByRelationTarget.Remove(Relate.To(entity));
+        _typesByRelationTarget.Remove(entity.Key);
     }
 
     #endregion
@@ -219,7 +219,7 @@ public partial class World
 
             tableList.Add(table);
 
-            if (!type.isRelation) continue;
+            if (!type.IsRelation) continue;
 
             if (!_typesByRelationTarget.TryGetValue(type.Key, out var typeSet))
             {

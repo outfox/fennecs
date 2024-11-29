@@ -40,10 +40,10 @@ public class ArchetypeTests(ITestOutputHelper output)
         var table = world.GetEntityMeta(entity).Archetype;
 
         var typeExpression = TypeExpression.Of<string>(Match.Plain);
-        Assert.True(table.Matches(typeExpression));
+        Assert.True(table.Has(typeExpression));
 
         var typeExpressionAny = TypeExpression.Of<string>(Match.Any);
-        Assert.True(table.Matches(typeExpressionAny));
+        Assert.True(table.Has(typeExpressionAny));
     }
 
 

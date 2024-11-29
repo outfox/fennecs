@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics;
 using System.Runtime.InteropServices;
+using fennecs.CRUD;
 
 namespace fennecs;
 
 /// <summary>
-/// Refers to an entity:
-/// real Entity, tracked object, or virtual concept (e.g. any/none Match Expression).
+/// Entity: An object in the fennecs World, that can have any number of Components.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public readonly record struct Entity : IComparable<Entity>
+public readonly record struct Entity : IComparable<Entity>, IEntity
 {
     [FieldOffset(0)] internal readonly ulong Value;
 
@@ -38,31 +37,6 @@ public readonly record struct Entity : IComparable<Entity>
     public World World => World.Get(WorldIndex);
 
 
-    // Entity Reference.
-    /// <summary>
-    /// Truthy if the Entity represents an actual Entity.
-    /// Falsy if it is a virtual concept or a tracked object.
-    /// Falsy if it is the <c>default</c> Entity.
-    /// </summary>
-    public bool IsEntity => Index > 0 && Generation > 0;
-
-    // Tracked Object Reference.
-    /// <summary>
-    /// Truthy if the Entity represents a tracked object.
-    /// Falsy if it is a virtual concept or an actual Entity.
-    /// Falsy if it is the <c>default</c> Entity.
-    /// </summary>
-    public bool IsObject => Generation < 0;
-
-    // Wildcard Entities, such as Any, Object, Entity, or Relation.
-    /// <summary>
-    /// Truthy if the Entity represents a virtual concept (see <see cref="Cross"/>).
-    /// Falsy if it is an actual Entity or a tracked object.
-    /// Falsy if it is the <c>default</c> Entity.
-    /// </summary>
-    public bool IsWildcard => Generation == 0 && Index < 0;
-
-
     #region IComparable/IEquatable Implementation
 
     /// <inheritdoc cref="IEquatable{T}"/>
@@ -71,13 +45,6 @@ public readonly record struct Entity : IComparable<Entity>
     /// <inheritdoc cref="IComparable{T}"/>
     public int CompareTo(Entity other) => Value.CompareTo(other.Value);
 
-    /// <summary>
-    /// Casts an Entity to its Entity. (extracting the appropriatefield)
-    /// </summary>
-    /// <param name="entity">an Entity</param>
-    /// <returns>the Entity</returns>
-    public static implicit operator Entity(Entity entity) => entity.Id;
-    
 
     /// <inheritdoc />
     public override int GetHashCode()
@@ -125,6 +92,9 @@ public readonly record struct Entity : IComparable<Entity>
     /// </summary>
     public bool Alive => World.IsAlive(this);
 
+    /// <summary>
+    /// The Key of this Entity (for use in relations).
+    /// </summary>
     public Key Key => Key.Of(this);
 
     #endregion
@@ -141,4 +111,30 @@ public readonly record struct Entity : IComparable<Entity>
 
     /// <inheritdoc />
     public override string ToString() => $"E-{WorldIndex:d3}-{Index:x8} gen{Generation:D5}";
+
+    /// <inheritdoc />
+    public Entity Add<C>(C component, Key key = default) where C : notnull
+    {
+        World.AddComponent(this, TypeExpression.Of<C>(key), component);
+        return this;
+    }
+
+    /// <inheritdoc />
+    public Entity Remove<C>(Key key = default) where C : notnull
+    {
+        World.RemoveComponent(this, TypeExpression.Of<C>(key));
+        return this;
+    }
+
+    /// <inheritdoc />
+    public bool Has<C>(Key key = default) where C : notnull
+    {
+        return World.HasComponent(this, TypeExpression.Of<C>(key));
+    }
+
+    /// <inheritdoc />
+    public void Despawn()
+    {
+        World.Despawn(this);
+    }
 }
