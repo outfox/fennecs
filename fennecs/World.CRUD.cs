@@ -9,8 +9,6 @@ public partial class World
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
         
-        if (typeExpression.isWildcard) throw new ArgumentException("Cannot add a wildcard component");
-
         if (Mode == WorldMode.Deferred)
         {
             _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Identity = identity, TypeExpression = typeExpression, Data = data});
@@ -53,47 +51,29 @@ public partial class World
     }
 
 
-    internal bool HasComponent<T>(Identity identity, Match match)
+    internal bool HasComponent<T>(Identity identity, Key key)
     {
-        var type = TypeExpression.Of<T>(match);
+        var type = TypeExpression.Of<T>(key);
         return HasComponent(identity, type);
     }
 
-    /* This is sad but can't be done syntactically at the moment (without bloating the interface)
-    internal ref T GetOrCreateComponent<T>(Identity identity, Match match) where T : notnull, new()
-    {
-        AssertAlive(identity);
-
-        if (!HasComponent<T>(identity, match))
-        {
-            if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot create bew mutable reference to component in deferred mode. (the Entity did must already have the component)");
-            AddComponent<T>(identity, TypeExpression.Of<T>(match), new());
-        }
-
-        var (table, row, _) = _meta[identity.Index];
-        var storage = table.GetStorage<T>(match);
-        return ref storage.Span[row];
-    }
-    */
     
-    internal ref T GetComponent<T>(Identity identity, Match match) where T : notnull
+    internal ref T GetComponent<T>(Identity identity, Key key) where T : notnull
     {
         AssertAlive(identity);
 
-        if (!HasComponent<T>(identity, match))
+        if (!HasComponent<T>(identity, key))
         {
-            throw new InvalidOperationException($"Entity {identity} does not have a reference type component of type {typeof(T)} / {match}");
+            throw new InvalidOperationException($"Entity {identity} does not have a reference type component of type {typeof(T)} / {key}");
         }
 
         var (table, row, _) = _meta[identity.Index];
-        var storage = table.GetStorage<T>(match);
+        var storage = table.GetStorage<T>(key);
         return ref storage.Span[row];
     }
     
     internal bool GetComponent(Identity identity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
-        if (type.isWildcard) throw new ArgumentException("Cannot get a wildcard component", nameof(type));
-        
         AssertAlive(identity);
 
         if (!HasComponent(identity, type))
@@ -119,9 +99,9 @@ public partial class World
 
     internal T[] Get<T>(Identity id, Match match) where T : notnull
     {
-        var type = TypeExpression.Of<T>(match);
+        var expression = MatchExpression.Of<T>(match);
         var meta = _meta[id.Index];
-        using var storages = meta.Archetype.Match<T>(type);
+        using var storages = meta.Archetype.Match<T>(expression);
         return storages.Select(s => s[meta.Row]).ToArray();
     }
 }

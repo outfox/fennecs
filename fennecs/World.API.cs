@@ -86,14 +86,14 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Universal Query, matching all Entities in the World.
     /// </summary>
-    public Query All => CompileQuery(new Mask().Has(TypeExpression.Of<Identity>(Match.Plain)));
+    public Query All => CompileQuery(new Mask().Has(TypeExpression.Of<Entity>(Match.Plain)));
     
     #endregion
     
     #region Entity Spawn, Liveness, and Despawn
 
     /// <summary>
-    /// Creates a new Identity in this World, and returns its Entity builder struct.
+    /// Creates a new Entity in this World, and returns its Entity builder struct.
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
     /// </summary>
     /// <returns>an Entity to operate on</returns>
@@ -117,7 +117,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <param name="values">component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.Expression);
+        var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Entity>.Plain.Expression);
         var archetype = GetArchetype(signature);
         archetype.Spawn(count, components, values);
     }
@@ -132,9 +132,9 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Checks if the entity is alive (was not despawned).
     /// </summary>
-    /// <param name="identity">an Entity</param>
+    /// <param name="entity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    internal bool IsAlive(Identity identity) => identity.Generation > 0 ? identity == _meta[identity.Index].Identity : _meta[identity.Index].Identity != default;
+    internal bool IsAlive(Entity entity) => identity.Generation > 0 ? identity == _meta[identity.Index].Identity : _meta[identity.Index].Identity != default;
 
 
     /// <summary>

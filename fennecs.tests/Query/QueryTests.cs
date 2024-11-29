@@ -44,7 +44,7 @@ public class QueryTests
         var entities = new List<Entity>();
         for (var i = 0; i < 2345; i++)
         {
-            var identity = world.Spawn().Add(i);
+            var entity = world.Spawn().Add(i);
             entities.Add(identity);
         }
 

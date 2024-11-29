@@ -48,9 +48,9 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
 
     #region Internals
 
-    private Batch AddComponent<T>(T data, Match match)
+    private Batch AddComponent<T>(T data, Key key) where T : notnull
     {
-        var typeExpression = TypeExpression.Of<T>(match);
+        var typeExpression = TypeExpression.Of<T>(key);
 
         if (AddMode == AddConflict.Strict && !_mask.SafeForAddition(typeExpression))
             throw new InvalidOperationException(
@@ -67,9 +67,9 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         return this;
     }
 
-    private Batch RemoveComponent<T>(Match match = default)
+    private Batch RemoveComponent<T>(Key key = default) where T : notnull
     {
-        var typeExpression = TypeExpression.Of<T>(match);
+        var typeExpression = TypeExpression.Of<T>(key);
 
         if (RemoveMode == RemoveConflict.Strict && !_mask.SafeForRemoval(typeExpression))
             throw new InvalidOperationException(
@@ -91,31 +91,23 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     #region IAddRemoveComponent
 
     /// <inheritdoc />
-    public Batch Add<R>(R component, Entity relation) where R : notnull => AddComponent(component, relation);
+    public Batch Add<C>(C component, Key key = default) where C : notnull => AddComponent(component, key);
 
     /// <inheritdoc />
-    public Batch Add<T>(Link<T> link) where T : class => AddComponent(link.Target, link);
+    public Batch Remove<C>(Key key = default) where C : notnull => RemoveComponent<C>(key);
 
     /// <inheritdoc />
-    public Batch Add<T>() where T : notnull, new() => AddComponent(new T(), Match.Plain);
+    public Batch Relate<C>(C component, Entity target) where C : notnull => AddComponent(component, Key.Of(target));
 
     /// <inheritdoc />
-    public Batch Add<C>(C component) where C : notnull => AddComponent(component, Match.Plain);
-
-    /// <inheritdoc />
-    public Batch Add<T>(Entity target) where T : notnull, new() => AddComponent<T>(new(), target);
+    public Batch Unrelate<C>(Entity target) where C : notnull => RemoveComponent<C>(Key.Of(target));
     
     /// <inheritdoc />
-    public Batch Remove<T>(Match match = default) where T : notnull => RemoveComponent<T>(match);
+    public Batch Link<T>(T link) where T : class => AddComponent(link, Key.Of(link));
 
     /// <inheritdoc />
-    public Batch Remove<R>(Entity relation) where R : notnull => RemoveComponent<R>(relation);
+    public Batch Unlink<L>(L linkedObject) where L : class => RemoveComponent<L>(Key.Of(linkedObject));
 
-    /// <inheritdoc />
-    public Batch Remove<L>(L linkedObject) where L : class => RemoveComponent<L>(Link<L>.With(linkedObject));
-
-    /// <inheritdoc />
-    public Batch Remove<T>(Link<T> link) where T : class => RemoveComponent<T>(link);
 
     /// <summary>
     /// Specifies behavior when adding a component to an archetype that already has the same type of component. 

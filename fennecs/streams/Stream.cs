@@ -18,7 +18,7 @@ namespace fennecs;
 /// </remarks>
 public record Stream(Query Query) : IBatchBegin
 {
-    protected private ImmutableArray<TypeExpression> StreamTypes = [];
+    private protected ImmutableArray<MatchExpression> StreamTypes = [];
 
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
@@ -114,7 +114,7 @@ public record Stream(Query Query) : IBatchBegin
     /// </summary>
     protected void AssertNoWildcards()
     {
-        if (StreamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {StreamTypes}");
+        if (StreamTypes.Any(expression => expression.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {StreamTypes}");
     }
 
     #endregion

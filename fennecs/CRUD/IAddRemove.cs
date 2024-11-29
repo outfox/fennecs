@@ -6,57 +6,54 @@
 public interface IAddRemove<out SELF>
 {
     /// <summary>
-    /// Add a default, Plain newable component of type C to the entity/entities.
-    /// </summary>
-    /// <returns>itself (fluent pattern)</returns>
-    public SELF Add<C>() where C : notnull, new();
-
-    /// <summary>
     /// Add a Plain component with value of type C to the entity/entities.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Add<C>(C component) where C : notnull;
-
-    /// <summary>
-    /// Add a newable Relation component backed by a value of type R to the entity/entities. (default value)
-    /// </summary>
-    /// <returns>itself (fluent pattern)</returns>
-    public SELF Add<T>(Entity target) where T : notnull, new();
-    
-    /// <summary>
-    /// Add a Relation component backed by a value of type R to the entity/entities.
-    /// </summary>
-    /// <returns>itself (fluent pattern)</returns>
-    public SELF Add<R>(R component, Entity relation) where R : notnull;
-
-
-    /// <summary>
-    /// Add a Object Link component with an Object of type L to the entity/entities.
-    /// </summary>
-    /// <returns>itself (fluent pattern)</returns>
-    public SELF Add<L>(Link<L> link) where L : class;
+    public SELF Add<C>(C component, Key key = default) where C : notnull;
 
     /// <summary>
     /// Remove a Plain component of type C from the entity/entities.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Remove<C>(Match match = default) where C : notnull;
+    public SELF Remove<C>(Key key = default) where C : notnull;
 
+
+    #region Convenience Defaults
+    
     /// <summary>
-    /// Remove a Relation component of type R with the specified relation from the entity/entities.
+    /// Add a default, Plain newable component of type C to the entity/entities.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Remove<R>(Entity relation) where R : notnull;
-
+    public SELF Add<C>(Key key = default) where C : notnull, new() => Add(new C(), key);
+    
     /// <summary>
-    /// Remove an Object Link component with the specified linked object from the entity/entities.
+    /// Add a newable Relation component backed by a value of type R to the entity/entities. (default value)
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Remove<L>(L linkedObject) where L : class;
+    public SELF Relate<R>(Entity target) where R : notnull, new() => Add(new R(), target.Key);
 
     /// <summary>
-    /// Remove an Object Link component with the specified link from the entity/entities.
+    /// Add a Relation component backed by a value of type R to the entity/entities.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Remove<L>(Link<L> link) where L : class;
+    public SELF Relate<R>(R component, Entity target) where R : notnull => Add(component, target.Key);
+
+    /// <summary>
+    /// Add a newable Relation component backed by a value of type R to the entity/entities. (default value)
+    /// </summary>
+    /// <returns>itself (fluent pattern)</returns>
+    public SELF Unrelate<R>(Entity target) where R : notnull => Remove<R>(target.Key);
+
+    /// <summary>
+    /// Add a Object Link component with an Object of type L to the entity/entities.
+    /// </summary>
+    /// <returns>itself (fluent pattern)</returns>
+    public SELF Link<L>(L link) where L : class => Add(link, Key.Of(link));
+    
+    /// <summary>
+    /// Remove a Object Link component with an Object of type L from the entity/entities.
+    /// </summary>  
+    public SELF Unlink<L>(L link) where L : class => Remove<L>(Key.Of(link));
+
+    #endregion
 }

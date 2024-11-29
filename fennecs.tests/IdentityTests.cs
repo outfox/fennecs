@@ -4,15 +4,15 @@ using System.Numerics;
 
 namespace fennecs.tests;
 
-public class IdentityTests(ITestOutputHelper output)
+public class EntityTests(ITestOutputHelper output)
 {
     [Fact]
     public void Virtual_Entities_have_no_Successors()
     {
-        Assert.Throws<InvalidOperationException>(() => new Identity(-1, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Identity(-4, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Identity(-2, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Identity(-3, 0).Successor);
+        Assert.Throws<InvalidOperationException>(() => new Entity(-1, 0).Successor);
+        Assert.Throws<InvalidOperationException>(() => new Entity(-4, 0).Successor);
+        Assert.Throws<InvalidOperationException>(() => new Entity(-2, 0).Successor);
+        Assert.Throws<InvalidOperationException>(() => new Entity(-3, 0).Successor);
         Assert.Throws<InvalidOperationException>(() => default(Identity).Successor);
     }
 

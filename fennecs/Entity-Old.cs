@@ -5,7 +5,7 @@ using fennecs.CRUD;
 using fennecs.storage;
 
 namespace fennecs;
-
+/*
 /// <summary>
 /// <para>
 /// <b>Entity</b>
@@ -13,7 +13,7 @@ namespace fennecs;
 /// <para>
 /// Builder Pattern to operate on Identities.
 /// Provides a fluent interface for constructing and modifying Entities within a world.
-/// The Entity's Identity and World are managed internally.
+/// The Entity's Entity and World are managed internally.
 /// </para>
 /// </summary>
 /// <remarks>
@@ -31,7 +31,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Match.Any"/>
-    public static Match Any => new(Identity.Any);
+    public static Match Any => new(Entity.Any);
 
     #endregion
 
@@ -39,12 +39,12 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
     /// <summary>
     /// Provides a fluent interface for constructing and modifying Entities within a world.
-    /// The Entity's Identity is managed internally.
+    /// The Entity's Entity is managed internally.
     /// </summary>
-    internal Entity(World world, Identity identity)
+    internal Entity(World world, Entity entity)
     {
         _world = world;
-        Id = identity;
+        Id = entity;
     }
 
 
@@ -256,14 +256,14 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     #region IBoxedComponent
 
     /// <inheritdoc />
-    public bool Has(Type type, Match match) => _world.HasComponent(this, TypeExpression.Of(type, match));
+    public bool Has(Type type, Match match) => _world.HasComponent(this, MatchExpression.Of(type, match));
     
     
 
     /// <inheritdoc />
-    public bool Get([MaybeNullWhen(false)] out object value, Type type, Match match = default)
+    public bool Get([MaybeNullWhen(false)] out object value, Type type, Key key = default)
     {
-        return _world.GetComponent(this, TypeExpression.Of(type, match), out value);
+        return _world.GetComponent(this, TypeExpression.Of(type, key), out value);
     }
 
 
@@ -277,18 +277,18 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
 
     /// <inheritdoc />
-    public void Set(object value, Match match = default)
+    public void Set(object value, Match key = default)
     {
-        _world.AddComponent(this, TypeExpression.Of(value.GetType(), match), value);
+        _world.AddComponent(this, TypeExpression.Of(value.GetType(), key), value);
     }
 
     
     /// <inheritdoc />
-    public Entity Clear(Type type, Match match = default)
+    public Entity Clear(Type type, Match key = default)
     {
-        var expression = TypeExpression.Of(type, match);
+        var expression = TypeExpression.Of(type, key);
         
-        if (!match.IsWildcard)
+        if (!key.IsWildcard)
         {
             _world.RemoveComponent(this, expression);
             return this;
@@ -347,3 +347,4 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
     #endregion
 }
+*/

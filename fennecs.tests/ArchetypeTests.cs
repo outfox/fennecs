@@ -9,12 +9,12 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Table_String_Contains_Types()
     {
         using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
+        var entity = world.Spawn().Add("foo").Add(123).Add(17.0f);
 
-        var table = world.GetEntityMeta(identity).Archetype;
+        var table = world.GetEntityMeta(entity).Archetype;
 
         output.WriteLine(table.ToString());
-        Assert.Contains(typeof(Identity).ToString(), table.ToString());
+        Assert.Contains(typeof(Entity).ToString(), table.ToString());
         Assert.Contains(typeof(string).ToString(), table.ToString());
         Assert.Contains(typeof(int).ToString(), table.ToString());
         Assert.Contains(typeof(float).ToString(), table.ToString());
@@ -25,8 +25,8 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void GetStorage_Returns_IStorage_Backed_By_Specific_Type()
     {
         using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
-        var table = world.GetEntityMeta(identity).Archetype;
+        var entity = world.Spawn().Add("foo").Add(123).Add(17.0f);
+        var table = world.GetEntityMeta(entity).Archetype;
         var storage = table.GetStorage(TypeExpression.Of<string>(Match.Plain));
         Assert.IsAssignableFrom<IStorage>(storage);
         Assert.IsAssignableFrom<Storage<string>>(storage);
@@ -36,7 +36,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Table_Matches_TypeExpression()
     {
         using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var entity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
         var table = world.GetEntityMeta(identity).Archetype;
 
         var typeExpression = TypeExpression.Of<string>(Match.Plain);

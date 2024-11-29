@@ -6,29 +6,29 @@ namespace fennecs;
 
 internal sealed class Mask : IDisposable
 {
-    internal readonly HashSet<TypeExpression> HasTypes = [];
-    internal readonly HashSet<TypeExpression> NotTypes = [];
-    internal readonly HashSet<TypeExpression> AnyTypes = [];
+    internal readonly HashSet<MatchExpression> HasTypes = [];
+    internal readonly HashSet<MatchExpression> NotTypes = [];
+    internal readonly HashSet<MatchExpression> AnyTypes = [];
 
-    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
-    public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
+    public bool SafeForAddition(TypeExpression expression) => NotTypes.Any(not => not.Matches(expression));
+    public bool SafeForRemoval(TypeExpression expression) => HasTypes.Any(has => has.Matches(expression));
+    
 
-
-    public Mask Has(TypeExpression typeExpression)
+    public Mask Has(MatchExpression typeExpression)
     {
         HasTypes.Add(typeExpression);
         return this;
     }
 
 
-    public Mask Not(TypeExpression typeExpression)
+    public Mask Not(MatchExpression typeExpression)
     {
         NotTypes.Add(typeExpression);
         return this;
     }
 
 
-    public Mask Any(TypeExpression typeExpression)
+    public Mask Any(MatchExpression typeExpression)
     {
         AnyTypes.Add(typeExpression);
         return this;

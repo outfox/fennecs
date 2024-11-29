@@ -220,12 +220,12 @@ public class WorldTests(ITestOutputHelper output)
     [InlineData(1)]
     [InlineData(1_000)]
     [InlineData(10_000)]
-    public void Cannot_Spawn_while_Iterating_IdentityRoot(int count)
+    public void Cannot_Spawn_while_Iterating_EntityRoot(int count)
     {
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Match.Plain).Stream();
+        var query = world.Query<Entity>(Match.Plain).Stream();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -245,7 +245,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Match.Plain).Stream();
+        var query = world.Query<Entity>(Match.Plain).Stream();
         query.Raw(world, (uniform, _) =>
         {
             for (var i = 0; i < count; i++)
@@ -272,7 +272,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Match.Plain).Stream();
+        var query = world.Query<Entity>(Match.Plain).Stream();
         query.For(world, (uniform, _) =>
         {
             var entity = uniform.Spawn();

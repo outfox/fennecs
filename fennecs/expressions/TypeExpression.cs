@@ -14,15 +14,13 @@ namespace fennecs;
 [StructLayout(LayoutKind.Explicit)]
 public readonly record struct TypeExpression : IComparable<TypeExpression>
 {
-    [FieldOffset(0)]
-    private readonly ulong _value;
+    [FieldOffset(0)] internal readonly ulong _value;
 
     [field: FieldOffset(0)]
     internal readonly Key Key;
 
     [field: FieldOffset(6)] 
     internal readonly short TypeId;
-    
     
     internal TypeExpression(Key key, short typeId)
     {
@@ -59,5 +57,24 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
 
     /// <inheritdoc />
     public int CompareTo(TypeExpression other) => _value.CompareTo(other._value);
+
+    /// <summary>
+    /// Does the secondary key target an Entity?
+    /// </summary>
+    public bool IsRelation => Key.IsEntity;
+    
+    /// <summary>
+    /// Does the secondary key target an Object?
+    /// </summary>
+    public bool IsLink => Key.IsLink;
+
+    public Identity TargetEntity
+    {
+        get
+        {
+            if (IsRelation) return new Identity(new LiveEntity(Key));
+        }
+    }
 }
+
 

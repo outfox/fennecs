@@ -11,6 +11,11 @@ namespace fennecs.storage;
 public interface IStorage
 {
     /// <summary>
+    /// The TypeExpression of the components stored. (i.e. their backing type and secondary key)
+    /// </summary>
+    TypeExpression Expression { get; }
+    
+    /// <summary>
     /// The number of elements currently stored.
     /// </summary>
     int Count { get; }

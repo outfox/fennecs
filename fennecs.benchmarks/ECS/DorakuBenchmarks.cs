@@ -336,7 +336,7 @@ public class DorakuBenchmarks
         where T1 : unmanaged, Fox<PRIM>
         where T2 : unmanaged, Fox<PRIM>
         where T3 : unmanaged, Fox<PRIM>
-        where PRIM : unmanaged, IAdditionOperators<PRIM,PRIM,PRIM>, IAdditiveIdentity<PRIM,PRIM>
+        where PRIM : unmanaged, IAdditionOperators<PRIM,PRIM,PRIM>, IAdditiveEntity<PRIM,PRIM>
     {
         Debug.Assert(c1V.Length == c2V.Length, "c1V and c2V must have the same length");
         Debug.Assert(c1V.Length == c3V.Length, "c1V and c3V must have the same length");

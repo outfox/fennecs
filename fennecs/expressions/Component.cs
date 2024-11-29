@@ -22,17 +22,17 @@ public readonly record struct Component
     /// <summary>
     /// Is this Component a Link? (if true, the Value is the linked Object)
     /// </summary>
-    public bool isLink => Expression.Key.IsObject;
+    public bool isLink => Expression.Key.IsLink;
     
     /// <summary>
     /// The Entity target of this Component, if it is a Relation.
     /// </summary>
     /// <exception cref="InvalidOperationException">if the Component is not a Relation</exception>
-    public Entity targetEntity
+    public Identity targetEntity
     {
         get
         {
-            if (Expression.isRelation) return new(World, Expression.Key);
+            if (Expression.Key.IsEntity) return new(World, Expression.TargetEntity);
             throw new InvalidOperationException("Component is not a relation.");
         }
     }
@@ -59,57 +59,6 @@ public readonly record struct Component
         Expression = expression;
         Box = box;
     }
-    
-    #region DEPRECATED
-    /// <summary>
-    /// Strongly-Typed Wildcard for a specific component type, with or without a Target. Used for Stream Filtering and CRUD.
-    /// </summary>
-    [Obsolete("use Comp<T>.Matching(Match.Any)")]
-    [ExcludeFromCodeCoverage]
-    public static Comp<T> Any<T>() => new(Match.Any);
-
-    /// <summary>
-    /// Strongly-Typed Wildcard for a specific component type, with any (but not no) Target. Used for Stream Filtering and CRUD.
-    /// </summary>
-    [Obsolete("use Comp<T>.Matching(Match.Target)")]
-    [ExcludeFromCodeCoverage]
-    public static Comp<T> AnyRelation<T>() => new(Match.Target);
-
-    /// <summary>
-    /// Wildcard for a specific component type, with any Entity-Entity Relation. Used for Stream Filtering and CRUD.
-    /// </summary>
-    [Obsolete("use Comp<T>.Matching(Entity.Any)")]
-    [ExcludeFromCodeCoverage]
-    public static Comp<T> AnyEntity<T>() => new(Match.Entity);
-
-    /// <summary>
-    /// Strongly-Typed for a specific component type, with any Object Link. Used for Stream Filtering and CRUD.
-    /// </summary>
-    [Obsolete("use Comp<T>.Matching(Link.Any)")]
-    [ExcludeFromCodeCoverage]
-    public static Comp<T> AnyObject<T>() => new(Link.Any); //new(Match.Object);
-
-    /// <summary>
-    /// Strongly-Typed for a specific component type, with no Relation. Used for Stream Filtering and CRUD.
-    /// </summary>
-    [Obsolete("use Comp<T>.Plain")]
-    [ExcludeFromCodeCoverage]
-    public static Comp<T> PlainComponent<T>() => Comp<T>.Plain;
-
-    /// <summary>
-    /// Strongly-Typed for a specific component type, with a specific Entity-Entity Relation. Used for Stream Filtering and CRUD.
-    /// </summary>
-    [Obsolete("use Comp<T>.Matching(target)")]
-    [ExcludeFromCodeCoverage]
-    public static Comp<T> SpecificEntity<T>(Entity target) => Comp<T>.Matching(target);
-
-    /// <summary>
-    /// Strongly-Typed for a specific component type, with a specific Object Link Relation. Used for Stream Filtering and CRUD.
-    /// </summary>
-    [Obsolete("use Comp<T>.Matching(Link.With(target))")]
-    [ExcludeFromCodeCoverage]
-    public static Comp<T> SpecificLink<T>(T target) where T : class => Comp<T>.Matching(Link.With(target));
-    #endregion
 }
 
 /// <summary>
@@ -161,22 +110,16 @@ public readonly record struct Comp
 /// <remarks>
 /// Variables of this type describe a Component, Relation, or Link, but not the actual values.
 /// </remarks>
-/// <param name="match">optional match expression for relation-backing components</param>
+/// <param name="Key">optional secondary <see cref="Key"/></param>
 /// <typeparam name="T">any type</typeparam>
-public readonly record struct Comp<T>(Match match = default)
+public readonly record struct Comp<T>(Key Key = default)
 {
-    internal TypeExpression Expression => TypeExpression.Of<T>(match);
-
-    /// <summary>
-    /// The size of this component for SIMD operations, in bytes.
-    /// If 0, the component is managed or not blittable, and cannot be used for SIMD.
-    /// </summary>
-    internal int SIMDsize => Expression.SIMDsize;
+    internal TypeExpression Expression => TypeExpression.Of<T>(Key);
 
     /// <summary>
     /// Component Expression for a blittable type with a specific relation target (match expression).
     /// </summary>
-    public static Comp<T> Matching(Match target) => new(target);
+    public static Comp<T> Matching(Key target) => new(target);
 
     /// <summary>
     /// Plain component expression for a blittable type.
@@ -186,12 +129,12 @@ public readonly record struct Comp<T>(Match match = default)
     /// <summary>
     /// A component expression matching a specific link object.
     /// </summary>
-    public static Comp<U> Matching<U>(U target) where U : class => new(Match.Link(target));
+    public static Comp<U> Matching<U>(U target) where U : class => new(Key.Of(target));
 
     /// <summary>
     /// Does this Component match another Component Expression?
     /// </summary>
-    public bool Matches(Comp<T> other) => Expression.Matches(other.Expression);
+    public bool Matches(Comp<T> other) => Expression == other.Expression;
 
     /// <summary>
     /// Cast this component to the typeless representation used by filters, etc.

@@ -7,9 +7,9 @@ namespace fennecs.tests;
 public class TypeIdTests
 {
     [Fact]
-    public void Identity_is_64_bits()
+    public void Entity_is_64_bits()
     {
-        Assert.Equal(64 / 8, Marshal.SizeOf<Identity>());
+        Assert.Equal(64 / 8, Marshal.SizeOf<Entity>());
     }
 
 
@@ -88,7 +88,7 @@ public class TypeIdTests
     public void TypeAssigner_None_does_not_match_Any()
     {
         var id1 = TypeExpression.Of<int>(Match.Plain);
-        var id2 = TypeExpression.Of<int>(new(new Identity(123)));
+        var id2 = TypeExpression.Of<int>(new(new Entity(123)));
         var id3 = TypeExpression.Of<int>(Match.Any);
 
         Assert.False(id1.Matches(id2));
@@ -115,7 +115,7 @@ public class TypeIdTests
 
 
     [Fact]
-    public void Match_from_Anonymous_Object_Identity_Is_Differentiable()
+    public void Match_from_Anonymous_Object_Entity_Is_Differentiable()
     {
         var target1 = new { doot = "foo" };
         var typeExpression1 = TypeExpression.Of<object>(Link.With(target1));

@@ -7,22 +7,57 @@ namespace fennecs;
 
 /// <summary>
 /// <c>ImmutableSortedSet&lt;TypeExpression&gt;</c> whose hash code is a combination of its elements' hashes.
-/// TODO: Maybe can be simplified to just use the underlying <c>ImmutableSortedSet</c> directly.
+/// TODO:Convert to bloom filter + faster (frozen?) set (needs benchmark).
 /// </summary>
-public readonly record struct Signature : IEnumerable<TypeExpression>, IComparable<Signature>
+public sealed record Signature : IEnumerable<TypeExpression>, IComparable<Signature>
 {
+    //private readonly Vector256<ulong> bloomQuick;
+    //private readonly Vector256<ulong> bloomDetail;
+    
     private readonly ImmutableSortedSet<TypeExpression> _set = ImmutableSortedSet<TypeExpression>.Empty;
+    
     
     private readonly int _hashCode;
 
     /// <inheritdoc />
     public override int GetHashCode() => _hashCode;
     
-    public bool Matches(TypeExpression type) => Contains(type);
+    
+    /// <summary>
+    /// Check if this <see cref="Signature"/> matches the given <see cref="TypeExpression"/>.
+    /// </summary>
+    /// <remarks>
+    /// Used for comparing archetypes among themselves.
+    /// </remarks>
+    public bool Matches(TypeExpression expression) => _set.Contains(expression);
 
-    public bool Matches(IReadOnlySet<TypeExpression> types) => Overlaps(types);
+    
+    /// <summary>
+    /// Check if this <see cref="Signature"/> matches the given <see cref="MatchExpression"/>.
+    /// </summary>
+    public bool Matches(MatchExpression expression) => expression.Matches(_set);
+
+
+    /// <summary>
+    /// Check if this <see cref="Signature"/> matches all of the given <see cref="MatchExpression"/>s.
+    /// TODO: Optimize o(n²) using bloom filter.
+    /// </summary>
+    public bool MatchesAll(IReadOnlySet<MatchExpression> expressions) => expressions.All(Matches);
+    
+    /// <summary>
+    /// Check if this <see cref="Signature"/> matches any of the given <see cref="MatchExpression"/>s.
+    /// TODO: Optimize o(n²) using bloom filter.
+    /// </summary>
+    public bool MatchesAny(IReadOnlySet<MatchExpression> expressions) => expressions.Any(Matches);
+    
+    /// <summary>
+    /// Check if this <see cref="Signature"/> matches none of the given <see cref="MatchExpression"/>s.
+    /// TODO: Optimize using bloom filter.
+    /// </summary>
+    public bool MatchesNone(IReadOnlySet<MatchExpression> expressions) => !expressions.All(Matches);
     
     internal bool Matches(IReadOnlySet<Comp> subset) => Overlaps(subset.Select(component => component.Expression).ToImmutableSortedSet());
+    
     
     /// <summary>
     /// Creates a new <see cref="Signature"/> from the given values.
@@ -111,7 +146,7 @@ public readonly record struct Signature : IEnumerable<TypeExpression>, IComparab
     public Signature Union(IEnumerable<TypeExpression> other) => new(_set.Union(other));
     
     /// <inheritdoc cref="ImmutableSortedSet{T}.SetEquals"/>
-    public bool Equals(Signature other) => _set.SetEquals(other._set);
+    public bool Equals(Signature? other) => other != null && _set.SetEquals(other._set);
 
 
     /// <inheritdoc />
@@ -120,9 +155,9 @@ public readonly record struct Signature : IEnumerable<TypeExpression>, IComparab
 
 
     /// <inheritdoc />
-    public int CompareTo(Signature other)
+    public int CompareTo(Signature? other)
     {
-        if (other._set == default!) return 1;
+        if (other == null) return 1;
         
         var minCount = Math.Min(_set.Count, other._set.Count);
 

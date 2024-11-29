@@ -15,10 +15,10 @@ public readonly record struct Identity : IComparable<Identity>
     [FieldOffset(0)] internal readonly ulong Value;
 
     //Identity Components
-    [FieldOffset(0)] internal readonly int Index;
+    [FieldOffset(0)] internal readonly int Index; //IDEA: Can use top 1~2 bits for special state, e.g. disabled, hidden, etc.
     [FieldOffset(4)] internal readonly byte WorldIndex;
     
-    [FieldOffset(5)] internal readonly byte EntityFlags;
+    [FieldOffset(5)] internal readonly byte Flags;
     [FieldOffset(6)] internal readonly ushort Generation;
 
     //Constituents for GetHashCode()
@@ -100,10 +100,10 @@ public readonly record struct Identity : IComparable<Identity>
     internal Identity(World.Id worldId, int index, short generation = 1)
     {
         // 0xgggg_E0ww_iiii_iiii
-        Value = (ulong) generation << 48 | BaseTag | worldId.Bits | (uint) index;   
+        Value = (ulong) generation << 48 | BaseFlag | worldId.Bits | (uint) index;   
     }
     
-    internal const ulong BaseTag = 0x0000_E000_0000_0000u;
+    internal const ulong BaseFlag = 0x0000_E000_0000_0000u;
     
     
     internal Identity(ulong key, ushort generation)
@@ -125,7 +125,7 @@ public readonly record struct Identity : IComparable<Identity>
     /// </summary>
     public bool Alive => World.IsAlive(this);
 
-    public Key Key => new(Value);
+    public Key Key => Key.Of(this);
 
     #endregion
 

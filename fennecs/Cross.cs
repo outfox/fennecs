@@ -56,7 +56,7 @@ public static class Cross
         /// <summary>
         /// Cross-Joins the Archetype with a list of StreamTypes.
         /// </summary>
-        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<MatchExpression> streamTypes)
         {
             Debug.Assert(streamTypes.Length == 1, "Not the right amount of stream types.");
             _allocated = true;
@@ -123,7 +123,7 @@ public static class Cross
         private readonly bool _allocated;
         private readonly bool _populated;
         
-        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<MatchExpression> streamTypes)
         {
             Debug.Assert(streamTypes.Length == 2, "Not the right amount of stream types.");
             _allocated = true;
@@ -181,7 +181,7 @@ public static class Cross
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<MatchExpression> streamTypes)
         {
             Debug.Assert(streamTypes.Length == 3, "Not the right amount of stream types.");
             _allocated = true;
@@ -244,7 +244,7 @@ public static class Cross
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<MatchExpression> streamTypes)
         {
             Debug.Assert(streamTypes.Length == 4, "Not the right amount of stream types.");
             _allocated = true;
@@ -311,7 +311,7 @@ public static class Cross
         private readonly bool _populated;
 
 
-        internal Join(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
+        internal Join(Archetype archetype, ReadOnlySpan<MatchExpression> streamTypes)
         {
             Debug.Assert(streamTypes.Length == 5, "Not the right amount of stream types.");
             _allocated = true;

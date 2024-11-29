@@ -21,7 +21,7 @@ public partial record Stream<C0> :
     /// </summary>
     internal Stream(Query Query, Match match0) : base(Query)
     {
-        StreamTypes = [TypeExpression.Of<C0>(match0)];
+        StreamTypes = [MatchExpression.Of<C0>(match0)];
     }
 
 
@@ -39,8 +39,7 @@ public partial record Stream<C0> :
     /// <param name="match">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
     public void Blit(C0 value, Match match = default)
     {
-        var typeExpression = TypeExpression.Of<C0>(match);
-        foreach (var table in Filtered) table.Fill(typeExpression, value);
+        foreach (var table in Filtered) table.Fill(match, value);
     }
 
     #endregion

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.Diagnostics;
 using System.Text;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -28,7 +29,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// Number of Entities contained in this Archetype.
     /// </summary>
-    public int Count => IdentityStorage.Count;
+    public int Count => EntityStorage.Count;
 
     /// <summary>
     /// Does this Archetype currently contain no Entities?
@@ -38,7 +39,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// Returns all the Entities in the Archetype as a ReadOnlySpan.
     /// </summary>
-    public ReadOnlySpan<Identity> Entities => IdentityStorage.Span;
+    public ReadOnlySpan<Entity> Entities => EntityStorage.Span;
     
     /// <summary>
     /// The World this Archetype is a part of.
@@ -48,7 +49,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
     /// </summary>
-    internal readonly Storage<Identity> IdentityStorage;
+    internal readonly Storage<Entity> EntityStorage;
 
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
 
@@ -65,6 +66,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         //MatchSignature = signature.Expand();
 
         // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
+        //TODO: Check if this even makes sense anymore.
         for (var index = 0; index < signature.Count; index++)
         {
             var type = signature[index];
@@ -72,7 +74,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             Storages[index] = IStorage.Instantiate(type);
         }
         
-        // Get quick lookup for Identity component (non-relational)
+        // Get quick lookup for Entity component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
         IdentityStorage = GetStorage<Identity>(default);
@@ -81,6 +83,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     private void Match<T>(MatchExpression expression, PooledList<Storage<T>> result) where T : notnull
     {
+        //TODO: Co-/Contravariance in the future!
+        
         foreach (var (type, index) in _storageIndices)
         {
             if (!expression.Matches(type)) continue;
@@ -92,6 +96,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     internal PooledList<Storage<T>> Match<T>(MatchExpression expression) where T : notnull
     {
+        //TODO: Co-/Contravariance in the future!
         var result = PooledList<Storage<T>>.Rent();
         Match(expression, result);
         return result;
@@ -102,21 +107,22 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     // A method that checks if a given Mask parameter matches certain criteria using boolean logic and short circuiting.
+    // ReSharper disable once ConvertIfStatementToReturnStatement
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.
-        var matchesNot = !Signature.Matches(mask.NotTypes);
+        var matchesNot = mask.NotTypes.Count == 0 || Signature.MatchesNone(mask.NotTypes);
         if (!matchesNot) return false;
 
         //If already matching, no need to check any further. 
-        var matchesHas = Signature.IsSupersetOf(mask.HasTypes);
+        var matchesHas = mask.HasTypes.Count == 0 || Signature.MatchesAll(mask.HasTypes);
         if (!matchesHas) return false;
 
         //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
-        var matchesAny = mask.AnyTypes.Count == 0;
-        matchesAny |= Signature.Matches(mask.AnyTypes);
+        var matchesAny = mask.AnyTypes.Count == 0 || Signature.MatchesAny(mask.AnyTypes);
+        if (!matchesAny) return false;
 
-        return matchesHas && matchesNot && matchesAny;
+        return true;
     }
 
 
@@ -208,7 +214,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             foreach (var type in alreadyPresent)
             {
                 var value = backFills[additions.IndexOf(type)];
-                Fill(type, value); //Fill with value to replace before migrating.
+                FillDirect(type, value); //Fill with value to replace before migrating.
             }
         }
         
@@ -246,7 +252,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         if (IsEmpty) World.DisposeArchetype(this);
     }
 
-
     /// <summary>
     /// Moves all Entities from this Archetype to the destination Archetype,
     /// discarding any components not present in the destination.
@@ -258,17 +263,22 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// Fills the appropriate storage of the archetype with the provided value.
     /// </summary>
-    internal void Fill<T>(TypeExpression type, T value) where T: notnull
+    internal void Fill<T>(Match match, T value) where T: notnull
     {
+        var isObject = typeof(T).IsAssignableFrom(typeof(object));
+        
+        
         // DeferredOperation sends data as objects
-        if (typeof(T).IsAssignableFrom(typeof(object)))
+        if (isObject)
         {
-            var sysArray = GetStorage(type);
-            sysArray.Blit(value);
+            var typeless = MatchExpression.Of(value.GetType(), match);
+            FillTypeless(typeless, value);
             return;
         }
-        
-        using var join = CrossJoin<T>([type]);
+
+        //FIXME: Doesn't have appropriate T for this CrossJoin!
+        var expression = MatchExpression.Of<T>(match);
+        using var join = CrossJoin<T>([expression]);
         if (join.Empty) return;
         do
         {
@@ -277,6 +287,38 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         } while (join.Iterate());
     }
 
+
+    private void FillTypeless(MatchExpression expression, object value)
+    {
+        Debug.Assert(value.GetType() == expression.Type, "Typeless fill must be identical to the type of the expression.");
+
+        //TODO: Co-/Contravariance in future?
+        //Debug.Assert(value.GetType().IsAssignableTo(expression.Type), "Typeless fill must be assignable to the type of the expression.");
+        
+        foreach (var storage in Storages)
+        {
+            // DeferredOperation sends data as objects
+            if (!expression.Matches(storage.Expression)) continue;
+            
+            storage.Blit(value);
+        }
+    }
+
+
+    private void FillDirect(TypeExpression expression, object value)
+    {
+        Debug.Assert(value.GetType() == expression.Type, "Typeless fill must be identical to the type of the expression.");
+
+        //TODO: Co-/Contravariance in future?
+        //Debug.Assert(value.GetType().IsAssignableTo(expression.Type), "Typeless fill must be assignable to the type of the expression.");
+
+        if (!_storageIndices.TryGetValue(expression, out var index)) return;
+        
+        Storages[index].Blit(value);
+    }
+
+
+    
 
     internal Storage<T> GetStorage<T>(Key key) where T : notnull
     {
@@ -395,31 +437,31 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     #region Cross Joins
-    internal Cross.Join<C0> CrossJoin<C0>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull
+    internal Cross.Join<C0> CrossJoin<C0>(ReadOnlySpan<MatchExpression> streamTypes) where C0 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1> CrossJoin<C0, C1>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull where C1 : notnull
+    internal Cross.Join<C0, C1> CrossJoin<C0, C1>(ReadOnlySpan<MatchExpression> streamTypes) where C0 : notnull where C1 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull
+    internal Cross.Join<C0, C1, C2> CrossJoin<C0, C1, C2>(ReadOnlySpan<MatchExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
+    internal Cross.Join<C0, C1, C2, C3> CrossJoin<C0, C1, C2, C3>(ReadOnlySpan<MatchExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
     }
 
 
-    internal Cross.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ReadOnlySpan<TypeExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
+    internal Cross.Join<C0, C1, C2, C3, C4> CrossJoin<C0, C1, C2, C3, C4>(ReadOnlySpan<MatchExpression> streamTypes) where C0 : notnull where C1 : notnull where C2 : notnull where C3 : notnull where C4 : notnull
     {
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }

@@ -1,4 +1,6 @@
-﻿namespace fennecs;
+﻿using System.Runtime.CompilerServices;
+
+namespace fennecs;
 
 /// <summary>
 /// Experimental extension methods for converting objects to various fennecs types.
@@ -8,6 +10,7 @@ public static class ObjectExtensions
     /// <summary>
     /// Convenient Means to convert any object to fennecs.Key (type detection)
     /// </summary>
+    [OverloadResolutionPriority(-1)]
     public static Key Key(this object self) => new(self);
 
     /// <summary>
