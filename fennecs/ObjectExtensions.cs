@@ -1,5 +1,4 @@
-﻿/*
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace fennecs;
 
@@ -12,11 +11,11 @@ public static class ObjectExtensions
     /// Convenient Means to convert any object to fennecs.Key (type detection)
     /// </summary>
     [OverloadResolutionPriority(-1)]
-    public static Key Key(this object self) => new(self);
+    public static Key Key(this object self) => fennecs.Key.Of(self);
 
     /// <summary>
     /// Convenient Means to convert any object to fennecs.Key (specifically typed)
     /// </summary>
-    public static Key Key<T>(this T self) where T : class => new(self);
+    [OverloadResolutionPriority(-1)]
+    public static Key Key<T>(this T self) where T : class => fennecs.Key.Of(self);
 }
-*/

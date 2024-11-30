@@ -18,17 +18,7 @@ public readonly record struct Key
     }
 
     internal Key(Entity entity) => Value = entity.Value & KeyMask;
-
     
-    /// <summary>
-    /// Create a Key for a tracked object and the backing Object Link type.
-    /// </summary>
-    public Key(object link)
-    {
-        LanguageType.LinkId(link);
-        Value = (ulong) Kind.Link | LanguageType.LinkId(link) | (uint) link.GetHashCode();
-    }
-
 
     /// <summary>
     /// Category / Kind of the Key.
@@ -52,7 +42,7 @@ public readonly record struct Key
     /// Create a Key for a tracked object and the backing Object Link type.
     /// Used to set targets of Object Links. 
     /// </summary>
-    public static Key Of(object link) => new(link);
+    public static Key Of(object link) => new((ulong) Kind.Link | LanguageType.LinkId(link) | (uint) link.GetHashCode());
 
     internal const ulong HeaderMask = 0xFFFF_0000_0000_0000u;
     internal const ulong KeyMask = ~0xFFFF_0000_0000_0000u;

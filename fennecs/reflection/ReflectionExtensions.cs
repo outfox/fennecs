@@ -17,9 +17,9 @@ public static class ReflectionExtensions
     /// This will attempt to create a component type of exactly the object's <see cref="object.GetType"/> returned <c>System.Type</c>.
     /// Note that <c>QueryBuilders</c> will need to use the specific type to match the Component! (e.g. <c>Query&lt;List&lt;int&gt;&gt;</c>)
     /// </remarks>
-    public static Entity AddVirtual(this Entity entity, object value, Match match = default)
+    public static Entity AddVirtual(this Entity entity, object value, Key key = default)
     {
-        entity._world.AddComponent(entity.Id, TypeExpression.Of(value.GetType(), match), value);
+        entity.World.AddComponent(entity, TypeExpression.Of(value.GetType(), key), value);
         return entity;
     }
 

@@ -23,7 +23,10 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
  
     /// <inheritdoc />
     public void Despawn() => Entity.Despawn();
-    
+
+    /// <inheritdoc />
+    public IReadOnlyList<Component> Components => Entity.Components;
+
     /// <inheritdoc />
     public Entity Add<C>(C component, Key key = default) where C : notnull => Entity.Add(component, key);
 

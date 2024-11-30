@@ -97,6 +97,9 @@ public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<
     /// </summary>
     public Key Key => Key.Of(this);
 
+    /// <inheritdoc />
+    public IReadOnlyList<Component> Components => World.GetComponents(this);
+
     #endregion
 
     /// <summary>

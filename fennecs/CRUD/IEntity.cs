@@ -10,6 +10,11 @@ public interface IEntity : IAddRemove<Entity>, IEquatable<Entity>, IHasTyped
     /// </summary>
     public void Despawn();
     
+    /// <summary>
+    /// All Components on the Entity, in a reflection-friendly typeless format. (for example to be used for serialization)
+    /// </summary>
+    public IReadOnlyList<Component> Components { get; }
+    
     /* TODO: Implement these :)
     /// <summary>
     /// Clones the Entity, and all its components.
