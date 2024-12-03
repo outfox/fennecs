@@ -22,52 +22,18 @@ public partial record Stream<C0, C1, C2, C3> : Stream, IEnumerable<(Entity, C0, 
 
 
     #region Blitters
+    
+    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
+    public void Blit(C0 value, Match match = default) => Filtered.Fill(match, value);
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C0 value, Match match = default)
-    {
-        var typeExpression = TypeExpression.Of<C0>(match);
-        foreach (var table in Filtered) table.Fill(typeExpression, value);
-    }
+    public void Blit(C1 value, Match match = default) => Filtered.Fill(match, value);
+    
+    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
+    public void Blit(C2 value, Match match = default) => Filtered.Fill(match, value);
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C1 value, Match match = default)
-    {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C1>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
-    }
-
-    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C2 value, Match match = default)
-    {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C2>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
-    }
-
-    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C3 value, Match match = default)
-    {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C3>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
-    }
+    public void Blit(C3 value, Match match = default) => Filtered.Fill(match, value);
 
     #endregion
 

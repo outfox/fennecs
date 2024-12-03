@@ -22,19 +22,11 @@ public partial record Stream<C0, C1> :
     #region Blitters
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C0 value, Match match = default)
-    {
-        using var worldLock = World.Lock();
-        foreach (var table in Filtered) table.Fill(match, value);
-    }
+    public void Blit(C0 value, Match match = default) => Filtered.Fill(match, value);
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C1 value, Match match = default)
-    {
-        using var worldLock = World.Lock();
-        foreach (var table in Filtered) table.Fill(match, value);
-    }
-
+    public void Blit(C1 value, Match match = default) => Filtered.Fill(match, value);
+    
     #endregion
 
 

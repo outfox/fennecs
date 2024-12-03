@@ -146,6 +146,18 @@ public readonly record struct Match
         _ => false,
     };
 
+    /// <summary>
+    /// Does this Match expression match any Object Links?
+    /// </summary>
+    public bool IsLink =>
+        Value switch
+        {
+            (ulong) Wildcard.Link => true,
+            (ulong) Wildcard.Target => true,
+            (ulong) Wildcard.Any => true,
+            _ => new Key(Value).IsLink,
+        };
+
     /* TODO: Likely not needed
     /// <summary>
     /// The Key of this Match Expression (for use in relations).

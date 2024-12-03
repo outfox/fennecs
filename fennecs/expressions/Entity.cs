@@ -9,14 +9,16 @@ namespace fennecs;
 /// Entity: An object in the fennecs World, that can have any number of Components.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
-public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<Entity>
+public readonly record struct Entity : IComparable<Entity>, IEntity
 {
     [FieldOffset(0)] internal readonly ulong Value;
 
     //Entity Components
-    [FieldOffset(0)] internal readonly int Index; //IDEA: Can use top 1~2 bits for special state, e.g. disabled, hidden, etc.
+    [FieldOffset(0)]
+    internal readonly int Index; //IDEA: Can use top 1~2 bits for special state, e.g. disabled, hidden, etc.
+
     [FieldOffset(4)] internal readonly byte WorldIndex;
-    
+
     [FieldOffset(5)] internal readonly byte Flags;
     [FieldOffset(6)] internal readonly ushort Generation;
 
@@ -29,8 +31,8 @@ public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<
     /// <c>null</c> equivalent for Entity.
     /// </summary>
     public static readonly Entity None = default;
-
     
+
     /// <summary>
     /// The World this Entity belongs to.
     /// </summary>
@@ -54,42 +56,54 @@ public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<
             return (int) (0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
         }
     }
+
     #endregion
 
 
-    internal Type Type => typeof(Entity);
-
-
     #region Constructors / Creators
+    
     /// <summary>
     /// Create a new Entity, Generation 1, in the given World. Called by EntityPool.
     /// </summary>
     internal Entity(World.Id worldId, int index, short generation = 1)
     {
         // 0xgggg_E0ww_iiii_iiii
-        Value = (ulong) generation << 48 | BaseFlag | worldId.Bits | (uint) index;   
+        Value = (ulong) generation << 48 | Key.BaseFlag | worldId.Bits | (uint) index;
     }
-    
-    internal const ulong BaseFlag = 0x0000_E000_0000_0000u;
-    
-    
+
+
     internal Entity(ulong key, ushort generation)
     {
         Value = key | (ulong) generation << 48;
     }
 
     /// <summary>
+    /// Implicitly convert a Key to an Entity.
+    /// </summary>
+    /// <throws><see cref="ArgumentException"/> if the Key is not an Entity.</throws>
+    /// <throws><see cref="InvalidOperationException"/> if the Entity is not alive.</throws>
+    /// <throws><see cref="NullReferenceException"/> if the decoded Entity has an invalid World.</throws>
+    /// <returns>the entity, if the Key is a living Entity</returns>
+    public static implicit operator Entity(Key key) => new(key);
+
+    /// <summary>
+    /// Implicitly convert an Entity to a Key, for use in relations and matching.
+    /// </summary>
+    public static implicit operator Key(Entity entity) => new(entity);
+
+    /// <summary>
     /// Construct an Entity from a Key.
     /// </summary>
     /// <remarks>
-    /// The Key must point to a living Entity. (this is usually the case)
+    /// The entity may technically not be alive, but relation keys are usually guaranteed to be alive if the world hasn't changed since it was obtained.
     /// </remarks>
+    /// <throws><see cref="ArgumentException"/> if the Key is not an Entity relation key.</throws>
+    /// <throws><see cref="NullReferenceException"/> if the decoded World is invalid.</throws>
     public Entity(Key key)
     {
         if (!key.IsEntity) throw new ArgumentException("Key must be an Entity.");
         Value = key.Value;
         Generation = World[Key.Index].Generation;
-        if (!Alive) throw new InvalidOperationException("Entity is not alive.");
     }
 
     internal Entity Successor
@@ -109,7 +123,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<
     /// <summary>
     /// The Key of this Entity (for use in relations).
     /// </summary>
-    public Key Key => Key.Of(this);
+    internal Key Key => new(this);
 
     /// <inheritdoc />
     public IReadOnlyList<Component> Components => World.GetComponents(this);
@@ -126,8 +140,13 @@ public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<
     /// <inheritdoc cref="Any"/>
     public static readonly Key Any = new((ulong) Key.Kind.Entity);
 
+
     /// <inheritdoc />
-    public override string ToString() => $"E-{WorldIndex:d3}-{Index:x8} gen{Generation:D5}";
+    public override string ToString()
+    {
+        var gen = Alive ? $"gen{Generation:D5}" : "DEAD";
+        return $"E-{WorldIndex:d3}-{Index:x8} {gen}";
+    }
 
     /// <inheritdoc />
     public Entity Add<C>(C component, Key key = default) where C : notnull
@@ -137,37 +156,9 @@ public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<
     }
 
     /// <inheritdoc />
-    public Entity Add<C>(Key key = default) where C : notnull, new()
-    {
-        World.AddComponent<C>(this, TypeExpression.Of<C>(key), new());
-        return this;
-    }
-
-    /// <inheritdoc />
-    public Entity Relate<C>(C component, Entity target) where C : notnull
-    {
-        World.AddComponent(this, TypeExpression.Of<C>(target.Key), component);
-        return this;
-    }
-
-    /// <inheritdoc />
-    public Entity Unrelate<C>(Entity target) where C : notnull
-    {
-        World.RemoveComponent(this, TypeExpression.Of<C>(target.Key));
-        return this;
-    }
-
-    /// <inheritdoc />
     public Entity Link<L>(L link) where L : class
     {
         World.AddComponent(this, TypeExpression.Of<L>(Key.Of(link)), link);
-        return this;
-    }
-
-    /// <inheritdoc />
-    public Entity Unlink<L>(L link) where L : class
-    {
-        World.RemoveComponent(this, TypeExpression.Of<L>(Key.Of(link)));
         return this;
     }
 

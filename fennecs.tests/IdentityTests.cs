@@ -15,18 +15,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Throws<InvalidOperationException>(() => new Entity(-3, 0).Successor);
         Assert.Throws<InvalidOperationException>(() => default(Entity).Successor);
     }
-
-
-    [Fact]
-    public void Entity_Resolves_as_Type()
-    {
-        var entity = new Entity(123);
-        Assert.Equal(typeof(Entity), entity.Type);
-
-        var objEntity = Entity.Of("hello world");
-        Assert.Equal(typeof(string), objEntity.Type);
-    }
-
+    
 
     [Fact]
     public void Entity_Plain_is_default()
@@ -45,20 +34,18 @@ public class EntityTests(ITestOutputHelper output)
         _ = Match.Any.ToString();
         _ = Match.Entity.ToString();
         _ = Match.Target.ToString();
-        _ = Match.Object.ToString();
+        _ = Match.Link.ToString();
         _ = Match.Plain.ToString();
-        _ = Entity.Of("hello world").ToString();
+        _ = Key.Of("hello world").ToString();
         _ = new Entity(123, 456).ToString();
-        _ = new Entity(-1, 2).ToString();
 
         output.WriteLine(Match.Any.ToString());
         output.WriteLine(Match.Entity.ToString());
         output.WriteLine(Match.Target.ToString());
-        output.WriteLine(Match.Object.ToString());
+        output.WriteLine(Match.Link.ToString());
         output.WriteLine(Match.Plain.ToString());
-        output.WriteLine(Entity.Of("hello world").ToString());
+        output.WriteLine(Key.Of("hello world").ToString());
         output.WriteLine(new Entity(123, 456).ToString());
-        output.WriteLine(new Entity(-1, 2).ToString());
     }
 
 

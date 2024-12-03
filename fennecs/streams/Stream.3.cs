@@ -14,47 +14,23 @@ public partial record Stream<C0, C1, C2> : Stream, IEnumerable<(Entity, C0, C1, 
 {
     /// <inheritdoc cref="Stream{C0}"/>
     /// // ReSharper disable once NotAccessedPositionalProperty.Global
-    internal Stream(Query Query, Match match0, Match match1, Match match2) : base(Query)
+    internal Stream(Query Query, Key match0, Key match1, Key match2) : base(Query)
     {
-        StreamTypes = [TypeExpression.Of<C0>(match0), TypeExpression.Of<C1>(match1), TypeExpression.Of<C2>(match2)];
+        StreamTypes = [MatchExpression.Of<C0>(match0), MatchExpression.Of<C1>(match1), MatchExpression.Of<C2>(match2)];
     }
 
 
     #region Blitters
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C0 value, Match match = default)
-    {
-        var typeExpression = TypeExpression.Of<C0>(match);
-        foreach (var table in Filtered) table.Fill(typeExpression, value);
-    }
+    public void Blit(C0 value, Match match = default) => Filtered.Fill(match, value);
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C1 value, Match match = default)
-    {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C1>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
-    }
-
+    public void Blit(C1 value, Match match = default) => Filtered.Fill(match, value);
+    
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
-    public void Blit(C2 value, Match match = default)
-    {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C2>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
-    }
-
+    public void Blit(C2 value, Match match = default) => Filtered.Fill(match, value);
+    
     #endregion
 
 

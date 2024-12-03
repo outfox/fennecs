@@ -95,18 +95,9 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
 
     /// <inheritdoc />
     public Batch Remove<C>(Key key = default) where C : notnull => RemoveComponent<C>(key);
-
-    /// <inheritdoc />
-    public Batch Relate<C>(C component, Entity target) where C : notnull => AddComponent(component, Key.Of(target));
-
-    /// <inheritdoc />
-    public Batch Unrelate<C>(Entity target) where C : notnull => RemoveComponent<C>(Key.Of(target));
     
     /// <inheritdoc />
     public Batch Link<T>(T link) where T : class => AddComponent(link, Key.Of(link));
-
-    /// <inheritdoc />
-    public Batch Unlink<L>(L linkedObject) where L : class => RemoveComponent<L>(Key.Of(linkedObject));
 
 
     /// <summary>

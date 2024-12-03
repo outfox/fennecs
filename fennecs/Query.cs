@@ -374,7 +374,22 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
 
     #endregion
 
-
+    #region Blitters
+    
+    /// <summary>
+    /// <para>Blit (write, fill) a component value of a type to all entities matched by this query that have that component.</para>
+    /// <para>🚀 Very fast!</para>
+    /// </summary>
+    /// <remarks>
+    /// To speed this up further, consider making the component a required component for this (or a separate) Query. (use <see cref="QueryBuilderBase{QB}.Has{T}(fennecs.Match)"/>).
+    /// </remarks>
+    /// <param name="value">a component value</param>
+    /// <param name="match">optional, leave at default for Plain components, use Entity.Any or specific Entity for Relations, or any other Key</param>
+    public void Blit<C>(C value, Match match = default) where C : notnull => Archetypes.Fill(match, value);
+    
+    #endregion
+    
+    
     #region IDisposable Implementation
 
     /// <summary>

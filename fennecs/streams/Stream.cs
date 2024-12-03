@@ -105,7 +105,7 @@ public record Stream(Query Query) : IBatchBegin
     }
 
     #endregion
-
+    
 
     #region Assertions
 

@@ -279,7 +279,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
     {
         var isObject = typeof(T).IsAssignableFrom(typeof(object));
         
-        
         // DeferredOperation sends data as objects
         if (isObject)
         {

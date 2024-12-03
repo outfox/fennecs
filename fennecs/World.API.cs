@@ -320,21 +320,11 @@ public partial class World : IDisposable, IEnumerable<Entity>
     #endregion
 
     #region Indexers
+    
     internal Entity this[int index] => _meta[index].Entity;
     
-    internal Entity this[LiveEntity live]
-    {
-        get
-        {
-            var result = _meta[live.Index].Entity;
-            
-            return result != default
-                ? result
-                : throw new ObjectDisposedException($"LiveEntity {live} is not alive in ${Name}.");
-        }
-    }
-
     #endregion
+    
     #region Debug Tools
 
     /// <inheritdoc />

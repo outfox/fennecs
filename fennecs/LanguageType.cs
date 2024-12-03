@@ -108,7 +108,7 @@ internal class LanguageType<T> : LanguageType
     }
     
     //FIXME: This constrains the number of legal component types quite a bit. (to max 4096)
-    public static ulong LinkId => LinkMask & (ulong) Id << 32;
+    public new static ulong LinkId => LinkMask & (ulong) Id << 32;
 }
 
 

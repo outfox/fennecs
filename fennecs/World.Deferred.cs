@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace fennecs;
@@ -74,15 +75,22 @@ public partial class World
     }
 
 
-    internal struct DeferredOperation(Batch operation)
+    
+    internal struct DeferredOperation
     {
-        internal required Opcode Opcode = Opcode.Batch;
+        internal required Opcode Opcode;
+        
         internal TypeExpression TypeExpression = default;
         internal Entity Entity = default;
-        internal object Data = operation;
+        internal object Data;
 
-
-        //[SetsRequiredMembers]
+        // ReSharper disable once ConvertToPrimaryConstructor
+        [SetsRequiredMembers]
+        public DeferredOperation(Batch operation)
+        {
+            Opcode = Opcode.Batch;
+            Data = operation;
+        }
     }
 
 

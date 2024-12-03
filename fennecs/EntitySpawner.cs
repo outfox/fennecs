@@ -25,59 +25,40 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
         _world = world;
     }
 
-    private EntitySpawner AddComponent(TypeExpression type, object value)
+    #endregion
+
+
+    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(fennecs.Key)" />
+    public EntitySpawner Add<C>(C component, Key key = default) where C : notnull
     {
+        var type = TypeExpression.Of<C>(key);
         if (_components.Contains(type))
         {
             // replace existing value
-            _values[_components.IndexOf(type)] = value;
+            _values[_components.IndexOf(type)] = component;
         }
         else
         {
             // add new value
             _components.Add(type);
-            _values.Add(value);
+            _values.Add(component);
         }
+
         return this;
     }
 
-    private EntitySpawner RemoveComponent(TypeExpression type)
+
+    /// <inheritdoc cref="IAddRemove{SELF}.Remove{R}(fennecs.Key)" />
+    public EntitySpawner Remove<C>(Key match = default) where C : notnull
     {
+        var type = Comp<C>.Matching(match).Expression;
         _values.RemoveAt(_components.IndexOf(type));
         _components.Remove(type);
+        
         return this;
     }
 
-    #endregion
 
-    
-    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(fennecs.Key)" />
-    public EntitySpawner Add<T>(T component, Key key = default) where T : notnull
-    {
-        var type = TypeExpression.Of<T>(key);
-        return AddComponent(type, component);
-    }
-
-    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(C,fennecs.Key)" />
-    public EntitySpawner Add<C>(Key key = default) where C : notnull, new() => Add(new C(), key);
-    
-
-    /// <inheritdoc cref="IAddRemove{SELF}.Relate{R}(fennecs.Entity)" />
-    public EntitySpawner Relate<T>(Entity target) where T : notnull, new() => Add(new T(), target.Key);
-
-    /// <inheritdoc cref="IAddRemove{SELF}.Relate{R}(fennecs.Entity)" />
-    public EntitySpawner Relate<T>(T component, Entity target) where T : notnull => Add(component, target.Key);
-
-
-    
-    /// <inheritdoc cref="IAddRemove{SELF}.Remove{R}(fennecs.Key)" />
-    public EntitySpawner Remove<T>(Key match = default) where T : notnull
-    {
-        var type = Comp<T>.Matching(match).Expression;
-        return RemoveComponent(type);
-    }
-
-    
     /// <summary>
     /// Spawns <c>count</c> entities with the configured components.
     /// </summary>
@@ -100,5 +81,4 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
         _values.Dispose();
         _values = null!;
     }
-
 }
