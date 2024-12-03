@@ -23,14 +23,13 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// </summary>
     /// <param name="world"><see cref="fennecs.World"/> to build queries for</param>
     /// <param name="streamTypes">list of types that must be guaranteed to be on the Query's Mask for Stream Creation</param>
-    protected private QueryBuilderBase(World world, Span<TypeExpression> streamTypes)
+    private protected QueryBuilderBase(World world, Span<MatchExpression> streamTypes)
     {
         _world = world;
         foreach (var type in streamTypes) _mask.Has(type);
         
         // TODO: need to agree with myself what I can do about including Entity or not.
-        if (!_mask.HasTypes.Contains(Comp<Entity>.Plain.Expression))
-            _mask.Has(Comp<Entity>.Plain.Expression);
+        _mask.HasTypes.Add(MatchExpression.Of<Entity>(default));
     }
 
     #endregion
@@ -61,7 +60,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Has<T>(Match match = default)
     {
-        _mask.Has(TypeExpression.Of<T>(match));
+        _mask.Has(MatchExpression.Of<T>(match));
         return (QB)this;
     }
 
@@ -75,7 +74,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Has<T>(Link<T> link) where T : class
     {
-        _mask.Has(TypeExpression.Of<T>(link));
+        _mask.Has(MatchExpression.Of<T>(link));
         return (QB)this;
     }
 
@@ -90,7 +89,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Not<T>(Match match = default)
     {
-        _mask.Not(TypeExpression.Of<T>(match));
+        _mask.Not(MatchExpression.Of<T>(match));
         return (QB)this;
     }
 
@@ -103,7 +102,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Not<T>(Link<T> link) where T : class
     {
-        _mask.Not(TypeExpression.Of<T>(link));
+        _mask.Not(MatchExpression.Of<T>(link));
         return (QB)this;
     }
 
@@ -117,7 +116,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Any<T>(Match match = default)
     {
-        _mask.Any(TypeExpression.Of<T>(match));
+        _mask.Any(MatchExpression.Of<T>(match));
         return (QB)this;
     }
 
@@ -131,7 +130,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Any<T>(Link<T> link) where T : class
     {
-        _mask.Any(TypeExpression.Of<T>(link));
+        _mask.Any(MatchExpression.Of<T>(link));
         return (QB)this;
     }
     
@@ -161,7 +160,7 @@ public class QueryBuilder(World world) : QueryBuilderBase<QueryBuilder>(world, [
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
 public class QueryBuilder<C1>(World world, Match match1 = default)
-    : QueryBuilderBase<QueryBuilder<C1>>(world, [TypeExpression.Of<C1>(match1)])
+    : QueryBuilderBase<QueryBuilder<C1>>(world, [MatchExpression.Of<C1>(match1)])
     where C1 : notnull
 {
     /// <include file='_docs.xml' path='members/member[@name="T:Stream"]'/>
@@ -170,7 +169,7 @@ public class QueryBuilder<C1>(World world, Match match1 = default)
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
 public class QueryBuilder<C1, C2>(World world, Match match1, Match match2)
-    : QueryBuilderBase<QueryBuilder<C1, C2>>(world, [TypeExpression.Of<C1>(match1), TypeExpression.Of<C2>(match2)])
+    : QueryBuilderBase<QueryBuilder<C1, C2>>(world, [MatchExpression.Of<C1>(match1), MatchExpression.Of<C2>(match2)])
     where C1 : notnull
     where C2 : notnull
 {
@@ -183,7 +182,7 @@ public class QueryBuilder<C1, C2>(World world, Match match1, Match match2)
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
 public class QueryBuilder<C1, C2, C3>(World world, Match match1, Match match2, Match match3)
-    : QueryBuilderBase<QueryBuilder<C1, C2, C3>>(world, [TypeExpression.Of<C1>(match1), TypeExpression.Of<C2>(match2), TypeExpression.Of<C3>(match3)])
+    : QueryBuilderBase<QueryBuilder<C1, C2, C3>>(world, [MatchExpression.Of<C1>(match1), MatchExpression.Of<C2>(match2), MatchExpression.Of<C3>(match3)])
     where C1 : notnull
     where C2 : notnull
     where C3 : notnull
@@ -197,7 +196,7 @@ public class QueryBuilder<C1, C2, C3>(World world, Match match1, Match match2, M
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
 public class QueryBuilder<C1, C2, C3, C4>(World world, Match match1, Match match2, Match match3, Match match4)
-    : QueryBuilderBase<QueryBuilder<C1, C2, C3, C4>>(world, [ TypeExpression.Of<C1>(match1), TypeExpression.Of<C2>(match2), TypeExpression.Of<C3>(match3), TypeExpression.Of<C4>(match4) ])
+    : QueryBuilderBase<QueryBuilder<C1, C2, C3, C4>>(world, [ MatchExpression.Of<C1>(match1), MatchExpression.Of<C2>(match2), MatchExpression.Of<C3>(match3), MatchExpression.Of<C4>(match4) ])
     where C1 : notnull
     where C2 : notnull
     where C3 : notnull
@@ -212,7 +211,7 @@ public class QueryBuilder<C1, C2, C3, C4>(World world, Match match1, Match match
 
 /// <inheritdoc cref="QueryBuilderBase{QB}"/>
 public class QueryBuilder<C1, C2, C3, C4, C5>(World world, Match match1, Match match2, Match match3, Match match4, Match match5)
-    : QueryBuilderBase<QueryBuilder<C1, C2, C3, C4, C5>>(world, [ TypeExpression.Of<C2>(match2), TypeExpression.Of<C3>(match3), TypeExpression.Of<C4>(match4), TypeExpression.Of<C5>(match5) ])
+    : QueryBuilderBase<QueryBuilder<C1, C2, C3, C4, C5>>(world, [ MatchExpression.Of<C2>(match2), MatchExpression.Of<C3>(match3), MatchExpression.Of<C4>(match4), MatchExpression.Of<C5>(match5) ])
     where C1 : notnull
     where C2 : notnull
     where C3 : notnull

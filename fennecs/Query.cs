@@ -46,8 +46,24 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
     public bool Contains<T>(Match match = default)
     {
-        var typeExpression = TypeExpression.Of<T>(match);
-        return Archetypes.Any(a => typeExpression.Matches(a.MatchSignature));
+        var expression = MatchExpression.Of<T>(match);
+        return Archetypes.Any(a => expression.Matches(a.Signature));
+    }
+
+
+    /// <summary>
+    ///     Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?
+    /// </summary>
+    /// <param name="type">System.Type of the backing component data</param>
+    /// <param name="match">
+    ///     Match Expression for the component type <see cref="Cross" />.
+    ///     The default is <see cref="Match.Plain"/>
+    /// </param>
+    /// <returns>true if the Query contains the Type with the given Match Expression</returns>
+    public bool Contains(Type type, Match match = default)
+    {
+        var expression = MatchExpression.Of(type,match);
+        return Archetypes.Any(a => expression.Matches(a.Signature));
     }
 
 

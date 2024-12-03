@@ -193,7 +193,7 @@ file class StreamsForGenerator
                                  {{Deconstruct(width, pattern)}}
                                  for (var i = 0; i < count; i++)
                                  {   
-                                     var entity = new Entity(World, entities[i]);    
+                                     var entity = entities[i];    
                                      action({{InvocationParameters(entity, uniform, pattern)}}); 
                                  }
                              } while (join.Iterate());

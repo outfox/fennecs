@@ -15,7 +15,7 @@ public partial record Stream<C0, C1> :
     /// <inheritdoc cref="Stream{C0}"/>
     internal Stream(Query Query, Match match0, Match match1) : base(Query)
     {
-        StreamTypes = [TypeExpression.Of<C0>(match0), TypeExpression.Of<C1>(match1)];
+        StreamTypes = [MatchExpression.Of<C0>(match0), MatchExpression.Of<C1>(match1)];
     }
 
 
@@ -24,21 +24,15 @@ public partial record Stream<C0, C1> :
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
     public void Blit(C0 value, Match match = default)
     {
-        var typeExpression = TypeExpression.Of<C0>(match);
-        foreach (var table in Filtered) table.Fill(typeExpression, value);
+        using var worldLock = World.Lock();
+        foreach (var table in Filtered) table.Fill(match, value);
     }
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
     public void Blit(C1 value, Match match = default)
     {
         using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C1>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
+        foreach (var table in Filtered) table.Fill(match, value);
     }
 
     #endregion

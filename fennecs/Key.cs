@@ -6,10 +6,13 @@ namespace fennecs;
 /// <summary>
 /// Secondary Key for a Component type expression - used in relations, object links, etc.
 /// </summary>
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Explicit)]
 public readonly record struct Key
 {
-    internal ulong Value { get; }
+    [FieldOffset(0)] internal readonly ulong Value;
+    
+    [FieldOffset(0)] 
+    internal readonly int Index;
 
     internal Key(ulong value)
     {
@@ -19,7 +22,21 @@ public readonly record struct Key
 
     internal Key(Entity entity) => Value = entity.Value & KeyMask;
     
+    
+    /// <summary>
+    /// Implicit conversion from Entity to Key.
+    /// </summary>
+    public static implicit operator Key(Entity entity) => entity.Key;
 
+    /// <summary>
+    /// Implicit conversion from Key to Entity.
+    /// </summary>
+    /// <remarks>
+    /// The entity must be alive.
+    /// </remarks>
+    public static implicit operator Entity(Key self) => new LiveEntity(self).Entity;
+    
+    
     /// <summary>
     /// Category / Kind of the Key.
     /// </summary>
@@ -123,7 +140,7 @@ public readonly ref struct LiveEntity
     /// </summary>
     internal LiveEntity(Entity id)
     {
-        Debug.Assert(id.Alive, $"Cannot create LiveEntity from dead-Entity {id}!");
+        Debug.Assert(id.Alive, $"Cannot create LiveEntity from dead Entity {id}!");
         Raw = id.Value & Key.KeyMask;
     }
 
@@ -143,6 +160,11 @@ public readonly ref struct LiveEntity
     /// Returns the actual World this LiveEntity refers to.
     /// </summary>
     public World World => World.Get(WorldId);
+
+    /// <summary>
+    /// Returns the actual Entity this LiveEntity refers to.
+    /// </summary>
+    public Entity Entity => this;
 
     /// <inheritdoc />
     public override string ToString() => $"E-{WorldId}:{Index:x8} live";

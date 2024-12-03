@@ -16,8 +16,11 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
 {
     [FieldOffset(0)] internal readonly ulong _value;
 
+    /// <summary>
+    /// The secondary Key of this TypeExpression (expressing its relation or link target).
+    /// </summary>
     [field: FieldOffset(0)]
-    internal readonly Key Key;
+    public readonly Key Key;
 
     [field: FieldOffset(6)] 
     internal readonly short TypeId;
@@ -68,13 +71,10 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// </summary>
     public bool IsLink => Key.IsLink;
 
-    public Entity TargetEntity
-    {
-        get
-        {
-            if (IsRelation) return new Entity(new LiveEntity(Key));
-        }
-    }
+    /// <summary>
+    /// Returns the Entity targeted by this TypeExpression, if it is a relation.
+    /// </summary>
+    public Entity TargetEntity => IsRelation ? Key : default(Entity);
 }
 
 

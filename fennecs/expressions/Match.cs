@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace fennecs;
+﻿namespace fennecs;
 
 /// <summary>
 /// Used to match against secondary Keys in Type Expressions (e.g. Queries, Streams, Filters, Masks).
@@ -111,16 +109,16 @@ public readonly record struct Match
     /// <para>This expression does not result in multiple enumeration, because it's not technically a Wildcard - there can only be one plain component per type on an Entity.</para>
     /// </summary>
     /// <inheritdoc cref="Plain"/>
-    public static readonly Match Plain = new(default);
+    public static readonly Match Plain = default;
     
 
     /// <summary>
     /// <para>Implicitly convert an <see cref="Entity"/> to a <see cref="Match"/> for use in filter expressions.</para>
     /// </summary>
-    /// <param name="value"></param>
+    /// <param name="entity"></param>
     /// <returns></returns>
     //public static implicit operator Match(Entity value) => new(value);
-    public static implicit operator Match(Entity value) => new(value.Key);
+    public static implicit operator Match(Entity entity) => new(entity.Key);
 
 
     /// <inheritdoc/>
@@ -148,8 +146,14 @@ public readonly record struct Match
         _ => false,
     };
 
+    /* TODO: Likely not needed
+    /// <summary>
+    /// The Key of this Match Expression (for use in relations).
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public Key Key => IsWildcard ? throw new InvalidOperationException("Cannot get Key of a Wildcard Match Expression.") : new Key(Value);
 
     public bool IsLink => Value == (ulong) Wildcard.Link || new Key(Value).IsLink;
     public bool IsEntity => Value == (ulong) Wildcard.Entity || new Key(Value).IsEntity;
+    */
 }

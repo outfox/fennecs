@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics.CodeAnalysis;
+
 
 namespace fennecs;
 
@@ -62,7 +62,7 @@ public partial class World
                     break;
 
                 case Opcode.Despawn:
-                    DespawnImpl(new(this, op.Entity));
+                    DespawnImpl(op.Entity);
                     break;
 
                 case Opcode.Batch:
@@ -74,25 +74,15 @@ public partial class World
     }
 
 
-    internal struct DeferredOperation
+    internal struct DeferredOperation(Batch operation)
     {
-        internal required Opcode Opcode;
-        internal TypeExpression TypeExpression;
-        internal Entity Entity;
-        internal object Data;
-        internal Archetype Archetype;
+        internal required Opcode Opcode = Opcode.Batch;
+        internal TypeExpression TypeExpression = default;
+        internal Entity Entity = default;
+        internal object Data = operation;
 
 
-        [SetsRequiredMembers]
-        public DeferredOperation(Batch operation)
-        {
-            Opcode = Opcode.Batch;
-            Data = operation;
-
-            Archetype = default!;
-            TypeExpression = default;
-            Entity = default;
-        }
+        //[SetsRequiredMembers]
     }
 
 

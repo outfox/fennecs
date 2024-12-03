@@ -534,4 +534,5 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal void Invalidate() => Interlocked.Increment(ref Version);
+
 }

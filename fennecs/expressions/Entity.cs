@@ -78,6 +78,20 @@ public readonly record struct Entity : IComparable<Entity>, IEntity, IAddRemove<
         Value = key | (ulong) generation << 48;
     }
 
+    /// <summary>
+    /// Construct an Entity from a Key.
+    /// </summary>
+    /// <remarks>
+    /// The Key must point to a living Entity. (this is usually the case)
+    /// </remarks>
+    public Entity(Key key)
+    {
+        if (!key.IsEntity) throw new ArgumentException("Key must be an Entity.");
+        Value = key.Value;
+        Generation = World[Key.Index].Generation;
+        if (!Alive) throw new InvalidOperationException("Entity is not alive.");
+    }
+
     internal Entity Successor
     {
         get

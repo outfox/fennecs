@@ -8,13 +8,13 @@ namespace fennecs;
 public static class ObjectExtensions
 {
     /// <summary>
-    /// Convenient Means to convert any object to fennecs.Key (type detection)
+    /// Convenient Means to convert any object to fennecs.Key (using GetType type detection)
     /// </summary>
     [OverloadResolutionPriority(-1)]
     public static Key Key(this object self) => fennecs.Key.Of(self);
 
     /// <summary>
-    /// Convenient Means to convert any object to fennecs.Key (specifically typed)
+    /// Convenient Means to convert any object to fennecs.Key (typed via specialization)
     /// </summary>
     [OverloadResolutionPriority(-1)]
     public static Key Key<T>(this T self) where T : class => fennecs.Key.Of(self);

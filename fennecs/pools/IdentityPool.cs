@@ -49,7 +49,7 @@ internal sealed class EntityPool
             // If we don't have enough recycled Identities, create more.
             for (var i = 0; i < count - recycled; i++)
             {
-                identities.Add(new(NewIndex));
+                identities.Add(new(_worldId, NewIndex));
             }
         }
         else

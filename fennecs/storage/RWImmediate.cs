@@ -6,24 +6,23 @@ namespace fennecs.storage;
 /// Read-write access to a component.
 /// </summary>
 /// <remarks>
-/// This is a specialized version of <see cref="RW{T}"/> to meed the needs of <see cref="fennecs.Entity.RW{C}"/>
+/// This is a specialized version of <see cref="RW{T}"/> to meed the needs of <see cref="RW{T}"/>
 /// </remarks>
-public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Match match) where T : notnull
+public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) where T : notnull
 {
-    private readonly Entity _entity = entity;
     private readonly ref T _value = ref value;
 
     /// <summary>
     /// Read access to the component's value.
     /// </summary>
-    public T read => _value;
+    public T Read => _value;
     
     /// <summary>
     /// Write access to the component's value.
     /// </summary>
-    public T write
+    public T Write
     {
-        get => _value;
+        get => _value; // Included for +=
         set
         {
             // Optimizes away the write and null checks if it's not modifiable.
@@ -38,7 +37,7 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Match matc
                 //_writtenUpdates?.Add(value);
                 
                 // TODO: Handle this in the outer scope, where the lists come from.
-                Modified<T>.Invoke([_entity], [original], [value]);
+                Modified<T>.Invoke([entity], [original], [value]);
             }
             else
             {
@@ -56,7 +55,7 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Match matc
     /// <para>Even though this is a structural change, it is still considered a "read" operation!</para>
     /// </remarks>
     /// <returns>the component value</returns>
-    public T consume
+    public T Consume
     {
         get        
         {
@@ -64,7 +63,7 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Match matc
             T copy = _value;
             // Remove<T> usually moves another entity into the slot of the removed one in immediate mode
             // The structural change is so expensive that it's not worth optimizing this getter further.
-            _entity.Remove<T>(match); 
+            entity.Remove<T>(key); 
             return copy;
         }
     }
@@ -72,6 +71,6 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Match matc
     /// <summary>
     /// Removes the component from the entity.
     /// </summary>
-    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Match)"/>
-    public void Remove() => _entity.Remove<T>(match);
+    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Key)"/>
+    public void Remove() => entity.Remove<T>(key);
 }

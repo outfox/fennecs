@@ -114,7 +114,7 @@ public record Stream(Query Query) : IBatchBegin
     /// </summary>
     protected void AssertNoWildcards()
     {
-        if (StreamTypes.Any(expression => expression.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {StreamTypes}");
+        if (StreamTypes.Any(expression => expression.IsWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {StreamTypes}");
     }
 
     #endregion

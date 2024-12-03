@@ -13,7 +13,7 @@ public class RWImmediateTests
         var x = 1;
         var rw = new RWImmediate<int>(ref x, entity, default);
         
-        Assert.Equal(1, rw.read);
+        Assert.Equal(1, rw.Read);
     }
 
     [Fact]
@@ -26,9 +26,9 @@ public class RWImmediateTests
         
         // ReSharper disable once UseObjectOrCollectionInitializer
         var rw = new RWImmediate<int>(ref x, entity, default);
-        rw.write = 2; // user usually does not use initializer code
+        rw.Write = 2; // user usually does not use initializer code
         
-        Assert.Equal(2, rw.read);
+        Assert.Equal(2, rw.Read);
     }
     
     [Fact]
@@ -42,7 +42,7 @@ public class RWImmediateTests
 
         var rw = new RWImmediate<int>(ref x, entity, default);
         
-        Assert.Equal(77, rw.consume);
+        Assert.Equal(77, rw.Consume);
         Assert.False(entity.Has<int>());
     }
 }

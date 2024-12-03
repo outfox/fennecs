@@ -205,14 +205,14 @@ file class JobsGenerator
                   public CountdownEvent CountDown = null!;
                   public void Execute() 
                   {
-                      var identities = MemoryE.Span;
-                      var count = identities.Length;
+                      var entities = MemoryE.Span;
+                      var count = entities.Length;
                       
                       {{deconstruction}}
               
                       for (var i = 0; i < count; i++)
                       {
-                         var entity = new Entity(World, identities[i]);
+                         var entity = entities[i];
                          Action({{invocationParams}});
                       }
                       CountDown.Signal();
