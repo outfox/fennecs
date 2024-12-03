@@ -35,26 +35,25 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entity = world.Spawn();
-        Assert.True(entity.Id.IsEntity);
-        Assert.False(entity.Id.IsWildcard);
-        Assert.False(entity.Id.IsObject);
+        Assert.True(entity.Alive);
+        Assert.True(entity.Key.IsEntity);
     }
 
 
     [Theory]
     [InlineData(0)]
+    [InlineData(10)]
+    [InlineData(100)]
     [InlineData(1_000)]
     [InlineData(10_000)]
-    [InlineData(1_000_000)]
+    [InlineData(100_000)]
     private void Can_Spawn_Many_Bare_Entities(int count)
     {
         using var world = new World();
         for (var i = 0; i < count; i++)
         {
             var entity = world.Spawn();
-            Assert.True(entity.Id.IsEntity);
-            Assert.False(entity.Id.IsWildcard);
-            Assert.False(entity.Id.IsObject);
+            Assert.True(entity.Alive);
         }
     }
 
@@ -537,9 +536,9 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var other = world.Spawn();
-        var data = new Entity(123);
-        entity.Add(data, other);
-        Assert.True(entity.Has<Entity>(other));
+
+        entity.Add<int>(other);
+        Assert.True(entity.Has<int>(other));
     }
 
 

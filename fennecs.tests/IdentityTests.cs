@@ -4,27 +4,12 @@ using System.Numerics;
 
 namespace fennecs.tests;
 
-public class EntityTests(ITestOutputHelper output)
+public class IdentityTests(ITestOutputHelper output)
 {
     [Fact]
-    public void Virtual_Entities_have_no_Successors()
+    public void Entity_None_is_default()
     {
-        Assert.Throws<InvalidOperationException>(() => new Entity(-1, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Entity(-4, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Entity(-2, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Entity(-3, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => default(Entity).Successor);
-    }
-    
-
-    [Fact]
-    public void Entity_Plain_is_default()
-    {
-        var none = default(Entity);
-        Assert.Equal(default, none.Generation);
-        output.WriteLine(none.Generation.ToString());
-        output.WriteLine(none.ToString());
-        Assert.Equal(default, none);
+        Assert.Equal(default, Entity.None);
     }
 
 
@@ -52,18 +37,18 @@ public class EntityTests(ITestOutputHelper output)
     [Fact]
     public void Entity_None_cannot_Match_One()
     {
-        var zero = new Entity(0);
-        Assert.NotEqual(Match.Plain, new Match(zero));
+        var zero = Entity.None;
+        Assert.NotEqual(Match.Plain, new Key(zero));
 
-        var one = new Entity(1);
-        Assert.NotEqual(Match.Plain, new Match(one));
+        var one = new Entity(1, 1);
+        Assert.NotEqual(Match.Plain, new(one));
     }
 
 
     [Fact]
     public void Entity_Matches_Only_Self()
     {
-        var self = new Entity(12345);
+        var self = new Entity(1234, 12);
         Assert.Equal(self, self);
 
         var successor = new Entity(12345, 3);
@@ -75,28 +60,31 @@ public class EntityTests(ITestOutputHelper output)
 
 
     [Theory]
-    [InlineData(1500, 1500)]
-    public void Entity_HashCodes_are_Unique(TypeID idCount, TypeID genCount)
+    [InlineData(100, short.MaxValue)]
+    [InlineData(1_000, short.MaxValue)]
+    [InlineData(10_000, short.MaxValue)]
+    public void Entity_HashCodes_are_Unique(int idCount, short genCount)
     {
         var ids = new Dictionary<int, Entity>((int)(idCount * genCount * 4f));
 
         //Identities
-        for (var i = 0; i < idCount; i++)
+        for (var index = 0; index < idCount; index++)
         //Generations
-        for (TypeID g = 1; g < genCount; g++)
+        for (short generation = 1; generation < genCount; generation++)
         {
-            var entity = new Entity(i, g);
+            var entity = new Entity(0, index, generation);
 
             Assert.NotEqual(new(entity), Match.Any);
             Assert.NotEqual(new(entity), Match.Plain);
 
-            if (ids.ContainsKey(entity.GetHashCode()))
+            if (!ids.TryAdd(entity.GetHashCode(), entity))
+            {
                 Assert.Fail($"Collision of {entity} with {ids[entity.GetHashCode()]}, {entity.GetHashCode()}#==#{ids[entity.GetHashCode()].GetHashCode()}");
-            else
-                ids.Add(entity.GetHashCode(), entity);
+            }
         }
     }
 
+    
     [Fact]
     public void Any_and_None_are_Distinct()
     {
@@ -104,34 +92,36 @@ public class EntityTests(ITestOutputHelper output)
         Assert.NotEqual(Match.Any.GetHashCode(), Match.Plain.GetHashCode());
     }
 
-
     [Fact]
-    public void Entity_Matches_Self_if_Same()
+    public void Can_Create_In_Worlds_1_to_255()
+    {
+        for (var i = 1; i <= byte.MaxValue; i++)
+        {
+            _ = new Entity(new(i), 1);
+        }
+        
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Entity(0, 1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Entity(256, 1));
+    }
+
+    [Theory]
+    [InlineData(9_999)]
+    public void Entity_Matches_Self_if_Same(int count)
     {
         var random = new Random(420960);
-        for (var i = 0; i < 1_000; i++)
+        for (var i = 1; i <= count; i++)
         {
-            var id = random.Next();
-            var gen = (TypeID)(random.Next() % TypeID.MaxValue);
+            var world = new World.Id(random.Next() & 255);
 
-            var self = new Entity(id, gen);
-            var other = new Entity(id, gen);
+            var index = random.Next();
+            var gen = (short)(random.Next() % short.MaxValue);
+            
+            var self = new Entity(world, index, gen);
+            var other = new Entity(world, index, gen);
 
             Assert.Equal(self, other);
         }
     }
-
-
-    /*
-    [Fact]
-    private void Entity_ToString_Facades_Entity_ToString()
-    {
-        var entity = new Entity(123, 456);
-        var entity = new Entity(entity);
-        output.WriteLine(entity.ToString());
-        Assert.Equal(entity.ToString(), entity.ToString());
-    }
-    */
 
 
     [Fact]
@@ -229,7 +219,7 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(t1);
         Assert.True(world.HasComponent<T>(entity, default));
         var components = world.GetSignature(entity);
-        Assert.True(components.Count() == 2);
+        Assert.Equal(2, components.Count);
     }
 
 
@@ -254,7 +244,7 @@ public class EntityTests(ITestOutputHelper output)
         world.Despawn(entity1);
         var entity2 = world.Spawn().Add(t1);
 
-        Assert.Equal(entity1.Id.Index, entity2.Id.Index);
+        Assert.Equal(entity1.Index, entity2.Index);
         Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity1, default));
     }
 
@@ -264,7 +254,7 @@ public class EntityTests(ITestOutputHelper output)
     private void Entity_can_Get_Component<T>(T t1) where T : struct
     {
         using var world = new World();
-        var entity = world.Spawn().Add(t1).Id;
+        var entity = world.Spawn().Add(t1);
         var x = world.GetComponent<T>(entity, default);
         Assert.Equal(t1, x);
     }

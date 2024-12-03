@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using fennecs.CRUD;
 
@@ -72,9 +74,14 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     }
 
 
-    internal Entity(ulong key, ushort generation)
+    internal Entity(ulong raw, ushort generation)
     {
-        Value = key | (ulong) generation << 48;
+        Value = raw | (ulong) generation << 48;
+    }
+
+    internal Entity(ulong raw)
+    {
+        Value = raw;
     }
 
     /// <summary>
@@ -89,7 +96,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <summary>
     /// Implicitly convert an Entity to a Key, for use in relations and matching.
     /// </summary>
-    public static implicit operator Key(Entity entity) => new(entity);
+    //public static implicit operator Key(Entity self) => new(self);
 
     /// <summary>
     /// Construct an Entity from a Key.
@@ -154,6 +161,9 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
         World.AddComponent(this, TypeExpression.Of<C>(key), component);
         return this;
     }
+    
+    /// <inheritdoc />
+    public Entity Add<C>(Key key = default) where C : notnull, new() => Add(new C(), key);
 
     /// <inheritdoc />
     public Entity Link<L>(L link) where L : class

@@ -32,8 +32,8 @@ public partial record Stream<C0> :
     /// <para>🚀 Very fast!</para>
     /// </summary>
     /// <remarks>
-    /// Each entity in the Query must possess the component type.
-    /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
+    /// This only fills existing components, it does not create new ones.
+    /// If you wish to create the component, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
     /// </remarks>
     /// <param name="value">a component value</param>
     /// <param name="match">default for Plain components, Entity for Relations, Entity.Of(Object) for ObjectLinks </param>
