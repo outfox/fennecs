@@ -111,8 +111,13 @@ public interface IStorage
 public class Storage<T> : IStorage where T : notnull
 {
     public Storage() : this(TypeExpression.Of<T>(default)) { }
+
+    /// <summary>
+    /// The backing type and secondary key of stored elements.
+    /// </summary>
+    internal readonly TypeExpression _expression;
     
-    public TypeExpression Expression { get; }
+    public TypeExpression Expression => _expression;
     
     private const int InitialCapacity = 32;
         

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using fennecs.CRUD;
+using fennecs.storage;
 
 namespace fennecs;
 
@@ -190,4 +191,10 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     {
         World.Despawn(this);
     }
+
+
+    /// <summary>
+    /// Returns a reference to a component of the given type, matching the given Key.
+    /// </summary>
+    public RWImmediate<C> Ref<C>(Key key) where C : notnull => new(ref World.GetComponent<C>(this, key), this, key);
 }

@@ -11,11 +11,15 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        var builder = new Entity(world, entity);
-        builder.Add<int>(target);
+        var wrong = world.Spawn();
+        entity.Add<int>(target);
+        
         Assert.True(entity.Has<int>(target));
-        Assert.False(entity.Has<int>(new Entity(world, new Entity(9001))));
-    }
+        Assert.False(entity.Has<int>(wrong));
+        Assert.False(entity.Has<int>());
+        Assert.Equal(default, entity.Ref<int>(target).Read);
+        Assert.Equal(default, entity.Ref<int>(target).Write);
+   }
 
 
     [Fact]
@@ -24,10 +28,14 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        var builder = new Entity(world, entity);
-        builder.Add(123, target);
+        var wrong = world.Spawn();
+        entity.Add(123, target);
+        
         Assert.True(entity.Has<int>(target));
-        Assert.False(entity.Has<int>(new Entity(world, new Entity(9001))));
+        Assert.False(entity.Has<int>(wrong));
+        Assert.False(entity.Has<int>());
+        Assert.Equal(123, entity.Ref<int>(target).Read);
+        Assert.Equal(123, entity.Ref<int>(target).Write);
     }
 
 

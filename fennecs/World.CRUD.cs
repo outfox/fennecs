@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using fennecs.storage;
 
 namespace fennecs;
 
@@ -71,6 +72,7 @@ public partial class World
         var storage = table.GetStorage<T>(key);
         return ref storage.Span[row];
     }
+    
     
     internal bool GetComponent(Entity entity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
