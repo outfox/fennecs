@@ -19,7 +19,11 @@ public partial record Stream<C0, C1, C2, C3, C4> : Stream, IEnumerable<(Entity, 
     /// <inheritdoc cref="Stream{C0}"/>
     internal Stream(Query Query, Match match0, Match match1, Match match2, Match match3, Match match4) : base(Query)
     {
-        StreamTypes = [TypeExpression.Of<C0>(match0), TypeExpression.Of<C1>(match1), TypeExpression.Of<C2>(match2), TypeExpression.Of<C3>(match3), TypeExpression.Of<C4>(match4)];
+        StreamTypes =
+        [
+            MatchExpression.Of<C0>(match0), MatchExpression.Of<C1>(match1), MatchExpression.Of<C2>(match2),
+            MatchExpression.Of<C3>(match3), MatchExpression.Of<C4>(match4)
+        ];
     }
 
 
@@ -30,7 +34,7 @@ public partial record Stream<C0, C1, C2, C3, C4> : Stream, IEnumerable<(Entity, 
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
     public void Blit(C1 value, Match match = default) => Filtered.Fill(match, value);
-    
+
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
     public void Blit(C2 value, Match match = default) => Filtered.Fill(match, value);
 
@@ -59,7 +63,8 @@ public partial record Stream<C0, C1, C2, C3, C4> : Stream, IEnumerable<(Entity, 
                 for (var index = 0; index < table.Count; index++)
                 {
                     yield return (table[index], s0[index], s1[index], s2[index], s3[index], s4[index]);
-                    if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    if (table.Version != snapshot)
+                        throw new InvalidOperationException("Collection was modified during iteration.");
                 }
             } while (join.Iterate());
         }
@@ -69,6 +74,4 @@ public partial record Stream<C0, C1, C2, C3, C4> : Stream, IEnumerable<(Entity, 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion
-
-
 }

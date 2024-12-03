@@ -58,7 +58,8 @@ public partial record Stream<C0> :
                 for (var index = 0; index < table.Count; index++)
                 {
                     yield return (table[index], s0.Span[index]);
-                    if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    if (table.Version != snapshot)
+                        throw new InvalidOperationException("Collection was modified during iteration.");
                 }
             } while (join.Iterate());
         }
@@ -68,6 +69,4 @@ public partial record Stream<C0> :
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion
-
-
 }

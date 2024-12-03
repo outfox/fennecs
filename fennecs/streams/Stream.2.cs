@@ -26,7 +26,7 @@ public partial record Stream<C0, C1> :
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
     public void Blit(C1 value, Match match = default) => Filtered.Fill(match, value);
-    
+
     #endregion
 
 
@@ -58,6 +58,4 @@ public partial record Stream<C0, C1> :
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion
-
-
 }
