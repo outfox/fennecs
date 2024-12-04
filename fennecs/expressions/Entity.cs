@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using fennecs.CRUD;
@@ -103,10 +104,6 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <returns>the entity, if the Key is a living Entity</returns>
     public static implicit operator Entity(Key key) => new(key);
 
-    /// <summary>
-    /// Implicitly convert an Entity to a Key, for use in relations and matching.
-    /// </summary>
-    //public static implicit operator Key(Entity self) => new(self);
 
     /// <summary>
     /// Construct an Entity from a Key.
@@ -190,6 +187,13 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     }
 
     /// <inheritdoc />
+    public Entity Remove(Type type, Key key = default)
+    {
+        World.RemoveComponent(this, TypeExpression.Of(type, key));
+        return this;
+    }
+
+    /// <inheritdoc />
     public bool Has<C>(Key key = default) where C : notnull => World.HasComponent(this, TypeExpression.Of<C>(key));
 
     /// <inheritdoc />
@@ -209,6 +213,32 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
     /// </summary>
     public ref readonly C Get<C>(Key key = default) where C : notnull => ref World.GetComponent<C>(this, key);
+    
+    /// <summary>
+    /// Gets the component from the Entity (boxed)
+    /// </summary>
+    public object Get(Type type, Key key = default)
+    {
+        if (World.TryGetComponent(this, TypeExpression.Of(type, key), out var component)) return component;
+        throw new InvalidOperationException($"Entity {this} does not have a component of {type} for key {key}");
+    }
+    
+
+    /// <summary>
+    /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
+    /// </summary>
+    public bool Get(Type type, Key key, [MaybeNullWhen(false)] out object component)
+    {
+        return World.TryGetComponent(this, TypeExpression.Of(type, key), out component);
+    }
+
+    /// <summary>
+    /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
+    /// </summary>
+    public bool Get(Type type, [MaybeNullWhen(false)] out object component)
+    {
+        return World.TryGetComponent(this, TypeExpression.Of(type), out component);
+    }
 
     /// <summary>
     /// Sets the component of the given type, matching the given Key.
@@ -237,5 +267,5 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <remarks>
     /// Only use this if you need to work with the component directly, otherwise it is recommended to use <see cref="Entity.Get{C}(fennecs.Key)"/> and <see cref="Set{C}(in C, fennecs.Key)"/>.
     /// </remarks>
-    public RWImmediate<C> Ref<C>(Key key) where C : notnull => new(ref World.GetComponent<C>(this, key), this, key);
+    public RWImmediate<C> Ref<C>(Key key = default) where C : notnull => new(ref World.GetComponent<C>(this, key), this, key);
 }

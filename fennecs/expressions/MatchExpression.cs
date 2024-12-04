@@ -82,7 +82,7 @@ public readonly record struct MatchExpression
         // Match.Relation matches only Entity-Entity relations.
         if (Match == Match.Entity) return other.Key.IsEntity;
 
-        // Match.Object matches only Entity-Object relations.
+        // Match.Link matches only Entity-Object relations.
         if (Match == Match.Link) return other.Key.IsLink;
 
         // Direct match?

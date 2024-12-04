@@ -177,7 +177,7 @@ public class Stream1Tests(ITestOutputHelper output)
         stream = world.Query<string>(Match.Target).Stream();
         Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<string>(Match.Object).Stream();
+        stream = world.Query<string>(Match.Link).Stream();
         Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
         stream = world.Query<string>(Match.Plain).Stream();

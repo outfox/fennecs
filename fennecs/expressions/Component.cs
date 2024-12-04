@@ -105,7 +105,7 @@ public readonly record struct Comp
 }
 
 /// <summary>
-/// Component Expression for Component types (of any kind). This is used as a more deliberate way to create and apss Component expressions around, for example for SIMD and Stream filters.
+/// Component Expression for Component types (of any kind). This is used as a more deliberate way to create and pass Component expressions around, for example for SIMD and Stream filters.
 /// </summary>
 /// <remarks>
 /// Variables of this type describe a Component, Relation, or Link, but not the actual values.
@@ -129,7 +129,7 @@ public readonly record struct Comp<T>(Key Key = default)
     /// <summary>
     /// A component expression matching a specific link object.
     /// </summary>
-    public static Comp<U> Matching<U>(U target) where U : class => new(Key.Of(target));
+    public static Comp<U> Matching<U>(U target) where U : notnull => new(Key.Of(target));
 
     /// <summary>
     /// Does this Component match another Component Expression?
@@ -141,4 +141,9 @@ public readonly record struct Comp<T>(Key Key = default)
     /// (this representation wraps an opaque internal type of the ECS)
     /// </summary>
     public static implicit operator Comp(Comp<T> self) => new(self.Expression);
+
+    /// <summary>
+    /// Do the types and secondary keys of these Comps match? 
+    /// </summary>
+    public bool Matches<C>(Comp<C> compPlain) where C: notnull => compPlain.Expression == Expression;
 }

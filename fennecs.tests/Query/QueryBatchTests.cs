@@ -315,7 +315,7 @@ public class QueryBatchTests
         Assert.DoesNotContain(e2, stringQuery);
         Assert.Contains(e3, stringQuery);
 
-        var linkQuery = world.Query<string>(Match.Object).Compile();
+        var linkQuery = world.Query<string>(Match.Link).Compile();
         Assert.Empty(linkQuery);
 
         var intQuery = world.Query<int>().Compile();
@@ -757,7 +757,7 @@ public class QueryBatchTests
         using var world = new World();
         var e3 = world.Spawn().Add(Link.With(target));
 
-        var stringQuery = world.Query<string>(Match.Object).Compile();
+        var stringQuery = world.Query<string>(Match.Link).Compile();
         Assert.Equal(1, stringQuery.Count);
         Assert.Contains(e3, stringQuery);
 
@@ -774,7 +774,7 @@ public class QueryBatchTests
         using var world = new World();
         var e3 = world.Spawn().Add(Link.With(target));
 
-        var stringQuery = world.Query<string>(Match.Object).Compile();
+        var stringQuery = world.Query<string>(Match.Link).Compile();
         Assert.Equal(1, stringQuery.Count);
         Assert.Contains(e3, stringQuery);
 
@@ -791,7 +791,7 @@ public class QueryBatchTests
         using var world = new World();
         var e3 = world.Spawn().Add(Link.With(target));
 
-        var stringQuery = world.Query<string>(Match.Object).Compile();
+        var stringQuery = world.Query<string>(Match.Link).Compile();
         Assert.Equal(1, stringQuery.Count);
         Assert.Contains(e3, stringQuery);
 

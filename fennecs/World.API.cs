@@ -157,7 +157,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
     /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
-    /// of <see cref="Match.Any"/>, <see cref="Match.Target"/>, or <see cref="Match.Object"/>, <see cref="Match.Entity"/>
+    /// of <see cref="Match.Any"/>, <see cref="Match.Target"/>, or <see cref="Match.Link"/>, <see cref="Match.Entity"/>
     /// </param>
     public void DespawnAllWith<T>(Match match = default)
     {

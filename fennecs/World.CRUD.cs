@@ -76,7 +76,7 @@ public partial class World
     }
     
     
-    internal bool GetComponent(Entity entity, TypeExpression type, [MaybeNullWhen(false)] out object value)
+    internal bool TryGetComponent(Entity entity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
         AssertAlive(entity);
 
@@ -107,5 +107,11 @@ public partial class World
         var meta = _meta[id.Index];
         using var storages = meta.Archetype.Match<T>(expression);
         return storages.Select(s => s[meta.Row]).ToArray();
+    }
+    
+    internal IReadOnlyList<Component> GetComponents(Entity id)
+    {
+        var archetype = _meta[id.Index].Archetype;
+        return archetype.GetRow(_meta[id.Index].Row);
     }
 }

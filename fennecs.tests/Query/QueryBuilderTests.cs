@@ -31,9 +31,9 @@ public class QueryBuilderTests
         var q1 = world.Query();
         var q2 = world.Query<int>(Match.Entity);
         var q3 = world.Query<int, string>(Match.Any, Match.Plain);
-        var q4 = world.Query<int, string, double>(Match.Object, Match.Target, Match.Plain);
-        var q5 = world.Query<int, string, double, float>(Match.Object, Match.Target, Match.Plain, Match.Any);
-        var q6 = world.Query<int, string, double, float, long>(Match.Object, Match.Target, Match.Plain, Match.Any, Match.Object);
+        var q4 = world.Query<int, string, double>(Match.Link, Match.Target, Match.Plain);
+        var q5 = world.Query<int, string, double, float>(Match.Link, Match.Target, Match.Plain, Match.Any);
+        var q6 = world.Query<int, string, double, float, long>(Match.Link, Match.Target, Match.Plain, Match.Any, Match.Link);
         Assert.NotNull(q1);
         Assert.NotNull(q2);
         Assert.NotNull(q3);
@@ -159,7 +159,7 @@ public class QueryBuilderTests
             .Any(Link.With(new List<float>()));
 
         //Conflict
-        builder.Has<int>().Not<string>(Match.Object).Any<double>();
+        builder.Has<int>().Not<string>(Match.Link).Any<double>();
 
         //Repeat
         builder.Has<int>();

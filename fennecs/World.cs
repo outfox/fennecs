@@ -243,12 +243,6 @@ public partial class World
         return table;
     }
 
-    internal IReadOnlyList<Component> GetComponents(Entity id)
-    {
-        var archetype = _meta[id.Index].Archetype;
-        return archetype.GetRow(_meta[id.Index].Row);
-    }
-
     /// <inheritdoc />
     public override int GetHashCode() => _guid.GetHashCode();
 

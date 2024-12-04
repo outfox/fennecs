@@ -13,7 +13,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Plain).ToString());
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Any).ToString());
-        output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Object).ToString());
+        output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Link).ToString());
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Entity).ToString());
         output.WriteLine(TypeExpression.Of<TypeEmpty>(new(new(123))).ToString());
     }
@@ -113,7 +113,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var none = TypeExpression.Of<TypeEmpty>(Match.Plain);
         var any = TypeExpression.Of<TypeEmpty>(Match.Any);
-        var obj = TypeExpression.Of<TypeEmpty>(Match.Object);
+        var obj = TypeExpression.Of<TypeEmpty>(Match.Link);
         var rel = TypeExpression.Of<TypeEmpty>(Match.Entity);
 
         var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
@@ -146,7 +146,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Object_Matches_only_Objects()
     {
-        var obj = TypeExpression.Of<TypeEmpty>(Match.Object);
+        var obj = TypeExpression.Of<TypeEmpty>(Match.Link);
 
         var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
         var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));

@@ -167,7 +167,7 @@ public class NumberingTests
         stream.Mem(
             action: indices =>
             {
-                var pin = indices.Memory.Pin();
+                indices.Memory.Pin();
                 foreach (ref var entry in indices.write) entry = index++;
             }
         );

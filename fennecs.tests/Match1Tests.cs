@@ -117,7 +117,7 @@ public class Match1Tests
     [Fact]
     public void Object_Enumerates_all_Object_Links()
     {
-        var query = _world.Query<string>(Match.Object).Stream();
+        var query = _world.Query<string>(Match.Link).Stream();
 
         HashSet<string> seen = [];
 

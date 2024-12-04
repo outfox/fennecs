@@ -496,7 +496,7 @@ public class QueryTests
         var query = world.Query<int>(Match.Any).Compile();
         world.Spawn().Add<int>();
         Assert.True(query.Contains<int>(Match.Plain));
-        Assert.False(query.Contains<float>(Match.Object));
+        Assert.False(query.Contains<float>(Match.Link));
     }
 
 

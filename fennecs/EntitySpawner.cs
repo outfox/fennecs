@@ -28,7 +28,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     #endregion
 
 
-    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(fennecs.Key)" />
+    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(C, fennecs.Key)" />
     public EntitySpawner Add<C>(C component, Key key = default) where C : notnull
     {
         var type = TypeExpression.Of<C>(key);
@@ -46,6 +46,9 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
 
         return this;
     }
+
+    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(fennecs.Key)" />
+    public EntitySpawner Add<C>(Key key = default) where C : notnull, new() => Add<C>(new(), key);
 
 
     /// <inheritdoc cref="IAddRemove{SELF}.Remove{R}(fennecs.Key)" />

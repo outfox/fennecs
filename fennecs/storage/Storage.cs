@@ -144,10 +144,7 @@ public class Storage<T> : IStorage where T : notnull
     /// Replaces the value at the given index.
     /// (use <c>Append</c> to add a new one)
     /// </summary>
-    public void Store(int index, T value)
-    {
-        Span[index] = value;
-    }
+    public void Store(int index, T value) => Span[index] = value;
     
     /// <inheritdoc />
     public Type Type => typeof(T);

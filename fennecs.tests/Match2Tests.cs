@@ -98,7 +98,7 @@ public class Match2Tests
     [Fact]
     public void Object_Enumerates_all_Object_Links()
     {
-        var query = _world.Query<string, float>(Match.Object, Match.Plain).Stream();
+        var query = _world.Query<string, float>(Match.Link, Match.Plain).Stream();
 
         HashSet<string> seen = [];
 

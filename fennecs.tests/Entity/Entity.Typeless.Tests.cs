@@ -15,7 +15,7 @@ public class EntityTypelessTests
         Assert.True(entity.Has(typeof(int), default));
         Assert.False(entity.Has(typeof(int), Match.Entity));
         Assert.False(entity.Has(typeof(int), Match.Target));
-        Assert.False(entity.Has(typeof(int), Match.Object));
+        Assert.False(entity.Has(typeof(int), Match.Link));
         Assert.True(entity.Has<int>());
     }
 
@@ -42,7 +42,7 @@ public class EntityTypelessTests
         object boxed = 123;
         entity.Set(123);
         
-        Assert.Equal(123, entity.Ref<int>());
+        Assert.Equal(123, entity.Ref<int>().Read);
         Assert.Equal(123, entity.Get(typeof(int)));
         Assert.Equal(boxed, entity.Get<int>(default)[0]);
     }
@@ -81,7 +81,7 @@ public class EntityTypelessTests
         
         object boxed = 123;
         
-        Assert.Throws<ArgumentException>(() => entity.Set(boxed, Match.Object));
+        Assert.Throws<ArgumentException>(() => entity.Set(boxed, Match.Link));
     }
     
     [Fact]

@@ -194,7 +194,7 @@ public class EntityTests(ITestOutputHelper output)
 
         Assert.True(entity.Has<string>("hello world"));
         Assert.True(entity.Has<string>(Match.Any));
-        Assert.True(entity.Has<string>(Match.Object));
+        Assert.True(entity.Has<string>(Match.Link));
         Assert.True(entity.Has<string>(Link.Any));
         Assert.True(entity.Has<string>(Match.Target));
 
@@ -231,7 +231,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.True(entity.Has<int>(Match.Any));
 
         Assert.False(entity.Has<int>(new Entity(world, new(9001))));
-        Assert.False(entity.Has<int>(Match.Object));
+        Assert.False(entity.Has<int>(Match.Link));
     }
 
 
