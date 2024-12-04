@@ -26,6 +26,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneRing", "cookbook\OneRing
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs.run", "fennecs.run\fennecs.run.csproj", "{D404E394-5EBE-4C30-9B2E-C875D4D83E0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs.analyzers", "fennecs.analyzers\fennecs.analyzers\fennecs.analyzers.csproj", "{93855CCA-92A0-4750-AAA4-940F8566A2D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs.analyzers.Sample", "fennecs.analyzers\fennecs.analyzers.Sample\fennecs.analyzers.Sample.csproj", "{D5270A25-1F87-4805-B3A5-1E000449B464}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fennecs.analyzers.Tests", "fennecs.analyzers\fennecs.analyzers.Tests\fennecs.analyzers.Tests.csproj", "{D57A068E-3743-4A75-BBA6-E9A7B894B8DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +73,18 @@ Global
 		{D404E394-5EBE-4C30-9B2E-C875D4D83E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D404E394-5EBE-4C30-9B2E-C875D4D83E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D404E394-5EBE-4C30-9B2E-C875D4D83E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93855CCA-92A0-4750-AAA4-940F8566A2D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93855CCA-92A0-4750-AAA4-940F8566A2D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93855CCA-92A0-4750-AAA4-940F8566A2D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93855CCA-92A0-4750-AAA4-940F8566A2D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5270A25-1F87-4805-B3A5-1E000449B464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5270A25-1F87-4805-B3A5-1E000449B464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5270A25-1F87-4805-B3A5-1E000449B464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5270A25-1F87-4805-B3A5-1E000449B464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D57A068E-3743-4A75-BBA6-E9A7B894B8DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D57A068E-3743-4A75-BBA6-E9A7B894B8DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D57A068E-3743-4A75-BBA6-E9A7B894B8DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D57A068E-3743-4A75-BBA6-E9A7B894B8DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E47323F4-E218-4B90-A85E-25E67750249B} = {4CED50D6-3475-41DC-98EC-5E79E9D919B2}

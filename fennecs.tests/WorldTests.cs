@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 
@@ -160,7 +161,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add(Link.With("dieter"))
             .Spawn(count);
 
-        var query = world.Query<int, string>(Match.Plain, Match.Link("dieter")).Stream();
+        var query = world.Query<int, string>(default, Link.With("dieter")).Stream();
         Assert.Equal(count, query.Count);
 
         query.For((i, s) =>
@@ -245,16 +246,15 @@ public class WorldTests(ITestOutputHelper output)
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Entity>(Match.Plain).Stream();
-        query.Raw(world, (uniform, _) =>
-        {
-            for (var i = 0; i < count; i++)
+        Assert.Throws<InvalidOperationException>(() =>
+            query.Raw(world, (uniform, _) =>
             {
-                var entity = uniform.Spawn();
-                Assert.True(entity.Id.IsEntity);
-                Assert.False(entity.Id.IsWildcard);
-                Assert.False(entity.Id.IsObject);
-            }
-        });
+                for (var i = 0; i < count; i++)
+                {
+                    var entity = uniform.Spawn();
+                    Assert.True(entity.Alive);
+                }
+            }));
 
         world.Dispose();
     }
@@ -271,13 +271,11 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Entity>(Match.Plain).Stream();
-        query.For(world, (uniform, _) =>
+        var stream = world.Query<Entity>().Stream();
+        stream.For(world, (uniform, _) =>
         {
             var entity = uniform.Spawn();
-            Assert.True(entity.Id.IsEntity);
-            Assert.False(entity.Id.IsWildcard);
-            Assert.False(entity.Id.IsObject);
+            Assert.True(entity.Alive);
             Thread.Yield();
         });
 
@@ -331,44 +329,47 @@ public class WorldTests(ITestOutputHelper output)
     public void Added_Newable_Class_is_not_Null()
     {
         using var world = new World();
-        var entity = world.Spawn().Add<NewableClass>().Id;
-        Assert.True(world.HasComponent<NewableClass>(entity, Match.Plain));
-        Assert.NotNull(world.GetComponent<NewableClass>(entity, Match.Plain));
+        var entity = world.Spawn().Add<NewableClass>();
+        Assert.True(world.HasComponent<NewableClass>(entity, default));
+        Assert.NotNull(world.GetComponent<NewableClass>(entity, default));
     }
 
 
-    [Fact]
-    public void Added_Newable_Struct_is_default()
+    [Theory]
+    [ClassData(typeof(KeyGenerator))]
+    public void Added_Newable_Struct_is_default(Key key)
     {
         using var world = new World();
-        var entity = world.Spawn().Add<NewableStruct>().Id;
-        Assert.True(world.HasComponent<NewableStruct>(entity, Match.Plain));
-        Assert.Equal(default, world.GetComponent<NewableStruct>(entity, Match.Plain));
+        var entity = world.Spawn().Add<NewableStruct>(key);
+        Assert.True(world.HasComponent<NewableStruct>(entity, key));
+        Assert.Equal(default, world.GetComponent<NewableStruct>(entity, key));
     }
 
 
-    [Fact]
-    public void Can_add_Non_Newable()
+    [Theory]
+    [ClassData(typeof(KeyGenerator))]
+    public void Can_add_Non_Newable(Key key)
     {
         using var world = new World();
-        var entity = world.Spawn().Add<string>("12").Id;
-        Assert.True(world.HasComponent<string>(entity, Match.Plain));
-        Assert.NotNull(world.GetComponent<string>(entity, Match.Plain));
+        var entity = world.Spawn().Add<string>("12", key);
+        Assert.True(world.HasComponent<string>(entity, key));
+        Assert.NotNull(world.GetComponent<string>(entity, key));
     }
 
 
-    [Fact]
-    public void Adding_Component_in_Deferred_Mode_Is_Deferred()
+    [Theory]
+    [ClassData(typeof(KeyGenerator))]
+    public void Adding_Component_in_Deferred_Mode_Is_Deferred(Key key)
     {
         using var world = new World();
         var entity = world.Spawn();
         var worldLock = world.Lock();
 
         entity.Add(666);
-        Assert.False(world.HasComponent<int>(entity, Match.Plain));
+        Assert.False(world.HasComponent<int>(entity, key));
         worldLock.Dispose();
-        Assert.True(world.HasComponent<int>(entity, Match.Plain));
-        Assert.Equal(666, world.GetComponent<int>(entity, Match.Plain));
+        Assert.True(world.HasComponent<int>(entity, key));
+        Assert.Equal(666, world.GetComponent<int>(entity, key));
     }
 
 
@@ -398,8 +399,9 @@ public class WorldTests(ITestOutputHelper output)
     }
 
 
-    [Fact]
-    public void Apply_Deferred_Add()
+    [Theory]
+    [ClassData(typeof(KeyGenerator))]
+    public void Apply_Deferred_Add(Key key)
     {
         using var world = new World();
         var entity = world.Spawn();
@@ -407,11 +409,11 @@ public class WorldTests(ITestOutputHelper output)
         var worldLock = world.Lock();
         entity.Add(666);
 
-        Assert.False(world.HasComponent<int>(entity, Match.Plain));
+        Assert.False(world.HasComponent<int>(entity, key));
         worldLock.Dispose();
 
-        Assert.True(world.HasComponent<int>(entity, Match.Plain));
-        Assert.Equal(666, world.GetComponent<int>(entity, Match.Plain));
+        Assert.True(world.HasComponent<int>(entity, key));
+        Assert.Equal(666, world.GetComponent<int>(entity, key));
     }
 
 
@@ -503,7 +505,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         object target = new { };
         entity.Add(Link.With(target));
-        Assert.True(entity.Has(Link.With(target)));
+        Assert.True(entity.Has<object>(target.Key())); //TODO: Probably wrong.
     }
 
 
@@ -524,9 +526,9 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         object target = new { };
         entity.Add(Link.With(target));
-        var typeExpression = TypeExpression.Of<object>(Link.With(target));
+        var typeExpression = TypeExpression.Of(target.GetType(), target.Key());
         world.RemoveComponent(entity, typeExpression);
-        Assert.False(entity.Has(Link.With(target)));
+        Assert.False(world.HasComponent(entity, typeExpression));
     }
 
 
@@ -620,7 +622,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity2 = world.Spawn().Add(Link.With("to the past"));
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
-        world.DespawnAllWith<string>(Match.Object);
+        world.DespawnAllWith<string>(Match.Link);
         Assert.True(world.IsAlive(entity1));
         Assert.False(world.IsAlive(entity2));
         Assert.True(world.IsAlive(entity3));
@@ -723,7 +725,7 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Equal(1, query.Count);
         Assert.Equal(1, world.Count);
     }
-    
+
     struct Predicted;
 
     [Fact]
@@ -755,18 +757,12 @@ public class WorldTests(ITestOutputHelper output)
 
         var quickCount = 0;
         quickStream.For(
-            (_, _) =>
-            {
-                quickCount++;
-            }
+            (_, _) => { quickCount++; }
         );
 
         var queryCount = 0;
         queryStream.For(
-            (_, _) =>
-            {
-                queryCount++;
-            }
+            (_, _) => { queryCount++; }
         );
 
         Assert.Equal(2, quickCount);
@@ -786,21 +782,15 @@ public class WorldTests(ITestOutputHelper output)
         var target1 = world.Spawn();
         var target2 = world.Spawn();
         world.Spawn().Add(new Predicted(), target1).Add(new Predicted(), target2);
-        
+
         var quickCount = 0;
         quickStream.For(
-            (_, _) =>
-            {
-                quickCount++;
-            }
+            (_, _) => { quickCount++; }
         );
 
         var queryCount = 0;
         queryStream.For(
-            (_,_) =>
-            {
-                queryCount++;
-            }
+            (_, _) => { queryCount++; }
         );
 
         Assert.Equal(2, quickCount);
@@ -828,4 +818,18 @@ public class WorldTests(ITestOutputHelper output)
     private class NewableClass;
 
     private struct NewableStruct;
+
+    
+    private class KeyGenerator : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return [default(Key)];
+            yield return [Key.Of(123)];
+            yield return [Key.Of("dieter")];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
 }

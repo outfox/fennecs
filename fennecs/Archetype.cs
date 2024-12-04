@@ -15,7 +15,7 @@ namespace fennecs;
 /// <summary>
 /// A storage of a class of Entities with a fixed set of Components, its <see cref="Signature"/>.
 /// </summary>
-public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHasTyped
+public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHasComponent
 {
     /// <summary>
     /// The TypeExpressions that define this Archetype.
@@ -115,11 +115,34 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
     /// Does this Archetype contain a storage of the given Type & Key?
     /// </summary>
     public bool Has<T>(Key key = default) where T : notnull=> _storageIndices.ContainsKey(TypeExpression.Of<T>(key));
+
+    
+    /// <summary>
+    /// Does this Archetype contain a storage of the given Type & Key?
+    /// </summary>
+    public bool Has(Type type, Key key = default) => _storageIndices.ContainsKey(TypeExpression.Of(type,key));
+
+    
+    /// <summary>
+    /// Does this Archetype contain one or more storages matching the given MatchExpression?
+    /// </summary>
+    public bool Has<C>(Match match) where C : notnull => Matches(MatchExpression.Of<C>(match));
+    
+    
+    /// <summary>
+    /// Does this Archetype contain one or more storages matching the given MatchExpression?
+    /// </summary>
+    public bool Has(Type type, Match match) => Matches(MatchExpression.Of(type, match));
+
     
     internal bool Matches(MatchExpression expression) => Signature.Matches(expression);
 
-    // A method that checks if a given Mask parameter matches certain criteria using boolean logic and short circuiting.
-    // ReSharper disable once ConvertIfStatementToReturnStatement
+    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> types) => Signature.IsSupersetOf(types);
+
+    
+    /// <summary>
+    /// A method that checks if a given Mask parameter matches certain criteria using boolean logic and short circuiting.
+    /// </summary>
     internal bool Matches(Mask mask)
     {
         //Not overrides both Any and Has.
@@ -128,18 +151,13 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
 
         //If already matching, no need to check any further. 
         var matchesHas = mask.HasTypes.Count == 0 || Signature.MatchesAll(mask.HasTypes);
-        if (!matchesHas) return false;
+        if (matchesHas) return true;
 
         //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
         var matchesAny = mask.AnyTypes.Count == 0 || Signature.MatchesAny(mask.AnyTypes);
-        if (!matchesAny) return false;
-
-        return true;
+        return matchesAny;
     }
-
-
-    internal bool IsMatchSuperSet(IReadOnlyList<TypeExpression> types) => Signature.IsSupersetOf(types);
-
+    
     /// <summary>
     /// Remove one or more Entities and all associated Component data from the Archetype.
     /// </summary>

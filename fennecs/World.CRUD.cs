@@ -24,7 +24,7 @@ public partial class World
         if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} already has a component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
-        var newArchetype = GetArchetype(newSignature);
+        var newArchetype = GetOrCreateArchetype(newSignature);
         Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
 
         // Back-fill the new value
@@ -47,25 +47,27 @@ public partial class World
         if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} does not have a component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
-        var newArchetype = GetArchetype(newSignature);
+        var newArchetype = GetOrCreateArchetype(newSignature);
         Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
     }
 
 
-    internal bool HasComponent<T>(Entity entity, Key key)
-    {
-        var type = TypeExpression.Of<T>(key);
-        return HasComponent(entity, type);
-    }
+    internal bool HasComponent<T>(Entity entity, Key key) => HasComponent(entity, TypeExpression.Of<T>(key));
+
+
+    internal bool HasComponent<T>(Entity entity, Match match) => HasComponent(entity, MatchExpression.Of<T>(match));
 
     
+    internal bool HasComponent(Entity entity, Type type, Match match) => HasComponent(entity, MatchExpression.Of(type, match));
+
+
     internal ref T GetComponent<T>(Entity entity, Key key) where T : notnull
     {
         AssertAlive(entity);
 
         if (!HasComponent<T>(entity, key))
         {
-            throw new InvalidOperationException($"Entity {entity} does not have a reference type component of type {typeof(T)} / {key}");
+            throw new InvalidOperationException($"Entity {entity} does not have a component of type {typeof(T)} / {key}");
         }
 
         var (table, row, _) = _meta[entity.Index];

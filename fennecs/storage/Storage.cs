@@ -110,7 +110,7 @@ public interface IStorage
 /// <typeparam name="T">the type of the array elements</typeparam>
 public class Storage<T> : IStorage where T : notnull
 {
-    public Storage() : this(TypeExpression.Of<T>(default)) { }
+    internal Storage() : this(TypeExpression.Of<T>(default)) { }
 
     /// <summary>
     /// The backing type and secondary key of stored elements.
@@ -123,8 +123,8 @@ public class Storage<T> : IStorage where T : notnull
         
     private static readonly ArrayPool<T> Pool = ArrayPool<T>.Create();
     
-    private T[] _data = Pool.Rent(InitialCapacity);
-    private T[]? _read = Pool.Rent(InitialCapacity);
+    private T[] _data;
+    private T[] _read;
 
     
     /// <summary>
@@ -134,10 +134,10 @@ public class Storage<T> : IStorage where T : notnull
     public Storage(TypeExpression expression)
     {
         using var _ = PooledList<Storage<T>>.Rent();        
-        Expression = expression;
+        _expression = expression;
         
         _data = Pool.Rent(InitialCapacity);
-        _read = typeof(fennecs.events.Commit).IsAssignableFrom(typeof(T)) ? Pool.Rent(InitialCapacity) : _data;
+        _read = typeof(events.Commit).IsAssignableFrom(typeof(T)) ? Pool.Rent(InitialCapacity) : _data;
     }
 
     /// <summary>
@@ -163,7 +163,7 @@ public class Storage<T> : IStorage where T : notnull
 
 
     /// <summary>
-    /// Number of Elements actually stored.
+    /// Capacity of the underlying array (NOT the number of elements stored).
     /// </summary>
     public int Capacity => _data.Length;
 

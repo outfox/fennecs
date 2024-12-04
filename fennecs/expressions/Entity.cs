@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using fennecs.CRUD;
+using fennecs.events;
 using fennecs.storage;
 
 namespace fennecs;
@@ -23,13 +24,16 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     [FieldOffset(4)] internal readonly byte WorldIndex;
 
     [FieldOffset(5)] internal readonly byte Flags;
-    [FieldOffset(6)] internal readonly ushort Generation;
+    [FieldOffset(6)] internal readonly short Generation;
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
     [FieldOffset(8)] internal readonly uint DWordHigh;
 
 
+    [Obsolete("Just use this / the Entity itself")]
+    internal Entity Id => this;
+        
     /// <summary>
     /// <c>null</c> equivalent for Entity.
     /// </summary>
@@ -40,6 +44,11 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// The World this Entity belongs to.
     /// </summary>
     public World World => World.Get(WorldIndex);
+    
+    /// <summary>
+    /// The Archetype this Entity belongs to.
+    /// </summary>
+    public Archetype Archetype => World.GetEntityMeta(this).Archetype;
 
 
     #region IComparable/IEquatable Implementation
@@ -146,7 +155,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
     /// </summary>
     /// <inheritdoc cref="Any"/>
-    public static readonly Key Any = new((ulong) Key.Kind.Entity);
+    public static readonly Match Any = Match.Entity;
 
 
     /// <inheritdoc />
@@ -181,20 +190,52 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     }
 
     /// <inheritdoc />
-    public bool Has<C>(Key key = default) where C : notnull
-    {
-        return World.HasComponent(this, TypeExpression.Of<C>(key));
-    }
+    public bool Has<C>(Key key = default) where C : notnull => World.HasComponent(this, TypeExpression.Of<C>(key));
 
     /// <inheritdoc />
-    public void Despawn()
-    {
-        World.Despawn(this);
-    }
+    public bool Has<C>(Match match) where C : notnull => World.HasComponent<C>(this, match);
 
+    /// <inheritdoc />
+    public bool Has(Type type, Key key = default) => World.HasComponent(this, TypeExpression.Of(type, key));
+
+    /// <inheritdoc />
+    public bool Has(Type type, Match match = default) => World.HasComponent(this, type, match);
+
+    /// <inheritdoc />
+    public void Despawn() => World.Despawn(this);
+
+
+    /// <summary>
+    /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
+    /// </summary>
+    public ref readonly C Get<C>(Key key = default) where C : notnull => ref World.GetComponent<C>(this, key);
+
+    /// <summary>
+    /// Sets the component of the given type, matching the given Key.
+    /// </summary>
+    public Entity Set<C>(in C value, Key key = default) where C : notnull
+    {
+        ref var reference = ref World.GetComponent<C>(this, key);
+
+        if (typeof(C).IsAssignableFrom(typeof(Modified<C>)))
+        {
+            var original = reference;
+            reference = value;
+            
+            Modified<C>.Invoke([this], [original], [value]);
+        }
+        else
+        {
+            reference = value;
+        }
+        return this;
+    }
 
     /// <summary>
     /// Returns a reference to a component of the given type, matching the given Key.
     /// </summary>
+    /// <remarks>
+    /// Only use this if you need to work with the component directly, otherwise it is recommended to use <see cref="Entity.Get{C}(fennecs.Key)"/> and <see cref="Set{C}(in C, fennecs.Key)"/>.
+    /// </remarks>
     public RWImmediate<C> Ref<C>(Key key) where C : notnull => new(ref World.GetComponent<C>(this, key), this, key);
 }

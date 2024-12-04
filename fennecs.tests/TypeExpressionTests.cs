@@ -54,8 +54,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
         {
             var id = random.Next();
             var deco = (TypeID)(random.Next() % TypeID.MaxValue);
-            var t1 = new TypeExpression((new Entity(id, deco)), (TypeID)i);
-            var t2 = new TypeExpression((new Entity(id, deco)), (TypeID)(i + 1));
+            var t1 = new TypeExpression((TypeID)i, (new Entity(id, deco)));
+            var t2 = new TypeExpression((TypeID)(i + 1), (new Entity(id, deco)));
 
             //  If this test fails, Archetypes will not be able to build immutable buckets for Wildcards.
             Assert.True(t1.CompareTo(t2) < 0);

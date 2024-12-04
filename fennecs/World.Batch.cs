@@ -24,7 +24,7 @@ public partial class World
         {
             var preAddSignature = archetype.Signature.Except(operation.Removals);
             var destinationSignature = preAddSignature.Union(operation.Additions);
-            var destination = GetArchetype(destinationSignature);
+            var destination = GetOrCreateArchetype(destinationSignature);
             archetype.Migrate(destination, operation.Additions, operation.BackFill, operation.AddMode);
         }
     }

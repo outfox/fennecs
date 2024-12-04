@@ -28,7 +28,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
         /// <summary>
         /// The ID of this World.
         /// </summary>
-        private readonly byte _id;
+        internal readonly byte _id;
         
     #endregion
     
@@ -118,7 +118,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
         var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Entity>.Plain.Expression);
-        var archetype = GetArchetype(signature);
+        var archetype = GetOrCreateArchetype(signature);
         archetype.Spawn(count, components, values);
     }
 
@@ -235,7 +235,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new(Comp<Entity>.Plain.Expression));
+        _root = GetOrCreateArchetype(new(Comp<Entity>.Plain.Expression));
         
         Worlds[_id] = this;
     }
@@ -332,6 +332,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     {
         return DebugString();
     }
+    
     /// <inheritdoc cref="ToString"/>
     public string DebugString()
     {

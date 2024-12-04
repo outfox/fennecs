@@ -25,7 +25,9 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     [field: FieldOffset(6)] 
     internal readonly short TypeId;
     
-    internal TypeExpression(Key key, short typeId)
+    internal TypeExpression(Type type, Key key) : this(LanguageType.Identify(type), key) { }
+    
+    internal TypeExpression(short typeId, Key key)
     {
         Debug.Assert(typeId != 0, "TypeId must be non-zero");
         Key = key;
@@ -42,14 +44,22 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and key.
     /// This may express a plain Component if <paramref name="key"/> is <c>default</c>/>,
     /// </summary> 
-    public static TypeExpression Of<T>(Key key) => new(key, LanguageType<T>.Id);
-
+    public static TypeExpression Of<T>(Key key) => new(LanguageType<T>.Id, key);
+    
+    
 
     /// <summary>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and key.
     /// This may express a plain Component if <paramref name="key"/> is <c>default</c>/>,
     /// </summary> 
-    public static TypeExpression Of(Type type, Key key) => new(key, LanguageType.Identify(type));
+    public static TypeExpression Of(Type type, Key key) => new(type, key);
+
+
+    /// <summary>
+    /// Creates a new <see cref="TypeExpression"/> for a given object link.
+    /// An object link is is a relation to the <see cref="Key.Of(object)"/> backed by the object itself..
+    /// </summary> 
+    public static TypeExpression Of<L>(L link) where L: class => new(typeof(L), Key.Of(link));
 
 
     /// <inheritdoc cref="object.ToString"/>
@@ -58,6 +68,17 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
         return Key != default ? $"<{LanguageType.Resolve(TypeId)}> >> {Key}" : $"<{LanguageType.Resolve(TypeId)}>";
     }
 
+    /// <summary>
+    /// Implicitly converts a (Type, Key) tuple to a TypeExpression.
+    /// </summary>
+    public static implicit operator TypeExpression((Type type, Key key) tuple) => new(tuple.type, tuple.key);
+
+    /// <summary>
+    /// Implicitly converts a (object, Key) tuple to a TypeExpression.
+    /// </summary>
+    public static implicit operator TypeExpression((object obj, Key key) tuple) => new(tuple.obj.GetType(), tuple.key);
+    
+    
     /// <inheritdoc />
     public int CompareTo(TypeExpression other) => _value.CompareTo(other._value);
 

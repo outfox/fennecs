@@ -108,6 +108,15 @@ public partial class World
     }
 
 
+    internal bool HasComponent(Entity entity, MatchExpression expression)
+    {
+        var meta = _meta[entity.Index];
+        return meta.Entity != default
+               && meta.Entity == entity
+               && meta.Archetype.Matches(expression);
+    }
+    
+
     private void DespawnImpl(Entity entity)
     {
         AssertAlive(entity);
@@ -151,7 +160,7 @@ public partial class World
             if (archetype.Count > 0)
             {
                 var signatureWithoutTarget = archetype.Signature.Except(types);
-                var destination = GetArchetype(signatureWithoutTarget);
+                var destination = GetOrCreateArchetype(signatureWithoutTarget);
                 archetype.Migrate(destination);
             }
         }
@@ -189,7 +198,7 @@ public partial class World
     internal ref Meta GetEntityMeta(Entity entity) => ref _meta[entity.Index];
 
 
-    private Archetype GetArchetype(Signature types)
+    private Archetype GetOrCreateArchetype(Signature types)
     {
         if (_typeGraph.TryGetValue(types, out var table)) return table;
 

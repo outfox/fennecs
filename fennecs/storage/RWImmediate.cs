@@ -6,7 +6,7 @@ namespace fennecs.storage;
 /// Read-write access to a component.
 /// </summary>
 /// <remarks>
-/// This is a specialized version of <see cref="RW{T}"/> to meed the needs of <see cref="RW{T}"/>
+/// This is a specialized version of <see cref="RW{T}"/> to meet the needs of obtaining a reference to a component, <see cref="Entity.Ref{C}(Key)"/>
 /// </remarks>
 public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) where T : notnull
 {

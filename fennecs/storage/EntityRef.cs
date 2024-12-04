@@ -1,4 +1,5 @@
-﻿using fennecs.CRUD;
+﻿using System.Runtime.CompilerServices;
+using fennecs.CRUD;
 
 namespace fennecs.storage;
 
@@ -8,7 +9,7 @@ namespace fennecs.storage;
 public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 {
     internal readonly ref readonly Entity Entity = ref entity;
-    
+
     /// <inheritdoc />
     public bool Equals(Entity other) => Entity.Equals(other);
 
@@ -17,16 +18,17 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
     /// (to store or compare with other Entities)
     /// </summary>
     public static implicit operator Entity(EntityRef self) => self.Entity;
-    
+
     /// <inheritdoc cref="Entity.Alive"/>
     public bool Alive => Entity.Alive;
- 
+
     /// <inheritdoc />
     public void Despawn() => Entity.Despawn();
 
     /// <inheritdoc />
     public IReadOnlyList<Component> Components => Entity.Components;
 
+    
     /// <inheritdoc />
     public Entity Add<C>(C component, Key key = default) where C : notnull => Entity.Add(component, key);
 
@@ -39,9 +41,23 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
     /// <inheritdoc />
     public Entity Link<L>(L link) where L : class => Entity.Link(link);
 
+    
+    #region IHasComponent
+
     /// <inheritdoc />
     public bool Has<C>(Key key = default) where C : notnull => Entity.Has<C>(key);
 
     /// <inheritdoc />
+    public bool Has<C>(Match match = default) where C : notnull => Entity.Has<C>(match);
+
+    /// <inheritdoc />
+    public bool Has(Type type, Key key = default) => Entity.Has(type, key);
+
+    /// <inheritdoc />
+    public bool Has(Type type, Match match = default) => Entity.Has(type, match);
+
+    /// <inheritdoc />
     public bool Has<L>(L linkedObject) where L : class => Entity.Has<L>(Key.Of(linkedObject));
+
+    #endregion
 }

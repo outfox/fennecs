@@ -38,25 +38,7 @@ public class EntityTests(ITestOutputHelper output)
         Assert.Equal(123, entity.Ref<int>(target).Write);
     }
 
-
-    [Fact]
-    public void Entity_has_ToString()
-    {
-        using var world = new World();
-        var entity = world.Spawn();
-        var builder = new Entity(world, entity.Id);
-        Assert.Equal(entity.ToString(), builder.ToString());
-
-        entity.Add(123);
-        entity.Add(7.0f, world.Spawn());
-        entity.Add(Link.With("hello"));
-        output.WriteLine(entity.ToString());
-        
-        world.Despawn(entity);
-        output.WriteLine(entity.ToString());
-    }
-
-
+    
     [Fact]
     public void Entity_Can_Despawn_Itself()
     {
@@ -69,38 +51,65 @@ public class EntityTests(ITestOutputHelper output)
         Assert.False(world.IsAlive(entity));
     }
 
-    [Fact]
-    public void Entity_Is_Comparable()
+    [Theory]
+    [InlineData(69, 1, 2, 3)]
+    [InlineData(2, 1, 20, 300)]
+    [InlineData(3, 1000, 2000, 3000)]
+    [InlineData(55, 31415, 123456, 345678)]
+    [InlineData(1, 1, int.MaxValue/2, int.MaxValue)]
+    public void Entity_Is_Comparable(byte world, int r1, int r2, int r3)
     {
-        using var world = new World();
-        var entity1 = new Entity(null!, new Entity(1));
-        var entity2 = new Entity(null!, new Entity(2));
-        var entity3 = new Entity(null!, new Entity(3));
+        var entity1 = new Entity(world, r1);
+        var entity2 = new Entity(world, r2);
+        var entity3 = new Entity(world, r3);
 
         Assert.True(entity1.CompareTo(entity2) < 0);
-        Assert.True(entity2.CompareTo(entity3) < 0);
         Assert.True(entity1.CompareTo(entity3) < 0);
+
+        Assert.True(entity2.CompareTo(entity1) > 0);
+        Assert.True(entity2.CompareTo(entity3) < 0);
+
+        Assert.True(entity3.CompareTo(entity1) > 0);
+        Assert.True(entity3.CompareTo(entity2) > 0);
+        
+        Assert.Equal(0, entity1.CompareTo(entity1));
+        Assert.Equal(0, entity2.CompareTo(entity2));
+        Assert.Equal(0, entity3.CompareTo(entity3));
     }
 
 
     [Fact]
     public void Entity_Is_Equal_Same_Id_Same_World()
     {
-        using var world = new World();
-        var entity1 = world.Spawn();
-        var entity2 = new Entity(world, entity1.Id);
+        var entity1 = new Entity(1, 1);
+        var entity2 = new Entity(1, 1);
+        var entity3 = new Entity(entity1.Value);
+        
         Assert.Equal(entity1, entity2);
+        Assert.Equal(entity1, entity3);
+
+        Assert.Equal(entity2, entity1);
+        Assert.Equal(entity2, entity3);
+        
+        Assert.Equal(entity3, entity1);
+        Assert.Equal(entity3, entity2);
+        
         Assert.True(entity1 == entity2);
+        Assert.True(entity1 == entity3);
+        
         Assert.True(entity2 == entity1);
+        Assert.True(entity2 == entity3);
+        
+        Assert.True(entity3 == entity1);
+        Assert.True(entity3 == entity2);
     }
 
 
     [Fact]
     public void Entity_Is_Distinct_Same_Id_Different_World()
     {
-        using var world = new World();
-        var entity1 = world.Spawn();
-        var entity3 = new Entity(null!, entity1.Id);
+        var entity1 = new Entity(1, 1);
+        var entity3 = new Entity(4, 1);
         Assert.NotEqual(entity1, entity3);
         Assert.True(entity1 != entity3);
         Assert.True(entity3 != entity1);
@@ -118,26 +127,18 @@ public class EntityTests(ITestOutputHelper output)
         Assert.True(entity2 != entity1);
     }
 
-
-    [Fact]
-    public void Entity_Is_Distinct_Different_Id_Different_World()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(10)]
+    [InlineData(69)]
+    [InlineData(420)]
+    [InlineData(10_000)]
+    public void Entity_is_Equatable_to_Object(int index)
     {
-        using var world1 = new World();
-        using var world2 = new World();
-        var entity1 = world2.Spawn();
-        var entity2 = new Entity(null!, new Entity(2));
-        Assert.NotEqual(entity1, entity2);
-        Assert.True(entity1 != entity2);
-        Assert.True(entity2 != entity1);
-    }
-
-
-    [Fact]
-    public void Entity_is_Equatable_to_Object()
-    {
-        using var world = new World();
-        var entity1 = world.Spawn();
-        var entity2 = new Entity(world, entity1.Id);
+        var entity1 = new Entity(1, index);
+        var entity2 = new Entity(1, entity1.Index);
         Assert.True(entity1.Equals(entity2));
         Assert.True(entity1.Equals((object) entity2));
         // ReSharper disable once SuspiciousTypeConversion.Global
@@ -151,20 +152,16 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity1 = world.Spawn();
         var entity2 = world.Spawn();
-        var entity3 = new Entity(world, entity1.Id);
-        var entity4 = new Entity(world, entity2.Id);
+        var entity3 = new Entity(world._id, entity1.Index, entity1.Generation);
+        var entity4 = new Entity(world._id, entity2.Index, entity2.Generation);
         var set = new HashSet<Entity> {entity1, entity2, entity3, entity4};
+    
         Assert.Equal(2, set.Count);
-    }
-
-
-    [Fact]
-    public void Entity_Decays_to_Entity()
-    {
-        using var world = new World();
-        var entity = world.Spawn();
-        Entity entity = entity;
-        Assert.Equal(entity.Id, entity);
+        
+        Assert.Contains(entity1, set);
+        Assert.Contains(entity2, set);
+        Assert.Contains(entity3, set);
+        Assert.Contains(entity4, set);
     }
 
     
@@ -449,7 +446,7 @@ public class EntityTests(ITestOutputHelper output)
         var other = world.Spawn();
         
         var entity = world.Spawn().Add(123);
-        var interfaceEntity = (IHasTyped) entity;
+        var interfaceEntity = (IHasComponent) entity;
         Assert.True(entity.Has<int>());
         
         entity.Add("123");
