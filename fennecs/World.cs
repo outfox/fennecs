@@ -195,7 +195,11 @@ public partial class World
     }
 
 
-    internal ref Meta GetEntityMeta(Entity entity) => ref _meta[entity.Index];
+    internal ref Meta GetEntityMeta(Entity entity)
+    {
+        AssertAlive(entity);
+        return ref _meta[entity.Index];
+    }
 
 
     private Archetype GetOrCreateArchetype(Signature types)
@@ -255,8 +259,7 @@ public partial class World
     private void AssertAlive(Entity entity)
     {
         if (IsAlive(entity)) return;
-
-        throw new ObjectDisposedException($"Entity {entity} is no longer alive.");
+        throw new ObjectDisposedException($"Entity {entity} is not alive in World {Name}.");
     }
 
     #endregion

@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using fennecs.CRUD;
-using fennecs.events;
+using fennecs.pools;
 using fennecs.storage;
 
 namespace fennecs;
@@ -34,12 +32,13 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
 
     [Obsolete("Just use this / the Entity itself")]
     internal Entity Id => this;
-        
+
+    private ref Meta Meta => ref World[this];
+
     /// <summary>
     /// <c>null</c> equivalent for Entity.
     /// </summary>
     public static readonly Entity None = default;
-    
 
     /// <summary>
     /// The World this Entity belongs to.
@@ -49,7 +48,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <summary>
     /// The Archetype this Entity belongs to.
     /// </summary>
-    public Archetype Archetype => World.GetEntityMeta(this).Archetype;
+    public Archetype Archetype => Meta.Archetype;
 
 
     #region IComparable/IEquatable Implementation
@@ -241,23 +240,42 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     }
 
     /// <summary>
-    /// Sets the component of the given type, matching the given Key.
+    /// Returns a List of all component type expressions accompanied by their values matching the provided term and backing type <see cref="T"/>.
     /// </summary>
-    public Entity Set<C>(in C value, Key key = default) where C : notnull
+    /// <remarks>
+    /// The values are copies, but if the components are reference types, these values will reference the same objects.
+    /// <see cref="PooledList{T}"/> should be Disposed if possible, either by declaring them in a using statement, or by calling their <see cref="IDisposable.Dispose"/> method.
+    /// </remarks>
+    /// <returns><c>PooledList&lt;(TypeExpression type, T value)&gt;</c></returns>
+    public PooledList<(TypeExpression expression, T value)> Get<T>(Match match = default) where T : notnull
     {
-        ref var reference = ref World.GetComponent<C>(this, key);
+        using var storages = Archetype.Match<T>(match);
+        var list = PooledList<(TypeExpression type, T value)>.Rent();
+        var index = Index;
+        list.AddRange(storages.Select(storage => (storage.Expression, storage[index])));
+        return list;
+    }
 
-        if (typeof(C).IsAssignableFrom(typeof(Modified<C>)))
-        {
-            var original = reference;
-            reference = value;
-            
-            Modified<C>.Invoke([this], [original], [value]);
-        }
-        else
-        {
-            reference = value;
-        }
+    /// <summary>
+    /// Returns a <c>ref</c> to a component of the given type, matching the given Key.
+    /// </summary>
+    public ref C Write<C>(Key key = default) where C : notnull => ref Archetype.GetStorage<C>(key)[Index];
+
+    /// <summary>
+    /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
+    /// </summary>
+    public ref readonly C Read<C>(Key key = default) where C : notnull => ref Archetype.GetStorage<C>(key)[Index];
+
+    /// <summary>
+    /// Sets all components of the given backing type on the Entity, matching the given Match term.
+    /// </summary>
+    /// <remarks>
+    /// This (as all functions taking a Match term) supports wildcards.
+    /// </remarks> 
+    public Entity Set<C>(in C value, Match match = default) where C : notnull
+    {
+        using var storages = Archetype.Match<C>(match);
+        foreach (var storage in storages) storage.Store(Index, value);
         return this;
     }
 

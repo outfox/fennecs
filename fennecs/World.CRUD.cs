@@ -103,9 +103,8 @@ public partial class World
 
     internal T[] Get<T>(Entity id, Match match) where T : notnull
     {
-        var expression = MatchExpression.Of<T>(match);
         var meta = _meta[id.Index];
-        using var storages = meta.Archetype.Match<T>(expression);
+        using var storages = meta.Archetype.Match<T>(match);
         return storages.Select(s => s[meta.Row]).ToArray();
     }
     

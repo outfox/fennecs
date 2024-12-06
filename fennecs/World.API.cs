@@ -323,6 +323,8 @@ public partial class World : IDisposable, IEnumerable<Entity>
     
     internal Entity this[int index] => _meta[index].Entity;
     
+    internal ref Meta this[Entity entity] => ref _meta[entity.Index];
+
     #endregion
     
     #region Debug Tools

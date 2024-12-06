@@ -20,7 +20,7 @@ public class Refs
         Assert.True(bob.Has<Owes>(alice));
         Assert.True(bob.Has<Owes>(eve));
 
-        Assert.Equal(23M, bob.Ref<Owes>(eve).Amount);
+        Assert.Equal(23M, bob.Get<Owes>(eve).Amount);
 
         if (!bob.Has<Owes>(eve))
         {
@@ -28,7 +28,7 @@ public class Refs
         }
         else
         {
-            bob.Ref<Owes>(eve).Amount += 7M;
+            bob.Ref<Owes>(eve).Write.Amount += 7M;
         }
         
         Assert.Equal(30M, bob.Ref<Owes>(eve).Amount);

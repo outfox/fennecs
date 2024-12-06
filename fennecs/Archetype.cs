@@ -95,11 +95,11 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
     }
 
 
-    internal PooledList<Storage<T>> Match<T>(MatchExpression expression) where T : notnull
+    internal PooledList<Storage<T>> Match<T>(Match match = default) where T : notnull
     {
         //TODO: Co-/Contravariance in the future!
         var result = PooledList<Storage<T>>.Rent();
-        Match(expression, result);
+        Match(MatchExpression.Of<T>(match), result);
         return result;
     }
 
@@ -214,9 +214,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
     {
         for (var i = 0; i < count; i++)
         {
+            //TODO: benchmark this vs ref assignment & memory writes
             var entity = EntityStorage[entry + i];
-            ref var meta = ref World.GetEntityMeta(entity);
-            meta = new() { Entity = entity, Archetype = this, Row = entry + i };
+            World[entity] = new(this, entry + i, entity);
         }
     }
 

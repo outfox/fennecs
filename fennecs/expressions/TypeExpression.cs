@@ -44,7 +44,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and key.
     /// This may express a plain Component if <paramref name="key"/> is <c>default</c>/>,
     /// </summary> 
-    public static TypeExpression Of<T>(Key key) => new(LanguageType<T>.Id, key);
+    public static TypeExpression Of<T>(Key key = default) => new(LanguageType<T>.Id, key);
     
     
 
@@ -52,7 +52,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// Creates a new <see cref="TypeExpression"/> for a given Component type and key.
     /// This may express a plain Component if <paramref name="key"/> is <c>default</c>/>,
     /// </summary> 
-    public static TypeExpression Of(Type type, Key key) => new(type, key);
+    public static TypeExpression Of(Type type, Key key = default) => new(type, key);
 
 
     /// <summary>
@@ -95,7 +95,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <summary>
     /// Returns the Entity targeted by this TypeExpression, if it is a relation.
     /// </summary>
-    public Entity TargetEntity => IsRelation ? Key : default(Entity);
+    public Entity Target => IsRelation ? Key : Entity.None;
 }
 
 
