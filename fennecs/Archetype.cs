@@ -103,7 +103,14 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
         return result;
     }
 
-    
+    internal PooledList<Storage<T>> Match<T>(MatchExpression expression) where T : notnull
+    {
+        //TODO: Co-/Contravariance in the future!
+        var result = PooledList<Storage<T>>.Rent();
+        Match(expression, result);
+        return result;
+    }
+
     
     /// <summary>
     /// Does this Archetype contain a storage of the given TypeExpression?
