@@ -41,8 +41,8 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         _mask = mask;
 
         Archetypes.AddRange(archetypes);
-        AddMode = addMode;
-        RemoveMode = removeMode;
+        AddMode = addMode == default ? World.DefaultAddConflict : addMode;
+        RemoveMode = removeMode == default ? World.DefaultRemoveConflict : removeMode;
     }
 
 
@@ -57,20 +57,19 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
                 $"TypeExpression {typeExpression} is not filtered out via Not<T> by this Query/Mask, additions could cause unintended runtime state. See QueryBuilder.Not<T>(). See AddConflict.Disallow, AddConflict.Skip, AddConflict.Replace.");
 
         if (Additions.Contains(typeExpression))
-            throw new InvalidOperationException($"Duplicate addition {typeExpression} : {data}  in same batch!");
+            throw new InvalidOperationException($"Duplicate addition {typeExpression} : {data} in same batch!");
 
         if (Removals.Contains(typeExpression))
             throw new InvalidOperationException($"Addition {typeExpression} conflicts with removal  in same batch!");
 
         Additions.Add(typeExpression);
-        BackFill.Add(data!);
+        BackFill.Add(data);
         return this;
     }
 
-    private Batch RemoveComponent<T>(Key key = default) where T : notnull
+    /// <inheritdoc />
+    public Batch Remove(TypeExpression typeExpression)
     {
-        var typeExpression = TypeExpression.Of<T>(key);
-
         if (RemoveMode == RemoveConflict.Strict && !_mask.SafeForRemoval(typeExpression))
             throw new InvalidOperationException(
                 $"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals could cause unintended runtime state. See QueryBuilder.Has<T>(). See RemoveConflict.Disallow, RemoveConflict.Skip.");
@@ -85,6 +84,7 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         return this;
     }
 
+
     #endregion
 
 
@@ -93,8 +93,6 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     /// <inheritdoc />
     public Batch Add<C>(C component, Key key = default) where C : notnull => AddComponent(component, key);
 
-    /// <inheritdoc />
-    public Batch Remove<C>(Key key = default) where C : notnull => RemoveComponent<C>(key);
     
     /// <inheritdoc />
     public Batch Link<T>(T link) where T : class => AddComponent(link, Key.Of(link));
@@ -114,12 +112,12 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         /// to keep any values already present, or use <see cref="Replace"/> if you'd like to overwrite the component
         /// value everywhere it is already encountered in the query.
         /// </remarks>
-        Strict = default,
+        Strict = 1,
 
         /// <summary>
         /// Keeps the existing component data whenever trying to add a duplicate.
         /// </summary>
-        Preserve,
+        Preserve = 2,
 
         /// <summary>
         /// Overwrites existing component data with the addded component if it is already present.
@@ -128,7 +126,7 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         /// Alternatively, you can use the faster <see cref="Stream{C0}.Blit"/> if you
         /// can ensure that the component is present on all entities in the query.
         /// </remarks>
-        Replace,
+        Replace = 3,
     }
 
 
@@ -141,14 +139,14 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         /// Disallow remove operation if the Component to be removed is not guaranteed to be present
         /// on ALL matched Archetypes, see <see cref="QueryBuilderBase{QB}.Has{T}(Match)"/>.
         /// </summary>
-        Strict = default,
+        Strict = 1,
 
         /// <summary>
         /// Allow operating on Archetypes where the Component to be removed is not present.
         /// Removal operations are Idempotent on these archetypes, i.e. they don't change them
         /// on their own.
         /// </summary>
-        Allow,
+        Allow = 2,
     }
 
     #endregion

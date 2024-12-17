@@ -16,7 +16,7 @@ namespace fennecs;
 ///         See <see cref="Stream{C}" /> Views with configurable output Stream Types for fast iteration.
 ///     </para>
 /// </summary>
-public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
+public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin, IAddRemove<Query> 
 {
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
@@ -41,7 +41,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// </summary>
     /// <param name="match">
     ///     Match Expression for the component type <see cref="Cross" />.
-    ///     The default is <see cref="Entity.Plain"/>
+    ///     The default is <see cref="Match.Plain"/>
     /// </param>
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
     public bool Contains<T>(Match match = default)
@@ -225,81 +225,31 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
 
     #region Bulk Operations
 
-    /// <summary>
-    ///     Adds a Component (using default constructor) to all Entities matched by this query.
-    /// </summary>
-    /// <inheritdoc cref="Add{T}(T)" />
-    public void Add<T>() where T : notnull, new() => Add(new T());
+    /// <inheritdoc />
+    /// <remarks>
+    /// This creates a batch and immediately submits it. Use <see cref="Batch()"/> to create a batch manually.
+    /// </remarks>
+    public Query Add<T>(T data, Key key = default) where T : notnull
+    {
+        Batch().Add(data, key).Submit();
+        return this;
+    }
 
-
-    /// <summary>
-    ///     Adds the given Component (using specified data) to all Entities matched by this query.
-    /// </summary>
-    /// <typeparam name="T">any type</typeparam>
-    /// <param name="data">the data to add</param>
-    /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
-    // ReSharper disable once MemberCanBePrivate.Global
-    public void Add<T>(T data) where T : notnull => Batch().Add(data).Submit();
-
-
-    /// <summary>
-    ///     Removes the given Component from all Entities matched by this query.
-    /// </summary>
-    /// <exception cref="InvalidOperationException">if the Query does not rule out this Component type in a Filter Expression.</exception>
-    /// <typeparam name="T">any Component type matched by the query</typeparam>
-    public void Remove<T>() where T : notnull => Batch().Remove<T>().Submit();
+    
+    /// <inheritdoc />
+    /// <remarks>
+    /// This creates a batch and immediately submits it. Use <see cref="Batch()"/> to create a batch manually.
+    /// </remarks>
+    public Query Remove(TypeExpression expression)
+    {
+        Batch().Remove(expression).Submit();
+        return this;
+    }
 
 
     /// <inheritdoc />
-    public Batch Batch() => new(Archetypes, World, Mask.Clone(), default, default);
-
-
-    /// <summary>
-    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
-    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
-    /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
-    /// </summary>
-    /// <remarks>
-    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
-    /// after the first operation, and thus lead to undesired results.
-    /// </remarks> 
-    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
-    public Batch Batch(Batch.AddConflict addConflict)
-    {
-        return new Batch(Archetypes, World, Mask.Clone(), addConflict, default);
-    }
-
-
-    /// <summary>
-    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
-    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
-    /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
-    /// </summary>
-    /// <remarks>
-    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
-    /// after the first operation, and thus lead to undesired results.
-    /// </remarks> 
-    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
-    public Batch Batch(Batch.RemoveConflict removeConflict)
-    {
-        return new Batch(Archetypes, World, Mask.Clone(), default, removeConflict);
-    }
-
-
-    /// <summary>
-    /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
-    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
-    /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
-    /// </summary>
-    /// <remarks>
-    /// (Add, Remove, etc.) If they were applied one by one, they would cause the Entities to no longer be matched
-    /// after the first operation, and thus lead to undesired results.
-    /// </remarks> 
-    /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
-    public Batch Batch(Batch.AddConflict addConflict, Batch.RemoveConflict removeConflict)
-    {
-        return new(Archetypes, World, Mask.Clone(), addConflict, removeConflict);
-    }
+    public Batch Batch(Batch.AddConflict addConflict = default, Batch.RemoveConflict removeConflict = default) => new(Archetypes, World, Mask.Clone(), addConflict, removeConflict);
+    
 
 
     /// <inheritdoc cref="Despawn" />

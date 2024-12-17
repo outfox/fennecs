@@ -1,7 +1,7 @@
 ﻿namespace fennecs.CRUD;
 
 /// <summary>
-/// Objects of this type can perform Add and Remove operations on entities or sets of entities.
+/// Provides Add and Remove operations on entities or sets of entities.
 /// </summary>
 public interface IAddRemove<out SELF>
 {
@@ -21,10 +21,16 @@ public interface IAddRemove<out SELF>
     public SELF Add<C>(Key key = default) where C : notnull, new() => Add(new C(), key);
 
     /// <summary>
-    /// Remove a Plain component of type C from the entity/entities.
+    /// Remove a component of type C from the entity/entities, matching the an optional Key.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Remove<C>(Key key = default) where C : notnull;
+    public SELF Remove<C>(Key key = default) where C : notnull => Remove(TypeExpression.Of<C>(key));
+
+    /// <summary>
+    /// Remove a component with the given expression from the entity/entities.
+    /// </summary>
+    /// <returns>itself (fluent pattern)</returns>
+    public SELF Remove(TypeExpression expression);
 
     /// <summary>
     /// Add a Object Link component with an Object of type L to the entity/entities.
@@ -35,5 +41,4 @@ public interface IAddRemove<out SELF>
     /// </remarks>
     /// <returns>itself (fluent pattern)</returns>
     public SELF Link<L>(L link) where L : class => Add(link, Key.Of(link));
-    
 }

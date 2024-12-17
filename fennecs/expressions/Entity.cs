@@ -179,16 +179,12 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     }
 
     /// <inheritdoc />
-    public Entity Remove<C>(Key key = default) where C : notnull
-    {
-        World.RemoveComponent(this, TypeExpression.Of<C>(key));
-        return this;
-    }
+    public Entity Remove<C>(Key key = default) where C : notnull => Remove(TypeExpression.Of<C>(key));
 
     /// <inheritdoc />
-    public Entity Remove(Type type, Key key = default)
+    public Entity Remove(TypeExpression expression)
     {
-        World.RemoveComponent(this, TypeExpression.Of(type, key));
+        World.RemoveComponent(this, expression);
         return this;
     }
 

@@ -1,11 +1,14 @@
-﻿using System.Runtime.CompilerServices;
-using fennecs.CRUD;
+﻿using fennecs.CRUD;
 
 namespace fennecs.storage;
 
 /// <summary>
-/// A fast, reference to an Entity. Implicitly casts to and from <see cref="fennecs.Entity"/>, and exposes <see cref="IAddRemove{T}"/> methods and others.
+/// A fast <c>ref readonly</c> style reference to an Entity. It can be used to interact and modify components on the Entity. 
 /// </summary>
+/// <remarks>
+/// Implicitly casts to and from <see cref="fennecs.Entity"/> if you need to store or compare with actual variables of that type.
+/// </remarks>
+
 public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 {
     internal readonly ref readonly Entity Entity = ref entity;
@@ -37,6 +40,9 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 
     /// <inheritdoc />
     public Entity Remove<C>(Key key = default) where C : notnull => Entity.Remove<C>(key);
+
+    /// <inheritdoc />
+    public Entity Remove(TypeExpression expression) => Entity.Remove(expression);
 
     /// <inheritdoc />
     public Entity Link<L>(L link) where L : class => Entity.Link(link);

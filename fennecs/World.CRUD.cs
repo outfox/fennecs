@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using fennecs.storage;
 
 namespace fennecs;
@@ -44,14 +45,14 @@ public partial class World
 
         var oldArchetype = meta.Archetype;
 
-        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} does not have a component of type {typeExpression}");
+        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Cannot remove Component {typeExpression} from Entity {entity}, because it does not or no longer has that component. Did you accidentally try to remove it twice?");
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
         var newArchetype = GetOrCreateArchetype(newSignature);
         Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
     }
 
-
+    
     internal bool HasComponent<T>(Entity entity, Key key) => HasComponent(entity, TypeExpression.Of<T>(key));
 
 
@@ -113,4 +114,5 @@ public partial class World
         var archetype = _meta[id.Index].Archetype;
         return archetype.GetRow(_meta[id.Index].Row);
     }
+
 }

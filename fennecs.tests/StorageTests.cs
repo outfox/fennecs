@@ -18,8 +18,8 @@ public class StorageTests
     [Fact]
     public void Storage_Retains_Expression()
     {
-        Assert.Equal(TypeExpression.Of<ValueType>(default), new Storage<ValueType>(TypeExpression.Of<ValueType>(default)).Expression);
-        Assert.Equal(TypeExpression.Of<ReferenceType>(default), new Storage<ReferenceType>(TypeExpression.Of<ReferenceType>(default)).Expression);
+        Assert.Equal(TypeExpression.Of<ValueType>(), new Storage<ValueType>(TypeExpression.Of<ValueType>()).Expression);
+        Assert.Equal(TypeExpression.Of<ReferenceType>(), new Storage<ReferenceType>(TypeExpression.Of<ReferenceType>()).Expression);
     }
     
     [Fact]

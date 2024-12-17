@@ -51,12 +51,11 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     public EntitySpawner Add<C>(Key key = default) where C : notnull, new() => Add<C>(new(), key);
 
 
-    /// <inheritdoc cref="IAddRemove{SELF}.Remove{R}(fennecs.Key)" />
-    public EntitySpawner Remove<C>(Key match = default) where C : notnull
+    /// <inheritdoc />
+    public EntitySpawner Remove(TypeExpression expression)
     {
-        var type = Comp<C>.Matching(match).Expression;
-        _values.RemoveAt(_components.IndexOf(type));
-        _components.Remove(type);
+        _values.RemoveAt(_components.IndexOf(expression));
+        _components.Remove(expression);
         
         return this;
     }

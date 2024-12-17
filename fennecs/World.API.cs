@@ -30,6 +30,16 @@ public partial class World : IDisposable, IEnumerable<Entity>
         /// </summary>
         internal readonly byte _id;
         
+        /// <summary>
+        /// Default behavior for Batch operations when a component is added to an entity that already has it.
+        /// </summary>
+        public static Batch.AddConflict DefaultAddConflict { get; set; } = Batch.AddConflict.Strict;
+
+        /// <summary>
+        /// Default behavior for Batch operations when a component is removed from an entity that does not have it.
+        /// </summary>
+        public static Batch.RemoveConflict DefaultRemoveConflict { get; set; } = Batch.RemoveConflict.Strict;
+        
     #endregion
     
     /// <summary>
@@ -348,4 +358,5 @@ public partial class World : IDisposable, IEnumerable<Entity>
     }
 
     #endregion
+    
 }

@@ -43,22 +43,9 @@ public record Stream(Query Query) : IBatchBegin
     #endregion
 
     #region Batch Operations
-
-    /// <summary>
-    /// Creates a builder for a Batch Operation on the Stream's currently filtered Archetypes.
-    /// </summary>
-    /// <remarks>If there is no filter, the Batch will affect all Archetypes in the Query.</remarks>
-    /// <returns>fluent builder</returns>
-    public Batch Batch() => Batch(default, default);
     
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add) => Batch(add, default);
-
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.RemoveConflict remove) => Batch(default, remove);
-
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => new(Filtered, World, Query.Mask.Clone(), add, remove);
+    /// <inheritdoc cref="fennecs.Query.Batch"/>
+    public Batch Batch(Batch.AddConflict add = default, Batch.RemoveConflict remove = default) => new(Filtered, World, Query.Mask.Clone(), add, remove);
 
     #endregion
 

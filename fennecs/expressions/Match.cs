@@ -104,8 +104,8 @@ public readonly record struct Match
 
 
     /// <summary>
-    /// <para><b>Plain Component match expression for Entity iteration.</b><br/>This matches only <b>Plain</b> Components of the given Stream Type.
-    /// </para>
+    /// <b>Match Expression to match only Plain Components.</b>
+    /// <i>(components without a secondary key)</i>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
     /// <para>This expression does not result in multiple enumeration, because it's not technically a Wildcard - there can only be one plain component per type on an Entity.</para>

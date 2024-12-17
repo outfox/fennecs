@@ -28,9 +28,10 @@ public class EntityTypelessTests
         object boxed = 123;
         entity.Set(boxed);
         
-        Assert.Equal(123, entity.Ref<int>());
+        Assert.Equal(123, entity.Read<int>());
         Assert.Equal(123, entity.Get(typeof(int)));
-        Assert.Equal(boxed, entity.Get<int>(default)[0]);
+        Assert.Equal(boxed, entity.Get<int>(Match.Any)[0]);
+        Assert.Equal(boxed, entity.Get<int>(Match.Plain)[0]);
     }
 
     [Fact]
@@ -44,7 +45,8 @@ public class EntityTypelessTests
         
         Assert.Equal(123, entity.Ref<int>().Read);
         Assert.Equal(123, entity.Get(typeof(int)));
-        Assert.Equal(boxed, entity.Get<int>(default)[0]);
+        Assert.Equal(boxed, entity.Get<int>(Match.Any)[0]);
+        Assert.Equal(boxed, entity.Get<int>(Match.Plain)[0]);
     }
 
     [Fact]
@@ -57,8 +59,8 @@ public class EntityTypelessTests
         entity.Clear(typeof(int), default);
         
         Assert.Null(entity.Get(typeof(int)));
-        Assert.False(entity.Get(out _, typeof(int)));
-        Assert.Empty(entity.Get<int>(default));
+        Assert.False(entity.Get(typeof(int), out _));
+        Assert.Empty(entity.Get<int>(Match.Any));
     }
 
     [Fact]
@@ -105,7 +107,7 @@ public class EntityTypelessTests
         entity.Clear(typeof(int), Match.Plain);
         
         Assert.Null(entity.Get(typeof(int)));
-        Assert.False(entity.Get(out _, typeof(int)));
+        Assert.False(entity.Get(typeof(int), out _));
         Assert.Empty(entity.Get<int>(Match.Any));
     }
 
@@ -117,10 +119,10 @@ public class EntityTypelessTests
         entity.Add(123);
         entity.Add(456, entity);
 
-        entity.Clear(typeof(int), Match.Any);
+        entity.Remove(typeof(int), Match.Any);
         
         Assert.Null(entity.Get(typeof(int)));
-        Assert.False(entity.Get(out _, typeof(int)));
+        Assert.False(entity.Get(typeof(int), out _));
         Assert.Empty(entity.Get<int>(Match.Any));
     }
 }
