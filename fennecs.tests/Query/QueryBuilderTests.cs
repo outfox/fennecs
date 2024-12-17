@@ -30,10 +30,10 @@ public class QueryBuilderTests
         using var world = new World();
         var q1 = world.Query();
         var q2 = world.Query<int>(Match.Entity);
-        var q3 = world.Query<int, string>(Match.Any, Match.Plain);
-        var q4 = world.Query<int, string, double>(Match.Link, Match.Target, Match.Plain);
-        var q5 = world.Query<int, string, double, float>(Match.Link, Match.Target, Match.Plain, Match.Any);
-        var q6 = world.Query<int, string, double, float, long>(Match.Link, Match.Target, Match.Plain, Match.Any, Match.Link);
+        var q3 = world.Query<int, string>(Match.Any, default(Key));
+        var q4 = world.Query<int, string, double>(Match.Link, Match.Target, default(Key));
+        var q5 = world.Query<int, string, double, float>(Match.Link, Match.Target, default(Key), Match.Any);
+        var q6 = world.Query<int, string, double, float, long>(Match.Link, Match.Target, default(Key), Match.Any, Match.Link);
         Assert.NotNull(q1);
         Assert.NotNull(q2);
         Assert.NotNull(q3);

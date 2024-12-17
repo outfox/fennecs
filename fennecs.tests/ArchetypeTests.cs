@@ -27,7 +27,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(entity).Archetype;
-        var storage = table.GetStorage(TypeExpression.Of<string>(Match.Plain));
+        var storage = table.GetStorage(TypeExpression.Of<string>((Key) default));
         Assert.IsAssignableFrom<IStorage>(storage);
         Assert.IsAssignableFrom<Storage<string>>(storage);
     }
@@ -36,14 +36,14 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Table_Matches_TypeExpression()
     {
         using var world = new World();
-        var entity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var entity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(entity).Archetype;
 
-        var typeExpression = TypeExpression.Of<string>(Match.Plain);
+        var typeExpression = TypeExpression.Of<string>((Key) default);
         Assert.True(table.Has(typeExpression));
 
-        var typeExpressionAny = TypeExpression.Of<string>(Match.Any);
-        Assert.True(table.Has(typeExpressionAny));
+        var matchExpressionAny = MatchExpression.Of<string>(Match.Any);
+        Assert.True(table.Has(matchExpressionAny));
     }
 
 
@@ -51,7 +51,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Table_Can_be_Generically_Enumerated()
     {
         using var world = new World();
-        var other = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var other = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(other).Archetype;
 
         var count = 0;

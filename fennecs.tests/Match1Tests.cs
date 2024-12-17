@@ -48,7 +48,7 @@ public class Match1Tests
     [Fact]
     public void Plain_Enumerates_Only_Plain_Components()
     {
-        var query = _world.Query<string>(Match.Plain).Stream();
+        var query = _world.Query<string>(default(Key)).Stream();
 
         HashSet<string> seen = [];
         query.For((str) =>

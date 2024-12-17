@@ -113,33 +113,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
 
     
     /// <summary>
-    /// Does this Archetype contain a storage of the given TypeExpression?
+    /// Does this Archetype contain a storage of the given MatchExpression?
     /// </summary>
-    public bool Has(TypeExpression typeExpression) => _storageIndices.ContainsKey(typeExpression);
-
-
-    /// <summary>
-    /// Does this Archetype contain a storage of the given Type & Key?
-    /// </summary>
-    public bool Has<T>(Key key = default) where T : notnull=> _storageIndices.ContainsKey(TypeExpression.Of<T>(key));
-
-    
-    /// <summary>
-    /// Does this Archetype contain a storage of the given Type & Key?
-    /// </summary>
-    public bool Has(Type type, Key key = default) => _storageIndices.ContainsKey(TypeExpression.Of(type,key));
-
-    
-    /// <summary>
-    /// Does this Archetype contain one or more storages matching the given MatchExpression?
-    /// </summary>
-    public bool Has<C>(Match match) where C : notnull => Matches(MatchExpression.Of<C>(match));
-    
-    
-    /// <summary>
-    /// Does this Archetype contain one or more storages matching the given MatchExpression?
-    /// </summary>
-    public bool Has(Type type, Match match) => Matches(MatchExpression.Of(type, match));
+    /// TODO: Needs optimization (expanded signature / _contains Key test)
+    public bool Has(MatchExpression expression) => _storageIndices.Keys.Any(expression.Matches);
 
     
     internal bool Matches(MatchExpression expression) => Signature.Matches(expression);
@@ -471,6 +448,29 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
     /// </remarks>
     public Entity this[int index] => EntityStorage[index];
 
+    
+    
+    internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    {
+        using var worldLock = World.Lock();
+        
+        var first = Count;
+
+        for (var i = 0; i < components.Count; i++)
+        {
+            var storage = GetStorage(components[i]);
+            storage.Append(values[i], count);
+        }
+
+        using var identities = World.SpawnBare(count);
+        EntityStorage.Append(identities);
+        PatchMetas(first, count);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal void Invalidate() => Interlocked.Increment(ref Version);
+
+    
 
     #region Cross Joins
     internal Cross.Join<C0> CrossJoin<C0>(ReadOnlySpan<MatchExpression> streamTypes) where C0 : notnull
@@ -502,61 +502,5 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
         return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
     }
     #endregion
-
-
-    
-    #region Inner Joins
-    /*
-    internal Cross.Join<C0> InnerJoin<C0>(ReadOnlySpan<TypeExpression> streamTypes)
-    {
-        return IsEmpty ? default : new Cross.Join<C0>(this, streamTypes.AsSpan());
-    }
-
-
-    internal Cross.Join<C0, C1> InnerJoin<C0, C1>(ReadOnlySpan<TypeExpression> streamTypes)
-    {
-        return IsEmpty ? default : new Cross.Join<C0, C1>(this, streamTypes);
-    }
-
-
-    internal Cross.Join<C0, C1, C2> InnerJoin<C0, C1, C2>(ReadOnlySpan<TypeExpression> streamTypes)
-    {
-        return IsEmpty ? default : new Cross.Join<C0, C1, C2>(this, streamTypes);
-    }
-
-
-    internal Cross.Join<C0, C1, C2, C3> InnerJoin<C0, C1, C2, C3>(ReadOnlySpan<TypeExpression> streamTypes)
-    {
-        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3>(this, streamTypes);
-    }
-
-
-    internal Cross.Join<C0, C1, C2, C3, C4> InnerJoin<C0, C1, C2, C3, C4>(ReadOnlySpan<TypeExpression> streamTypes)
-    {
-        return IsEmpty ? default : new Cross.Join<C0, C1, C2, C3, C4>(this, streamTypes);
-    }
-    */
-    #endregion
-
-
-    internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
-    {
-        using var worldLock = World.Lock();
-        
-        var first = Count;
-
-        for (var i = 0; i < components.Count; i++)
-        {
-            var storage = GetStorage(components[i]);
-            storage.Append(values[i], count);
-        }
-
-        using var identities = World.SpawnBare(count);
-        EntityStorage.Append(identities);
-        PatchMetas(first, count);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal void Invalidate() => Interlocked.Increment(ref Version);
 
 }

@@ -734,7 +734,7 @@ public class Stream2Tests(ITestOutputHelper output)
         stream = world.Query<string, int>(Match.Link).Stream();
         Assert.Throws<InvalidOperationException>(() => stream.Job((str, _) => { output.WriteLine(str); }));
 
-        stream = world.Query<string, int>(Match.Plain).Stream();
+        stream = world.Query<string, int>(default(Key)).Stream();
         var ran = false;
         stream.Job((str, _) =>
         {

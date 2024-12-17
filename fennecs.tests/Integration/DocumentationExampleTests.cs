@@ -13,7 +13,7 @@ public class DocumentationExampleTests
         var entity1 = world.Spawn().Add<Position>();
         var entity2 = world.Spawn().Add(new Position(new(1, 2, 3))).Add<int>();
 
-        var query = world.Query<Position>(Match.Plain).Stream();
+        var query = world.Query<Position>(default(Key)).Stream();
 
         const float multiplier = 10f;
         
@@ -23,11 +23,11 @@ public class DocumentationExampleTests
         
         query.Job(multiplier,(uniform, pos) => { pos.write.Value *= uniform; });
 
-        var pos1 = world.GetComponent<Position>(entity1, Match.Plain);
+        var pos1 = world.GetComponent<Position>(entity1, default);
         var expected = new Position(pos1.Value * multiplier);
         Assert.Equal(expected, pos1);
 
-        var pos2 = world.GetComponent<Position>(entity2, Match.Plain);
+        var pos2 = world.GetComponent<Position>(entity2, default);
         expected = new Position( new Vector3(1, 2, 3) * multiplier);
         Assert.Equal(expected, pos2);
     }

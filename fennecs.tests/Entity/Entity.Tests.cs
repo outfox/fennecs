@@ -173,7 +173,7 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(123);
 
         Assert.True(entity.Has<int>());
-        Assert.True(entity.Has<int>(Match.Plain));
+        Assert.True(entity.Has<int>(default));
         Assert.True(entity.Has<int>(Match.Any));
 
         Assert.False(entity.Has<int>(Entity.Any));

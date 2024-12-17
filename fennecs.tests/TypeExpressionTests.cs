@@ -11,7 +11,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void To_String()
     {
-        output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Plain).ToString());
+        output.WriteLine(TypeExpression.Of<TypeEmpty>(default).ToString());
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Any).ToString());
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Link).ToString());
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Entity).ToString());
@@ -22,8 +22,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Id_is_Comparable()
     {
-        var t1 = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var t2 = TypeExpression.Of<TypeEmpty>(Match.Plain);
+        var t1 = TypeExpression.Of<TypeEmpty>(default);
+        var t2 = TypeExpression.Of<TypeEmpty>(default);
         Assert.Equal(t1, t2);
     }
 
@@ -31,8 +31,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Id_is_Comparable_for_BaseTypes()
     {
-        var t1 = TypeExpression.Of<double>(Match.Plain);
-        var t2 = TypeExpression.Of<double>(Match.Plain);
+        var t1 = TypeExpression.Of<double>(default);
+        var t2 = TypeExpression.Of<double>(default);
         Assert.Equal(t1, t2);
     }
 
@@ -40,8 +40,8 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Is_Distinct()
     {
-        var t1 = TypeExpression.Of<int>(Match.Plain);
-        var t2 = TypeExpression.Of<ushort>(Match.Plain);
+        var t1 = TypeExpression.Of<int>(default);
+        var t2 = TypeExpression.Of<ushort>(default);
         Assert.NotEqual(t1, t2);
     }
 
@@ -67,7 +67,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Implicitly_decays_to_Type()
     {
-        var t1 = TypeExpression.Of<TypeEmpty>(Match.Plain).Type;
+        var t1 = TypeExpression.Of<TypeEmpty>(default).Type;
         var t2 = typeof(TypeEmpty);
         Assert.Equal(t2, t1);
         Assert.Equal(t1, t2);
@@ -77,9 +77,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Has_Equality_Operator()
     {
-        var t1 = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var t2 = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var t3 = TypeExpression.Of<string>(Match.Plain);
+        var t1 = TypeExpression.Of<TypeEmpty>(default);
+        var t2 = TypeExpression.Of<TypeEmpty>(default);
+        var t3 = TypeExpression.Of<string>((Key) default);
         Assert.True(t1 == t2);
         Assert.False(t1 == t3);
     }
@@ -88,9 +88,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Has_Inequality_Operator()
     {
-        var t1 = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var t2 = TypeExpression.Of<int>(Match.Plain);
-        var t3 = TypeExpression.Of<int>(Match.Plain);
+        var t1 = TypeExpression.Of<TypeEmpty>(default);
+        var t2 = TypeExpression.Of<int>(default);
+        var t3 = TypeExpression.Of<int>(default);
         Assert.True(t1 != t2);
         Assert.False(t3 != t2);
     }
@@ -98,7 +98,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Can_Create_For_Type()
     {
-        var tx1 = TypeExpression.Of(typeof(TypeEmpty), Match.Plain);
+        var tx1 = TypeExpression.Of(typeof(TypeEmpty), default);
         var tx2 = TypeExpression.Of(typeof(TypeEmpty), Match.Any);
         var tx3 = TypeExpression.Of(typeof(TypeEmpty), new Entity(null!, new(123)));
 
@@ -111,7 +111,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void None_Matches_only_None()
     {
-        var none = TypeExpression.Of<TypeEmpty>(Match.Plain);
+        var none = TypeExpression.Of<TypeEmpty>(default);
         var any = TypeExpression.Of<TypeEmpty>(Match.Any);
         var obj = TypeExpression.Of<TypeEmpty>(Match.Link);
         var rel = TypeExpression.Of<TypeEmpty>(Match.Entity);
@@ -133,7 +133,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var any = TypeExpression.Of<TypeEmpty>(Match.Any);
 
-        var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
+        var typ = TypeExpression.Of<TypeEmpty>(default);
         var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
@@ -148,7 +148,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var obj = TypeExpression.Of<TypeEmpty>(Match.Link);
 
-        var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
+        var typ = TypeExpression.Of<TypeEmpty>(default);
         var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
@@ -163,7 +163,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var rel = TypeExpression.Of<TypeEmpty>(Match.Entity);
 
-        var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
+        var typ = TypeExpression.Of<TypeEmpty>(default);
         var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
@@ -178,7 +178,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var rel = TypeExpression.Of<TypeEmpty>(Match.Target);
 
-        var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
+        var typ = TypeExpression.Of<TypeEmpty>(default);
         var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
@@ -191,7 +191,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Entity_only_matches_Entity()
     {
-        var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
+        var typ = TypeExpression.Of<TypeEmpty>(default);
         var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 

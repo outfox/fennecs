@@ -19,10 +19,10 @@ public readonly record struct MatchExpression
     private short TypeId { get; }
     
     internal static MatchExpression Of<T>(Match match) => new(match, LanguageType<T>.Id);
-    internal static MatchExpression Of<T>(Key key) => new(key, LanguageType<T>.Id);
+    //internal static MatchExpression Of<T>(Key key) => new(key, LanguageType<T>.Id);
 
     internal static MatchExpression Of(Type type, Match match) => new(match, LanguageType.Identify(type));
-    internal static MatchExpression Of(Type type, Key key) => new(key, LanguageType.Identify(type));
+    //internal static MatchExpression Of(Type type, Key key) => new(key, LanguageType.Identify(type));
     
 
     private MatchExpression(Match match, short typeId)
@@ -47,7 +47,7 @@ public readonly record struct MatchExpression
     /// <summary>
     /// The <see cref="TypeExpression"/> is a relation, meaning it has a target other than None.
     /// </summary>
-    public bool IsRelation => Match != Match.Plain;
+    public bool IsRelation => Match != default(Key);
 
 
     /// <summary>
@@ -60,7 +60,7 @@ public readonly record struct MatchExpression
     /// Match against another TypeExpression; used for Query Matching.
     /// Examines the Type and Target fields of either and decides whether the other TypeExpression is a match.
     /// <para>
-    /// See also: <see cref="Match.Plain"/>, <see cref="Entity.Any"/>, <see cref="Match.Target"/>, <see cref="Match.Link"/>, <see cref="Match.Any"/>
+    /// See also: <see cref="Key.Plain"/>, <see cref="Entity.Any"/>, <see cref="Match.Target"/>, <see cref="Match.Link"/>, <see cref="Match.Any"/>
     /// </para>
     /// </summary>
     /// <param name="other">another type expression</param>
@@ -71,7 +71,7 @@ public readonly record struct MatchExpression
         if (TypeId != other.TypeId) return false;
 
         // Match.None matches only None. (plain Components)
-        if (Match == Match.Plain) return other.Key == default;
+        if (Match == default(Key)) return other.Key == default;
 
         // Match.Any matches everything; relations and pure Components (target == none).
         if (Match == Match.Any) return true;

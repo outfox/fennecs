@@ -41,7 +41,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// </summary>
     /// <param name="match">
     ///     Match Expression for the component type <see cref="Cross" />.
-    ///     The default is <see cref="Match.Plain"/>
+    ///     The default is <see cref="Key.Plain"/>
     /// </param>
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
     public bool Contains<T>(Match match = default)
@@ -57,7 +57,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// <param name="type">System.Type of the backing component data</param>
     /// <param name="match">
     ///     Match Expression for the component type <see cref="Cross" />.
-    ///     The default is <see cref="Match.Plain"/>
+    ///     The default is <see cref="Key.Plain"/>
     /// </param>
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
     public bool Contains(Type type, Match match = default)

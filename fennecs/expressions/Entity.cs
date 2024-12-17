@@ -282,4 +282,10 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// Only use this if you need to work with the component directly, otherwise it is recommended to use <see cref="Entity.Get{C}(fennecs.Key)"/> and <see cref="Set{C}(in C, fennecs.Key)"/>.
     /// </remarks>
     public RWImmediate<C> Ref<C>(Key key = default) where C : notnull => new(ref World.GetComponent<C>(this, key), this, key);
+
+    /// <inheritdoc />
+    public bool Has(MatchExpression expression) => World.HasComponent(this, expression);
+
+    /// <inheritdoc />
+    public bool Has(TypeExpression expression) => World.HasComponent(this, expression);
 }

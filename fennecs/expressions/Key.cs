@@ -103,5 +103,4 @@ public readonly record struct Key
     internal const ulong HeaderMask = 0xFFFF_0000_0000_0000u;
     internal const ulong KeyMask = ~0xFFFF_0000_0000_0000u;
     internal const ulong CategoryMask = 0x0000_F000_0000_0000u;
-
 }

@@ -166,7 +166,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
     /// <typeparam name="T">any component type</typeparam>
-    /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
+    /// <param name="match">default <see cref="Key.Plain"/>.<br/>Can alternatively be one
     /// of <see cref="Match.Any"/>, <see cref="Match.Target"/>, or <see cref="Match.Link"/>, <see cref="Match.Entity"/>
     /// </param>
     public void DespawnAllWith<T>(Match match = default)

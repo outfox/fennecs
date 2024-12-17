@@ -69,6 +69,11 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     }
 
     /// <summary>
+    /// Implicitly converts a <see cref="TypeExpression"/> to a <see cref="MatchExpression"/>.
+    /// </summary>
+    public static implicit operator MatchExpression(TypeExpression self) => new(self);
+    
+    /// <summary>
     /// Implicitly converts a (Type, Key) tuple to a TypeExpression.
     /// </summary>
     public static implicit operator TypeExpression((Type type, Key key) tuple) => new(tuple.type, tuple.key);

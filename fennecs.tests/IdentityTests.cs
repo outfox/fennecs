@@ -20,7 +20,7 @@ public class IdentityTests(ITestOutputHelper output)
         _ = Match.Entity.ToString();
         _ = Match.Target.ToString();
         _ = Match.Link.ToString();
-        _ = Match.Plain.ToString();
+        _ = default(Key).ToString();
         _ = Key.Of("hello world").ToString();
         _ = new Entity(123, 456).ToString();
 
@@ -28,7 +28,7 @@ public class IdentityTests(ITestOutputHelper output)
         output.WriteLine(Match.Entity.ToString());
         output.WriteLine(Match.Target.ToString());
         output.WriteLine(Match.Link.ToString());
-        output.WriteLine(Match.Plain.ToString());
+        output.WriteLine(default(Key).ToString());
         output.WriteLine(Key.Of("hello world").ToString());
         output.WriteLine(new Entity(123, 456).ToString());
     }
@@ -38,10 +38,10 @@ public class IdentityTests(ITestOutputHelper output)
     public void Entity_None_cannot_Match_One()
     {
         var zero = Entity.None;
-        Assert.NotEqual(Match.Plain, new Key(zero));
+        Assert.NotEqual(default, new Key(zero));
 
         var one = new Entity(1, 1);
-        Assert.NotEqual(Match.Plain, new(one));
+        Assert.NotEqual((Key) default, new(one));
     }
 
 
@@ -75,7 +75,7 @@ public class IdentityTests(ITestOutputHelper output)
             var entity = new Entity(0, index, generation);
 
             Assert.NotEqual(new(entity), Match.Any);
-            Assert.NotEqual(new(entity), Match.Plain);
+            Assert.NotEqual(new(entity), (Key) default);
 
             if (!ids.TryAdd(entity.GetHashCode(), entity))
             {
@@ -88,8 +88,8 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Any_and_None_are_Distinct()
     {
-        Assert.NotEqual(Match.Any, Match.Plain);
-        Assert.NotEqual(Match.Any.GetHashCode(), Match.Plain.GetHashCode());
+        Assert.NotEqual(Match.Any, default(Key));
+        Assert.NotEqual(Match.Any.GetHashCode(), default(Key).GetHashCode());
     }
 
     [Fact]

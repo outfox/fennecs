@@ -180,7 +180,7 @@ public class Stream1Tests(ITestOutputHelper output)
         stream = world.Query<string>(Match.Link).Stream();
         Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
 
-        stream = world.Query<string>(Match.Plain).Stream();
+        stream = world.Query<string>(default(Key)).Stream();
         var ran = false;
         stream.Job((str) =>
         {

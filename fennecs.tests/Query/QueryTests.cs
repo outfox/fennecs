@@ -125,8 +125,8 @@ public class QueryTests
         /*var charlie = */
         world.Spawn().Add(p3).Add(222, bob);
 
-        var query = world.Query<Entity, Vector3>(Match.Plain, default)
-            .Any<int>(Match.Plain)
+        var query = world.Query<Entity, Vector3>(default(Key), default)
+            .Any<int>(default(Key))
             .Stream();
 
         var count = 0;
@@ -153,7 +153,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).Add(111, alice);
         var charlie = world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain).Any<int>(eve).Stream();
+        var query = world.Query<Entity, Vector3>(default(Key), default(Key)).Any<int>(eve).Stream();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -181,7 +181,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).Add(111, alice);
         var charlie = world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3>(default(Key), default(Key))
             .Any<int>(eve)
             .Any<int>(alice)
             .Stream();
@@ -231,7 +231,7 @@ public class QueryTests
         /*var charlie = */
         world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3>(default(Key), default(Key))
             .Not<int>(bob)
             .Any<int>(alice)
             .Stream();
@@ -276,7 +276,7 @@ public class QueryTests
         world.Spawn().Add(p3).Add(555, bob);
         world.Spawn().Add(p3).Add(666, eve);
 
-        var query = world.Query<Entity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3, int>(default(Key), default(Key), default(Key))
             .Not<int>(bob)
             .Stream();
 
@@ -323,17 +323,17 @@ public class QueryTests
         var query1A = world.Query().Compile();
         var query1B = world.Query().Compile();
 
-        var query2A = world.Query<Entity>(Match.Plain).Compile();
-        var query2B = world.Query<Entity>(Match.Plain).Compile();
+        var query2A = world.Query<Entity>(default(Key)).Compile();
+        var query2B = world.Query<Entity>(default(Key)).Compile();
 
         var query3A = world.Query().Has<int>().Compile();
         var query3B = world.Query().Has<int>().Compile();
 
-        var query4A = world.Query<Entity>(Match.Plain).Not<int>().Compile();
-        var query4B = world.Query<Entity>(Match.Plain).Not<int>().Compile();
+        var query4A = world.Query<Entity>(default(Key)).Not<int>().Compile();
+        var query4B = world.Query<Entity>(default(Key)).Not<int>().Compile();
 
-        var query5A = world.Query<Entity>(Match.Plain).Any<int>().Any<float>().Compile();
-        var query5B = world.Query<Entity>(Match.Plain).Any<int>().Any<float>().Compile();
+        var query5A = world.Query<Entity>(default(Key)).Any<int>().Any<float>().Compile();
+        var query5B = world.Query<Entity>(default(Key)).Any<int>().Any<float>().Compile();
 
         Assert.Equal(query1A, query1B);
         Assert.True(ReferenceEquals(query1A, query1B));
@@ -495,7 +495,7 @@ public class QueryTests
         using var world = new World();
         var query = world.Query<int>(Match.Any).Compile();
         world.Spawn().Add<int>();
-        Assert.True(query.Contains<int>(Match.Plain));
+        Assert.True(query.Contains<int>(default(Key)));
         Assert.False(query.Contains<float>(Match.Link));
     }
 
@@ -514,13 +514,13 @@ public class QueryTests
     public void Filtered_Enumerator_Filters()
     {
         using var world = new World();
-        var query = world.Query<Entity, int>(Match.Plain, Match.Any).Compile();
+        var query = world.Query<Entity, int>(default(Key), Match.Any).Compile();
 
         var entity1 = world.Spawn().Add(444);
         var entity2 = world.Spawn().Add(555, entity1);
 
         //Partial miss
-        var tx = TypeExpression.Of<int>(Match.Plain);
+        var tx = TypeExpression.Of<int>(default);
         Assert.Contains(entity1, query.Filtered(tx));
         Assert.DoesNotContain(entity2, query.Filtered(tx));
 

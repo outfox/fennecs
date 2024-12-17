@@ -63,6 +63,12 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
     public bool Has(Type type, Match match = default) => Entity.Has(type, match);
 
     /// <inheritdoc />
+    public bool Has(MatchExpression expression) => Entity.Has(expression);
+    
+    /// <inheritdoc />
+    public bool Has(TypeExpression expression) => Entity.Has(expression);
+
+    /// <inheritdoc />
     public bool Has<L>(L linkedObject) where L : class => Entity.Has<L>(Key.Of(linkedObject));
 
     #endregion

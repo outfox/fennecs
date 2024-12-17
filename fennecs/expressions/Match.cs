@@ -57,7 +57,7 @@ public readonly record struct Match
     /// <remarks>
     /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for
     /// each matching component. While querying is efficient, this increases the number of operations per entity.</para>
-    /// <para>This is an intentional feature, and the user is protected by the fact that the default is <see cref="Plain"/>.</para>
+    /// <para>This is an intentional feature, and the user is protected by the fact that the default is <see cref="Key.Plain"/>.</para>
     /// <para>This effect is more pronounced in large archetypes with many matching components, potentially
     /// multiplying the workload significantly. However, for smaller archetypes or simpler tasks, impacts are minimal.</para>
     /// <para>Risks and considerations include:</para>
@@ -102,17 +102,6 @@ public readonly record struct Match
     /// <inheritdoc cref="Any"/>
     public static readonly Match Entity = new(Wildcard.Entity);
 
-
-    /// <summary>
-    /// <b>Match Expression to match only Plain Components.</b>
-    /// <i>(components without a secondary key)</i>
-    /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
-    /// </para>
-    /// <para>This expression does not result in multiple enumeration, because it's not technically a Wildcard - there can only be one plain component per type on an Entity.</para>
-    /// </summary>
-    /// <inheritdoc cref="Plain"/>
-    public static readonly Match Plain = default;
-    
 
     /// <summary>
     /// <para>Implicitly convert an <see cref="Entity"/> to a <see cref="Match"/> for use in filter expressions.</para>

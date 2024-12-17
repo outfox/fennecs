@@ -188,7 +188,7 @@ public class WorldTests(ITestOutputHelper output)
             .Add("relation", other)
             .Spawn(count);
 
-        var query = world.Query<int, string>(Match.Plain, other).Stream();
+        var query = world.Query<int, string>(default(Key), other).Stream();
         Assert.Equal(count, query.Count);
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
@@ -225,7 +225,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Entity>(Match.Plain).Stream();
+        var query = world.Query<Entity>(default(Key)).Stream();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -245,7 +245,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Entity>(Match.Plain).Stream();
+        var query = world.Query<Entity>(default(Key)).Stream();
         Assert.Throws<InvalidOperationException>(() =>
             query.Raw(world, (uniform, _) =>
             {
@@ -314,8 +314,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().Add(444, target2);
         }
 
-        var query1 = world.Query<Entity>(Match.Plain).Has<int>(target1).Stream();
-        var query2 = world.Query<Entity>(Match.Plain).Has<int>(target2).Stream();
+        var query1 = world.Query<Entity>(default(Key)).Has<int>(target1).Stream();
+        var query2 = world.Query<Entity>(default(Key)).Has<int>(target2).Stream();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);
@@ -426,7 +426,7 @@ public class WorldTests(ITestOutputHelper output)
         entity.Remove<int>();
 
         worldLock.Dispose();
-        Assert.False(world.HasComponent<int>(entity, Match.Plain));
+        Assert.False(world.HasComponent<int>(entity, default));
     }
 
 
@@ -588,7 +588,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity2 = world.Spawn().Add(Link.With("to the past"));
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
-        world.DespawnAllWith<string>(Match.Plain);
+        world.DespawnAllWith<string>(default(Key));
         Assert.False(world.IsAlive(entity1));
         Assert.True(world.IsAlive(entity2));
         Assert.True(world.IsAlive(entity3));
