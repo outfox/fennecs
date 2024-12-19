@@ -14,45 +14,45 @@ public class Scenarios
     {
         using var world = new World();
 
-        var random = new Random(9001);
         var entities = new List<Entity>();
 
         var floats = 0;
         var doubles = 0;
         var strings = 0;
-        var shorts = 0;
+        ushort shorts = 0;
 
         for (var i = 1; i < count; i++)
         {
-            var builder = world.Spawn().Add(count);
+            var entity = world.Spawn().Add(count);
             if (i % floatRate == 0)
             {
                 floats++;
-                builder.Add<float>(i);
+                entity.Add<float>(i);
             }
 
             if (i % doubleRate == 0)
             {
                 doubles++;
-                builder.Add<double>(i);
+                entity.Add<double>(i);
             }
 
             if (i % stringRate == 0)
             {
                 strings++;
-                builder.Add(i.ToString());
+                entity.Add(i.ToString());
             }
 
             if (i % shortRate == 0)
             {
                 shorts++;
-                builder.Add<ushort>(new Entity(world, entities[random.Next(entities.Count)]));
+                entity.Add(shorts, world.Spawn());
             }
 
-            entities.Add(builder);
+            entities.Add(entity);
         }
 
-
+        Assert.Equal(count, entities.Count);
+        
         var floatsActual = world.Query<float>().Stream().Count;
         Assert.Equal(floats, floatsActual);
 

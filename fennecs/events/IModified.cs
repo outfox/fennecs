@@ -4,58 +4,16 @@ namespace fennecs.events;
 /// Interface handling events triggered when a component on an entity is modified.
 /// </summary>
 /// <remarks>
-/// Does not provide data about relations yet.
-/// </remarks>
-/// <typeparam name="C">any component type</typeparam>
-/// <remarks>
 /// fennecs may call this called more than once for differetn blocks of entities/components (but only once per change event per Entity)
 /// </remarks>
-
-public interface IModified<C> : ICommit where C : notnull//, IEquatable<C> TODO: Implement this
+public interface IModified<C> : ICommit where C : notnull
 {
     /// <summary>
-    /// Takes a list of entities who had a component modified.
+    /// Called when the component is modified.
     /// </summary>
-    delegate void EntityHandler(ReadOnlySpan<Entity> entities);
-
-    /// <summary>
-    /// Takes a list of entities and their original and updated values.
-    /// </summary>
-    delegate void EntityValueHandler(ReadOnlySpan<Entity> entities, ReadOnlySpan<C> original, ReadOnlySpan<C> updated);
-
-    /// <summary>
-    /// Event triggered when a component is modified, providing the original and updated values.
-    /// </summary>
-    /// <remarks>
-    /// This triggers at the end of each chunk as it is being processed.
-    /// Execution happens on the thread that is processing the chunk!
-    /// </remarks>
-    static event EntityHandler? Entities;
-
-    /// <summary>
-    /// Event triggered when a component is modified, providing the entity and the original and updated values.
-    /// </summary>
-    /// <remarks>
-    /// This triggers at the end of each chunk as it is being processed.
-    /// Execution happens on the thread that is processing the chunk!
-    /// </remarks>
-    static event EntityValueHandler? Values;
-
-    /// <summary>
-    /// Called by Streams after feedback from RW&lt;C&gt; is processed.
-    /// </summary>
-    internal static void Invoke(ReadOnlySpan<Entity> entities, ReadOnlySpan<C> original, ReadOnlySpan<C> updated)
-    {
-        Entities?.Invoke(entities);
-        Values?.Invoke(entities, original, updated);
-    }
-
-    /// <summary>
-    /// For testing purposes, clears the event handlers.
-    /// </summary>
-    internal static void Clear()
-    {
-        Entities = null;
-        Values = null;
-    }
+    /// <param name="entities">the entities that have the component added</param>
+    /// <param name="newValues">the new values of the component</param>
+    /// <param name="oldValues">the old values of the component (empty for newly added components)</param>
+    /// <param name="key">secondarykey of the added component (same for all entities)</param>
+    static abstract void Notify(ReadOnlySpan<Entity> entities, ReadOnlySpan<C> newValues, ReadOnlySpan<C> oldValues, Key key);
 }

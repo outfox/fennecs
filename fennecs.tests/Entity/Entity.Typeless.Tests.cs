@@ -56,7 +56,23 @@ public class EntityTypelessTests
         var entity = world.Spawn();
         entity.Add(123);
 
-        entity.Clear(typeof(int), default);
+        entity.Remove(TypeExpression.Of<int>());
+        
+        Assert.Null(entity.Get(typeof(int)));
+        Assert.False(entity.Get(typeof(int), out _));
+        Assert.Empty(entity.Get<int>(Match.Any));
+    }
+
+    [Fact]
+    public void Clear_Component_Typeless()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+
+#pragma warning disable CA2263
+        entity.Remove(MatchExpression.Of(typeof(int), default));
+#pragma warning restore CA2263
         
         Assert.Null(entity.Get(typeof(int)));
         Assert.False(entity.Get(typeof(int), out _));
@@ -92,7 +108,7 @@ public class EntityTypelessTests
         using var world = new World();
         var entity = world.Spawn();
         
-        Assert.Throws<InvalidOperationException>(() => entity.Clear(typeof(int)));
+        Assert.Throws<InvalidOperationException>(() => entity.Remove<int>());
     }
 
     [Fact]
@@ -103,8 +119,8 @@ public class EntityTypelessTests
         entity.Add(123);
         entity.Add(456, entity);
 
-        entity.Clear(typeof(int), Match.Entity);
-        entity.Clear(typeof(int), default(Key));
+        entity.Remove(MatchExpression.Of(typeof(int), Match.Entity));
+        entity.Remove(MatchExpression.Of(typeof(int), default));
         
         Assert.Null(entity.Get(typeof(int)));
         Assert.False(entity.Get(typeof(int), out _));

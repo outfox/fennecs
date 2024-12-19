@@ -30,6 +30,6 @@ public class ReadmeTests
             }
         );
         
-        Assert.Equal(-1 * DeltaTime * 9.81f * Vector3.UnitZ, entity.Ref<Velocity>().Value);
+        Assert.Equal(-1 * DeltaTime * 9.81f * Vector3.UnitZ, entity.Ref<Velocity>().Read.Value);
     }
 }
