@@ -1,4 +1,7 @@
-﻿namespace fennecs.CRUD;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+
+namespace fennecs.CRUD;
 
 /// <summary>
 /// Objects of this type can perform Batch operations on entities or sets of entities.
@@ -13,10 +16,11 @@ public interface IBatchBegin
     /// be matched after the first operation, and thus lead to undesired no-ops.
     /// </remarks>
     /// <param name="add">Conflict Resolution for Addition of Components already on Entities encountered</param> 
-    /// <param name="remove">Conflict Resolution for Removal of Components not on Entities encountered</param> 
+    /// <param name="remove">Conflict Resolution for Removal of Components not on Entities encountered</param>
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.AddConflict add = default, Batch.RemoveConflict remove = default);
 
     /// <inheritdoc cref="Batch(fennecs.Batch.AddConflict,fennecs.Batch.RemoveConflict)"/>
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     public Batch Batch(Batch.RemoveConflict remove) => Batch(default, remove);
 }

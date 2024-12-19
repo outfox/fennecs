@@ -209,7 +209,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         world.Spawn();
-        entity.Add(Link.With("hello world"));
+        entity.Link("hello world");
         entity.Add("bellum gallicum");
 
         Assert.True(entity.Has<string>("hello world"));
@@ -230,7 +230,8 @@ public class EntityTests(ITestOutputHelper output)
         Assert.True(entity.Has<int>(Match.Target));
         Assert.True(entity.Has<int>(Match.Any));
 
-        Assert.False(entity.Has<int>(new Entity(world, new(9001))));
+        var wrong = world.Spawn();
+        Assert.False(entity.Has<int>(wrong));
         Assert.False(entity.Has<int>(Match.Link));
     }
 
@@ -255,9 +256,9 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         entity.Add(123);
 
-        var component = entity.RW<int>();
+        var component = entity.Ref<int>();
         
-        Assert.Equal(123, component.read);
+        Assert.Equal(123, component.Read);
     }
 
     
@@ -272,11 +273,11 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(123, other);
         entity.Add(345, third);
 
-        var component1 = entity.RW<int>(other);
-        Assert.Equal(123, component1.read);
+        var component1 = entity.Ref<int>(other);
+        Assert.Equal(123, component1.Read);
 
-        var component2 = entity.RW<int>(third);
-        Assert.Equal(345, component2.read);
+        var component2 = entity.Ref<int>(third);
+        Assert.Equal(345, component2.Read);
     }
 
     
@@ -287,13 +288,13 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         entity.Add(0);
 
-        var component = entity.RW<int>();
+        var component = entity.Ref<int>();
 
-        component.write = 321;
-        Assert.Equal(321, entity.Ref<int>());
+        component.Write = 321;
+        Assert.Equal(321, entity.Ref<int>().Read);
 
-        component.write += 123;
-        Assert.Equal(444, entity.Ref<int>());
+        component.Write += 123;
+        Assert.Equal(444, entity.Ref<int>().Read);
     }
 
     
@@ -304,13 +305,13 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         entity.Add(new List<int>());
 
-        var component = entity.RW<List<int>>();
+        var component = entity.Ref<List<int>>();
 
-        component.write = [420];
-        Assert.Equal([420], entity.Ref<List<int>>());
+        component.Write = [420];
+        Assert.Equal([420], entity.Ref<List<int>>().Read);
 
-        component.write.Add(69);
-        Assert.Equal([420, 69], entity.Ref<List<int>>());
+        component.Write.Add(69);
+        Assert.Equal([420, 69], entity.Ref<List<int>>().Read);
     }
 
     
@@ -322,11 +323,11 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(0);
 
 
-        entity.RW<int>().write = 321;
-        Assert.Equal(321, entity.Ref<int>());
+        entity.Ref<int>().Write = 321;
+        Assert.Equal(321, entity.Ref<int>().Read);
 
-        entity.RW<int>().write += 123;
-        Assert.Equal(444, entity.Ref<int>());
+        entity.Ref<int>().Write += 123;
+        Assert.Equal(444, entity.Read<int>());
     }
     
     
@@ -337,8 +338,8 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         entity.Add(789);
         
-        var component = entity.RW<int>();
-        Assert.Equal(789, component.consume);
+        var component = entity.Ref<int>();
+        Assert.Equal(789, component.Consume);
         Assert.False(entity.Has<int>());
     }
 
@@ -350,7 +351,7 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         entity.Add(789);
         
-        var value = entity.RW<int>().consume;
+        var value = entity.Ref<int>().Consume;
         Assert.Equal(789, value);
         Assert.False(entity.Has<int>());
     }
@@ -363,7 +364,7 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         entity.Add(789);
         
-        var component = entity.RW<int>();
+        var component = entity.Ref<int>();
         component.Remove();
         Assert.False(entity.Has<int>());
     }
@@ -376,10 +377,10 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         entity.Add(123);
-        ref var component = ref entity.Ref<int>();
+        ref var component = ref entity.Write<int>();
         Assert.Equal(123, component);
         component = 456;
-        Assert.Equal(456, entity.Ref<int>());
+        Assert.Equal(456, entity.Read<int>());
     }
 
     [Fact]

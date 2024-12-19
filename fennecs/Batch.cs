@@ -1,4 +1,5 @@
-﻿using fennecs.CRUD;
+﻿using System.Runtime.CompilerServices;
+using fennecs.CRUD;
 using fennecs.pools;
 
 namespace fennecs;
@@ -10,10 +11,10 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
 {
     private readonly World _world;
     private readonly Mask _mask;
-
+    
     internal readonly PooledList<Archetype> Archetypes = PooledList<Archetype>.Rent();
     internal readonly PooledList<TypeExpression> Additions = PooledList<TypeExpression>.Rent();
-    internal readonly PooledList<TypeExpression> Removals = PooledList<TypeExpression>.Rent();
+    internal readonly PooledList<MatchExpression> Removals = PooledList<MatchExpression>.Rent();
     internal readonly PooledList<object> BackFill = PooledList<object>.Rent();
 
     internal readonly AddConflict AddMode;
@@ -23,23 +24,29 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
 
 
     /// <summary>
-    /// Submit this Batch to its World, which will take ownership of the IDisposable.
-    /// The world wil defer the operation if it is not in immediate mode and dispose afterwards.
+    /// Submit this Batch to its World, taking ownership of the IDisposable.
+    /// The world wil defer the operation if it is not in immediate mode.
+    /// The Batch is disposed afterwards.
     /// </summary>
-    public void Submit()
+    public void Submit([CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
     {
-        if (_world.Submit(this))
+        if (_world.Submit(this, callerFile, callerLine))
         {
             Dispose();
         }
     }
 
 
-    internal Batch(HashSet<Archetype> archetypes, World world, Mask mask, AddConflict addMode, RemoveConflict removeMode)
+    internal Batch(
+        HashSet<Archetype> archetypes, 
+        World world, Mask mask, 
+        AddConflict addMode, 
+        RemoveConflict removeMode
+)
     {
         _world = world;
         _mask = mask;
-
+        
         Archetypes.AddRange(archetypes);
         AddMode = addMode == default ? World.DefaultAddConflict : addMode;
         RemoveMode = removeMode == default ? World.DefaultRemoveConflict : removeMode;
@@ -51,16 +58,9 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     private Batch AddComponent<T>(T data, Key key) where T : notnull
     {
         var typeExpression = TypeExpression.Of<T>(key);
-
-        if (AddMode == AddConflict.Strict && !_mask.SafeForAddition(typeExpression))
-            throw new InvalidOperationException(
-                $"TypeExpression {typeExpression} is not filtered out via Not<T> by this Query/Mask, additions could cause unintended runtime state. See QueryBuilder.Not<T>(). See AddConflict.Disallow, AddConflict.Skip, AddConflict.Replace.");
-
-        if (Additions.Contains(typeExpression))
-            throw new InvalidOperationException($"Duplicate addition {typeExpression} : {data} in same batch!");
-
-        if (Removals.Contains(typeExpression))
-            throw new InvalidOperationException($"Addition {typeExpression} conflicts with removal  in same batch!");
+        
+        if (Removals.Any(removal => removal.Matches(typeExpression)))
+            throw new InvalidOperationException($"Addition of {typeExpression} conflicts with removal in same batch! Because all Removals are applied before any additions, this leads to undefined behaviour.");
 
         Additions.Add(typeExpression);
         BackFill.Add(data);
@@ -68,19 +68,12 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     }
 
     /// <inheritdoc />
-    public Batch Remove(TypeExpression typeExpression)
+    public Batch Remove(MatchExpression expression)
     {
-        if (RemoveMode == RemoveConflict.Strict && !_mask.SafeForRemoval(typeExpression))
-            throw new InvalidOperationException(
-                $"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals could cause unintended runtime state. See QueryBuilder.Has<T>(). See RemoveConflict.Disallow, RemoveConflict.Skip.");
+        if (Additions.Any(expression.Matches))
+            throw new InvalidOperationException($"Removal of {expression} conflicts with addition in same batch! Because any Additions are applied after all Removals, this leads to undefined behaviour.");
 
-        if (Additions.Contains(typeExpression))
-            throw new InvalidOperationException($"Removal of {typeExpression} conflicts with addition in same batch!");
-
-        if (Removals.Contains(typeExpression))
-            throw new InvalidOperationException($"Duplicate removal of {typeExpression} in same batch!");
-
-        Removals.Add(typeExpression);
+        Removals.Add(expression);
         return this;
     }
 
@@ -164,6 +157,4 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         BackFill.Dispose();
         _mask.Dispose();
     }
-
-
 }

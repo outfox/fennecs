@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 
@@ -51,46 +52,64 @@ public partial class World
 
     private void CatchUp(ConcurrentQueue<DeferredOperation> operations)
     {
-        while (operations.TryDequeue(out var op))
-            switch (op.Opcode)
+        Debug.Assert(Mode == WorldMode.CatchUp, "Cannot catch up outside of WorldMode.CatchUp.");
+        
+        while (operations.TryDequeue(out var op)) 
+            try
             {
-                case Opcode.Add:
-                    AddComponent(op.Entity, op.TypeExpression, op.Data);
-                    break;
+                switch (op.Opcode)
+                {
+                    case Opcode.Add:
+                        AddComponent(op.Entity, op.TypeExpression, op.Data);
+                        break;
 
-                case Opcode.Remove:
-                    RemoveComponent(op.Entity, op.TypeExpression);
-                    break;
+                    case Opcode.Remove:
+                        RemoveComponent(op.Entity, op.MatchExpression);
+                        break;
 
-                case Opcode.Despawn:
-                    DespawnImpl(op.Entity);
-                    break;
+                    case Opcode.Despawn:
+                        DespawnImpl(op.Entity);
+                        break;
 
-                case Opcode.Batch:
-                    var batch = (Batch) op.Data;
-                    Commit(batch);
-                    batch.Dispose();
-                    break;
+                    case Opcode.Batch:
+                        var batch = (Batch) op.Data;
+                        Commit(batch);
+                        batch.Dispose();
+                        break;
+
+                    default:
+                        throw new NotImplementedException($"Unknown Opcode: {op.Opcode}");
+                }
+            }
+            catch (Exception inner)
+            {
+                throw new InvalidOperationException($"Invalid Deferred Operation (submitted at {op.File}:{op.Line})", inner);
             }
     }
 
 
-    
+
     internal struct DeferredOperation
     {
         internal required Opcode Opcode;
         
         internal TypeExpression TypeExpression = default;
+        internal MatchExpression MatchExpression = default;
         internal Entity Entity = default;
         internal object Data;
 
         // ReSharper disable once ConvertToPrimaryConstructor
         [SetsRequiredMembers]
-        public DeferredOperation(Batch operation)
+        public DeferredOperation(Batch batch, string callerFile, int callerLine)
         {
             Opcode = Opcode.Batch;
-            Data = operation;
+            Data = batch;
+            File = callerFile;
+            Line = callerLine;
         }
+
+        public string File { get; init; }
+        public int Line { get; init; }
     }
 
 

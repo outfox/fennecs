@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace fennecs;
 
@@ -89,6 +90,9 @@ public readonly record struct MatchExpression
         return Match == new Match(other.Key);
     }
 
+    /// <inheritdoc cref="Matches(TypeExpression)"/>
+    /// <returns>false if the other expression is matched by this expression</returns>
+    public bool MatchesNot(TypeExpression other) => !Matches(other);
 
     /// <summary>
     /// TODO: Remove me.
@@ -110,5 +114,12 @@ public readonly record struct MatchExpression
     public override string ToString()
     {
         return Match != default ? $"<{LanguageType.Resolve(TypeId)}> >> {Match}" : $"<{LanguageType.Resolve(TypeId)}> (plain)";
+    }
+
+    internal TypeExpression AsTypeExpression()
+    {
+        //TODO: This should probably be an Overload in Signature (used in Signature.Remove)
+        Debug.Assert(!IsWildcard, "Can't cast a Wildcard to a TypeExpression");
+        return new(_value);
     }
 }

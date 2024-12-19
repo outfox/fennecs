@@ -118,7 +118,7 @@ public class RWTests
     }
     
     
-    private struct Type69 : Modified<Type69>;
+    private struct Type69 : IModified<Type69>;
 
     [Fact]
     public void Triggers_Entities_on_Modified_Value()
@@ -132,7 +132,7 @@ public class RWTests
 
         var modified = false;
         
-        Modified<Type69>.Entities += entities =>
+        IModified<Type69>.Entities += entities =>
         {
             modified = true;
             Assert.Equal(1, entities.Length);
@@ -142,10 +142,10 @@ public class RWTests
         rw.write = new();
         Assert.True(modified);
         
-        Modified<Type69>.Clear();
+        IModified<Type69>.Clear();
     }
 
-    private class Type42 : Modified<Type42>;
+    private class Type42 : IModified<Type42>;
 
     [Fact]
     public void Triggers_Entities_on_Modified_Reference()
@@ -159,7 +159,7 @@ public class RWTests
 
         var modified = false;
         
-        Modified<Type42>.Entities += entities =>
+        IModified<Type42>.Entities += entities =>
         {
             modified = true;
             Assert.Equal(1, entities.Length);
@@ -169,7 +169,7 @@ public class RWTests
         rw.write = new();
         Assert.True(modified);
 
-        Modified<Type42>.Clear();
+        IModified<Type42>.Clear();
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public class RWTests
         var modified = false;
         var updated = new Type42();
         
-        Modified<Type42>.Values += (entities, originals, updateds) =>
+        IModified<Type42>.Values += (entities, originals, updateds) =>
         {
             modified = true;
             Assert.Equal(1, entities.Length);
@@ -198,6 +198,6 @@ public class RWTests
         rw.write = updated;
         Assert.True(modified);
         
-        Modified<Type42>.Clear();
+        IModified<Type42>.Clear();
     }
 }

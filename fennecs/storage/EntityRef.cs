@@ -1,4 +1,5 @@
-﻿using fennecs.CRUD;
+﻿using System.Runtime.CompilerServices;
+using fennecs.CRUD;
 
 namespace fennecs.storage;
 
@@ -33,32 +34,26 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
 
     
     /// <inheritdoc />
-    public Entity Add<C>(C component, Key key = default) where C : notnull => Entity.Add(component, key);
+    public Entity Add<C>(C component, Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull => Entity.Add(component, key, callerFile, callerLine);
 
     /// <inheritdoc />
-    public Entity Add<C>(Key key = default) where C : notnull, new() => Entity.Add(new C(), key);
+    public Entity Add<C>(Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull, new() => Entity.Add(new C(), key, callerFile, callerLine);
 
     /// <inheritdoc />
-    public Entity Remove<C>(Key key = default) where C : notnull => Entity.Remove<C>(key);
+    public Entity Remove<C>(Match match = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull => Entity.Remove<C>(match, callerFile, callerLine);
 
     /// <inheritdoc />
-    public Entity Remove(TypeExpression expression) => Entity.Remove(expression);
+    public Entity Remove(MatchExpression expression, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) => Entity.Remove(expression, callerFile, callerLine);
 
     /// <inheritdoc />
-    public Entity Link<L>(L link) where L : class => Entity.Link(link);
+    public Entity Link<L>(L link, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where L : class => Entity.Link(link, callerFile, callerLine);
 
     
     #region IHasComponent
 
     /// <inheritdoc />
-    public bool Has<C>(Key key = default) where C : notnull => Entity.Has<C>(key);
-
-    /// <inheritdoc />
     public bool Has<C>(Match match = default) where C : notnull => Entity.Has<C>(match);
-
-    /// <inheritdoc />
-    public bool Has(Type type, Key key = default) => Entity.Has(type, key);
-
+    
     /// <inheritdoc />
     public bool Has(Type type, Match match = default) => Entity.Has(type, match);
 
@@ -66,10 +61,7 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
     public bool Has(MatchExpression expression) => Entity.Has(expression);
     
     /// <inheritdoc />
-    public bool Has(TypeExpression expression) => Entity.Has(expression);
-
-    /// <inheritdoc />
-    public bool Has<L>(L linkedObject) where L : class => Entity.Has<L>(Key.Of(linkedObject));
+    public bool Has<L>(L link) where L : class => Entity.Has<L>(Key.Of(link));
 
     #endregion
 }

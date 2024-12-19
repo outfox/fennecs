@@ -25,9 +25,9 @@ public interface IHasComponent
     /// Check for presence of the Object Link component with the specified linked object.
     /// </summary>
     /// <typeparam name="L">backing and target type of the Object Link component to check for</typeparam>
-    /// <param name="linkedObject">the linked object to check for, its Key (based on its type and hash coce) will be used as the secondary key.</param>
+    /// <param name="link">the linked object to check for, its Key (based on its type and hash coce) will be used as the secondary key.</param>
     /// <returns>true if the entity/entities has the component with the specified linked object; otherwise, false.</returns>
-    public bool Has<L>(L linkedObject) where L : class => Has<L>(Key.Of(linkedObject));
+    public bool Has<L>(L link) where L : class => Has(MatchExpression.Of<L>(Key.Of(link)));
 
     /// <summary>
     /// Check for presence of one or more component of the specified type, matching the given match term.

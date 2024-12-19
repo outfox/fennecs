@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Immutable;
+using fennecs.pools;
 
 namespace fennecs;
 
@@ -67,6 +68,14 @@ public sealed record Signature : IEnumerable<TypeExpression>, IComparable<Signat
     {
     }
 
+    /// <summary>
+    /// Creates a new <see cref="Signature"/> from the given values.
+    /// </summary>
+    /// <param name="values">constituent values of the signature; will be converted to an <see cref="ImmutableSortedSet{T}"/></param>
+    public Signature(IEnumerable<TypeExpression> values) : this(values.ToImmutableSortedSet())
+    {
+    }
+
 
     /// <summary>
     /// Creates a new <see cref="Signature"/> from the given values.
@@ -91,8 +100,7 @@ public sealed record Signature : IEnumerable<TypeExpression>, IComparable<Signat
 
     /// <inheritdoc cref="ImmutableSortedSet{T}.Contains"/>
     public bool Contains(TypeExpression item) => _set.Contains(item);
-
-
+    
     /// <inheritdoc cref="ImmutableSortedSet{T}.Except"/>
     public Signature Except(IEnumerable<TypeExpression> other) => new(_set.Except(other));
 
@@ -125,7 +133,13 @@ public sealed record Signature : IEnumerable<TypeExpression>, IComparable<Signat
     /// <inheritdoc cref="ImmutableSortedSet{T}.Overlaps"/>
     public bool Overlaps(ImmutableSortedSet<TypeExpression> other) => _set.Overlaps(other);
 
-
+    
+    /// <summary>
+    /// Remove all entries from this <see cref="Signature"/> that match the given <see cref="MatchExpression"/>.
+    /// </summary>
+    public Signature Remove(IReadOnlyList<MatchExpression> operationRemovals) => new(operationRemovals.Aggregate(this, (current, removal) => new(current.Where(removal.MatchesNot))));
+    
+    
     /// <inheritdoc cref="ImmutableSortedSet{T}.Remove"/>
     public Signature Remove(TypeExpression value) => new(_set.Remove(value));
 

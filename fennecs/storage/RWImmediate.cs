@@ -26,7 +26,7 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) w
         set
         {
             // Optimizes away the write and null checks if it's not modifiable.
-            if (typeof(Modified<T>).IsAssignableFrom(typeof(T)))
+            if (typeof(IModified<T>).IsAssignableFrom(typeof(T)))
             {
                 var original = _value;
                 _value = value;
@@ -37,7 +37,7 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) w
                 //_writtenUpdates?.Add(value);
                 
                 // TODO: Handle this in the outer scope, where the lists come from.
-                Modified<T>.Invoke([entity], [original], [value]);
+                IModified<T>.Invoke([entity], [original], [value]);
             }
             else
             {

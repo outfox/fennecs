@@ -137,7 +137,7 @@ public class Storage<T> : IStorage where T : notnull
         _expression = expression;
         
         _data = Pool.Rent(InitialCapacity);
-        _read = typeof(events.Commit).IsAssignableFrom(typeof(T)) ? Pool.Rent(InitialCapacity) : _data;
+        _read = typeof(events.ICommit).IsAssignableFrom(typeof(T)) ? Pool.Rent(InitialCapacity) : _data;
     }
 
     /// <summary>

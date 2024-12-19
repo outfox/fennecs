@@ -1,19 +1,17 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-using fennecs.storage;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace fennecs;
 
 public partial class World
 {
     #region CRUD
-    internal void AddComponent<T>(Entity entity, TypeExpression typeExpression, T data) where T : notnull
+    internal void AddComponent<T>(Entity entity, TypeExpression typeExpression, T data, string callerFile = "", int callerLine = 0) where T : notnull
     {
-        if (data == null) throw new ArgumentNullException(nameof(data));
+        if (data is null) throw new ArgumentNullException(nameof(data), $"Cannot add a null value for component of type {typeExpression}.");
         
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Entity = entity, TypeExpression = typeExpression, Data = data});
+            _deferredOperations.Enqueue(new() {Opcode = Opcode.Add, Entity = entity, TypeExpression = typeExpression, Data = data, File = callerFile, Line = callerLine});
             return;
         }
 
@@ -22,7 +20,7 @@ public partial class World
         ref var meta = ref _meta[entity.Index];
         var oldArchetype = meta.Archetype;
 
-        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} already has a component of type {typeExpression}");
+        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} already has a component of type {typeExpression}.");
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetOrCreateArchetype(newSignature);
@@ -33,11 +31,11 @@ public partial class World
     }
 
 
-    internal void RemoveComponent(Entity entity, TypeExpression typeExpression)
+    internal void RemoveComponent(Entity entity, MatchExpression expression)
     {
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Entity = entity, TypeExpression = typeExpression});
+            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Entity = entity, MatchExpression = expression});
             return;
         }
 
@@ -45,9 +43,11 @@ public partial class World
 
         var oldArchetype = meta.Archetype;
 
-        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Cannot remove Component {typeExpression} from Entity {entity}, because it does not or no longer has that component. Did you accidentally try to remove it twice?");
+        if (!oldArchetype.Signature.Matches(expression)) throw new InvalidOperationException($"Cannot remove Component {expression} from Entity {entity}, because it does not or no longer has that component. Did you accidentally try to remove it twice?");
 
-        var newSignature = oldArchetype.Signature.Remove(typeExpression);
+        var newSignature = expression.IsWildcard 
+            ? new(oldArchetype.Signature.Where(expression.MatchesNot)) 
+            : oldArchetype.Signature.Remove(expression.AsTypeExpression());
         var newArchetype = GetOrCreateArchetype(newSignature);
         Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
     }

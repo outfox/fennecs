@@ -4,11 +4,11 @@ namespace fennecs;
 
 public partial class World
 {
-    internal bool Submit(Batch batch)
+    internal bool Submit(Batch batch, string callerLine, int callerFile)
     {
         if (Mode != WorldMode.Immediate)
         {
-            _deferredOperations.Enqueue(new(batch));
+            _deferredOperations.Enqueue(new(batch, callerLine, callerFile));
             return false;
         }
 
@@ -22,7 +22,7 @@ public partial class World
     {
         foreach (var archetype in operation.Archetypes)
         {
-            var preAddSignature = archetype.Signature.Except(operation.Removals);
+            var preAddSignature = archetype.Signature.Remove(operation.Removals);
             var destinationSignature = preAddSignature.Union(operation.Additions);
             var destination = GetOrCreateArchetype(destinationSignature);
             archetype.Migrate(destination, operation.Additions, operation.BackFill, operation.AddMode);

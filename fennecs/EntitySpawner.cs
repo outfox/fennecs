@@ -28,9 +28,11 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     #endregion
 
 
-    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(C, fennecs.Key)" />
+    /// <inheritdoc />
     public EntitySpawner Add<C>(C component, Key key = default) where C : notnull
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        
         var type = TypeExpression.Of<C>(key);
         if (_components.Contains(type))
         {
@@ -47,26 +49,32 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
         return this;
     }
 
-    /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(fennecs.Key)" />
+    /// <inheritdoc />
     public EntitySpawner Add<C>(Key key = default) where C : notnull, new() => Add<C>(new(), key);
 
 
     /// <inheritdoc />
-    public EntitySpawner Remove(TypeExpression expression)
+    public EntitySpawner Remove(MatchExpression expression)
     {
-        _values.RemoveAt(_components.IndexOf(expression));
-        _components.Remove(expression);
+        ObjectDisposedException.ThrowIf(_disposed, this);
         
+        foreach (var component in _components.Where(expression.Matches).ToArray())
+        {
+            _values.RemoveAt(_components.IndexOf(component));
+            _components.Remove(component);
+        }
+
         return this;
     }
-
-
+    
     /// <summary>
     /// Spawns <c>count</c> entities with the configured components.
     /// </summary>
     /// <param name="count">number of entities to spawn</param>
     public EntitySpawner Spawn(int count = 1)
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        
         _world.Spawn(count, _components, _values);
         return this;
     }
@@ -75,6 +83,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     public void Dispose()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
+        
         _disposed = true;
 
         _components.Dispose();

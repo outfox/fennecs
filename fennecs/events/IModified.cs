@@ -7,7 +7,11 @@ namespace fennecs.events;
 /// Does not provide data about relations yet.
 /// </remarks>
 /// <typeparam name="C">any component type</typeparam>
-public interface Modified<C> where C : notnull//, IEquatable<C> TODO: Implement this
+/// <remarks>
+/// fennecs may call this called more than once for differetn blocks of entities/components (but only once per change event per Entity)
+/// </remarks>
+
+public interface IModified<C> : ICommit where C : notnull//, IEquatable<C> TODO: Implement this
 {
     /// <summary>
     /// Takes a list of entities who had a component modified.

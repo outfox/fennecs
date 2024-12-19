@@ -34,6 +34,11 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
         TypeId = typeId;
     }
 
+    internal TypeExpression(ulong value)
+    {
+        _value = value;
+    }
+
     /// <summary>
     /// Get the backing Component type that this <see cref="TypeExpression"/> represents.
     /// </summary>

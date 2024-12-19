@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using fennecs.CRUD;
 
 namespace fennecs;
@@ -240,7 +242,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// <remarks>
     /// This creates a batch and immediately submits it. Use <see cref="Batch()"/> to create a batch manually.
     /// </remarks>
-    public Query Remove(TypeExpression expression)
+    public Query Remove(MatchExpression expression)
     {
         Batch().Remove(expression).Submit();
         return this;
@@ -248,6 +250,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
 
 
     /// <inheritdoc />
+    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     public Batch Batch(Batch.AddConflict addConflict = default, Batch.RemoveConflict removeConflict = default) => new(Archetypes, World, Mask.Clone(), addConflict, removeConflict);
     
 

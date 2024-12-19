@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using fennecs.CRUD;
 using fennecs.pools;
@@ -162,40 +163,40 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     }
 
     /// <inheritdoc />
-    public Entity Add<C>(C component, Key key = default) where C : notnull
+    public Entity Add<C>(C component, Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull
     {
-        World.AddComponent(this, TypeExpression.Of<C>(key), component);
+        World.AddComponent(this, TypeExpression.Of<C>(key), component, callerFile, callerLine);
         return this;
     }
     
     /// <inheritdoc />
-    public Entity Add<C>(Key key = default) where C : notnull, new() => Add(new C(), key);
+    public Entity Add<C>(Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull, new() => Add(new C(), key);
 
     /// <inheritdoc />
-    public Entity Link<L>(L link) where L : class
+    public Entity Link<L>(L link, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where L : class
     {
+        if (typeof(L) == typeof(object))
+        {
+            World.AddComponent(this, TypeExpression.Of(link.GetType(), Key.Of(link)), link);
+            return this;
+        }
+        
         World.AddComponent(this, TypeExpression.Of<L>(Key.Of(link)), link);
         return this;
     }
 
     /// <inheritdoc />
-    public Entity Remove<C>(Key key = default) where C : notnull => Remove(TypeExpression.Of<C>(key));
+    public Entity Remove<C>(Match match = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull => Remove(MatchExpression.Of<C>(match));
 
     /// <inheritdoc />
-    public Entity Remove(TypeExpression expression)
+    public Entity Remove(MatchExpression expression, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
     {
         World.RemoveComponent(this, expression);
         return this;
     }
 
     /// <inheritdoc />
-    public bool Has<C>(Key key = default) where C : notnull => World.HasComponent(this, TypeExpression.Of<C>(key));
-
-    /// <inheritdoc />
-    public bool Has<C>(Match match) where C : notnull => World.HasComponent<C>(this, match);
-
-    /// <inheritdoc />
-    public bool Has(Type type, Key key = default) => World.HasComponent(this, TypeExpression.Of(type, key));
+    public bool Has<C>(Match match = default) where C : notnull => World.HasComponent<C>(this, match);
 
     /// <inheritdoc />
     public bool Has(Type type, Match match = default) => World.HasComponent(this, type, match);
@@ -287,5 +288,5 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     public bool Has(MatchExpression expression) => World.HasComponent(this, expression);
 
     /// <inheritdoc />
-    public bool Has(TypeExpression expression) => World.HasComponent(this, expression);
+    public bool Has<L>(L link) where L : class => World.HasComponent(this, MatchExpression.Of<L>(link.Key()));
 }
