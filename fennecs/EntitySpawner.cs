@@ -54,6 +54,9 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
 
 
     /// <inheritdoc />
+    public EntitySpawner Remove<C>(Match match = default) where C : notnull => Remove(MatchExpression.Of<C>(match));
+
+    /// <inheritdoc />
     public EntitySpawner Remove(MatchExpression expression)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);

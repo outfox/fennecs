@@ -36,6 +36,13 @@
    </tr>
 </table>
 
+## What's an ECS?
+**fenn**ecs is an Entity-Component System library for .NET, written in C#. [ECS](https://en.wikipedia.org/wiki/Entity_component_system) is a software architecture pattern that is used to structure application logic, predominantly in games and simulations.
+ECS works by composing functionality into **systems** that operate on batches of **components** that are attached to **entities**. This differs from another widespread architecture, the GameObject-Component model, where **behaviours** are actual components attached to **game objects**, holding both their state and the majority of their code.
+
+![Traditional Nodes or Game Objects: Intuitive at small scale, hard to optimize, difficult querying, stronger coupling; ECS Approach: Efficient data processing, intrinsically optimized, expressive querying, looser coupling](https://fennecs.tech/logos/ecs-dark.svg#gh-dark-mode-only)
+![Traditional Nodes or Game Objects: Intuitive at small scale, hard to optimize, difficult querying, stronger coupling; ECS Approach: Efficient data processing, intrinsically optimized, expressive querying, looser coupling](https://fennecs.tech/logos/ecs-light.svg#gh-light-mode-only)
+
 ## Quickstart
 > *Brand new? Try the [cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro, or [dive into the docs](https://fennecs.tech/docs/)!*</br>
 > *Familiar with ECS architectures? Get an [overview](https://fennecs.tech/docs/Concepts.html) of new & unique concepts!*

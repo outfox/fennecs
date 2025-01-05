@@ -98,6 +98,7 @@ public class RWTests
         var rw = new RW<int>(ref x, in type, in entity);
         rw.Remove();
         Assert.False(entity.Has<int>());
+        Assert.False(entity.Has<int>(Match.Any));
     }
     
     [Fact]
@@ -111,15 +112,21 @@ public class RWTests
         entity.Add(x, target);
 
         Match match = target;
+        Assert.True(entity.Has<int>(target));
         Assert.True(entity.Has<int>(match));
         
-        entity.RW<int>(match).Remove();
+        entity.Ref<int>(target).Remove();
         Assert.False(entity.Has<int>(match));
     }
     
     
-    private struct Type69 : IModified<Type69>;
-
+    private struct Type69 : IModified<Type69>
+    {
+        public static void Notify(ReadOnlySpan<Entity> entities, ReadOnlySpan<Type69> newValues, ReadOnlySpan<Type69> oldValues, Key key)
+        {
+        }
+    }
+/*
     [Fact]
     public void Triggers_Entities_on_Modified_Value()
     {
@@ -200,4 +207,5 @@ public class RWTests
         
         IModified<Type42>.Clear();
     }
+    */
 }

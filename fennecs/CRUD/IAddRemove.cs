@@ -21,7 +21,7 @@ public interface IAddRemove<out SELF>
     /// This will call the default parameterless constructor of the backing component type.
     /// </example>
     /// <returns>itself (fluent pattern)</returns>
-    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
+    [OverloadResolutionPriority(1)]
     public SELF Add<C>(Key key = default) where C : notnull, new() => Add(new C(), key);
 
     /// <summary>
@@ -29,7 +29,6 @@ public interface IAddRemove<out SELF>
     /// </summary>
     /// <param name="match">the match term to match the secondary key against, can be a Wildcard or a specific Key, including an Entity. <c>default</c> matches only plain components (no secondary key)</param>
     /// <returns>itself (fluent pattern)</returns>
-    [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
     public SELF Remove<C>(Match match = default) where C : notnull => Remove(MatchExpression.Of<C>(match));
     
     /// <summary>

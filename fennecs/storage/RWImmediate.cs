@@ -26,23 +26,14 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) w
         set
         {
             // Optimizes away the write and null checks if it's not modifiable.
-            if (typeof(IModified<T>).IsAssignableFrom(typeof(T)))
+            if (value is IModified<T> modifiable)
             {
                 var original = _value;
-                _value = value;
-
-                // TODO: Collect changes up into the Runner's outer scope instead, and process all at once there.
-                //_writtenEntities?.Add(_entity);
-                //_writtenOriginals?.Add(original);
-                //_writtenUpdates?.Add(value);
                 
-                // TODO: Handle this in the outer scope, where the lists come from.
-                IModified<T>.Invoke([entity], [original], [value]);
+                // TODO: This can't compile prior to restructuring the events system.
+                //modifiable.Notify([entity], [value], [original]);
             }
-            else
-            {
-                _value = value;
-            }
+            _value = value;
         }
     }
     
