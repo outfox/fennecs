@@ -58,6 +58,7 @@ Beyond performance, the compositional approach creates well-structured, maintain
 ### Words of Caution
 <details>
 <summary>What <b>fenn</b>ecs is not (click to expand)</summary> 
+### **fenn**ecs is beta software, and the API surface is still in flux.
 
 ### **fenn**ecs is not recommended for beginners or those new to game development.
 
