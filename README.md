@@ -66,7 +66,7 @@ Beyond performance, the compositional approach creates well-structured, maintain
 
 It is not a game engine. It is not a game framework. You still need one of those (but the choice is yours!)   
 
-**fenn**ecs not a runtime or drop-in optimizer. Instead, it requires logic designed for it from the ground up.
+**fenn**ecs isn't a runtime or drop-in optimizer. Instead, it requires logic designed for it from the ground up.
 
 It does not provide batteries-included game features (like character controllers, physic, etc.), it's a library to enable you to implement your own (or re-use existing) game logic.
 
