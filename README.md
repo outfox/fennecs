@@ -59,7 +59,7 @@ Beyond performance, the compositional approach creates well-structured, maintain
 <details>
 <summary>What <b>fenn</b>ecs is not (click to expand)</summary> 
 
-**fenn**ecs is not recommended for beginners or those new to game development.
+### **fenn**ecs is not recommended for beginners or those new to game development.
 
 It is not a game engine. It is not a game framework. You still need one of those (but the choice is yours!)   
 
@@ -71,8 +71,11 @@ Despite similar names, it has no resemblance to [Entity Framework](https://learn
 
 **fenn**ecs is designed for **general game logic** rather than specialized systems like particle effects, even though those make for popular demonstrations. 
 
-It doesn't leverage GPUs! It aims to make powerful multi-core CPUs easier to max out for developers by guaranteeing sequential data transfers, good data locality and high cache coherence, plus parallel processing across multiple cores.
-Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it.
+It doesn't leverage GPUs! It focuses on CPU-side processing, though it can be used to transfer data to and from the GPU (for very advanced use cases).
+
+This library aims to make powerful multi-core CPUs easier to max out for developers by guaranteeing sequential data transfers, good data locality and high cache coherence, plus parallel processing across multiple cores.
+
+Always fast, but never the fastest: Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it.
 
 </details>
 
