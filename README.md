@@ -58,7 +58,7 @@ Beyond performance, the compositional approach creates well-structured, maintain
 <details>
 <summary><h3>What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
 
-### **fenn**ecs is not stable. It's usable, but the API surface is still in flux throughout the beta development cycle.
+### **fenn**ecs is not stable. Its API surface stays in flux throughout the beta cycle.    
 
 ### **fenn**ecs is not recommended for beginners or those new to game development.
 
