@@ -66,9 +66,9 @@ It is not a game engine. It is not a game framework. You still need one of those
 
 **fenn**ecs not a runtime or drop-in optimizer. Instead, it requires logic designed for it from the ground up.
 
-It does not provide batteries-included any game features (like character controllers, physic, etc.), it's a library for you to implement your own.
+It does not provide batteries-included game features (like character controllers, physic, etc.), it's a library to enable you to implement your own (or re-use existing) game logic.
 
-Despite similar names, it has no resemblance to [Entity Framework](https://learn.microsoft.com/en-us/ef/).  It
+Despite similar names, it has no resemblance to [Entity Framework](https://learn.microsoft.com/en-us/ef/). 
 
 **fenn**ecs is designed for **general game logic** rather than specialized systems like particle effects, even though those make for popular demonstrations. 
 
