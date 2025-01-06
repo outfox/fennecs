@@ -36,12 +36,39 @@
    </tr>
 </table>
 
-## What's an ECS?
-**fenn**ecs is an Entity-Component System library for .NET, written in C#. [ECS](https://en.wikipedia.org/wiki/Entity_component_system) is a software architecture pattern that is used to structure application logic, predominantly in games and simulations.
-ECS works by composing functionality into **systems** that operate on batches of **components** that are attached to **entities**. This differs from another widespread architecture, the GameObject-Component model, where **behaviours** are actual components attached to **game objects**, holding both their state and the majority of their code.
+
+## About this Project
+**fenn**ecs is a free and open source Entity-Component System (ECS) library for .NET, written in C#. It integrates with [popular game engines and frameworks](https://fennecs.tech/examples/) or in standalone solutions.
+
+[ECS](https://en.wikipedia.org/wiki/Entity_component_system) is a software architecture pattern used to structure application logic, primarily in games and simulations. ECS works by organizing functionality into **systems** that process batches of **components** attached to **entities**. This differs from the common GameObject-Component (or Node) model, where **scripts** are components attached to **game objects** that contain both state data and core logic.
 
 [![Traditional Nodes or Game Objects: Intuitive at small scale, hard to optimize, difficult querying, stronger coupling; ECS Approach: Efficient data processing, intrinsically optimized, expressive querying, looser coupling](https://fennecs.tech/img/ecs-darkmode.svg#gh-dark-mode-only)](https://en.wikipedia.org/wiki/Entity_component_system#gh-dark-mode-only)
 [![Traditional Nodes or Game Objects: Intuitive at small scale, hard to optimize, difficult querying, stronger coupling; ECS Approach: Efficient data processing, intrinsically optimized, expressive querying, looser coupling](https://fennecs.tech/img/ecs-lightmode.svg#gh-light-mode-only)](https://en.wikipedia.org/wiki/Entity_component_system#gh-light-mode-only)
+
+
+**fenn**ecs provides a simple, fast, and flexible way to structure your application logic, emphasizing high performance through composable behaviors with minimal boilerplate.
+It's a lightweight, zero-dependency library compatible with modern game engines.
+
+Some refer to ECS as an in-memory database for querying and modifying 10³ to 10⁵ objects at microsecond-scale, thousands of times per frame. 
+
+This makes it ideal for games and simulations requiring high-performance processing and modification of large datasets.
+
+Beyond performance, the compositional approach creates well-structured, maintainable code that emphasizes extensibility, readability, and ease of use. It shines by unlocking generous performance gains *and* expressive ways to write game code that practically screams its intent. 
+
+<details>
+<summary>What <b>fenn</b>ecs is not (click to expand)</summary> 
+
+**fenn**ecs not a runtime or drop-in optimizer. Instead, it requires logic designed for it from the ground up.
+
+It is not a batteries-included framework or game engine. Despite similar names, it has no resemblance to [Entity Framework](https://learn.microsoft.com/en-us/ef/).
+
+**fenn**ecs is designed for **general game logic** rather than specialized systems like particle effects, even though those make for popular demonstrations. 
+
+It doesn't leverage your GPU, it attempts make utilizing powerful multi-core CPUs easier. 
+
+Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it.
+
+</details>
 
 ## Quickstart
 > *Brand new? Try the [cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro, or [dive into the docs](https://fennecs.tech/docs/)!*</br>
