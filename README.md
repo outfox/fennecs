@@ -58,7 +58,7 @@ Beyond performance, the compositional approach creates well-structured, maintain
 **fenn**ecs shines by unlocking generous performance gains *and* expressive ways to write game code that practically screams its intent. 
 
 <details>
-<summary><h3>What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
+<summary><h3>The fine print: What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
 
 ### **fenn**ecs is not stable. Its API surface stays in flux throughout the beta cycle.    
 
