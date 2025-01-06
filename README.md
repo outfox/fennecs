@@ -59,9 +59,15 @@ Beyond performance, the compositional approach creates well-structured, maintain
 <details>
 <summary>What <b>fenn</b>ecs is not (click to expand)</summary> 
 
+**fenn**ecs is not recommended for beginners or those new to game development.
+
+It is not a game engine. It is not a game framework. You still need one of those (but the choice is yours!)   
+
 **fenn**ecs not a runtime or drop-in optimizer. Instead, it requires logic designed for it from the ground up.
 
-It is not a batteries-included framework or game engine. Despite similar names, it has no resemblance to [Entity Framework](https://learn.microsoft.com/en-us/ef/).
+It does not provide batteries-included any game features (like character controllers, physic, etc.), it's a library for you to implement your own.
+
+Despite similar names, it has no resemblance to [Entity Framework](https://learn.microsoft.com/en-us/ef/).  It
 
 **fenn**ecs is designed for **general game logic** rather than specialized systems like particle effects, even though those make for popular demonstrations. 
 
