@@ -51,7 +51,7 @@ It's a lightweight, zero-dependency library compatible with modern game engines.
 
 Some refer to ECS as an in-memory database for querying and modifying 10³ to 10⁵ objects at microsecond-scale, thousands of times per frame. 
 
-This makes it ideal for games and simulations requiring high-performance processing and modification of large datasets. The library aims to make powerful multi-core CPUs easier to max out for developers by guaranteeing sequential data transfers, good data locality and high cache coherence, plus parallel processing across multiple cores. ↓ 
+This makes it ideal for games and simulations requiring high-performance processing and modification of large datasets. The library aims to make powerful multi-core CPUs easier to max out for developers by guaranteeing sequential data transfers, good data locality and high cache coherence, plus parallel processing across multiple cores. 
 
 Beyond performance, the compositional approach creates well-structured, maintainable code that emphasizes extensibility, readability, and ease of use. 
 
