@@ -55,7 +55,7 @@ This makes it ideal for games and simulations requiring high-performance process
 
 Beyond performance, the compositional approach creates well-structured, maintainable code that emphasizes extensibility, readability, and ease of use. It shines by unlocking generous performance gains *and* expressive ways to write game code that practically screams its intent. 
 
-### About everything else
+### Words of Caution
 <details>
 <summary>What <b>fenn</b>ecs is not (click to expand)</summary> 
 
