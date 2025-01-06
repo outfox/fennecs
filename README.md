@@ -55,6 +55,7 @@ This makes it ideal for games and simulations requiring high-performance process
 
 Beyond performance, the compositional approach creates well-structured, maintainable code that emphasizes extensibility, readability, and ease of use. It shines by unlocking generous performance gains *and* expressive ways to write game code that practically screams its intent. 
 
+### About everything else
 <details>
 <summary>What <b>fenn</b>ecs is not (click to expand)</summary> 
 
@@ -64,8 +65,7 @@ It is not a batteries-included framework or game engine. Despite similar names, 
 
 **fenn**ecs is designed for **general game logic** rather than specialized systems like particle effects, even though those make for popular demonstrations. 
 
-It doesn't leverage your GPU, it attempts make utilizing powerful multi-core CPUs easier. 
-
+It doesn't leverage GPUs! It aims to make powerful multi-core CPUs easier to max out for developers by guaranteeing sequential data transfers, good data locality and high cache coherence, plus parallel processing across multiple cores.
 Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it.
 
 </details>
