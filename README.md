@@ -38,7 +38,7 @@
 
 
 ## About this Project
-**fenn**ecs is a free and open source Entity-Component System (ECS) library for .NET, written in C#. It integrates with [popular game engines and frameworks](https://fennecs.tech/examples/) or in standalone solutions.
+**fenn**ecs is a free and open source Entity-Component System (ECS) library for .NET, written in C#. It integrates with [popular game engines and frameworks](https://fennecs.tech/examples/) or can be used just as well in standalone solutions.
 
 [ECS](https://en.wikipedia.org/wiki/Entity_component_system) is a software architecture pattern used to structure application logic, primarily in games and simulations. ECS works by organizing functionality into **systems** that process batches of **components** attached to **entities**. This differs from the common GameObject-Component (or Node) model, where **scripts** are components attached to singular **game objects** that contain both state data and core logic.
 
