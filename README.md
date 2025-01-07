@@ -53,11 +53,11 @@ It integrates with [popular game engines and frameworks](https://fennecs.tech/ex
 <details>
 <summary><h3>The fine print: What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
 
-### **fenn**ecs is not yet stable. 
+#### **fenn**ecs is not yet stable. 
 
 Much of its API surface will stay in flux during beta cycles.    
 
-### **fenn**ecs is not recommended for beginning developers.
+#### **fenn**ecs is not recommended for beginning developers.
 
 It requires advanced knowledge of C# and game development to use effectively.
 
@@ -69,7 +69,7 @@ It does not provide game features (like character controllers, transforms, etc.)
 
 Despite similar names, ECSs predate and have no relation to [Entity Framework](https://learn.microsoft.com/en-us/ef/) (an [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)). 
 
-**fenn**ecs is designed for **general game logic** rather than specialized systems like particle effects, even though those make for popular demonstrations. 
+**fenn**ecs is designed for **general game logic**, rather than just specialized systems like particle effects, even though those make for popular demonstrations. 
 
 It doesn't (want to) leverage GPUs! It focuses on CPU-side processing, though it can be used to prepare data like [cbuffers](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-constants#parameters) for rendering.
 
