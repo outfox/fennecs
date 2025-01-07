@@ -55,16 +55,16 @@ This approach differs from the common GameObject-Component (or Node) model, wher
 <details>
 <summary><h3>What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
 
-#### **fenn**ecs is not yet stable. 
+#### **fenn**ecs is not yet stable
 Much of its API surface will stay in flux during beta cycles.    
 
-#### **fenn**ecs is not recommended for beginning developers.
+#### **fenn**ecs is not recommended for beginning developers
 It requires advanced knowledge of C# and game development to use effectively.
 
-#### **fenn**ecs isn't a runtime or drop-in optimizer solution. 
+#### **fenn**ecs isn't a runtime or drop-in optimizer solution 
 Like other ECSs, it requires logic designed for it from the ground up.
 
-#### It is nogame engine, nor a game framework. 
+#### It is nogame engine, nor a game framework 
 You still need one of those (but the choice is yours!). It also does not provide game features (like character controllers, transforms, etc.), it's a library that enables you to implement your own (or re-use existing) game logic.
 
 #### It's not for VFX
