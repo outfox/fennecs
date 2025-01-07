@@ -38,45 +38,40 @@
 
 
 ## About this Project
-**fenn**ecs is a free and open source Entity-Component System (ECS) library for .NET, written in C#. It integrates with [popular game engines and frameworks](https://fennecs.tech/examples/) or can be used just as well in standalone solutions.
+**fenn**ecs is a free and open source Entity-Component System (ECS) library for .NET, written in C#. 
+
+It integrates with [popular game engines and frameworks](https://fennecs.tech/examples/) or can be used just as well in standalone solutions.
 
 [ECS](https://en.wikipedia.org/wiki/Entity_component_system) is a software architecture pattern used to structure application logic, primarily in games and simulations. ECS works by organizing functionality into **systems** that process batches of **components** attached to **entities**. This differs from the common GameObject-Component (or Node) model, where **scripts** are components attached to singular **game objects** that contain both state data and core logic.
 
 [![Traditional Nodes or Game Objects: Intuitive at small scale, hard to optimize, difficult querying, stronger coupling; ECS Approach: Efficient data processing, intrinsically optimized, expressive querying, looser coupling](https://fennecs.tech/img/ecs-darkmode.svg#gh-dark-mode-only)](https://en.wikipedia.org/wiki/Entity_component_system#gh-dark-mode-only)
 [![Traditional Nodes or Game Objects: Intuitive at small scale, hard to optimize, difficult querying, stronger coupling; ECS Approach: Efficient data processing, intrinsically optimized, expressive querying, looser coupling](https://fennecs.tech/img/ecs-lightmode.svg#gh-light-mode-only)](https://en.wikipedia.org/wiki/Entity_component_system#gh-light-mode-only)
 
+**fenn**ecs provides a simple, fast, and flexible way to structure your application logic, emphasizing high execution speed and composable, expressive code with minimal boilerplate.
 
-**fenn**ecs provides a simple, fast, and flexible way to structure your application logic, emphasizing high performance through composable behaviors with minimal boilerplate.
-It's a lightweight, zero-dependency library compatible with modern game engines.
-
-Some refer to ECS as an in-memory database for querying and modifying 10³ to 10⁵ objects at microsecond-scale, thousands of times per frame. 
-
-This makes it ideal for games and simulations requiring high-performance processing and modification of large datasets. The library aims to make powerful multi-core CPUs easier to max out for developers by guaranteeing sequential data transfers, good data locality and high cache coherence, plus parallel processing across multiple cores. 
-
-Beyond performance, the compositional approach creates well-structured, maintainable code that emphasizes extensibility, readability, and ease of use. 
-
-**fenn**ecs shines by unlocking generous performance gains *and* expressive ways to write game code that practically screams its intent. 
 
 <details>
 <summary><h3>The fine print: What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
 
-### **fenn**ecs is not yet stable. Its API surface stays in flux during its beta cycles.    
+### **fenn**ecs is not yet stable. 
 
-### **fenn**ecs is not recommended for beginners or those new to game development.
+Much of its API surface will stay in flux during beta cycles.    
 
-It is not a game engine. It is not a game framework. You still need one of those (but the choice is yours!)   
+### **fenn**ecs is not recommended for beginning developers.
+
+It is no a game engine, nor a game framework. You still need one of those (but the choice is yours!)
 
 **fenn**ecs isn't a runtime or drop-in optimizer. Instead, it requires logic designed for it from the ground up.
 
-It does not provide batteries-included game features (like character controllers, physic, etc.), it's a library to enable you to implement your own (or re-use existing) game logic.
+It does not provide game features (like character controllers, transforms, etc.), it's a library that enables you to implement your own (or re-use existing) game logic.
 
-Despite similar names, it has no resemblance to [Entity Framework](https://learn.microsoft.com/en-us/ef/). 
+Despite similar names, ECSs predate and have no relation to [Entity Framework](https://learn.microsoft.com/en-us/ef/) (an [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)). 
 
 **fenn**ecs is designed for **general game logic** rather than specialized systems like particle effects, even though those make for popular demonstrations. 
 
-It doesn't leverage GPUs! It focuses on CPU-side processing, though it can be used to transfer data to and from the GPU (for very advanced use cases).
+It doesn't (want to) leverage GPUs! It focuses on CPU-side processing, though it can be used to prepare data like [cbuffers](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-constants#parameters) for rendering.
 
-Always fast, but never the fastest: Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it.
+**fenn**ecs is fast, but never the fastest: Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it.
 
 </details>
 
