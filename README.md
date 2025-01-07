@@ -67,8 +67,8 @@ This approach differs from the common GameObject-Component (or Node) model, wher
 > #### It is no game engine, nor a game framework 
 > You still need one of those (but the choice is yours!). It also does not provide game features (like renderers, character controllers, transforms, etc.), it's a library that enables you to implement your own (or re-use existing) game logic.
  
-> #### It's not for VFX
-> **fenn**ecs is designed for **general game logic**, rather than just specialized systems like particle effects, even though those make for popular demonstrations.
+> #### It's not just for VFX
+> **fenn**ecs is designed for **general game logic**, rather than just specialized systems like particle effects.
  
 > #### It's not EF, and not a Database
 > Despite similar names, ECSs predate and have no relation to [Entity Framework](https://learn.microsoft.com/en-us/ef/) (an [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)). 
