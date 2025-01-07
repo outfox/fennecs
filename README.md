@@ -51,7 +51,7 @@ It integrates with [popular game engines and frameworks](https://fennecs.tech/ex
 
 
 <details>
-<summary><h3>The fine print: What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
+<summary><h3>What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
 
 #### **fenn**ecs is not yet stable. 
 
@@ -73,7 +73,7 @@ Despite similar names, ECSs predate and have no relation to [Entity Framework](h
 
 It doesn't (want to) leverage GPUs! It focuses on CPU-side processing, though it can be used to prepare data like [cbuffers](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-constants#parameters) for rendering.
 
-**fenn**ecs is fast, but never the fastest: Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it.
+**fenn**ecs is fast, but never the fastest: Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it. Boilerplate reduction and clean flexiblilty are design goals that outrank performance.
 
 </details>
 
