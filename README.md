@@ -57,25 +57,25 @@ This approach differs from the common GameObject-Component (or Node) model, wher
 
 > #### **fenn**ecs is not yet stable
 > Much of its API surface will stay in flux during beta cycles.    
-> 
+ 
 > #### **fenn**ecs is not recommended for beginning developers
 > It requires advanced knowledge of C# and game development to use effectively.
-> 
+ 
 > #### **fenn**ecs isn't a runtime or drop-in optimizer solution 
 > Like other ECSs, it requires logic designed for it from the ground up.
-> 
+ 
 > #### It is nogame engine, nor a game framework 
 > You still need one of those (but the choice is yours!). It also does not provide game features (like renderers, character controllers, transforms, etc.), it's a library that enables you to implement your own (or re-use existing) game logic.
-> 
+ 
 > #### It's not for VFX
 > **fenn**ecs is designed for **general game logic**, rather than just specialized systems like particle effects, even though those make for popular demonstrations.
-> 
+ 
 > #### It's not EF, and not a Database
 > Despite similar names, ECSs predate and have no relation to [Entity Framework](https://learn.microsoft.com/en-us/ef/) (an [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping)). 
-> 
+ 
 > #### It doesn't run on GPUs
 > **fenn**ecs focus lies on CPU-side processing, though it can be used to prepare data like [cbuffers](https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-constants#parameters) for rendering.
-> 
+ 
 > #### There's always a tradeoff
 > **fenn**ecs is fast, but never the fastest: Bespoke solutions (native arrays, compute shaders, etc.) tailored to a specific use case likely outperform it. Boilerplate reduction and clean flexiblilty are design goals that outrank performance.
 
