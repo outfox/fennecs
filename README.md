@@ -54,6 +54,7 @@ This approach differs from the common GameObject-Component (or Node) model, wher
 
 <details>
 <summary><h3>What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
+
 > #### **fenn**ecs is not yet stable
 > Much of its API surface will stay in flux during beta cycles.    
 > 
