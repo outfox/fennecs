@@ -43,8 +43,6 @@
 
 [ECS](https://en.wikipedia.org/wiki/Entity_component_system) is a software architecture pattern used to structure application logic, primarily in games and simulations. ECS works by organizing functionality into **systems** that process batches of **components** attached to **entities**.
 
-**fenn**ecs integrates with [popular game engines and frameworks](https://fennecs.tech/examples/) or can be used just as well in standalone solutions.
-
 [![Traditional Nodes or Game Objects: Intuitive at small scale, hard to optimize, difficult querying, stronger coupling; ECS Approach: Efficient data processing, intrinsically optimized, expressive querying, looser coupling](https://fennecs.tech/img/diagram-ecs-darkmode.svg#gh-dark-mode-only)](https://en.wikipedia.org/wiki/Entity_component_system#gh-dark-mode-only)
 [![Traditional Nodes or Game Objects: Intuitive at small scale, hard to optimize, difficult querying, stronger coupling; ECS Approach: Efficient data processing, intrinsically optimized, expressive querying, looser coupling](https://fennecs.tech/img/diagram-ecs-lightmode.svg#gh-light-mode-only)](https://en.wikipedia.org/wiki/Entity_component_system#gh-light-mode-only)
 
