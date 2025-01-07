@@ -59,9 +59,11 @@ Much of its API surface will stay in flux during beta cycles.
 
 ### **fenn**ecs is not recommended for beginning developers.
 
-It is no a game engine, nor a game framework. You still need one of those (but the choice is yours!)
+It requires advanced knowledge of C# and game development to use effectively.
 
 **fenn**ecs isn't a runtime or drop-in optimizer. Instead, it requires logic designed for it from the ground up.
+
+It is no a game engine, nor a game framework. You still need one of those (but the choice is yours!)
 
 It does not provide game features (like character controllers, transforms, etc.), it's a library that enables you to implement your own (or re-use existing) game logic.
 
