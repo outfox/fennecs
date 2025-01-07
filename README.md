@@ -64,7 +64,7 @@ This approach differs from the common GameObject-Component (or Node) model, wher
 > #### **fenn**ecs isn't a runtime or drop-in optimizer solution 
 > Like other ECSs, it requires logic designed for it from the ground up.
  
-> #### It is nogame engine, nor a game framework 
+> #### It is no game engine, nor a game framework 
 > You still need one of those (but the choice is yours!). It also does not provide game features (like renderers, character controllers, transforms, etc.), it's a library that enables you to implement your own (or re-use existing) game logic.
  
 > #### It's not for VFX
