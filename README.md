@@ -56,7 +56,7 @@ This approach differs from the common GameObject-Component (or Node) model, wher
 <summary><h3>What <b>fenn</b>ecs is not!</h3> <i>(click to expand)</i></summary>  
 
 > #### **fenn**ecs is not yet stable
-> Much of its API surface will stay in flux during beta cycles.    
+> During beta cycles, the API surface will stay constantly in flux.
  
 > #### **fenn**ecs is not recommended for beginning developers
 > It requires advanced knowledge of C# and game development to use effectively.
