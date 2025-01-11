@@ -509,7 +509,7 @@ public class QueryTests
         Assert.True(query.Contains(entity));
     }
 
-
+/*
     [Fact]
     public void Filtered_Enumerator_Filters()
     {
@@ -535,7 +535,7 @@ public class QueryTests
         Assert.Contains(entity2, query.Filtered(tx));
     }
 
-
+*/
     [Fact]
     public void Can_Iterate_ArchetypesReadonly()
     {

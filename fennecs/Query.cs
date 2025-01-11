@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using fennecs.CRUD;
 
 namespace fennecs;
@@ -257,13 +258,22 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
         return this;
     }
 
+    /// <inheritdoc />
     public Query Remove<C>(C target) where C : class => Remove<C>(Key.Of(target));
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// This creates a batch and immediately submits it. Use <see cref="Batch()"/> to create a batch manually.
+    /// </remarks>
 
 
     /// <inheritdoc />
     [SuppressMessage("ReSharper", "ExplicitCallerInfoArgument")]
+    [OverloadResolutionPriority(1)]
     public Batch Batch(Batch.AddConflict addConflict = default, Batch.RemoveConflict removeConflict = default) => new(Archetypes, World, Mask.Clone(), addConflict, removeConflict);
     
+    /// <inheritdoc />
+    public Batch Batch(Batch.RemoveConflict removeConflict = default) => Batch(default, removeConflict);
 
 
     /// <inheritdoc cref="Despawn" />

@@ -385,11 +385,11 @@ public class QueryBatchTests
         
         Assert.Equal(3, intQuery.Count);
         Assert.True(e1.Has<int>());
-        Assert.Equal(314, e1.Ref<int>());
+        Assert.Equal(314, e1.Ref<int>().Read);
         Assert.True(e2.Has<int>());
-        Assert.Equal(314, e2.Ref<int>());
+        Assert.Equal(314, e2.Ref<int>().Read);
         Assert.True(e3.Has<int>());
-        Assert.Equal(314, e3.Ref<int>());
+        Assert.Equal(314, e3.Ref<int>().Read);
     }
 
 
@@ -410,16 +410,16 @@ public class QueryBatchTests
         Assert.Equal(3, query.Count);
         
         Assert.True(e1.Has<int>());
-        Assert.Equal(314, e1.Ref<int>());
-        Assert.Equal("works", e1.Ref<string>());
+        Assert.Equal(314, e1.Ref<int>().Read);
+        Assert.Equal("works", e1.Ref<string>().Read);
         
         Assert.True(e2.Has<int>());
-        Assert.Equal(314, e2.Ref<int>());
-        Assert.Equal("works", e2.Ref<string>());
+        Assert.Equal(314, e2.Ref<int>().Read);
+        Assert.Equal("works", e2.Ref<string>().Read);
         
         Assert.True(e3.Has<int>());
-        Assert.Equal(314, e3.Ref<int>());
-        Assert.Equal("works", e3.Ref<string>());
+        Assert.Equal(314, e3.Ref<int>().Read);
+        Assert.Equal("works", e3.Ref<string>().Read);
     }
 
 
@@ -450,7 +450,7 @@ public class QueryBatchTests
 
         // Added here because there was an issue below that currupted e3's meta,
         // and needed to ruled that out as a precondition.
-        Assert.Equal("pre-existing", e3.Ref<string>());
+        Assert.Equal("pre-existing", e3.Ref<string>().Read);
 
         var intQuery = world.Query<int>().Compile();
         Assert.Equal(3, intQuery.Count);
@@ -461,11 +461,11 @@ public class QueryBatchTests
 
         Assert.Equal(3, intQuery.Count);
         Assert.True(e1.Has<string>());
-        Assert.Equal("batched", e1.Ref<string>());
+        Assert.Equal("batched", e1.Ref<string>().Read);
         Assert.True(e2.Has<string>());
-        Assert.Equal("batched", e2.Ref<string>());
+        Assert.Equal("batched", e2.Ref<string>().Read);
         Assert.True(e3.Has<string>());
-        Assert.Equal("pre-existing", e3.Ref<string>());
+        Assert.Equal("pre-existing", e3.Ref<string>().Read);
     }
 
 
@@ -480,7 +480,7 @@ public class QueryBatchTests
 
         // Added here because ther was an issue below that currupted e3's meta,
         // and needed to ruled that out as a precondition.
-        Assert.Equal("pre-existing", e3.Ref<string>());
+        Assert.Equal("pre-existing", e3.Ref<string>().Read);
 
         var intQuery = world.Query<int>().Compile();
         Assert.Equal(3, intQuery.Count);
@@ -491,11 +491,11 @@ public class QueryBatchTests
 
         Assert.Equal(3, intQuery.Count);
         Assert.True(e1.Has<string>());
-        Assert.Equal("batched", e1.Ref<string>());
+        Assert.Equal("batched", e1.Ref<string>().Read);
         Assert.True(e2.Has<string>());
-        Assert.Equal("batched", e2.Ref<string>());
+        Assert.Equal("batched", e2.Ref<string>().Read);
         Assert.True(e3.Has<string>());
-        Assert.Equal("batched", e3.Ref<string>());
+        Assert.Equal("batched", e3.Ref<string>().Read);
     }
 
 
@@ -517,11 +517,11 @@ public class QueryBatchTests
 
         Assert.Equal(3, intQuery.Count);
         Assert.True(e1.Has<string>());
-        Assert.Equal("batched", e1.Ref<string>());
+        Assert.Equal("batched", e1.Ref<string>().Read);
         Assert.True(e2.Has<string>());
-        Assert.Equal("batched", e2.Ref<string>());
+        Assert.Equal("batched", e2.Ref<string>().Read);
         Assert.True(e3.Has<string>());
-        Assert.Equal("batched", e3.Ref<string>());
+        Assert.Equal("batched", e3.Ref<string>().Read);
     }
 
 
@@ -778,7 +778,7 @@ public class QueryBatchTests
         Assert.Equal(1, stringQuery.Count);
         Assert.Contains(e3, stringQuery);
 
-        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(Link.With(target)).Submit();
+        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(target).Submit();
 
         Assert.Equal(0, stringQuery.Count);
         Assert.Empty(stringQuery);
@@ -795,11 +795,11 @@ public class QueryBatchTests
         Assert.Equal(1, stringQuery.Count);
         Assert.Contains(e3, stringQuery);
 
-        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(Link.With(target)).Submit();
+        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(target).Submit();
 
         Assert.Equal(0, stringQuery.Count);
         Assert.Empty(stringQuery);
 
-        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(Link.With(target)).Submit();
+        stringQuery.Batch(Batch.AddConflict.Preserve).Remove(target).Submit();
     }
 }
