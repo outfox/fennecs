@@ -64,4 +64,7 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
     public bool Has<L>(L link) where L : class => Entity.Has<L>(Key.Of(link));
 
     #endregion
+
+    /// <inheritdoc />
+    public override string ToString() => Entity.ToString();
 }

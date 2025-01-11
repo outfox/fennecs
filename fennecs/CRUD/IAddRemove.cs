@@ -21,21 +21,26 @@ public interface IAddRemove<out SELF>
     /// This will call the default parameterless constructor of the backing component type.
     /// </example>
     /// <returns>itself (fluent pattern)</returns>
-    [OverloadResolutionPriority(1)]
-    public SELF Add<C>(Key key = default) where C : notnull, new() => Add(new C(), key);
+    public SELF Add<C>(Key key = default) where C : notnull, new();// => Add(new C(), key);
 
     /// <summary>
     /// Remove ALL components of type C  matching the Match Expression from the entity/entities.
     /// </summary>
     /// <param name="match">the match term to match the secondary key against, can be a Wildcard or a specific Key, including an Entity. <c>default</c> matches only plain components (no secondary key)</param>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Remove<C>(Match match = default) where C : notnull => Remove(MatchExpression.Of<C>(match));
+    public SELF Remove<C>(Match match = default) where C : notnull;// => Remove(MatchExpression.Of<C>(match));
     
     /// <summary>
     /// Remove all components of type C from the entity/entities, matching the Match Expression.
     /// </summary>
     /// <returns>itself (fluent pattern)</returns>
     public SELF Remove(MatchExpression expression);
+
+    /// <summary>
+    /// Remove all components of type C from the entity/entities, matching the Match Expression.
+    /// </summary>
+    /// <returns>itself (fluent pattern)</returns>
+    public SELF Remove<C>(C target) where C : class;// => Remove<C>(Key.Of(target));
 
     /// <summary>
     /// Add a Object Link component with an Object of type L to the entity/entities.
@@ -70,11 +75,11 @@ public interface IAddRemoveDeferrable<out SELF>
 
     /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(C,Key)"/>
     /// Operation may be deferred until the last World lock is released (usually the end of the scope of a runner).
-    public SELF Add<C>(Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull, new() => Add(new C(), key, callerFile, callerLine);
+    public SELF Add<C>(Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull, new();// => Add(new C(), key, callerFile, callerLine);
 
     /// <inheritdoc cref="IAddRemove{SELF}.Remove{C}(Match)"/>
     /// Operation may be deferred until the last World lock is released (usually the end of the scope of a runner).
-    public SELF Remove<C>(Match match = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull => Remove(MatchExpression.Of<C>(match), callerFile, callerLine);
+    public SELF Remove<C>(Match match = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull;// => Remove(MatchExpression.Of<C>(match), callerFile, callerLine);
     
     /// <inheritdoc cref="IAddRemove{SELF}.Remove{C}(Match)"/>
     /// Operation may be deferred until the last World lock is released (usually the end of the scope of a runner).
@@ -82,5 +87,5 @@ public interface IAddRemoveDeferrable<out SELF>
 
     /// <inheritdoc cref="IAddRemove{SELF}.Link{L}(L)"/>
     /// Operation may be deferred until the last World lock is released (usually the end of the scope of a runner).
-    public SELF Link<L>(L link, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where L : class => Add(link, Key.Of(link), callerFile, callerLine);
+    public SELF Link<L>(L link, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where L : class;// => Add(link, Key.Of(link), callerFile, callerLine);
 }

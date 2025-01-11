@@ -8,7 +8,7 @@ namespace fennecs.storage;
 /// <remarks>
 /// This is a specialized version of <see cref="RW{T}"/> to meet the needs of obtaining a reference to a component, <see cref="Entity.Ref{C}(Key)"/>
 /// </remarks>
-public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) where T : notnull
+public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) : IEquatable<T> where T : notnull
 {
     private readonly ref T _value = ref value;
 
@@ -64,4 +64,19 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) w
     /// </summary>
     /// <inheritdoc cref="Entity.Remove{C}(fennecs.Key)"/>
     public void Remove() => entity.Remove<T>(key);
+
+    /// <inheritdoc cref="IEquatable{T}" />
+    public static bool operator ==(T other, RWImmediate<T> self) => self._value.Equals(other);
+
+    /// <inheritdoc cref="IEquatable{T}" />
+    public static bool operator !=(T other, RWImmediate<T> self) => !(other == self);
+
+    /// <inheritdoc cref="IEquatable{T}" />
+    public static bool operator ==(RWImmediate<T> self, T other) => self._value.Equals(other);
+
+    /// <inheritdoc cref="IEquatable{T}" />
+    public static bool operator !=(RWImmediate<T> self, T other) => !(self == other);
+
+    /// <inheritdoc />
+    public bool Equals(T? other) => other is not null && _value.Equals(other);
 }

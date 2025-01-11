@@ -60,7 +60,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         const string target = "hello world";
 
         var entity = world.Spawn().Add(Link.With(target));
-        entity.Remove<string>(target);
+        entity.Remove<string>(Key.Of(target));
 
         var runs = 0;
         query.For((_) => { runs++; });
@@ -78,7 +78,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         const string target = "hello world";
 
         var entity = world.Spawn().Add(Link.With(target));
-        var typeExpression = TypeExpression.Of<string>(Link.With("hello world"));
+        var typeExpression = TypeExpression.Of<string>("hello world");
         world.RemoveComponent(entity, typeExpression);
 
         var runs = 0;

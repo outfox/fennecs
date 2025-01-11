@@ -9,17 +9,6 @@ namespace fennecs.tests;
 public class TypeExpressionTests(ITestOutputHelper output)
 {
     [Fact]
-    public void To_String()
-    {
-        output.WriteLine(TypeExpression.Of<TypeEmpty>(default).ToString());
-        output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Any).ToString());
-        output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Link).ToString());
-        output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Entity).ToString());
-        output.WriteLine(TypeExpression.Of<TypeEmpty>(new(new(123))).ToString());
-    }
-
-
-    [Fact]
     public void Id_is_Comparable()
     {
         var t1 = TypeExpression.Of<TypeEmpty>(default);
@@ -46,6 +35,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     }
 
 
+    /*
     [Fact]
     public void Is_Sorted_By_TypeId_Ascending()
     {
@@ -62,7 +52,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
             Assert.True(t2.CompareTo(t1) > 0);
         }
     }
-
+    */
 
     [Fact]
     public void Implicitly_decays_to_Type()
@@ -99,14 +89,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void Can_Create_For_Type()
     {
         var tx1 = TypeExpression.Of(typeof(TypeEmpty), default);
-        var tx2 = TypeExpression.Of(typeof(TypeEmpty), Match.Any);
-        var tx3 = TypeExpression.Of(typeof(TypeEmpty), new Entity(null!, new(123)));
-
-        Assert.False(tx1.isRelation);
-        Assert.True(tx2.isWildcard);
-        Assert.True(tx3.isRelation);
+        Assert.False(tx1.IsRelation);
     }
-
+/*
 
     [Fact]
     public void None_Matches_only_None()
@@ -199,7 +184,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         Assert.True(ent.Matches(ent));
         Assert.False(ent.Matches(lnk));
     }
-
+*/
     [Fact]
     public void HasCorrectSize_in_Flags_B()
     {

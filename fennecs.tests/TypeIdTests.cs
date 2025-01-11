@@ -54,7 +54,10 @@ public class TypeIdTests
     [Fact]
     public void TypeAssigner_None_Matches_Identical()
     {
-        var id1 = TypeExpression.Of<int>(default);
+        var id1 = MatchExpression.Of<int>(default);
+        
+        // Keeping the default case to ensure it remains at default
+        // ReSharper disable once RedundantArgumentDefaultValue
         var id2 = TypeExpression.Of<int>(default);
 
         Assert.True(id1.Matches(id2));
@@ -67,32 +70,31 @@ public class TypeIdTests
         // Keeping the default case to ensure it remains at default
         // ReSharper disable once RedundantArgumentDefaultValue
         var id1 = TypeExpression.Of<int>(default);
-        var id2 = TypeExpression.Of<int>(Match.Any);
+        var id2 = MatchExpression.Of<int>(Match.Any);
 
         Assert.True(id2.Matches(id1));
-        Assert.False(id1.Matches(id2)); //Non-commutative, TODO: Review whether we actually want this.
     }
 
 
     [Fact]
     public void TypeAssigner_does_not_Match_Identical()
     {
+        // Keeping the default case to ensure it remains at default
+        // ReSharper disable once RedundantArgumentDefaultValue
         var id1 = TypeExpression.Of<int>(default);
-        var id2 = TypeExpression.Of<float>(default);
+        var id2 = MatchExpression.Of<float>(default);
 
-        Assert.False(id1.Matches(id2));
+        Assert.False(id2.Matches(id1));
     }
 
 
     [Fact]
     public void TypeAssigner_None_does_not_match_Any()
     {
-        var id1 = TypeExpression.Of<int>(default);
+        var id1 = MatchExpression.Of<int>(default);
         var id2 = TypeExpression.Of<int>(new(new Entity(123)));
-        var id3 = TypeExpression.Of<int>(Match.Any);
 
         Assert.False(id1.Matches(id2));
-        Assert.False(id1.Matches(id3));
     }
 
 

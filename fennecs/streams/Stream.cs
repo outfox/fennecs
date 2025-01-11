@@ -47,6 +47,9 @@ public record Stream(Query Query) : IBatchBegin
     /// <inheritdoc cref="fennecs.Query.Batch"/>
     public Batch Batch(Batch.AddConflict add = default, Batch.RemoveConflict remove = default) => new(Filtered, World, Query.Mask.Clone(), add, remove);
 
+    /// <inheritdoc cref="fennecs.Query.Batch"/>
+    public Batch Batch(Batch.RemoveConflict remove) => new(Filtered, World, Query.Mask.Clone(), default, remove);
+
     #endregion
 
     /// <summary>

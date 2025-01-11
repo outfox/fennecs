@@ -2,7 +2,6 @@
 
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using fennecs.CRUD;
 
 namespace fennecs;
@@ -242,11 +241,23 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// <remarks>
     /// This creates a batch and immediately submits it. Use <see cref="Batch()"/> to create a batch manually.
     /// </remarks>
+    public Query Add<T>(Key key = default) where T : notnull, new() => Add(new T(), key);
+
+    /// <inheritdoc />
+    public Query Remove<C>(Match match = default) where C : notnull => Remove(MatchExpression.Of<C>(match));
+    
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// This creates a batch and immediately submits it. Use <see cref="Batch()"/> to create a batch manually.
+    /// </remarks>
     public Query Remove(MatchExpression expression)
     {
         Batch().Remove(expression).Submit();
         return this;
     }
+
+    public Query Remove<C>(C target) where C : class => Remove<C>(Key.Of(target));
 
 
     /// <inheritdoc />

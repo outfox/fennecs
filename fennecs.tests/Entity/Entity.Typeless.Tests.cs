@@ -134,8 +134,8 @@ public class EntityTypelessTests
         var entity = world.Spawn();
         entity.Add(123);
         entity.Add(456, entity);
-
-        entity.Remove(typeof(int), Match.Any);
+        
+        entity.Remove(MatchExpression.Of<int>(Match.Any));
         
         Assert.Null(entity.Get(typeof(int)));
         Assert.False(entity.Get(typeof(int), out _));

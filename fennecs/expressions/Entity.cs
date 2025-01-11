@@ -289,4 +289,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
 
     /// <inheritdoc />
     public bool Has<L>(L link) where L : class => World.HasComponent(this, MatchExpression.Of<L>(link.Key()));
+    
+    /// <summary>Truthy if the Entity is alive.</summary>
+    public static implicit operator bool(Entity entity) => entity.Alive;
 }

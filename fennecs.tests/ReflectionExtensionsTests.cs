@@ -8,14 +8,14 @@ public class ReflectionExtensionsTests
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         // ReSharper disable once ConvertToConstant.Local
-        public float value = 1;
+        public float Value = 1;
     }
 
     private class Derived1 : Base
     {
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         // ReSharper disable once ConvertToConstant.Local
-        public int additionalValue = 2; 
+        public int AdditionalValue = 2; 
     }
 
     private class Derived2 : Base;
@@ -44,9 +44,9 @@ public class ReflectionExtensionsTests
         
         Assert.True(entity.Has<Derived1>());
         
-        ref var derived = ref entity.Ref<Derived1>();
-        Assert.Equal(1, derived.value);
-        Assert.Equal(2, derived.additionalValue);
+        var derived = entity.Ref<Derived1>();
+        Assert.Equal(1, derived.Read.Value);
+        Assert.Equal(2, derived.Read.AdditionalValue);
     }
     
     [Fact]

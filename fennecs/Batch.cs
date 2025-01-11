@@ -68,6 +68,9 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     }
 
     /// <inheritdoc />
+    public Batch Remove<C>(Match match = default) where C : notnull => Remove(MatchExpression.Of<C>(match));
+
+    /// <inheritdoc />
     public Batch Remove(MatchExpression expression)
     {
         if (Additions.Any(expression.Matches))
@@ -76,12 +79,17 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         Removals.Add(expression);
         return this;
     }
-
+    
+    /// <inheritdoc />
+    public Batch Remove<C>(C target) where C : class => Remove<C>(Key.Of(target));
 
     #endregion
 
 
     #region IAddRemoveComponent
+
+    /// <inheritdoc />
+    public Batch Add<C>(Key key = default) where C : notnull, new() => AddComponent(new C(), key);
 
     /// <inheritdoc />
     public Batch Add<C>(C component, Key key = default) where C : notnull => AddComponent(component, key);

@@ -113,7 +113,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         Entity e1 = world.Spawn().Add(1);
         Entity e2 = world.Spawn().Add(2);
         e1.Despawn();
-        Assert.Equal(2, e2.Ref<int>());
+        Assert.Equal(2, e2.Ref<int>().Read);
 
         Entity e3 = world.Spawn().Add(3);
         e2.Despawn();
@@ -138,7 +138,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         bool dead_entity_in_world_iteration = false;
         foreach (var entity in world)
         {
-            if (entity.Alive && entity.Ref<int>() == 3)
+            if (entity.Alive && entity.Ref<int>().Read == 3)
             {
                 e3_seen_in_world_iteration_alive_and_with_val_3 = true;
             }
@@ -221,8 +221,8 @@ public class ArchetypeTests(ITestOutputHelper output)
             Assert.True(world.IsAlive(entity));
 
             // Components correct?
-            Assert.Equal(i, entity.Ref<int>());    
-            Assert.Equal(i, entity.Ref<short>());    
+            Assert.True(entity.Ref<int>() == i);    
+            Assert.True((short) i == entity.Ref<short>());    
         }
     }
 
@@ -253,14 +253,14 @@ public class ArchetypeTests(ITestOutputHelper output)
             entity.Add((short) i);
         }
 
-        for (var i = 0; i < entities.Count; i++)
+        for (short i = 0; i < entities.Count; i++)
         {
             var entity = entities[i];
             Assert.True(world.IsAlive(entity));
 
             // Components correct?
-            Assert.Equal(i, entity.Ref<int>());    
-            Assert.Equal(i, entity.Ref<short>());    
+            Assert.True(i == entity.Ref<int>());    
+            Assert.True(i == entity.Ref<short>());    
         }
     }
 

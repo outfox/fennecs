@@ -282,7 +282,7 @@ public class QueryBatchTests
         Assert.Single(linkQuery);
         Assert.Contains(e1, linkQuery);
         
-        linkQuery.Batch().Remove(Link.With(doom)).Submit();
+        linkQuery.Batch().Remove(doom).Submit();
         
         Assert.Empty(linkQuery);
     }

@@ -138,28 +138,28 @@ public class DocumentationNBodyTests
 
         Assert.Equal(bodyCount, iterations3);
         
-        var pos1 = sun1.Ref<Position>().Value;
+        var pos1 = sun1.Ref<Position>().Read.Value;
         Assert.Equal(body1.position, pos1);
         Assert.NotEqual(p1, pos1);
 
-        var pos2 = sun2.Ref<Position>().Value;
+        var pos2 = sun2.Ref<Position>().Read.Value;
         Assert.Equal(body2.position, pos2);
         Assert.NotEqual(p2, pos2);
         
-        var pos3 = sun3.Ref<Position>().Value;
+        var pos3 = sun3.Ref<Position>().Read.Value;
         Assert.Equal(body3.position, pos3);
 
         var force1 = Vector3.Normalize(p2 - p1) * body2.mass / Vector3.DistanceSquared(p2, p1) / body1.mass;
         force1 += Vector3.Normalize(p3 - p1) * body3.mass / Vector3.DistanceSquared(p3, p1) / body1.mass;
-        Assert.Equal(force1, sun1.Ref<Acceleration>().Value);
+        Assert.Equal(force1, sun1.Ref<Acceleration>().Read.Value);
         
         var force2 = Vector3.Normalize(p1 - p2) * body1.mass / Vector3.DistanceSquared(p1, p2) / body2.mass;
         force2 += Vector3.Normalize(p3 - p2) * body3.mass / Vector3.DistanceSquared(p3, p2) / body2.mass;
-        Assert.Equal(force2, sun2.Ref<Acceleration>().Value);
+        Assert.Equal(force2, sun2.Ref<Acceleration>().Read.Value);
         
         var force3 = Vector3.Normalize(p1 - p3) * body1.mass / Vector3.DistanceSquared(p1, p3) / body3.mass;
         force3 += Vector3.Normalize(p2 - p3) * body2.mass / Vector3.DistanceSquared(p2, p3) / body3.mass;
-        Assert.Equal(force3, sun3.Ref<Acceleration>().Value);
+        Assert.Equal(force3, sun3.Ref<Acceleration>().Read.Value);
     }
 
 
