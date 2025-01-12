@@ -290,7 +290,7 @@ public partial class World
         /// </summary>
         public static implicit operator Id(byte id) => new(id);
         
-         internal int Index => _id;
+        internal int Index => _id;
         
         internal readonly ulong Bits;
         

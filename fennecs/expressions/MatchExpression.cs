@@ -8,13 +8,14 @@ namespace fennecs;
 /// It is used in <see cref="Query"/>, in <see cref="Stream"/>s and their Filters, etc.
 /// </summary>
 [StructLayout(LayoutKind.Explicit)]
+[DebuggerDisplay("{ToString()}")]
 public readonly record struct MatchExpression
 {
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     [FieldOffset(0)] internal readonly ulong _value;
     
     [field: FieldOffset(0)] 
-    private Match Match { get; init; }
+    private Match Match { get; init; } //FIXME: This is overwiten by fieldoffset 6!!!
     
     [field: FieldOffset(6)] 
     private short TypeId { get; }
@@ -71,23 +72,26 @@ public readonly record struct MatchExpression
         // Reject if Types are incompatible. 
         if (TypeId != other.TypeId) return false;
 
-        // Match.None matches only None. (plain Components)
-        if (Match == default(Key)) return other.Key == default;
+        return Match.Value switch
+        {
+            // Match.None matches only None. (plain Components)
+            default(ulong) => other.Key == default,
+            
+            // Match.Any matches everything; relations and pure Components (target == none).
+            (ulong) Match.Wildcard.Any => true,
 
-        // Match.Any matches everything; relations and pure Components (target == none).
-        if (Match == Match.Any) return true;
+            // Match.Target matches all Entity-Target Relations.
+            (ulong) Match.Wildcard.Target => other.Key != default,
+            
+            // Match.Relation matches only Entity-Entity relations.
+            (ulong) Match.Wildcard.Entity => other.Key.IsEntity,
 
-        // Match.Target matches all Entity-Target Relations.
-        if (Match == Match.Target) return other.Key != default;
+            // Match.Link matches only Entity-Object relations.
+            (ulong) Match.Wildcard.Link => other.Key.IsLink,
 
-        // Match.Relation matches only Entity-Entity relations.
-        if (Match == Match.Entity) return other.Key.IsEntity;
-
-        // Match.Link matches only Entity-Object relations.
-        if (Match == Match.Link) return other.Key.IsLink;
-
-        // Direct match?
-        return Match == new Match(other.Key);
+            // Direct match?
+            _ => Match == other.Key,
+        };
     }
 
     /// <inheritdoc cref="Matches(TypeExpression)"/>

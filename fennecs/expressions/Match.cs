@@ -70,6 +70,14 @@ public readonly record struct Match
     /// </ul>
     /// </remarks>
     public static Match Any { get; }  = new(Wildcard.Any);
+    
+    
+    public const ulong AnyValue = (ulong) Wildcard.Any;
+    public const ulong TargetValue = (ulong) Wildcard.Target;
+    public const ulong LinkValue = (ulong) Wildcard.Link;
+    public const ulong EntityValue = (ulong) Wildcard.Entity;
+    
+    
     //public static Match Any => new(Entity.Any); // or prefer default ?
 
     /// <summary>
