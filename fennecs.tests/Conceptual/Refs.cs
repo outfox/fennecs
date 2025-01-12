@@ -28,7 +28,8 @@ public class Refs
         }
         else
         {
-            bob.Write<Owes>(eve).Amount += 7M;
+            ref var write = ref bob.Write<Owes>(eve); 
+            write.Amount += 7M;
         }
         
         Assert.Equal(30M, bob.Read<Owes>(eve).Amount);

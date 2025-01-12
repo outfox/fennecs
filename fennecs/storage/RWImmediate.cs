@@ -62,7 +62,7 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) :
     /// <summary>
     /// Removes the component from the entity.
     /// </summary>
-    /// <inheritdoc cref="Entity.Remove{C}(fennecs.Key)"/>
+    /// <inheritdoc cref="Entity.Remove{C}(Match,string,int)"/>
     public void Remove() => entity.Remove<T>(key);
 
     /// <inheritdoc cref="IEquatable{T}" />
@@ -79,4 +79,10 @@ public readonly ref struct RWImmediate<T>(ref T value, Entity entity, Key key) :
 
     /// <inheritdoc />
     public bool Equals(T? other) => other is not null && _value.Equals(other);
+    
+    /// <inheritdoc />
+    public override bool Equals(object? obj) => _value.Equals(obj);
+    
+    /// <inheritdoc />
+    public override int GetHashCode() => _value.GetHashCode();
 }

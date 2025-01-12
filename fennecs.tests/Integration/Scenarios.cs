@@ -14,14 +14,14 @@ public class Scenarios
     {
         using var world = new World();
 
-        var entities = new List<Entity>();
+        var entities = new List<Entity>(count);
 
         var floats = 0;
         var doubles = 0;
         var strings = 0;
         ushort shorts = 0;
 
-        for (var i = 1; i < count; i++)
+        for (var i = 0; i < count; i++)
         {
             var entity = world.Spawn().Add(count);
             if (i % floatRate == 0)
@@ -52,8 +52,8 @@ public class Scenarios
         }
 
         Assert.Equal(count, entities.Count);
-        
-        var floatsActual = world.Query<float>().Stream().Count;
+        var floatStream = world.Query<float>().Stream();
+        var floatsActual = floatStream.Count;
         Assert.Equal(floats, floatsActual);
 
         var doublesActual = world.Query<double>().Stream().Count;
@@ -63,10 +63,10 @@ public class Scenarios
         Assert.Equal(strings, stringsActual);
 
         var stringsAndDoublesActual = world.Query<string, double>().Stream().Count;
-        Assert.Equal(count / (stringRate * doubleRate), stringsAndDoublesActual);
+        Assert.Equal(count / (stringRate * doubleRate) + 1, stringsAndDoublesActual); // +1 for entity 0
 
         var floatsAndShortsActual = world.Query().Any<float>().Has<ushort>(Match.Any).Compile().Count;
-        Assert.Equal(count / (floatRate * shortRate), floatsAndShortsActual);
+        Assert.Equal(count / (floatRate * shortRate) + 1, floatsAndShortsActual); // +1 for entity 0
 
         var shortsActual = world.Query().Has<ushort>(Match.Any).Compile().Count;
         Assert.Equal(shorts, shortsActual);

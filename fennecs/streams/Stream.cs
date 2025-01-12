@@ -53,9 +53,11 @@ public record Stream(Query Query) : IBatchBegin
     #endregion
 
     /// <summary>
-    /// The number of entities that match the underlying Query.
+    /// The number of entities that match the underlying Query (filtered by the Stream's Filters).
     /// </summary>
-    public int Count => Filtered.Sum(f => f.Count);
+    public int Count => Filtered.Sum(
+        f => f.Count
+        );
 
 
     /// <summary>

@@ -1,4 +1,8 @@
-﻿namespace fennecs;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
+namespace fennecs;
 
 /// <summary>
 /// Used to match against secondary Keys in Type Expressions (e.g. Queries, Streams, Filters, Masks).
@@ -7,9 +11,16 @@
 /// Match's static readonly constants differentiate between Plain Components, Entity-Entity Relations, and Entity-Object Relations.
 /// The class offers a set of Wildcards for matching combinations of the above in <see cref="Query">Queries</see>; as opposed to filtering for only a specific target.
 /// </para>
+[StructLayout(LayoutKind.Explicit)]
 public readonly record struct Match
 {
-    internal readonly ulong Value;
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    [FieldOffset(0)] internal readonly ulong Value;
+    
+    [FieldOffset(0)] internal readonly int Id;
+    
+    [FieldOffset(4)]
+    internal readonly ushort Flags;
 
     internal enum Wildcard : ulong
     {
@@ -36,7 +47,9 @@ public readonly record struct Match
     
     internal Match(Key key) => Value = key.Value;
     
-    internal Match(Wildcard wildcard) => Value = (ulong) wildcard;
+    internal Match(ulong value) => Value = value & Key.KeyMask;
+
+    private Match(Wildcard wildcard) => Value = (ulong) wildcard;
 
     /// <summary>
     /// <para>

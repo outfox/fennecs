@@ -20,7 +20,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// The secondary Key of this TypeExpression (expressing its relation or link target).
     /// </summary>
     [field: FieldOffset(0)]
-    public readonly Key Key;
+    public readonly Key Key => new(_value);
 
     [field: FieldOffset(6)] 
     internal readonly short TypeId;
@@ -30,8 +30,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     internal TypeExpression(short typeId, Key key)
     {
         Debug.Assert(typeId != 0, "TypeId must be non-zero");
-        Key = key;
-        TypeId = typeId;
+        _value = key.Value | (ulong) typeId << 48;
     }
 
     internal TypeExpression(ulong value)

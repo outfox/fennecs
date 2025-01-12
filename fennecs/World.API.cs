@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
@@ -220,7 +221,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
     #region Lifecycle & Locking
 
-    private static readonly Queue<byte> WorldIds = new(Enumerable.Range(1, byte.MaxValue).Select(i => (byte) i));
+    private static readonly ConcurrentQueue<byte> WorldIds = new(Enumerable.Range(1, byte.MaxValue).Select(i => (byte) i));
     private static readonly World[] Worlds = new World[byte.MaxValue];
     
     

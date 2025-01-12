@@ -135,7 +135,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
 
         //If already matching, no need to check any further. 
         var matchesHas = mask.HasTypes.Count == 0 || Signature.MatchesAll(mask.HasTypes);
-        if (matchesHas) return true;
+        if (!matchesHas) return false;
 
         //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
         var matchesAny = mask.AnyTypes.Count == 0 || Signature.MatchesAny(mask.AnyTypes);
@@ -378,8 +378,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
 
             oldStorage.Move(entry, newStorage);
         }
-
-        // If we cycled an entity from the end of the storages, need Row update.
+        
+        // If we cycled an entity from the end of the storages, it needs a Row update.
         if (source.Count > entry) source.PatchMetas(entry);
         
         // Entity was moved, needs both Archetype and Row update.

@@ -33,8 +33,10 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
 
     [Obsolete("Just use this / the Entity itself")]
     internal Entity Id => this;
-
+    
     private ref Meta Meta => ref World[this];
+    
+    internal int Row => Meta.Row;
 
     /// <summary>
     /// <c>null</c> equivalent for Entity.
@@ -256,12 +258,12 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <summary>
     /// Returns a <c>ref</c> to a component of the given type, matching the given Key.
     /// </summary>
-    public ref C Write<C>(Key key = default) where C : notnull => ref Archetype.GetStorage<C>(key)[Index];
+    public ref C Write<C>(Key key = default) where C : notnull => ref Archetype.GetStorage<C>(key)[Row];
 
     /// <summary>
     /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
     /// </summary>
-    public ref readonly C Read<C>(Key key = default) where C : notnull => ref Archetype.GetStorage<C>(key)[Index];
+    public ref readonly C Read<C>(Key key = default) where C : notnull => ref Archetype.GetStorage<C>(key)[Row];
 
     /// <summary>
     /// Sets all components of the given backing type on the Entity, matching the given Match term.

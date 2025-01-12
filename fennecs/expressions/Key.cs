@@ -9,15 +9,14 @@ namespace fennecs;
 [StructLayout(LayoutKind.Explicit)]
 public readonly record struct Key
 {
-    [FieldOffset(0)] internal readonly ulong Value;
-    
     [FieldOffset(0)] 
     internal readonly int Index;
 
+    [FieldOffset(0)] internal readonly ulong Value;
+    
     internal Key(ulong value)
     {
-        Debug.Assert((value & HeaderMask) == 0, "Keys may not have header bits set.");
-        Value = value;
+        Value = value & KeyMask;
     }
 
     internal Key(Entity entity) => Value = entity.Value & KeyMask;

@@ -12,13 +12,13 @@ namespace fennecs;
 public readonly record struct MatchExpression
 {
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     [FieldOffset(0)] internal readonly ulong _value;
-    
-    [field: FieldOffset(0)] 
-    private Match Match { get; init; } //FIXME: This is overwiten by fieldoffset 6!!!
     
     [field: FieldOffset(6)] 
     private short TypeId { get; }
+
+    private Match Match => new(_value);
     
     internal static MatchExpression Of<T>(Match match) => new(match, LanguageType<T>.Id);
     //internal static MatchExpression Of<T>(Key key) => new(key, LanguageType<T>.Id);
@@ -29,7 +29,7 @@ public readonly record struct MatchExpression
 
     private MatchExpression(Match match, short typeId)
     {
-        Match = match;
+        _value = match.Value;
         TypeId = typeId;
     }
 
@@ -72,7 +72,7 @@ public readonly record struct MatchExpression
         // Reject if Types are incompatible. 
         if (TypeId != other.TypeId) return false;
 
-        return Match.Value switch
+        return (Match.Value) switch
         {
             // Match.None matches only None. (plain Components)
             default(ulong) => other.Key == default,
