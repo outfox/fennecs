@@ -33,6 +33,9 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
+        // No Query can match a despawned Entity, or an entity from a different World.
+        if (!World.IsAlive(entity)) return false;
+        
         var meta = World.GetEntityMeta(entity);
         var table = meta.Archetype;
         return Archetypes.Contains(table);
