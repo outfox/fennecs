@@ -28,7 +28,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
-    [FieldOffset(8)] internal readonly uint DWordHigh;
+    [FieldOffset(4)] internal readonly uint DWordHigh;
 
 
     [Obsolete("Just use this / the Entity itself")]

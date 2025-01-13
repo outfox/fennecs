@@ -274,11 +274,11 @@ public class QueryBatchTests
     public void Can_Remove_Batched()
     {
         using var world = new World();
-        const string doom = "doom";
+        var doom = "doom";
         
-        var e1 = world.Spawn().Add(Link.With(doom));
+        var e1 = world.Spawn().Link(doom);
 
-        var linkQuery = world.Query<string>(Link.With(doom)).Compile();
+        var linkQuery = world.Query<string>(Key.Of(doom)).Compile();
         Assert.Single(linkQuery);
         Assert.Contains(e1, linkQuery);
         
@@ -319,7 +319,7 @@ public class QueryBatchTests
         Assert.Empty(linkQuery);
 
         var intQuery = world.Query<int>().Compile();
-        intQuery.Batch(Batch.AddConflict.Preserve).Add(Link.With("doom")).Submit();
+        intQuery.Batch(Batch.AddConflict.Preserve).Link("doom").Submit();
 
         Assert.Equal(2, linkQuery.Count);
         Assert.Contains(e1, linkQuery);
@@ -755,7 +755,7 @@ public class QueryBatchTests
     {
         const string target = "lala!";
         using var world = new World();
-        var e3 = world.Spawn().Add(Link.With(target));
+        var e3 = world.Spawn().Link(target);
 
         var stringQuery = world.Query<string>(Match.Link).Compile();
         Assert.Equal(1, stringQuery.Count);
@@ -772,7 +772,7 @@ public class QueryBatchTests
     {
         const string target = "lala!";
         using var world = new World();
-        var e3 = world.Spawn().Add(Link.With(target));
+        var e3 = world.Spawn().Link(target);
 
         var stringQuery = world.Query<string>(Match.Link).Compile();
         Assert.Equal(1, stringQuery.Count);
@@ -789,7 +789,7 @@ public class QueryBatchTests
     {
         const string target = "lala!";
         using var world = new World();
-        var e3 = world.Spawn().Add(Link.With(target));
+        var e3 = world.Spawn().Link(target);
 
         var stringQuery = world.Query<string>(Match.Link).Compile();
         Assert.Equal(1, stringQuery.Count);

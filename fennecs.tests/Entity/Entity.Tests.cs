@@ -46,7 +46,7 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         entity.Add(123);
         entity.Add(7.0f, world.Spawn());
-        entity.Add(Link.With("hello"));
+        entity.Link("hello");
         entity.Despawn();
         Assert.False(world.IsAlive(entity));
     }
@@ -190,7 +190,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         world.Spawn();
-        entity.Add(Link.With("hello world"));
+        entity.Link("hello world");
 
         Assert.True(entity.Has<string>("hello world"));
         Assert.True(entity.Has<string>(Match.Any));
@@ -421,7 +421,7 @@ public class EntityTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         Name helloWorld = new("hello world");
-        entity.Add(Link.With(helloWorld));
+        entity.Link(helloWorld);
         var component = entity.Ref<Name>(Key.Of(helloWorld));
         Assert.Equal(helloWorld, component.Read);
     }
@@ -453,7 +453,7 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add("123");
         Assert.True(interfaceEntity.Has<string>());
         
-        entity.Add(Link.With("666"));
+        entity.Link("666");
         Assert.True(interfaceEntity.Has("666"));
         
         Assert.False(interfaceEntity.Has<int>(other));
@@ -479,7 +479,7 @@ public class EntityTests(ITestOutputHelper output)
         entity.Add(123);
         entity.Add(69.420);
         entity.Add(new TypeA());
-        entity.Add(Link.With("hello"));
+        entity.Link("hello");
         
         var components = entity.Components;
         Assert.Equal(4, components.Count);
@@ -508,7 +508,7 @@ public class EntityTests(ITestOutputHelper output)
         
         entity.Add(123, other);
         var literal = "hello" + random.Next();
-        entity.Add(Link.With(literal));
+        entity.Link(literal);
         
         var components = entity.Components;
         Assert.Equal(2, components.Count);
@@ -557,8 +557,8 @@ public class EntityTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var literal = "hello world";
         Name helloWorld = new(literal);
-        entity.Add(Link.With(helloWorld));
-        entity.Add(Link.With(literal));
+        entity.Link(helloWorld);
+        entity.Link(literal);
         var strings = entity.Get<Name>(Match.Any);
         Assert.Equal(helloWorld, strings[0].Item2);
         Assert.Single(strings);
@@ -574,8 +574,8 @@ public class EntityTests(ITestOutputHelper output)
         const string literal2 = "hello world2";
         Name helloWorld1 = new(literal1);
         Name helloWorld2 = new(literal2);
-        entity.Add(Link.With(helloWorld1));
-        entity.Add(Link.With(helloWorld2));
+        entity.Link(helloWorld1);
+        entity.Link(helloWorld2);
         var strings = entity.Get<Name>(Match.Any);
         Assert.Contains((TypeExpression.Of(helloWorld1), helloWorld1), strings);
         Assert.Contains((TypeExpression.Of(helloWorld2), helloWorld2), strings);

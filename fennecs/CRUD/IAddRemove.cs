@@ -58,7 +58,7 @@ public interface IAddRemove<out SELF>
     /// removing the old and then adding the new link instead of changing the value of the backing component (which would preserve the old key).
     /// </remarks>
     /// <returns>itself (fluent pattern)</returns>
-    public SELF Link<L>(L link) where L : class => Add(link, Key.Of(link));
+    public SELF Link<L>(L link) where L : class;// => Add(link, Key.Of(link));
 }
 
 /// <summary>

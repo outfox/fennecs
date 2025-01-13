@@ -21,12 +21,11 @@ public readonly record struct MatchExpression
     private Match Match => new(_value);
     
     internal static MatchExpression Of<T>(Match match) => new(match, LanguageType<T>.Id);
-    //internal static MatchExpression Of<T>(Key key) => new(key, LanguageType<T>.Id);
 
     internal static MatchExpression Of(Type type, Match match) => new(match, LanguageType.Identify(type));
-    //internal static MatchExpression Of(Type type, Key key) => new(key, LanguageType.Identify(type));
-    
 
+    internal static MatchExpression Of<L>(L link) where L : class => new(Key.Of(link), LanguageType<L>.Id);
+    
     private MatchExpression(Match match, short typeId)
     {
         _value = match.Value;

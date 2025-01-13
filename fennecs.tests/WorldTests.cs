@@ -158,10 +158,10 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         world.Entity()
             .Add(555)
-            .Add(Link.With("dieter"))
+            .Link("dieter")
             .Spawn(count);
 
-        var query = world.Query<int, string>(default, Link.With("dieter")).Stream();
+        var query = world.Query<int, string>(default, Key.Of("dieter")).Stream();
         Assert.Equal(count, query.Count);
 
         query.For((i, s) =>
@@ -365,7 +365,8 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
         var worldLock = world.Lock();
 
-        entity.Add(666);
+        entity.Add(666, key);
+        
         Assert.False(world.HasComponent<int>(entity, key));
         worldLock.Dispose();
         Assert.True(world.HasComponent<int>(entity, key));
@@ -407,7 +408,7 @@ public class WorldTests(ITestOutputHelper output)
         var entity = world.Spawn();
 
         var worldLock = world.Lock();
-        entity.Add(666);
+        entity.Add(666, key);
 
         Assert.False(world.HasComponent<int>(entity, key));
         worldLock.Dispose();
@@ -504,7 +505,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         object target = new { };
-        entity.Add(Link.With(target));
+        entity.Link(target);
         Assert.True(entity.Has<object>(target.Key())); //TODO: Probably wrong.
     }
 
@@ -525,7 +526,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         object target = new { };
-        entity.Add(Link.With(target));
+        entity.Link(target);
         var typeExpression = TypeExpression.Of(target.GetType(), target.Key());
         world.RemoveComponent(entity, typeExpression);
         Assert.False(world.HasComponent(entity, typeExpression));
@@ -585,7 +586,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var target = world.Spawn();
         var entity1 = world.Spawn().Add("hallo");
-        var entity2 = world.Spawn().Add(Link.With("to the past"));
+        var entity2 = world.Spawn().Link("to the past");
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
         world.DespawnAllWith<string>(default(Key));
@@ -602,7 +603,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var target = world.Spawn();
         var entity1 = world.Spawn().Add("hallo");
-        var entity2 = world.Spawn().Add(Link.With("to the past"));
+        var entity2 = world.Spawn().Link("to the past");
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
         world.DespawnAllWith<string>(Match.Any);
@@ -619,7 +620,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var target = world.Spawn();
         var entity1 = world.Spawn().Add("hallo");
-        var entity2 = world.Spawn().Add(Link.With("to the past"));
+        var entity2 = world.Spawn().Link("to the past");
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
         world.DespawnAllWith<string>(Match.Link);
@@ -636,7 +637,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var target = world.Spawn();
         var entity1 = world.Spawn().Add("hallo");
-        var entity2 = world.Spawn().Add(Link.With("to the past"));
+        var entity2 = world.Spawn().Link("to the past");
         var entity3 = world.Spawn().Add<string>("to the future", target);
         var entity4 = world.Spawn().Add(666);
         world.DespawnAllWith<string>(Match.Target);

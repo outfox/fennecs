@@ -215,10 +215,10 @@ public class EntitySpawnerTests
     {
         using var world = new World();
         var other = world.Spawn();
-        using var spawner1 = world.Entity().Add(Link.With("hello")); 
+        using var spawner1 = world.Entity().Link("hello"); 
         spawner1.Spawn();
         
-        using var query1 = world.Query<string>(Link.With("hello")).Compile();
+        using var query1 = world.Query<string>(Key.Of("hello")).Compile();
         Assert.Equal(1, query1.Count);
         Assert.Equal(2, world.Count);
         

@@ -247,6 +247,10 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// </remarks>
     public Query Add<T>(Key key = default) where T : notnull, new() => Add(new T(), key);
 
+
+    /// <inheritdoc />
+    public Query Link<L>(L link) where L : class => Add(link, Key.Of(link));
+
     /// <inheritdoc />
     public Query Remove<C>(Match match = default) where C : notnull => Remove(MatchExpression.Of<C>(match));
     

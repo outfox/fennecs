@@ -69,17 +69,16 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// QueryBuilder includes only Entities that have the given Component, Relation, or Object Link.
     /// </summary>
     /// <param name="link">an object link</param>
-    /// <typeparam name="T">component's backing type</typeparam>
+    /// <typeparam name="L">component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
-    public QB Has<T>(Link<T> link) where T : class
+    public QB Has<L>(L link) where L : class
     {
-        _mask.Has(MatchExpression.Of<T>(link));
+        _mask.Has(MatchExpression.Of(link));
         return (QB)this;
     }
-
-
-
+    
+    
     /// <summary>
     /// Exclude all Entities that have the given Component or Relation.
     /// </summary>
@@ -92,17 +91,18 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
         _mask.Not(MatchExpression.Of<T>(match));
         return (QB)this;
     }
+    
 
     /// <summary>
     /// Exclude all Entities that have the given Component or Relation.
     /// </summary>
     /// <param name="link">an object link</param>
-    /// <typeparam name="T">component's backing type</typeparam>
+    /// <typeparam name="L">object link's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
-    public QB Not<T>(Link<T> link) where T : class
+    public QB Not<L>(L link) where L : class
     {
-        _mask.Not(MatchExpression.Of<T>(link));
+        _mask.Not(MatchExpression.Of(link));
         return (QB)this;
     }
 
@@ -128,9 +128,9 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <typeparam name="T">component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
-    public QB Any<T>(Link<T> link) where T : class
+    public QB Any<T>(T link) where T : class
     {
-        _mask.Any(MatchExpression.Of<T>(link));
+        _mask.Any(MatchExpression.Of(link));
         return (QB)this;
     }
     

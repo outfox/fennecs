@@ -73,6 +73,9 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     /// <inheritdoc />
     public EntitySpawner Remove<C>(C target) where C : class => Remove<C>(Key.Of(target));
 
+    /// <inheritdoc />
+    public EntitySpawner Link<L>(L link) where L : class => Add(link, Key.Of(link));
+
     /// <summary>
     /// Spawns <c>count</c> entities with the configured components.
     /// </summary>

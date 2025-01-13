@@ -9,7 +9,7 @@ public class TypeIdTests
     [Fact]
     public void Entity_is_64_bits()
     {
-        Assert.Equal(64 / 8, Marshal.SizeOf<Entity>());
+        Assert.Equal(8, Marshal.SizeOf<Entity>());
     }
 
 
@@ -120,14 +120,14 @@ public class TypeIdTests
     public void Match_from_Anonymous_Object_Entity_Is_Differentiable()
     {
         var target1 = new { doot = "foo" };
-        var typeExpression1 = TypeExpression.Of<object>(Link.With(target1));
-        var typeExpression2 = TypeExpression.Of<object>(Link.With(target1));
+        var typeExpression1 = TypeExpression.Of<object>(target1);
+        var typeExpression2 = TypeExpression.Of<object>(target1);
         
         Assert.Equal(typeExpression1, typeExpression2);
         
         var target2 = new { doot = "bar"};
-        var typeExpression3 = TypeExpression.Of<object>(Link.With(target2));
-        var typeExpression4 = TypeExpression.Of<object>(Link.With(target2));
+        var typeExpression3 = TypeExpression.Of<object>(target2);
+        var typeExpression4 = TypeExpression.Of<object>(target2);
         
         Assert.False(ReferenceEquals(target1, target2));
         Assert.NotEqual(target1, target2);

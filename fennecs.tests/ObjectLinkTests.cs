@@ -10,7 +10,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
 
         // string may be interned or not
         const string target = "hello world";
-        world.Spawn().Add(Link.With(target));
+        world.Spawn().Link(target);
 
         var runs = 0;
         query.For((str) =>
@@ -34,7 +34,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         const string link = "hello world";
 
         var entity = world.Spawn();
-        entity.Add(Link.With(link));
+        entity.Link(link);
 
         var runs = 0;
         query.For((str) =>
@@ -59,7 +59,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         // string may be interned or not
         const string target = "hello world";
 
-        var entity = world.Spawn().Add(Link.With(target));
+        var entity = world.Spawn().Link(target);
         entity.Remove<string>(Key.Of(target));
 
         var runs = 0;
@@ -77,7 +77,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         // string may be interned or not
         const string target = "hello world";
 
-        var entity = world.Spawn().Add(Link.With(target));
+        var entity = world.Spawn().Link(target);
         var typeExpression = TypeExpression.Of<string>("hello world");
         world.RemoveComponent(entity, typeExpression);
 

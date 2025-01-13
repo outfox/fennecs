@@ -11,6 +11,7 @@ public static class Link
     /// </summary>
     /// <param name="target">the object</param>
     /// <typeparam name="T">type of the object</typeparam>
+    [Obsolete("Use IAddRemove.Link<T> instead.", true)]
     public static Link<T> With<T>(T target) where T : class => Link<T>.With(target);
 
     /// <summary>

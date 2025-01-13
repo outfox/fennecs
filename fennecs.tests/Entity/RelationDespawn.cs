@@ -17,7 +17,7 @@ public class RelationDespawn
         
         world.Entity()
             .Add<int>(default, subject)
-            .Add(Link.With("relation target"))
+            .Link("relation target")
             .Spawn(relations)
             .Dispose();
         
