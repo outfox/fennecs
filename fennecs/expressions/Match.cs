@@ -51,6 +51,7 @@ public readonly record struct Match
 
     private Match(Wildcard wildcard) => Value = (ulong) wildcard;
 
+    
     /// <summary>
     /// <para>
     /// Match Expression to match only a specific Relation (Entity-Entity).
@@ -58,8 +59,8 @@ public readonly record struct Match
     /// <para>Use it freely in filter expressions. See <see cref="QueryBuilder"/> for how to apply it in queries.</para>
     /// </summary>
     public static Match Relation(Entity other) => new(other.Key);
-    
 
+    
     /// <summary>
     /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches all types of relations on the given Stream Type: <b>Plain, Entity, and Object</b>.
     /// </para>
@@ -82,7 +83,15 @@ public readonly record struct Match
     /// <li>Use wildcards deliberately and sparingly.</li>
     /// </ul>
     /// </remarks>
-    public static Match Any { get; }  = new(Wildcard.Any);
+    public static readonly Match Any = new(Wildcard.Any);
+    
+    /// <summary>
+    /// <para>
+    /// <b>Wildcard match expression for Entity iteration.</b><br/>.
+    /// This matches only components with no secondary key. (it's generally recommended to match by Key default instead)
+    /// </para>
+    /// </summary>
+    public static readonly Match Plain = default;
     
     
     public const ulong AnyValue = (ulong) Wildcard.Any;

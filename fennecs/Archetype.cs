@@ -95,11 +95,34 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
     }
 
 
+    private void Match(MatchExpression expression, PooledList<IStorage> result)
+    {
+        foreach (var (type, index) in _storageIndices)
+        {
+            if (!expression.Matches(type)) continue;
+            result.Add(Storages[index]);
+        }
+    }
+
+
     internal PooledList<Storage<T>> Match<T>(Match match = default) where T : notnull
     {
         //TODO: Co-/Contravariance in the future!
         var result = PooledList<Storage<T>>.Rent();
         Match(MatchExpression.Of<T>(match), result);
+        return result;
+    }
+
+    internal PooledList<IStorage> Match(Type type, Match match = default)
+    {
+        //TODO: Co-/Contravariance in the future!
+        var result = PooledList<IStorage>.Rent();
+        var expression = MatchExpression.Of(type, match);
+        foreach (var (typeExpression, index) in _storageIndices)
+        {
+            if (!expression.Matches(typeExpression)) continue;
+            result.Add(Storages[index]);
+        }
         return result;
     }
 
@@ -111,7 +134,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
         return result;
     }
 
-    
     /// <summary>
     /// Does this Archetype contain a storage of the given MatchExpression?
     /// </summary>

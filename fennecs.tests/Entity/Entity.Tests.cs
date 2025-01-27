@@ -559,7 +559,7 @@ public class EntityTests(ITestOutputHelper output)
         Name helloWorld = new(literal);
         entity.Link(helloWorld);
         entity.Link(literal);
-        var strings = entity.Get<Name>(Match.Any);
+        var strings = entity.GetAll<Name>(Match.Any);
         Assert.Equal(helloWorld, strings[0].Item2);
         Assert.Single(strings);
     }
@@ -576,7 +576,7 @@ public class EntityTests(ITestOutputHelper output)
         Name helloWorld2 = new(literal2);
         entity.Link(helloWorld1);
         entity.Link(helloWorld2);
-        var strings = entity.Get<Name>(Match.Any);
+        var strings = entity.GetAll<Name>(Match.Any);
         Assert.Contains((TypeExpression.Of(helloWorld1), helloWorld1), strings);
         Assert.Contains((TypeExpression.Of(helloWorld2), helloWorld2), strings);
         Assert.Equal(2, strings.Count);

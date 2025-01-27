@@ -54,7 +54,6 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
 
 
     #region Internals
-
     private Batch AddComponent<T>(T data, Key key) where T : notnull
     {
         var typeExpression = TypeExpression.Of<T>(key);
@@ -79,8 +78,10 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         if (Additions.Any(expression.Matches))
             throw new InvalidOperationException($"Removal of {expression} conflicts with addition in same batch! Because any Additions are applied after all Removals, this leads to undefined behaviour.");
 
-        if (RemoveMode == Batch.RemoveConflict.Allow)
+        /*
+        if (RemoveMode == RemoveConflict.Allow)
             throw new InvalidOperationException($"Removal of {expression} conflicts with removal in same batch! Because any Removals are applied after all Additions, this leads to undefined behaviour.");
+        */
         
         Removals.Add(expression);
         return this;

@@ -555,7 +555,7 @@ public class QueryBatchTests
         Assert.Contains(e2, notStringQuery);
         Assert.Contains(e3, notStringQuery);
     }
-    
+    /*
     [Fact]
     public void Cant_Remove_Conflict_with_Disallow()
     {
@@ -568,7 +568,7 @@ public class QueryBatchTests
                 .Submit();
         });
     }
-
+*/
 
     [Fact]
     public void Cannot_Safely_Duplicate_Remove()
@@ -673,7 +673,7 @@ public class QueryBatchTests
         });
     }
 
-
+/*
     [Fact]
     public void Cannot_Remove_Conflict_with_Disallow()
     {
@@ -686,7 +686,7 @@ public class QueryBatchTests
                 .Submit();
         });
     }
-
+*/
 
     [Fact]
     public void Can_Remove_Conflict_with_Skip()

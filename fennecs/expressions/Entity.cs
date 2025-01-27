@@ -174,6 +174,13 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     }
     
     /// <inheritdoc />
+    public Entity Add(object component, Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
+    {
+        World.AddComponent(this, TypeExpression.Of(component.GetType(), key), component, callerFile, callerLine);
+        return this;
+    }
+    
+    /// <inheritdoc />
     public Entity Add<C>(Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull, new() => Add(new C(), key);
 
     /// <inheritdoc />
@@ -227,7 +234,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <summary>
     /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
     /// </summary>
-    public bool Get(Type type, Key key, [MaybeNullWhen(false)] out object component)
+    public bool TryGet(Type type, Key key, [MaybeNullWhen(false)] out object component)
     {
         return World.TryGetComponent(this, TypeExpression.Of(type, key), out component);
     }
@@ -235,7 +242,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <summary>
     /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
     /// </summary>
-    public bool Get(Type type, [MaybeNullWhen(false)] out object component)
+    public bool TryGet(Type type, [MaybeNullWhen(false)] out object component)
     {
         return World.TryGetComponent(this, TypeExpression.Of(type), out component);
     }
@@ -248,7 +255,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <see cref="PooledList{T}"/> should be Disposed if possible, either by declaring them in a using statement, or by calling their <see cref="IDisposable.Dispose"/> method.
     /// </remarks>
     /// <returns><c>PooledList&lt;(TypeExpression type, T value)&gt;</c></returns>
-    public PooledList<(TypeExpression expression, T value)> Get<T>(Match match = default) where T : notnull
+    public PooledList<(TypeExpression expression, T value)> GetAll<T>(Match match) where T : notnull
     {
         using var storages = Archetype.Match<T>(match);
         var list = PooledList<(TypeExpression type, T value)>.Rent();
@@ -269,6 +276,21 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
 
     /// <summary>
     /// Sets all components of the given backing type on the Entity, matching the given Match term.
+    /// Doesn't add the component.
+    /// </summary>
+    /// <remarks>
+    /// This (as all functions taking a Match term) supports wildcards.
+    /// </remarks> 
+    public Entity Set(object value, Match match = default)
+    {
+        using var storages = Archetype.Match(value.GetType(), match);
+        foreach (var storage in storages) storage.Store(Row, value);
+        return this;
+    }
+
+    /// <summary>
+    /// Sets all components of the given backing type on the Entity, matching the given Match term.
+    /// Doesn't add the component.
     /// </summary>
     /// <remarks>
     /// This (as all functions taking a Match term) supports wildcards.
@@ -276,7 +298,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     public Entity Set<C>(in C value, Match match = default) where C : notnull
     {
         using var storages = Archetype.Match<C>(match);
-        foreach (var storage in storages) storage.Store(Index, value);
+        foreach (var storage in storages) storage.Store(Row, value);
         return this;
     }
 

@@ -112,13 +112,17 @@ public class IdentityTests(ITestOutputHelper output)
         }
 
         HashSet<Entity> entities = [];
+        List<World> worlds = [];
         
         for (var i = 0; i < byte.MaxValue; i++)
         {
-            using var world = new World();
+            var world = new World();
+            worlds.Add(world);
             var entity = world.Spawn();
             Assert.True(entities.Add(entity));
         }
+        
+        foreach (var world in worlds) world.Dispose();
     }
 
     [Theory]
