@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -27,8 +28,8 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     [FieldOffset(6)] internal readonly short Generation;
 
     //Constituents for GetHashCode()
-    [FieldOffset(0)] internal readonly uint DWordLow;
-    [FieldOffset(4)] internal readonly uint DWordHigh;
+    //[FieldOffset(0)] internal readonly uint DWordLow;
+    //[FieldOffset(4)] internal readonly uint DWordHigh;
 
 
     [Obsolete("Just use this / the Entity itself")]
@@ -47,7 +48,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// The World this Entity belongs to.
     /// </summary>
     public World World => World.Get(WorldIndex);
-    
+
     /// <summary>
     /// The Archetype this Entity belongs to.
     /// </summary>
@@ -64,14 +65,15 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
 
 
     /// <inheritdoc />
-    public override int GetHashCode()
+    public override int GetHashCode() => Value.GetHashCode();
+    /*
     {
         unchecked
         {
             return (int) (0x811C9DC5u * DWordLow + 0x1000193u * DWordHigh + 0xc4ceb9fe1a85ec53u);
         }
     }
-
+    */
     #endregion
 
 
@@ -87,7 +89,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     }
 
 
-    internal Entity(ulong raw, ushort generation)
+    private Entity(ulong raw, ushort generation)
     {
         Value = raw | (ulong) generation << 48;
     }
@@ -134,7 +136,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     /// <summary>
     /// Is this Entity alive in its World?
     /// </summary>
-    public bool Alive => World.IsAlive(this);
+    public bool Alive => World != null! && World.IsAlive(this);
 
     /// <summary>
     /// The Key of this Entity (for use in relations).
@@ -250,8 +252,8 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     {
         using var storages = Archetype.Match<T>(match);
         var list = PooledList<(TypeExpression type, T value)>.Rent();
-        var index = Index;
-        list.AddRange(storages.Select(storage => (storage.Expression, storage[index])));
+        var row = Row;
+        list.AddRange(storages.Select(storage => (storage.Expression, storage[row])));
         return list;
     }
 

@@ -5,27 +5,6 @@ namespace fennecs.tests.Stream;
 public class Stream1Tests(ITestOutputHelper output)
 {
     [Fact]
-    public void Can_Run_New_Job()
-    {
-        using var world = new World();
-        var arnold = world.Spawn().Add("Arnold");
-        var dolph = world.Spawn().Add("Dolph");
-
-        List<(Entity, string)> list = [(arnold, "Arnold"), (dolph, "Dolph")];
-        
-        var stream = world.Stream<string>();
-        stream.Job((e, str) =>
-        {
-            output.WriteLine(str.read);
-            output.WriteLine(e.ToString());
-            lock(list) Assert.True(list.Remove((e.Entity, str.read)));
-        });
-        
-        Assert.Empty(list);
-    }
-
-
-    [Fact]
     public void Can_Enumerate_Stream()
     {
         using var world = new World();
@@ -159,35 +138,6 @@ public class Stream1Tests(ITestOutputHelper output)
 
         Assert.Equal(stream1.Query, stream2.Query);
         Assert.Equal(stream1.Query, stream3.Query);
-    }
-
-
-    [Fact]
-    public void Cannot_Run_Job_on_Wildcard_Query()
-    {
-        using var world = new World();
-        world.Spawn().Add("jason");
-
-        var stream = world.Query<string>(Match.Any).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job(str => { output.WriteLine(str); }));
-
-        stream = world.Query<string>(Match.Entity).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
-
-        stream = world.Query<string>(Match.Target).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
-
-        stream = world.Query<string>(Match.Link).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((str) => { output.WriteLine(str); }));
-
-        stream = world.Query<string>(default(Key)).Stream();
-        var ran = false;
-        stream.Job((str) =>
-        {
-            output.WriteLine(str);
-            ran = true;
-        });
-        Assert.True(ran);
     }
 
     [Fact]

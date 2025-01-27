@@ -36,4 +36,8 @@
       <ProjectReference Include="..\fennecs\fennecs.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Stream\Raw\" />
+    </ItemGroup>
+
 </Project>

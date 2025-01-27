@@ -1,9 +1,0 @@
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "profiles": {
-    "DebugRoslynAnalyzers": {
-      "commandName": "DebugRoslynComponent",
-      "targetProject": "../fennecs.analyzers.Sample/fennecs.analyzers.Sample.csproj"
-    }
-  }
-}

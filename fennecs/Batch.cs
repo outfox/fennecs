@@ -60,8 +60,11 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         var typeExpression = TypeExpression.Of<T>(key);
         
         if (Removals.Any(removal => removal.Matches(typeExpression)))
-            throw new InvalidOperationException($"Addition of {typeExpression} conflicts with removal in same batch! Because all Removals are applied before any additions, this leads to undefined behaviour.");
-
+            throw new InvalidOperationException($"Addition of {typeExpression} conflicts with removal in same batch! Because all Removals are applied before any additions, this leads to undefined behaviour. (if you want to replace a value in a batch, use Add on a Batch with AddConflict.Replace)");
+        
+        if (Additions.Any(existing => existing == typeExpression)) 
+            throw new InvalidOperationException($"Addition of {typeExpression} conflicts with existing addition in same batch!");
+        
         Additions.Add(typeExpression);
         BackFill.Add(data);
         return this;
@@ -76,6 +79,9 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         if (Additions.Any(expression.Matches))
             throw new InvalidOperationException($"Removal of {expression} conflicts with addition in same batch! Because any Additions are applied after all Removals, this leads to undefined behaviour.");
 
+        if (RemoveMode == Batch.RemoveConflict.Allow)
+            throw new InvalidOperationException($"Removal of {expression} conflicts with removal in same batch! Because any Removals are applied after all Additions, this leads to undefined behaviour.");
+        
         Removals.Add(expression);
         return this;
     }

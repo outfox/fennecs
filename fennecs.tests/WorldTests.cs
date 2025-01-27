@@ -240,21 +240,23 @@ public class WorldTests(ITestOutputHelper output)
     [InlineData(0)]
     [InlineData(1_000)]
     [InlineData(10_000)]
-    public void Cannot_Safely_Spawn_in_Raw(int count)
+    public void Can_Safely_Spawn_in_Raw(int count)
     {
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Entity>(default(Key)).Stream();
-        Assert.Throws<InvalidOperationException>(() =>
-            query.Raw(world, (uniform, _) =>
+
+        query.Raw(world, (uniform, data) =>
+        {
+            Assert.True(data.Length == count);
+            
+            for (var i = 0; i < count; i++)
             {
-                for (var i = 0; i < count; i++)
-                {
-                    var entity = uniform.Spawn();
-                    Assert.True(entity.Alive);
-                }
-            }));
+                var entity = uniform.Spawn();
+                Assert.True(entity.Alive);
+            }
+        });
 
         world.Dispose();
     }
@@ -500,13 +502,13 @@ public class WorldTests(ITestOutputHelper output)
 
 
     [Fact]
-    private void Can_Test_for_Type_Relation_Component_Presence()
+    private void Can_Test_for_Type_Relation_Component_Presence_Anonymous()
     {
         using var world = new World();
         var entity = world.Spawn();
-        object target = new { };
+        var target = new { };
         entity.Link(target);
-        Assert.True(entity.Has<object>(target.Key())); //TODO: Probably wrong.
+        Assert.True(entity.Has(target));
     }
 
 
@@ -525,7 +527,7 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entity = world.Spawn();
-        object target = new { };
+        var target = new { };
         entity.Link(target);
         var typeExpression = TypeExpression.Of(target.GetType(), target.Key());
         world.RemoveComponent(entity, typeExpression);

@@ -31,21 +31,21 @@ public readonly record struct MemoryRW<T> where T : notnull
     ///When making a large number of reads/writes, consider caching spans <see cref="read"/> or <see cref="write"/> instead.
     /// </remarks>
     public ref T this[int index] => ref storage.Span[index];
-    
+
     /// <summary>
     /// Access the the memory as a <see cref="ReadOnlySpan{T}"/>
     /// </summary>
-    public ReadOnlySpan<T> read => storage.Span[start..length];
+    public ReadOnlySpan<T> read => storage.Span.Slice(start, length);
     
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>
     /// </summary>
-    public Span<T> write => storage.Span[start..length];
+    public Span<T> write => storage.Span.Slice(start, length);
 
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>
     /// </summary>
-    public Span<T> Span => storage.Span[start..length];
+    public Span<T> Span => storage.Span.Slice(start, length);
     
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>

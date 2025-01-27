@@ -32,16 +32,16 @@ public readonly record struct MemoryR<T> where T : notnull
     /// When making a large numbers of reads, consider caching span <see cref="read"/> instead.
     /// </remarks>
     public ref readonly T this[int index] => ref storage.Span[index];
+
+    /// <summary>
+    /// Access the the memory as a <see cref="ReadOnlySpan{T}"/>
+    /// </summary>
+    public ReadOnlySpan<T> read => storage.ReadOnlySpan.Slice(start, length);
     
     /// <summary>
     /// Access the the memory as a <see cref="ReadOnlySpan{T}"/>
     /// </summary>
-    public ReadOnlySpan<T> read => storage.ReadOnlySpan[start..length];
-    
-    /// <summary>
-    /// Access the the memory as a <see cref="ReadOnlySpan{T}"/>
-    /// </summary>
-    public ReadOnlySpan<T> Span => storage.ReadOnlySpan[start..length];
+    public ReadOnlySpan<T> Span => storage.ReadOnlySpan.Slice(start, length);
     
     /// <summary>
     /// Access the the memory as a <see cref="Span{T}"/>

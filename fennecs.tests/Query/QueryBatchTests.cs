@@ -555,41 +555,35 @@ public class QueryBatchTests
         Assert.Contains(e2, notStringQuery);
         Assert.Contains(e3, notStringQuery);
     }
-
-
+    
     [Fact]
-    public void Cannot_Remove_Add_Conflict_with_Disallow()
+    public void Cant_Remove_Conflict_with_Disallow()
     {
         using var world = new World();
         var stringQuery = world.Query<string>().Compile();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            stringQuery.Batch(Batch.AddConflict.Strict)
-                .Add<float>()
+            stringQuery.Batch(Batch.RemoveConflict.Strict)
+                .Remove<float>()
                 .Submit();
         });
     }
 
 
     [Fact]
-    public void Cannot_Duplicate_Remove()
+    public void Cannot_Safely_Duplicate_Remove()
     {
         using var world = new World();
         var stringQuery = world.Query<string>().Has<float>().Compile();
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            stringQuery.Batch(Batch.RemoveConflict.Strict)
-                .Remove<float>()
-                .Remove<float>()
-                .Submit();
-        });
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            stringQuery.Batch(Batch.RemoveConflict.Allow)
-                .Remove<float>()
-                .Remove<float>()
-                .Submit();
-        });
+        stringQuery.Batch(Batch.RemoveConflict.Strict)
+            .Remove<float>()
+            .Remove<float>()
+            .Submit();
+
+        stringQuery.Batch(Batch.RemoveConflict.Allow)
+            .Remove<float>()
+            .Remove<float>()
+            .Submit();
     }
 
 

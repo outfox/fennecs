@@ -221,8 +221,8 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
     #region Lifecycle & Locking
 
-    private static readonly ConcurrentQueue<byte> WorldIds = new(Enumerable.Range(1, byte.MaxValue).Select(i => (byte) i));
-    private static readonly World[] Worlds = new World[byte.MaxValue];
+    private static readonly ConcurrentQueue<byte> WorldIds = new(Enumerable.Range(0, byte.MaxValue).Select(i => (byte) i));
+    private static readonly World[] Worlds = new World[byte.MaxValue+1];
     
     
     /// <summary>

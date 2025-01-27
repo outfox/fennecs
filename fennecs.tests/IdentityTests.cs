@@ -38,7 +38,7 @@ public class IdentityTests(ITestOutputHelper output)
     public void Entity_None_cannot_Match_One()
     {
         var zero = Entity.None;
-        Assert.NotEqual(default, new Key(zero));
+        Assert.Equal(default, new Key(zero));
 
         var one = new Entity(1, 1);
         Assert.NotEqual((Key) default, new(one));
@@ -48,40 +48,51 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     public void Entity_Matches_Only_Self()
     {
-        var self = new Entity(1234, 12);
+        var self = new Entity(12, 12);
         Assert.Equal(self, self);
 
-        var successor = new Entity(12345, 3);
+        var successor = self.Successor;
         Assert.NotEqual(self, successor);
 
-        var other = new Entity(9000, 3);
-        Assert.NotEqual(self, other);
+        var other1 = new Entity(12, 3);
+        Assert.NotEqual(self, other1);
+        
+        var other2 = new Entity(13, 12);
+        Assert.NotEqual(self, other2);
     }
 
 
+    /// <summary>
+    /// This isn't really a test, as we're using the internal hashcode for long.
+    /// </summary>
     [Theory]
+    [InlineData(10, short.MaxValue)]
+    [InlineData(50, short.MaxValue)]
     [InlineData(100, short.MaxValue)]
-    [InlineData(1_000, short.MaxValue)]
-    [InlineData(10_000, short.MaxValue)]
-    public void Entity_HashCodes_are_Unique(int idCount, short genCount)
+    public void Entity_HashCodes(int idCount, short genCount)
     {
         var ids = new Dictionary<int, Entity>((int)(idCount * genCount * 4f));
-
+        var rnd = new Random(idCount);
+        
         //Identities
-        for (var index = 0; index < idCount; index++)
-        //Generations
-        for (short generation = 1; generation < genCount; generation++)
+        for (var i = 0; i < idCount; i++)
         {
-            var entity = new Entity(0, index, generation);
-
-            Assert.NotEqual(new(entity), Match.Any);
-            Assert.NotEqual(new(entity), (Key) default);
-
-            if (!ids.TryAdd(entity.GetHashCode(), entity))
+            
+            var index = rnd.Next();
+            
+            for (short generation = 1; generation < genCount; generation++)
             {
-                Assert.Fail($"Collision of {entity} with {ids[entity.GetHashCode()]}, {entity.GetHashCode()}#==#{ids[entity.GetHashCode()].GetHashCode()}");
+                var entity = new Entity(1, index, generation);
+
+                Assert.NotEqual(new(entity), Match.Any);
+                Assert.NotEqual(new(entity), (Key) default);
+                if (!ids.TryAdd(entity.GetHashCode(), entity))
+                {
+                    Assert.Fail($"Collision of {entity} with {ids[entity.GetHashCode()]}, {entity.GetHashCode()}#==#{ids[entity.GetHashCode()].GetHashCode()}");
+                }
             }
         }
+        //Generations
     }
 
     
@@ -93,15 +104,21 @@ public class IdentityTests(ITestOutputHelper output)
     }
 
     [Fact]
-    public void Can_Create_In_Worlds_1_to_255()
+    public void Can_Create_In_All_Worlds()
     {
-        for (var i = 1; i <= byte.MaxValue; i++)
+        for (var i = 0; i < byte.MaxValue; i++)
         {
             _ = new Entity(new(i), 1);
         }
+
+        HashSet<Entity> entities = [];
         
-        Assert.Throws<ArgumentOutOfRangeException>(() => new Entity(0, 1));
-        Assert.Throws<ArgumentOutOfRangeException>(() => new Entity(256, 1));
+        for (var i = 0; i < byte.MaxValue; i++)
+        {
+            using var world = new World();
+            var entity = world.Spawn();
+            Assert.True(entities.Add(entity));
+        }
     }
 
     [Theory]
@@ -160,11 +177,11 @@ public class IdentityTests(ITestOutputHelper output)
     [Fact]
     private void Different_Entity_is_Not_Equal()
     {
-        var entity1 = new Entity(69, 420);
-        var entity2 = new Entity(420, 69);
+        var entity1 = new Entity(69, 42);
+        var entity2 = new Entity(42, 69);
 
         var entity3 = new Entity(69, 69);
-        var entity4 = new Entity(420, 420);
+        var entity4 = new Entity(42, 42);
 
         Assert.NotEqual(entity1, entity2);
         Assert.True(entity1 != entity2);

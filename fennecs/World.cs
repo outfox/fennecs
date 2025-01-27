@@ -273,14 +273,14 @@ public partial class World
 
         internal Id(byte id)
         {
-            Debug.Assert(id > 0, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
+            //ArgumentOutOfRangeException.ThrowIfEqual(id, 0, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
             Bits = (ulong) id << 32;
             _id = id;
         }
 
         internal Id(int id)
         {
-            Debug.Assert(id is > 0 and <= byte.MaxValue, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
+            //Debug.Assert(id is > 0 and <= byte.MaxValue, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
             Bits = (ulong) id << 32;
             _id = (byte) id;
         }

@@ -4,79 +4,6 @@
 // ReSharper disable once ClassNeverInstantiated.Global
 public class Stream1TestsExperiment
 {
-#if REMOVEME
-
-    [Theory]
-    [InlineData(1, 10, false)]
-    [InlineData(2, 20, true)]
-    [InlineData(3, 30, false)]
-    // Add more test cases as needed
-    public void Query_Tests(int componentCount, int entityCount, bool createEmptyTable)
-    {
-        using var world = new World();
-
-        if (createEmptyTable)
-        {
-            var entity = world.Spawn();
-            for (int i = 0; i < componentCount; i++)
-            {
-                entity.Add(GetComponentValue(i));
-            }
-            world.Despawn(entity);
-        }
-
-        var queryMethod = typeof(World).GetMethod("Query", Type.EmptyTypes);
-        var genericQueryMethod = queryMethod!.MakeGenericMethod(GetComponentTypes(componentCount));
-        var query = genericQueryMethod!.Invoke(world, null);
-
-        var streamMethod = query!.GetType().GetMethod("Stream", Type.EmptyTypes);
-        var stream = streamMethod!.Invoke(query, null);
-
-        for (var i = 0; i < entityCount; i++)
-        {
-            var entity = world.Spawn();
-            for (var j = 0; j < componentCount; j++)
-            {
-                entity.Add(GetComponentValue(j));
-            }
-        }
-
-        Assert.Equal(entityCount, GetQueryCount(stream!));
-
-        // Perform additional assertions and operations on the query stream
-        // using reflection to invoke methods like For, Raw, Job, etc.
-        // You can create helper methods to encapsulate the reflection logic
-        // and make the test code more readable.
-    }
-
-    private Type[] GetComponentTypes(int count)
-    {
-        // Return an array of component types based on the count
-        // You can use your own logic to determine the types
-        // For example, you can use a dictionary or switch statement
-        // to map the count to specific component types
-        return [];
-    }
-
-    private object GetComponentValue(int index)
-    {
-        // Return a value for the component based on the index
-        // You can use your own logic to generate test data
-        return null!;
-    }
-
-    private int GetQueryCount(object stream)
-    {
-        // Use reflection to invoke the Count property on the stream
-        var countProperty = stream.GetType().GetProperty("Count");
-        return (int)(countProperty!.GetValue(stream) ?? throw new InvalidOperationException());
-    }
-    // Add more helper methods as needed for assertions and operations
-}
-
-#endif
-
-
     [Theory]
     [ClassData(typeof(QueryCountGenerator))]
     private void All_Runners_Applicable(int count, bool createEmptyTable)
@@ -116,19 +43,19 @@ public class Stream1TestsExperiment
             }
         });
 
-        query.Job((str) =>
+        query.For((str) =>
         {
             Assert.Equal("three", str);
             str.write = "four";
         });
 
-        query.Job((str) =>
+        query.For((str) =>
         {
             Assert.Equal("four", str);
             str.write = "five";
         });
 
-        query.Job(6, (uniform, str) =>
+        query.For(6, (uniform, str) =>
         {
             Assert.Equal("five", str);
             str.write = uniform.ToString();
@@ -300,123 +227,6 @@ public class Stream1TestsExperiment
         query.Raw(integers => { Assert.Equal(0, integers.Length); });
     }
 
-
-    [Theory]
-    [ClassData(typeof(QueryCountGenerator))]
-    private void Query_Job_Count_Accurate(int count, bool createEmptyTable)
-    {
-        using var world = new World();
-
-        if (createEmptyTable)
-        {
-            var dead = world.Spawn().Add<int>().Add("will be removed");
-            world.Despawn(dead);
-        }
-
-        List<Entity> entities = new(count);
-
-        var query = world.Query<int>().Stream();
-
-        query.Raw(integers => { Assert.Equal(0, integers.Length); });
-
-        for (var index = 0; index < count; index++)
-        {
-            var captured = index;
-            query.Raw(integers => { Assert.Equal(captured, integers.Length); });
-
-            entities.Add(
-                world.Spawn()
-                    .Add(index)
-            );
-        }
-
-        query.Raw(integers => { Assert.Equal(count, integers.Length); });
-
-        var random = new Random(69 + count);
-
-        for (var i = count; i > 0; i--)
-        {
-            var captured = i;
-            query.Raw(integers => { Assert.Equal(captured, integers.Length); });
-
-            var removalIndex = random.Next(entities.Count);
-            var removalEntity = entities[removalIndex];
-            entities.RemoveAt(removalIndex);
-            world.Despawn(removalEntity);
-        }
-
-        query.Raw(integers => { Assert.Equal(0, integers.Length); });
-    }
-
-
-    [Theory]
-    [ClassData(typeof(QueryCountGenerator))]
-    private void Parallel_Visits_All_Entities(int count, bool createEmptyTable)
-    {
-        using var world = new World();
-
-        if (createEmptyTable)
-        {
-            var dead = world.Spawn().Add<int>().Add("will be removed");
-            world.Despawn(dead);
-        }
-
-        for (var index = 0; index < count; index++)
-            world.Spawn()
-                .Add(index);
-
-        var query = world.Query<int>().Stream();
-
-        var processed = 0;
-        query.Job((index) =>
-        {
-            Interlocked.Increment(ref processed);
-            index.write = 123;
-        });
-
-        Assert.Equal(count, processed);
-
-        query.Job((index) =>
-        {
-            ArgumentOutOfRangeException.ThrowIfNegative(index.read);
-            Assert.Equal(123, index);
-        });
-    }
-
-
-    [Theory]
-    [ClassData(typeof(QueryCountGenerator))]
-    private void Job_Visits_All_Entities(int count, bool createEmptyTable)
-    {
-        using var world = new World();
-
-        if (createEmptyTable)
-        {
-            var dead = world.Spawn().Add<int>().Add("will be removed");
-            world.Despawn(dead);
-        }
-
-        for (var index = 0; index < count; index++)
-            world.Spawn()
-                .Add(index);
-
-        var query = world.Query<int>(default(Key)).Stream();
-
-        var processed = 0;
-        query.Job((index) =>
-        {
-            Interlocked.Increment(ref processed);
-            index.write = 123;
-        });
-
-        Assert.Equal(count, processed);
-
-        query.Job((index) =>
-        {
-            ArgumentOutOfRangeException.ThrowIfNegative(index.read);
-            Assert.Equal(123, index);
-        });
-    }
 
 
     [Theory]
