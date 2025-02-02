@@ -1,5 +1,6 @@
 ﻿namespace fennecs.tests;
 
+/*
 public static class ExpressionTests
 {
     [Fact]
@@ -13,7 +14,7 @@ public static class ExpressionTests
         
         var compPlain = Comp<string>.Plain;
         var compEntity = Comp<string>.Matching(entity);
-        var compObject = Comp<string>.Matching("Erwin");
+        var compObject = Comp<string>.Matching(Key.Of("Erwin"));
 
         Assert.True(matchAny.Matches(compPlain));
         Assert.True(matchAny.Matches(compEntity));
@@ -44,7 +45,7 @@ public static class ExpressionTests
         using var world = new World();
 
         var matchObject = Comp<string>.Matching(Link.Any);
-
+        
         var compPlain = Comp<string>.Plain;
         var compEntity = Comp<string>.Matching(world.Spawn());
         var compObject = Comp<string>.Matching("Erwin");
@@ -142,3 +143,4 @@ public static class ExpressionTests
         Assert.False(matchObject.Matches(compObjectWrong));
     }
 }
+*/

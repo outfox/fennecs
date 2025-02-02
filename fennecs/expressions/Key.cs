@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace fennecs;
 
@@ -16,10 +15,10 @@ public readonly record struct Key
     
     internal Key(ulong value)
     {
-        Value = value & KeyMask;
+        Value = value & Mask;
     }
 
-    internal Key(Entity entity) => Value = entity.Value & KeyMask;
+    internal Key(Entity entity) => Value = entity.Value & Mask;
     
     
     /// <summary>
@@ -57,19 +56,19 @@ public readonly record struct Key
     public enum Kind : ulong
     {
         /// <summary>
-        /// Plain Component (no secondary key / relations)
+        /// Plain Components (no relation key)
         /// </summary>
-        Plain = default,
+        None = default,
         
         /// <summary>
-        /// Specific Object Link
+        /// Entity Relation (Target is an entity)
         /// </summary>
-        Link = 0x0000_8000_0000_0000u,
-        
+        Entity = 0x0000_0E00_0000_0000u,
+
         /// <summary>
-        /// Specific Entity
+        /// Object Link Relation (target is an instance of its backing type)
         /// </summary>
-        Entity = 0x0000_E000_0000_0000u,
+        Link = 0x0000_0B00_0000_0000u,
     }
 
 
@@ -86,7 +85,7 @@ public readonly record struct Key
     /// <inheritdoc />
     public override string ToString() => Category switch
     {
-        Kind.Plain => "Plain",
+        Kind.None => "None",
         Kind.Entity => new Entity(this).ToString(),
         Kind.Link => $"Link {Value:x16}", //TODO: format nicely.
 
@@ -98,8 +97,10 @@ public readonly record struct Key
     /// </summary>
     public static implicit operator Match(Key self) => new(self);
 
-    internal const ulong BaseFlag = 0x0000_E000_0000_0000u;
-    internal const ulong HeaderMask = 0xFFFF_0000_0000_0000u;
-    internal const ulong KeyMask = ~0xFFFF_0000_0000_0000u;
-    internal const ulong CategoryMask = 0x0000_F000_0000_0000u;
+    internal const ulong Entity = (ulong) Kind.Entity;
+
+    private const ulong HeaderMask = 0xFFFF_0000_0000_0000u;
+    internal const ulong CategoryMask = 0x0000_0F00_0000_0000u;
+    
+    internal const ulong Mask = ~HeaderMask;
 }

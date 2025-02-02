@@ -21,9 +21,81 @@ public readonly record struct Match
     
     [FieldOffset(4)]
     internal readonly ushort Flags;
+    
+    public KeyCategory Cat => (KeyCategory)(Flags & Key.CategoryMask);
+    
+    [Flags]
+    public enum KeyCategory : ulong
+    {
+        /// <summary>
+        /// Plain Components (no key)
+        /// </summary>
+        Plain = default,
+        
+        /// <summary>
+        /// Relation (Target is an entity)
+        /// </summary>
+        Entity = 1 * 0x0000_0100_0000_0000u,
 
+        /// <summary>
+        /// Object Link (target is an instance of its backing type)
+        /// </summary>
+        Link = 2 * 0x0000_0100_0000_0000u,
+
+        /// <summary>
+        /// Reserved for future use.
+        /// </summary>
+        [Obsolete("Reserved for future use.", true)]
+        Reserved1 = 4 * 0x0000_0100_0000_0000u,
+
+        /// <summary>
+        /// Reserved for future use.
+        /// </summary>
+        [Obsolete("Reserved for future use.", true)]
+        Reserved2 = 8 * 0x0000_0100_0000_0000u,
+    }
+
+    public enum StorageCategory : ulong
+    {
+        /// <summary>
+        /// Void storage. (used for tags)
+        /// </summary>
+        Void = default,
+        
+        /// <summary>
+        /// Flat Data storage (most components use this)
+        /// </summary>
+        Flat = 1 * 0x0000_1000_0000_0000u,
+
+        /// <summary>
+        /// Singleton Data storage (most components use this)
+        /// </summary>
+        [Obsolete("Reserved for future use.", true)]
+        Singleton = 2 * 0x0000_1000_0000_0000u,
+    }
+    
     internal enum Wildcard : ulong
     {
+        /// <summary>
+        /// Plain Components (no key)
+        /// </summary>
+        Plain = KeyCategory.Plain,
+        
+        /// <summary>
+        /// Relation (Target is an entity)
+        /// </summary>
+        Relation = KeyCategory.Entity,
+
+        /// <summary>
+        /// Object Link  (target is an instance of its own component backing type)
+        /// </summary>
+        Link2 = KeyCategory.Link,
+
+        /// <summary>
+        /// Any Target (Non-Plain)
+        /// </summary>
+        Target2 = Relation | Link2,
+        
         /// <summary>
         /// wildcard (any Object Link)
         /// </summary>
@@ -47,7 +119,7 @@ public readonly record struct Match
     
     internal Match(Key key) => Value = key.Value;
     
-    internal Match(ulong value) => Value = value & Key.KeyMask;
+    internal Match(ulong value) => Value = value & Key.Mask;
 
     private Match(Wildcard wildcard) => Value = (ulong) wildcard;
 
@@ -198,6 +270,14 @@ public readonly record struct Match
 /// </summary>
 public static class Any
 {
+    /// <summary>
+    /// Match Expression to match any Entity secondary keys relations.
+    /// </summary>
+    /// <remarks>
+    /// Same as <see cref="Entity.Any"/> or <see cref="Match.Entity"/>
+    /// </remarks>
+    public static readonly Match Plain = Match.Plain;
+
     /// <summary>
     /// Match Expression to match any Entity secondary keys relations.
     /// </summary>

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -9,6 +8,54 @@ using fennecs.pools;
 using fennecs.storage;
 
 namespace fennecs;
+
+/// <summary>
+/// Provides a weak reference storage mechanism for an Entity, by pairing it with a 32-bit Generation value.
+/// This type ensures safe entity tracking by using the Generation counter as a validity check.
+/// When an Entity is despawned, its Generation is incremented, automatically invalidating any existing
+/// EntityWithGeneration references to that Entity.
+/// </summary>
+/// <remarks>
+/// Best suited for scenarios where:
+/// <list type="bullet">
+/// <item>You need to track Entity lifecycle changes and validate weak references (e.g. for networking, or AI targets)</item>
+/// <item>You require direct access to the Entity's components from anywhere not operating on a <see cref="Stream"/> that contains the Entity</item>
+/// <item>You perform frequent component access operations and need performance</item>
+/// </list>
+/// 
+/// While robust object lifecycle management could make this type unnecessary,
+/// it provides a reliable safety mechanism for scenarios where Entity lifetime
+/// cannot be guaranteed at access time.
+/// </remarks>
+public readonly record struct EntityWithGeneration(FastEntity Entity, int Generation) : IEquatable<FastEntity>
+{
+    /// <inheritdoc />
+    public bool Equals(FastEntity other) => this == other;
+
+    /// <inheritdoc />
+    public override int GetHashCode() => HashCode.Combine(Entity, Generation);
+    
+    public bool Alive => Entity.Generation == Generation;
+}
+
+public readonly record struct Entity(uint Value)
+{
+    internal readonly uint Value = Value;
+    internal int Index => (int) (Value & World.Mask);
+    
+    /// <summary>
+    /// The World this Entity belongs to.
+    /// </summary>
+    public World World => World.Get(Value >> (32-World.Bits));
+    
+    public int Generation =>  World[this].Generation;
+    
+    /// <summary>
+    /// Implicitly casts a <see cref="FastEntity"/> to an annotated <see cref="EntityWithGeneration"/>.
+    /// </summary>
+    public static implicit operator EntityWithGeneration(FastEntity entity) => new(entity, entity.Generation);
+}
+
 
 /// <summary>
 /// Entity: An object in the fennecs World, that can have any number of Components.
@@ -85,7 +132,7 @@ public readonly record struct Entity : IComparable<Entity>, IEntity
     internal Entity(World.Id worldId, int index, short generation = 1)
     {
         // 0xgggg_E0ww_iiii_iiii
-        Value = (ulong) generation << 48 | Key.BaseFlag | worldId.Bits | (uint) index;
+        Value = (ulong) generation << 48 | Key.Entity | worldId.Bits | (uint) index;
     }
 
 

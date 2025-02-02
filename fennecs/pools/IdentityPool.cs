@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 
 namespace fennecs.pools;
 
@@ -16,24 +17,66 @@ internal sealed class EntityPool
 
     private readonly Queue<Entity> _recycled;
 
+    private readonly uint _worldTag;
+    
     private readonly World.Id _worldId;
 
     private int NewIndex => ++Created;
 
+    // TODO: Make this configurable
+    private const int MaxEntities = 0x00FF_FFFF;
+    
+    internal uint Discriminator(Entity entity) => _discriminators[entity.Index];
+    
+    private uint[] _discriminators = [];
+
+    private const int MinimumRecycledCapacity = 1024;
+    
+
     public EntityPool(World.Id worldId, int initialCapacity)
     {
         _worldId = worldId;
+        _worldTag = (uint) worldId.Index << (32-World.Bits);
+        
         _recycled = new(initialCapacity * 2);
+
         for (var i = 0; i < initialCapacity; i++) _recycled.Enqueue(new(_worldId, NewIndex));
+        
+        EnsureMinimumRecycledCapacity();
+        EnsureDiscriminators();
+    }
+    
+    private void EnsureDiscriminators()
+    {
+        if (_discriminators.Length >= Created) return;
+        
+        var last = _discriminators.Length;
+
+        var newSize = Math.Min((int) BitOperations.RoundUpToPowerOf2((uint) Created), MaxEntities);
+        Array.Resize(ref _discriminators, newSize);
+        
+        _discriminators.AsSpan(last).Fill(1u);
+    }
+
+    private void EnsureMinimumRecycledCapacity()
+    {
+        if (_recycled.Count >= MinimumRecycledCapacity) return;
+        for (var i = _recycled.Count; i < Math.Min(MinimumRecycledCapacity * 2, MaxEntities); i++) _recycled.Enqueue(new(_worldId, NewIndex));
     }
 
 
     internal Entity Spawn()
-    { 
-        return _recycled.TryDequeue(out var recycledEntity)
-            ? recycledEntity
-            : new(_worldId, NewIndex);
+    {
+        if (_recycled.TryDequeue(out var entity)) return entity;
+        
+        entity = new(_worldId, NewIndex);
+        
+        if (Created > MaxEntities) throw new InvalidOperationException($"Reached maximum number of Entities {MaxEntities} in World {_worldId}");
+        EnsureDiscriminators();
+        
+        return entity;
     }
+
 
     internal PooledList<Entity> Spawn(int count)
     {
@@ -62,11 +105,18 @@ internal sealed class EntityPool
             }
         }
 
+        EnsureMinimumRecycledCapacity();
+        EnsureDiscriminators();
+        
         return identities;
     }
 
 
-    internal void Recycle(Entity entity) => _recycled.Enqueue(entity.Successor);
+    internal void Recycle(Entity entity)
+    {
+        // Increment Generation discriminator, and discard Entities whose discriminator is exhausted (wraps around).
+        if (++_discriminators[entity.Index] > 0) _recycled.Enqueue(entity.Successor);
+    }
 
     internal void Recycle(ReadOnlySpan<Entity> toDelete)
     {

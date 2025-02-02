@@ -129,7 +129,7 @@ public readonly record struct Comp<T>(Key Key = default)
     /// <summary>
     /// A component expression matching a specific link object.
     /// </summary>
-    public static Comp<U> Matching<U>(U target) where U : notnull => new(Key.Of(target));
+    public static Comp<U> Matching<U>(U target) where U : class => new(Key.Of(target));
 
     /// <summary>
     /// Does this Component match another Component Expression?

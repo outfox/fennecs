@@ -15,6 +15,10 @@ namespace fennecs;
 /// </remarks>
 public partial class World : IDisposable, IEnumerable<Entity>
 {
+    internal const int Bits = 8;
+    internal const uint Mask = 0x00FF_FFFFu;
+
+
     #region Config
         /// <summary>
         /// Optional name for the World.
@@ -232,6 +236,11 @@ public partial class World : IDisposable, IEnumerable<Entity>
     
     
     /// <summary>
+    /// Get a World by its ID.
+    /// </summary>
+    internal static World Get(uint index) => Worlds[index];
+
+    /// <summary>
     /// Create a new World.
     /// </summary>
     /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
@@ -336,6 +345,8 @@ public partial class World : IDisposable, IEnumerable<Entity>
     
     internal ref Meta this[Entity entity] => ref _meta[entity.Index];
 
+    internal ref Meta this[FastEntity entity] => ref _meta[entity.Index];
+
     #endregion
     
     #region Debug Tools
@@ -359,5 +370,5 @@ public partial class World : IDisposable, IEnumerable<Entity>
     }
 
     #endregion
-    
+
 }

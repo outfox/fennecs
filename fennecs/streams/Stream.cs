@@ -4,7 +4,7 @@ using fennecs.CRUD;
 namespace fennecs;
 
 /// <summary>
-/// Base type for Streams. A Stream is a zip-view over a Query's results.
+/// Base type for Streams. A Stream is a fast, filterable Zip-View iterating a Query's Entities along with some of their Components.
 /// </summary>
 /// <remarks>
 /// Typical Concrete Streams are: 
