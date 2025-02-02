@@ -149,7 +149,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </summary>
     /// <param name="entity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    internal bool IsAlive(Entity entity) => entity.Generation > 0 ? entity == _meta[entity.Index].Entity : _meta[entity.Index].Entity != default;
+    internal bool IsAlive(Entity entity) => _meta[entity.Index].Archetype != null;
 
 
     /// <summary>
@@ -340,8 +340,6 @@ public partial class World : IDisposable, IEnumerable<Entity>
     #endregion
 
     #region Indexers
-    
-    internal Entity this[int index] => _meta[index].Entity;
     
     internal ref Meta this[Entity entity] => ref _meta[entity.Index];
     

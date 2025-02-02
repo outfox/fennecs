@@ -69,7 +69,8 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Can_Truncate_Nothing()
     {
         using var world = new World();
-        var entity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        Entity tempQualifier = world.Spawn().Add("foo").Add(123).Add(17.0f);
+        var entity = tempQualifier;
         var table = world.GetEntityMeta(entity).Archetype;
 
         table.Truncate(2000);
@@ -83,7 +84,8 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Can_Truncate_Negative()
     {
         using var world = new World();
-        var entity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        Entity tempQualifier = world.Spawn().Add("foo").Add(123).Add(17.0f);
+        var entity = tempQualifier;
         var table = world.GetEntityMeta(entity).Archetype;
 
         table.Truncate(-2);
@@ -268,8 +270,10 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void IsComparable_Same_As_Signature()
     {
         using var world = new World();
-        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
-        _ = world.Spawn().Add(123).Add(17.0f).Id;
+        Entity tempQualifier = world.Spawn().Add("foo").Add(123).Add(17.0f);
+        var entity1 = tempQualifier;
+        Entity tempQualifier1 = world.Spawn().Add(123).Add(17.0f);
+        _ = tempQualifier1;
         
         var table1 = world.GetEntityMeta(entity1).Archetype;
         var table2 = world.GetEntityMeta(entity1).Archetype;
@@ -283,8 +287,10 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Has_Signature_HashCode()
     {
         using var world = new World();
-        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
-        var entity2 = world.Spawn().Add(123).Add(17.0f).Id;
+        Entity tempQualifier = world.Spawn().Add("foo").Add(123).Add(17.0f);
+        var entity1 = tempQualifier;
+        Entity tempQualifier1 = world.Spawn().Add(123).Add(17.0f);
+        var entity2 = tempQualifier1;
         
         var table1 = world.GetEntityMeta(entity1).Archetype;
         var table2 = world.GetEntityMeta(entity2).Archetype;

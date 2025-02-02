@@ -26,5 +26,8 @@ public readonly record struct EntityWithGeneration(Entity Entity, uint Generatio
     /// <inheritdoc />
     public override int GetHashCode() => HashCode.Combine(Entity, Generation);
     
+    /// <summary>
+    /// Fast alive check, compares generation values.
+    /// </summary>
     public bool Alive => Entity.Generation == Generation;
 }

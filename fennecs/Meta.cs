@@ -11,6 +11,4 @@ namespace fennecs;
 /// Entity is the Entity itself, Generation is a discriminator for the Entity's Generation.
 /// This disciminator can be used to annotate an Entity by casting it to <see cref="EntityWithGeneration"/>.
 /// </remarks>
-internal readonly record struct Meta(Archetype Archetype, int Row, Entity Entity, int Generation = 0)
-{
-}
+internal readonly record struct Meta(Archetype Archetype, int Row);

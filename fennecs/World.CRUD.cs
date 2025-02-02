@@ -71,7 +71,7 @@ public partial class World
             throw new InvalidOperationException($"Entity {entity} does not have a component of type {typeof(T)} / {key}");
         }
 
-        var (table, row, _) = _meta[entity.Index];
+        var (table, row) = _meta[entity.Index];
         var storage = table.GetStorage<T>(key);
         return ref storage.Span[row];
     }
@@ -87,8 +87,8 @@ public partial class World
             return false;
         }
 
-        var (table, row, _) = _meta[entity.Index];
-        var storage = table.GetStorage(type);
+        var (table, row) = _meta[entity.Index];
+        var storage = table!.GetStorage(type);
         value = storage.Get(row);
         return true;
     }
@@ -97,7 +97,7 @@ public partial class World
     {
         AssertAlive(entity);
         var meta = _meta[entity.Index];
-        var array = meta.Archetype.Signature;
+        var array = meta.Archetype!.Signature;
         return array;
     }
     #endregion
@@ -105,14 +105,14 @@ public partial class World
     internal T[] Get<T>(Entity id, Match match) where T : notnull
     {
         var meta = _meta[id.Index];
-        using var storages = meta.Archetype.Match<T>(match);
+        using var storages = meta.Archetype!.Match<T>(match);
         return storages.Select(s => s[meta.Row]).ToArray();
     }
     
     internal IReadOnlyList<Component> GetComponents(Entity id)
     {
         var archetype = _meta[id.Index].Archetype;
-        return archetype.GetRow(_meta[id.Index].Row);
+        return archetype!.GetRow(_meta[id.Index].Row);
     }
 
 }

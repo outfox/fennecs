@@ -13,7 +13,7 @@ internal sealed class EntityPool
 {
     internal uint Created { get; private set; }
 
-    internal int Alive => Created - _recycled.Count;
+    internal int Alive => (int) (Created - (uint) _recycled.Count);
 
     private readonly Queue<Entity> _recycled;
 
@@ -61,7 +61,7 @@ internal sealed class EntityPool
     private void EnsureMinimumRecycledCapacity()
     {
         if (_recycled.Count >= MinimumRecycledCapacity) return;
-        for (var i = _recycled.Count; i < Math.Min(MinimumRecycledCapacity * 2, MaxEntities); i++) _recycled.Enqueue(new(_worldId, NewIndex));
+        for (var i = _recycled.Count; i < Math.Min(MinimumRecycledCapacity * 2, MaxEntities); i++) _recycled.Enqueue(new(_worldTag, NewIndex));
     }
 
 
@@ -69,7 +69,7 @@ internal sealed class EntityPool
     {
         if (_recycled.TryDequeue(out var entity)) return entity;
         
-        entity = new(_worldId, NewIndex);
+        entity = new(_worldTag, NewIndex);
         
         if (Created > MaxEntities) throw new InvalidOperationException($"Reached maximum number of Entities {MaxEntities} in World {_worldId}");
         EnsureDiscriminators();
@@ -92,7 +92,7 @@ internal sealed class EntityPool
             // If we don't have enough recycled Identities, create more.
             for (var i = 0; i < count - recycled; i++)
             {
-                identities.Add(new(_worldId, NewIndex));
+                identities.Add(new(_worldTag, NewIndex));
             }
         }
         else
@@ -115,7 +115,7 @@ internal sealed class EntityPool
     internal void Recycle(Entity entity)
     {
         // Increment Generation discriminator, and discard Entities whose discriminator is exhausted (wraps around).
-        if (++_discriminators[entity.Index] > 0) _recycled.Enqueue(entity.Successor);
+        if (++_discriminators[entity.Index] > 0) _recycled.Enqueue(entity);
     }
 
     internal void Recycle(ReadOnlySpan<Entity> toDelete)

@@ -14,6 +14,18 @@ public interface IEntity : IAddRemoveDeferrable<Entity>, IEquatable<Entity>, IHa
     /// All Components on the Entity, in a reflection-friendly typeless format. (for example to be used for serialization)
     /// </summary>
     public IReadOnlyList<Component> Components { get; }
+
+    
+    /// <summary>
+    /// The World this Entity belongs to.
+    /// </summary>
+    public World World { get; }
+
+    /// <summary>
+    /// The Archetype this Entity belongs to.
+    /// </summary>
+    public Archetype? Archetype { get; }
+
     
     /* TODO: Implement these :)
     /// <summary>

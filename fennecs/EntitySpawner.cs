@@ -29,11 +29,21 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
 
 
     /// <inheritdoc />
-    public EntitySpawner Add<C>(C component, Key key = default) where C : notnull
+    public EntitySpawner Add<C>(C component, Key key = default) where C : notnull  => Add(TypeExpression.Of<C>(key), component);
+
+    /// <inheritdoc />
+    public EntitySpawner Add(object component, Key key = default) => Add(TypeExpression.Of(component.GetType(), key), component);
+    
+    /// <inheritdoc />
+    public EntitySpawner Add<C>(Key key = default) where C : notnull, new() => Add<C>(new(), key);
+    
+    /// <summary>
+    /// Generalized Add method that allows adding any component type.
+    /// </summary>
+    private EntitySpawner Add(TypeExpression type, object component)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         
-        var type = TypeExpression.Of<C>(key);
         if (_components.Contains(type))
         {
             // replace existing value
@@ -45,14 +55,10 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
             _components.Add(type);
             _values.Add(component);
         }
-
+        
         return this;
     }
-
-    /// <inheritdoc />
-    public EntitySpawner Add<C>(Key key = default) where C : notnull, new() => Add<C>(new(), key);
-
-
+    
     /// <inheritdoc />
     public EntitySpawner Remove<C>(Match match = default) where C : notnull => Remove(MatchExpression.Of<C>(match));
 

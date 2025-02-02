@@ -28,7 +28,7 @@ public class PooledList<T> : List<T>, IDisposable
     {
         for (var i = 0; i < BagCapacity; i++) Recycled.Add(new());
     }
-    
+
     /// <summary>
     /// Rents a List from the Pool.
     /// </summary>

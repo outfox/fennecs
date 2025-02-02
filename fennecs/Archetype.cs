@@ -222,7 +222,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
         {
             //TODO: benchmark this vs ref assignment & memory writes
             var entity = EntityStorage[entry + i];
-            World[entity] = new(this, entry + i, entity);
+            World[entity] = new(this, entry + i);
         }
     }
 

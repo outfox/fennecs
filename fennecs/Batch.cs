@@ -69,6 +69,21 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         return this;
     }
 
+    private Batch AddComponent(Type type, object data, Key key)
+    {
+        var typeExpression = TypeExpression.Of(type, key);
+        
+        if (Removals.Any(removal => removal.Matches(typeExpression)))
+            throw new InvalidOperationException($"Addition of {typeExpression} conflicts with removal in same batch! Because all Removals are applied before any additions, this leads to undefined behaviour. (if you want to replace a value in a batch, use Add on a Batch with AddConflict.Replace)");
+        
+        if (Additions.Any(existing => existing == typeExpression)) 
+            throw new InvalidOperationException($"Addition of {typeExpression} conflicts with existing addition in same batch!");
+        
+        Additions.Add(typeExpression);
+        BackFill.Add(data);
+        return this;
+    }
+
     /// <inheritdoc />
     public Batch Remove<C>(Match match = default) where C : notnull => Remove(MatchExpression.Of<C>(match));
 
@@ -101,6 +116,9 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     /// <inheritdoc />
     public Batch Add<C>(C component, Key key = default) where C : notnull => AddComponent(component, key);
 
+    /// <inheritdoc />
+    public Batch Add(object component, Key key = default) => AddComponent(component.GetType(), component, key);
+    
     
     /// <inheritdoc />
     public Batch Link<T>(T link) where T : class => AddComponent(link, Key.Of(link));

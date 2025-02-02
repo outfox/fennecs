@@ -33,9 +33,22 @@ public readonly ref struct EntityRef(ref readonly Entity entity) : IEntity
     /// <inheritdoc />
     public IReadOnlyList<Component> Components => Entity.Components;
 
+    /// <inheritdoc />
+    public World World => Entity.World;
     
     /// <inheritdoc />
+    public Archetype? Archetype => Entity.Archetype;
+
+
+    /// <inheritdoc />
     public Entity Add<C>(C component, Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull => Entity.Add(component, key, callerFile, callerLine);
+
+    /// <inheritdoc />
+    public Entity Add(object component, Key key = default, string callerFile = "", int callerLine = 0)
+    {
+        World.AddComponent(this, TypeExpression.Of(component.GetType(), key), component, callerFile, callerLine);
+        return this;
+    }
 
     /// <inheritdoc />
     public Entity Add<C>(Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull, new() => Entity.Add(new C(), key, callerFile, callerLine);

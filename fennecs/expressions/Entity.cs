@@ -14,7 +14,6 @@ namespace fennecs;
 /// </summary>
 public readonly record struct Entity(uint Value) : IEntity
 {
-    internal readonly uint Value = Value;
     internal uint Index => Value & World.Mask;
     private uint WorldIndex => Value >> World.Shift;
 
@@ -36,9 +35,6 @@ public readonly record struct Entity(uint Value) : IEntity
     /// </summary>
     public static implicit operator EntityWithGeneration(Entity entity) => new(entity, entity.Generation);
 
-    [Obsolete("Just use this / the Entity itself")]
-    internal Entity Id => this;
-    
     private ref Meta Meta => ref World[this];
 
     private int Row => Meta.Row;
@@ -56,7 +52,7 @@ public readonly record struct Entity(uint Value) : IEntity
     /// <summary>
     /// The Signature of this Entity (all its component type expressions).
     /// </summary>
-    public Signature Signature => Archetype.Signature;
+    public Signature Signature => Archetype != null! ? Archetype.Signature : Signature.Empty;
     
 
     #region IComparable/IEquatable Implementation
@@ -80,8 +76,9 @@ public readonly record struct Entity(uint Value) : IEntity
     /// </summary>
     public Entity(uint worldTag, uint newIndex) : this(worldTag | newIndex)
     {
-        Debug.Assert(0 == (worldTag & newIndex), "Could not create a valid value, worldTag and newIndex must be disjoint");
-        Debug.Assert(World != null, $"No World exists with Tag {worldTag:x8} / Index {WorldIndex:d3}");
+        Debug.Assert(0 == (worldTag & World.Mask), "Could not create a valid value, worldTag and newIndex must be disjoint");
+        Debug.Assert(worldTag == (worldTag & ~World.Mask), "WorldTag must be aligned to the World's Mask.");
+        Debug.Assert(World != null, $"No World exists with Tag {worldTag:x8} / Index {WorldIndex:d3}.");
     }
 
 
@@ -107,11 +104,11 @@ public readonly record struct Entity(uint Value) : IEntity
     /// <returns>the entity, if the Key is a living Entity</returns>
     public static implicit operator Entity(Key key) => new(key);
 
-    
+
     /// <summary>
     /// Is this Entity alive in its World?
     /// </summary>
-    public bool Alive => World != null! && World.IsAlive(this);
+    public bool Alive => World != null! && Archetype != null!;
 
     /// <summary>
     /// The Key of this Entity (for use in relations).
@@ -215,7 +212,7 @@ public readonly record struct Entity(uint Value) : IEntity
     }
 
     /// <summary>
-    /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
+    /// Returns a <c>ref readonly</c> to a component of the given type, with no key.
     /// </summary>
     public bool TryGet(Type type, [MaybeNullWhen(false)] out object component)
     {
@@ -232,8 +229,11 @@ public readonly record struct Entity(uint Value) : IEntity
     /// <returns><c>PooledList&lt;(TypeExpression type, T value)&gt;</c></returns>
     public PooledList<(TypeExpression expression, T value)> GetAll<T>(Match match) where T : notnull
     {
-        using var storages = Archetype.Match<T>(match);
         var list = PooledList<(TypeExpression type, T value)>.Rent();
+
+        if (!Alive) return list;
+        
+        using var storages = Archetype.Match<T>(match);
         var row = Row;
         list.AddRange(storages.Select(storage => (storage.Expression, storage[row])));
         return list;
@@ -242,12 +242,22 @@ public readonly record struct Entity(uint Value) : IEntity
     /// <summary>
     /// Returns a <c>ref</c> to a component of the given type, matching the given Key.
     /// </summary>
-    public ref C Write<C>(Key key = default) where C : notnull => ref Archetype.GetStorage<C>(key)[Row];
+    public ref C Write<C>(Key key = default) where C : notnull
+    {
+        if (Archetype == null) throw new InvalidOperationException("Entity is not alive.");
+        
+        return ref Archetype.GetStorage<C>(key)[Row];
+    }
 
     /// <summary>
     /// Returns a <c>ref readonly</c> to a component of the given type, matching the given Key.
     /// </summary>
-    public ref readonly C Read<C>(Key key = default) where C : notnull => ref Archetype.GetStorage<C>(key)[Row];
+    public ref readonly C Read<C>(Key key = default) where C : notnull
+    {
+        if (Archetype == null) throw new InvalidOperationException("Entity is not alive.");
+        
+        return ref Archetype.GetStorage<C>(key)[Row];
+    }
 
     /// <summary>
     /// Sets all components of the given backing type on the Entity, matching the given Match term.
@@ -258,6 +268,8 @@ public readonly record struct Entity(uint Value) : IEntity
     /// </remarks> 
     public Entity Set(object value, Match match = default)
     {
+        if (Archetype == null) throw new InvalidOperationException("Entity is not alive.");
+        
         using var storages = Archetype.Match(value.GetType(), match);
         foreach (var storage in storages) storage.Store(Row, value);
         return this;
@@ -272,6 +284,8 @@ public readonly record struct Entity(uint Value) : IEntity
     /// </remarks> 
     public Entity Set<C>(in C value, Match match = default) where C : notnull
     {
+        if (Archetype == null) throw new InvalidOperationException("Entity is not alive.");
+
         using var storages = Archetype.Match<C>(match);
         foreach (var storage in storages) storage.Store(Row, value);
         return this;
@@ -283,7 +297,12 @@ public readonly record struct Entity(uint Value) : IEntity
     /// <remarks>
     /// Only use this if you need to work with the component directly, otherwise it is recommended to use <see cref="Entity.Get{C}(fennecs.Key)"/> and <see cref="Set{C}"/>.
     /// </remarks>
-    public RWImmediate<C> Ref<C>(Key key = default) where C : notnull => new(ref World.GetComponent<C>(this, key), this, key);
+    public RWImmediate<C> Ref<C>(Key key = default) where C : notnull
+    {
+        if (Archetype == null) throw new InvalidOperationException("Entity is not alive.");
+        
+        return new(ref World.GetComponent<C>(this, key), this, key);
+    }
 
     /// <inheritdoc />
     public bool Has(MatchExpression expression) => World.HasComponent(this, expression);

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -81,9 +80,10 @@ public partial class World
             var entity = _entityPool.Spawn();
 
             // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
-            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)(_entityPool.Created + 1)));
+            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2(_entityPool.Created + 1));
 
-            _meta[entity.Index] = new(_root, _root.Count, entity);
+            _meta[entity.Index] = new(_root, _root.Count);
+            
             _root.EntityStorage.Append(entity);
             _root.Invalidate();
 
@@ -96,7 +96,7 @@ public partial class World
         lock (_spawnLock)
         {
             var identities = _entityPool.Spawn(count);
-            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)_entityPool.Created + 1));
+            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2(_entityPool.Created + 1));
             return identities;
         }
     }
@@ -104,19 +104,19 @@ public partial class World
 
     internal bool HasComponent(Entity entity, TypeExpression typeExpression)
     {
+        AssertAlive(entity);
+        
         var meta = _meta[entity.Index];
-        return meta.Entity != default
-               && meta.Entity == entity
-               && meta.Archetype.Has(typeExpression);
+        return meta.Archetype!.Has(typeExpression);
     }
 
 
     internal bool HasComponent(Entity entity, MatchExpression expression)
     {
-        var meta = _meta[entity.Index];
-        return meta.Entity != default
-               && meta.Entity == entity
-               && meta.Archetype.Matches(expression);
+        AssertAlive(entity);
+        
+        ref var meta = ref _meta[entity.Index];
+        return meta.Archetype!.Matches(expression);
     }
     
 
@@ -132,15 +132,14 @@ public partial class World
 
         ref var meta = ref _meta[entity.Index];
 
-        var table = meta.Archetype;
+        var table = meta.Archetype!;
         table.Delete(meta.Row);
 
         DespawnDependencies(entity);
 
         _entityPool.Recycle(entity);
 
-        // Patch Meta
-        _meta[entity.Index] = default;
+        meta = default;
     }
 
 
@@ -272,20 +271,9 @@ public partial class World
     /// </summary>
     public readonly record struct Id
     {
-        private readonly byte _id;
-
-        internal Id(byte id)
+        internal Id(uint id)
         {
-            //ArgumentOutOfRangeException.ThrowIfEqual(id, 0, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
-            Bits = (ulong) id << 32;
-            _id = id;
-        }
-
-        internal Id(int id)
-        {
-            //Debug.Assert(id is > 0 and <= byte.MaxValue, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
-            Bits = (ulong) id << 32;
-            _id = (byte) id;
+            Index = id << Shift;
         }
 
         /// <summary>
@@ -293,11 +281,9 @@ public partial class World
         /// </summary>
         public static implicit operator Id(byte id) => new(id);
         
-        internal int Index => _id;
-        
-        internal readonly ulong Bits;
-        
+        internal uint Index { get; }
+
         /// <inheritdoc />
-        public override string ToString() => $"{_id:d3}";
+        public override string ToString() => $"{Index:d3}";
     }
 }

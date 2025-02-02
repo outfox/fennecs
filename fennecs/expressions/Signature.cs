@@ -211,6 +211,11 @@ public sealed record Signature : IEnumerable<TypeExpression>, IComparable<Signat
     /// </summary>
     public int Count { get; }
 
+    /// <summary>
+    /// An empty <see cref="Signature"/>.
+    /// </summary>
+    public static Signature Empty { get; } = new(ImmutableSortedSet<TypeExpression>.Empty);
+
     /// <inheritdoc cref="Enumerable.ElementAt{TSource}(System.Collections.Generic.IEnumerable{TSource},System.Index)"/>
     public TypeExpression this[int index] => _set.ElementAt(index);
 }

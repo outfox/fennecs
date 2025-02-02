@@ -37,7 +37,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
         if (!World.IsAlive(entity)) return false;
         
         var meta = World.GetEntityMeta(entity);
-        var table = meta.Archetype;
+        var table = meta.Archetype!;
         return Archetypes.Contains(table);
     }
 
@@ -232,7 +232,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
 
     /// <inheritdoc />
     /// <remarks>
-    /// This creates a batch and immediately submits it. Use <see cref="Batch()"/> to create a batch manually.
+    /// This creates a batch and immediately submits it. Use <see cref="IBatchBegin.Batch(fennecs.Batch.AddConflict,fennecs.Batch.RemoveConflict)"/> to create a batch manually.
     /// </remarks>
     public Query Add<T>(T data, Key key = default) where T : notnull
     {
@@ -240,10 +240,20 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
         return this;
     }
 
-    
     /// <inheritdoc />
     /// <remarks>
-    /// This creates a batch and immediately submits it. Use <see cref="Batch()"/> to create a batch manually.
+    /// This creates a batch and immediately submits it. Use <see cref="IBatchBegin.Batch(fennecs.Batch.AddConflict,fennecs.Batch.RemoveConflict)"/> to create a batch manually.
+    /// </remarks>
+    public Query Add(object component, Key key = default)
+    {
+        Batch().Add(component, key).Submit();
+        return this;
+    }
+
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// This creates a batch and immediately submits it. Use <see cref="IBatchBegin.Batch(fennecs.Batch.AddConflict,fennecs.Batch.RemoveConflict)"/> to create a batch manually.
     /// </remarks>
     public Query Add<T>(Key key = default) where T : notnull, new() => Add(new T(), key);
 
