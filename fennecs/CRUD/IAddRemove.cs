@@ -15,6 +15,12 @@ public interface IAddRemove<out SELF>
     public SELF Add<C>(C component, Key key = default) where C : notnull;
 
     /// <summary>
+    /// Typeless: Add a boxed component to the Entity. Calls object.GetType() to determine the type.
+    /// </summary>
+    /// <returns>itself (fluent pattern)</returns>
+    public SELF Add(object component, Key key = default);
+
+    /// <summary>
     /// Add a newable component of type C to the entity/entities, with an optional Key.
     /// </summary>
     /// <example>
@@ -72,6 +78,10 @@ public interface IAddRemoveDeferrable<out SELF>
     /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(C,Key)"/>
     /// Operation may be deferred until the last World lock is released (usually the end of the scope of a runner).
     public SELF Add<C>(C component, Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0) where C : notnull;
+
+    /// <inheritdoc cref="IAddRemove{SELF}.Add(object,Key)"/>
+    /// Operation may be deferred until the last World lock is released (usually the end of the scope of a runner).
+    public SELF Add(object component, Key key = default, [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0);
 
     /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(C,Key)"/>
     /// Operation may be deferred until the last World lock is released (usually the end of the scope of a runner).

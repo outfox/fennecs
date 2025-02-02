@@ -11,7 +11,7 @@ namespace fennecs.pools;
 /// </remarks>
 internal sealed class EntityPool
 {
-    internal int Created { get; private set; }
+    internal uint Created { get; private set; }
 
     internal int Alive => Created - _recycled.Count;
 
@@ -21,7 +21,7 @@ internal sealed class EntityPool
     
     private readonly World.Id _worldId;
 
-    private int NewIndex => ++Created;
+    private uint NewIndex => ++Created;
 
     // TODO: Make this configurable
     private const int MaxEntities = 0x00FF_FFFF;
@@ -36,11 +36,11 @@ internal sealed class EntityPool
     public EntityPool(World.Id worldId, int initialCapacity)
     {
         _worldId = worldId;
-        _worldTag = (uint) worldId.Index << (32-World.Bits);
+        _worldTag = (uint) worldId.Index << World.Shift;
         
         _recycled = new(initialCapacity * 2);
 
-        for (var i = 0; i < initialCapacity; i++) _recycled.Enqueue(new(_worldId, NewIndex));
+        for (var i = 0; i < initialCapacity; i++) _recycled.Enqueue(new(_worldTag, NewIndex));
         
         EnsureMinimumRecycledCapacity();
         EnsureDiscriminators();
@@ -52,7 +52,7 @@ internal sealed class EntityPool
         
         var last = _discriminators.Length;
 
-        var newSize = Math.Min((int) BitOperations.RoundUpToPowerOf2((uint) Created), MaxEntities);
+        var newSize = Math.Min((int) BitOperations.RoundUpToPowerOf2(Created), MaxEntities);
         Array.Resize(ref _discriminators, newSize);
         
         _discriminators.AsSpan(last).Fill(1u);

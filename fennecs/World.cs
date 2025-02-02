@@ -10,7 +10,6 @@ namespace fennecs;
 public partial class World
 {
     
-        
     #region World State & Storage
 
     private readonly EntityPool _entityPool;
@@ -44,6 +43,8 @@ public partial class World
     private int _locks;
 
     internal static int Concurrency => Math.Max(1, Environment.ProcessorCount-2);
+
+    internal uint Discriminator(Entity entity) => _entityPool.Discriminator(entity);
     
     internal WorldMode Mode { get; private set; } = WorldMode.Immediate;
 

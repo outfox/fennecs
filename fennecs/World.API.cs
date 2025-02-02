@@ -16,8 +16,8 @@ namespace fennecs;
 public partial class World : IDisposable, IEnumerable<Entity>
 {
     internal const int Bits = 8;
+    internal const int Shift = 24;
     internal const uint Mask = 0x00FF_FFFFu;
-
 
     #region Config
         /// <summary>
@@ -344,9 +344,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     internal Entity this[int index] => _meta[index].Entity;
     
     internal ref Meta this[Entity entity] => ref _meta[entity.Index];
-
-    internal ref Meta this[FastEntity entity] => ref _meta[entity.Index];
-
+    
     #endregion
     
     #region Debug Tools
@@ -370,5 +368,4 @@ public partial class World : IDisposable, IEnumerable<Entity>
     }
 
     #endregion
-
 }
