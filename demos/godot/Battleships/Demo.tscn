@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cksybw015ecn5" path="res://Battleships/Sprites/water_ripple_medium_000.png" id="1_36tmx"]
 [ext_resource type="Texture2D" uid="uid://dml80u5fkcf3h" path="res://Battleships/Sprites/ship_medium_body.png" id="1_mpdiq"]
-[ext_resource type="Script" path="res://Battleships/BattleShipsDemo.cs" id="1_wuhof"]
+[ext_resource type="Script" uid="uid://bbmdbvx452yy7" path="res://Battleships/BattleShipsDemo.cs" id="1_wuhof"]
 [ext_resource type="Texture2D" uid="uid://c8tiu4pl00u1i" path="res://Battleships/Sprites/water_ripple_medium_001.png" id="2_kdxpr"]
 [ext_resource type="Texture2D" uid="uid://b3o314u5nbtc3" path="res://Battleships/Sprites/ship_big_gun_dual_hit.png" id="3_fu8pa"]
 [ext_resource type="Texture2D" uid="uid://csjqy4cgeidmh" path="res://Battleships/Sprites/water_ripple_medium_002.png" id="3_jr5lu"]
@@ -10,14 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://ctj0ep35r7j2" path="res://Battleships/Sprites/water_ripple_medium_003.png" id="4_i5xih"]
 [ext_resource type="Texture2D" uid="uid://ci3taoovbw6a5" path="res://Battleships/Sprites/water_ripple_medium_004.png" id="5_7wb2b"]
 [ext_resource type="Texture2D" uid="uid://ks3f84kp8lki" path="res://Battleships/Sprites/ship_big_gun.png" id="5_ida0b"]
-[ext_resource type="Script" path="res://Battleships/AutoPlayAnimation.gd" id="6_nk4bq"]
+[ext_resource type="Script" uid="uid://dr1djepej8dj3" path="res://Battleships/AutoPlayAnimation.gd" id="6_nk4bq"]
 [ext_resource type="PackedScene" uid="uid://dflthu5dnjmkt" path="res://Battleships/Vessels/battleship.tscn" id="13_auviu"]
 [ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="16_um5ly"]
-[ext_resource type="Script" path="res://Battleships/Objective.cs" id="17_0i071"]
+[ext_resource type="Script" uid="uid://dnincmifv8y1b" path="res://Battleships/Objective.cs" id="17_0i071"]
 [ext_resource type="SpriteFrames" uid="uid://bm5fnxtudky7e" path="res://Battleships/Sprites/sheet_flag.tres" id="17_a473v"]
-[ext_resource type="Script" path="res://Battleships/Admiralty.cs" id="17_kr6vl"]
-[ext_resource type="Script" path="res://Battleships/Gun.cs" id="20_tj12v"]
-[ext_resource type="Script" path="res://Battleships/CameraZoomAndPan.gd" id="22_n6gg5"]
+[ext_resource type="Script" uid="uid://bsmmu5e1wwdds" path="res://Battleships/Admiralty.cs" id="17_kr6vl"]
+[ext_resource type="Script" uid="uid://bafbqqxjrhc5x" path="res://Battleships/Gun.cs" id="20_tj12v"]
+[ext_resource type="Script" uid="uid://cd7naxk1n1n8f" path="res://Battleships/CameraZoomAndPan.gd" id="22_n6gg5"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_q1es4"]
 animations = [{

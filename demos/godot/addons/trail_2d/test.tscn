@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://brkkcdmjbkvok"]
 
-[ext_resource type="Script" path="res://addons/trail_2d/trail_2d.gd" id="1_4d7r7"]
+[ext_resource type="Script" uid="uid://b6l4p5npqya6t" path="res://addons/trail_2d/trail_2d.gd" id="1_4d7r7"]
 
 [sub_resource type="GDScript" id="GDScript_62opy"]
 resource_name = "Test scene"

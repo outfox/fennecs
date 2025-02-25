@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://5jx5gqeanxar"]
 
 [ext_resource type="Texture2D" uid="uid://bef00ap5tn0g6" path="res://N-Body/Sprites/star_white01.png" id="1_dvduc"]
-[ext_resource type="Script" path="res://N-Body/StellarBody.cs" id="2_neflf"]
-[ext_resource type="Script" path="res://addons/trail_2d/trail_2d.gd" id="4_gkdrt"]
+[ext_resource type="Script" uid="uid://bomerap3r7g3g" path="res://N-Body/StellarBody.cs" id="2_neflf"]
+[ext_resource type="Script" uid="uid://b6l4p5npqya6t" path="res://addons/trail_2d/trail_2d.gd" id="4_gkdrt"]
 
 [sub_resource type="Gradient" id="Gradient_qihq8"]
 colors = PackedColorArray(1, 1, 1, 0.8, 1, 1, 1, 0)

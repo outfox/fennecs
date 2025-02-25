@@ -3,7 +3,6 @@
 using System;
 using System.Runtime.InteropServices;
 using Godot;
-using Environment = System.Environment;
 using Vector3 = System.Numerics.Vector3;
 
 namespace fennecs.demos.godot;
@@ -44,7 +43,7 @@ public partial class DemoCubes : Node
 	// Fennecs: The World that will contain the Entities.
 	private readonly World _world = new(MaxEntities);
 
-	// Calculation: Visible CubeCount (can be smoothed to be passed in as an uniform).
+	// Calculation: Visible CubeCount (can be smoothed to be passed in as a uniform).
 	private float _cubeCount = 1;
 	private Vector3 _currentAmplitude;
 
@@ -57,11 +56,7 @@ public partial class DemoCubes : Node
 
 	// Fennecs: The Query that will be used to interact with the Entities.
 	private Stream<Matrix4X3, Vector3, int> _stream;
-
-	// ??Boilerplate: Array used to copy the Entity Transform data into Godot's MultiMesh.
-	private float[] _submissionArray = [];
-
-
+	
 	// Calculation: Elapsed time value for the simulation.
 	private float _time;
 
@@ -95,13 +90,24 @@ public partial class DemoCubes : Node
 	private void SetEntityCount(int spawnCount)
 	{
 		// Spawn new entities if needed.
-		for (var i = _stream.Count; i < spawnCount; i++)
-			_world.Spawn().Add(i)
-				.Add<Matrix4X3>()
-				.Add<Vector3>();
+		var difference = spawnCount - _stream.Count;
 
+		if (difference > 0)
+		{
+			_world.Entity()
+				.Add<int>()
+				.Add<Matrix4X3>()
+				.Add<Vector3>()
+				.Spawn(difference);
+
+			// Number all the entities
+			var i = 0;
+			_stream.For((ref Matrix4X3 _, ref Vector3 _, ref int index) => index = i++);
+		}
+		
 		// Cut off excess entities, if any.
-		_stream.Query.Truncate(spawnCount);
+		if (difference < 0) _stream.Query.Truncate(spawnCount);
+		
 	}
 
 
@@ -137,17 +143,11 @@ public partial class DemoCubes : Node
 		// Calculation: Determine the number of entities that will be displayed (also used to smooth out animation).
 		_cubeCount = Mathf.FloorToInt(_currentRenderedFraction * _stream.Count);
 
-		// Calculation: A desirable size of each work item to spread it across available CPU cores.
-		var chunkSize = Math.Max(_stream.Count / Environment.ProcessorCount, 128);
-
 		// ----------------------- HERE'S WHERE THE SIMULATION WORK IS RUN ------------------------
 		// Update Transforms and Positions of all Cube Entities.
 		//  We decided to put the code for this into a static method.
 		// -------------------------------------------------------------------------------------------
 		_stream.Job((_time, _currentAmplitude, _cubeCount, dt), UpdatePositionForCube);
-
-		// Workaround for Godot not accepting oversize Arrays or Spans.
-		Array.Resize(ref _submissionArray, (int) (_cubeCount * Matrix4X3.SizeInFloats));
 
 		// Make the cloud of cubes denser if there are more cubes.
 		var amplitudePortion = Mathf.Clamp(1.0f - _stream.Count / (float) MaxEntities, 0f, 1f);
@@ -158,29 +158,17 @@ public partial class DemoCubes : Node
 		InstanceCount = (int) _cubeCount;
 
 		// ------------------------ HERE IS WHERE THE DATA IS SENT TO GODOT ------------------------
-		// Copy transforms into Multimesh
+		// Copy transforms into MultiMesh
 		// Note that this is a static anonymous method: It doesn't have the allocation baggage of a lambda's closure.
 		// We're saving a few keystrokes by using a method on the Query with only the first Stream Type (Matrix4X3).
 		// But fennecs doesn't limit us. We can use any Instance or Static method, lambda, or delegate here.
 		// -------------------------------------------------------------------------------------------
 		_stream.Raw(
-			uniform: (MeshInstance.Multimesh.GetRid(), _submissionArray),
-			action:  static ((Rid mesh, float[] submission) uniform, Memory<Matrix4X3> transforms) =>
+			uniform: (MeshInstance.Multimesh.GetRid(), InstanceCount * Matrix4X3.SizeInFloats),
+			action:  static ((Rid mesh, int count) uniform, Memory<Matrix4X3> transforms) =>
 			{
 				var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
-
-				// We must copy the data manually once, into our pre-created array.
-				// ISSUE : (Godot) It cannot come from an ArrayPool because it needs to have the exact size.
-				// ISSUE : (Godot) It cannot come from a Span because the API doesn't accept it (yet).
-				// Upvote: https://github.com/godotengine/godot-proposals/issues/9083
-				floatSpan[..uniform.submission.Length].CopyTo(uniform.submission);
-				RenderingServer.MultimeshSetBuffer(uniform.mesh, uniform.submission);
-
-				// Dream way - raw Query to pass Memory<T>, Godot Memory<TY overload not yet available.
-				// _stream.Raw(transforms => RenderingServer.MultimeshSetBuffer(uniform.mesh, transforms));
-				// or, in line with Godot's internal Marshalling:
-				// _stream.Raw(transforms => RenderingServer.MultimeshSetBuffer(uniform.mesh, transforms.Span));
-				// ISSUE: Calling Span.ToArray() makes an expensive allocation; and is unusable for this purpose.
+				RenderingServer.MultimeshSetBuffer(uniform.mesh, floatSpan[..uniform.count]);
 			});
 	}
 

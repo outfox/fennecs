@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dmxrpg865t8wt"]
 
-[ext_resource type="Script" path="res://N-Body/SimulationCell.gd" id="1_gsr88"]
+[ext_resource type="Script" uid="uid://cxhmsolfqeuhd" path="res://N-Body/SimulationCell.gd" id="1_gsr88"]
 [ext_resource type="PackedScene" uid="uid://5jx5gqeanxar" path="res://N-Body/StellarBody.tscn" id="1_olciv"]
 
 [node name="Cell" type="Node2D"]
