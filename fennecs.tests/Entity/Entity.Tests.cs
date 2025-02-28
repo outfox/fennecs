@@ -52,16 +52,16 @@ public class EntityTests(ITestOutputHelper output)
     }
 
     [Theory]
-    [InlineData(69, 1, 2, 3)]
-    [InlineData(2, 1, 20, 300)]
-    [InlineData(3, 1000, 2000, 3000)]
-    [InlineData(55, 31415, 123456, 345678)]
-    [InlineData(1, 1, int.MaxValue/2, int.MaxValue)]
-    public void Entity_Is_Comparable(byte world, int r1, int r2, int r3)
+    [InlineData(1, 2, 3)]
+    [InlineData( 1, 20, 300)]
+    [InlineData( 1000, 2000, 3000)]
+    [InlineData( 31415, 123456, 345678)]
+    [InlineData( 1, int.MaxValue/2, int.MaxValue)]
+    public void Entity_Is_Comparable(uint r1, uint r2, uint r3)
     {
-        var entity1 = new Entity(world, r1);
-        var entity2 = new Entity(world, r2);
-        var entity3 = new Entity(world, r3);
+        var entity1 = new Id(r1);
+        var entity2 = new Id(r2);
+        var entity3 = new Id(r3);
 
         Assert.True(entity1.CompareTo(entity2) < 0);
         Assert.True(entity1.CompareTo(entity3) < 0);
@@ -81,9 +81,9 @@ public class EntityTests(ITestOutputHelper output)
     [Fact]
     public void Entity_Is_Equal_Same_Id_Same_World()
     {
-        var entity1 = new Entity(1, 1);
-        var entity2 = new Entity(1, 1);
-        var entity3 = new Entity(entity1.Value);
+        var entity1 = new Entity(new(1), 1);
+        var entity2 = new Entity(new(1), 1);
+        var entity3 = new Entity(entity1.Identity, 1);
         
         Assert.Equal(entity1, entity2);
         Assert.Equal(entity1, entity3);

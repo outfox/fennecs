@@ -94,7 +94,7 @@ public readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <summary>
     /// Does the secondary key target an Entity?
     /// </summary>
-    public bool IsRelation => Key.IsEntity;
+    public bool IsRelation => Key.IsIdentity;
     
     /// <summary>
     /// Does the secondary key target an Object?

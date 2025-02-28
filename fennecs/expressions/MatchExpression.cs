@@ -83,7 +83,7 @@ public readonly record struct MatchExpression
             (ulong) Match.Wildcard.Target => other.Key != default,
             
             // Match.Relation matches only Entity-Entity relations.
-            (ulong) Match.Wildcard.Entity => other.Key.IsEntity,
+            (ulong) Match.Wildcard.Entity => other.Key.IsIdentity,
 
             // Match.Link matches only Entity-Object relations.
             (ulong) Match.Wildcard.Link => other.Key.IsLink,

@@ -10,7 +10,7 @@ namespace fennecs;
 public readonly record struct Key
 {
     [FieldOffset(0)] 
-    internal readonly int Index;
+    internal readonly uint Index;
 
     [FieldOffset(0)] internal readonly ulong Value;
     
@@ -19,7 +19,9 @@ public readonly record struct Key
         Value = value & KeyMask;
     }
 
-    internal Key(Entity entity) => Value = entity.Value & KeyMask;
+    public Key(Entity entity) => Value = entity.Identity.Value | EntityFlag;
+    
+    public Key(Entity entity) => Value = entity.Raw | EntityFlag;
     
     
     /// <summary>
@@ -76,12 +78,38 @@ public readonly record struct Key
     /// <summary>
     /// Is this Key representing an Entity Relation?
     /// </summary>
-    public bool IsEntity => Category == Kind.Entity;
+    public bool IsIdentity => Category == Kind.Entity;
 
     /// <summary>
     /// Is this Key representing an Object Link?
     /// </summary>
     public bool IsLink => Category == Kind.Link;
+    
+    /// <summary>
+    /// The Identity that this key represents.
+    /// </summary>
+    public Entity Entity
+    {
+        get
+        {
+            Debug.Assert(IsIdentity, "Key is not an Entity Key.");
+            return IsIdentity ? new(new(Index)) : default;
+        }
+    }
+
+
+    /// <summary>
+    /// The Id that this key represents.
+    /// </summary>
+    internal Id Id
+    {
+        get
+        {
+            Debug.Assert(IsIdentity, "Key is not an Entity Key.");
+            return IsIdentity ? new(Index) : default;
+        }
+    }
+
 
     /// <inheritdoc />
     public override string ToString() => Category switch
@@ -98,7 +126,7 @@ public readonly record struct Key
     /// </summary>
     public static implicit operator Match(Key self) => new(self);
 
-    internal const ulong BaseFlag = 0x0000_E000_0000_0000u;
+    internal const ulong EntityFlag = 0x0000_E000_0000_0000u;
     internal const ulong HeaderMask = 0xFFFF_0000_0000_0000u;
     internal const ulong KeyMask = ~0xFFFF_0000_0000_0000u;
     internal const ulong CategoryMask = 0x0000_F000_0000_0000u;

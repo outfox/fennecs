@@ -8,68 +8,62 @@ namespace fennecs.pools;
 /// <remarks>
 /// Not thread-safe (yet?). This is the responsibility of the World that uses the pool.
 /// </remarks>
-internal sealed class EntityPool
+internal sealed class IdentityPool
 {
-    internal int Created { get; private set; }
+    internal uint Created { get; private set; }
 
-    internal int Alive => Created - _recycled.Count;
+    internal int Alive => (int) (Created - _recycled.Count);
 
-    private readonly Queue<Entity> _recycled;
+    private readonly Queue<Id> _recycled;
 
-    private readonly World.Id _worldId;
+    private readonly World.Id _world;
 
-    private int NewIndex => ++Created;
+    private uint NextId => _world.Tag | Created++;
 
-    public EntityPool(World.Id worldId, int initialCapacity)
+    public IdentityPool(World.Id world, int initialCapacity)
     {
-        _worldId = worldId;
-        _recycled = new(initialCapacity * 2);
-        for (var i = 0; i < initialCapacity; i++) _recycled.Enqueue(new(_worldId, NewIndex));
+        _world = world;
+        _recycled = new(initialCapacity);
+        for (var i = 0; i < initialCapacity; i++) _recycled.Enqueue(new(NextId));
     }
 
-
-    internal Entity Spawn()
+    internal Id Spawn()
     { 
         return _recycled.TryDequeue(out var recycledEntity)
-            ? recycledEntity
-            : new(_worldId, NewIndex);
+            ? recycledEntity 
+            : new(NextId);
     }
 
-    internal PooledList<Entity> Spawn(int count)
+    internal PooledList<Id> Spawn(int amount)
     {
-        var identities = PooledList<Entity>.Rent();
+        var identities = PooledList<Id>.Rent();
         var recycled = _recycled.Count;
 
-        if (recycled <= count)
+        if (recycled <= amount)
         {
             // Reuse all entities in the recycler.
             identities.AddRange(_recycled);
             _recycled.Clear();
 
-            // If we don't have enough recycled Identities, create more.
-            for (var i = 0; i < count - recycled; i++)
+            // If we didn't have enough recycled Identities, create more.
+            var remainder = amount - recycled;
+            for (var i = 0; i < remainder; i++)
             {
-                identities.Add(new(_worldId, NewIndex));
+                identities.Add(new(NextId));
             }
         }
         else
         {
             // Otherwise, take the requested amount from the recycled pool.
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < amount; i++)
             {
-                //TODO: Optimize this!
+                //TODO: Optimize this! Maybe with a range copy? (needs custom queue)
                 identities.Add(_recycled.Dequeue());
             }
         }
 
         return identities;
     }
-
-
-    internal void Recycle(Entity entity) => _recycled.Enqueue(entity.Successor);
-
-    internal void Recycle(ReadOnlySpan<Entity> toDelete)
-    {
-        foreach (var entity in toDelete) Recycle(entity);
-    }
+    
+    internal void Recycle(Id id) => _recycled.Enqueue(id);
 }

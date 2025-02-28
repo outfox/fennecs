@@ -67,7 +67,7 @@ public interface IAddRemove<out SELF>
 /// Operations may be deferred until the end of the scope or world lock.
 /// For this purpose, <see cref="CallerFilePathAttribute"/> and <see cref="CallerLineNumberAttribute"/> are used to provide meaningful error messages if necessary.
 // ReSharper disable ExplicitCallerInfoArgument
-public interface IAddRemoveDeferrable<out SELF>
+public interface IAddRemoveDeferrable<out SELF> where SELF : allows ref struct
 {
     /// <inheritdoc cref="IAddRemove{SELF}.Add{C}(C,Key)"/>
     /// Operation may be deferred until the last World lock is released (usually the end of the scope of a runner).

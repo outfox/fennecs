@@ -214,15 +214,15 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>, IHa
     /// Meta within the World will have the correct Row to access the Entity's associated data
     /// within the Archetype.
     /// </summary>
-    /// <param name="entry">If `count` param is nonzero, `entry` must be less than `this.Count`.</param>
+    /// <param name="start">If `count` param is nonzero, `entry` must be less than `this.Count`.</param>
     /// <param name="count">If &lt;= 0, PatchMetas does nothing.</param>
-    private void PatchMetas(int entry, int count = 1)
+    private void PatchMetas(int start, int count = 1)
     {
         for (var i = 0; i < count; i++)
         {
             //TODO: benchmark this vs ref assignment & memory writes
-            var entity = EntityStorage[entry + i];
-            World[entity] = new(this, entry + i, entity);
+            var entity = EntityStorage[start + i];
+            World[entity] = new(this, start + i);
         }
     }
 

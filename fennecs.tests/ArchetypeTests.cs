@@ -115,20 +115,25 @@ public class ArchetypeTests(ITestOutputHelper output)
         e1.Despawn();
         Assert.Equal(2, e2.Ref<int>().Read);
 
-        Entity e3 = world.Spawn().Add(3);
+        //Entity 3
+        var e3 = world.Spawn().Add(3);
+        
         e2.Despawn();
         bool e3_seen_in_query_alive_and_with_val_3 = false;
         bool dead_entity_in_query = false;
         world.Query<int>().Stream().For((entity, val) =>
         {
-            if (entity.Alive && val.read == 3)
+            Assert.Equal(entity, e3);
+            
+            switch (entity.Alive)
             {
-                e3_seen_in_query_alive_and_with_val_3 = true;
-            }
-
-            if (!entity.Alive)
-            {
-                dead_entity_in_query = true;
+                case true when val.read == 3:
+                    e3_seen_in_query_alive_and_with_val_3 = true;
+                    break;
+                
+                case false:
+                    dead_entity_in_query = true;
+                    break;
             }
         });
         Assert.True(e3_seen_in_query_alive_and_with_val_3);
@@ -174,13 +179,12 @@ public class ArchetypeTests(ITestOutputHelper output)
         
         world.Despawn(e1);
 
-        for (var i = 0; i < entities.Length; i++)
+        foreach (var entity in entities)
         {
-            var entity = entities[i];
-            Assert.True(world.IsAlive(entity));
+            Assert.True(entity.Alive);
 
-            // Metas patched?
-            Assert.Equal(entity, world.GetEntityMeta(entity).Entity);
+            // Metas patched? TODO: Need to check if rows actually updated correctly.
+            Assert.Equal(entity.Row, world.GetEntityMeta(entity).Row);
         }
     }
     

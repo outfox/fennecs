@@ -31,15 +31,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// </summary>
     /// <param name="entity">an entity</param>
     /// <returns>true if Entity is in the Query</returns>
-    public bool Contains(Entity entity)
-    {
-        // No Query can match a despawned Entity, or an entity from a different World.
-        if (!World.IsAlive(entity)) return false;
-        
-        var meta = World.GetEntityMeta(entity);
-        var table = meta.Archetype;
-        return Archetypes.Contains(table);
-    }
+    public bool Contains(Entity entity) => entity.Alive && Archetypes.Contains(entity.Archetype);
 
     /// <summary>
     ///     Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?

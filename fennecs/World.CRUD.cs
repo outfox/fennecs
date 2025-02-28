@@ -71,7 +71,7 @@ public partial class World
             throw new InvalidOperationException($"Entity {entity} does not have a component of type {typeof(T)} / {key}");
         }
 
-        var (table, row, _) = _meta[entity.Index];
+        var (table, row) = _meta[entity.Index];
         var storage = table.GetStorage<T>(key);
         return ref storage.Span[row];
     }
@@ -87,7 +87,7 @@ public partial class World
             return false;
         }
 
-        var (table, row, _) = _meta[entity.Index];
+        var (table, row) = _meta[entity.Index];
         var storage = table.GetStorage(type);
         value = storage.Get(row);
         return true;

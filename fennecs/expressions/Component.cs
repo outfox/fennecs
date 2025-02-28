@@ -17,7 +17,7 @@ public readonly record struct Component
     /// <remarks>
     /// If targetEntity is despawned, Component instances involving relations with that Entity already in existence remain unaffected.
     /// </remarks>
-    public bool IsRelation => Expression.Key.IsEntity;
+    public bool IsRelation => Expression.Key.IsIdentity;
     
     /// <summary>
     /// Is this Component a Link? (if true, the Value is the linked Object)
@@ -32,7 +32,7 @@ public readonly record struct Component
     {
         get
         {
-            if (Expression.Key.IsEntity) return Expression.Target;
+            if (Expression.Key.IsIdentity) return Expression.Target;
             throw new InvalidOperationException("Component is not a relation.");
         }
     }

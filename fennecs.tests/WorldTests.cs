@@ -37,7 +37,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         Assert.True(entity.Alive);
-        Assert.True(entity.Key.IsEntity);
+        Assert.True(entity.Key.IsIdentity);
     }
 
 

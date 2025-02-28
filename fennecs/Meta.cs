@@ -11,4 +11,4 @@ namespace fennecs;
 /// Row is the position within the Archetype Table.
 /// Entity is the Entity itself (including Generation).
 /// </remarks>
-internal readonly record struct Meta(Archetype Archetype, int Row, Entity Entity);
+internal readonly record struct Meta(Archetype Archetype, int Row);

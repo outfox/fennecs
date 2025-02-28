@@ -29,7 +29,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
         /// <summary>
         /// The ID of this World.
         /// </summary>
-        internal readonly byte _id;
+        internal readonly Id _id;
         
         /// <summary>
         /// Default behavior for Batch operations when a component is added to an entity that already has it.
@@ -145,13 +145,14 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </summary>
     /// <param name="entity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    internal bool IsAlive(Entity entity) => entity.Generation > 0 ? entity == _meta[entity.Index].Entity : _meta[entity.Index].Entity != default;
+    [Obsolete("Use Entity.Alive or Identity.Alive")]
+    internal bool IsAlive(Entity entity) => entity.Alive;
 
 
     /// <summary>
     /// The number of living entities in the World.
     /// </summary>
-    public int Count => _entityPool.Alive;
+    public int Count => _identityPool.Alive;
 
     /// <summary>
     /// All Queries that exist in this World.
@@ -213,7 +214,12 @@ public partial class World : IDisposable, IEnumerable<Entity>
                 DespawnDependencies(entity);
                 _meta[entity.Index] = default;
             }
-            _entityPool.Recycle(identities);
+
+            foreach (var entity in identities)
+            {
+                _gen[entity.Index]++;
+                _identityPool.Recycle(entity.Identity);
+            }
         }
     }
     #endregion
@@ -221,14 +227,20 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
     #region Lifecycle & Locking
 
-    private static readonly ConcurrentQueue<byte> WorldIds = new(Enumerable.Range(0, byte.MaxValue).Select(i => (byte) i));
-    private static readonly World[] Worlds = new World[byte.MaxValue+1];
+    private static readonly ConcurrentQueue<Id> WorldIds = new();
+    private static World[] _worlds = [];
     
     
     /// <summary>
     /// Get a World by its ID.
     /// </summary>
-    internal static World Get(Id id) => Worlds[id.Index];
+    internal static World Get(Id id) => _worlds[id.Index];
+    
+    
+    /// <summary>
+    /// Get a World by its ID.
+    /// </summary>
+    internal static World Get(uint index) => _worlds[index];
     
     
     /// <summary>
@@ -237,18 +249,22 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <param name="initialCapacity">initial Entity capacity to reserve. The world will grow automatically.</param>
     public World(int initialCapacity = 4096)
     {
+        // Set Default world bit count if it's not set yet.
+        if (_worlds.Length == 0) Bits = 7;
+        
         if (!WorldIds.TryDequeue(out _id)) throw new InvalidOperationException($"Ran out of World IDs constructing {Name}. Dispose some Worlds first.");
         
-        Name = $"{nameof(World)}-{_id:d3}";
+        Name = $"{nameof(World)}-{_id}";
         
-        _entityPool = new(_id, initialCapacity);
+        _identityPool = new(_id, initialCapacity);
 
         _meta = new Meta[initialCapacity];
+        _gen = new uint[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
         _root = GetOrCreateArchetype(new(Comp<Entity>.Plain.Expression));
         
-        Worlds[_id] = this;
+        _worlds[_id.Index] = this;
     }
 
 
@@ -301,7 +317,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
         //TODO: Dispose all Object Links, Queries, etc.?
         
         WorldIds.Enqueue(_id);
-        Worlds[_id] = null!;
+        _worlds[_id.Index] = null!;
         
         System.GC.SuppressFinalize(this);
     }
@@ -331,8 +347,6 @@ public partial class World : IDisposable, IEnumerable<Entity>
     #endregion
 
     #region Indexers
-    
-    internal Entity this[int index] => _meta[index].Entity;
     
     internal ref Meta this[Entity entity] => ref _meta[entity.Index];
 

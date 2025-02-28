@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -9,11 +8,78 @@ namespace fennecs;
 
 public partial class World
 {
+    #region World Bits
+    internal static uint Mask;  
+    internal static int Shift;
+
+    private static readonly Lock Init = new();
+    
+    private static int _bits;
+    
+    /// <summary>
+    /// How many Bits to reserve in Entity IDs for the World Index.
+    /// <ul>The more bits you reserve ...
+    /// <li>... the more Worlds can be created</li>
+    /// <li>... the fewer Entities may exist in each of them</li>
+    /// </ul>
+    /// </summary>
+    /// <example>
+    /// <c>World.Bits = 1</c> (min) up to 2 Worlds and 2^30 (1 Gi) Entities per World<br/>
+    /// <c>World.Bits = 7</c> (default) up to 128 Worlds and 2^24 (16 Mi) Entities per World<br/>
+    /// <c>World.Bits = 15</c> (max) up to 32768 Worlds but only 2^16 (64 Ki) Entities per World<br/>
+    /// </example>
+    /// <remarks>
+    /// Out of the 32 bits that form an Entity's Identity, the most significant bit is reserved to discern valid
+    /// Identities from default values. Since the maximum (fast) collection size in .NET is capped at
+    /// 1Gi = 1,073,741,824, this bit does not go to waste. 🦊
+    /// </remarks>
+
+    /// <exception cref="ArgumentOutOfRangeException">if the value is not between 1 and 15, inclusive </exception>
+    /// <exception cref="InvalidOperationException">if any worlds already exist</exception>
+    public static int Bits
+    {
+        get => _bits;
+        set
+        {
+            lock (Init)
+            {
+                if (value is < 1 or > 15)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), value, "WorldBits should be less than 16");
+                }
+
+                if (_worlds.Any(w => w != null!))
+                    throw new InvalidOperationException("Cannot change WorldBits after Worlds have been created.");
+            
+                _bits = value;
+            
+                Shift = 32 - value;
+                Mask = 0xFFFF_FFFF << Shift;
+
+                _worlds = new World[MaxWorlds];
+                
+                WorldIds.Clear();
+                for (var i = 0; i < MaxWorlds; i++)
+                {
+                    WorldIds.Enqueue(new(i));
+                }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// The maximum supported number of worlds (derived from the value set in <see cref="Bits"/>)
+    /// </summary>
+    public static int MaxWorlds => 1 << Bits;
+    
+    #endregion
+    
     #region World State & Storage
 
-    private readonly EntityPool _entityPool;
+    private readonly IdentityPool _identityPool;
 
     private Meta[] _meta;
+    private uint[] _gen;
 
     private readonly Guid _guid = Guid.NewGuid();
 
@@ -37,8 +103,8 @@ public partial class World
     #region Locking & Deferred Operations
 
     private readonly Lock _spawnLock = new();
-
     private readonly Lock _modeChangeLock = new();
+    
     private int _locks;
 
     internal static int Concurrency => Math.Max(1, Environment.ProcessorCount-2);
@@ -71,29 +137,34 @@ public partial class World
 
     #region CRUD
 
-    private Entity NewEntity()
+    private Entity.Snapshot NewEntity()
     {
         lock (_spawnLock)
         {
-            var entity = _entityPool.Spawn();
+            var identity = _identityPool.Spawn();
 
             // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
-            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)(_entityPool.Created + 1)));
+            var capacity = (int) BitOperations.RoundUpToPowerOf2(_identityPool.Created + 1);
+            Array.Resize(ref _meta, capacity);
+            Array.Resize(ref _gen, capacity);
 
-            _meta[entity.Index] = new(_root, _root.Count, entity);
-            _root.EntityStorage.Append(entity);
+            var index = identity.Index;
+            _meta[index] = new(_root, _root.Count);
+            _root.EntityStorage.Append(identity);
             _root.Invalidate();
 
-            return entity;
+            return new(identity, _gen[index]);
         }
     }
 
-    internal PooledList<Entity> SpawnBare(int count)
+    internal PooledList<fennecs.Id> SpawnBare(int count)
     {
         lock (_spawnLock)
         {
-            var identities = _entityPool.Spawn(count);
-            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)_entityPool.Created + 1));
+            var identities = _identityPool.Spawn(count);
+            var capacity = (int) BitOperations.RoundUpToPowerOf2(_identityPool.Created + 1);
+            Array.Resize(ref _meta, capacity);
+            Array.Resize(ref _gen, capacity);
             return identities;
         }
     }
@@ -101,19 +172,13 @@ public partial class World
 
     internal bool HasComponent(Entity entity, TypeExpression typeExpression)
     {
-        var meta = _meta[entity.Index];
-        return meta.Entity != default
-               && meta.Entity == entity
-               && meta.Archetype.Has(typeExpression);
+        return entity.Alive && entity.Archetype.Has(typeExpression);
     }
 
 
     internal bool HasComponent(Entity entity, MatchExpression expression)
     {
-        var meta = _meta[entity.Index];
-        return meta.Entity != default
-               && meta.Entity == entity
-               && meta.Archetype.Matches(expression);
+        return entity.Alive && entity.Archetype.Matches(expression);
     }
     
 
@@ -127,17 +192,22 @@ public partial class World
             return;
         }
 
-        ref var meta = ref _meta[entity.Index];
+        lock (_spawnLock)
+        {
+            var index = entity.Index;
+            ref var meta = ref _meta[index];
 
-        var table = meta.Archetype;
-        table.Delete(meta.Row);
+            var table = meta.Archetype;
+            table.Delete(meta.Row);
 
-        DespawnDependencies(entity);
+            DespawnDependencies(entity);
 
-        _entityPool.Recycle(entity);
+            // Clear Meta
+            _meta[index] = default;
 
-        // Patch Meta
-        _meta[entity.Index] = default;
+            _gen[index]++;
+            _identityPool.Recycle(entity.Identity);
+        }
     }
 
 
@@ -200,6 +270,12 @@ public partial class World
         AssertAlive(entity);
         return ref _meta[entity.Index];
     }
+    
+    internal ref Meta GetMeta(Entity.Id identity) => ref _meta[identity.Index];
+
+    internal ref Meta GetEntityMeta(Entity entity) => ref _meta[entity.Index];
+
+    internal ref uint GetGeneration(Entity entity) => ref _gen[entity.Index];
 
 
     private Archetype GetOrCreateArchetype(Signature types)
@@ -256,45 +332,27 @@ public partial class World
     #region Assert Helpers
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //TODO: We should do this in Entity instead, and clean up World code a lot?
     private void AssertAlive(Entity entity)
     {
-        if (IsAlive(entity)) return;
+        if (entity.Alive) return;
         throw new ObjectDisposedException($"Entity {entity} is not alive in World {Name}.");
     }
 
     #endregion
 
+    
     /// <summary>
     /// A unique ID for a World.
     /// </summary>
-    public readonly record struct Id
+    internal readonly record struct Id(int Index)
     {
-        private readonly byte _id;
+        // The bit pattern representing this world; the top bit is used to represent this being a valid world.
+        internal readonly uint Tag = (uint) (Index << Shift) | ValidFlag;
 
-        internal Id(byte id)
-        {
-            //ArgumentOutOfRangeException.ThrowIfEqual(id, 0, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
-            Bits = (ulong) id << 32;
-            _id = id;
-        }
-
-        internal Id(int id)
-        {
-            //Debug.Assert(id is > 0 and <= byte.MaxValue, $"{typeof(Id).FullName} must be between 1 and {byte.MaxValue}");
-            Bits = (ulong) id << 32;
-            _id = (byte) id;
-        }
-
-        /// <summary>
-        /// Casts a byte to an Id.
-        /// </summary>
-        public static implicit operator Id(byte id) => new(id);
-        
-        internal int Index => _id;
-        
-        internal readonly ulong Bits;
-        
         /// <inheritdoc />
-        public override string ToString() => $"{_id:d3}";
+        public override string ToString() => $"w{Index:d3}"; 
+
+        private const uint ValidFlag = 0b_1000_0000_0000_0000_0000_0000_0000_0000u;
     }
 }
