@@ -67,6 +67,6 @@ common/enable_object_picking=false
 [rendering]
 
 textures/default_filters/anisotropic_filtering_level=3
+anti_aliasing/quality/msaa_3d=1
 textures/decals/filter=5
 environment/defaults/default_clear_color=Color(0.0627451, 0.12549, 0.156863, 1)
-anti_aliasing/quality/msaa_3d=1
