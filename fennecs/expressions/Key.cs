@@ -19,7 +19,7 @@ public readonly record struct Key
         Value = value & KeyMask;
     }
 
-    public Key(Entity entity) => Value = entity.Identity.Value | EntityFlag;
+    public Key(Entity entity) => Value = entity.Id.Value | EntityFlag;
     
     public Key(Entity entity) => Value = entity.Raw | EntityFlag;
     

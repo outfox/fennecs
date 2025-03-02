@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace fennecs.pools;
+﻿namespace fennecs.pools;
 
 /// <summary>
 /// Generation and Entity management for Entities
@@ -14,7 +12,7 @@ internal sealed class IdentityPool
 
     internal int Alive => (int) (Created - _recycled.Count);
 
-    private readonly Queue<Id> _recycled;
+    private readonly Queue<Entity.Id> _recycled;
 
     private readonly World.Id _world;
 
@@ -27,16 +25,16 @@ internal sealed class IdentityPool
         for (var i = 0; i < initialCapacity; i++) _recycled.Enqueue(new(NextId));
     }
 
-    internal Id Spawn()
+    internal Entity.Id Spawn()
     { 
         return _recycled.TryDequeue(out var recycledEntity)
             ? recycledEntity 
             : new(NextId);
     }
 
-    internal PooledList<Id> Spawn(int amount)
+    internal PooledList<Entity.Id> Spawn(int amount)
     {
-        var identities = PooledList<Id>.Rent();
+        var identities = PooledList<Entity.Id>.Rent();
         var recycled = _recycled.Count;
 
         if (recycled <= amount)
@@ -65,5 +63,5 @@ internal sealed class IdentityPool
         return identities;
     }
     
-    internal void Recycle(Id id) => _recycled.Enqueue(id);
+    internal void Recycle(Entity.Id id) => _recycled.Enqueue(id);
 }

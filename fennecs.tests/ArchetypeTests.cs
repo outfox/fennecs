@@ -184,7 +184,7 @@ public class ArchetypeTests(ITestOutputHelper output)
             Assert.True(entity.Alive);
 
             // Metas patched? TODO: Need to check if rows actually updated correctly.
-            Assert.Equal(entity.Row, world.GetEntityMeta(entity).Row);
+            Assert.Equal(entity._id.Meta.Row, world.GetEntityMeta(entity).Row);
         }
     }
     

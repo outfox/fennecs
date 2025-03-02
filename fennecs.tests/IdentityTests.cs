@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace fennecs.tests;
 
-public class IdentityTests(ITestOutputHelper output)
+public class IdTests(ITestOutputHelper output)
 {
     [Fact]
     public void Entity_None_is_default()

@@ -206,7 +206,7 @@ public partial class World
             _meta[index] = default;
 
             _gen[index]++;
-            _identityPool.Recycle(entity.Identity);
+            _identityPool.Recycle(entity.Id);
         }
     }
 
@@ -265,17 +265,16 @@ public partial class World
     }
 
 
-    internal ref Meta GetEntityMeta(Entity entity)
+    internal ref Meta GetEntityMeta(Entity.Id id)
     {
-        AssertAlive(entity);
-        return ref _meta[entity.Index];
+        return ref _meta[id.Index];
     }
     
-    internal ref Meta GetMeta(Entity.Id identity) => ref _meta[identity.Index];
+    internal ref Meta GetMeta(Entity.Id id) => ref _meta[id.Index];
 
     internal ref Meta GetEntityMeta(Entity entity) => ref _meta[entity.Index];
 
-    internal ref uint GetGeneration(Entity entity) => ref _gen[entity.Index];
+    internal ref uint GetGeneration(Entity.Id entity) => ref _gen[entity.Index];
 
 
     private Archetype GetOrCreateArchetype(Signature types)

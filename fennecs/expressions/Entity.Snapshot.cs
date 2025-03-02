@@ -9,27 +9,28 @@ namespace fennecs;
 public readonly ref partial struct Entity
 {
     /// <summary>
-    /// Entity: An object in the fennecs World, that can have any number of Components.
+    /// Snapshots are Entities annotated with a generation, disambiguating them in case the original
+    /// Entity is despawned and subsequently recycled.
     /// </summary>
     public readonly record struct Snapshot : IEntity, IComparable<Snapshot>, IComparable<Entity>
     {
-        internal readonly Id Identity;
-        public Entity entity => new (Identity);
-        
+        private readonly Id _id;
         private readonly uint _generation;
+        
+        internal Snapshot(Id id)
+        {
+            _id = id;
+            _generation = id.Generation;
+        }
+        
+        internal uint Index => _id.Index;
 
-        internal uint Index => Id.Index;
-
-        internal Entity Id => new(Identity);
-
-        private ref Meta Meta => ref Id.Meta;
+        private ref Meta Meta => ref _id.Meta;
 
         /// <summary>
         /// Is this Entity alive in its World?
         /// </summary>
-        public bool Alive => Id.Gen == _generation;
-
-        internal int Row => Id.Row;
+        public bool Alive => _id.Generation == _generation;
 
         /// <summary>
         /// <c>null</c> equivalent for Entity.
@@ -39,7 +40,7 @@ public readonly ref partial struct Entity
         /// <summary>
         /// The World this Entity belongs to.
         /// </summary>
-        public World World => Id.World;
+        public World World => _id.World;
 
         /// <summary>
         /// The Archetype this Entity belongs to.
@@ -50,18 +51,18 @@ public readonly ref partial struct Entity
         #region IComparable/IEquatable Implementation
 
         /// <inheritdoc cref="IEquatable{T}"/>
-        public bool Equals(Snapshot other) => Identity == other.Identity && _generation == other._generation;
+        public bool Equals(Snapshot other) => _id == other._id && _generation == other._generation;
 
         /// <inheritdoc cref="IComparable{T}"/>
         public int CompareTo(Snapshot other)
         {
-            var id = this.Identity.CompareTo(other.Identity);
+            var id = this._id.CompareTo(other._id);
             return id == 0 ? _generation.CompareTo(other._generation) : id;
         }
 
 
         /// <inheritdoc />
-        public override int GetHashCode() => HashCode.Combine(Identity, _generation);
+        public override int GetHashCode() => HashCode.Combine(_id, _generation);
 
         #endregion
 

@@ -10,3 +10,4 @@ Temp
 *.Artifacts
 .dist
 *.old
+builds

@@ -83,7 +83,7 @@ public class EntityTests(ITestOutputHelper output)
     {
         var entity1 = new Entity(new(1), 1);
         var entity2 = new Entity(new(1), 1);
-        var entity3 = new Entity(entity1.Identity, 1);
+        var entity3 = new Entity(entity1.Id, 1);
         
         Assert.Equal(entity1, entity2);
         Assert.Equal(entity1, entity3);

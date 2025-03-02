@@ -218,7 +218,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
             foreach (var entity in identities)
             {
                 _gen[entity.Index]++;
-                _identityPool.Recycle(entity.Identity);
+                _identityPool.Recycle(entity.Id);
             }
         }
     }

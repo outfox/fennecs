@@ -3,8 +3,14 @@
 namespace fennecs;
 
 /// <summary>
-/// Represents a living Entity. Can be cast to Entity to get a snapshot annotated with a generation.
+/// An object in the fennecs World, that can have any number of Components.
+/// This <c>ref struct</c> represents a living Entity, and while in scope is
+/// guaranteed to be alive.
 /// </summary>
+/// <remarks>
+/// Use its <see cref="snapshot"/> property to store it in an <see cref="Entity.Snapshot">Entity.Snapshot</see>
+/// variable, annotated with a generation, for long term storage and later referencing.
+/// </remarks>
 public readonly ref partial struct Entity : IComparable<Entity>, IEntity
 {
     private readonly ref readonly Id _id;
@@ -12,6 +18,8 @@ public readonly ref partial struct Entity : IComparable<Entity>, IEntity
 
     
     internal uint Raw => _id.Value;
+    
+    public Snapshot snapshot => _id.Snapshot;
 
     /// <summary>
     /// Represents a living Entity. Can be cast to Entity to get a snapshot annotated with a generation.
@@ -22,26 +30,19 @@ public readonly ref partial struct Entity : IComparable<Entity>, IEntity
     }
 
     /// <summary>
-    /// The Index of this Entity.
-    /// </summary>
-    public uint Index => _id.Index;
-
-    /// <summary>
     /// The World this Entity lives in.
     /// </summary>
     public World World => World.Get(WorldIndex);
-
+    
+    internal uint Index => _id.Index;
     private uint WorldIndex => _id.Value & World.Mask >> World.Shift;
-    private ref Meta Meta => ref World.GetEntityMeta(this);
-    internal uint Gen => World.GetGeneration(this);
-    internal int Row => Meta.Row;
 
 
     /// <summary>
     /// Convert this Identity to an Entity, annotating it with its current generation.
     /// </summary>
     /// <returns></returns>
-    public static implicit operator Snapshot(Entity self) => new(self._id, self.Gen);
+    public static implicit operator Snapshot(Entity self) => self.snapshot;
 
     /// <inheritdoc />
     public int CompareTo(Entity other) => _id.CompareTo(other._id);
@@ -52,7 +53,7 @@ public readonly ref partial struct Entity : IComparable<Entity>, IEntity
     }
 
     /// <inheritdoc />
-    public override string ToString() => $"i{Index:x8}(w{WorldIndex}g{Gen})";
+    public override string ToString() => _id.ToString();
 
     #region IEntity
 

@@ -6,11 +6,11 @@ using fennecs.storage;
 
 namespace fennecs;
 
-/// <summary>
-/// Represents a living Entity. Can be cast to Entity to get a snapshot annotated with a generation.
-/// </summary>
 public readonly ref partial struct Entity
 {
+    /// <summary>
+    /// Stored (internal use only) representation of an Entity.
+    /// </summary>
     internal readonly record struct Id(uint Value) : IComparable<Id>
     {
         internal bool Valid => Value != default;
@@ -22,10 +22,12 @@ public readonly ref partial struct Entity
 
         internal uint WorldIndex => Value & World.Mask >> World.Shift;
 
-        
-        private ref Meta Meta => ref World.GetEntityMeta(this);
-        internal uint Gen => World.GetGeneration(this);
+
+        internal ref Meta Meta => ref World.GetEntityMeta(this);
+        internal Archetype Archetype => Meta.Archetype;
         internal int Row => Meta.Row;
+
+        internal uint Generation => World.GetGeneration(this);
 
 
         /// <inheritdoc />
@@ -41,5 +43,6 @@ public readonly ref partial struct Entity
         /// </summary>
         public World World => World.Get(WorldIndex);
 
+        public Snapshot Snapshot => new(this);
     }
 }
