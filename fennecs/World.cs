@@ -265,16 +265,9 @@ public partial class World
     }
 
 
-    internal ref Meta GetEntityMeta(Entity.Id id)
-    {
-        return ref _meta[id.Index];
-    }
+    internal ref Meta GetEntityMeta(fennecs.Id id) => ref _meta[id.Index];
     
-    internal ref Meta GetMeta(Entity.Id id) => ref _meta[id.Index];
-
-    internal ref Meta GetEntityMeta(Entity entity) => ref _meta[entity.Index];
-
-    internal ref uint GetGeneration(Entity.Id entity) => ref _gen[entity.Index];
+    internal ref uint GetGeneration(fennecs.Id id) => ref _gen[id.Index];
 
 
     private Archetype GetOrCreateArchetype(Signature types)

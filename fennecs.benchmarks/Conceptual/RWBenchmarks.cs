@@ -5,6 +5,7 @@ using BenchmarkDotNet.Jobs;
 using CodegenCS;
 using fennecs;
 using fennecs.storage;
+using EntityRef = fennecs.EntityRef;
 
 namespace Benchmark.Conceptual;
 
