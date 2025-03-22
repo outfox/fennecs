@@ -174,7 +174,7 @@ public readonly record struct Comp<T>(Match match = default)
     internal int SIMDsize => Expression.SIMDsize;
 
     /// <summary>
-    /// Component Expression for a blittable type with a specific relation target (match expression).
+    /// Component Expression for a type with a specific relation target (match expression).
     /// </summary>
     public static Comp<T> Matching(Match target) => new(target);
 

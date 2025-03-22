@@ -22,7 +22,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// </summary>
     protected SortedSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty 
         ? Archetypes 
-        : new(Archetypes.Where(a => (Subset.IsEmpty || a.Signature.Matches(Subset)) && !a.Signature.Matches(Exclude)));
+        : new(Archetypes.Where(a => (Subset.IsEmpty || a.MatchSignature.Matches(Subset)) && !a.MatchSignature.Matches(Exclude)));
 
     /// <summary>
     /// Creates a builder for a Batch Operation on the Stream's underyling Query.
