@@ -16,7 +16,7 @@ internal readonly record struct Identity : IComparable<Identity>
     //Identity Components
     [FieldOffset(0)] internal readonly int Index;
     [FieldOffset(4)] internal readonly ushort Generation;
-    [FieldOffset(4)] internal readonly TypeID Decoration;
+    [FieldOffset(4)] internal readonly TypeId Decoration;
 
     //Constituents for GetHashCode()
     [FieldOffset(0)] internal readonly uint DWordLow;
@@ -29,7 +29,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// Falsy if it is a virtual concept or a tracked object.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>
-    public bool IsEntity => Index > 0 && Decoration > 0;
+    public bool IsEntity => Index > 0 && Decoration != TypeId.None;
 
     // Tracked Object Reference.
     /// <summary>
@@ -37,7 +37,7 @@ internal readonly record struct Identity : IComparable<Identity>
     /// Falsy if it is a virtual concept or an actual Entity.
     /// Falsy if it is the <c>default</c> Identity.
     /// </summary>
-    public bool IsObject => Decoration < 0;
+    public bool IsObject => Decoration != TypeId.None;
 
     // Wildcard Entities, such as Any, Object, Entity, or Relation.
     /// <summary>
@@ -78,7 +78,7 @@ internal readonly record struct Identity : IComparable<Identity>
     internal Type Type => Decoration switch
     {
         // Decoration is Type Id
-        <= 0 => LanguageType.Resolve(Math.Abs(Decoration)),
+        <= 0 => LanguageType.Resolve(Decoration),
         // Decoration is Generation
         _ => typeof(Identity),
     };
@@ -95,7 +95,7 @@ internal readonly record struct Identity : IComparable<Identity>
     internal static Identity Of<T>(T item) where T : class => new(item != null! ? item.GetHashCode() : 0, LanguageType<T>.TargetId);
     
     
-    internal Identity(int id, TypeID decoration = 1) : this((uint) id | (ulong) decoration << 32)
+    internal Identity(int id, short decoration = 1) : this((uint) id | (ulong) decoration << 32)
     {
     }
 
@@ -112,7 +112,7 @@ internal readonly record struct Identity : IComparable<Identity>
         {
             if (!IsEntity) throw new InvalidOperationException("Cannot reuse virtual Identities");
 
-            var generationWrappedStartingAtOne = (TypeID) (Generation % (TypeID.MaxValue - 1) + 1);
+            var generationWrappedStartingAtOne = (short) (Generation % (short.MaxValue - 1) + 1);
             return new Identity(Index, generationWrappedStartingAtOne);
         }
     }

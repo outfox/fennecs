@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.5.16-beta</Version>
+        <Version>0.6.0-beta</Version>
         <Title>fennecs</Title>
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -34,6 +34,8 @@
         <Platforms>AnyCPU</Platforms>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        
+        <GenerateSBom>true</GenerateSBom>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -63,5 +65,12 @@
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Sbom.Targets" Version="3.1.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 </Project>

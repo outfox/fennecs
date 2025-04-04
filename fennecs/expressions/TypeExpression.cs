@@ -22,12 +22,24 @@ namespace fennecs;
 /// <para> If <see cref="fennecs.Identity.Object"/>, the type expression acts as a Wildcard 
 ///   expression that matches ONLY entity-object relations.</para>
 /// </remarks>
+
 internal readonly record struct TypeExpression : IComparable<TypeExpression>
 {
     //private TypeExpression(Match match, TypeID typeId) : this(match.Value, typeId, default)
     //{ }
+    //[FieldOffset(0)] internal readonly ulong _raw;
     
-    public TypeExpression(Identity Identity, TypeID TypeId, TypeFlags Flags)
+    //[FieldOffset(0)] internal readonly uint _key;
+    
+    //[FieldOffset(4)] internal readonly KeyKind _keyKind;
+    
+    //[FieldOffset(5)] internal readonly StorageKind _storageKind;
+    
+    //[FieldOffset(6)] internal readonly TypeId _typeId;
+
+
+
+    public TypeExpression(Identity Identity, TypeId TypeId, TypeFlags Flags)
     {
         this.Identity = Identity;
         this.TypeId = TypeId;
@@ -60,7 +72,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     public Type Type => LanguageType.Resolve(TypeId);
 
     public Identity Identity { get; init; }
-    public TypeID TypeId { get; }
+    public TypeId TypeId { get; }
     public TypeFlags Flags { get; }
     
 
@@ -240,7 +252,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <inheritdoc />
     public int CompareTo(TypeExpression other)
     {
-        var typeComparison = TypeId.CompareTo(other.TypeId);
+        var typeComparison = TypeId.Value - other.TypeId.Value;
         if (typeComparison != 0)
         {
             return typeComparison;
