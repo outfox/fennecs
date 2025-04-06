@@ -1,41 +1,46 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 
-namespace fennecs;
+namespace fennecs.Language;
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
-internal class LanguageType
+internal class Type
 {
-    protected internal static Type Resolve(TypeId typeId) => Types[typeId.Value];
+    protected internal static System.Type Resolve(TypeId typeId) => Types[typeId.Value];
 
     // Shared ID counter
     protected static TypeId Counter;
 
-    protected static readonly Type[] Types = new Type[ushort.MaxValue + 1];
+    protected internal static readonly System.Type[] Types = new System.Type[ushort.MaxValue + 1];
     protected static readonly Traits[] Traits = new Traits[ushort.MaxValue + 1];
     
-    protected static readonly Vector256<byte>[] Identities = new Vector256<byte>[ushort.MaxValue + 1];
-    protected static readonly Vector256<byte>[] Inheritances = new Vector256<byte>[ushort.MaxValue + 1];
+    /// <summary>
+    /// Direct flags that can be used to identify types in bloom filters.
+    /// </summary>
+    protected static readonly Vector256<byte>[] Identified = new Vector256<byte>[ushort.MaxValue + 1];
+    /// <summary>
+    /// Bloom filter that encompasses the type's inheritance hierarchy, used to check if it is assignable to another.
+    /// </summary>
+    protected static readonly Vector256<byte>[] Assignable = new Vector256<byte>[ushort.MaxValue + 1];
     
-    protected static readonly Dictionary<Type, TypeId> Ids = new();
+    protected static readonly Dictionary<System.Type, TypeId> Ids = new();
 
     protected static readonly object RegistryLock = new();
 
 
-    protected internal static TypeId Identify(Type type)
+    protected internal static TypeId Identify(System.Type type)
     {
         // Query the registry directly for a fast response.
         if (Ids.TryGetValue(type, out var id)) return id;
 
         lock (RegistryLock)
         {
-            // Construct LanguageType<T>, invoking its static constructor.
-            Type[] typeArgs = [type];
-            var constructed = typeof(LanguageType<>).MakeGenericType(typeArgs);
+            // Construct a fresh LanguageType<T>, invoking its static constructor.
+            System.Type[] typeArgs = [type];
+            var constructed = typeof(Type<>).MakeGenericType(typeArgs);
             constructed.TypeInitializer!.Invoke(null, null);
 
             // Constructor should have added the type to the registry.
@@ -43,35 +48,41 @@ internal class LanguageType
         }
     }
 
+    /// <summary>
+    /// Wildcard type, used for generic wildcards and as a stopgap for when all TypeIds are exhausted.
+    /// </summary>
+    private struct Any;
+    
+    /// <summary>
+    /// No type, used to put something in the 0th id to make comparisons simpler.
+    /// </summary>
+    private struct None;
+    
 
-    static LanguageType()
+
+    static Type()
     {
         Counter = default;
         
         // Block off the first (0th) ID and treat as a None type.
-        Types[TypeId.Null.Value] = typeof(None);
-        Ids[typeof(None)] = TypeId.Null;
+        Types[TypeId.None.Value] = typeof(None);
+        Ids[typeof(None)] = TypeId.None;
 
         // Register the last (MaxValue) ID as Any type, reserved used for future Wildcards and as a
         // simple stopgap for when all TypeIds are exhausted, raising an Exception the type initializer
         // of LanguageType<T> (the same way as any other type collision)
-        Types[TypeId.Wild.Value] = typeof(Any);
-        Ids[typeof(Any)] = TypeId.Wild;
+        Types[TypeId.Any.Value] = typeof(Any);
+        Ids[typeof(Any)] = TypeId.Any;
     }
 
 
-    private struct Any;
-    
-    private struct None;
-    
-
-    private static readonly ConcurrentDictionary<Type, TypeFlags> CachedFlags = new();
-    public static TypeFlags Flags(Type type)
+    private static readonly ConcurrentDictionary<System.Type, TypeFlags> CachedFlags = new();
+    public static TypeFlags Flags(System.Type type)
     {
         if (CachedFlags.TryGetValue(type, out var flags)) return flags;
 
         // Call generic method for T
-        var method = typeof(LanguageType).GetMethod(nameof(FlagsOf), BindingFlags.Public | BindingFlags.Static);
+        var method = typeof(Type).GetMethod(nameof(FlagsOf), BindingFlags.Public | BindingFlags.Static);
         var generic = method!.MakeGenericMethod(type);
         return (TypeFlags) generic.Invoke(null, null)!;
     }
@@ -94,74 +105,14 @@ internal class LanguageType
         CachedFlags.TryAdd(typeof(T), flags);
         return flags;
     }
-
-    internal readonly record struct TypeId(ushort Value)
-    {
-        public static TypeId Null => new(0);
-        public static TypeId Wild => new(ushort.MaxValue);
-
-        public TypeId Next
-        {
-            get
-            {
-                Debug.Assert(Value < ushort.MaxValue - 1, "TypeIds exhausted.");
-                return new((ushort) (Value + 1));
-            }
-        }
-
-        public bool Matches(TypeId that)
-        {
-            // None matches nothing.
-            if (this == Null || that == Null) return false;
-
-            // Any matches anything except none.
-            if (this == Wild || that == Wild) return true;
-
-            // Direct equality comparison.
-            if (this == that) return true;
-
-            // Inheritance check.
-            // (and to avoid this repeat memory access, we use bloom filters in o(n) or worse cases like Signatures)
-            var thisType = Types[Value];
-            return thisType.IsAssignableFrom(Types[that.Value]);
-        }
-    }
 }
 
-internal readonly record struct Traits
-{
-    /// <summary>
-    /// The underlying type of the TypeId.
-    /// </summary>
-    public required Type Type { get; init; }
-    
-    /// <summary>
-    /// Lookup whether the type is a class. 
-    /// </summary>
-    public required bool IsClass  { get; init; }
-
-    /// <summary>
-    /// Lookup whether the type is a class. 
-    /// </summary>
-    public required bool IsValueType  { get; init; }
-
-    /// <summary>
-    /// Lookup whether the type is an unmanaged type 
-    /// </summary>
-    public required bool IsUnmanaged { get; init; }
-    
-    /// <summary>
-    /// Lookup whether the type is an interface. 
-    /// </summary>
-    public required bool IsInterface { get; init; }
-}
-
-internal class LanguageType<T> : LanguageType where T : unmanaged
+internal class Type<T> : Type where T : unmanaged
 {
     // ReSharper disable StaticMemberInGenericType (we indeed want this unique for each T)
     public static readonly TypeId Id;
     
-    static LanguageType()
+    static Type()
     {
         lock (RegistryLock)
         {
@@ -183,12 +134,12 @@ internal class LanguageType<T> : LanguageType where T : unmanaged
             // Single hash function Bloom filter https://hur.st/bloomfilter/?n=50&p=&m=256&k=1
             // This is perfect until 256 component types are known. Then it gradually degrades.
             // On positive (false or true), made 100% reliable by a fast set overlap check.
-            Identities[Id.Value] = Bloom((byte) (Id.Value % 256));
+            Identified[Id.Value] = Bloom((byte) (Id.Value % 256));
 
-            Inheritances[Id.Value] = typeof(T).IsClass
-                ? InheritanceBloom()
-                : Vector256<byte>.Zero;
-
+            // Classes can be assignable to other classes or interfaces, value types are only assignable to interfaces.
+            Assignable[Id.Value] = typeof(T).IsClass
+                ? InheritanceBloom() | InterfaceBloom()
+                : InterfaceBloom();
         }
     }
 
@@ -215,7 +166,7 @@ internal class LanguageType<T> : LanguageType where T : unmanaged
     /// 1 in 100 false positives up to 20 inheritance/interface layers deep.</li></ul>
     /// On positive, is just n Type.isAssignableFrom checks.
     /// </summary>
-    private static Vector256<byte> TypeBloom(Type type) => 
+    private static Vector256<byte> TypeBloom(System.Type type) => 
         Bloom((byte) (type.GetHashCode() % 256)) |
         Bloom((byte) (type.GUID.GetHashCode() % 256)) |
         Bloom((byte) (type.Name.GetHashCode() % 256));
@@ -246,28 +197,4 @@ internal class LanguageType<T> : LanguageType where T : unmanaged
         typeof(T).GetInterfaces() is { } types
             ? types.Aggregate(Vector256<byte>.Zero, (current, type) => current | TypeBloom(type))
             : Vector256<byte>.Zero;
-}
-
-internal static class TypeFlagExtensions
-{
-    public static bool IsUnmanaged(this Type t)
-    {
-        if (t.IsPrimitive || t.IsPointer || t.IsEnum) return true;
-        
-        if (!t.IsValueType || t.IsGenericType || t.IsByRef || t.IsByRefLike) return false;
-
-        var fields = t.GetFields(BindingFlags.Public
-                                 | BindingFlags.NonPublic
-                                 | BindingFlags.Instance);
-        
-        // Recursively check all fields.
-        return fields.All(x => x.FieldType.IsUnmanaged());
-    }
-}
-
-[Flags]
-internal enum TypeFlags : ushort
-{ 
-    SIMDSize  = 0x1fff, // bottom 12 bits.
-    Unmanaged = 0x8000, // top bit.
 }

@@ -2,6 +2,9 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using fennecs.Language;
+using Type = System.Type;
+
 #pragma warning disable CS0169 // Field is never used
 
 namespace fennecs.tests;
@@ -203,7 +206,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void HasCorrectSize_in_Flags_B()
     {
-        var flags = LanguageType.FlagsOf<TypeInt>();
+        var flags = Type.FlagsOf<TypeInt>();
         Assert.True(flags.HasFlag(TypeFlags.Unmanaged));
         Assert.Equal(Unsafe.SizeOf<TypeInt>(), (int)(flags & TypeFlags.SIMDSize));
     }
@@ -211,7 +214,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void HasCorrectSize_in_Flags_TypeEmpty()
     {
-        var flags = LanguageType.FlagsOf<TypeEmpty>();
+        var flags = Type.FlagsOf<TypeEmpty>();
         Assert.True(flags.HasFlag(TypeFlags.Unmanaged));
         var size = Unsafe.SizeOf<TypeEmpty>();
         var actual = (int)(flags & TypeFlags.SIMDSize);
@@ -221,7 +224,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void HasCorrectSize_in_Flags_TypeIntInt()
     {
-        var flags = LanguageType.FlagsOf<TypeIntInt>();
+        var flags = Type.FlagsOf<TypeIntInt>();
         Assert.True(flags.HasFlag(TypeFlags.Unmanaged));
         var size = Unsafe.SizeOf<TypeIntInt>();
         var actual = (int)(flags & TypeFlags.SIMDSize);
@@ -234,9 +237,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [InlineData(typeof(TypeIntInt), 8)]
     [InlineData(typeof(TypeDouble), 8)]
     [InlineData(typeof(TypeDoubleIntTight), 12)]
-    public void HasCorrectSize_structs(Type type, int size)
+    public void HasCorrectSize_structs(System.Type type, int size)
     {
-        var flags = LanguageType.Flags(type);
+        var flags = Type.Flags(type);
         Assert.True(flags.HasFlag(TypeFlags.Unmanaged));
         Assert.Equal(size, (int)(flags & TypeFlags.SIMDSize));
     }
@@ -249,9 +252,9 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [InlineData(typeof(Thread))]
     [InlineData(typeof(HashSet<int>))]
     [InlineData(typeof(byte[]))]
-    public void Recognizes_Managed_Types(Type type)
+    public void Recognizes_Managed_Types(System.Type type)
     {
-        var flags = LanguageType.Flags(type);
+        var flags = Type.Flags(type);
         Assert.False(flags.HasFlag(TypeFlags.Unmanaged));
     }
 

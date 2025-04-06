@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections.Immutable;
+using fennecs.Language;
+using Type = fennecs.Language.Type;
 
 namespace fennecs;
 
@@ -69,7 +71,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <summary>
     /// Get the backing Component type that this <see cref="TypeExpression"/> represents.
     /// </summary>
-    public Type Type => LanguageType.Resolve(TypeId);
+    public System.Type Type => Type.Resolve(TypeId);
 
     public Identity Identity { get; init; }
     public TypeId TypeId { get; }
@@ -185,7 +187,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <typeparam name="T">The backing type for which to generate the expression.</typeparam>
     /// <param name="match">The target entity, with a default of <see cref="fennecs.Identity.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of<T>(Match match) => new(match.Value, LanguageType<T>.Id, LanguageType.FlagsOf<T>());
+    public static TypeExpression Of<T>(Match match) => new(match.Value, Type<T>.Id, Type.FlagsOf<T>());
 
 
     /// <summary>
@@ -210,14 +212,14 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <param name="type">The Component type.</param>
     /// <param name="match">The target entity, with a default of <see cref="fennecs.Identity.Plain"/>, specifically NO target.</param>
     /// <returns>A new <see cref="TypeExpression"/> struct instance, configured according to the specified type and target.</returns>
-    public static TypeExpression Of(Type type, Match match) => new(match.Value, LanguageType.Identify(type), LanguageType.Flags(type));
+    public static TypeExpression Of(System.Type type, Match match) => new(match.Value, Type.Identify(type), Type.Flags(type));
 
 
     /// <inheritdoc cref="object.ToString"/>
     public override string ToString()
     {
-        if (isWildcard || isRelation) return $"<{LanguageType.Resolve(TypeId)}> >> {Match}";
-        return $"<{LanguageType.Resolve(TypeId)}>";
+        if (isWildcard || isRelation) return $"<{Type.Resolve(TypeId)}> >> {Match}";
+        return $"<{Type.Resolve(TypeId)}>";
     }
 
     /// <summary>
