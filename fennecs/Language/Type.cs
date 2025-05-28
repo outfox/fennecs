@@ -181,7 +181,7 @@ internal class Type<T> : Type where T : unmanaged
         if (type.IsValueType) return Vector256<byte>.Zero;
         
         var bloom = Vector256<byte>.Zero;
-        while (type != null && type != typeof(object))
+        while (type != null && type != typeof(object)) // skip object
         {
             bloom |= TypeBloom(type);
             type = type.BaseType;
