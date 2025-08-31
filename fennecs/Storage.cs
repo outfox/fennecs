@@ -184,12 +184,6 @@ internal class Storage<T> : IStorage
         FullSpan[(Count - removals)..Count].Clear();
         
         Count -= removals;
-
-        /*
-        // Naive Wasteful: Shift EVERYTHING backwards.
-        FullSpan[(index + removals)..].CopyTo(FullSpan[index..]);
-        if (Count < _data.Length) FullSpan[Count..].Clear();
-        */        
     }
 
 

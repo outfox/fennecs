@@ -38,4 +38,35 @@ public class LivenessTests(ITestOutputHelper output)
         
         Assert.Empty(world);
     }
+
+    [Fact]
+    public void CanDespawnViaUniformSet()
+    {
+        using var world = new World();
+        world.Entity().Add(69).Spawn(1234);
+        world.Entity().Add(42).Spawn(4567);
+
+        var stream = world.Query<int>().Stream();
+        var despawns = new HashSet<Entity>();
+        stream.For(
+            uniform: despawns, 
+            action: (HashSet<Entity> killSet, in Entity entity, ref int value) => 
+        {
+            if (value == 69) killSet.Add(entity); // Can also just use a closure here, i.e. despawns.
+            if (value == 60 + 9 && killSet.Count % 3 == 0) killSet.Add(entity); // fake redundant addition ;)
+        });
+        
+        Assert.Equal(1234, despawns.Count);
+        Assert.Equal(1234+4567, world.Count);
+        
+        foreach (var d in despawns) world.Despawn(d); // I'll add a overload for any collections later
+        
+        Assert.Equal(4567, world.Count);
+
+        stream.For((ref int value) =>
+        {
+            Assert.NotEqual(69, value);
+        });
+    }
+    
 }
