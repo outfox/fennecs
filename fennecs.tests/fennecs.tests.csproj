@@ -8,7 +8,8 @@
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
         <PackageId>fennecs.tests</PackageId> 
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks> 
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

@@ -4,6 +4,13 @@ using fennecs.pools;
 
 namespace fennecs;
 
+public enum Loop
+{
+    Next,
+    Skip,
+    Stop,
+}
+
 /// <inheritdoc cref="Stream{C0}"/>
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
@@ -14,6 +21,44 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     where C1 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
+
+    public delegate bool ComponentFilter1(in C1 c0);
+
+    public delegate Loop LoopFilter1(in C1 c0);
+    
+    //public Func<C0, bool>? Filter0;
+    /// <summary>
+    /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
+    /// </summary>
+    public ComponentFilter1 F1 { get; init; }
+
+    public LoopFilter1? L1 { get; init; }
+    
+    public Stream<C0, C1> Where(ComponentFilter0? f0 = null)
+    {
+        return this with
+        {
+            F0 = f0 ?? ((in C0 _) => true)
+        };
+    }
+
+
+    public Stream<C0, C1> Where(ComponentFilter1? f1 = null)
+    {
+        return this with
+        {
+            F1 = f1 ?? ((in C1 _) => true)
+        };
+    }
+
+    public Stream<C0, C1> Where(LoopFilter1? l1 = null)
+    {
+        return this with
+        {
+            L1 = l1
+        };
+    }
+
 
 
     #region Stream.For

@@ -16,6 +16,23 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
+    
+    public delegate bool ComponentFilter0(in C0 c0);
+    
+    //public Func<C0, bool>? Filter0;
+    /// <summary>
+    /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
+    /// </summary>
+    public ComponentFilter0 F0 { get; init; }
+
+    public Stream<C0> With(ComponentFilter0? f0 = null)
+    {
+        return this with
+        {
+            F0 = f0 ?? ((in C0 _) => true)
+        };
+    }
+
 
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
