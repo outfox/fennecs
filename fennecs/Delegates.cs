@@ -1,34 +1,7 @@
 ﻿namespace fennecs;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-public delegate void EntityAction(Entity entity);
-public delegate void EntitySpanAction(Span<Entity> entities);
-
-public delegate void UniformEntityAction<in U>(U uniform, Entity entity);
-public delegate void UniformEntitySpanAction<in U>(U uniform, Span<Entity> entities);
-
-public enum Finish {
-    /// <summary>
-    /// Move the the next Entity, this is the default behaviour as for the <see cref="ComponentAction{C0}"/>, <see cref="EntityComponentAction{C0}"/>, <see cref="UniformComponentAction{U,C0}"/>, etc.
-    /// </summary>
-    Entity = 0,
-    /// <summary>
-    /// Finishes the entire Job (on the current thread), or the current Archetype (in a single-threaded runner).
-    /// Other threads will continue to process their Archetypes, but this thread will not process any more Entities in the current Job.
-    /// </summary>
-    Job = 1,
-    /// <summary>
-    /// Finishes the entire Runner. For Jobs, this will wait for all threads to finish as soon as possible.
-    /// </summary>
-    All = int.MaxValue, 
-}
-
-public delegate Finish EarlyOutComponentAction<C0>(ref C0 comp0);
-public delegate Finish EarlyOutComponentAction<C0, C1>(ref C0 comp0, ref C1 comp1);
-public delegate Finish EarlyOutComponentAction<C0, C1, C2>(ref C0 comp0, ref C1 comp1, ref C2 comp2);
-public delegate Finish EarlyOutComponentAction<C0, C1, C2, C3>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
-public delegate Finish EarlyOutComponentAction<C0, C1, C2, C3, C4>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
-
+public delegate bool ComponentFilter<C>(in C c0);
 
 public delegate void ComponentAction<C0>(ref C0 comp0);
 public delegate void ComponentAction<C0, C1>(ref C0 comp0, ref C1 comp1);

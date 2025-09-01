@@ -16,22 +16,24 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
+
     
-    public delegate bool ComponentFilter0(in C0 c0);
-    
-    //public Func<C0, bool>? Filter0;
     /// <summary>
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
-    public ComponentFilter0 F0 { get; init; }
+    public ComponentFilter<C0>? F0 { get; init; }
 
-    public Stream<C0> With(ComponentFilter0? f0 = null)
+    /// <summary>
+    /// Creates a new Stream with the same Query, but with the provided filter predicate.
+    /// </summary>
+    public Stream<C0> Where2(ComponentFilter<C0>? f0)
     {
         return this with
         {
-            F0 = f0 ?? ((in C0 _) => true)
+            F0 = f0,
         };
     }
+
 
 
     /// <summary>

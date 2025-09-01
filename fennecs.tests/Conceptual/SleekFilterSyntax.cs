@@ -60,8 +60,5 @@ public class SleekFilterSyntax
         var testStream = world.Stream<int, float>();
         var testFiltered1 = testStream.Where((in int v) => v < 0); //C#14
         var testFiltered2 = testStream.Where((in float i) => i >= 0.5f);
-        
-        var testFiltered3 = testStream.Where((in i) => i >= 0.5f ? Loop.Next : Loop.Stop);
-        var testFiltered4 = testStream.Where((in i) => i >= 0.5f ? Loop.Next : Loop.Skip);
     }
 }
