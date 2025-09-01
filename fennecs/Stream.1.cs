@@ -17,7 +17,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
 
-    
+    /*
     /// <summary>
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
@@ -33,7 +33,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
             F0 = f0,
         };
     }
-
+    */
 
 
     /// <summary>

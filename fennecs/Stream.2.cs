@@ -1,5 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.X86;
+
 using fennecs.pools;
 
 namespace fennecs;
@@ -19,8 +22,14 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     /// <summary>
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
-    public ComponentFilter<C1>? F1 { get; init; }
+    public ComponentFilter<C0>? F0 { private get; init; }
 
+    /// <summary>
+    /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
+    /// </summary>
+    public ComponentFilter<C1>? F1 { private get; init; }
+
+    
     /// <summary>
     /// Creates a new Stream with the same Query and Filters, but replacing the filter for Component <c>C0</c> with the provided predicate. 
     /// </summary>
@@ -32,6 +41,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         };
     }
 
+    
     /// <summary>
     /// Creates a new Stream with the same Query and Filters, but replacing the filter for Component <c>C1</c> with the provided predicate.
     /// </summary>
@@ -46,8 +56,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
 
     #region Stream.For
 
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    public void For(ComponentAction<C0, C1> action)
+    private void FastFor(ComponentAction<C0, C1> action)
     {
         using var worldLock = World.Lock();
 
@@ -58,7 +67,30 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
             do
             {
                 var (s0, s1) = join.Select;
-                Unroll8(s0, s1, action);
+                LoopUnroll8(s0, s1, action);
+            } while (join.Iterate());
+        }
+    }
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    public void For(ComponentAction<C0, C1> action)
+    {
+        using var worldLock = World.Lock();
+
+        if (F0 == default && F1 == default)
+        {
+            FastFor(action);
+            return;
+        }
+        
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            do
+            {
+                var (s0, s1) = join.Select;
+                LoopFiltered(s0, s1, action);
             } while (join.Iterate());
         }
     }
@@ -80,7 +112,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
                 var span0 = s0.Span;
                 var span1 = s1.Span;
 
-                Unroll8U(span0, span1, action, uniform);
+                LoopUnroll8U(span0, span1, action, uniform);
             } while (join.Iterate());
         }
     }
@@ -328,9 +360,19 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     
     #endregion
     
-    #region Unroll
+    #region Action Loops
     
-    private static void Unroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
+    private void LoopFiltered(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
+    {
+        for (var i = 0; i < span0.Length; i ++)
+        {
+            if (F0 != default && !F0(span0[i])) continue;
+            if (F1 != default && !F1(span1[i])) continue;
+            action(ref span0[i], ref span1[i]);
+        }
+    }
+
+    private static void LoopUnroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
@@ -353,7 +395,62 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         }
     }
 
-    private static void Unroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<U, C0, C1> action, U uniform)
+    private static unsafe void LoopUnroll8Prefetch<U0, U1>(Span<U0> span0, Span<U1> span1, ComponentAction<U0, U1> action) where U0 : unmanaged where U1 : unmanaged
+    {
+        var c = span0.Length / 8 * 8;
+
+        fixed (U0* p0 = span0)
+        fixed (U1* p1 = span1)
+        {
+            for (var i = 0; i < c; i += 8)
+            {
+                if (Sse.IsSupported)
+                {
+                    Sse.Prefetch0(p0 + i + 16); //TODO: (tune this distance!)
+                    Sse.Prefetch0(p1 + i + 16);
+                }
+
+                // Unrolled loop body
+                action(ref span0[i], ref span1[i]);
+                action(ref span0[i + 1], ref span1[i + 1]);
+                action(ref span0[i + 2], ref span1[i + 2]);
+                action(ref span0[i + 3], ref span1[i + 3]);
+                action(ref span0[i + 4], ref span1[i + 4]);
+                action(ref span0[i + 5], ref span1[i + 5]);
+                action(ref span0[i + 6], ref span1[i + 6]);
+                action(ref span0[i + 7], ref span1[i + 7]);
+            }
+        }
+        var d = span0.Length;
+        for (var i = c; i < d; i++)
+        {
+            action(ref span0[i], ref span1[i]);
+        }
+    }
+
+    private static void LoopUnroll8Interleave4(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
+    {
+        var c = span0.Length / 8 * 8;
+        for (var i = 0; i < c; i += 8)
+        {
+            action(ref span0[i], ref span1[i]);
+            action(ref span0[i + 4], ref span1[i + 4]);
+            action(ref span0[i + 1], ref span1[i + 1]);
+            action(ref span0[i + 5], ref span1[i + 5]);
+            action(ref span0[i + 2], ref span1[i + 2]);
+            action(ref span0[i + 6], ref span1[i + 6]);
+            action(ref span0[i + 3], ref span1[i + 3]);
+            action(ref span0[i + 7], ref span1[i + 7]);
+        }
+
+        var d = span0.Length;
+        for (var i = c; i < d; i++)
+        {
+            action(ref span0[i], ref span1[i]);
+        }
+    }
+
+    private static void LoopUnroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<U, C0, C1> action, U uniform)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
