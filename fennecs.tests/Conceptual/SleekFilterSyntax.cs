@@ -5,22 +5,20 @@ namespace fennecs.tests.Conceptual;
 
 public class SleekFilterSyntax
 {
-    private static Stream<Index> Setup(int count1, int count2 = 0)
+    private readonly record struct Test1(int Value) : IComparable<int>, IComparable<Test1>
     {
-        using var world = new World();
+        public int CompareTo(Test1 other)
+        {
+            return Value.CompareTo(other.Value);
+        }
 
-        using var _ = world.Entity()
-            .Add<Index>()
-            .Spawn(count1)
-            .Add(true)
-            .Spawn(count2);
-
-        // This is shorthand for a stream query.
-        return world.Stream<Index>();
+        public int CompareTo(int other)
+        {
+            return Value.CompareTo(other);
+        }
     }
-    
-    record struct Test1(int Value);
-    record struct Test2(float Value) : IComparable<float>
+
+    private readonly record struct Test2(float Value) : IComparable<float>
     {
         public int CompareTo(Test2 other)
         {
@@ -29,36 +27,47 @@ public class SleekFilterSyntax
 
         public int CompareTo(float other)
         {
-            throw new NotImplementedException();
+            return Value.CompareTo(other);
         }
     }
 
-    [Fact]
-    public void FilterWithLambda()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(10)]
+    [InlineData(100)]
+    [InlineData(1_000)]
+    public void FilterWithLambda(int count)
     {
-        var world = new World();
+        using var world = new World();
 
-        var allPositions = world.Stream<Vector3, int>();
-        var allPositions2 = world.Stream<Vector3, Vector3>();
-        var belowTheGround = allPositions with
+        for (var i = 0; i < count; i++)
         {
-            F0 = (in Vector3 v) => v.Y < 0,
-        };
+            world.Spawn()
+                .Add(new Test1(Random.Shared.Next(i)))
+                .Add(new Test2(Random.Shared.NextSingle() * i));
+        }
         
-        belowTheGround.For((ref Vector3 index) =>
+        var all = world.Stream<Test1, Test2>();
+
+        var topHalfFloat = all.Where((in Test2 t) => t.Value > 50.0f);
+        var botHalfFloat = all.Where((in Test2 t) => t.Value <= 50.0f);
+        
+        var top = 0;
+        var bot = 0;
+        topHalfFloat.For((ref _, ref t2) =>
         {
-            Assert.True(index.Y < 0);   
+            top++;
+            Assert.True(t2.Value > 50);
         });
 
-        var belowTheGround1 = allPositions.Where((in Vector3 v) => v.Y < 0); //C#13
-        var belowTheGround2 = allPositions.Where((in int i) => i == 12345);
+        botHalfFloat.For((ref _, ref t2) =>
+        {
+            bot++;
+            Assert.True(t2.Value <= 50);
+        });
         
-        var belowTheGround3 = allPositions.Where((in v) => v.Y < 0); //C#14
-        var belowTheGround4 = allPositions.Where((in i) => i == 12345);
-        
-        
-        var testStream = world.Stream<int, float>();
-        var testFiltered1 = testStream.Where((in int v) => v < 0); //C#14
-        var testFiltered2 = testStream.Where((in float i) => i >= 0.5f);
+        Assert.Equal(count, top + bot);
     }
 }

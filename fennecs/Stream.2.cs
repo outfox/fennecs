@@ -372,6 +372,54 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         }
     }
 
+    private void LoopFilteredUnroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
+    {
+        var c = span0.Length / 8 * 8;
+        for (var i = 0; i < c; i += 8)
+        {
+            if ((F0 == default || F0(span0[i])) && 
+                (F1 == default || F1(span1[i]))) 
+                action(ref span0[i], ref span1[i]);
+
+            if ((F0 == default || F0(span0[i + 1])) && 
+                (F1 == default || F1(span1[i + 1]))) 
+                action(ref span0[i + 1], ref span1[i + 1]);   
+            
+            if ((F0 == default || F0(span0[i + 2])) && 
+                (F1 == default || F1(span1[i + 2]))) 
+                action(ref span0[i + 2], ref span1[i + 2]);
+            
+            if ((F0 == default || F0(span0[i + 3])) && 
+                (F1 == default || F1(span1[i + 3]))) 
+                action(ref span0[i + 3], ref span1[i + 3]);
+            
+            if ((F0 == default || F0(span0[i + 4])) && 
+                (F1 == default || F1(span1[i + 4]))) 
+                action(ref span0[i + 4], ref span1[i + 4]);
+            
+            if ((F0 == default || F0(span0[i + 5])) && 
+                (F1 == default || F1(span1[i + 5]))) 
+                action(ref span0[i + 5], ref span1[i + 5]);
+            
+            if ((F0 == default || F0(span0[i + 6])) && 
+                (F1 == default || F1(span1[i + 6]))) 
+                action(ref span0[i + 6], ref span1[i + 6]);
+            
+            if ((F0 == default || F0(span0[i + 7])) && 
+                (F1 == default || F1(span1[i + 7]))) 
+                action(ref span0[i + 7], ref span1[i + 7]);
+            
+        }
+
+        var d = span0.Length;
+        for (var i = c; i < d; i++)
+        {
+            if (F0 != default && !F0(span0[i])) continue;
+            if (F1 != default && !F1(span1[i])) continue;
+            action(ref span0[i], ref span1[i]);
+        }
+    }
+
     private static void LoopUnroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
     {
         var c = span0.Length / 8 * 8;
