@@ -13,12 +13,12 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <PlatformTarget>x64</PlatformTarget>
+      <PlatformTarget>AnyCPU</PlatformTarget>
       <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <PlatformTarget>x64</PlatformTarget>
+      <PlatformTarget>AnyCPU</PlatformTarget>
       <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     </PropertyGroup>
 
