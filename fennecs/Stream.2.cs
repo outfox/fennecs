@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using System.Runtime.Intrinsics.X86;
 
 using fennecs.pools;
 
@@ -19,6 +18,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
     
     #region Filter State
+    
     /// <summary>
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
@@ -90,7 +90,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
             do
             {
                 var (s0, s1) = join.Select;
-                LoopFiltered(s0, s1, action);
+                LoopFilteredUnroll8(s0, s1, action);
             } while (join.Iterate());
         }
     }
@@ -361,17 +361,9 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     #endregion
     
     #region Action Loops
-    
-    private void LoopFiltered(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
-    {
-        for (var i = 0; i < span0.Length; i ++)
-        {
-            if (F0 != default && !F0(span0[i])) continue;
-            if (F1 != default && !F1(span1[i])) continue;
-            action(ref span0[i], ref span1[i]);
-        }
-    }
 
+    // ReSharper disable once CognitiveComplexity
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void LoopFilteredUnroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
     {
         var c = span0.Length / 8 * 8;
@@ -420,7 +412,8 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         }
     }
 
-    private static void LoopUnroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void LoopUnroll8<U0, U1>(Span<U0> span0, Span<U1> span1, ComponentAction<U0, U1> action)
     {
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
@@ -443,61 +436,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         }
     }
 
-    private static unsafe void LoopUnroll8Prefetch<U0, U1>(Span<U0> span0, Span<U1> span1, ComponentAction<U0, U1> action) where U0 : unmanaged where U1 : unmanaged
-    {
-        var c = span0.Length / 8 * 8;
-
-        fixed (U0* p0 = span0)
-        fixed (U1* p1 = span1)
-        {
-            for (var i = 0; i < c; i += 8)
-            {
-                if (Sse.IsSupported)
-                {
-                    Sse.Prefetch0(p0 + i + 16); //TODO: (tune this distance!)
-                    Sse.Prefetch0(p1 + i + 16);
-                }
-
-                // Unrolled loop body
-                action(ref span0[i], ref span1[i]);
-                action(ref span0[i + 1], ref span1[i + 1]);
-                action(ref span0[i + 2], ref span1[i + 2]);
-                action(ref span0[i + 3], ref span1[i + 3]);
-                action(ref span0[i + 4], ref span1[i + 4]);
-                action(ref span0[i + 5], ref span1[i + 5]);
-                action(ref span0[i + 6], ref span1[i + 6]);
-                action(ref span0[i + 7], ref span1[i + 7]);
-            }
-        }
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
-            action(ref span0[i], ref span1[i]);
-        }
-    }
-
-    private static void LoopUnroll8Interleave4(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
-    {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
-        {
-            action(ref span0[i], ref span1[i]);
-            action(ref span0[i + 4], ref span1[i + 4]);
-            action(ref span0[i + 1], ref span1[i + 1]);
-            action(ref span0[i + 5], ref span1[i + 5]);
-            action(ref span0[i + 2], ref span1[i + 2]);
-            action(ref span0[i + 6], ref span1[i + 6]);
-            action(ref span0[i + 3], ref span1[i + 3]);
-            action(ref span0[i + 7], ref span1[i + 7]);
-        }
-
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
-            action(ref span0[i], ref span1[i]);
-        }
-    }
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void LoopUnroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<U, C0, C1> action, U uniform)
     {
         var c = span0.Length / 8 * 8;

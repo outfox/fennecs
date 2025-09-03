@@ -1,19 +1,22 @@
 ﻿using System.Numerics;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Order;
+
 using fennecs;
 
 namespace Benchmark.ECS;
 
 [ShortRunJob]
+[Orderer(SummaryOrderPolicy.FastestToSlowest)]
 //[ThreadingDiagnoser]
 //[MemoryDiagnoser]
 public class FilterBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(100, 1_000, 10_000)]
-    public int entityCount { get; set; }
+    [Params(100, 1_000, 10_000, 100_000, 1_000_000)]
+    public int EntityCount { get; set; }
 
-    private static readonly Random random = new(1337);
+    private static readonly Random Random = new(1337);
 
     private World _world = null!;
     
@@ -30,14 +33,14 @@ public class FilterBenchmarks
         _streamV3 = _world.Query<Vector3, int>().Stream();
         _streamV3TopHalf = _streamV3.Where((in Vector3 v) => v.Y > 0.5f);
         _streamV3TopHalfInt = _streamV3.Where((in int i) => i >= 50);
-        
-        _vectorsRaw = new Vector3[entityCount];
-        _intsRaw = new int[entityCount];
 
-        for (var i = 0; i < entityCount; i++)
+        _vectorsRaw = new Vector3[EntityCount];
+        _intsRaw = new int[EntityCount];
+
+        for (var i = 0; i < EntityCount; i++)
         {
-            _vectorsRaw[i] = new(random.NextSingle(), random.NextSingle(), random.NextSingle());
-            _intsRaw[i] = random.Next() % 101;
+            _vectorsRaw[i] = new(Random.NextSingle(), Random.NextSingle(), Random.NextSingle());
+            _intsRaw[i] = Random.Next() % 101;
 
             switch (i % 4)
             {
@@ -45,7 +48,7 @@ public class FilterBenchmarks
                     _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]);
                     break;
                 case 1:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]).Add("hello");
+                    _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]).Add($"hello{i}");
                     break;
                 case 2:
                     _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]).Add<float>();
@@ -86,8 +89,7 @@ public class FilterBenchmarks
         
         return count;
     }
-
-
+    
     [Benchmark]
     public int FilterVector()
     {

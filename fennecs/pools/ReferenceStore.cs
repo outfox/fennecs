@@ -12,8 +12,6 @@ internal class ReferenceStore(int capacity = 4096)
 
     public Identity Request<T>(T item) where T : class
     {
-        ArgumentNullException.ThrowIfNull(nameof(item));
-
         var identity = Identity.Of(item);
 
         lock (_storage)

@@ -1,6 +1,6 @@
 <Project Sdk="Godot.NET.Sdk/4.4.0-rc.1">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>fennecs.demos.godot</RootNamespace>
