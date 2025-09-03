@@ -363,7 +363,6 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     #region Action Loops
 
     // ReSharper disable once CognitiveComplexity
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void LoopFilteredUnroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
     {
         var c = span0.Length / 8 * 8;
@@ -412,7 +411,6 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void LoopUnroll8<U0, U1>(Span<U0> span0, Span<U1> span1, ComponentAction<U0, U1> action)
     {
         var c = span0.Length / 8 * 8;
@@ -436,7 +434,6 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void LoopUnroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<U, C0, C1> action, U uniform)
     {
         var c = span0.Length / 8 * 8;
