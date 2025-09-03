@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
 
@@ -70,12 +71,11 @@ public class FilterBenchmarks
         
         _streamV3.For((ref Vector3 v, ref int i) =>
         {
-            if (i > 50) i = (int) Vector3.Dot(v, UniformConstantVector);
+            if (v.Y > 0.5f) i = (int) Vector3.Dot(v, UniformConstantVector);
         });
         
         return count;
     }
-
 
     [Benchmark]
     public int ManualInteger()
@@ -84,12 +84,27 @@ public class FilterBenchmarks
         
         _streamV3.For((ref Vector3 v, ref int i) =>
         {
-            if (v.Y > 0.5f) i = (int) Vector3.Dot(v, UniformConstantVector);
+            if (i >= 50) i = (int) Vector3.Dot(v, UniformConstantVector);
         });
         
         return count;
     }
-    
+
+    [Benchmark]
+    public int MethodInteger()
+    {
+        var count = 0;
+        
+        _streamV3.For(MethodInt);
+        
+        return count;
+    }
+
+    private void MethodInt(ref Vector3 v, ref int i)
+    {
+        if (i >= 50) i = (int) Vector3.Dot(v, UniformConstantVector);
+    }
+
     [Benchmark]
     public int FilterVector()
     {
