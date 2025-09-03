@@ -23,7 +23,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <LangVersion>preview</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
-        <Configurations>Debug;Release</Configurations>
+        <Configurations>Release;Debug</Configurations>
 
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 

@@ -13,13 +13,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    </PropertyGroup>
-
+    
     <ItemGroup>
       <ProjectReference Include="..\fennecs\fennecs.csproj" />
     </ItemGroup>
