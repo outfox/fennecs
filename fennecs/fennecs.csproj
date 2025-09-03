@@ -37,6 +37,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <Optimize>true</Optimize>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
@@ -46,8 +47,8 @@
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <EnablePackageValidation>false</EnablePackageValidation>
     </PropertyGroup>
+    
     <ItemGroup>
-
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).tests</_Parameter1>
         </AssemblyAttribute>
