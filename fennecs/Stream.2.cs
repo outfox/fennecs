@@ -97,14 +97,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
     public ComponentFilter<C1>? F1 { private get; init; }
-
-    public Match Match1
-    {
-        get => field;
-        init => field = value;
-    } = Match1;
-
-
+    
     /// <summary>
     /// Creates a new Stream with the same Query and Filters, but replacing the filter for Component <c>C0</c> with the provided predicate. 
     /// </summary>
@@ -410,7 +403,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
     #region IEnumerable
 
     /// <inheritdoc />
-    public new IEnumerator<(Entity, C0, C1)> GetEnumerator()
+    public IEnumerator<(Entity, C0, C1)> GetEnumerator()
     {
         foreach (var table in Filtered)
         {

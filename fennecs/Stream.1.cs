@@ -120,7 +120,6 @@ public readonly record struct Stream<C0>(Query Query, Match Match0) : IEnumerabl
     /// </summary>
     /// <param name="action"><see cref="UniformComponentAction{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(U uniform, UniformComponentAction<U, C0> action)
     {
         using var worldLock = World.Lock();

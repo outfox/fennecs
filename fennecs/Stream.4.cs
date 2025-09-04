@@ -363,7 +363,7 @@ public readonly record struct Stream<C0, C1, C2, C3>(Query Query, Match Match0, 
     #region IEnumerable
 
     /// <inheritdoc />
-    public new IEnumerator<(Entity, C0, C1, C2, C3)> GetEnumerator()
+    public IEnumerator<(Entity, C0, C1, C2, C3)> GetEnumerator()
     {
         foreach (var table in Filtered)
         {
