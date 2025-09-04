@@ -21,9 +21,9 @@ public class FilterBenchmarks
 
     private World _world = null!;
     
-    private Stream<Vector3, int> _streamV3 = null!;
-    private Stream<Vector3, int> _streamV3TopHalf = null!;
-    private Stream<Vector3, int> _streamV3TopHalfInt = null!;
+    private Stream<Vector3, int> _streamV3;
+    private Stream<Vector3, int> _streamV3TopHalf;
+    private Stream<Vector3, int> _streamV3TopHalfInt;
     private Vector3[] _vectorsRaw = null!;
     private int[] _intsRaw = null!;
 

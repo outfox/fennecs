@@ -17,7 +17,7 @@ public class SimpleEntityBenchmarks
 
     private World _world = null!;
     
-    private Stream<Vector3> _streamV3 = null!;
+    private Stream<Vector3> _streamV3;
     private Vector3[] _vectorsRaw = null!;
 
     [GlobalSetup]

@@ -17,7 +17,7 @@ namespace Benchmark.ECS;
 public class BlitterBenchmarks
 {
     private World _world = null!;
-    private Stream<int, string> _stream = null!;
+    private Stream<int, string> _stream ;
 
     // ReSharper disable once MemberCanBePrivate.Global
     [Params(100_000, 1_000_000, 10_000_000, 100_000_000)]

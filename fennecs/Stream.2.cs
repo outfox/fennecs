@@ -391,6 +391,22 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IB
 
 
     #region Blitters
+    /// <summary>
+    /// <para>Blit (write) a component value of a stream type to all entities matched by this query.</para>
+    /// <para>🚀 Very fast!</para>
+    /// </summary>
+    /// <remarks>
+    /// Each entity in the Query must possess the component type.
+    /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
+    /// </remarks>
+    /// <param name="value">a component value</param>
+    /// <param name="match">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
+    public void Blit(C0 value, Match match = default)
+    {
+        var typeExpression = TypeExpression.Of<C0>(match);
+        foreach (var table in Filtered) table.Fill(typeExpression, value);
+    }
+
 
     /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
     public void Blit(C1 value, Match match = default)

@@ -18,7 +18,7 @@ namespace Benchmark.ECS;
 // ReSharper disable once IdentifierTypo
 public class SIMDBenchmarks
 {
-    private Stream<Component1, Component2, Component3> _query = null!;
+    private Stream<Component1, Component2, Component3> _query;
     private World _world = null!;
 
     // ReSharper disable once MemberCanBePrivate.Global

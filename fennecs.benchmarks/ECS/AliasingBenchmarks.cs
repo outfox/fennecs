@@ -30,9 +30,9 @@ public class AliasingBenchmarks(Vector4[] testArray)
 
     private World _world = null!;
 
-    private Stream<Vector4> _queryV4 = null!;
-    private Stream<FoxVector4> _queryF4 = null!;
-    private Stream<FoxVector4Simd> _query128 = null!;
+    private Stream<Vector4> _queryV4;
+    private Stream<FoxVector4> _queryF4;
+    private Stream<FoxVector4Simd> _query128;
 
     private struct FoxVector4(Vector4 v) : Fox<Vector4>, Fox128<Vector4>
     {
@@ -120,7 +120,7 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [GlobalCleanup]
     public void Cleanup()
     {
-        _queryV4 = null!;
+        _queryV4;
         _world.Dispose();
         _world = null!;
     }
