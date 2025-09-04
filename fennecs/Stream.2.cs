@@ -8,14 +8,12 @@ namespace fennecs;
 /// <inheritdoc cref="Stream{C0}"/>
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
-// ReSharper disable once NotAccessedPositionalProperty.Global
-public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Match1)
-    : IEnumerable<(Entity, C0, C1)>, IBatchBegin
+public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IBatchBegin
     where C0 : notnull
     where C1 : notnull
 {
     #region Stream Fields
-    private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
+    private readonly ImmutableArray<TypeExpression> _streamTypes;
 
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
@@ -60,9 +58,9 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
 
     /// <summary>
     /// The Query this Stream is associated with.
-    /// Can be re-inited via the with keyword.
+    /// Can be re-initialized via the with keyword.
     /// </summary>
-    public Query Query { get; } = Query;
+    public Query Query { get; }
 
     /// <summary>
     /// Subset Stream Filter - if not empty, only entities with these components will be included in the Stream. 
@@ -77,7 +75,16 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
     /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
-    private readonly CountdownEvent Countdown = new(initialCount: 1);
+    private readonly CountdownEvent _countdown = new(initialCount: 1);
+
+    /// <inheritdoc cref="Stream{C0}"/>
+    /// <typeparam name="C0">stream type</typeparam>
+    /// <typeparam name="C1">stream type</typeparam>
+    public Stream(Query Query, Match match0, Match match1)
+    {
+        _streamTypes = [TypeExpression.Of<C0>(match0), TypeExpression.Of<C1>(match1)];
+        this.Query = Query;
+    }
 
     /// <summary>   
     ///     The number of threads this Stream uses for parallel processing.
@@ -145,7 +152,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
     {
         using var worldLock = World.Lock();
 
-        if (F0 == default && F1 == default)
+        if (F0 == null && F1 == null)
         {
             FastFor(action);
             return;
@@ -241,7 +248,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
         using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        Countdown.Reset();
+        _countdown.Reset();
 
         using var jobs = PooledList<Work<C0, C1>>.Rent();
 
@@ -256,7 +263,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
             {
                 for (var chunk = 0; chunk < partitions; chunk++)
                 {
-                    Countdown.AddCount();
+                    _countdown.AddCount();
 
                     var start = chunk * chunkSize;
                     var length = Math.Min(chunkSize, count - start);
@@ -267,7 +274,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
                     job.Action = action;
-                    job.CountDown = Countdown;
+                    job.CountDown = _countdown;
                     jobs.Add(job);
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
@@ -275,8 +282,8 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
             } while (join.Iterate());
         }
 
-        Countdown.Signal();
-        Countdown.Wait();
+        _countdown.Signal();
+        _countdown.Wait();
 
         JobPool<Work<C0, C1>>.Return(jobs);
     }
@@ -290,7 +297,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
-        Countdown.Reset();
+        _countdown.Reset();
 
         using var jobs = PooledList<UniformWork<U, C0, C1>>.Rent();
 
@@ -305,7 +312,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
             {
                 for (var chunk = 0; chunk < partitions; chunk++)
                 {
-                    Countdown.AddCount();
+                    _countdown.AddCount();
 
                     var start = chunk * chunkSize;
                     var length = Math.Min(chunkSize, count - start);
@@ -317,7 +324,7 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
                     job.Memory2 = s1.AsMemory(start, length);
                     job.Action = action;
                     job.Uniform = uniform;
-                    job.CountDown = Countdown;
+                    job.CountDown = _countdown;
                     jobs.Add(job);
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
@@ -325,8 +332,8 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
             } while (join.Iterate());
         }
 
-        Countdown.Signal();
-        Countdown.Wait();
+        _countdown.Signal();
+        _countdown.Wait();
 
         JobPool<UniformWork<U, C0, C1>>.Return(jobs);
     }
@@ -436,36 +443,36 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
         {
-            if ((F0 == default || F0(span0[i])) && 
-                (F1 == default || F1(span1[i]))) 
+            if ((F0 == null || F0(span0[i])) && 
+                (F1 == null || F1(span1[i]))) 
                 action(ref span0[i], ref span1[i]);
 
-            if ((F0 == default || F0(span0[i + 1])) && 
-                (F1 == default || F1(span1[i + 1]))) 
+            if ((F0 == null || F0(span0[i + 1])) && 
+                (F1 == null || F1(span1[i + 1]))) 
                 action(ref span0[i + 1], ref span1[i + 1]);   
             
-            if ((F0 == default || F0(span0[i + 2])) && 
-                (F1 == default || F1(span1[i + 2]))) 
+            if ((F0 == null || F0(span0[i + 2])) && 
+                (F1 == null || F1(span1[i + 2]))) 
                 action(ref span0[i + 2], ref span1[i + 2]);
             
-            if ((F0 == default || F0(span0[i + 3])) && 
-                (F1 == default || F1(span1[i + 3]))) 
+            if ((F0 == null || F0(span0[i + 3])) && 
+                (F1 == null || F1(span1[i + 3]))) 
                 action(ref span0[i + 3], ref span1[i + 3]);
             
-            if ((F0 == default || F0(span0[i + 4])) && 
-                (F1 == default || F1(span1[i + 4]))) 
+            if ((F0 == null || F0(span0[i + 4])) && 
+                (F1 == null || F1(span1[i + 4]))) 
                 action(ref span0[i + 4], ref span1[i + 4]);
             
-            if ((F0 == default || F0(span0[i + 5])) && 
-                (F1 == default || F1(span1[i + 5]))) 
+            if ((F0 == null || F0(span0[i + 5])) && 
+                (F1 == null || F1(span1[i + 5]))) 
                 action(ref span0[i + 5], ref span1[i + 5]);
             
-            if ((F0 == default || F0(span0[i + 6])) && 
-                (F1 == default || F1(span1[i + 6]))) 
+            if ((F0 == null || F0(span0[i + 6])) && 
+                (F1 == null || F1(span1[i + 6]))) 
                 action(ref span0[i + 6], ref span1[i + 6]);
             
-            if ((F0 == default || F0(span0[i + 7])) && 
-                (F1 == default || F1(span1[i + 7]))) 
+            if ((F0 == null || F0(span0[i + 7])) && 
+                (F1 == null || F1(span1[i + 7]))) 
                 action(ref span0[i + 7], ref span1[i + 7]);
             
         }
@@ -473,8 +480,8 @@ public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Ma
         var d = span0.Length;
         for (var i = c; i < d; i++)
         {
-            if (F0 != default && !F0(span0[i])) continue;
-            if (F1 != default && !F1(span1[i])) continue;
+            if (F0 != null && !F0(span0[i])) continue;
+            if (F1 != null && !F1(span1[i])) continue;
             action(ref span0[i], ref span1[i]);
         }
     }
