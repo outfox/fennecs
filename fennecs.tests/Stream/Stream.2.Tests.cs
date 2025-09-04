@@ -561,16 +561,16 @@ public class Stream2Tests(ITestOutputHelper output)
         world.Spawn().Add("jason").Add(123);
 
         var stream = world.Query<string, int>(Match.Any).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str, ref int i) => { output.WriteLine(str);}));
 
         stream = world.Query<string, int>(Match.Entity).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str, ref int i) => { output.WriteLine(str);}));
 
         stream = world.Query<string, int>(Match.Target).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str, ref int i) => { output.WriteLine(str);}));
 
         stream = world.Query<string, int>(Match.Object).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str, ref int i) => { output.WriteLine(str);}));
 
         stream = world.Query<string, int>(Match.Plain).Stream();
         var ran = false;

@@ -186,16 +186,16 @@ public class Stream3Tests(ITestOutputHelper output)
         world.Spawn().Add("jason").Add(123).Add(1.5f);
 
         var stream = world.Query<string, int, float>(Match.Any).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str, ref i, ref f) => { output.WriteLine(str);}));
 
         stream = world.Query<string, int, float>(Match.Entity).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str, ref i, ref f) => { output.WriteLine(str);}));
 
         stream = world.Query<string, int, float>(Match.Target).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str, ref i, ref f) => { output.WriteLine(str);}));
 
         stream = world.Query<string, int, float>(Match.Object).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str);}));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str, ref i, ref f) => { output.WriteLine(str);}));
 
         stream = world.Query<string, int, float>(Match.Plain).Stream();
         var ran = false;

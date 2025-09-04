@@ -120,7 +120,6 @@ public class AliasingBenchmarks(Vector4[] testArray)
     [GlobalCleanup]
     public void Cleanup()
     {
-        _queryV4;
         _world.Dispose();
         _world = null!;
     }

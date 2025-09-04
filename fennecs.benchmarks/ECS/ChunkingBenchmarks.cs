@@ -21,7 +21,7 @@ public class ChunkingBenchmarks
     private World _world = null!;
 
     private Stream<Vector3> _queryV3;
-    private Vector3[] _vectorsRaw;
+    private Vector3[] _vectorsRaw = null!;
 
     [GlobalSetup]
     public void Setup()
@@ -74,7 +74,6 @@ public class ChunkingBenchmarks
     [GlobalCleanup]
     public void Cleanup()
     {
-        _queryV3;
         _world.Dispose();
         _world = null!;
     }
