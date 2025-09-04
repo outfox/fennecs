@@ -7,44 +7,35 @@ namespace fennecs;
 
 /// <summary>
 /// A Stream is an accessor that allows for iteration over a Query's contents.
-/// It exposes both the Runners as well as IEnumerable over a value tuple of the
+/// It exposes both the Runners and IEnumerable over a value tuple of the
 /// Query's contents.
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>, IBatchBegin 
+public readonly record struct Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>, IBatchBegin 
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
 
-    /*
-    /// <summary>
-    /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
-    /// </summary>
-    public ComponentFilter<C0>? F0 { get; init; }
-
     /// <summary>
     /// Creates a new Stream with the same Query, but with the provided filter predicate.
     /// </summary>
-    public Stream<C0> Where2(ComponentFilter<C0>? f0)
-    {
-        return this with
-        {
-            F0 = f0,
-        };
-    }
-    */
-
-
+    public ComponentFilter<C0>? F0 { get; init; }
+    
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
     /// </summary>
-    protected SortedSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty 
+    private SortedSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty 
         ? Archetypes 
-        : new(Archetypes.Where(a => (Subset.IsEmpty || a.MatchSignature.Matches(Subset)) && !a.MatchSignature.Matches(Exclude)));
+        : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
+
+    private bool InclusionPredicate(Archetype a)
+    {
+        return (Subset.IsEmpty || a.MatchSignature.Matches(Subset)) && !a.MatchSignature.Matches(Exclude);
+    }
 
     /// <summary>
-    /// Creates a builder for a Batch Operation on the Stream's underyling Query.
+    /// Creates a builder for a Batch Operation on the Stream's underlying Query.
     /// </summary>
     /// <returns>fluent builder</returns>
     public Batch Batch() => Query.Batch();
@@ -68,16 +59,16 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <summary>
     /// The Archetypes that this Stream is iterating over.
     /// </summary>
-    protected SortedSet<Archetype> Archetypes => Query.Archetypes;
+    private SortedSet<Archetype> Archetypes => Query.Archetypes;
 
     /// <summary>
     /// The World this Stream is associated with.
     /// </summary>
-    protected World World => Query.World;
+    private World World => Query.World;
 
     /// <summary>
     /// The Query this Stream is associated with.
-    /// Can be re-inited via the with keyword.
+    /// Can be re-initialized via the with keyword.
     /// </summary>
     public Query Query { get; } = Query;
 
@@ -94,12 +85,12 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <summary>
     ///     Countdown event for parallel runners.
     /// </summary>
-    protected readonly CountdownEvent Countdown = new(initialCount: 1);
+    private readonly CountdownEvent _countdown = new(initialCount: 1);
 
     /// <summary>   
     ///     The number of threads this Stream uses for parallel processing.
     /// </summary>
-    protected static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
+    private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
 
 
     #region Stream.For
@@ -129,7 +120,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// </summary>
     /// <param name="action"><see cref="UniformComponentAction{C0,U}"/> taking references to Component Types.</param>
     /// <param name="uniform">The uniform data to pass to the action.</param>
-    // /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(U uniform, UniformComponentAction<U, C0> action)
     {
         using var worldLock = World.Lock();
@@ -203,12 +194,12 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <param name="action"><see cref="ComponentAction{C0}"/> taking references to Component Types.</param>
     public void Job(ComponentAction<C0> action)
     {
-        AssertNoWildcards();
+        AssertNoWildcards(_streamTypes);
             
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
-        Countdown.Reset();
+        _countdown.Reset();
 
         using var jobs = PooledList<Work<C0>>.Rent();
 
@@ -223,7 +214,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
             {
                 for (var chunk = 0; chunk < partitions; chunk++)
                 {
-                    Countdown.AddCount();
+                    _countdown.AddCount();
 
                     var start = chunk * chunkSize;
                     var length = Math.Min(chunkSize, count - start);
@@ -233,7 +224,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
                     var job = JobPool<Work<C0>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Action = action;
-                    job.CountDown = Countdown;
+                    job.CountDown = _countdown;
                     jobs.Add(job);
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
@@ -241,8 +232,8 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
             } while (join.Iterate());
         }
 
-        Countdown.Signal();
-        Countdown.Wait();
+        _countdown.Signal();
+        _countdown.Wait();
 
         JobPool<Work<C0>>.Return(jobs);
     }
@@ -254,12 +245,12 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <param name="uniform">The uniform data to pass to the action.</param>
     public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
     {
-        AssertNoWildcards();
+        AssertNoWildcards(_streamTypes);
         
         var chunkSize = Math.Max(1, Count / Concurrency);
 
         using var worldLock = World.Lock();
-        Countdown.Reset();
+        _countdown.Reset();
 
         using var jobs = PooledList<UniformWork<U, C0>>.Rent();
 
@@ -274,7 +265,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
             {
                 for (var chunk = 0; chunk < partitions; chunk++)
                 {
-                    Countdown.AddCount();
+                    _countdown.AddCount();
 
                     var start = chunk * chunkSize;
                     var length = Math.Min(chunkSize, count - start);
@@ -285,7 +276,7 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Action = action;
                     job.Uniform = uniform;
-                    job.CountDown = Countdown;
+                    job.CountDown = _countdown;
                     jobs.Add(job);
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
@@ -293,8 +284,8 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
             } while (join.Iterate());
         }
 
-        Countdown.Signal();
-        Countdown.Wait();
+        _countdown.Signal();
+        _countdown.Wait();
 
         JobPool<UniformWork<U, C0>>.Return(jobs);
     }
@@ -370,9 +361,9 @@ public record Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>,
     /// <summary>
     /// Throws if the query has any Wildcards.
     /// </summary>
-    protected void AssertNoWildcards()
+    private void AssertNoWildcards(ImmutableArray<TypeExpression> streamTypes)
     {
-        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {_streamTypes}");
+        if (_streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
     }
 
     #endregion

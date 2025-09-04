@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
-
+using fennecs.CRUD;
 using fennecs.pools;
 
 namespace fennecs;
@@ -10,12 +9,82 @@ namespace fennecs;
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
-    : Stream<C0>(Query, Match0), IEnumerable<(Entity, C0, C1)>
+public readonly record struct Stream<C0, C1>(Query Query, Match Match0, Match Match1)
+    : IEnumerable<(Entity, C0, C1)>, IBatchBegin
     where C0 : notnull
     where C1 : notnull
 {
+    #region Stream Fields
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1)];
+
+    /// <summary>
+    /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
+    /// </summary>
+    private SortedSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty
+        ? Archetypes
+        : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate)); //TODO: Create immutable set?
+
+    private bool InclusionPredicate(Archetype candidate) => (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) && !candidate.MatchSignature.Matches(Exclude);
+
+    /// <summary>
+    /// Creates a builder for a Batch Operation on the Stream's underlying Query.
+    /// </summary>
+    /// <returns>fluent builder</returns>
+    public Batch Batch() => Query.Batch();
+    
+    /// <inheritdoc cref="fennecs.Query.Batch()"/>
+    public Batch Batch(Batch.AddConflict add) => Query.Batch(add);
+    
+    /// <inheritdoc cref="fennecs.Query.Batch()"/>
+    public Batch Batch(Batch.RemoveConflict remove) => Query.Batch(remove);
+
+    /// <inheritdoc cref="fennecs.Query.Batch()"/>
+    public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => Query.Batch(add, remove);
+    
+    
+    /// <summary>
+    /// The number of entities that match the underlying Query.
+    /// </summary>
+    public int Count => Filtered.Sum(f => f.Count);
+
+
+    /// <summary>
+    /// The Archetypes that this Stream is iterating over.
+    /// </summary>
+    private SortedSet<Archetype> Archetypes => Query.Archetypes;
+
+    /// <summary>
+    /// The World this Stream is associated with.
+    /// </summary>
+    private World World => Query.World;
+
+    /// <summary>
+    /// The Query this Stream is associated with.
+    /// Can be re-inited via the with keyword.
+    /// </summary>
+    public Query Query { get; } = Query;
+
+    /// <summary>
+    /// Subset Stream Filter - if not empty, only entities with these components will be included in the Stream. 
+    /// </summary>
+    public ImmutableSortedSet<Comp> Subset { get; init; } = [];
+    
+    /// <summary>
+    /// Exclude Stream Filter - any entities with these components will be excluded from the Stream. (none if empty)
+    /// </summary>
+    public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
+    
+    /// <summary>
+    ///     Countdown event for parallel runners.
+    /// </summary>
+    private readonly CountdownEvent Countdown = new(initialCount: 1);
+
+    /// <summary>   
+    ///     The number of threads this Stream uses for parallel processing.
+    /// </summary>
+    private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
+
+    #endregion
     
     #region Filter State
     
@@ -29,7 +98,13 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     /// </summary>
     public ComponentFilter<C1>? F1 { private get; init; }
 
-    
+    public Match Match1
+    {
+        get => field;
+        init => field = value;
+    } = Match1;
+
+
     /// <summary>
     /// Creates a new Stream with the same Query and Filters, but replacing the filter for Component <c>C0</c> with the provided predicate. 
     /// </summary>
@@ -168,7 +243,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     /// <inheritdoc cref="Stream{C0}.Job"/>
     public void Job(ComponentAction<C0, C1> action)
     {
-        AssertNoWildcards();
+        AssertNoWildcards(_streamTypes);
         
         using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
@@ -217,7 +292,7 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
     /// <inheritdoc cref="Stream{C0}.Job{U}"/>
     public void Job<U>(U uniform, UniformComponentAction<U, C0, C1> action)
     {
-        AssertNoWildcards();
+        AssertNoWildcards(_streamTypes);
 
         var chunkSize = Math.Max(1, Count / Concurrency);
 
@@ -457,5 +532,15 @@ public record Stream<C0, C1>(Query Query, Match Match0, Match Match1)
         }
     }
     
+    #endregion
+    
+    #region Assertions
+    /// <summary>
+    /// Throws if the query has any Wildcards.
+    /// </summary>
+    private static void AssertNoWildcards(ImmutableArray<TypeExpression> streamTypes)
+    {
+        if (streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+    }
     #endregion
 }
