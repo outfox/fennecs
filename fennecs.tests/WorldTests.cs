@@ -89,7 +89,7 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>().Stream();
         Assert.Equal(count, query.Count);
 
-        query.For((ref int i, ref string s) =>
+        query.For((ref i, ref s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("hallo", s);
@@ -119,7 +119,7 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>().Stream();
         Assert.Equal(count * 2, query.Count);
 
-        query.For((ref int i, ref string s) =>
+        query.For((ref i, ref s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("hallo", s);
@@ -143,7 +143,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var query = world.Query<int>().Stream();
         Assert.Equal(count, query.Count);
-        query.For((ref int i) => Assert.Equal(666, i));
+        query.For((ref i) => Assert.Equal(666, i));
     }
 
 
@@ -164,7 +164,7 @@ public class WorldTests(ITestOutputHelper output)
         var query = world.Query<int, string>(Match.Plain, Match.Link("dieter")).Stream();
         Assert.Equal(count, query.Count);
 
-        query.For((ref int i, ref string s) =>
+        query.For((ref i, ref s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("dieter", s);
@@ -192,7 +192,7 @@ public class WorldTests(ITestOutputHelper output)
         Assert.Equal(count, query.Count);
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
-        query.For((ref int i, ref string s) =>
+        query.For((ref i, ref s) =>
         {
             Assert.Equal(555, i);
             Assert.Equal("relation", s);
@@ -273,7 +273,7 @@ public class WorldTests(ITestOutputHelper output)
         for (var i = 0; i < count; i++) world.Spawn();
 
         var query = world.Query<Identity>(Match.Plain).Stream();
-        query.For(world, (World uniform, ref Identity _) =>
+        query.For(world, (uniform, ref _) =>
         {
             var entity = uniform.Spawn();
             Assert.True(entity.Id.IsEntity);
@@ -756,7 +756,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var quickCount = 0;
         quickStream.For(
-            (in Entity _, ref Predicted _) =>
+            (in _, ref _) =>
             {
                 quickCount++;
             }
@@ -764,7 +764,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var queryCount = 0;
         queryStream.For(
-            (in Entity _, ref Predicted _) =>
+            (in _, ref _) =>
             {
                 queryCount++;
             }
@@ -790,7 +790,7 @@ public class WorldTests(ITestOutputHelper output)
         
         var quickCount = 0;
         quickStream.For(
-            (in Entity _, ref Predicted _) =>
+            (in _, ref _) =>
             {
                 quickCount++;
             }
@@ -798,7 +798,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var queryCount = 0;
         queryStream.For(
-            (in Entity _, ref Predicted _) =>
+            (in _, ref _) =>
             {
                 queryCount++;
             }

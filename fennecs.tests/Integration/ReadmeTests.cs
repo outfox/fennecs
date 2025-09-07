@@ -24,7 +24,7 @@ public class ReadmeTests
         // Run code on all entities in the query. (exchange 'For' with 'Job' for parallel processing)
         stream.For(
             uniform: DeltaTime * 9.81f * Vector3.UnitZ,
-            static (Vector3 uniform, ref Velocity velocity) =>
+            static (uniform, ref velocity) =>
             {
                 velocity.Value -= uniform;
             }

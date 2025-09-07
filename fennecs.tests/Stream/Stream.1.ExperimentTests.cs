@@ -101,7 +101,7 @@ public class Stream1TestsExperiment
                 .Add("one");
         }
 
-        query.For((ref string str) =>
+        query.For((ref str) =>
         {
             Assert.Equal("one", str);
             str = "two";
@@ -116,26 +116,26 @@ public class Stream1TestsExperiment
             }
         });
 
-        query.Job((ref string str) =>
+        query.Job((ref str) =>
         {
             Assert.Equal("three", str);
             str = "four";
         });
 
-        query.Job((ref string str) =>
+        query.Job((ref str) =>
         {
             Assert.Equal("four", str);
             str = "five";
         });
 
-        query.Job(6, (int uniform, ref string str) =>
+        query.Job(6, (uniform, ref str) =>
         {
             Assert.Equal("five", str);
             str = uniform.ToString();
         });
 
 
-        query.For(7, (int uniform, ref string str) =>
+        query.For(7, (uniform, ref str) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
@@ -159,7 +159,7 @@ public class Stream1TestsExperiment
             }
         });
 
-        query.For((ref string str) => { Assert.Equal(9.ToString(), str); });
+        query.For((ref str) => { Assert.Equal(9.ToString(), str); });
     }
 
 
@@ -370,7 +370,7 @@ public class Stream1TestsExperiment
         var query = world.Query<int>().Stream();
 
         var processed = 0;
-        query.Job((ref int index) =>
+        query.Job((ref index) =>
         {
             Interlocked.Increment(ref processed);
             index = 123;
@@ -378,7 +378,7 @@ public class Stream1TestsExperiment
 
         Assert.Equal(count, processed);
 
-        query.Job((ref int index) =>
+        query.Job((ref index) =>
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
@@ -405,7 +405,7 @@ public class Stream1TestsExperiment
         var query = world.Query<int>(Match.Plain).Stream();
 
         var processed = 0;
-        query.Job((ref int index) =>
+        query.Job((ref index) =>
         {
             Interlocked.Increment(ref processed);
             index = 123;
@@ -413,7 +413,7 @@ public class Stream1TestsExperiment
 
         Assert.Equal(count, processed);
 
-        query.Job((ref int index) =>
+        query.Job((ref index) =>
         {
             ArgumentOutOfRangeException.ThrowIfNegative(index);
             Assert.Equal(123, index);
@@ -495,10 +495,10 @@ public class Stream1TestsExperiment
         });
 
         var index = 0;
-        query.For((ref long value) => { Assert.Equal(index++, value); });
+        query.For((ref value) => { Assert.Equal(index++, value); });
 
         var index2 = 0;
-        query.For(1337, (int _, ref long value) => { Assert.Equal(index2++, value); });
+        query.For(1337, (_, ref value) => { Assert.Equal(index2++, value); });
     }
 
     [Fact]
@@ -513,7 +513,7 @@ public class Stream1TestsExperiment
 
         var found = new List<Entity>();
 
-        query.For((in Entity e, ref int _) =>
+        query.For((in e, ref _) =>
         {
             found.Add(e);
         });
@@ -536,7 +536,7 @@ public class Stream1TestsExperiment
 
         var found = new List<Entity>();
 
-        query.For(3.1415f, (float uniform, in Entity e, ref int _) =>
+        query.For(3.1415f, (uniform, in e, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);

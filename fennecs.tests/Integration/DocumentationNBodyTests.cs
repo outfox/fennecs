@@ -102,7 +102,7 @@ public class DocumentationNBodyTests
         accumulator.Blit(new Acceleration { Value = Vector3.Zero });
         
         // Accumulate all forces (we have only 1 attractor stream, this will enumerate each sun 3 times)
-        accumulator.For((ref Acceleration acc, ref Body self, ref Body attractor) =>
+        accumulator.For((ref acc, ref self, ref attractor) =>
         {
             iterations1++;
 
@@ -117,7 +117,7 @@ public class DocumentationNBodyTests
         Assert.Equal(bodyCount * bodyCount, iterations1);
 
         // Integrate forces, velocities, and positions
-        integrator.For(0.01f, (float dt, ref Acceleration accel, ref Velocity velocity, ref Position position) =>
+        integrator.For(0.01f, (dt, ref accel, ref velocity, ref position) =>
         {
             iterations2++;
             velocity.Value += dt * accel.Value;
@@ -129,7 +129,7 @@ public class DocumentationNBodyTests
         
         // Copy the Position back to the Body components of the same object
         // (the plain and relation components are backed by the same instances of Body!)
-        consolidator.For((ref Position position, ref Body body) =>
+        consolidator.For((ref position, ref body) =>
         {
             iterations3++;
             body.position = position.Value;

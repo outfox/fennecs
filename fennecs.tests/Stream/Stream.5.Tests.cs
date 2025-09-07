@@ -88,7 +88,7 @@ public class Stream5Tests(ITestOutputHelper output)
                 .Add('Q');
         }
 
-        query.For(static (ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
+        query.For(static (ref _, ref _, ref _, ref str, ref _) =>
         {
             Assert.Equal("one", str);
             str = "two";
@@ -114,7 +114,7 @@ public class Stream5Tests(ITestOutputHelper output)
             }
         });
 
-        query.Job((ref TypeA _, ref double _, ref int index, ref string str, ref char _) =>
+        query.Job((ref _, ref _, ref index, ref str, ref _) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("four", str);
@@ -129,7 +129,7 @@ public class Stream5Tests(ITestOutputHelper output)
         });
 
 
-        query.For(7, static (int uniform, ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
+        query.For(7, static (uniform, ref _, ref _, ref _, ref str, ref _) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
@@ -155,7 +155,7 @@ public class Stream5Tests(ITestOutputHelper output)
         });
 
 
-        query.For((in Entity e, ref TypeA a, ref double _, ref int _, ref string str, ref char _) =>
+        query.For((in e, ref a, ref _, ref _, ref str, ref _) =>
         {
             Assert.True(e.Alive);
             Assert.Equal(e, a.entity);
@@ -165,14 +165,14 @@ public class Stream5Tests(ITestOutputHelper output)
         });
 
         
-        query.For(11, (int uniform, in Entity _, ref TypeA _, ref double _, ref int _, ref string str, ref char _) =>
+        query.For(11, (uniform, in _, ref _, ref _, ref _, ref str, ref _) =>
         {
             Assert.Equal(10.ToString(), str);
             str = uniform.ToString();
         });
 
 
-        query.For((ref TypeA _, ref double _, ref int _, ref string str, ref char _) => { Assert.Equal(11.ToString(), str); });
+        query.For((ref _, ref _, ref _, ref str, ref _) => { Assert.Equal(11.ToString(), str); });
     }
 
     
@@ -196,7 +196,7 @@ public class Stream5Tests(ITestOutputHelper output)
 
         stream = world.Query<string, int, float, char, double>(Match.Plain).Stream();
         var ran = false;
-        stream.Job((ref string str, ref int _, ref float _, ref char _, ref double _) =>
+        stream.Job((ref str, ref _, ref _, ref _, ref _) =>
         { 
             output.WriteLine(str); 
             ran = true;

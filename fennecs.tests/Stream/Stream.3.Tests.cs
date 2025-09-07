@@ -90,7 +90,7 @@ public class Stream3Tests(ITestOutputHelper output)
                 .Add('Q');
         }
 
-        query.For(12f, (float _, in Entity _, ref int _, ref string str, ref char _) =>
+        query.For(12f, (_, in _, ref _, ref str, ref _) =>
         {
             Assert.Equal("one", str);
             str = "two";
@@ -116,14 +116,14 @@ public class Stream3Tests(ITestOutputHelper output)
             }
         });
 
-        query.Job((ref int index, ref string str, ref char _) =>
+        query.Job((ref index, ref str, ref _) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("four", str);
             str = "five";
         });
 
-        query.Job(6, (int uniform, ref int index, ref string str, ref char _) =>
+        query.Job(6, (uniform, ref index, ref str, ref _) =>
         {
             Assert.Equal(index, index);
             Assert.Equal("five", str);
@@ -131,7 +131,7 @@ public class Stream3Tests(ITestOutputHelper output)
         });
 
 
-        query.For(7, (int uniform, ref int _, ref string str, ref char _) =>
+        query.For(7, (uniform, ref _, ref str, ref _) =>
         {
             Assert.Equal(6.ToString(), str);
             str = uniform.ToString();
@@ -155,20 +155,20 @@ public class Stream3Tests(ITestOutputHelper output)
             }
         });
 
-        query.For((in Entity _, ref int _, ref string str, ref char _) =>
+        query.For((in _, ref _, ref str, ref _) =>
         {
             Assert.Equal(9.ToString(), str);
             str = "10";
         });
 
 
-        query.For(11, (int uniform, in Entity _, ref int _, ref string str, ref char _) =>
+        query.For(11, (uniform, in _, ref _, ref str, ref _) =>
         {
             Assert.Equal(10.ToString(), str);
             str = uniform.ToString();
         });
 
-        query.For((ref int _, ref string str, ref char _) => { Assert.Equal(11.ToString(), str); });
+        query.For((ref _, ref str, ref _) => { Assert.Equal(11.ToString(), str); });
     }
 
     [Fact]
@@ -199,7 +199,7 @@ public class Stream3Tests(ITestOutputHelper output)
 
         stream = world.Query<string, int, float>(Match.Plain).Stream();
         var ran = false;
-        stream.Job((ref string str, ref int _, ref float _) =>
+        stream.Job((ref str, ref _, ref _) =>
         { 
             output.WriteLine(str); 
             ran = true;

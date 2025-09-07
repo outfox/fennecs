@@ -118,7 +118,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         e2.Despawn();
         bool e3_seen_in_query_alive_and_with_val_3 = false;
         bool dead_entity_in_query = false;
-        world.Query<int>().Stream().For((in Entity entity, ref int val) =>
+        world.Query<int>().Stream().For((in entity, ref val) =>
         {
             if (entity.Alive && val == 3)
             {

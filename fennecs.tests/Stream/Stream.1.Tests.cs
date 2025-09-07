@@ -51,7 +51,7 @@ public class Stream1Tests(ITestOutputHelper output)
         var stream = world.Stream<string>();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            foreach (var row in stream)
+            foreach (var unused in stream)
             {
                 world.Spawn().Add("Sylvester");
             }
@@ -72,7 +72,7 @@ public class Stream1Tests(ITestOutputHelper output)
 
         List<string> list = ["Arnold", "Dolph"];
 
-        stream.For((ref string c0) =>
+        stream.For((ref c0) =>
         {
             list.Remove(c0);
         });
@@ -92,7 +92,7 @@ public class Stream1Tests(ITestOutputHelper output)
 
         List<string> list = ["Arnold", "Dolph"];
 
-        stream.For((ref string c0) =>
+        stream.For((ref c0) =>
         {
             Assert.True(list.Remove(c0));
         });
@@ -112,14 +112,14 @@ public class Stream1Tests(ITestOutputHelper output)
         world.Spawn().Add("Dolph").Add(678);
 
         List<string> list = ["Arnold", "Dolph"];
-        stream1.For((ref string c0) =>
+        stream1.For((ref c0) =>
         {
             Assert.True(list.Remove(c0));
         });
         Assert.Empty(list);
 
         List<int> list2 = [123, 678];
-        stream2.For((ref int c0) =>
+        stream2.For((ref c0) =>
         {
             Assert.True(list2.Remove(c0));
         });
@@ -148,20 +148,20 @@ public class Stream1Tests(ITestOutputHelper output)
         world.Spawn().Add("jason");
 
         var stream = world.Query<string>(Match.Any).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str) => { output.WriteLine(str); }));
 
         stream = world.Query<string>(Match.Entity).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str) => { output.WriteLine(str); }));
 
         stream = world.Query<string>(Match.Target).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str) => { output.WriteLine(str); }));
 
         stream = world.Query<string>(Match.Object).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref string str) => { output.WriteLine(str); }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str) => { output.WriteLine(str); }));
 
         stream = world.Query<string>(Match.Plain).Stream();
         var ran = false;
-        stream.Job((ref string str) =>
+        stream.Job((ref str) =>
         {
             output.WriteLine(str);
             ran = true;

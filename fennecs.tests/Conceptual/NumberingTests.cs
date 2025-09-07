@@ -38,7 +38,7 @@ public class NumberingTests
         
         stream.For(
             uniform: Index.Ascending(from: 0),
-            action: static (IEnumerator<Index> enumerator, ref Index index) =>
+            action: static (enumerator, ref index) =>
             {
                 enumerator.MoveNext();
                 index = enumerator.Current;
@@ -65,7 +65,7 @@ public class NumberingTests
 
         stream.For(
             uniform: range,
-            action: static (IEnumerator<Index> enumerator, ref Index index) =>
+            action: static (enumerator, ref index) =>
             {
                 enumerator.MoveNext();
                 index = enumerator.Current;
@@ -90,7 +90,7 @@ public class NumberingTests
         var lazyQueue = new Queue<int>(Enumerable.Range(0, count));
         stream.For(
             uniform: lazyQueue,
-            action: static (Queue<int> queue, ref Index index) =>
+            action: static (queue, ref index) =>
             {
                 index.Value = queue.Dequeue();
             }
@@ -111,7 +111,7 @@ public class NumberingTests
         var stream = Setup(count1, count2);
 
         var queue = new Queue<Index>(Enumerable.Range(0, stream.Count).Select(i => new Index(i)));
-        stream.For((ref Index index) => index = queue.Dequeue());
+        stream.For((ref index) => index = queue.Dequeue());
 
         VerifyCountAndOrder(stream, count1+count2);
     }
@@ -128,7 +128,7 @@ public class NumberingTests
         var stream = Setup(count1, count2);
 
         var i = 0;
-        stream.For((ref Index index) => index = new(i++));
+        stream.For((ref index) => index = new(i++));
 
         VerifyCountAndOrder(stream, count1+count2);
     }

@@ -50,7 +50,7 @@ public class LivenessTests(ITestOutputHelper output)
         var despawns = new HashSet<Entity>();
         stream.For(
             uniform: despawns, 
-            action: (HashSet<Entity> killSet, in Entity entity, ref int value) => 
+            action: (killSet, in entity, ref value) => 
         {
             if (value == 69) killSet.Add(entity); // Can also just use a closure here, i.e. despawns.
             if (value == 60 + 9 && killSet.Count % 3 == 0) killSet.Add(entity); // fake redundant addition ;)
@@ -63,7 +63,7 @@ public class LivenessTests(ITestOutputHelper output)
         
         Assert.Equal(4567, world.Count);
 
-        stream.For((ref int value) =>
+        stream.For((ref value) =>
         {
             Assert.NotEqual(69, value);
         });

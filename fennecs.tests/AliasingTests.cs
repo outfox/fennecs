@@ -43,7 +43,7 @@
             
             var query = world.Query<Weight, Size>().Stream();
             
-            query.For(static (ref Weight weight, ref Size size) =>
+            query.For(static (ref weight, ref size) =>
             {
                 Assert.Equal(50, weight.Value);
                 Assert.Equal(150, size.Value);
@@ -52,7 +52,7 @@
                 size.Value = 155;
             });
 
-            query.For(static (ref Weight weight, ref Size size) =>
+            query.For(static (ref weight, ref size) =>
             {
                 Assert.Equal(61, weight.Value);
                 Assert.Equal(155, size.Value);

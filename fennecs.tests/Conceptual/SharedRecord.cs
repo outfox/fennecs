@@ -16,7 +16,7 @@ public class SharedRecord(ITestOutputHelper output)
         var sharedData = new SharedData(42);     // shared instance
         world.Entity().Add(sharedData).Spawn(5); // add it to 5 fresh entities
 
-        stream.For((ref SharedData data) =>
+        stream.For((ref data) =>
         {
             data.Value++; // increments value once for each entity in query!
             output.WriteLine(data.ToString());
@@ -25,7 +25,7 @@ public class SharedRecord(ITestOutputHelper output)
         sharedData.Value++; // increment outside of runner
         output.WriteLine("");
 
-        stream.For((ref SharedData data) =>
+        stream.For((ref data) =>
         {
             output.WriteLine(data.ToString());
         });

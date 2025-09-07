@@ -13,7 +13,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         world.Spawn().Add(Link.With(target));
 
         var runs = 0;
-        query.For((ref string str) =>
+        query.For((ref str) =>
         {
             runs++;
             output.WriteLine(str);
@@ -37,7 +37,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         entity.Add(Link.With(link));
 
         var runs = 0;
-        query.For((ref string str) =>
+        query.For((ref str) =>
         {
             runs++;
             output.WriteLine(str);
@@ -63,7 +63,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         entity.Remove<string>(target);
 
         var runs = 0;
-        query.For((ref string _) => { runs++; });
+        query.For((ref _) => { runs++; });
         Assert.Equal(0, runs);
     }
 
@@ -82,7 +82,7 @@ public class ObjectLinkTests(ITestOutputHelper output)
         world.RemoveComponent(entity, typeExpression);
 
         var runs = 0;
-        query.For((ref string _) => { runs++; });
+        query.For((ref _) => { runs++; });
         Assert.Equal(0, runs);
     }
 }
