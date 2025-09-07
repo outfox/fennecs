@@ -581,4 +581,26 @@ public class Stream2Tests(ITestOutputHelper output)
         });
         Assert.True(ran);
     }
+
+    [Fact]
+    public void Has_Batch_Interface()
+    {
+        using var world = new World();
+        
+        world.Spawn().Add(1).Add(2.0f);
+        
+        var stream = world.Query<int, float>().Not<string>().Stream();
+        var batch = stream.Batch();
+        batch.Add<string>("visited");
+        batch.Submit();
+
+        var check = world.Query<int, float>().Compile();
+        var i = 0;
+        foreach (var entity in check)
+        {
+            i++;
+            Assert.True(entity.Has<string>());
+        }
+        Assert.Equal(1, i);
+    }
 }

@@ -263,4 +263,27 @@ public class Stream1Tests(ITestOutputHelper output)
         Assert.Single(stream4);
         Assert.Single(stream5);
     }
+    
+    [Fact]
+    public void Has_Batch_Interface()
+    {
+        using var world = new World();
+        
+        world.Spawn().Add(1);
+        
+        var stream = world.Query<int>().Not<string>().Stream();
+        var batch = stream.Batch();
+        batch.Add<string>("visited");
+        batch.Submit();
+
+        var check = world.Query<int>().Compile();
+        var i = 0;
+        foreach (var entity in check)
+        {
+            i++;
+            Assert.True(entity.Has<string>());
+        }
+        Assert.Equal(1, i);
+    }
+
 }

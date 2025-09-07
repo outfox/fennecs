@@ -217,4 +217,27 @@ public class Stream5Tests(ITestOutputHelper output)
     {
         public Entity entity;
     };
+    
+    
+    [Fact]
+    public void Has_Batch_Interface()
+    {
+        using var world = new World();
+        
+        world.Spawn().Add(1).Add(2.0f).Add(123.0).Add('c').Add(true);
+        
+        var stream = world.Query<int, float, double, char, bool>().Not<string>().Stream();
+        var batch = stream.Batch();
+        batch.Add<string>("visited");
+        batch.Submit();
+
+        var check = world.Query<int, float, double, char, bool>().Compile();
+        var i = 0;
+        foreach (var entity in check)
+        {
+            i++;
+            Assert.True(entity.Has<string>());
+        }
+        Assert.Equal(1, i);
+    }
 }

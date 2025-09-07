@@ -368,7 +368,6 @@ public readonly record struct Stream<C0>(Query Query, Match Match0) : IEnumerabl
     #endregion
 
     #region Blitters
-
     /// <summary>
     /// <para>Blit (write) a component value of a stream type to all entities matched by this query.</para>
     /// <para>🚀 Very fast!</para>
@@ -384,7 +383,6 @@ public readonly record struct Stream<C0>(Query Query, Match Match0) : IEnumerabl
         var typeExpression = TypeExpression.Of<C0>(match);
         foreach (var table in Filtered) table.Fill(typeExpression, value);
     }
-
     #endregion
 
     #region Query Forwarding
