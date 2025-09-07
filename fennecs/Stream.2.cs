@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
-using fennecs.CRUD;
 using fennecs.pools;
 
 namespace fennecs;
@@ -8,7 +7,7 @@ namespace fennecs;
 /// <inheritdoc cref="Stream{C0}"/>
 /// <typeparam name="C0">stream type</typeparam>
 /// <typeparam name="C1">stream type</typeparam>
-public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IBatchBegin
+public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     where C0 : notnull
     where C1 : notnull
 {
@@ -20,26 +19,10 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IB
     /// </summary>
     private SortedSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty
         ? Archetypes
-        : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate)); //TODO: Create immutable set?
+        : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
 
     private bool InclusionPredicate(Archetype candidate) => (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) && !candidate.MatchSignature.Matches(Exclude);
 
-    /// <summary>
-    /// Creates a builder for a Batch Operation on the Stream's underlying Query.
-    /// </summary>
-    /// <returns>fluent builder</returns>
-    public Batch Batch() => Query.Batch();
-    
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add) => Query.Batch(add);
-    
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.RemoveConflict remove) => Query.Batch(remove);
-
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => Query.Batch(add, remove);
-    
-    
     /// <summary>
     /// The number of entities that match the underlying Query.
     /// </summary>
@@ -78,8 +61,6 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IB
     private readonly CountdownEvent _countdown = new(initialCount: 1);
 
     /// <inheritdoc cref="Stream{C0}"/>
-    /// <typeparam name="C0">stream type</typeparam>
-    /// <typeparam name="C1">stream type</typeparam>
     public Stream(Query Query, Match match0, Match match1)
     {
         _streamTypes = [TypeExpression.Of<C0>(match0), TypeExpression.Of<C1>(match1)];
@@ -98,21 +79,21 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IB
     /// <summary>
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
-    public ComponentFilter<C0>? F0 { private get; init; }
+    public ComponentFilter<C0>? Filter0 { private get; init; }
 
     /// <summary>
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
-    public ComponentFilter<C1>? F1 { private get; init; }
+    public ComponentFilter<C1>? Filter1 { private get; init; }
     
     /// <summary>
     /// Creates a new Stream with the same Query and Filters, but replacing the filter for Component <c>C0</c> with the provided predicate. 
     /// </summary>
-    public Stream<C0, C1> Where(ComponentFilter<C0>? f0)
+    public Stream<C0, C1> Where(ComponentFilter<C0>? filter0)
     {
         return this with
         {
-            F0 = f0,
+            Filter0 = filter0,
         };
     }
 
@@ -120,11 +101,11 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IB
     /// <summary>
     /// Creates a new Stream with the same Query and Filters, but replacing the filter for Component <c>C1</c> with the provided predicate.
     /// </summary>
-    public Stream<C0, C1> Where(ComponentFilter<C1>? f1)
+    public Stream<C0, C1> Where(ComponentFilter<C1>? filter1)
     {
         return this with
         {
-            F1 = f1,
+            Filter1 = filter1,
         };
     }
     #endregion
@@ -152,7 +133,7 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IB
     {
         using var worldLock = World.Lock();
 
-        if (F0 == null && F1 == null)
+        if (Filter0 == null && Filter1 == null)
         {
             FastFor(action);
             return;
@@ -459,36 +440,36 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IB
         var c = span0.Length / 8 * 8;
         for (var i = 0; i < c; i += 8)
         {
-            if ((F0 == null || F0(span0[i])) && 
-                (F1 == null || F1(span1[i]))) 
+            if ((Filter0 == null || Filter0(span0[i])) && 
+                (Filter1 == null || Filter1(span1[i]))) 
                 action(ref span0[i], ref span1[i]);
 
-            if ((F0 == null || F0(span0[i + 1])) && 
-                (F1 == null || F1(span1[i + 1]))) 
+            if ((Filter0 == null || Filter0(span0[i + 1])) && 
+                (Filter1 == null || Filter1(span1[i + 1]))) 
                 action(ref span0[i + 1], ref span1[i + 1]);   
             
-            if ((F0 == null || F0(span0[i + 2])) && 
-                (F1 == null || F1(span1[i + 2]))) 
+            if ((Filter0 == null || Filter0(span0[i + 2])) && 
+                (Filter1 == null || Filter1(span1[i + 2]))) 
                 action(ref span0[i + 2], ref span1[i + 2]);
             
-            if ((F0 == null || F0(span0[i + 3])) && 
-                (F1 == null || F1(span1[i + 3]))) 
+            if ((Filter0 == null || Filter0(span0[i + 3])) && 
+                (Filter1 == null || Filter1(span1[i + 3]))) 
                 action(ref span0[i + 3], ref span1[i + 3]);
             
-            if ((F0 == null || F0(span0[i + 4])) && 
-                (F1 == null || F1(span1[i + 4]))) 
+            if ((Filter0 == null || Filter0(span0[i + 4])) && 
+                (Filter1 == null || Filter1(span1[i + 4]))) 
                 action(ref span0[i + 4], ref span1[i + 4]);
             
-            if ((F0 == null || F0(span0[i + 5])) && 
-                (F1 == null || F1(span1[i + 5]))) 
+            if ((Filter0 == null || Filter0(span0[i + 5])) && 
+                (Filter1 == null || Filter1(span1[i + 5]))) 
                 action(ref span0[i + 5], ref span1[i + 5]);
             
-            if ((F0 == null || F0(span0[i + 6])) && 
-                (F1 == null || F1(span1[i + 6]))) 
+            if ((Filter0 == null || Filter0(span0[i + 6])) && 
+                (Filter1 == null || Filter1(span1[i + 6]))) 
                 action(ref span0[i + 6], ref span1[i + 6]);
             
-            if ((F0 == null || F0(span0[i + 7])) && 
-                (F1 == null || F1(span1[i + 7]))) 
+            if ((Filter0 == null || Filter0(span0[i + 7])) && 
+                (Filter1 == null || Filter1(span1[i + 7]))) 
                 action(ref span0[i + 7], ref span1[i + 7]);
             
         }
@@ -496,8 +477,8 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>, IB
         var d = span0.Length;
         for (var i = c; i < d; i++)
         {
-            if (F0 != null && !F0(span0[i])) continue;
-            if (F1 != null && !F1(span1[i])) continue;
+            if (Filter0 != null && !Filter0(span0[i])) continue;
+            if (Filter1 != null && !Filter1(span1[i])) continue;
             action(ref span0[i], ref span1[i]);
         }
     }

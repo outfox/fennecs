@@ -14,7 +14,7 @@ namespace Benchmark.ECS;
 public class FilterBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(100, 1_000, 10_000, 100_000, 1_000_000)]
+    [Params(100, 1_000, 10_000, 100_000)]
     public int EntityCount { get; set; }
 
     private static readonly Random Random = new(1337);
@@ -32,8 +32,8 @@ public class FilterBenchmarks
     {
         _world = new();
         _streamV3 = _world.Query<Vector3, int>().Stream();
-        _streamV3TopHalf = _streamV3.Where((in Vector3 v) => v.Y > 0.5f);
-        _streamV3TopHalfInt = _streamV3.Where((in int i) => i >= 50);
+        _streamV3TopHalf = _streamV3.Where((in Vector3 v) => v.Y > 0.9f);
+        _streamV3TopHalfInt = _streamV3.Where((in int i) => i >= 90);
 
         _vectorsRaw = new Vector3[EntityCount];
         _intsRaw = new int[EntityCount];
@@ -71,7 +71,7 @@ public class FilterBenchmarks
         
         _streamV3.For((ref Vector3 v, ref int i) =>
         {
-            if (v.Y > 0.5f) i = (int) Vector3.Dot(v, UniformConstantVector);
+            if (v.Y > 0.9f) i = (int) Vector3.Dot(v, UniformConstantVector);
         });
         
         return count;
@@ -84,7 +84,7 @@ public class FilterBenchmarks
         
         _streamV3.For((ref Vector3 v, ref int i) =>
         {
-            if (i >= 50) i = (int) Vector3.Dot(v, UniformConstantVector);
+            if (i >= 90) i = (int) Vector3.Dot(v, UniformConstantVector);
         });
         
         return count;
@@ -102,7 +102,7 @@ public class FilterBenchmarks
 
     private void MethodInt(ref Vector3 v, ref int i)
     {
-        if (i >= 50) i = (int) Vector3.Dot(v, UniformConstantVector);
+        if (i >= 90) i = (int) Vector3.Dot(v, UniformConstantVector);
     }
 
     [Benchmark]
