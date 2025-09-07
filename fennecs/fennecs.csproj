@@ -11,7 +11,7 @@
         <Authors>Moritz Voss, Aaron Winter</Authors>
         <Company>tiger.blue</Company>
         <Description>The tiny ECS that could!</Description>
-        <Copyright>2024 Moritz Voss, 2022 Aaron Winter</Copyright>
+        <Copyright>2025 Moritz Voss, 2022 Aaron Winter</Copyright>
         <PackageProjectUrl>https://fennecs.tech</PackageProjectUrl>
         <RepositoryUrl>https://github.com/outfox/fennecs</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
@@ -21,7 +21,7 @@
         <PackageTags>ecs, entity, component, system, game, gamedev, game-development, godot, monogame, flax, stride, entity-component, entity-component-system</PackageTags>
         <TargetFramework>net9.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>latest</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
         <Configurations>Release;Debug</Configurations>
 

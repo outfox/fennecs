@@ -30,21 +30,6 @@ public readonly record struct Stream<C0, C1, C2, C3>(Query Query, Match Match0, 
 
     private bool InclusionPredicate(Archetype candidate) => (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) && !candidate.MatchSignature.Matches(Exclude);
 
-    /// <summary>
-    /// Creates a builder for a Batch Operation on the Stream's underlying Query.
-    /// </summary>
-    /// <returns>fluent builder</returns>
-    public Batch Batch() => Query.Batch();
-    
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add) => Query.Batch(add);
-    
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.RemoveConflict remove) => Query.Batch(remove);
-
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => Query.Batch(add, remove);
-    
     
     /// <summary>
     /// The number of entities that match the underlying Query.

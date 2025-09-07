@@ -12,7 +12,7 @@ namespace fennecs;
 /// </summary>
 /// <typeparam name="C0">component type to stream. if this type is not in the query, the stream will always be length zero.</typeparam>
 // ReSharper disable once NotAccessedPositionalProperty.Global
-public readonly record struct Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)>, IBatchBegin 
+public readonly record struct Stream<C0>(Query Query, Match Match0) : IEnumerable<(Entity, C0)> 
     where C0 : notnull
 {
     private readonly ImmutableArray<TypeExpression> _streamTypes = [TypeExpression.Of<C0>(Match0)];
@@ -33,28 +33,11 @@ public readonly record struct Stream<C0>(Query Query, Match Match0) : IEnumerabl
     {
         return (Subset.IsEmpty || a.MatchSignature.Matches(Subset)) && !a.MatchSignature.Matches(Exclude);
     }
-
-    /// <summary>
-    /// Creates a builder for a Batch Operation on the Stream's underlying Query.
-    /// </summary>
-    /// <returns>fluent builder</returns>
-    public Batch Batch() => Query.Batch();
-    
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add) => Query.Batch(add);
-    
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.RemoveConflict remove) => Query.Batch(remove);
-
-    /// <inheritdoc cref="fennecs.Query.Batch()"/>
-    public Batch Batch(Batch.AddConflict add, Batch.RemoveConflict remove) => Query.Batch(add, remove);
-    
     
     /// <summary>
     /// The number of entities that match the underlying Query.
     /// </summary>
     public int Count => Filtered.Sum(f => f.Count);
-
 
     /// <summary>
     /// The Archetypes that this Stream is iterating over.
