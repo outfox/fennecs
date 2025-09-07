@@ -343,8 +343,24 @@ public class EntityTests(ITestOutputHelper output)
             Assert.True(found, $"Component {component.Type} = {component.Box.Value} not found in expected list.");
         }
     }
-    
-    
+
+    [Fact]
+    public void ComponentToString()
+    {
+        using var world = new World();
+        var entity = world.Spawn();
+        entity.Add(123);
+        entity.Add('c', entity);
+        entity.Add(69.420);
+        entity.Add(new TypeA());
+        entity.Add(Link.With("hello"));
+
+        foreach (var component in entity.Components)
+        {
+            output.WriteLine(component.ToString());
+        }
+    }
+
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
