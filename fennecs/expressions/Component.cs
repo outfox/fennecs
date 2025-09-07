@@ -50,6 +50,11 @@ public readonly record struct Component
     /// </remarks>
     public IStrongBox Box { get; }
     
+    /// <summary>
+    /// Human-readable representation of this Component Expression.
+    /// </summary>
+    public override string ToString() => $"Component<{Type.Name}>({Expression.Match})";
+
     private World World { get; }
     internal TypeExpression Expression { get; }
     
@@ -198,4 +203,9 @@ public readonly record struct Comp<T>(Match match = default)
     /// (this representation wraps an opaque internal type of the ECS)
     /// </summary>
     public static implicit operator Comp(Comp<T> self) => new(self.Expression);
+
+    /// <summary>
+    /// Human-readable representation of this Component Expression.
+    /// </summary>
+    public override string ToString() => $"Comp<{typeof(T).Name}>({Expression.Match})";
 }
