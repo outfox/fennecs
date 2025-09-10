@@ -13,7 +13,7 @@ namespace Benchmark.Conceptual;
 public class LoopConventionBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(100_000)]
+    [Params(10_000)]
     public int EntityCount { get; set; }
 
     private static readonly Random Random = new(1337);
@@ -30,11 +30,11 @@ public class LoopConventionBenchmarks
         for (var i = 0; i < EntityCount; i++)
         {
             _vectorsRaw[i] = new(Random.NextSingle(), Random.NextSingle(), Random.NextSingle());
-            _intsRaw[i] = Random.Next() % 101;
+            _intsRaw[i] = Random.Next() % 100;
         }
     }
     
-    private const int Threshold = 90;
+    private const int Threshold = 20;
 
     private static readonly Vector3 UniformConstantVector = new(3, 4, 5);
 
