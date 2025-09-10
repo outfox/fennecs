@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
@@ -101,6 +102,21 @@ public class FilterBenchmarks
     }
 
     private void MethodInt(ref Vector3 v, ref int i)
+    {
+        if (i >= 90) i = (int) Vector3.Dot(v, UniformConstantVector);
+    }
+
+    [Benchmark]
+    public int StaticInteger()
+    {
+        var count = 0;
+        
+        _streamV3.For(StaticInt);
+        
+        return count;
+    }
+
+    private static void StaticInt(ref Vector3 v, ref int i)
     {
         if (i >= 90) i = (int) Vector3.Dot(v, UniformConstantVector);
     }

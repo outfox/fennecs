@@ -1,10 +1,10 @@
 ﻿using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
+
+using Benchmark.Conceptual;
 using Benchmark.ECS;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
-
-using Microsoft.Diagnostics.Tracing;
 
 
 var config = ManualConfig.Create(DefaultConfig.Instance).WithOptions(ConfigOptions.JoinSummary);
@@ -19,4 +19,4 @@ if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
 //BenchmarkRunner.Run<DorakuBenchmarks>(config);
-BenchmarkRunner.Run<FilterBenchmarks>(config);
+BenchmarkRunner.Run<LoopConventionBenchmarks>(config);
