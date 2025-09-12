@@ -220,7 +220,7 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
                     job.Action = action;
-                    job.Filter = Pass;
+                    job.Pass = Pass;
                     job.CountDown = _countdown;
                     jobs.Add(job);
                     
@@ -272,6 +272,7 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
                     job.Memory2 = s1.AsMemory(start, length);
                     job.Action = action;
                     job.Uniform = uniform;
+                    job.Pass = Pass;
                     job.CountDown = _countdown;
                     jobs.Add(job);
 
