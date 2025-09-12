@@ -65,4 +65,11 @@
             <Link>fennecs-icon-nuget.png</Link>
         </None>
     </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Codegen\Stream.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>Stream.generated.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
 </Project>
