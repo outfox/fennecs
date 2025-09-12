@@ -8,7 +8,7 @@ using System.Collections.Immutable;
 using fennecs.pools;
 using fennecs;
 
-// Hash: 1707556
+// Date: 09/12/2025 22:10:46
 
 namespace fennecs
 {
@@ -31,8 +31,8 @@ namespace fennecs
         private World World => Query.World;
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
-            ? Archetypes
-            : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
+                ? Archetypes
+                : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
 
         private bool InclusionPredicate(Archetype candidate) =>
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
@@ -73,7 +73,6 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
-
                     var s0 = join.Select;
                     Loop(s0, action);
                 } while (join.Iterate());
@@ -329,22 +328,21 @@ namespace fennecs
         }
         #endregion
 
-    #region Query Forwarding
+        #region Query Forwarding
     
-    /// <inheritdoc cref="fennecs.Query.Truncate"/>
-    public void Truncate(int targetSize, Query.TruncateMode mode = default)
-    {
-        Query.Truncate(targetSize, mode);
-    }
+        /// <inheritdoc cref="fennecs.Query.Truncate"/>
+        public void Truncate(int targetSize, Query.TruncateMode mode = default)
+        {
+            Query.Truncate(targetSize, mode);
+        }
     
-    /// <inheritdoc cref="fennecs.Query.Despawn"/>
-    public void Despawn()
-    {
-        foreach (var archetype in Filtered) archetype.Truncate(0);
-    }
+        /// <inheritdoc cref="fennecs.Query.Despawn"/>
+        public void Despawn()
+        {
+            foreach (var archetype in Filtered) archetype.Truncate(0);
+        }
 
-    #endregion
-
+        #endregion
     }
     /// <summary>
     /// Auto-generated Stream with arity 2.
@@ -366,8 +364,8 @@ namespace fennecs
         private World World => Query.World;
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
-            ? Archetypes
-            : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
+                ? Archetypes
+                : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
 
         private bool InclusionPredicate(Archetype candidate) =>
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
@@ -412,7 +410,6 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
-
                     var (s0, s1) = join.Select;
                     Loop(s0.Span, s1, action);
                 } while (join.Iterate());
@@ -678,22 +675,21 @@ namespace fennecs
         }
         #endregion
 
-    #region Query Forwarding
+        #region Query Forwarding
     
-    /// <inheritdoc cref="fennecs.Query.Truncate"/>
-    public void Truncate(int targetSize, Query.TruncateMode mode = default)
-    {
-        Query.Truncate(targetSize, mode);
-    }
+        /// <inheritdoc cref="fennecs.Query.Truncate"/>
+        public void Truncate(int targetSize, Query.TruncateMode mode = default)
+        {
+            Query.Truncate(targetSize, mode);
+        }
     
-    /// <inheritdoc cref="fennecs.Query.Despawn"/>
-    public void Despawn()
-    {
-        foreach (var archetype in Filtered) archetype.Truncate(0);
-    }
+        /// <inheritdoc cref="fennecs.Query.Despawn"/>
+        public void Despawn()
+        {
+            foreach (var archetype in Filtered) archetype.Truncate(0);
+        }
 
-    #endregion
-
+        #endregion
     }
     /// <summary>
     /// Auto-generated Stream with arity 3.
@@ -716,8 +712,8 @@ namespace fennecs
         private World World => Query.World;
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
-            ? Archetypes
-            : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
+                ? Archetypes
+                : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
 
         private bool InclusionPredicate(Archetype candidate) =>
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
@@ -766,7 +762,6 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
-
                     var (s0, s1, s2) = join.Select;
                     Loop(s0.Span, s1.Span, s2, action);
                 } while (join.Iterate());
@@ -1042,22 +1037,21 @@ namespace fennecs
         }
         #endregion
 
-    #region Query Forwarding
+        #region Query Forwarding
     
-    /// <inheritdoc cref="fennecs.Query.Truncate"/>
-    public void Truncate(int targetSize, Query.TruncateMode mode = default)
-    {
-        Query.Truncate(targetSize, mode);
-    }
+        /// <inheritdoc cref="fennecs.Query.Truncate"/>
+        public void Truncate(int targetSize, Query.TruncateMode mode = default)
+        {
+            Query.Truncate(targetSize, mode);
+        }
     
-    /// <inheritdoc cref="fennecs.Query.Despawn"/>
-    public void Despawn()
-    {
-        foreach (var archetype in Filtered) archetype.Truncate(0);
-    }
+        /// <inheritdoc cref="fennecs.Query.Despawn"/>
+        public void Despawn()
+        {
+            foreach (var archetype in Filtered) archetype.Truncate(0);
+        }
 
-    #endregion
-
+        #endregion
     }
     /// <summary>
     /// Auto-generated Stream with arity 4.
@@ -1081,8 +1075,8 @@ namespace fennecs
         private World World => Query.World;
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
-            ? Archetypes
-            : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
+                ? Archetypes
+                : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
 
         private bool InclusionPredicate(Archetype candidate) =>
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
@@ -1135,7 +1129,6 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
-
                     var (s0, s1, s2, s3) = join.Select;
                     Loop(s0.Span, s1.Span, s2.Span, s3, action);
                 } while (join.Iterate());
@@ -1421,22 +1414,21 @@ namespace fennecs
         }
         #endregion
 
-    #region Query Forwarding
+        #region Query Forwarding
     
-    /// <inheritdoc cref="fennecs.Query.Truncate"/>
-    public void Truncate(int targetSize, Query.TruncateMode mode = default)
-    {
-        Query.Truncate(targetSize, mode);
-    }
+        /// <inheritdoc cref="fennecs.Query.Truncate"/>
+        public void Truncate(int targetSize, Query.TruncateMode mode = default)
+        {
+            Query.Truncate(targetSize, mode);
+        }
     
-    /// <inheritdoc cref="fennecs.Query.Despawn"/>
-    public void Despawn()
-    {
-        foreach (var archetype in Filtered) archetype.Truncate(0);
-    }
+        /// <inheritdoc cref="fennecs.Query.Despawn"/>
+        public void Despawn()
+        {
+            foreach (var archetype in Filtered) archetype.Truncate(0);
+        }
 
-    #endregion
-
+        #endregion
     }
     /// <summary>
     /// Auto-generated Stream with arity 5.
@@ -1461,8 +1453,8 @@ namespace fennecs
         private World World => Query.World;
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
-            ? Archetypes
-            : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
+                ? Archetypes
+                : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
 
         private bool InclusionPredicate(Archetype candidate) =>
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
@@ -1519,7 +1511,6 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
-
                     var (s0, s1, s2, s3, s4) = join.Select;
                     Loop(s0.Span, s1.Span, s2.Span, s3.Span, s4, action);
                 } while (join.Iterate());
@@ -1815,21 +1806,20 @@ namespace fennecs
         }
         #endregion
 
-    #region Query Forwarding
+        #region Query Forwarding
     
-    /// <inheritdoc cref="fennecs.Query.Truncate"/>
-    public void Truncate(int targetSize, Query.TruncateMode mode = default)
-    {
-        Query.Truncate(targetSize, mode);
-    }
+        /// <inheritdoc cref="fennecs.Query.Truncate"/>
+        public void Truncate(int targetSize, Query.TruncateMode mode = default)
+        {
+            Query.Truncate(targetSize, mode);
+        }
     
-    /// <inheritdoc cref="fennecs.Query.Despawn"/>
-    public void Despawn()
-    {
-        foreach (var archetype in Filtered) archetype.Truncate(0);
-    }
+        /// <inheritdoc cref="fennecs.Query.Despawn"/>
+        public void Despawn()
+        {
+            foreach (var archetype in Filtered) archetype.Truncate(0);
+        }
 
-    #endregion
-
+        #endregion
     }
 }

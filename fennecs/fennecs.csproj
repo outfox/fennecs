@@ -65,11 +65,23 @@
             <Link>fennecs-icon-nuget.png</Link>
         </None>
     </ItemGroup>
-
+    
+    <PropertyGroup>
+        <TransformOnBuild>true</TransformOnBuild>
+    </PropertyGroup>
+    
     <ItemGroup>
         <None Update="Codegen\Stream.tt">
             <Generator>TextTemplatingFileGenerator</Generator>
             <LastGenOutput>Stream.generated.cs</LastGenOutput>
         </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Update="Codegen\Stream.generated.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Stream.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>
