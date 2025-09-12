@@ -17,11 +17,6 @@ public class SleekFilterSyntax
 
     private readonly record struct Test2(float Value) : IComparable<float>
     {
-        public int CompareTo(Test2 other)
-        {
-            return Value.CompareTo(other.Value);
-        }
-
         public int CompareTo(float other)
         {
             return Value.CompareTo(other);
@@ -35,7 +30,7 @@ public class SleekFilterSyntax
     [InlineData(10)]
     [InlineData(100)]
     [InlineData(1_000)]
-    public void FilterWithLambda(int count)
+    public void ForFilterWithLambda(int count)
     {
         using var world = new World();
 
