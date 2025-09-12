@@ -115,8 +115,10 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
 
     #region Stream.For
 
-    private void UnifiedFor(ComponentAction<C0, C1> action)
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
+    public void For(ComponentAction<C0, C1> action)
     {
+        using var worldLock = World.Lock();
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
@@ -130,8 +132,10 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     }
 
 
-    private void UnifiedForU<U>(U uniform, UniformComponentAction<U, C0, C1> action)
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
+    public void For<U>(U uniform, UniformComponentAction<U, C0, C1> action)
     {
+        using var worldLock = World.Lock();
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
@@ -143,10 +147,12 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
             } while (join.Iterate());
         }
     }
-    
-    
-    private void UnifiedForE(EntityComponentAction<C0, C1> action)
+
+
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
+    public void For(EntityComponentAction<C0, C1> action)
     {
+        using var worldLock = World.Lock();
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
@@ -160,9 +166,10 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     }
 
 
-        
-    private void UnifiedForUE<U>(U uniform, UniformEntityComponentAction<U, C0, C1> action)
+    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
+    public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1> action)
     {
+        using var worldLock = World.Lock();
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
@@ -173,38 +180,6 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
                 LoopUniformEntity(table, s0.Span, s1.Span, action, uniform);
             } while (join.Iterate());
         }
-    }
-
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
-    public void For(ComponentAction<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-        UnifiedFor(action);
-    }
-
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
-    public void For<U>(U uniform, UniformComponentAction<U, C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-        UnifiedForU(uniform, action);
-    }
-
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
-    public void For(EntityComponentAction<C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-        UnifiedForE(action);
-    }
-
-
-    /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
-    public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1> action)
-    {
-        using var worldLock = World.Lock();
-        UnifiedForUE(uniform, action);
     }
 
     #endregion
@@ -245,9 +220,11 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
                     job.Action = action;
+                    job.Filter = Pass;
                     job.CountDown = _countdown;
                     jobs.Add(job);
-
+                    
+                    //TODO: Maybe the other overload is better?
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
                 }
             } while (join.Iterate());

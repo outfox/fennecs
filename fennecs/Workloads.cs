@@ -33,13 +33,21 @@ internal class Work<C1, C2> : IThreadPoolWorkItem
 {
     public Memory<C1> Memory1 = null!;
     public Memory<C2> Memory2 = null!;
+    public FilterDelegate<C1,C2> Filter = null!;
     public ComponentAction<C1, C2> Action = null!;
     public CountdownEvent CountDown = null!;
 
 
     public void Execute()
     {
-        for (var i = 0; i < Memory1.Length; i++) Action(ref Memory1.Span[i], ref Memory2.Span[i]);
+        var s1 = Memory1.Span;
+        var s2 = Memory2.Span;
+        
+        for (var i = 0; i < Memory1.Length; i++)
+        {
+            if (!Filter(in s1[i], in s2[i])) continue;
+            Action(ref s1[i], ref s2[i]);
+        }
         CountDown.Signal();
     }
 }

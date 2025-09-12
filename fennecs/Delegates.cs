@@ -1,7 +1,9 @@
 ﻿namespace fennecs;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-public delegate bool ComponentFilter<C>(in C c0);
+public delegate bool ComponentFilter<C0>(in C0 c0);
+
+public delegate bool FilterDelegate<C0, C1>(in C0 c0, in C1 c1);
 
 public delegate void ComponentAction<C0>(ref C0 comp0);
 public delegate void ComponentAction<C0, C1>(ref C0 comp0, ref C1 comp1);
