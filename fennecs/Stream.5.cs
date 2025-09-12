@@ -10,8 +10,7 @@ namespace fennecs;
 /// <typeparam name="C2">stream type</typeparam>
 /// <typeparam name="C3">stream type</typeparam>
 /// <typeparam name="C4">stream type</typeparam>
-// ReSharper disable once NotAccessedPositionalProperty.Global
-public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Match0, Match Match1, Match Match2, Match Match3, Match Match4)
+public readonly record struct Stream<C0, C1, C2, C3, C4>
     : IEnumerable<(Entity, C0, C1, C2, C3, C4)>
     where C0 : notnull
     where C1 : notnull
@@ -19,25 +18,26 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
     where C3 : notnull
     where C4 : notnull
 {
-    private readonly ImmutableArray<TypeExpression> _streamTypes =
-        [TypeExpression.Of<C0>(Match0), TypeExpression.Of<C1>(Match1), TypeExpression.Of<C2>(Match2), TypeExpression.Of<C3>(Match3), TypeExpression.Of<C4>(Match4)];
-
     #region Stream Fields
+
+    private readonly ImmutableArray<TypeExpression> _streamTypes;
 
     /// <summary>
     /// Archetypes, or Archetypes that match the Stream's Subset and Exclude filters.
     /// </summary>
-    private SortedSet<Archetype> Filtered => Subset.IsEmpty && Exclude.IsEmpty
-        ? Archetypes
-        : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate)); //TODO: Create immutable set?
+    private SortedSet<Archetype> Filtered =>
+        Subset.IsEmpty && Exclude.IsEmpty
+            ? Archetypes
+            : new SortedSet<Archetype>(Archetypes.Where(InclusionPredicate));
 
-    private bool InclusionPredicate(Archetype candidate) => (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) && !candidate.MatchSignature.Matches(Exclude);
+    private bool InclusionPredicate(Archetype candidate) =>
+        (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
+        !candidate.MatchSignature.Matches(Exclude);
 
     /// <summary>
     /// The number of entities that match the underlying Query.
     /// </summary>
     public int Count => Filtered.Sum(f => f.Count);
-
 
     /// <summary>
     /// The Archetypes that this Stream is iterating over.
@@ -51,32 +51,101 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
 
     /// <summary>
     /// The Query this Stream is associated with.
-    /// Can be re-inited via the with keyword.
+    /// Can be re-initialized via the with keyword.
     /// </summary>
-    public Query Query { get; } = Query;
+    public Query Query { get; }
 
     /// <summary>
-    /// Subset Stream Filter - if not empty, only entities with these components will be included in the Stream. 
+    /// Subset Stream Filter - if not empty, only entities with these components 
+    /// will be included in the Stream. 
     /// </summary>
     public ImmutableSortedSet<Comp> Subset { get; init; } = [];
-    
+
     /// <summary>
-    /// Exclude Stream Filter - any entities with these components will be excluded from the Stream. (none if empty)
+    /// Exclude Stream Filter - any entities with these components 
+    /// will be excluded from the Stream. (none if empty)
     /// </summary>
     public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
-    
-    /// <summary>
-    ///     Countdown event for parallel runners.
-    /// </summary>
-    private readonly CountdownEvent Countdown = new(initialCount: 1);
 
-    /// <summary>   
-    ///     The number of threads this Stream uses for parallel processing.
+    /// <summary>
+    /// Countdown event for parallel runners.
+    /// </summary>
+    private readonly CountdownEvent _countdown = new(initialCount: 1);
+
+    /// <summary>
+    /// Constructs a Stream of five component types.
+    /// </summary>
+    public Stream(Query query, Match match0, Match match1, Match match2, Match match3, Match match4)
+    {
+        _streamTypes =
+        [
+            TypeExpression.Of<C0>(match0),
+            TypeExpression.Of<C1>(match1),
+            TypeExpression.Of<C2>(match2),
+            TypeExpression.Of<C3>(match3),
+            TypeExpression.Of<C4>(match4)
+        ];
+        Query = query;
+    }
+
+    /// <summary>
+    /// The number of threads this Stream uses for parallel processing.
     /// </summary>
     private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
 
     #endregion
-    
+
+    #region Filter State
+
+    /// <summary>Filter for component C0.</summary>
+    public ComponentFilter<C0> Filter0 { private get; init; } = (in C0 _) => true;
+
+    /// <summary>Filter for component C1.</summary>
+    public ComponentFilter<C1> Filter1 { private get; init; } = (in C1 _) => true;
+
+    /// <summary>Filter for component C2.</summary>
+    public ComponentFilter<C2> Filter2 { private get; init; } = (in C2 _) => true;
+
+    /// <summary>Filter for component C3.</summary>
+    public ComponentFilter<C3> Filter3 { private get; init; } = (in C3 _) => true;
+
+    /// <summary>Filter for component C4.</summary>
+    public ComponentFilter<C4> Filter4 { private get; init; } = (in C4 _) => true;
+
+    private bool Pass(in C0 c0, in C1 c1, in C2 c2, in C3 c3, in C4 c4) =>
+        Filter0(c0) && Filter1(c1) && Filter2(c2) && Filter3(c3) && Filter4(c4);
+
+    /// <summary>
+    /// Creates a new Stream with the same Query and Filters, but replacing the 
+    /// filter for Component <c>C0</c> with the provided predicate. 
+    /// </summary>
+    public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C0> filter0) => this with {Filter0 = filter0};
+
+    /// <summary>
+    /// Creates a new Stream with the same Query and Filters, but replacing the 
+    /// filter for Component <c>C1</c> with the provided predicate. 
+    /// </summary>
+    public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C1> filter1) => this with {Filter1 = filter1};
+
+    /// <summary>
+    /// Creates a new Stream with the same Query and Filters, but replacing the 
+    /// filter for Component <c>C2</c> with the provided predicate. 
+    /// </summary>
+    public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C2> filter2) => this with {Filter2 = filter2};
+
+    /// <summary>
+    /// Creates a new Stream with the same Query and Filters, but replacing the 
+    /// filter for Component <c>C3</c> with the provided predicate. 
+    /// </summary>
+    public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C3> filter3) => this with {Filter3 = filter3};
+
+    /// <summary>
+    /// Creates a new Stream with the same Query and Filters, but replacing the 
+    /// filter for Component <c>C4</c> with the provided predicate. 
+    /// </summary>
+    public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C4> filter4) => this with {Filter4 = filter4};
+
+    #endregion
 
     #region Stream.For
 
@@ -84,7 +153,6 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
     public void For(ComponentAction<C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
-
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
@@ -92,82 +160,55 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
-                Unroll8(s0, s1, s2, s3, s4, action);
+                Loop(s0.Span, s1.Span, s2.Span, s3.Span, s4.Span, action);
             } while (join.Iterate());
         }
     }
-
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
     public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
-
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
             if (join.Empty) continue;
-
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
-                var span0 = s0.Span;
-                var span1 = s1.Span;
-                var span2 = s2.Span;
-                var span3 = s3.Span;
-                var span4 = s4.Span;
-
-                Unroll8U(uniform, span0, span1, span2, span3, span4, action);
+                LoopUniform(s0.Span, s1.Span, s2.Span, s3.Span, s4.Span, action, uniform);
             } while (join.Iterate());
         }
     }
-
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
     public void For(EntityComponentAction<C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
-
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
             if (join.Empty) continue;
-
-            var count = table.Count;
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
-                var span0 = s0.Span;
-                var span1 = s1.Span;
-                var span2 = s2.Span;
-                var span3 = s3.Span;
-                var span4 = s4.Span;
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
+                LoopEntity(table, s0.Span, s1.Span, s2.Span, s3.Span, s4.Span, action);
             } while (join.Iterate());
         }
     }
-
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
     public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3, C4> action)
     {
         using var worldLock = World.Lock();
-
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
             if (join.Empty) continue;
-
-            var count = table.Count;
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
-                var span0 = s0.Span;
-                var span1 = s1.Span;
-                var span2 = s2.Span;
-                var span3 = s3.Span;
-                var span4 = s4.Span;
-                for (var i = 0; i < count; i++) action(uniform, table[i], ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
+                LoopUniformEntity(table, s0.Span, s1.Span, s2.Span, s3.Span, s4.Span, action, uniform);
             } while (join.Iterate());
         }
     }
@@ -180,32 +221,29 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
     public void Job(ComponentAction<C0, C1, C2, C3, C4> action)
     {
         AssertNoWildcards(_streamTypes);
-        
+
         using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        Countdown.Reset();
-
+        _countdown.Reset();
         using var jobs = PooledList<Work<C0, C1, C2, C3, C4>>.Rent();
 
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
             if (join.Empty) continue;
-
-            var count = table.Count; // storage.Length is the capacity, not the count.
+            var count = table.Count;
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+
             do
             {
                 for (var chunk = 0; chunk < partitions; chunk++)
                 {
-                    Countdown.AddCount();
-
+                    _countdown.AddCount();
                     var start = chunk * chunkSize;
                     var length = Math.Min(chunkSize, count - start);
 
                     var (s0, s1, s2, s3, s4) = join.Select;
-
                     var job = JobPool<Work<C0, C1, C2, C3, C4>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
@@ -213,7 +251,8 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
                     job.Memory4 = s3.AsMemory(start, length);
                     job.Memory5 = s4.AsMemory(start, length);
                     job.Action = action;
-                    job.CountDown = Countdown;
+                    job.Pass = Pass;
+                    job.CountDown = _countdown;
                     jobs.Add(job);
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
@@ -221,43 +260,39 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
             } while (join.Iterate());
         }
 
-        Countdown.Signal();
-        Countdown.Wait();
+        _countdown.Signal();
+        _countdown.Wait();
 
         JobPool<Work<C0, C1, C2, C3, C4>>.Return(jobs);
     }
-
 
     /// <inheritdoc cref="Stream{C0}.Job{U}"/>
     public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
     {
         AssertNoWildcards(_streamTypes);
 
+        using var worldLock = World.Lock();
         var chunkSize = Math.Max(1, Count / Concurrency);
 
-        using var worldLock = World.Lock();
-        Countdown.Reset();
-
+        _countdown.Reset();
         using var jobs = PooledList<UniformWork<U, C0, C1, C2, C3, C4>>.Rent();
 
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
             if (join.Empty) continue;
-
-            var count = table.Count; // storage.Length is the capacity, not the count.
+            var count = table.Count;
             var partitions = count / chunkSize + Math.Sign(count % chunkSize);
+
             do
             {
                 for (var chunk = 0; chunk < partitions; chunk++)
                 {
-                    Countdown.AddCount();
-
+                    _countdown.AddCount();
                     var start = chunk * chunkSize;
                     var length = Math.Min(chunkSize, count - start);
 
                     var (s0, s1, s2, s3, s4) = join.Select;
-
                     var job = JobPool<UniformWork<U, C0, C1, C2, C3, C4>>.Rent();
                     job.Memory1 = s0.AsMemory(start, length);
                     job.Memory2 = s1.AsMemory(start, length);
@@ -266,7 +301,8 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
                     job.Memory5 = s4.AsMemory(start, length);
                     job.Action = action;
                     job.Uniform = uniform;
-                    job.CountDown = Countdown;
+                    job.Pass = Pass;
+                    job.CountDown = _countdown;
                     jobs.Add(job);
 
                     ThreadPool.UnsafeQueueUserWorkItem(job, true);
@@ -274,8 +310,8 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
             } while (join.Iterate());
         }
 
-        Countdown.Signal();
-        Countdown.Wait();
+        _countdown.Signal();
+        _countdown.Wait();
 
         JobPool<UniformWork<U, C0, C1, C2, C3, C4>>.Return(jobs);
     }
@@ -293,22 +329,20 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
             if (join.Empty) continue;
-
             var count = table.Count;
+
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
-                var mem0 = s0.AsMemory(0, count);
-                var mem1 = s1.AsMemory(0, count);
-                var mem2 = s2.AsMemory(0, count);
-                var mem3 = s3.AsMemory(0, count);
-                var mem4 = s4.AsMemory(0, count);
-
-                action(mem0, mem1, mem2, mem3, mem4);
+                action(
+                    s0.AsMemory(0, count),
+                    s1.AsMemory(0, count),
+                    s2.AsMemory(0, count),
+                    s3.AsMemory(0, count),
+                    s4.AsMemory(0, count));
             } while (join.Iterate());
         }
     }
-
 
     /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
     public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2, C3, C4> action)
@@ -319,95 +353,69 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
         {
             using var join = table.CrossJoin<C0, C1, C2, C3, C4>(_streamTypes.AsSpan());
             if (join.Empty) continue;
-
             var count = table.Count;
+
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
-                var mem0 = s0.AsMemory(0, count);
-                var mem1 = s1.AsMemory(0, count);
-                var mem2 = s2.AsMemory(0, count);
-                var mem3 = s3.AsMemory(0, count);
-                var mem4 = s4.AsMemory(0, count);
-
-                action(uniform, mem0, mem1, mem2, mem3, mem4);
+                action(
+                    uniform,
+                    s0.AsMemory(0, count),
+                    s1.AsMemory(0, count),
+                    s2.AsMemory(0, count),
+                    s3.AsMemory(0, count),
+                    s4.AsMemory(0, count));
             } while (join.Iterate());
         }
     }
 
     #endregion
 
-
     #region Blitters
+
     /// <summary>
-    /// <para>Blit (write) a component value of a stream type to all entities matched by this query.</para>
-    /// <para>🚀 Very fast!</para>
+    /// Blit (write) a component value of type <c>C0</c> to all entities matched by this query.
     /// </summary>
-    /// <remarks>
-    /// Each entity in the Query must possess the component type.
-    /// Otherwise, consider using <see cref="Query.Add{T}()"/> with <see cref="Batch.AddConflict.Replace"/>. 
-    /// </remarks>
-    /// <param name="value">a component value</param>
-    /// <param name="match">default for Plain components, Entity for Relations, Identity.Of(Object) for ObjectLinks </param>
     public void Blit(C0 value, Match match = default)
     {
-        var typeExpression = TypeExpression.Of<C0>(match);
-        foreach (var table in Filtered) table.Fill(typeExpression, value);
+        var t = TypeExpression.Of<C0>(match);
+        foreach (var table in Filtered) table.Fill(t, value);
     }
 
-
-    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
+    /// <summary>
+    /// Blit (write) a component value of type <c>C1</c> to all entities matched by this query.
+    /// </summary>
     public void Blit(C1 value, Match match = default)
     {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C1>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
+        var t = TypeExpression.Of<C1>(match);
+        foreach (var table in Filtered) table.Fill(t, value);
     }
-    
-    
-    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
+
+    /// <summary>
+    /// Blit (write) a component value of type <c>C2</c> to all entities matched by this query.
+    /// </summary>
     public void Blit(C2 value, Match match = default)
     {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C2>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
+        var t = TypeExpression.Of<C2>(match);
+        foreach (var table in Filtered) table.Fill(t, value);
     }
 
-
-    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
+    /// <summary>
+    /// Blit (write) a component value of type <c>C3</c> to all entities matched by this query.
+    /// </summary>
     public void Blit(C3 value, Match match = default)
     {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C3>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
+        var t = TypeExpression.Of<C3>(match);
+        foreach (var table in Filtered) table.Fill(t, value);
     }
-    
-    /// <inheritdoc cref="Stream{C0}.Blit(C0,Match)"/>
+
+    /// <summary>
+    /// Blit (write) a component value of type <c>C4</c> to all entities matched by this query.
+    /// </summary>
     public void Blit(C4 value, Match match = default)
     {
-        using var worldLock = World.Lock();
-
-        var typeExpression = TypeExpression.Of<C4>(match);
-
-        foreach (var table in Filtered)
-        {
-            table.Fill(typeExpression, value);
-        }
+        var t = TypeExpression.Of<C4>(match);
+        foreach (var table in Filtered) table.Fill(t, value);
     }
 
     #endregion
@@ -425,10 +433,11 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
             do
             {
                 var (s0, s1, s2, s3, s4) = join.Select;
-                for (var index = 0; index < table.Count; index++)
+                for (var i = 0; i < table.Count; i++)
                 {
-                    yield return (table[index], s0[index], s1[index], s2[index], s3[index], s4[index]);
-                    if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    yield return (table[i], s0[i], s1[i], s2[i], s3[i], s4[i]);
+                    if (table.Version != snapshot)
+                        throw new InvalidOperationException("Collection was modified during iteration.");
                 }
             } while (join.Iterate());
         }
@@ -436,63 +445,61 @@ public readonly record struct Stream<C0, C1, C2, C3, C4>(Query Query, Match Matc
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    
+
     #endregion
 
-    private static void Unroll8(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4, ComponentAction<C0, C1, C2, C3, C4> action)
+    #region Action Loops
+
+    private void Loop(Span<C0> s0, Span<C1> s1, Span<C2> s2, Span<C3> s3, Span<C4> s4,
+        ComponentAction<C0, C1, C2, C3, C4> action)
     {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
+        for (int i = 0; i < s0.Length; i++)
         {
-            action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
-            action(ref span0[i + 1], ref span1[i + 1], ref span2[i + 1], ref span3[i + 1], ref span4[i + 1]);
-            action(ref span0[i + 2], ref span1[i + 2], ref span2[i + 2], ref span3[i + 2], ref span4[i + 2]);
-            action(ref span0[i + 3], ref span1[i + 3], ref span2[i + 3], ref span3[i + 3], ref span4[i + 3]);
-
-            action(ref span0[i + 4], ref span1[i + 4], ref span2[i + 4], ref span3[i + 4], ref span4[i + 4]);
-            action(ref span0[i + 5], ref span1[i + 5], ref span2[i + 5], ref span3[i + 5], ref span4[i + 5]);
-            action(ref span0[i + 6], ref span1[i + 6], ref span2[i + 6], ref span3[i + 6], ref span4[i + 6]);
-            action(ref span0[i + 7], ref span1[i + 7], ref span2[i + 7], ref span3[i + 7], ref span4[i + 7]);
-        }
-
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
-            action(ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
+            if (!Pass(in s0[i], in s1[i], in s2[i], in s3[i], in s4[i])) continue;
+            action(ref s0[i], ref s1[i], ref s2[i], ref s3[i], ref s4[i]);
         }
     }
 
-    private static void Unroll8U<U>(U uniform, Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
+    private void LoopEntity(Archetype table, Span<C0> s0, Span<C1> s1, Span<C2> s2, Span<C3> s3, Span<C4> s4,
+        EntityComponentAction<C0, C1, C2, C3, C4> action)
     {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
+        for (int i = 0; i < s0.Length; i++)
         {
-            action(uniform, ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
-            action(uniform, ref span0[i + 1], ref span1[i + 1], ref span2[i + 1], ref span3[i + 1], ref span4[i + 1]);
-            action(uniform, ref span0[i + 2], ref span1[i + 2], ref span2[i + 2], ref span3[i + 2], ref span4[i + 2]);
-            action(uniform, ref span0[i + 3], ref span1[i + 3], ref span2[i + 3], ref span3[i + 3], ref span4[i + 3]);
-
-            action(uniform, ref span0[i + 4], ref span1[i + 4], ref span2[i + 4], ref span3[i + 4], ref span4[i + 4]);
-            action(uniform, ref span0[i + 5], ref span1[i + 5], ref span2[i + 5], ref span3[i + 5], ref span4[i + 5]);
-            action(uniform, ref span0[i + 6], ref span1[i + 6], ref span2[i + 6], ref span3[i + 6], ref span4[i + 6]);
-            action(uniform, ref span0[i + 7], ref span1[i + 7], ref span2[i + 7], ref span3[i + 7], ref span4[i + 7]);
-        }
-
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
-            action(uniform, ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
+            if (!Pass(in s0[i], in s1[i], in s2[i], in s3[i], in s4[i])) continue;
+            action(table[i], ref s0[i], ref s1[i], ref s2[i], ref s3[i], ref s4[i]);
         }
     }
-    
+
+    private void LoopUniform<U>(Span<C0> s0, Span<C1> s1, Span<C2> s2, Span<C3> s3, Span<C4> s4,
+        UniformComponentAction<U, C0, C1, C2, C3, C4> action, U uniform)
+    {
+        for (int i = 0; i < s0.Length; i++)
+        {
+            if (!Pass(in s0[i], in s1[i], in s2[i], in s3[i], in s4[i])) continue;
+            action(uniform, ref s0[i], ref s1[i], ref s2[i], ref s3[i], ref s4[i]);
+        }
+    }
+
+    private void LoopUniformEntity<U>(Archetype table, Span<C0> s0, Span<C1> s1, Span<C2> s2, Span<C3> s3, Span<C4> s4,
+        UniformEntityComponentAction<U, C0, C1, C2, C3, C4> action, U uniform)
+    {
+        for (int i = 0; i < s0.Length; i++)
+        {
+            if (!Pass(in s0[i], in s1[i], in s2[i], in s3[i], in s4[i])) continue;
+            action(uniform, table[i], ref s0[i], ref s1[i], ref s2[i], ref s3[i], ref s4[i]);
+        }
+    }
+
+    #endregion
+
     #region Assertions
-    /// <summary>
-    /// Throws if the query has any Wildcards.
-    /// </summary>
+
     private static void AssertNoWildcards(ImmutableArray<TypeExpression> streamTypes)
     {
-        if (streamTypes.Any(t => t.isWildcard)) throw new InvalidOperationException($"Cannot run a this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+        if (streamTypes.Any(t => t.isWildcard))
+            throw new InvalidOperationException(
+                $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
     }
-    #endregion
 
+    #endregion
 }
