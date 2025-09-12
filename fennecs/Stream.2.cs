@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
+
 using fennecs.pools;
 
 namespace fennecs;
@@ -79,17 +80,19 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     /// <summary>
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
-    public ComponentFilter<C0>? Filter0 { private get; init; }
+    public ComponentFilter<C0> Filter0 { private get; init; } = (in C0 _) => true;
 
     /// <summary>
     /// Filter for component 0. Return true to include the entity in the Stream, false to skip it.
     /// </summary>
-    public ComponentFilter<C1>? Filter1 { private get; init; }
+    public ComponentFilter<C1> Filter1 { private get; init; } = (in C1 _) => true;
+    
+    private bool Pass(in C0 c0, in C1 c1) => Filter0(c0) && Filter1(c1);
     
     /// <summary>
     /// Creates a new Stream with the same Query and Filters, but replacing the filter for Component <c>C0</c> with the provided predicate. 
     /// </summary>
-    public Stream<C0, C1> Where(ComponentFilter<C0>? filter0)
+    public Stream<C0, C1> Where(ComponentFilter<C0> filter0)
     {
         return this with
         {
@@ -101,7 +104,7 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     /// <summary>
     /// Creates a new Stream with the same Query and Filters, but replacing the filter for Component <c>C1</c> with the provided predicate.
     /// </summary>
-    public Stream<C0, C1> Where(ComponentFilter<C1>? filter1)
+    public Stream<C0, C1> Where(ComponentFilter<C1> filter1)
     {
         return this with
         {
@@ -112,10 +115,8 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
 
     #region Stream.For
 
-    private void FastFor(ComponentAction<C0, C1> action)
+    private void UnifiedFor(ComponentAction<C0, C1> action)
     {
-        using var worldLock = World.Lock();
-
         foreach (var table in Filtered)
         {
             using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
@@ -123,32 +124,63 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
             do
             {
                 var (s0, s1) = join.Select;
-                LoopUnroll8(s0, s1, action);
+                Loop(s0.Span, s1.Span, action);
             } while (join.Iterate());
         }
     }
+
+
+    private void UnifiedForU<U>(U uniform, UniformComponentAction<U, C0, C1> action)
+    {
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            do
+            {
+                var (s0, s1) = join.Select;
+                LoopUniform(s0.Span, s1.Span, action, uniform);
+            } while (join.Iterate());
+        }
+    }
+    
+    
+    private void UnifiedForE(EntityComponentAction<C0, C1> action)
+    {
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            do
+            {
+                var (s0, s1) = join.Select;
+                LoopEntity(table, s0.Span, s1.Span, action);
+            } while (join.Iterate());
+        }
+    }
+
+
+        
+    private void UnifiedForUE<U>(U uniform, UniformEntityComponentAction<U, C0, C1> action)
+    {
+        foreach (var table in Filtered)
+        {
+            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
+            if (join.Empty) continue;
+            do
+            {
+                var (s0, s1) = join.Select;
+                LoopUniformEntity(table, s0.Span, s1.Span, action, uniform);
+            } while (join.Iterate());
+        }
+    }
+
 
     /// <include file='XMLdoc.xml' path='members/member[@name="T:For"]'/>
     public void For(ComponentAction<C0, C1> action)
     {
         using var worldLock = World.Lock();
-
-        if (Filter0 == null && Filter1 == null)
-        {
-            FastFor(action);
-            return;
-        }
-        
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-            do
-            {
-                var (s0, s1) = join.Select;
-                LoopFilteredUnroll8(s0, s1, action);
-            } while (join.Iterate());
-        }
+        UnifiedFor(action);
     }
 
 
@@ -156,21 +188,7 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     public void For<U>(U uniform, UniformComponentAction<U, C0, C1> action)
     {
         using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-
-            do
-            {
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                var span1 = s1.Span;
-
-                LoopUnroll8U(span0, span1, action, uniform);
-            } while (join.Iterate());
-        }
+        UnifiedForU(uniform, action);
     }
 
 
@@ -178,21 +196,7 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     public void For(EntityComponentAction<C0, C1> action)
     {
         using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-
-            var count = table.Count;
-            do
-            {
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                var span1 = s1.Span;
-                for (var i = 0; i < count; i++) action(table[i], ref span0[i], ref span1[i]);
-            } while (join.Iterate());
-        }
+        UnifiedForE(action);
     }
 
 
@@ -200,21 +204,7 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1> action)
     {
         using var worldLock = World.Lock();
-
-        foreach (var table in Filtered)
-        {
-            using var join = table.CrossJoin<C0, C1>(_streamTypes.AsSpan());
-            if (join.Empty) continue;
-
-            var count = table.Count;
-            do
-            {
-                var (s0, s1) = join.Select;
-                var span0 = s0.Span;
-                var span1 = s1.Span;
-                for (var i = 0; i < count; i++) action(uniform, table[i], ref span0[i], ref span1[i]);
-            } while (join.Iterate());
-        }
+        UnifiedForUE(uniform, action);
     }
 
     #endregion
@@ -434,101 +424,46 @@ public readonly record struct Stream<C0, C1> : IEnumerable<(Entity, C0, C1)>
     
     #region Action Loops
 
-    // ReSharper disable once CognitiveComplexity
-    private void LoopFilteredUnroll8(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
+    private void Loop(Span<C0> span0, Span<C1> span1, ComponentAction<C0, C1> action)
     {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
+        var length = span0.Length;
+        for (var i = 0; i < length; i++)
         {
-            if ((Filter0 == null || Filter0(span0[i])) && 
-                (Filter1 == null || Filter1(span1[i]))) 
-                action(ref span0[i], ref span1[i]);
-
-            if ((Filter0 == null || Filter0(span0[i + 1])) && 
-                (Filter1 == null || Filter1(span1[i + 1]))) 
-                action(ref span0[i + 1], ref span1[i + 1]);   
-            
-            if ((Filter0 == null || Filter0(span0[i + 2])) && 
-                (Filter1 == null || Filter1(span1[i + 2]))) 
-                action(ref span0[i + 2], ref span1[i + 2]);
-            
-            if ((Filter0 == null || Filter0(span0[i + 3])) && 
-                (Filter1 == null || Filter1(span1[i + 3]))) 
-                action(ref span0[i + 3], ref span1[i + 3]);
-            
-            if ((Filter0 == null || Filter0(span0[i + 4])) && 
-                (Filter1 == null || Filter1(span1[i + 4]))) 
-                action(ref span0[i + 4], ref span1[i + 4]);
-            
-            if ((Filter0 == null || Filter0(span0[i + 5])) && 
-                (Filter1 == null || Filter1(span1[i + 5]))) 
-                action(ref span0[i + 5], ref span1[i + 5]);
-            
-            if ((Filter0 == null || Filter0(span0[i + 6])) && 
-                (Filter1 == null || Filter1(span1[i + 6]))) 
-                action(ref span0[i + 6], ref span1[i + 6]);
-            
-            if ((Filter0 == null || Filter0(span0[i + 7])) && 
-                (Filter1 == null || Filter1(span1[i + 7]))) 
-                action(ref span0[i + 7], ref span1[i + 7]);
-            
-        }
-
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
-            if (Filter0 != null && !Filter0(span0[i])) continue;
-            if (Filter1 != null && !Filter1(span1[i])) continue;
+            if (!Pass(in span0[i], in span1[i])) continue;
             action(ref span0[i], ref span1[i]);
         }
     }
 
-    private static void LoopUnroll8<U0, U1>(Span<U0> span0, Span<U1> span1, ComponentAction<U0, U1> action)
+    private void LoopEntity(Archetype table, Span<C0> span0, Span<C1> span1, EntityComponentAction<C0, C1> action)
     {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
+        var length = span0.Length;
+        for (var i = 0; i < length; i++)
         {
-            action(ref span0[i], ref span1[i]);
-            action(ref span0[i + 1], ref span1[i + 1]);
-            action(ref span0[i + 2], ref span1[i + 2]);
-            action(ref span0[i + 3], ref span1[i + 3]);
-
-            action(ref span0[i + 4], ref span1[i + 4]);
-            action(ref span0[i + 5], ref span1[i + 5]);
-            action(ref span0[i + 6], ref span1[i + 6]);
-            action(ref span0[i + 7], ref span1[i + 7]);
-        }
-
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
-            action(ref span0[i], ref span1[i]);
+            if (!Pass(in span0[i], in span1[i])) continue;
+            action(table[i], ref span0[i], ref span1[i]);
         }
     }
 
-    private static void LoopUnroll8U<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<U, C0, C1> action, U uniform)
+    private void LoopUniform<U>(Span<C0> span0, Span<C1> span1, UniformComponentAction<U, C0, C1> action, U uniform)
     {
-        var c = span0.Length / 8 * 8;
-        for (var i = 0; i < c; i += 8)
+        var length = span0.Length;
+        for (var i = 0; i < length; i++)
         {
-            action(uniform, ref span0[i], ref span1[i]);
-            action(uniform, ref span0[i + 1], ref span1[i + 1]);
-            action(uniform, ref span0[i + 2], ref span1[i + 2]);
-            action(uniform, ref span0[i + 3], ref span1[i + 3]);
-
-            action(uniform, ref span0[i + 4], ref span1[i + 4]);
-            action(uniform, ref span0[i + 5], ref span1[i + 5]);
-            action(uniform, ref span0[i + 6], ref span1[i + 6]);
-            action(uniform, ref span0[i + 7], ref span1[i + 7]);
-        }
-
-        var d = span0.Length;
-        for (var i = c; i < d; i++)
-        {
+            if (!Pass(in span0[i], in span1[i])) continue;
             action(uniform, ref span0[i], ref span1[i]);
         }
     }
-    
+
+    private void LoopUniformEntity<U>(Archetype table, Span<C0> span0, Span<C1> span1, UniformEntityComponentAction<U, C0, C1> action, U uniform)
+    {
+        var length = span0.Length;
+        for (var i = 0; i < length; i++)
+        {
+            if (!Pass(in span0[i], in span1[i])) continue;
+            action(uniform, table[i], ref span0[i], ref span1[i]);
+        }
+    }
+
     #endregion
     
     #region Assertions

@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
@@ -8,142 +7,68 @@ using fennecs;
 
 namespace Benchmark.ECS;
 
-[ShortRunJob]
+[LongRunJob]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
-//[ThreadingDiagnoser]
-//[MemoryDiagnoser]
+[HideColumns("Job", "Error", "RatioSD")]
+[MedianColumn]
 public class FilterBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(100, 1_000, 10_000, 100_000)]
+    [Params(1_000)]
     public int EntityCount { get; set; }
 
     private static readonly Random Random = new(1337);
 
     private World _world = null!;
     
+    private const int Threshold = 50;
+    
+    private bool ComponentFilter(in int i) => i >= Threshold;
+
+    private static readonly Vector3 UniformConstantVector = new(3, 4, 5);
+    
     private Stream<Vector3, int> _streamV3;
-    private Stream<Vector3, int> _streamV3TopHalf;
-    private Stream<Vector3, int> _streamV3TopHalfInt;
+    private Stream<Vector3, int> _streamV3Top10Percent;
     private Vector3[] _vectorsRaw = null!;
     private int[] _intsRaw = null!;
 
-    [GlobalSetup]
+    [IterationSetup]
     public void Setup()
     {
         _world = new();
         _streamV3 = _world.Query<Vector3, int>().Stream();
-        _streamV3TopHalf = _streamV3.Where((in Vector3 v) => v.Y > 0.9f);
-        _streamV3TopHalfInt = _streamV3.Where((in int i) => i >= 90);
+        _streamV3Top10Percent = _streamV3.Where(ComponentFilter);
 
         _vectorsRaw = new Vector3[EntityCount];
         _intsRaw = new int[EntityCount];
-
+ 
         for (var i = 0; i < EntityCount; i++)
         {
             _vectorsRaw[i] = new(Random.NextSingle(), Random.NextSingle(), Random.NextSingle());
-            _intsRaw[i] = Random.Next() % 101;
+            _intsRaw[i] = Random.Next() % 100;
 
-            switch (i % 4)
-            {
-                case 0:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]);
-                    break;
-                case 1:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]).Add($"hello{i}");
-                    break;
-                case 2:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]).Add<float>();
-                    break;
-                case 3:
-                    _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]).Add<double>();
-                    break;
-            }
-            
+            _world.Spawn().Add(_vectorsRaw[i]).Add(_intsRaw[i]);
         }
     }
-
-    private static readonly Vector3 UniformConstantVector = new(3, 4, 5);
-
+    
+    
     [Benchmark]
-    public int ManualVector()
+    public void ManualInteger()
     {
-        var count = 0;
-        
-        _streamV3.For((ref Vector3 v, ref int i) =>
+        _streamV3.For(delegate (ref Vector3 v, ref int i)
         {
-            if (v.Y > 0.9f) i = (int) Vector3.Dot(v, UniformConstantVector);
+            if (i < Threshold) return;
+            v = UniformConstantVector + v;
         });
-        
-        return count;
     }
 
+    
     [Benchmark]
-    public int ManualInteger()
+    public void FilterInteger()
     {
-        var count = 0;
-        
-        _streamV3.For((ref Vector3 v, ref int i) =>
+        _streamV3Top10Percent.For(delegate (ref Vector3 v, ref int _)
         {
-            if (i >= 90) i = (int) Vector3.Dot(v, UniformConstantVector);
+            v = UniformConstantVector + v;
         });
-        
-        return count;
-    }
-
-    [Benchmark]
-    public int MethodInteger()
-    {
-        var count = 0;
-        
-        _streamV3.For(MethodInt);
-        
-        return count;
-    }
-
-    private void MethodInt(ref Vector3 v, ref int i)
-    {
-        if (i >= 90) i = (int) Vector3.Dot(v, UniformConstantVector);
-    }
-
-    [Benchmark]
-    public int StaticInteger()
-    {
-        var count = 0;
-        
-        _streamV3.For(StaticInt);
-        
-        return count;
-    }
-
-    private static void StaticInt(ref Vector3 v, ref int i)
-    {
-        if (i >= 90) i = (int) Vector3.Dot(v, UniformConstantVector);
-    }
-
-    [Benchmark]
-    public int FilterVector()
-    {
-        var count = 0;
-        
-        _streamV3TopHalf.For((ref Vector3 v, ref int i) =>
-        {
-            i = (int) Vector3.Dot(v, UniformConstantVector);
-        });
-        
-        return count;
-    }
-
-    [Benchmark]
-    public int FilterInteger()
-    {
-        var count = 0;
-        
-        _streamV3TopHalfInt.For((ref Vector3 v, ref int i) =>
-        {
-            i = (int) Vector3.Dot(v, UniformConstantVector);
-        });
-        
-        return count;
     }
 }

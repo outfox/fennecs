@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Order;
 
 namespace Benchmark.Conceptual;
@@ -9,11 +8,11 @@ namespace Benchmark.Conceptual;
 [ShortRunJob]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 //[HardwareCounters(HardwareCounter.CacheMisses, HardwareCounter.BranchMispredictions)]
-
+[HideColumns("Job", "Error", "Median", "RatioSD")]
 public class LoopConventionBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(10_000)]
+    [Params(1_000_000)]
     public int EntityCount { get; set; }
 
     private static readonly Random Random = new(1337);
@@ -34,7 +33,7 @@ public class LoopConventionBenchmarks
         }
     }
     
-    private const int Threshold = 20;
+    private const int Threshold = 50;
 
     private static readonly Vector3 UniformConstantVector = new(3, 4, 5);
 
@@ -45,12 +44,7 @@ public class LoopConventionBenchmarks
     {
         return i >= Threshold;
     }
-    
-    private bool StaticFilterInt(ref int i)
-    {
-        return i >= Threshold;
-    }
-    
+
     private void Process(RefAction<Vector3, int> action)
     {
         var vectorsSpan = _vectorsRaw.AsSpan();
