@@ -65,14 +65,38 @@ namespace fennecs
         <#= Environment.NewLine #>    <#= GenWhereList(n) #>
     {
         #region Stream Fields
+
+        // The component TypeExpressions that this Stream operates on.
         private readonly ImmutableArray<TypeExpression> _streamTypes;
+
+        /// <summary>
+        /// The Query this Stream is associated with.
+        /// </summary>
         public Query Query { get; }
+
+        /// <summary>
+        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// will be included in the Stream. 
+        /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
+        
+        /// <summary>
+        /// Exclude Stream Filter - any entities with these components 
+        /// will be excluded from the Stream. (none if empty)
+        /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
+        
+        // Countdown event used to track completion of jobs.
         private readonly CountdownEvent _countdown = new(initialCount: 1);
 
+        /// <summary>
+        /// The Archetypes that the underlying Query matches.
+        /// </summary>
         private SortedSet<Archetype> Archetypes => Query.Archetypes;
+
+        // The World that the contained Entities and underlying Query are associated with.
         private World World => Query.World;
+
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
                 ? Archetypes
@@ -82,36 +106,51 @@ namespace fennecs
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
             !candidate.MatchSignature.Matches(Exclude);
 
+        /// <summary>
+        /// The number of entities that match the underlying Query.
+        /// </summary>
         public int Count => Filtered.Sum(f => f.Count);
-
+        
         private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
         #endregion
 
         #region Constructor
-        public Stream(Query query<# for (int i = 0; i < n; i++) { #>, Match match<#= i #><# } #>)
+        /// <summary>
+        /// Constructs a for a Query operating on the given component types.
+        /// </summary>
+        public Stream(Query query<# for (var i = 0; i < n; i++) { #>, Match match<#= i #><# } #>)
         {
             _streamTypes = ImmutableArray.Create(
-<# for (int i = 0; i < n; i++) { #>                TypeExpression.Of<C<#= i #>>(match<#= i #>)<#= i < n - 1 ? "," : "" #>
+<# for (var i = 0; i < n; i++) { #>                TypeExpression.Of<C<#= i #>>(match<#= i #>)<#= i < n - 1 ? "," : "" #>
 <# } #>);
             Query = query;
         }
         #endregion
 
         #region Filter State
-<# for (int i = 0; i < n; i++) { #>
+<# for (var i = 0; i < n; i++) { #>
+        /// <summary>
+        /// Filter for component C<#= i #>.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C<#= i #>> Filter<#= i #> { private get; init; } = (in C<#= i #> _) => true;
 <# } #>
-
+        // Internally used default filter that lets all entities pass.
         private bool Pass(<#= FormatList(n, "in C{0} c{0}") #>) =>
             <#= string.Join(" && ", Enumerable.Range(0, n).Select(i => $"Filter{i}(c{i})")) #>;
 
-<# for (int i = 0; i < n; i++) { #>
+<# for (var i = 0; i < n; i++) { #>
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C<#= i #></c> with the provided predicate. 
+        /// </summary>
         public Stream<<#= types #>> Where(ComponentFilter<C<#= i #>> filter<#= i #>) =>
             this with { Filter<#= i #> = filter<#= i #> };
 <# } #>
         #endregion
 
         #region For
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<<#= types #>> action)
         {
             using var worldLock = World.Lock();
@@ -127,6 +166,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, <#= types #>> action)
         {
             using var worldLock = World.Lock();
@@ -142,6 +182,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<<#= types #>> action)
         {
             using var worldLock = World.Lock();
@@ -157,6 +198,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, <#= types #>> action)
         {
             using var worldLock = World.Lock();
@@ -174,6 +216,7 @@ namespace fennecs
         #endregion
 
         #region Job
+        /// <inheritdoc cref="Stream{C0}.Job"/>
         public void Job(ComponentAction<<#= types #>> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -200,7 +243,7 @@ namespace fennecs
 
                         var <#= (n > 1 ? "(" : "") + GenList("s",n) + (n > 1 ? ")" : "")  #> = join.Select;
                         var job = JobPool<Work<<#= types #>>>.Rent();
-<# for (int i=0;i<n;i++){ #>
+<# for (var i=0;i<n;i++){ #>
                         job.Memory<#= i+1 #> = s<#= i #>.AsMemory(start,length);
 <# } #>
                         job.Action = action;
@@ -217,6 +260,7 @@ namespace fennecs
             JobPool<Work<<#= types #>>>.Return(jobs);
         }
 
+        /// <inheritdoc cref="Stream{C0}.Job{U}"/>
         public void Job<U>(U uniform, UniformComponentAction<U, <#= types #>> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -243,7 +287,7 @@ namespace fennecs
 
                         var <#= (n > 1 ? "(" : "") + GenList("s",n) + (n > 1 ? ")" : "")  #> = join.Select;
                         var job = JobPool<UniformWork<U, <#= types #>>>.Rent();
-<# for (int i=0;i<n;i++){ #>
+<# for (var i=0;i<n;i++){ #>
                         job.Memory<#= i+1 #> = s<#= i #>.AsMemory(start,length);
 <# } #>
                         job.Action = action;
@@ -263,6 +307,7 @@ namespace fennecs
         #endregion
 
         #region Raw
+        /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<<#= types #>> action)
         {
             using var worldLock = World.Lock();
@@ -274,13 +319,14 @@ namespace fennecs
                 do
                 {
                     var <#= (n > 1 ? "(" : "") + GenList("s",n) + (n > 1 ? ")" : "")  #> = join.Select;
-<# for (int i=0;i<n;i++){ #>                    var mem<#= i #> = s<#= i #>.AsMemory(0, count);
+<# for (var i=0;i<n;i++){ #>                    var mem<#= i #> = s<#= i #>.AsMemory(0, count);
 <# } #>
                     action(<#= GenList("mem",n) #>);
                 } while (join.Iterate());
             }
         }
 
+        /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, <#= types #>> action)
         {
             using var worldLock = World.Lock();
@@ -292,7 +338,7 @@ namespace fennecs
                 do
                 {
                     var <#= (n > 1 ? "(" : "") + GenList("s",n) + (n > 1 ? ")" : "")  #> = join.Select;
-<# for (int i=0;i<n;i++){ #>                    var mem<#= i #> = s<#= i #>.AsMemory(0, count);
+<# for (var i=0;i<n;i++){ #>                    var mem<#= i #> = s<#= i #>.AsMemory(0, count);
 <# } #>
                     action(uniform, <#= GenList("mem",n) #>);
                 } while (join.Iterate());
@@ -301,6 +347,7 @@ namespace fennecs
         #endregion
 
         #region IEnumerable
+        /// <inheritdoc />
         public IEnumerator<(Entity, <#= types #>)> GetEnumerator()
         {
             foreach (var table in Filtered)
@@ -323,7 +370,11 @@ namespace fennecs
         #endregion
 
         #region Blitters
-<# for (int i=0; i<n; i++){ #>
+<# for (var i=0; i<n; i++){ #>
+        /// <summary>
+        /// Blit (write) a component value of type <c>C<#= i #>></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C<#= i #> value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C<#= i #>>(match);

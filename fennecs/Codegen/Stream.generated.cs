@@ -8,7 +8,7 @@ using System.Collections.Immutable;
 using fennecs.pools;
 using fennecs;
 
-// Date: 09/12/2025 22:10:46
+// Date: 09/12/2025 22:39:29
 
 namespace fennecs
 {
@@ -21,14 +21,38 @@ namespace fennecs
     where C0 : notnull
     {
         #region Stream Fields
+
+        // The component TypeExpressions that this Stream operates on.
         private readonly ImmutableArray<TypeExpression> _streamTypes;
+
+        /// <summary>
+        /// The Query this Stream is associated with.
+        /// </summary>
         public Query Query { get; }
+
+        /// <summary>
+        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// will be included in the Stream. 
+        /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
+        
+        /// <summary>
+        /// Exclude Stream Filter - any entities with these components 
+        /// will be excluded from the Stream. (none if empty)
+        /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
+        
+        // Countdown event used to track completion of jobs.
         private readonly CountdownEvent _countdown = new(initialCount: 1);
 
+        /// <summary>
+        /// The Archetypes that the underlying Query matches.
+        /// </summary>
         private SortedSet<Archetype> Archetypes => Query.Archetypes;
+
+        // The World that the contained Entities and underlying Query are associated with.
         private World World => Query.World;
+
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
                 ? Archetypes
@@ -38,12 +62,18 @@ namespace fennecs
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
             !candidate.MatchSignature.Matches(Exclude);
 
+        /// <summary>
+        /// The number of entities that match the underlying Query.
+        /// </summary>
         public int Count => Filtered.Sum(f => f.Count);
-
+        
         private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Constructs a for a Query operating on the given component types.
+        /// </summary>
         public Stream(Query query, Match match0)
         {
             _streamTypes = ImmutableArray.Create(
@@ -54,16 +84,25 @@ namespace fennecs
         #endregion
 
         #region Filter State
+        /// <summary>
+        /// Filter for component C0.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C0> Filter0 { private get; init; } = (in C0 _) => true;
-
+        // Internally used default filter that lets all entities pass.
         private bool Pass(in C0 c0) =>
             Filter0(c0);
 
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C0</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0> Where(ComponentFilter<C0> filter0) =>
             this with { Filter0 = filter0 };
         #endregion
 
         #region For
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0> action)
         {
             using var worldLock = World.Lock();
@@ -79,6 +118,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0> action)
         {
             using var worldLock = World.Lock();
@@ -94,6 +134,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0> action)
         {
             using var worldLock = World.Lock();
@@ -109,6 +150,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0> action)
         {
             using var worldLock = World.Lock();
@@ -126,6 +168,7 @@ namespace fennecs
         #endregion
 
         #region Job
+        /// <inheritdoc cref="Stream{C0}.Job"/>
         public void Job(ComponentAction<C0> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -167,6 +210,7 @@ namespace fennecs
             JobPool<Work<C0>>.Return(jobs);
         }
 
+        /// <inheritdoc cref="Stream{C0}.Job{U}"/>
         public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -211,6 +255,7 @@ namespace fennecs
         #endregion
 
         #region Raw
+        /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0> action)
         {
             using var worldLock = World.Lock();
@@ -228,6 +273,7 @@ namespace fennecs
             }
         }
 
+        /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0> action)
         {
             using var worldLock = World.Lock();
@@ -247,6 +293,7 @@ namespace fennecs
         #endregion
 
         #region IEnumerable
+        /// <inheritdoc />
         public IEnumerator<(Entity, C0)> GetEnumerator()
         {
             foreach (var table in Filtered)
@@ -269,6 +316,10 @@ namespace fennecs
         #endregion
 
         #region Blitters
+        /// <summary>
+        /// Blit (write) a component value of type <c>C0></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C0 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C0>(match);
@@ -354,14 +405,38 @@ namespace fennecs
     where C1 : notnull
     {
         #region Stream Fields
+
+        // The component TypeExpressions that this Stream operates on.
         private readonly ImmutableArray<TypeExpression> _streamTypes;
+
+        /// <summary>
+        /// The Query this Stream is associated with.
+        /// </summary>
         public Query Query { get; }
+
+        /// <summary>
+        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// will be included in the Stream. 
+        /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
+        
+        /// <summary>
+        /// Exclude Stream Filter - any entities with these components 
+        /// will be excluded from the Stream. (none if empty)
+        /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
+        
+        // Countdown event used to track completion of jobs.
         private readonly CountdownEvent _countdown = new(initialCount: 1);
 
+        /// <summary>
+        /// The Archetypes that the underlying Query matches.
+        /// </summary>
         private SortedSet<Archetype> Archetypes => Query.Archetypes;
+
+        // The World that the contained Entities and underlying Query are associated with.
         private World World => Query.World;
+
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
                 ? Archetypes
@@ -371,12 +446,18 @@ namespace fennecs
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
             !candidate.MatchSignature.Matches(Exclude);
 
+        /// <summary>
+        /// The number of entities that match the underlying Query.
+        /// </summary>
         public int Count => Filtered.Sum(f => f.Count);
-
+        
         private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Constructs a for a Query operating on the given component types.
+        /// </summary>
         public Stream(Query query, Match match0, Match match1)
         {
             _streamTypes = ImmutableArray.Create(
@@ -388,19 +469,36 @@ namespace fennecs
         #endregion
 
         #region Filter State
+        /// <summary>
+        /// Filter for component C0.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C0> Filter0 { private get; init; } = (in C0 _) => true;
+        /// <summary>
+        /// Filter for component C1.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C1> Filter1 { private get; init; } = (in C1 _) => true;
-
+        // Internally used default filter that lets all entities pass.
         private bool Pass(in C0 c0, in C1 c1) =>
             Filter0(c0) && Filter1(c1);
 
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C0</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1> Where(ComponentFilter<C0> filter0) =>
             this with { Filter0 = filter0 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C1</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1> Where(ComponentFilter<C1> filter1) =>
             this with { Filter1 = filter1 };
         #endregion
 
         #region For
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0, C1> action)
         {
             using var worldLock = World.Lock();
@@ -416,6 +514,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0, C1> action)
         {
             using var worldLock = World.Lock();
@@ -431,6 +530,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0, C1> action)
         {
             using var worldLock = World.Lock();
@@ -446,6 +546,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1> action)
         {
             using var worldLock = World.Lock();
@@ -463,6 +564,7 @@ namespace fennecs
         #endregion
 
         #region Job
+        /// <inheritdoc cref="Stream{C0}.Job"/>
         public void Job(ComponentAction<C0, C1> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -505,6 +607,7 @@ namespace fennecs
             JobPool<Work<C0, C1>>.Return(jobs);
         }
 
+        /// <inheritdoc cref="Stream{C0}.Job{U}"/>
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -550,6 +653,7 @@ namespace fennecs
         #endregion
 
         #region Raw
+        /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0, C1> action)
         {
             using var worldLock = World.Lock();
@@ -568,6 +672,7 @@ namespace fennecs
             }
         }
 
+        /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1> action)
         {
             using var worldLock = World.Lock();
@@ -588,6 +693,7 @@ namespace fennecs
         #endregion
 
         #region IEnumerable
+        /// <inheritdoc />
         public IEnumerator<(Entity, C0, C1)> GetEnumerator()
         {
             foreach (var table in Filtered)
@@ -610,12 +716,20 @@ namespace fennecs
         #endregion
 
         #region Blitters
+        /// <summary>
+        /// Blit (write) a component value of type <c>C0></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C0 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C1></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C1 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C1>(match);
@@ -702,14 +816,38 @@ namespace fennecs
     where C2 : notnull
     {
         #region Stream Fields
+
+        // The component TypeExpressions that this Stream operates on.
         private readonly ImmutableArray<TypeExpression> _streamTypes;
+
+        /// <summary>
+        /// The Query this Stream is associated with.
+        /// </summary>
         public Query Query { get; }
+
+        /// <summary>
+        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// will be included in the Stream. 
+        /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
+        
+        /// <summary>
+        /// Exclude Stream Filter - any entities with these components 
+        /// will be excluded from the Stream. (none if empty)
+        /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
+        
+        // Countdown event used to track completion of jobs.
         private readonly CountdownEvent _countdown = new(initialCount: 1);
 
+        /// <summary>
+        /// The Archetypes that the underlying Query matches.
+        /// </summary>
         private SortedSet<Archetype> Archetypes => Query.Archetypes;
+
+        // The World that the contained Entities and underlying Query are associated with.
         private World World => Query.World;
+
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
                 ? Archetypes
@@ -719,12 +857,18 @@ namespace fennecs
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
             !candidate.MatchSignature.Matches(Exclude);
 
+        /// <summary>
+        /// The number of entities that match the underlying Query.
+        /// </summary>
         public int Count => Filtered.Sum(f => f.Count);
-
+        
         private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Constructs a for a Query operating on the given component types.
+        /// </summary>
         public Stream(Query query, Match match0, Match match1, Match match2)
         {
             _streamTypes = ImmutableArray.Create(
@@ -737,22 +881,47 @@ namespace fennecs
         #endregion
 
         #region Filter State
+        /// <summary>
+        /// Filter for component C0.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C0> Filter0 { private get; init; } = (in C0 _) => true;
+        /// <summary>
+        /// Filter for component C1.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C1> Filter1 { private get; init; } = (in C1 _) => true;
+        /// <summary>
+        /// Filter for component C2.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C2> Filter2 { private get; init; } = (in C2 _) => true;
-
+        // Internally used default filter that lets all entities pass.
         private bool Pass(in C0 c0, in C1 c1, in C2 c2) =>
             Filter0(c0) && Filter1(c1) && Filter2(c2);
 
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C0</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2> Where(ComponentFilter<C0> filter0) =>
             this with { Filter0 = filter0 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C1</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2> Where(ComponentFilter<C1> filter1) =>
             this with { Filter1 = filter1 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C2</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2> Where(ComponentFilter<C2> filter2) =>
             this with { Filter2 = filter2 };
         #endregion
 
         #region For
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0, C1, C2> action)
         {
             using var worldLock = World.Lock();
@@ -768,6 +937,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
         {
             using var worldLock = World.Lock();
@@ -783,6 +953,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0, C1, C2> action)
         {
             using var worldLock = World.Lock();
@@ -798,6 +969,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2> action)
         {
             using var worldLock = World.Lock();
@@ -815,6 +987,7 @@ namespace fennecs
         #endregion
 
         #region Job
+        /// <inheritdoc cref="Stream{C0}.Job"/>
         public void Job(ComponentAction<C0, C1, C2> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -858,6 +1031,7 @@ namespace fennecs
             JobPool<Work<C0, C1, C2>>.Return(jobs);
         }
 
+        /// <inheritdoc cref="Stream{C0}.Job{U}"/>
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -904,6 +1078,7 @@ namespace fennecs
         #endregion
 
         #region Raw
+        /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0, C1, C2> action)
         {
             using var worldLock = World.Lock();
@@ -923,6 +1098,7 @@ namespace fennecs
             }
         }
 
+        /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2> action)
         {
             using var worldLock = World.Lock();
@@ -944,6 +1120,7 @@ namespace fennecs
         #endregion
 
         #region IEnumerable
+        /// <inheritdoc />
         public IEnumerator<(Entity, C0, C1, C2)> GetEnumerator()
         {
             foreach (var table in Filtered)
@@ -966,18 +1143,30 @@ namespace fennecs
         #endregion
 
         #region Blitters
+        /// <summary>
+        /// Blit (write) a component value of type <c>C0></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C0 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C1></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C1 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C1>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C2></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C2 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C2>(match);
@@ -1065,14 +1254,38 @@ namespace fennecs
     where C3 : notnull
     {
         #region Stream Fields
+
+        // The component TypeExpressions that this Stream operates on.
         private readonly ImmutableArray<TypeExpression> _streamTypes;
+
+        /// <summary>
+        /// The Query this Stream is associated with.
+        /// </summary>
         public Query Query { get; }
+
+        /// <summary>
+        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// will be included in the Stream. 
+        /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
+        
+        /// <summary>
+        /// Exclude Stream Filter - any entities with these components 
+        /// will be excluded from the Stream. (none if empty)
+        /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
+        
+        // Countdown event used to track completion of jobs.
         private readonly CountdownEvent _countdown = new(initialCount: 1);
 
+        /// <summary>
+        /// The Archetypes that the underlying Query matches.
+        /// </summary>
         private SortedSet<Archetype> Archetypes => Query.Archetypes;
+
+        // The World that the contained Entities and underlying Query are associated with.
         private World World => Query.World;
+
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
                 ? Archetypes
@@ -1082,12 +1295,18 @@ namespace fennecs
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
             !candidate.MatchSignature.Matches(Exclude);
 
+        /// <summary>
+        /// The number of entities that match the underlying Query.
+        /// </summary>
         public int Count => Filtered.Sum(f => f.Count);
-
+        
         private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Constructs a for a Query operating on the given component types.
+        /// </summary>
         public Stream(Query query, Match match0, Match match1, Match match2, Match match3)
         {
             _streamTypes = ImmutableArray.Create(
@@ -1101,25 +1320,58 @@ namespace fennecs
         #endregion
 
         #region Filter State
+        /// <summary>
+        /// Filter for component C0.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C0> Filter0 { private get; init; } = (in C0 _) => true;
+        /// <summary>
+        /// Filter for component C1.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C1> Filter1 { private get; init; } = (in C1 _) => true;
+        /// <summary>
+        /// Filter for component C2.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C2> Filter2 { private get; init; } = (in C2 _) => true;
+        /// <summary>
+        /// Filter for component C3.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C3> Filter3 { private get; init; } = (in C3 _) => true;
-
+        // Internally used default filter that lets all entities pass.
         private bool Pass(in C0 c0, in C1 c1, in C2 c2, in C3 c3) =>
             Filter0(c0) && Filter1(c1) && Filter2(c2) && Filter3(c3);
 
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C0</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3> Where(ComponentFilter<C0> filter0) =>
             this with { Filter0 = filter0 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C1</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3> Where(ComponentFilter<C1> filter1) =>
             this with { Filter1 = filter1 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C2</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3> Where(ComponentFilter<C2> filter2) =>
             this with { Filter2 = filter2 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C3</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3> Where(ComponentFilter<C3> filter3) =>
             this with { Filter3 = filter3 };
         #endregion
 
         #region For
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0, C1, C2, C3> action)
         {
             using var worldLock = World.Lock();
@@ -1135,6 +1387,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3> action)
         {
             using var worldLock = World.Lock();
@@ -1150,6 +1403,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0, C1, C2, C3> action)
         {
             using var worldLock = World.Lock();
@@ -1165,6 +1419,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3> action)
         {
             using var worldLock = World.Lock();
@@ -1182,6 +1437,7 @@ namespace fennecs
         #endregion
 
         #region Job
+        /// <inheritdoc cref="Stream{C0}.Job"/>
         public void Job(ComponentAction<C0, C1, C2, C3> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1226,6 +1482,7 @@ namespace fennecs
             JobPool<Work<C0, C1, C2, C3>>.Return(jobs);
         }
 
+        /// <inheritdoc cref="Stream{C0}.Job{U}"/>
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1273,6 +1530,7 @@ namespace fennecs
         #endregion
 
         #region Raw
+        /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0, C1, C2, C3> action)
         {
             using var worldLock = World.Lock();
@@ -1293,6 +1551,7 @@ namespace fennecs
             }
         }
 
+        /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2, C3> action)
         {
             using var worldLock = World.Lock();
@@ -1315,6 +1574,7 @@ namespace fennecs
         #endregion
 
         #region IEnumerable
+        /// <inheritdoc />
         public IEnumerator<(Entity, C0, C1, C2, C3)> GetEnumerator()
         {
             foreach (var table in Filtered)
@@ -1337,24 +1597,40 @@ namespace fennecs
         #endregion
 
         #region Blitters
+        /// <summary>
+        /// Blit (write) a component value of type <c>C0></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C0 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C1></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C1 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C1>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C2></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C2 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C2>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C3></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C3 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C3>(match);
@@ -1443,14 +1719,38 @@ namespace fennecs
     where C4 : notnull
     {
         #region Stream Fields
+
+        // The component TypeExpressions that this Stream operates on.
         private readonly ImmutableArray<TypeExpression> _streamTypes;
+
+        /// <summary>
+        /// The Query this Stream is associated with.
+        /// </summary>
         public Query Query { get; }
+
+        /// <summary>
+        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// will be included in the Stream. 
+        /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
+        
+        /// <summary>
+        /// Exclude Stream Filter - any entities with these components 
+        /// will be excluded from the Stream. (none if empty)
+        /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
+        
+        // Countdown event used to track completion of jobs.
         private readonly CountdownEvent _countdown = new(initialCount: 1);
 
+        /// <summary>
+        /// The Archetypes that the underlying Query matches.
+        /// </summary>
         private SortedSet<Archetype> Archetypes => Query.Archetypes;
+
+        // The World that the contained Entities and underlying Query are associated with.
         private World World => Query.World;
+
         private SortedSet<Archetype> Filtered =>
             Subset.IsEmpty && Exclude.IsEmpty
                 ? Archetypes
@@ -1460,12 +1760,18 @@ namespace fennecs
             (Subset.IsEmpty || candidate.MatchSignature.Matches(Subset)) &&
             !candidate.MatchSignature.Matches(Exclude);
 
+        /// <summary>
+        /// The number of entities that match the underlying Query.
+        /// </summary>
         public int Count => Filtered.Sum(f => f.Count);
-
+        
         private static int Concurrency => Math.Max(1, Environment.ProcessorCount - 2);
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Constructs a for a Query operating on the given component types.
+        /// </summary>
         public Stream(Query query, Match match0, Match match1, Match match2, Match match3, Match match4)
         {
             _streamTypes = ImmutableArray.Create(
@@ -1480,28 +1786,69 @@ namespace fennecs
         #endregion
 
         #region Filter State
+        /// <summary>
+        /// Filter for component C0.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C0> Filter0 { private get; init; } = (in C0 _) => true;
+        /// <summary>
+        /// Filter for component C1.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C1> Filter1 { private get; init; } = (in C1 _) => true;
+        /// <summary>
+        /// Filter for component C2.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C2> Filter2 { private get; init; } = (in C2 _) => true;
+        /// <summary>
+        /// Filter for component C3.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C3> Filter3 { private get; init; } = (in C3 _) => true;
+        /// <summary>
+        /// Filter for component C4.             
+        /// </summary>
+        /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C4> Filter4 { private get; init; } = (in C4 _) => true;
-
+        // Internally used default filter that lets all entities pass.
         private bool Pass(in C0 c0, in C1 c1, in C2 c2, in C3 c3, in C4 c4) =>
             Filter0(c0) && Filter1(c1) && Filter2(c2) && Filter3(c3) && Filter4(c4);
 
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C0</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C0> filter0) =>
             this with { Filter0 = filter0 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C1</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C1> filter1) =>
             this with { Filter1 = filter1 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C2</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C2> filter2) =>
             this with { Filter2 = filter2 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C3</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C3> filter3) =>
             this with { Filter3 = filter3 };
+        /// <summary>
+        /// Creates a new Stream with the same Query and Filters, but replacing the 
+        /// filter for Component <c>C4</c> with the provided predicate. 
+        /// </summary>
         public Stream<C0, C1, C2, C3, C4> Where(ComponentFilter<C4> filter4) =>
             this with { Filter4 = filter4 };
         #endregion
 
         #region For
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0, C1, C2, C3, C4> action)
         {
             using var worldLock = World.Lock();
@@ -1517,6 +1864,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
         {
             using var worldLock = World.Lock();
@@ -1532,6 +1880,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0, C1, C2, C3, C4> action)
         {
             using var worldLock = World.Lock();
@@ -1547,6 +1896,7 @@ namespace fennecs
             }
         }
 
+        /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3, C4> action)
         {
             using var worldLock = World.Lock();
@@ -1564,6 +1914,7 @@ namespace fennecs
         #endregion
 
         #region Job
+        /// <inheritdoc cref="Stream{C0}.Job"/>
         public void Job(ComponentAction<C0, C1, C2, C3, C4> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1609,6 +1960,7 @@ namespace fennecs
             JobPool<Work<C0, C1, C2, C3, C4>>.Return(jobs);
         }
 
+        /// <inheritdoc cref="Stream{C0}.Job{U}"/>
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1657,6 +2009,7 @@ namespace fennecs
         #endregion
 
         #region Raw
+        /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0, C1, C2, C3, C4> action)
         {
             using var worldLock = World.Lock();
@@ -1678,6 +2031,7 @@ namespace fennecs
             }
         }
 
+        /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2, C3, C4> action)
         {
             using var worldLock = World.Lock();
@@ -1701,6 +2055,7 @@ namespace fennecs
         #endregion
 
         #region IEnumerable
+        /// <inheritdoc />
         public IEnumerator<(Entity, C0, C1, C2, C3, C4)> GetEnumerator()
         {
             foreach (var table in Filtered)
@@ -1723,30 +2078,50 @@ namespace fennecs
         #endregion
 
         #region Blitters
+        /// <summary>
+        /// Blit (write) a component value of type <c>C0></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C0 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C1></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C1 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C1>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C2></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C2 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C2>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C3></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C3 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C3>(match);
             foreach (var table in Filtered)
                 table.Fill(typeExpression, value);
         }
+        /// <summary>
+        /// Blit (write) a component value of type <c>C4></c>
+        /// to all entities matched by this query. 
+        /// </summary>
         public void Blit(C4 value, Match match = default)
         {
             var typeExpression = TypeExpression.Of<C4>(match);
