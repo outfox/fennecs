@@ -36,5 +36,4 @@
     <ItemGroup>
       <ProjectReference Include="..\fennecs\fennecs.csproj" />
     </ItemGroup>
-
 </Project>
