@@ -16,7 +16,7 @@ namespace fennecs;
 ///         See <see cref="Stream{C}" /> Views with configurable output Stream Types for fast iteration.
 ///     </para>
 /// </summary>
-public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
+public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
 {
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
@@ -69,7 +69,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// This is only needed for benchmark situations and debugging where allocations
     /// might otherwise be made happen lazily only as the actual workload starts.
     /// </remarks>
-    public virtual Query Warmup() => this;
+    public Query Warmup() => this;
 
     #region Internals
 
@@ -87,11 +87,6 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     */
 
     /// <summary>
-    ///     Countdown event for parallel runners.
-    /// </summary>
-    protected readonly CountdownEvent Countdown = new(initialCount: 1);
-
-    /// <summary>
     /// This query's currently matched Archetypes.
     /// (affected by filters)
     /// </summary>
@@ -101,7 +96,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// The World this Query is associated with.
     /// The World will notify the Query of new matched Archetypes, or Archetypes to forget.
     /// </summary>
-    internal protected World World { get; protected init; }
+    internal World World { get; init; }
 
     /// <summary>
     ///  Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
@@ -238,7 +233,7 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     ///     Adds a Component (using default constructor) to all Entities matched by this query.
     /// </summary>
     /// <inheritdoc cref="Add{T}(T)" />
-    public void Add<T>() where T : notnull, new() => Add<T>(new T());
+    public void Add<T>() where T : notnull, new() => Add(new T());
 
 
     /// <summary>
@@ -391,20 +386,17 @@ public partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
     /// </summary>
     public void Dispose()
     {
-        ObjectDisposedException.ThrowIf(disposed, this);
+        ObjectDisposedException.ThrowIf(Disposed, this);
 
-        disposed = true;
+        Disposed = true;
 
         //Archetypes.Dispose();
 
         World.RemoveQuery(this);
         Mask.Dispose();
-
-        // Microsoft CA1816: Call GC.SuppressFinalize if the class does not have a finalizer
-        GC.SuppressFinalize(this);
     }
 
-    private bool disposed { get; set; }
+    private bool Disposed { get; set; }
 
     #endregion
 }
