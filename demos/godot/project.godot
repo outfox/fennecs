@@ -14,7 +14,7 @@ config/name="fennecs.demos.godot"
 config/description="A set of examples using the fennecs Entity Component System"
 run/main_scene="uid://dr2uc3nf0w2sy"
 config/quit_on_go_back=false
-config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 boot_splash/image="res://zzzShared/fennecs-logo.png"
 config/icon="res://icon.svg"
 

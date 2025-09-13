@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.4.0-rc.1">
+<Project Sdk="Godot.NET.Sdk/4.5.0-beta.6">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <IsPackable>false</IsPackable>
@@ -6,7 +6,7 @@
     <RootNamespace>fennecs.demos.godot</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="fennecs" Version="0.5.15-beta" />
+    <PackageReference Include="fennecs" Version="0.6.0" />
   </ItemGroup>
   <ItemGroup>
     <!--<ProjectReference Include="..\..\fennecs\fennecs.csproj" />-->

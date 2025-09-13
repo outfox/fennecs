@@ -57,6 +57,9 @@ public partial class DemoCubes : Node
 	// Fennecs: The Query that will be used to interact with the Entities.
 	private Stream<Matrix4X3, Vector3, int> _stream;
 	
+	// Fennecs: A view into our query that only exports the Matrix4X3 transforms to Godot.
+	private Stream<Matrix4X3> _exportStream;
+	
 	// Calculation: Elapsed time value for the simulation.
 	private float _time;
 
@@ -118,6 +121,7 @@ public partial class DemoCubes : Node
 	{
 		// Boilerplate: Prepare our Query that we'll use to interact with the Entities.
 		_stream = _world.Query<Matrix4X3, Vector3, int>().Stream();
+		_exportStream = _world.Query<Matrix4X3>().Stream();
 
 		// Boilerplate: Users can change the number of entities, so pre-warm the memory allocator a bit.
 		SetEntityCount(MaxEntities);
@@ -163,9 +167,9 @@ public partial class DemoCubes : Node
 		// We're saving a few keystrokes by using a method on the Query with only the first Stream Type (Matrix4X3).
 		// But fennecs doesn't limit us. We can use any Instance or Static method, lambda, or delegate here.
 		// -------------------------------------------------------------------------------------------
-		_stream.Raw(
+		_exportStream.Raw(
 			uniform: (MeshInstance.Multimesh.GetRid(), InstanceCount * Matrix4X3.SizeInFloats),
-			action:  static ((Rid mesh, int count) uniform, Memory<Matrix4X3> transforms) =>
+			action:  ((Rid mesh, int count) uniform, Memory<Matrix4X3> transforms) =>
 			{
 				var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
 				RenderingServer.MultimeshSetBuffer(uniform.mesh, floatSpan[..uniform.count]);
