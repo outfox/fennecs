@@ -1,9 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
+
+#if NET9_0_OR_GREATER
+using LockType = System.Threading.Lock;
+#else
+using LockType = object;
+#endif
 
 namespace fennecs;
 
@@ -36,9 +41,9 @@ public partial class World
 
     #region Locking & Deferred Operations
 
-    private readonly object _spawnLock = new();
+    private readonly LockType _spawnLock = new();
 
-    private readonly object _modeChangeLock = new();
+    private readonly LockType _modeChangeLock = new();
     private int _locks;
 
     internal WorldMode Mode { get; private set; } = WorldMode.Immediate;
@@ -99,10 +104,13 @@ public partial class World
 
     internal bool HasComponent(Identity identity, TypeExpression typeExpression)
     {
-        var meta = _meta[identity.Index];
-        return meta.Identity != default
-               && meta.Identity == identity
-               && typeExpression.Matches(meta.Archetype.MatchSignature);
+        lock (_spawnLock)
+        {
+            var meta = _meta[identity.Index];
+            return meta.Identity != default
+                   && meta.Identity == identity
+                   && typeExpression.Matches(meta.Archetype.MatchSignature);
+        }
     }
 
 
@@ -116,17 +124,20 @@ public partial class World
             return;
         }
 
-        ref var meta = ref _meta[entity.Id.Index];
+        lock (_spawnLock)
+        {
+            ref var meta = ref _meta[entity.Id.Index];
 
-        var table = meta.Archetype;
-        table.Delete(meta.Row);
+            var table = meta.Archetype;
+            table.Delete(meta.Row);
 
-        DespawnDependencies(entity);
+            DespawnDependencies(entity);
 
-        _identityPool.Recycle(entity);
+            _identityPool.Recycle(entity);
 
-        // Patch Meta
-        _meta[entity.Id.Index] = default;
+            // Patch Meta
+            _meta[entity.Id.Index] = default;
+        }
     }
 
 
