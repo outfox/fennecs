@@ -22,12 +22,9 @@ public partial class World
         
         internal WorldLock(World world)
         {
-            lock (world._modeChangeLock)
-            {
-                _world = world;
-                _world.Mode = WorldMode.Deferred;
-                _world._locks++;
-            }
+            _world = world;
+            _world.Mode = WorldMode.Deferred;
+            Interlocked.Increment(ref _world._locks);
         }
 
 
@@ -84,6 +81,7 @@ public partial class World
 
 
         [SetsRequiredMembers]
+        // ReSharper disable once ConvertToPrimaryConstructor
         public DeferredOperation(Batch operation)
         {
             Opcode = Opcode.Batch;

@@ -1,15 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
-
-#if NET9_0_OR_GREATER
-using LockType = System.Threading.Lock;
-#else
-using LockType = object;
-#endif
 
 namespace fennecs;
 
@@ -42,8 +35,8 @@ public partial class World
 
     #region Locking & Deferred Operations
 
-    private readonly LockType _spawnLock = new();
-    private readonly LockType _modeChangeLock = new();
+    //private readonly LockType _spawnLock = new();
+    //private readonly LockType _modeChangeLock = new();
     private int _locks;
 
     internal WorldMode Mode { get; private set; } = WorldMode.Immediate;
@@ -51,14 +44,11 @@ public partial class World
 
     private void Unlock()
     {
-        lock (_modeChangeLock)
-        {
-            if (--_locks != 0) return;
+        if (Interlocked.Decrement(ref _locks) > 0) return;
 
-            Mode = WorldMode.CatchUp;
-            CatchUp(_deferredOperations);
-            Mode = WorldMode.Immediate;
-        }
+        Mode = WorldMode.CatchUp;
+        CatchUp(_deferredOperations);
+        Mode = WorldMode.Immediate;
     }
 
 
@@ -76,41 +66,32 @@ public partial class World
 
     private Identity NewEntity()
     {
-        lock (_spawnLock)
-        {
-            var identity = _identityPool.Spawn();
+        var identity = _identityPool.Spawn();
 
-            // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
-            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)(_identityPool.Created + 1)));
+        // FIXME: Cleanup / Unify! (not pretty to directly interact with the internals here)
+        Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)(_identityPool.Created + 1)));
 
-            _meta[identity.Index] = new(_root, _root.Count, identity);
-            _root.IdentityStorage.Append(identity);
-            _root.Invalidate();
+        _meta[identity.Index] = new(_root, _root.Count, identity);
+        _root.IdentityStorage.Append(identity);
+        _root.Invalidate();
 
-            return identity;
-        }
+        return identity;
     }
 
     internal PooledList<Identity> SpawnBare(int count)
     {
-        lock (_spawnLock)
-        {
-            var identities = _identityPool.Spawn(count);
-            Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)_identityPool.Created + 1));
-            return identities;
-        }
+        var identities = _identityPool.Spawn(count);
+        Array.Resize(ref _meta, (int)BitOperations.RoundUpToPowerOf2((uint)_identityPool.Created + 1));
+        return identities;
     }
 
 
     internal bool HasComponent(Identity identity, TypeExpression typeExpression)
     {
-        lock (_spawnLock)
-        {
-            var meta = _meta[identity.Index];
-            return meta.Identity != default
-                   && meta.Identity == identity
-                   && typeExpression.Matches(meta.Archetype.MatchSignature);
-        }
+        var meta = _meta[identity.Index];
+        return meta.Identity != default
+               && meta.Identity == identity
+               && typeExpression.Matches(meta.Archetype.MatchSignature);
     }
 
 
@@ -118,29 +99,23 @@ public partial class World
     {
         AssertAlive(entity);
 
-        lock (_modeChangeLock) //TODO: Technically correct, but not very nice. How to make world itself more/less threadsafe?
+        if (Mode == WorldMode.Deferred)
         {
-            if (Mode == WorldMode.Deferred)
-            {
-                _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Identity = entity });
-                return;
-            }
+            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Identity = entity });
+            return;
         }
 
-        lock (_spawnLock)
-        {
-            ref var meta = ref _meta[entity.Id.Index];
+        ref var meta = ref _meta[entity.Id.Index];
 
-            var table = meta.Archetype;
-            table.Delete(meta.Row);
+        var table = meta.Archetype;
+        table.Delete(meta.Row);
 
-            DespawnDependencies(entity);
+        DespawnDependencies(entity);
 
-            _identityPool.Recycle(entity);
+        _identityPool.Recycle(entity);
 
-            // Patch Meta
-            _meta[entity.Id.Index] = default;
-        }
+        // Patch Meta
+        _meta[entity.Id.Index] = default;
     }
 
 
@@ -177,101 +152,86 @@ public partial class World
 
     internal Query CompileQuery(Mask mask)
     {
-        lock (_spawnLock)
-        {
-            // Return cached query if available.
-            if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
+        // Return cached query if available.
+        if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
-            //TODO: if we operate on the mask itself, modifications to that mask downstream cause issues.
-            //The mask should not be modifiable outside of that scope, so there's an upstream bug.
-            // var copy = mask.Clone(); <-- even just copying here hides the race condition
-            
-            // Create a new query and cache it.
-            var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(mask)));
-            
-            var copy = mask.Clone();
-            query = new(this, copy, matchingTables);
-            
-            _queries.Add(query);
-            _queryCache.Add(copy.GetHashCode(), query);
-            return query;
-        }
+        //TODO: if we operate on the mask itself, modifications to that mask downstream cause issues.
+        //The mask should not be modifiable outside of that scope, so there's an upstream bug.
+        // var copy = mask.Clone(); <-- even just copying here hides the race condition
+        
+        // Create a new query and cache it.
+        var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(mask)));
+        
+        var copy = mask.Clone();
+        query = new(this, copy, matchingTables);
+        
+        _queries.Add(query);
+        _queryCache.Add(copy.GetHashCode(), query);
+        return query;
     }
 
 
     internal void RemoveQuery(Query query)
     {
-        lock (_spawnLock)
-        {
-            _queries.Remove(query);
-            _queryCache.Remove(query.Mask.GetHashCode());
-        }
+        _queries.Remove(query);
+        _queryCache.Remove(query.Mask.GetHashCode());
     }
 
 
     internal ref Meta GetEntityMeta(Identity identity)
     {
-        lock (_spawnLock)
-        {
-            return ref _meta[identity.Index];
-        }
+        return ref _meta[identity.Index];
     }
 
 
     private Archetype GetArchetype(Signature types)
     {
-        lock (_spawnLock)
+        if (_typeGraph.TryGetValue(types, out var table)) return table;
+        table = new(this, types);
+
+        //This could be given to us by the next query update?
+        _archetypes.Add(table);
+
+        // TODO: This is a suboptimal lookup (enumerate dictionary)
+        // IDEA: Maybe we can keep Queries in a Tree which
+        // identifies them just by their Signature root. (?) 
+        foreach (var query in _queries)
         {
-            if (_typeGraph.TryGetValue(types, out var table)) return table;
-            table = new(this, types);
-
-            //This could be given to us by the next query update?
-            _archetypes.Add(table);
-
-            // TODO: This is a suboptimal lookup (enumerate dictionary)
-            // IDEA: Maybe we can keep Queries in a Tree which
-            // identifies them just by their Signature root. (?) 
-            foreach (var query in _queries)
+            if (table.Matches(query.Mask))
             {
-                if (table.Matches(query.Mask))
-                {
-                    query.TrackArchetype(table);
-                }
+                query.TrackArchetype(table);
             }
-
-            foreach (var type in types)
-            {
-                if (!_tablesByType.TryGetValue(type, out var tableList))
-                {
-                    tableList = new(capacity: 16);
-                    _tablesByType[type] = tableList;
-                }
-
-                tableList.Add(table);
-
-                if (!type.isRelation) continue;
-
-                if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
-                {
-                    typeSet = [];
-                    _typesByRelationTarget[type.Relation] = typeSet;
-                }
-
-                typeSet.Add(type);
-            }
-
-            _typeGraph.Add(types, table);
-            return table;
         }
+
+        foreach (var type in types)
+        {
+            if (!_tablesByType.TryGetValue(type, out var tableList))
+            {
+                tableList = new(capacity: 16);
+                _tablesByType[type] = tableList;
+            }
+
+            tableList.Add(table);
+
+            if (!type.isRelation) continue;
+
+            if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
+            {
+                typeSet = [];
+                _typesByRelationTarget[type.Relation] = typeSet;
+            }
+
+            typeSet.Add(type);
+        }
+
+        _typeGraph.Add(types, table);
+        return table;
     }
 
     internal IReadOnlyList<Component> GetComponents(Identity id)
     {
-        lock (_spawnLock)
-        {
-            var archetype = _meta[id.Index].Archetype;
-            return archetype.GetRow(_meta[id.Index].Row);
-        }
+        var archetype = _meta[id.Index].Archetype;
+        return archetype.GetRow(_meta[id.Index].Row);
     }
 
     /// <inheritdoc />

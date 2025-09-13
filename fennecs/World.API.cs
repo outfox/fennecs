@@ -176,13 +176,10 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <param name="toDelete">the entities to despawn (remove)</param>
     internal void Despawn(ReadOnlySpan<Entity> toDelete)
     {
-        lock (_spawnLock)
+        //Deleting backwards is usually faster when deleting one-by one (saves a memcpy for each)
+        for (var i = toDelete.Length - 1; i >= 0; i--)
         {
-            //Deleting backwards is usually faster when deleting one-by one (saves a memcpy for each)
-            for (var i = toDelete.Length - 1; i >= 0; i--)
-            {
-                DespawnImpl(toDelete[i]);
-            }
+            DespawnImpl(toDelete[i]);
         }
     }
 
@@ -195,15 +192,12 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <param name="identities">the entities to despawn (remove)</param>
     internal void Recycle(ReadOnlySpan<Identity> identities)
     {
-        lock (_spawnLock)
+        foreach (var identity in identities)
         {
-            foreach (var identity in identities)
-            {
-                DespawnDependencies(new(this, identity));
-                _meta[identity.Index] = default;
-            }
-            _identityPool.Recycle(identities);
+            DespawnDependencies(new(this, identity));
+            _meta[identity.Index] = default;
         }
+        _identityPool.Recycle(identities);
     }
     #endregion
 
@@ -232,44 +226,36 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </summary>
     public void GC()
     {
-        lock (_spawnLock) 
-        lock (_modeChangeLock)
-        {
-            if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
+        if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
 
-            foreach (var archetype in _archetypes.ToArray())
-            {
-                if (archetype.Count == 0) DisposeArchetype(archetype);
-            }
+        foreach (var archetype in _archetypes.ToArray())
+        {
+            if (archetype.Count == 0) DisposeArchetype(archetype);
         }
     }
 
 
     internal void DisposeArchetype(Archetype archetype)
     {
-        lock (_spawnLock)
-        lock (_modeChangeLock)
+        Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
+        Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
+            
+        _typeGraph.Remove(archetype.Signature);
+            
+        foreach (var type in archetype.Signature)
         {
-            Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
-            Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
-            
-            _typeGraph.Remove(archetype.Signature);
-            
-            foreach (var type in archetype.Signature)
-            {
-                // Same here, if all Archetypes with a Type are gone, we can clear the entry.
-                _tablesByType[type].Remove(archetype);
-                if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
-            }
-
-            foreach (var query in _queries)
-            {
-                // TODO: Will require some optimization later.
-                query.ForgetArchetype(archetype);
-            }
-            
-            _archetypes.Remove(archetype);
+            // Same here, if all Archetypes with a Type are gone, we can clear the entry.
+            _tablesByType[type].Remove(archetype);
+            if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
         }
+
+        foreach (var query in _queries)
+        {
+            // TODO: Will require some optimization later.
+            query.ForgetArchetype(archetype);
+        }
+            
+        _archetypes.Remove(archetype);
     }
 
 
@@ -297,7 +283,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <inheritdoc />
     public IEnumerator<Entity> GetEnumerator()
     {
-        lock (_spawnLock) return _archetypes.SelectMany(archetype => archetype).GetEnumerator();
+        return _archetypes.SelectMany(archetype => archetype).GetEnumerator();
     }
 
     /// <inheritdoc />
@@ -319,16 +305,13 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <inheritdoc cref="ToString"/>
     public string DebugString()
     {
-        lock (_spawnLock) lock (_modeChangeLock)
-        {
-            var sb = new StringBuilder("World:");
-            sb.AppendLine();
-            sb.AppendLine($" {_archetypes.Count} Archetypes");
-            sb.AppendLine($" {Count} Entities");
-            sb.AppendLine($" {_queries.Count} Queries");
-            sb.AppendLine($"{nameof(WorldMode)}.{Mode}");
-            return sb.ToString();
-        }
+        var sb = new StringBuilder("World:");
+        sb.AppendLine();
+        sb.AppendLine($" {_archetypes.Count} Archetypes");
+        sb.AppendLine($" {Count} Entities");
+        sb.AppendLine($" {_queries.Count} Queries");
+        sb.AppendLine($"{nameof(WorldMode)}.{Mode}");
+        return sb.ToString();
     }
 
     #endregion
