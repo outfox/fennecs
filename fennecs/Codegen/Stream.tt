@@ -160,6 +160,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var <#= (n > 1 ? "(" : "") + GenList("s", n) + (n > 1 ? ")" : "")  #> = join.Select;
                     Loop(<#= GenList("s", n, ".Span, ") #>, action);
                 } while (join.Iterate());
@@ -176,6 +177,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var <#= (n > 1 ? "(" : "") + GenList("s",n) + (n > 1 ? ")" : "")  #> = join.Select;
                     LoopUniform(<#= GenList("s",n,".Span, ") #>, action, uniform);
                 } while (join.Iterate());
@@ -192,6 +194,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var <#= (n > 1 ? "(" : "") + GenList("s",n) + (n > 1 ? ")" : "")  #> = join.Select;
                     LoopEntity(table, <#= GenList("s",n,".Span, ") #>, action);
                 } while (join.Iterate());
@@ -208,6 +211,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var <#= (n > 1 ? "(" : "") + GenList("s",n) + (n > 1 ? ")" : "")  #> = join.Select;
                     LoopUniformEntity(table, <#= GenList("s",n,".Span, ") #>, action, uniform);
                 } while (join.Iterate());
@@ -338,7 +342,8 @@ namespace fennecs
                 do
                 {
                     var <#= (n > 1 ? "(" : "") + GenList("s",n) + (n > 1 ? ")" : "")  #> = join.Select;
-<# for (var i=0;i<n;i++){ #>                    var mem<#= i #> = s<#= i #>.AsMemory(0, count);
+<# for (var i=0;i<n;i++){ #>                    
+                    var mem<#= i #> = s<#= i #>.AsMemory(0, count);
 <# } #>
                     action(uniform, <#= GenList("mem",n) #>);
                 } while (join.Iterate());

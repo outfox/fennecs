@@ -8,7 +8,7 @@ using System.Collections.Immutable;
 using fennecs.pools;
 using fennecs;
 
-// Date: 09/12/2025 22:39:29
+// Date: 09/13/2025 07:25:46
 
 namespace fennecs
 {
@@ -112,6 +112,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var s0 = join.Select;
                     Loop(s0, action);
                 } while (join.Iterate());
@@ -128,6 +129,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var s0 = join.Select;
                     LoopUniform(s0, action, uniform);
                 } while (join.Iterate());
@@ -144,6 +146,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var s0 = join.Select;
                     LoopEntity(table, s0, action);
                 } while (join.Iterate());
@@ -160,6 +163,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var s0 = join.Select;
                     LoopUniformEntity(table, s0, action, uniform);
                 } while (join.Iterate());
@@ -285,6 +289,7 @@ namespace fennecs
                 do
                 {
                     var s0 = join.Select;
+                    
                     var mem0 = s0.AsMemory(0, count);
                     action(uniform, mem0);
                 } while (join.Iterate());
@@ -508,6 +513,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1) = join.Select;
                     Loop(s0.Span, s1, action);
                 } while (join.Iterate());
@@ -524,6 +530,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1) = join.Select;
                     LoopUniform(s0.Span, s1, action, uniform);
                 } while (join.Iterate());
@@ -540,6 +547,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1) = join.Select;
                     LoopEntity(table, s0.Span, s1, action);
                 } while (join.Iterate());
@@ -556,6 +564,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1) = join.Select;
                     LoopUniformEntity(table, s0.Span, s1, action, uniform);
                 } while (join.Iterate());
@@ -684,7 +693,9 @@ namespace fennecs
                 do
                 {
                     var (s0, s1) = join.Select;
+                    
                     var mem0 = s0.AsMemory(0, count);
+                    
                     var mem1 = s1.AsMemory(0, count);
                     action(uniform, mem0, mem1);
                 } while (join.Iterate());
@@ -931,6 +942,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2) = join.Select;
                     Loop(s0.Span, s1.Span, s2, action);
                 } while (join.Iterate());
@@ -947,6 +959,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2) = join.Select;
                     LoopUniform(s0.Span, s1.Span, s2, action, uniform);
                 } while (join.Iterate());
@@ -963,6 +976,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2) = join.Select;
                     LoopEntity(table, s0.Span, s1.Span, s2, action);
                 } while (join.Iterate());
@@ -979,6 +993,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2) = join.Select;
                     LoopUniformEntity(table, s0.Span, s1.Span, s2, action, uniform);
                 } while (join.Iterate());
@@ -1110,8 +1125,11 @@ namespace fennecs
                 do
                 {
                     var (s0, s1, s2) = join.Select;
+                    
                     var mem0 = s0.AsMemory(0, count);
+                    
                     var mem1 = s1.AsMemory(0, count);
+                    
                     var mem2 = s2.AsMemory(0, count);
                     action(uniform, mem0, mem1, mem2);
                 } while (join.Iterate());
@@ -1381,6 +1399,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2, s3) = join.Select;
                     Loop(s0.Span, s1.Span, s2.Span, s3, action);
                 } while (join.Iterate());
@@ -1397,6 +1416,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2, s3) = join.Select;
                     LoopUniform(s0.Span, s1.Span, s2.Span, s3, action, uniform);
                 } while (join.Iterate());
@@ -1413,6 +1433,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2, s3) = join.Select;
                     LoopEntity(table, s0.Span, s1.Span, s2.Span, s3, action);
                 } while (join.Iterate());
@@ -1429,6 +1450,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2, s3) = join.Select;
                     LoopUniformEntity(table, s0.Span, s1.Span, s2.Span, s3, action, uniform);
                 } while (join.Iterate());
@@ -1563,9 +1585,13 @@ namespace fennecs
                 do
                 {
                     var (s0, s1, s2, s3) = join.Select;
+                    
                     var mem0 = s0.AsMemory(0, count);
+                    
                     var mem1 = s1.AsMemory(0, count);
+                    
                     var mem2 = s2.AsMemory(0, count);
+                    
                     var mem3 = s3.AsMemory(0, count);
                     action(uniform, mem0, mem1, mem2, mem3);
                 } while (join.Iterate());
@@ -1858,6 +1884,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2, s3, s4) = join.Select;
                     Loop(s0.Span, s1.Span, s2.Span, s3.Span, s4, action);
                 } while (join.Iterate());
@@ -1874,6 +1901,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2, s3, s4) = join.Select;
                     LoopUniform(s0.Span, s1.Span, s2.Span, s3.Span, s4, action, uniform);
                 } while (join.Iterate());
@@ -1890,6 +1918,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2, s3, s4) = join.Select;
                     LoopEntity(table, s0.Span, s1.Span, s2.Span, s3.Span, s4, action);
                 } while (join.Iterate());
@@ -1906,6 +1935,7 @@ namespace fennecs
                 if (join.Empty) continue;
                 do
                 {
+                    // (s0, s1, ..., sN) = join.Select
                     var (s0, s1, s2, s3, s4) = join.Select;
                     LoopUniformEntity(table, s0.Span, s1.Span, s2.Span, s3.Span, s4, action, uniform);
                 } while (join.Iterate());
@@ -2043,10 +2073,15 @@ namespace fennecs
                 do
                 {
                     var (s0, s1, s2, s3, s4) = join.Select;
+                    
                     var mem0 = s0.AsMemory(0, count);
+                    
                     var mem1 = s1.AsMemory(0, count);
+                    
                     var mem2 = s2.AsMemory(0, count);
+                    
                     var mem3 = s3.AsMemory(0, count);
+                    
                     var mem4 = s4.AsMemory(0, count);
                     action(uniform, mem0, mem1, mem2, mem3, mem4);
                 } while (join.Iterate());
