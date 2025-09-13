@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 10.0.x
     - name: Restore dependencies
-      run: dotnet restore fennecs.tests/fennecs.tests.csproj
+      run: dotnet restore fennecs.tests/fennecs.tests.csproj --framework net10.0
     - name: Build
-      run: dotnet build --no-restore fennecs.tests/fennecs.tests.csproj
+      run: dotnet build --no-restore fennecs.tests/fennecs.tests.csproj --framework net10.0
     - name: Test
-      run: dotnet test --no-build --verbosity normal fennecs.tests/fennecs.tests.csproj
+      run: dotnet test --no-build --verbosity normal fennecs.tests/fennecs.tests.csproj --framework net10.0
