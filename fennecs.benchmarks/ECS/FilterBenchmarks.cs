@@ -7,14 +7,14 @@ using fennecs;
 
 namespace Benchmark.ECS;
 
-[ShortRunJob]
+[LongRunJob]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [HideColumns("Job", "Error", "RatioSD")]
 [MedianColumn]
 public class FilterBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(100_000)]
+    [Params(10_000)]
     public int EntityCount { get; set; }
 
     private static readonly Random Random = new(1337);
