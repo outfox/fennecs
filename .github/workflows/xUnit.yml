@@ -23,6 +23,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore fennecs.tests/fennecs.tests.csproj
     - name: Build
-      run: dotnet build --no-restore fennecs.tests/fennecs.tests.csproj --framework net10.0
+      run: dotnet build --no-restore fennecs.tests/fennecs.tests.csproj 
     - name: Test
-      run: dotnet test --no-build --verbosity normal fennecs.tests/fennecs.tests.csproj --framework net10.0
+      run: dotnet test --no-build --verbosity normal fennecs.tests/fennecs.tests.csproj 
