@@ -11,3 +11,4 @@ Temp
 s3/
 .dist
 *.old
+*.old.*
