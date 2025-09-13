@@ -35,7 +35,7 @@ stream.For(
 
 ## 🌟 Key Features
 
-- Modern C# codebase targeting .NET 8
+- Modern C# codebase targeting .NET 8, 9, and 10
 - Archetype-based storage for cache-friendly iteration
 - Expressive, queryable relations between entities and components
 - Easy parallelization of workloads across and within archetypes
