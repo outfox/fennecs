@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
+
 using fennecs.pools;
 
 namespace fennecs;
@@ -59,7 +61,10 @@ internal sealed class Mask : IDisposable
     public override int GetHashCode() => Key();
 
     /// <inheritdoc />
-    public void Dispose() => MaskPool.Return(this);
+    public void Dispose()
+    {
+        MaskPool.Return(this);
+    }
 
 
     /// <summary>

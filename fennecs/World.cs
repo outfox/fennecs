@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
@@ -42,7 +43,6 @@ public partial class World
     #region Locking & Deferred Operations
 
     private readonly LockType _spawnLock = new();
-
     private readonly LockType _modeChangeLock = new();
     private int _locks;
 
@@ -118,10 +118,13 @@ public partial class World
     {
         AssertAlive(entity);
 
-        if (Mode == WorldMode.Deferred)
+        lock (_modeChangeLock) //TODO: Technically correct, but not very nice. How to make world itself more/less threadsafe?
         {
-            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Identity = entity });
-            return;
+            if (Mode == WorldMode.Deferred)
+            {
+                _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Identity = entity });
+                return;
+            }
         }
 
         lock (_spawnLock)
@@ -156,13 +159,11 @@ public partial class World
         foreach (var archetype in toMigrate)
         {
             if (archetype == homeArchetype) continue;
-
-            if (archetype.Count > 0)
-            {
-                var signatureWithoutTarget = archetype.Signature.Except(types);
-                var destination = GetArchetype(signatureWithoutTarget);
-                archetype.Migrate(destination);
-            }
+            if (archetype.Count <= 0) continue;
+            
+            var signatureWithoutTarget = archetype.Signature.Except(types);
+            var destination = GetArchetype(signatureWithoutTarget);
+            archetype.Migrate(destination);
         }
 
         // No longer tracking this Entity
@@ -176,77 +177,101 @@ public partial class World
 
     internal Query CompileQuery(Mask mask)
     {
-        // Return cached query if available.
-        if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
+        lock (_spawnLock)
+        {
+            // Return cached query if available.
+            if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
 
-        // Create a new query and cache it.
-        var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(mask)));
-        query = new(this, mask.Clone(), matchingTables);
-        _queries.Add(query);
-        _queryCache.Add(query.Mask.GetHashCode(), query);
-        return query;
+            //TODO: if we operate on the mask itself, modifications to that mask downstream cause issues.
+            //The mask should not be modifiable outside of that scope, so there's an upstream bug.
+            // var copy = mask.Clone(); <-- even just copying here hides the race condition
+            
+            // Create a new query and cache it.
+            var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(mask)));
+            
+            var copy = mask.Clone();
+            query = new(this, copy, matchingTables);
+            
+            _queries.Add(query);
+            _queryCache.Add(copy.GetHashCode(), query);
+            return query;
+        }
     }
 
 
     internal void RemoveQuery(Query query)
     {
-        _queries.Remove(query);
-        _queryCache.Remove(query.Mask.GetHashCode());
+        lock (_spawnLock)
+        {
+            _queries.Remove(query);
+            _queryCache.Remove(query.Mask.GetHashCode());
+        }
     }
 
 
-    internal ref Meta GetEntityMeta(Identity identity) => ref _meta[identity.Index];
+    internal ref Meta GetEntityMeta(Identity identity)
+    {
+        lock (_spawnLock)
+        {
+            return ref _meta[identity.Index];
+        }
+    }
 
 
     private Archetype GetArchetype(Signature types)
     {
-        if (_typeGraph.TryGetValue(types, out var table)) return table;
-
-        table = new(this, types);
-
-        //This could be given to us by the next query update?
-        _archetypes.Add(table);
-
-        // TODO: This is a suboptimal lookup (enumerate dictionary)
-        // IDEA: Maybe we can keep Queries in a Tree which
-        // identifies them just by their Signature root. (?) 
-        foreach (var query in _queries)
+        lock (_spawnLock)
         {
-            if (table.Matches(query.Mask))
+            if (_typeGraph.TryGetValue(types, out var table)) return table;
+            table = new(this, types);
+
+            //This could be given to us by the next query update?
+            _archetypes.Add(table);
+
+            // TODO: This is a suboptimal lookup (enumerate dictionary)
+            // IDEA: Maybe we can keep Queries in a Tree which
+            // identifies them just by their Signature root. (?) 
+            foreach (var query in _queries)
             {
-                query.TrackArchetype(table);
+                if (table.Matches(query.Mask))
+                {
+                    query.TrackArchetype(table);
+                }
             }
+
+            foreach (var type in types)
+            {
+                if (!_tablesByType.TryGetValue(type, out var tableList))
+                {
+                    tableList = new(capacity: 16);
+                    _tablesByType[type] = tableList;
+                }
+
+                tableList.Add(table);
+
+                if (!type.isRelation) continue;
+
+                if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
+                {
+                    typeSet = [];
+                    _typesByRelationTarget[type.Relation] = typeSet;
+                }
+
+                typeSet.Add(type);
+            }
+
+            _typeGraph.Add(types, table);
+            return table;
         }
-
-        foreach (var type in types)
-        {
-            if (!_tablesByType.TryGetValue(type, out var tableList))
-            {
-                tableList = new(capacity: 16);
-                _tablesByType[type] = tableList;
-            }
-
-            tableList.Add(table);
-
-            if (!type.isRelation) continue;
-
-            if (!_typesByRelationTarget.TryGetValue(type.Relation, out var typeSet))
-            {
-                typeSet = [];
-                _typesByRelationTarget[type.Relation] = typeSet;
-            }
-
-            typeSet.Add(type);
-        }
-
-        _typeGraph.Add(types, table);
-        return table;
     }
 
     internal IReadOnlyList<Component> GetComponents(Identity id)
     {
-        var archetype = _meta[id.Index].Archetype;
-        return archetype.GetRow(_meta[id.Index].Row);
+        lock (_spawnLock)
+        {
+            var archetype = _meta[id.Index].Archetype;
+            return archetype.GetRow(_meta[id.Index].Row);
+        }
     }
 
     /// <inheritdoc />

@@ -3,6 +3,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
+using fennecs.pools;
+
 namespace fennecs;
 
 /// <summary>
@@ -76,8 +78,16 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Universal Query, matching all Entities in the World.
     /// </summary>
-    public Query All => CompileQuery(new Mask().Has(TypeExpression.Of<Identity>(Match.Plain)));
-    
+    public Query All
+    {
+        get
+        {
+            using var mask = MaskPool.Rent();
+            mask.Has(TypeExpression.Of<Identity>(Match.Plain));
+            return CompileQuery(mask);
+        }
+    }
+
     #endregion
     
     #region Entity Spawn, Liveness, and Despawn
@@ -222,6 +232,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </summary>
     public void GC()
     {
+        lock (_spawnLock) 
         lock (_modeChangeLock)
         {
             if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
@@ -236,25 +247,29 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
     internal void DisposeArchetype(Archetype archetype)
     {
-        Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
-        Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
-        
-        _typeGraph.Remove(archetype.Signature);
-        
-        foreach (var type in archetype.Signature)
+        lock (_spawnLock)
+        lock (_modeChangeLock)
         {
-            // Same here, if all Archetypes with a Type are gone, we can clear the entry.
-            _tablesByType[type].Remove(archetype);
-            if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
-        }
+            Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
+            Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
+            
+            _typeGraph.Remove(archetype.Signature);
+            
+            foreach (var type in archetype.Signature)
+            {
+                // Same here, if all Archetypes with a Type are gone, we can clear the entry.
+                _tablesByType[type].Remove(archetype);
+                if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
+            }
 
-        foreach (var query in _queries)
-        {
-            // TODO: Will require some optimization later.
-            query.ForgetArchetype(archetype);
+            foreach (var query in _queries)
+            {
+                // TODO: Will require some optimization later.
+                query.ForgetArchetype(archetype);
+            }
+            
+            _archetypes.Remove(archetype);
         }
-        
-        _archetypes.Remove(archetype);
     }
 
 
@@ -280,7 +295,10 @@ public partial class World : IDisposable, IEnumerable<Entity>
     #region IEnumerable
     
     /// <inheritdoc />
-    public IEnumerator<Entity> GetEnumerator() => _archetypes.SelectMany(archetype => archetype).GetEnumerator();
+    public IEnumerator<Entity> GetEnumerator()
+    {
+        lock (_spawnLock) return _archetypes.SelectMany(archetype => archetype).GetEnumerator();
+    }
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator()
@@ -297,16 +315,20 @@ public partial class World : IDisposable, IEnumerable<Entity>
     {
         return DebugString();
     }
+    
     /// <inheritdoc cref="ToString"/>
     public string DebugString()
     {
-        var sb = new StringBuilder("World:");
-        sb.AppendLine();
-        sb.AppendLine($" {_archetypes.Count} Archetypes");
-        sb.AppendLine($" {Count} Entities");
-        sb.AppendLine($" {_queries.Count} Queries");
-        sb.AppendLine($"{nameof(WorldMode)}.{Mode}");
-        return sb.ToString();
+        lock (_spawnLock) lock (_modeChangeLock)
+        {
+            var sb = new StringBuilder("World:");
+            sb.AppendLine();
+            sb.AppendLine($" {_archetypes.Count} Archetypes");
+            sb.AppendLine($" {Count} Entities");
+            sb.AppendLine($" {_queries.Count} Queries");
+            sb.AppendLine($"{nameof(WorldMode)}.{Mode}");
+            return sb.ToString();
+        }
     }
 
     #endregion

@@ -7,11 +7,10 @@ namespace fennecs.pools;
 internal static class MaskPool
 {
     internal static readonly ConcurrentBag<Mask> Pool = [];
-
-
+    
     public static Mask Rent()
     {
-        return Pool.TryTake(out var mask) ? mask : new Mask();
+        return Pool.TryTake(out var mask) ? mask : new();
     }
 
 
@@ -24,6 +23,6 @@ internal static class MaskPool
 
     static MaskPool()
     {
-        for (var i = 0; i < 32; i++) Pool.Add(new Mask());
+        for (var i = 0; i < 32; i++) Pool.Add(new());
     }
 }

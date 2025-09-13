@@ -36,7 +36,7 @@
         [Fact]
         public void FoxesCanBeStreamTypes()
         {
-            var world = new World();
+            using var world = new World();
             world.Spawn()
                 .Add<Weight>(50)
                 .Add<Size>(150);

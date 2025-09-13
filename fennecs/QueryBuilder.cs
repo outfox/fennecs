@@ -23,14 +23,10 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// </summary>
     /// <param name="world"><see cref="fennecs.World"/> to build queries for</param>
     /// <param name="streamTypes">list of types that must be guaranteed to be on the Query's Mask for Stream Creation</param>
-    protected private QueryBuilderBase(World world, Span<TypeExpression> streamTypes)
+    private protected QueryBuilderBase(World world, Span<TypeExpression> streamTypes)
     {
         _world = world;
         foreach (var type in streamTypes) _mask.Has(type);
-        
-        // TODO: need to agree with myself what I can do about including Identity or not.
-        if (!_mask.HasTypes.Contains(Comp<Identity>.Plain.Expression))
-            _mask.Has(Comp<Identity>.Plain.Expression);
     }
 
     #endregion
@@ -143,11 +139,11 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     public void Dispose()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
+        GC.SuppressFinalize(this);
         
         _disposed = true;
         _mask.Dispose();
         _mask = null!;
-        GC.SuppressFinalize(this);
     }
 
     /// <inheritdoc cref="IDisposable"/>
