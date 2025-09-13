@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-using System.Diagnostics;
-
 using fennecs.pools;
 
 namespace fennecs;
@@ -11,7 +9,7 @@ internal sealed class Mask : IDisposable
     internal readonly SortedSet<TypeExpression> HasTypes = [];
     internal readonly SortedSet<TypeExpression> NotTypes = [];
     internal readonly SortedSet<TypeExpression> AnyTypes = [];
-
+    
     public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
     public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
 

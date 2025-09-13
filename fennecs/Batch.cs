@@ -183,6 +183,4 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         BackFill.Dispose();
         _mask.Dispose();
     }
-
-
 }

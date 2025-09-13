@@ -139,15 +139,12 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     public void Dispose()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
+
         GC.SuppressFinalize(this);
-        
         _disposed = true;
         _mask.Dispose();
         _mask = null!;
     }
-
-    /// <inheritdoc cref="IDisposable"/>
-    ~QueryBuilderBase() => Dispose();
 
     #endregion
 }
