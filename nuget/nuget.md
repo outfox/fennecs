@@ -49,4 +49,4 @@ Check out the [fennecs website](https://fennecs.tech) for:
 - 🍳 Cookbook with tasty recipes
 - 🎮 Demo projects to get inspired
 
-Happy coding! 🦊❤️
+Stay Foxy! 🦊❤️
