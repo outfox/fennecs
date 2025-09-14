@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <PackageId>fennecs</PackageId>
         <Version>0.6.1</Version>
         <Title>fennecs - tiny ECS</Title>
+        <OutputType>Library</OutputType>
     </PropertyGroup>
     
     <PropertyGroup>
@@ -59,6 +59,10 @@
         <EnablePackageValidation>false</EnablePackageValidation>
     </PropertyGroup>
 
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="'$(DevEnvDir)TextTransformCore.exe' '$(ProjectDir)Codegen/Stream.tt'" />
+    </Target>
+    
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).tests</_Parameter1>
