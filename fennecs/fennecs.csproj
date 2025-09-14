@@ -1,39 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>fennecs</AssemblyName>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <PackageId>fennecs</PackageId>
-        <Version>0.6.0</Version>
-        <Title>fennecs</Title>
+        <Version>0.6.1</Version>
+        <Title>fennecs - tiny ECS</Title>
+    </PropertyGroup>
+    
+    <PropertyGroup>
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
         <Company>tiger.blue</Company>
         <Description>The tiny ECS that could!</Description>
         <Copyright>2025 Moritz Voss, 2022 Aaron Winter</Copyright>
-        <PackageProjectUrl>https://fennecs.tech</PackageProjectUrl>
+
         <RepositoryUrl>https://github.com/outfox/fennecs</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
+
+        <PackageProjectUrl>https://fennecs.tech</PackageProjectUrl>
         <PackageReadmeFile>./nuget.md</PackageReadmeFile>
         <PackageReleaseNotes>https://fennecs.tech/misc/ReleaseNotes.html</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ecs, entity, component, system, game, gamedev, game-development, godot, monogame, flax, stride, entity-component, entity-component-system</PackageTags>
-        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <LangVersion>latest</LangVersion>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
-        <Configurations>Release;Debug</Configurations>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <AssemblyName>fennecs</AssemblyName>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
 
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <Configurations>Release;Debug</Configurations>
+        <Platforms>AnyCPU</Platforms>
+        
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
-        <DebugType>portable</DebugType>
-        <DebugSymbols>true</DebugSymbols>        
-        <IncludeSymbols>true</IncludeSymbols>
-
-        <Platforms>AnyCPU</Platforms>
-        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+
+        <TransformOnBuild>true</TransformOnBuild>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -41,13 +51,14 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <EnablePackageValidation>false</EnablePackageValidation>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).tests</_Parameter1>
@@ -64,24 +75,8 @@
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
-    </ItemGroup>
-    
-    <PropertyGroup>
-        <TransformOnBuild>true</TransformOnBuild>
-    </PropertyGroup>
-    
-    <ItemGroup>
         <None Update="Codegen\Stream.tt">
-            <Generator>TextTemplatingFileGenerator</Generator>
-            <LastGenOutput>Stream.generated.cs</LastGenOutput>
+          <Generator>TextTemplatingFileGenerator</Generator>
         </None>
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Compile Update="Codegen\Stream.generated.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>Stream.tt</DependentUpon>
-      </Compile>
     </ItemGroup>
 </Project>
