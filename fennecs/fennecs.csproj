@@ -58,10 +58,6 @@
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <EnablePackageValidation>false</EnablePackageValidation>
     </PropertyGroup>
-
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="'$(DevEnvDir)TextTransformCore.exe' '$(ProjectDir)Codegen/Stream.tt'" />
-    </Target>
     
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
@@ -81,6 +77,7 @@
         </None>
         <None Update="Codegen\Stream.tt">
           <Generator>TextTemplatingFileGenerator</Generator>
+          <LastGenOutput>Stream.cs</LastGenOutput>
         </None>
     </ItemGroup>
 </Project>
