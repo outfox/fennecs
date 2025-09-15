@@ -1,6 +1,7 @@
-﻿<#@ template language="C#" #>
-<#@ output extension=".generated.cs" #>
+﻿<#@ template debug="true" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
+<#@ output extension=".generated.cs" #> 
 <#
     const int maxArity = 5; // Maximum number of components in the stream
 

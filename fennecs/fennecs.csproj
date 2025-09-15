@@ -52,6 +52,7 @@
         <EnablePackageValidation>true</EnablePackageValidation>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\Release\fennecs.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -69,15 +70,30 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\"/>
+        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\" />
         <None Include="../nuget/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
-        <None Update="Codegen\Stream.tt">
-          <Generator>TextTemplatingFileGenerator</Generator>
-          <LastGenOutput>Stream.cs</LastGenOutput>
-        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Codegen\Stream.generated.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Stream.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+			<None Update="Codegen\Stream.tt">
+				<Generator>TextTemplatingFileGenerator</Generator>
+				<LastGenOutput>Stream.generated.cs</LastGenOutput>
+			</None>
     </ItemGroup>
 </Project>
