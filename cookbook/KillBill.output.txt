@@ -1,4 +1,4 @@
-Directed by: Trentin Quarantino
+﻿Directed by: Trentin Quarantino
 As we said, there were 5 of them.
 One hides in hideout 0x12736da2.
 One hides in hideout 0x4474dd11.

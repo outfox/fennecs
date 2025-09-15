@@ -1,4 +1,4 @@
-Shusai: fuji hara tofu ten
+﻿Shusai: fuji hara tofu ten
 Look, Takumi Fujiwara is driving his dad's
 E-00000001:00001 <fennecs.Identity>
   |-<Car>

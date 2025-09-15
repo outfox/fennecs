@@ -1,4 +1,4 @@
-Directed by Renard Nimoy.
+﻿Directed by Renard Nimoy.
 James Tiberius Kirk, Starfleet identification
 E-00000001:00001 <fennecs.Identity>
 (Kirk despawned)
