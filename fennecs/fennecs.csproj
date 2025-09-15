@@ -5,7 +5,7 @@
         <Title>fennecs - tiny ECS</Title>
         <OutputType>Library</OutputType>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <Product>fennecs Entity-Component System</Product>
         <Authors>Moritz Voss, Aaron Winter</Authors>
@@ -23,7 +23,7 @@
         <PackageTags>ecs, entity, component, system, game, gamedev, game-development, godot, monogame, flax, stride, entity-component, entity-component-system</PackageTags>
         <PackageIcon>fennecs-icon-nuget.png</PackageIcon>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <AssemblyName>fennecs</AssemblyName>
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
@@ -34,7 +34,7 @@
 
         <Configurations>Release;Debug</Configurations>
         <Platforms>AnyCPU</Platforms>
-        
+
         <DebugType>portable</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <IncludeSymbols>true</IncludeSymbols>
@@ -59,7 +59,7 @@
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <EnablePackageValidation>false</EnablePackageValidation>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>$(AssemblyName).tests</_Parameter1>
@@ -70,30 +70,30 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\" />
+        <None Include="../nuget/nuget.md" Pack="true" PackagePath="\"/>
         <None Include="../nuget/fennecs-icon-nuget.png">
             <PackagePath>.</PackagePath>
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
+        <Compile Include="Codegen\Stream.generated.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Stream.tt</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Codegen\Stream.generated.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Stream.tt</DependentUpon>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>
-			<None Update="Codegen\Stream.tt">
-				<Generator>TextTemplatingFileGenerator</Generator>
-				<LastGenOutput>Stream.generated.cs</LastGenOutput>
-			</None>
+        <None Update="Codegen\Stream.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>Stream.generated.cs</LastGenOutput>
+        </None>
     </ItemGroup>
 </Project>
