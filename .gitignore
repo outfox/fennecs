@@ -11,3 +11,4 @@ s3/
 .dist
 *.old
 *.old.*
+*.csproj.user
