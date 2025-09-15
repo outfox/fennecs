@@ -76,11 +76,11 @@
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
-        <Compile Include="Codegen\Stream.generated.cs">
+        <None Include="Codegen\Stream.generated.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Stream.tt</DependentUpon>
-        </Compile>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
