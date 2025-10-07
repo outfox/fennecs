@@ -250,9 +250,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         // Update all Meta info to mark entities as moved.
         destination.PatchMetas(addedStart, addedCount);
-
-        // Garbage collect own type.
-        if (IsEmpty) _world.DisposeArchetype(this);
     }
 
 
@@ -277,7 +274,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             return;
         }
         
-        Span<TypeExpression> span = stackalloc TypeExpression[1] {type};
+        Span<TypeExpression> span = [type];
         using var join = CrossJoin<T>(span);
         if (join.Empty) return;
         do

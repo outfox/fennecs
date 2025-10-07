@@ -230,7 +230,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
         foreach (var archetype in _archetypes.ToArray())
         {
-            if (archetype.Count == 0) DisposeArchetype(archetype);
+            if (archetype.IsEmpty) DisposeArchetype(archetype);
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <PackageId>fennecs</PackageId>
-        <Version>0.6.1</Version>
+        <Version>0.6.2</Version>
         <Title>fennecs - tiny ECS</Title>
         <OutputType>Library</OutputType>
     </PropertyGroup>
