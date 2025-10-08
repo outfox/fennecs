@@ -16,6 +16,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24f96c11-d0e1-4b27-8465-3dca90249c5c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.fennECS/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fennecs2.sln.DotSettings" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.fennECS/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.fennECS/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.fennECS/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.fennECS/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
@@ -401,7 +403,7 @@
       <workItem from="1757928160556" duration="97000" />
       <workItem from="1757928462221" duration="175000" />
       <workItem from="1757928870983" duration="139000" />
-      <workItem from="1759913804812" duration="3176000" />
+      <workItem from="1759913804812" duration="3555000" />
     </task>
     <servers />
   </component>
