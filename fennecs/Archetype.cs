@@ -250,9 +250,6 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         
         // Update all Meta info to mark entities as moved.
         destination.PatchMetas(addedStart, addedCount);
-
-        // Garbage collect own type.
-        if (IsEmpty) _world.DisposeArchetype(this);
     }
 
 
