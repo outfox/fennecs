@@ -327,6 +327,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     {
         var sb = new System.Text.StringBuilder(Id.ToString());
         sb.Append(' ');
+        
         if (_world.IsAlive(Id))
         {
             sb.AppendJoin("\n  |-", _world.GetSignature(Id));

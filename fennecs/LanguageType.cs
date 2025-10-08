@@ -49,6 +49,9 @@ internal class LanguageType
         // of LanguageType<T> (the same way as any other type collision)
         Types[TypeID.MaxValue] = typeof(Any);
         Ids[typeof(Any)] = TypeID.MaxValue;
+
+        // Block off the 1st ID as Identity type, used for Entity identities.
+        if (LanguageType<Identity>.Id != 1) throw new InvalidOperationException("Identity type must have TypeID 1");
     }
 
 
@@ -91,7 +94,6 @@ internal class LanguageType<T> : LanguageType
 {
     // ReSharper disable once StaticMemberInGenericType (we indeed want this unique for each T)
     public static readonly TypeID Id;
-
 
     static LanguageType()
     {

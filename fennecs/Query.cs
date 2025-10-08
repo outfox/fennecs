@@ -316,9 +316,11 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     /// </summary>
     public void Despawn()
     {
-        Truncate(0);
+        while (Archetypes.Any(a => a.Count > 0))
+        {
+            Truncate(0);
+        }
     }
-
 
     /// <summary>
     /// Despawn all Entities above the specified count in the Query, using the specified mode of distribution.

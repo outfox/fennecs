@@ -28,6 +28,41 @@ public class DespawnTests
         world.Query<TagForDespawn>().Compile().Despawn();
     }
 
+    [Fact]
+    private void DespawnWithRelationDespawnsAllEntities()
+    {
+        var world = new World();
+        var entities = new List<Entity>();
+        
+        var parent = world.Spawn();
+        parent.Add<TagForDespawn>();
+        parent.Add(-1);
+        entities.Add(parent);
+
+        for (var i = 0; i < 100; i++) {
+            var entity = world.Spawn();
+            entity.Add(i);
+            
+            entities.Add(entity);
+            
+            if (i % 5 == 2) {
+                entity.Add<RelationComponent>(parent);
+            }
+
+            entity.Add<ComponentA>();
+
+            if (i % 3 == 0) {
+                entity.Add<TagForDespawn>();
+            }
+
+            parent = entity;
+        }
+
+        world.Query<int>().Compile().Despawn();
+        
+        foreach (var entity in entities) Assert.False(entity.Alive, $"Entity {entity} should be despawned");
+    }
+
 
     [Fact]
     private void CanDespawnPlain()
