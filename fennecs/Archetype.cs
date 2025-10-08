@@ -274,7 +274,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             return;
         }
         
-        Span<TypeExpression> span = stackalloc TypeExpression[1] {type};
+        Span<TypeExpression> span = [type];
         using var join = CrossJoin<T>(span);
         if (join.Empty) return;
         do
