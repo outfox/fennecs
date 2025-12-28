@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.5.0-rc.2">
+<Project Sdk="Godot.NET.Sdk/4.6.0-dev.4">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <IsPackable>false</IsPackable>

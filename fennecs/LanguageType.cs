@@ -9,7 +9,7 @@ namespace fennecs;
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 internal class LanguageType
 {
-    internal protected static Type Resolve(TypeID typeId) => Types[typeId];
+    protected internal static Type Resolve(TypeID typeId) => Types[typeId];
 
     // Shared ID counter
     protected static TypeID Counter;
@@ -20,7 +20,7 @@ internal class LanguageType
     protected static readonly object RegistryLock = new();
 
 
-    internal protected static TypeID Identify(Type type)
+    protected internal static TypeID Identify(Type type)
     {
         // Query the registry directly for a fast response.
         if (Ids.TryGetValue(type, out var id)) return id;
@@ -40,18 +40,23 @@ internal class LanguageType
 
     static LanguageType()
     {
-        // Block off the first (0th) ID and treat as a None type.
-        Types[0] = typeof(None);
-        Ids[typeof(None)] = 0;
+        lock (RegistryLock)
+        {
+            // Block off the first (0th) ID and treat as a None type.
+            Types[0] = typeof(None);
+            Ids[typeof(None)] = 0;
 
-        // Register the last (MaxValue) ID as Any type, reserved used for future Wildcards and as a
-        // simple stopgap for when all TypeIDs are exhausted, raising an Exception the type initializer
-        // of LanguageType<T> (the same way as any other type collision)
-        Types[TypeID.MaxValue] = typeof(Any);
-        Ids[typeof(Any)] = TypeID.MaxValue;
+            // Register the 1st ID as Identity type, used for Entity identities.
+            Types[1] = typeof(Identity);
+            Ids[typeof(Identity)] = 1;
+            Counter = 1;
 
-        // Block off the 1st ID as Identity type, used for Entity identities.
-        if (LanguageType<Identity>.Id != 1) throw new InvalidOperationException("Identity type must have TypeID 1");
+            // Register the last (MaxValue) ID as Any type, reserved used for future Wildcards and as a
+            // simple stopgap for when all TypeIDs are exhausted, raising an Exception the type initializer
+            // of LanguageType<T> (the same way as any other type collision)
+            Types[TypeID.MaxValue] = typeof(Any);
+            Ids[typeof(Any)] = TypeID.MaxValue;
+        }
     }
 
 

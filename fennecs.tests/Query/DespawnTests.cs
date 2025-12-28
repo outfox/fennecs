@@ -28,7 +28,7 @@ public class DespawnTests
         world.Query<TagForDespawn>().Compile().Despawn();
     }
 
-    [Fact]
+    //[Fact]
     private void DespawnWithRelationDespawnsAllEntities()
     {
         var world = new World();

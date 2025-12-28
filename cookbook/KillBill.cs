@@ -65,7 +65,7 @@ betrayingVipers.For((in Entity them, ref Location theirLocation) =>
     Console.WriteLine($"Oh, hello {them}!");
     Console.WriteLine("Remember us?"); 
     Console.WriteLine($"They do. They remember everything! " + 
-                      $"They admit their Betral is {them.Has<Betrayed>(us)}!");
+                      $"They admit their Betrayal is {them.Has<Betrayed>(us)}!");
     
     // Get our revenge.
     them.Despawn();
