@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <PackageId>fennecs</PackageId>
-        <Version>0.6.2</Version>
+        <Version>0.6.3</Version>
         <Title>fennecs - tiny ECS</Title>
         <OutputType>Library</OutputType>
     </PropertyGroup>
@@ -27,7 +27,8 @@
     <PropertyGroup>
         <AssemblyName>fennecs</AssemblyName>
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-
+        <IsTrimmable>true</IsTrimmable>
+        
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>

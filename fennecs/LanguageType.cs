@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace fennecs;
 
@@ -46,14 +47,14 @@ internal class LanguageType
             Types[0] = typeof(None);
             Ids[typeof(None)] = 0;
 
-            // Register the 1st ID as Identity type, used for Entity identities.
+            // Register the 1st ID as Identity's type, used for Entity identities.
             Types[1] = typeof(Identity);
             Ids[typeof(Identity)] = 1;
             Counter = 1;
 
-            // Register the last (MaxValue) ID as Any type, reserved used for future Wildcards and as a
-            // simple stopgap for when all TypeIDs are exhausted, raising an Exception the type initializer
-            // of LanguageType<T> (the same way as any other type collision)
+            // Register the last (MaxValue) ID as Any type, reserved used for future Wildcards and as
+            // a simple stopgap for when all TypeIDs are exhausted. This will raise an Exception in the
+            // type initializer of LanguageType<T> (the same way as any other type collision)
             Types[TypeID.MaxValue] = typeof(Any);
             Ids[typeof(Any)] = TypeID.MaxValue;
         }
@@ -61,10 +62,11 @@ internal class LanguageType
 
 
     private struct Any;
-    
+
     private struct None;
 
     private static readonly ConcurrentDictionary<Type, TypeFlags> CachedFlags = new();
+
     public static TypeFlags Flags(Type type)
     {
         if (CachedFlags.TryGetValue(type, out var flags)) return flags;
@@ -79,19 +81,34 @@ internal class LanguageType
     {
         if (CachedFlags.TryGetValue(typeof(T), out var flags)) return flags;
 
-        if (typeof(T).IsUnmanaged())
+        if (IsBlittable<T>())
         {
             var size = Unsafe.SizeOf<T>();
 
             // Arbitrary: 2048 bytes is the maximum size of a SIMD-able type.
-            // It is recommended to keep this much lower - 64 bytes or less.
-            if (size <= 0x1000) flags |= (TypeFlags)size;
+            // It is recommended to keep this much lower - 64 bytes or fewer.
+            if (size <= 0x1000) flags |= (TypeFlags) size;
 
             flags |= TypeFlags.Unmanaged;
         }
 
         CachedFlags.TryAdd(typeof(T), flags);
         return flags;
+    }
+
+    private static bool IsBlittable<U>()
+    {
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<U>()) return false;
+        
+        try
+        {
+            _ = Marshal.SizeOf<U>();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
 
@@ -112,32 +129,12 @@ internal class LanguageType<T> : LanguageType
 
 
     //FIXME: This collides with certain Entity types and generations.
-    public static TypeID TargetId => (TypeID)(-Id);
-}
-
-internal static class TypeFlagExtensions
-{
-    public static bool IsUnmanaged(this Type t)
-    {
-        if (t.IsPrimitive || t.IsPointer || t.IsEnum) return true;
-        
-        if (!t.IsValueType || t.IsGenericType || t.IsByRef || t.IsByRefLike) return false;
-
-        var fields = t.GetFields(BindingFlags.Public
-                                 | BindingFlags.NonPublic
-                                 | BindingFlags.Instance);
-        
-        // Recursively check all fields.
-        return fields.All(x => x.FieldType.IsUnmanaged());
-    }
-    
-    // Probably no use for this comptime optimization?
-    // public static bool IsUnmanaged<T>() where T: unmanaged => true;
+    public static TypeID TargetId => (TypeID) (-Id);
 }
 
 [Flags]
 internal enum TypeFlags : ushort
-{ 
-    SIMDSize  = 0x1fff, // bottom 12 bits.
+{
+    SIMDSize = 0x1fff, // bottom 12 bits.
     Unmanaged = 0x8000, // top bit.
 }
