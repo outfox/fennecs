@@ -5,7 +5,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Date: 01/01/2026 20:58:23
+// Date: 01/01/2026 21:01:16
 
 namespace fennecs;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -22,14 +22,21 @@ public delegate bool FilterDelegate<C0, C1, C2, C3>(in C0 c0, in C1 c1, in C2 c2
 public delegate bool FilterDelegate<C0, C1, C2, C3, C4>(in C0 c0, in C1 c1, in C2 c2, in C3 c3, in C4 c4);
 
 // ============================================================================
+// ComponentAction - base version (all ref)
+// ============================================================================
+public delegate void ComponentAction<C0>(ref C0 comp0);
+public delegate void ComponentAction<C0, C1>(ref C0 comp0, ref C1 comp1);
+public delegate void ComponentAction<C0, C1, C2>(ref C0 comp0, ref C1 comp1, ref C2 comp2);
+public delegate void ComponentAction<C0, C1, C2, C3>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
+public delegate void ComponentAction<C0, C1, C2, C3, C4>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
+
+// ============================================================================
 // ComponentAction - modifier permutations
 // ============================================================================
 /// <summary>ComponentAction with modifiers: in</summary>
 public delegate void ComponentActionI<C0>(in C0 comp0);
 /// <summary>ComponentAction with modifiers: out</summary>
 public delegate void ComponentActionO<C0>(out C0 comp0);
-/// <summary>ComponentAction with modifiers: ref</summary>
-public delegate void ComponentActionR<C0>(ref C0 comp0);
 /// <summary>ComponentAction with modifiers: in, in</summary>
 public delegate void ComponentActionII<C0, C1>(in C0 comp0, in C1 comp1);
 /// <summary>ComponentAction with modifiers: in, out</summary>
@@ -46,8 +53,6 @@ public delegate void ComponentActionOR<C0, C1>(out C0 comp0, ref C1 comp1);
 public delegate void ComponentActionRI<C0, C1>(ref C0 comp0, in C1 comp1);
 /// <summary>ComponentAction with modifiers: ref, out</summary>
 public delegate void ComponentActionRO<C0, C1>(ref C0 comp0, out C1 comp1);
-/// <summary>ComponentAction with modifiers: ref, ref</summary>
-public delegate void ComponentActionRR<C0, C1>(ref C0 comp0, ref C1 comp1);
 /// <summary>ComponentAction with modifiers: in, in, in</summary>
 public delegate void ComponentActionIII<C0, C1, C2>(in C0 comp0, in C1 comp1, in C2 comp2);
 /// <summary>ComponentAction with modifiers: in, in, out</summary>
@@ -100,8 +105,6 @@ public delegate void ComponentActionROR<C0, C1, C2>(ref C0 comp0, out C1 comp1, 
 public delegate void ComponentActionRRI<C0, C1, C2>(ref C0 comp0, ref C1 comp1, in C2 comp2);
 /// <summary>ComponentAction with modifiers: ref, ref, out</summary>
 public delegate void ComponentActionRRO<C0, C1, C2>(ref C0 comp0, ref C1 comp1, out C2 comp2);
-/// <summary>ComponentAction with modifiers: ref, ref, ref</summary>
-public delegate void ComponentActionRRR<C0, C1, C2>(ref C0 comp0, ref C1 comp1, ref C2 comp2);
 /// <summary>ComponentAction with modifiers: in, in, in, in</summary>
 public delegate void ComponentActionIIII<C0, C1, C2, C3>(in C0 comp0, in C1 comp1, in C2 comp2, in C3 comp3);
 /// <summary>ComponentAction with modifiers: in, in, in, out</summary>
@@ -262,8 +265,6 @@ public delegate void ComponentActionRROR<C0, C1, C2, C3>(ref C0 comp0, ref C1 co
 public delegate void ComponentActionRRRI<C0, C1, C2, C3>(ref C0 comp0, ref C1 comp1, ref C2 comp2, in C3 comp3);
 /// <summary>ComponentAction with modifiers: ref, ref, ref, out</summary>
 public delegate void ComponentActionRRRO<C0, C1, C2, C3>(ref C0 comp0, ref C1 comp1, ref C2 comp2, out C3 comp3);
-/// <summary>ComponentAction with modifiers: ref, ref, ref, ref</summary>
-public delegate void ComponentActionRRRR<C0, C1, C2, C3>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
 /// <summary>ComponentAction with modifiers: in, in, in, in, in</summary>
 public delegate void ComponentActionIIIII<C0, C1, C2, C3, C4>(in C0 comp0, in C1 comp1, in C2 comp2, in C3 comp3, in C4 comp4);
 /// <summary>ComponentAction with modifiers: in, in, in, in, out</summary>
@@ -748,8 +749,15 @@ public delegate void ComponentActionRRROR<C0, C1, C2, C3, C4>(ref C0 comp0, ref 
 public delegate void ComponentActionRRRRI<C0, C1, C2, C3, C4>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, in C4 comp4);
 /// <summary>ComponentAction with modifiers: ref, ref, ref, ref, out</summary>
 public delegate void ComponentActionRRRRO<C0, C1, C2, C3, C4>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, out C4 comp4);
-/// <summary>ComponentAction with modifiers: ref, ref, ref, ref, ref</summary>
-public delegate void ComponentActionRRRRR<C0, C1, C2, C3, C4>(ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
+
+// ============================================================================
+// UniformComponentAction - base version (all ref)
+// ============================================================================
+public delegate void UniformComponentAction<in U, C0>(U uniform, ref C0 comp0);
+public delegate void UniformComponentAction<in U, C0, C1>(U uniform, ref C0 comp0, ref C1 comp1);
+public delegate void UniformComponentAction<in U, C0, C1, C2>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2);
+public delegate void UniformComponentAction<in U, C0, C1, C2, C3>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
+public delegate void UniformComponentAction<in U, C0, C1, C2, C3, C4>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 
 // ============================================================================
 // UniformComponentAction - modifier permutations
@@ -758,8 +766,6 @@ public delegate void ComponentActionRRRRR<C0, C1, C2, C3, C4>(ref C0 comp0, ref 
 public delegate void UniformComponentActionI<in U, C0>(U uniform, in C0 comp0);
 /// <summary>UniformComponentAction with modifiers: out</summary>
 public delegate void UniformComponentActionO<in U, C0>(U uniform, out C0 comp0);
-/// <summary>UniformComponentAction with modifiers: ref</summary>
-public delegate void UniformComponentActionR<in U, C0>(U uniform, ref C0 comp0);
 /// <summary>UniformComponentAction with modifiers: in, in</summary>
 public delegate void UniformComponentActionII<in U, C0, C1>(U uniform, in C0 comp0, in C1 comp1);
 /// <summary>UniformComponentAction with modifiers: in, out</summary>
@@ -776,8 +782,6 @@ public delegate void UniformComponentActionOR<in U, C0, C1>(U uniform, out C0 co
 public delegate void UniformComponentActionRI<in U, C0, C1>(U uniform, ref C0 comp0, in C1 comp1);
 /// <summary>UniformComponentAction with modifiers: ref, out</summary>
 public delegate void UniformComponentActionRO<in U, C0, C1>(U uniform, ref C0 comp0, out C1 comp1);
-/// <summary>UniformComponentAction with modifiers: ref, ref</summary>
-public delegate void UniformComponentActionRR<in U, C0, C1>(U uniform, ref C0 comp0, ref C1 comp1);
 /// <summary>UniformComponentAction with modifiers: in, in, in</summary>
 public delegate void UniformComponentActionIII<in U, C0, C1, C2>(U uniform, in C0 comp0, in C1 comp1, in C2 comp2);
 /// <summary>UniformComponentAction with modifiers: in, in, out</summary>
@@ -830,8 +834,6 @@ public delegate void UniformComponentActionROR<in U, C0, C1, C2>(U uniform, ref 
 public delegate void UniformComponentActionRRI<in U, C0, C1, C2>(U uniform, ref C0 comp0, ref C1 comp1, in C2 comp2);
 /// <summary>UniformComponentAction with modifiers: ref, ref, out</summary>
 public delegate void UniformComponentActionRRO<in U, C0, C1, C2>(U uniform, ref C0 comp0, ref C1 comp1, out C2 comp2);
-/// <summary>UniformComponentAction with modifiers: ref, ref, ref</summary>
-public delegate void UniformComponentActionRRR<in U, C0, C1, C2>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2);
 /// <summary>UniformComponentAction with modifiers: in, in, in, in</summary>
 public delegate void UniformComponentActionIIII<in U, C0, C1, C2, C3>(U uniform, in C0 comp0, in C1 comp1, in C2 comp2, in C3 comp3);
 /// <summary>UniformComponentAction with modifiers: in, in, in, out</summary>
@@ -992,8 +994,6 @@ public delegate void UniformComponentActionRROR<in U, C0, C1, C2, C3>(U uniform,
 public delegate void UniformComponentActionRRRI<in U, C0, C1, C2, C3>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, in C3 comp3);
 /// <summary>UniformComponentAction with modifiers: ref, ref, ref, out</summary>
 public delegate void UniformComponentActionRRRO<in U, C0, C1, C2, C3>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, out C3 comp3);
-/// <summary>UniformComponentAction with modifiers: ref, ref, ref, ref</summary>
-public delegate void UniformComponentActionRRRR<in U, C0, C1, C2, C3>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
 /// <summary>UniformComponentAction with modifiers: in, in, in, in, in</summary>
 public delegate void UniformComponentActionIIIII<in U, C0, C1, C2, C3, C4>(U uniform, in C0 comp0, in C1 comp1, in C2 comp2, in C3 comp3, in C4 comp4);
 /// <summary>UniformComponentAction with modifiers: in, in, in, in, out</summary>
@@ -1478,8 +1478,15 @@ public delegate void UniformComponentActionRRROR<in U, C0, C1, C2, C3, C4>(U uni
 public delegate void UniformComponentActionRRRRI<in U, C0, C1, C2, C3, C4>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, in C4 comp4);
 /// <summary>UniformComponentAction with modifiers: ref, ref, ref, ref, out</summary>
 public delegate void UniformComponentActionRRRRO<in U, C0, C1, C2, C3, C4>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, out C4 comp4);
-/// <summary>UniformComponentAction with modifiers: ref, ref, ref, ref, ref</summary>
-public delegate void UniformComponentActionRRRRR<in U, C0, C1, C2, C3, C4>(U uniform, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
+
+// ============================================================================
+// EntityComponentAction - base version (all ref)
+// ============================================================================
+public delegate void EntityComponentAction<C0>(in Entity entity, ref C0 comp0);
+public delegate void EntityComponentAction<C0, C1>(in Entity entity, ref C0 comp0, ref C1 comp1);
+public delegate void EntityComponentAction<C0, C1, C2>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
+public delegate void EntityComponentAction<C0, C1, C2, C3>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
+public delegate void EntityComponentAction<C0, C1, C2, C3, C4>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 
 // ============================================================================
 // EntityComponentAction - modifier permutations
@@ -1488,8 +1495,6 @@ public delegate void UniformComponentActionRRRRR<in U, C0, C1, C2, C3, C4>(U uni
 public delegate void EntityComponentActionI<C0>(in Entity entity, in C0 comp0);
 /// <summary>EntityComponentAction with modifiers: out</summary>
 public delegate void EntityComponentActionO<C0>(in Entity entity, out C0 comp0);
-/// <summary>EntityComponentAction with modifiers: ref</summary>
-public delegate void EntityComponentActionR<C0>(in Entity entity, ref C0 comp0);
 /// <summary>EntityComponentAction with modifiers: in, in</summary>
 public delegate void EntityComponentActionII<C0, C1>(in Entity entity, in C0 comp0, in C1 comp1);
 /// <summary>EntityComponentAction with modifiers: in, out</summary>
@@ -1506,8 +1511,6 @@ public delegate void EntityComponentActionOR<C0, C1>(in Entity entity, out C0 co
 public delegate void EntityComponentActionRI<C0, C1>(in Entity entity, ref C0 comp0, in C1 comp1);
 /// <summary>EntityComponentAction with modifiers: ref, out</summary>
 public delegate void EntityComponentActionRO<C0, C1>(in Entity entity, ref C0 comp0, out C1 comp1);
-/// <summary>EntityComponentAction with modifiers: ref, ref</summary>
-public delegate void EntityComponentActionRR<C0, C1>(in Entity entity, ref C0 comp0, ref C1 comp1);
 /// <summary>EntityComponentAction with modifiers: in, in, in</summary>
 public delegate void EntityComponentActionIII<C0, C1, C2>(in Entity entity, in C0 comp0, in C1 comp1, in C2 comp2);
 /// <summary>EntityComponentAction with modifiers: in, in, out</summary>
@@ -1560,8 +1563,6 @@ public delegate void EntityComponentActionROR<C0, C1, C2>(in Entity entity, ref 
 public delegate void EntityComponentActionRRI<C0, C1, C2>(in Entity entity, ref C0 comp0, ref C1 comp1, in C2 comp2);
 /// <summary>EntityComponentAction with modifiers: ref, ref, out</summary>
 public delegate void EntityComponentActionRRO<C0, C1, C2>(in Entity entity, ref C0 comp0, ref C1 comp1, out C2 comp2);
-/// <summary>EntityComponentAction with modifiers: ref, ref, ref</summary>
-public delegate void EntityComponentActionRRR<C0, C1, C2>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
 /// <summary>EntityComponentAction with modifiers: in, in, in, in</summary>
 public delegate void EntityComponentActionIIII<C0, C1, C2, C3>(in Entity entity, in C0 comp0, in C1 comp1, in C2 comp2, in C3 comp3);
 /// <summary>EntityComponentAction with modifiers: in, in, in, out</summary>
@@ -1722,8 +1723,6 @@ public delegate void EntityComponentActionRROR<C0, C1, C2, C3>(in Entity entity,
 public delegate void EntityComponentActionRRRI<C0, C1, C2, C3>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, in C3 comp3);
 /// <summary>EntityComponentAction with modifiers: ref, ref, ref, out</summary>
 public delegate void EntityComponentActionRRRO<C0, C1, C2, C3>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, out C3 comp3);
-/// <summary>EntityComponentAction with modifiers: ref, ref, ref, ref</summary>
-public delegate void EntityComponentActionRRRR<C0, C1, C2, C3>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
 /// <summary>EntityComponentAction with modifiers: in, in, in, in, in</summary>
 public delegate void EntityComponentActionIIIII<C0, C1, C2, C3, C4>(in Entity entity, in C0 comp0, in C1 comp1, in C2 comp2, in C3 comp3, in C4 comp4);
 /// <summary>EntityComponentAction with modifiers: in, in, in, in, out</summary>
@@ -2208,8 +2207,15 @@ public delegate void EntityComponentActionRRROR<C0, C1, C2, C3, C4>(in Entity en
 public delegate void EntityComponentActionRRRRI<C0, C1, C2, C3, C4>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, in C4 comp4);
 /// <summary>EntityComponentAction with modifiers: ref, ref, ref, ref, out</summary>
 public delegate void EntityComponentActionRRRRO<C0, C1, C2, C3, C4>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, out C4 comp4);
-/// <summary>EntityComponentAction with modifiers: ref, ref, ref, ref, ref</summary>
-public delegate void EntityComponentActionRRRRR<C0, C1, C2, C3, C4>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
+
+// ============================================================================
+// UniformEntityComponentAction - base version (all ref)
+// ============================================================================
+public delegate void UniformEntityComponentAction<in U, C0>(U uniform, in Entity entity, ref C0 comp0);
+public delegate void UniformEntityComponentAction<in U, C0, C1>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1);
+public delegate void UniformEntityComponentAction<in U, C0, C1, C2>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
+public delegate void UniformEntityComponentAction<in U, C0, C1, C2, C3>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
+public delegate void UniformEntityComponentAction<in U, C0, C1, C2, C3, C4>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 
 // ============================================================================
 // UniformEntityComponentAction - modifier permutations
@@ -2218,8 +2224,6 @@ public delegate void EntityComponentActionRRRRR<C0, C1, C2, C3, C4>(in Entity en
 public delegate void UniformEntityComponentActionI<in U, C0>(U uniform, in Entity entity, in C0 comp0);
 /// <summary>UniformEntityComponentAction with modifiers: out</summary>
 public delegate void UniformEntityComponentActionO<in U, C0>(U uniform, in Entity entity, out C0 comp0);
-/// <summary>UniformEntityComponentAction with modifiers: ref</summary>
-public delegate void UniformEntityComponentActionR<in U, C0>(U uniform, in Entity entity, ref C0 comp0);
 /// <summary>UniformEntityComponentAction with modifiers: in, in</summary>
 public delegate void UniformEntityComponentActionII<in U, C0, C1>(U uniform, in Entity entity, in C0 comp0, in C1 comp1);
 /// <summary>UniformEntityComponentAction with modifiers: in, out</summary>
@@ -2236,8 +2240,6 @@ public delegate void UniformEntityComponentActionOR<in U, C0, C1>(U uniform, in 
 public delegate void UniformEntityComponentActionRI<in U, C0, C1>(U uniform, in Entity entity, ref C0 comp0, in C1 comp1);
 /// <summary>UniformEntityComponentAction with modifiers: ref, out</summary>
 public delegate void UniformEntityComponentActionRO<in U, C0, C1>(U uniform, in Entity entity, ref C0 comp0, out C1 comp1);
-/// <summary>UniformEntityComponentAction with modifiers: ref, ref</summary>
-public delegate void UniformEntityComponentActionRR<in U, C0, C1>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1);
 /// <summary>UniformEntityComponentAction with modifiers: in, in, in</summary>
 public delegate void UniformEntityComponentActionIII<in U, C0, C1, C2>(U uniform, in Entity entity, in C0 comp0, in C1 comp1, in C2 comp2);
 /// <summary>UniformEntityComponentAction with modifiers: in, in, out</summary>
@@ -2290,8 +2292,6 @@ public delegate void UniformEntityComponentActionROR<in U, C0, C1, C2>(U uniform
 public delegate void UniformEntityComponentActionRRI<in U, C0, C1, C2>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, in C2 comp2);
 /// <summary>UniformEntityComponentAction with modifiers: ref, ref, out</summary>
 public delegate void UniformEntityComponentActionRRO<in U, C0, C1, C2>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, out C2 comp2);
-/// <summary>UniformEntityComponentAction with modifiers: ref, ref, ref</summary>
-public delegate void UniformEntityComponentActionRRR<in U, C0, C1, C2>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
 /// <summary>UniformEntityComponentAction with modifiers: in, in, in, in</summary>
 public delegate void UniformEntityComponentActionIIII<in U, C0, C1, C2, C3>(U uniform, in Entity entity, in C0 comp0, in C1 comp1, in C2 comp2, in C3 comp3);
 /// <summary>UniformEntityComponentAction with modifiers: in, in, in, out</summary>
@@ -2452,8 +2452,6 @@ public delegate void UniformEntityComponentActionRROR<in U, C0, C1, C2, C3>(U un
 public delegate void UniformEntityComponentActionRRRI<in U, C0, C1, C2, C3>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, in C3 comp3);
 /// <summary>UniformEntityComponentAction with modifiers: ref, ref, ref, out</summary>
 public delegate void UniformEntityComponentActionRRRO<in U, C0, C1, C2, C3>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, out C3 comp3);
-/// <summary>UniformEntityComponentAction with modifiers: ref, ref, ref, ref</summary>
-public delegate void UniformEntityComponentActionRRRR<in U, C0, C1, C2, C3>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
 /// <summary>UniformEntityComponentAction with modifiers: in, in, in, in, in</summary>
 public delegate void UniformEntityComponentActionIIIII<in U, C0, C1, C2, C3, C4>(U uniform, in Entity entity, in C0 comp0, in C1 comp1, in C2 comp2, in C3 comp3, in C4 comp4);
 /// <summary>UniformEntityComponentAction with modifiers: in, in, in, in, out</summary>
@@ -2938,8 +2936,6 @@ public delegate void UniformEntityComponentActionRRROR<in U, C0, C1, C2, C3, C4>
 public delegate void UniformEntityComponentActionRRRRI<in U, C0, C1, C2, C3, C4>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, in C4 comp4);
 /// <summary>UniformEntityComponentAction with modifiers: ref, ref, ref, ref, out</summary>
 public delegate void UniformEntityComponentActionRRRRO<in U, C0, C1, C2, C3, C4>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, out C4 comp4);
-/// <summary>UniformEntityComponentAction with modifiers: ref, ref, ref, ref, ref</summary>
-public delegate void UniformEntityComponentActionRRRRR<in U, C0, C1, C2, C3, C4>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 
 // ============================================================================
 // MemoryAction - no modifier permutations (Memory<T> already controls mutability)
