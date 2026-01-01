@@ -19,6 +19,13 @@
         return GetPermutationsRecursive(componentCount, modifiers);
     }
 
+    // Generate Memory/ReadOnlyMemory permutations
+    IEnumerable<string[]> GetMemoryPermutations(int componentCount)
+    {
+        var memoryTypes = new[] { "Memory", "ReadOnlyMemory" };
+        return GetPermutationsRecursive(componentCount, memoryTypes);
+    }
+
     IEnumerable<string[]> GetPermutationsRecursive(int depth, string[] options)
     {
         if (depth == 0)
@@ -42,14 +49,30 @@
             .Select(i => $"{modifiers[i]} C{i} comp{i}"));
     }
 
+    string MemorySignature(string[] memoryTypes, int n)
+    {
+        return string.Join(", ", Enumerable.Range(0, n)
+            .Select(i => $"{memoryTypes[i]}<C{i}> comp{i}"));
+    }
+
     string ModifierKey(string[] modifiers)
     {
         return string.Join("", modifiers.Select(m => m.ToUpperInvariant()[0]));
     }
 
+    string MemoryKey(string[] memoryTypes)
+    {
+        return string.Join("", memoryTypes.Select(m => m == "Memory" ? "M" : "R"));
+    }
+
     bool IsAllRef(string[] modifiers)
     {
         return modifiers.All(m => m == "ref");
+    }
+
+    bool IsAllMemory(string[] memoryTypes)
+    {
+        return memoryTypes.All(m => m == "Memory");
     }
 #>
 //------------------------------------------------------------------------------
@@ -182,17 +205,57 @@ public delegate void UniformEntityComponentAction<#= modKey #><in U, <#= GenList
 #>
 
 // ============================================================================
-// MemoryAction - no modifier permutations (coming soon)
+// MemoryAction - base version (all Memory)
 // ============================================================================
 <# for (var n = 1; n <= maxArity; n++) { #>
 public delegate void MemoryAction<<#= GenList("C", n) #>>(<#= string.Join(", ", Enumerable.Range(0, n).Select(i => $"Memory<C{i}> comp{i}")) #>);
 <# } #>
 
 // ============================================================================
-// MemoryUniformAction - no modifier permutations
+// MemoryAction - Memory/ReadOnlyMemory permutations
+// ============================================================================
+<# 
+for (var n = 1; n <= maxArity; n++)
+{
+    var permutations = GetMemoryPermutations(n).ToList();
+    foreach (var memTypes in permutations)
+    {
+        if (IsAllMemory(memTypes)) continue; // Skip, already defined above
+        var memKey = MemoryKey(memTypes);
+        var memSig = MemorySignature(memTypes, n);
+#>
+/// <summary>MemoryAction with memory types: <#= string.Join(", ", memTypes) #></summary>
+public delegate void MemoryAction<#= memKey #><<#= GenList("C", n) #>>(<#= memSig #>);
+<# 
+    }
+} 
+#>
+
+// ============================================================================
+// MemoryUniformAction - base version (all Memory)
 // ============================================================================
 <# for (var n = 1; n <= maxArity; n++) { #>
 public delegate void MemoryUniformAction<in U, <#= GenList("C", n) #>>(U uniform, <#= string.Join(", ", Enumerable.Range(0, n).Select(i => $"Memory<C{i}> comp{i}")) #>);
 <# } #>
+
+// ============================================================================
+// MemoryUniformAction - Memory/ReadOnlyMemory permutations
+// ============================================================================
+<# 
+for (var n = 1; n <= maxArity; n++)
+{
+    var permutations = GetMemoryPermutations(n).ToList();
+    foreach (var memTypes in permutations)
+    {
+        if (IsAllMemory(memTypes)) continue;
+        var memKey = MemoryKey(memTypes);
+        var memSig = MemorySignature(memTypes, n);
+#>
+/// <summary>MemoryUniformAction with memory types: <#= string.Join(", ", memTypes) #></summary>
+public delegate void MemoryUniformAction<#= memKey #><in U, <#= GenList("C", n) #>>(U uniform, <#= memSig #>);
+<# 
+    }
+} 
+#>
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

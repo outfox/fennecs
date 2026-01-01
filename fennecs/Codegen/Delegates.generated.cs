@@ -5,7 +5,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Date: 01/01/2026 21:05:37
+// Date: 01/01/2026 21:11:34
 
 namespace fennecs;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -2938,7 +2938,7 @@ public delegate void UniformEntityComponentActionRRRRI<in U, C0, C1, C2, C3, C4>
 public delegate void UniformEntityComponentActionRRRRO<in U, C0, C1, C2, C3, C4>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, out C4 comp4);
 
 // ============================================================================
-// MemoryAction - no modifier permutations (coming soon)
+// MemoryAction - base version (all Memory)
 // ============================================================================
 public delegate void MemoryAction<C0>(Memory<C0> comp0);
 public delegate void MemoryAction<C0, C1>(Memory<C0> comp0, Memory<C1> comp1);
@@ -2947,12 +2947,248 @@ public delegate void MemoryAction<C0, C1, C2, C3>(Memory<C0> comp0, Memory<C1> c
 public delegate void MemoryAction<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
 
 // ============================================================================
-// MemoryUniformAction - no modifier permutations
+// MemoryAction - Memory/ReadOnlyMemory permutations
+// ============================================================================
+/// <summary>MemoryAction with memory types: ReadOnlyMemory</summary>
+public delegate void MemoryActionR<C0>(ReadOnlyMemory<C0> comp0);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMR<C0, C1>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionRM<C0, C1>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRR<C0, C1>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1);
+/// <summary>MemoryAction with memory types: Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMMR<C0, C1, C2>(Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionMRM<C0, C1, C2>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMRR<C0, C1, C2>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryActionRMM<C0, C1, C2>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRMR<C0, C1, C2>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionRRM<C0, C1, C2>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRRR<C0, C1, C2>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2);
+/// <summary>MemoryAction with memory types: Memory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMMMR<C0, C1, C2, C3>(Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryAction with memory types: Memory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionMMRM<C0, C1, C2, C3>(Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryAction with memory types: Memory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMMRR<C0, C1, C2, C3>(Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryActionMRMM<C0, C1, C2, C3>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMRMR<C0, C1, C2, C3>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionMRRM<C0, C1, C2, C3>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMRRR<C0, C1, C2, C3>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, Memory, Memory</summary>
+public delegate void MemoryActionRMMM<C0, C1, C2, C3>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRMMR<C0, C1, C2, C3>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionRMRM<C0, C1, C2, C3>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRMRR<C0, C1, C2, C3>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryActionRRMM<C0, C1, C2, C3>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRRMR<C0, C1, C2, C3>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionRRRM<C0, C1, C2, C3>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRRRR<C0, C1, C2, C3>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryAction with memory types: Memory, Memory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMMMMR<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, Memory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionMMMRM<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, Memory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMMMRR<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, Memory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryActionMMRMM<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, Memory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMMRMR<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, Memory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionMMRRM<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMMRRR<C0, C1, C2, C3, C4>(Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, Memory, Memory, Memory</summary>
+public delegate void MemoryActionMRMMM<C0, C1, C2, C3, C4>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMRMMR<C0, C1, C2, C3, C4>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionMRMRM<C0, C1, C2, C3, C4>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMRMRR<C0, C1, C2, C3, C4>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryActionMRRMM<C0, C1, C2, C3, C4>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMRRMR<C0, C1, C2, C3, C4>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionMRRRM<C0, C1, C2, C3, C4>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionMRRRR<C0, C1, C2, C3, C4>(Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, Memory, Memory, Memory</summary>
+public delegate void MemoryActionRMMMM<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRMMMR<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionRMMRM<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRMMRR<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryActionRMRMM<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRMRMR<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionRMRRM<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRMRRR<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, Memory, Memory</summary>
+public delegate void MemoryActionRRMMM<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRRMMR<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionRRMRM<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRRMRR<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryActionRRRMM<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRRRMR<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryActionRRRRM<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryActionRRRRR<C0, C1, C2, C3, C4>(ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+
+// ============================================================================
+// MemoryUniformAction - base version (all Memory)
 // ============================================================================
 public delegate void MemoryUniformAction<in U, C0>(U uniform, Memory<C0> comp0);
 public delegate void MemoryUniformAction<in U, C0, C1>(U uniform, Memory<C0> comp0, Memory<C1> comp1);
 public delegate void MemoryUniformAction<in U, C0, C1, C2>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2);
 public delegate void MemoryUniformAction<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
 public delegate void MemoryUniformAction<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+
+// ============================================================================
+// MemoryUniformAction - Memory/ReadOnlyMemory permutations
+// ============================================================================
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionR<in U, C0>(U uniform, ReadOnlyMemory<C0> comp0);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMR<in U, C0, C1>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionRM<in U, C0, C1>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRR<in U, C0, C1>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMMR<in U, C0, C1, C2>(U uniform, Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionMRM<in U, C0, C1, C2>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMRR<in U, C0, C1, C2>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryUniformActionRMM<in U, C0, C1, C2>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRMR<in U, C0, C1, C2>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionRRM<in U, C0, C1, C2>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRRR<in U, C0, C1, C2>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMMMR<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionMMRM<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMMRR<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryUniformActionMRMM<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMRMR<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionMRRM<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMRRR<in U, C0, C1, C2, C3>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, Memory, Memory</summary>
+public delegate void MemoryUniformActionRMMM<in U, C0, C1, C2, C3>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRMMR<in U, C0, C1, C2, C3>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionRMRM<in U, C0, C1, C2, C3>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRMRR<in U, C0, C1, C2, C3>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryUniformActionRRMM<in U, C0, C1, C2, C3>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRRMR<in U, C0, C1, C2, C3>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionRRRM<in U, C0, C1, C2, C3>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRRRR<in U, C0, C1, C2, C3>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMMMMR<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionMMMRM<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMMMRR<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryUniformActionMMRMM<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMMRMR<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionMMRRM<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMMRRR<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, Memory, Memory, Memory</summary>
+public delegate void MemoryUniformActionMRMMM<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMRMMR<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionMRMRM<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMRMRR<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryUniformActionMRRMM<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMRRMR<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionMRRRM<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionMRRRR<in U, C0, C1, C2, C3, C4>(U uniform, Memory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, Memory, Memory, Memory</summary>
+public delegate void MemoryUniformActionRMMMM<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRMMMR<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionRMMRM<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRMMRR<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryUniformActionRMRMM<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRMRMR<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionRMRRM<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRMRRR<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, Memory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, Memory, Memory</summary>
+public delegate void MemoryUniformActionRRMMM<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRRMMR<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionRRMRM<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRRMRR<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, Memory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory, Memory</summary>
+public delegate void MemoryUniformActionRRRMM<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRRRMR<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, Memory<C3> comp3, ReadOnlyMemory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, Memory</summary>
+public delegate void MemoryUniformActionRRRRM<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, Memory<C4> comp4);
+/// <summary>MemoryUniformAction with memory types: ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory, ReadOnlyMemory</summary>
+public delegate void MemoryUniformActionRRRRR<in U, C0, C1, C2, C3, C4>(U uniform, ReadOnlyMemory<C0> comp0, ReadOnlyMemory<C1> comp1, ReadOnlyMemory<C2> comp2, ReadOnlyMemory<C3> comp3, ReadOnlyMemory<C4> comp4);
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
