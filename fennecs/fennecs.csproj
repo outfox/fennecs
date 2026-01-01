@@ -78,12 +78,12 @@
             <Pack>True</Pack>
             <Link>fennecs-icon-nuget.png</Link>
         </None>
-        <None Include="Codegen\Stream.generated.cs">
+        <None Include="generators\Stream.generated.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Stream.tt</DependentUpon>
         </None>
-        <None Update="Codegen\Delegates.tt">
+        <None Update="generators\Delegates.tt">
           <Generator>TextTemplatingFileGenerator</Generator>
           <LastGenOutput>Delegates.generated.cs</LastGenOutput>
         </None>
@@ -94,17 +94,14 @@
     </ItemGroup>
 
     <ItemGroup>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="Codegen\Stream.tt">
+        <None Update="generators\Stream.tt">
             <Generator>TextTemplatingFileGenerator</Generator>
             <LastGenOutput>Stream.generated.cs</LastGenOutput>
         </None>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Codegen\Delegates.generated.cs">
+      <Compile Update="generators\Delegates.generated.cs">
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>Delegates.tt</DependentUpon>
