@@ -5,7 +5,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Date: 01/01/2026 21:01:16
+// Date: 01/01/2026 21:05:19
 
 namespace fennecs;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -2938,7 +2938,7 @@ public delegate void UniformEntityComponentActionRRRRI<in U, C0, C1, C2, C3, C4>
 public delegate void UniformEntityComponentActionRRRRO<in U, C0, C1, C2, C3, C4>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, out C4 comp4);
 
 // ============================================================================
-// MemoryAction - no modifier permutations (Memory<T> already controls mutability)
+// MemoryAction - no modifier permutations (coming soon)
 // ============================================================================
 public delegate void MemoryAction<C0>(Memory<C0> comp0);
 public delegate void MemoryAction<C0, C1>(Memory<C0> comp0, Memory<C1> comp1);

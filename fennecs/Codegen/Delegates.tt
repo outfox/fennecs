@@ -182,7 +182,7 @@ public delegate void UniformEntityComponentAction<#= modKey #><in U, <#= GenList
 #>
 
 // ============================================================================
-// MemoryAction - no modifier permutations (Memory<T> already controls mutability)
+// MemoryAction - no modifier permutations (coming soon)
 // ============================================================================
 <# for (var n = 1; n <= maxArity; n++) { #>
 public delegate void MemoryAction<<#= GenList("C", n) #>>(<#= string.Join(", ", Enumerable.Range(0, n).Select(i => $"Memory<C{i}> comp{i}")) #>);
