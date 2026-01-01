@@ -83,6 +83,10 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Stream.tt</DependentUpon>
         </None>
+        <None Update="Codegen\Delegates.tt">
+          <Generator>TextTemplatingFileGenerator</Generator>
+          <LastGenOutput>Delegates.generated.cs</LastGenOutput>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -97,5 +101,13 @@
             <Generator>TextTemplatingFileGenerator</Generator>
             <LastGenOutput>Stream.generated.cs</LastGenOutput>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Codegen\Delegates.generated.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Delegates.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>
