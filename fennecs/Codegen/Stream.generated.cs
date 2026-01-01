@@ -9,7 +9,7 @@ using System.Collections.Immutable;
 using fennecs.pools;
 using fennecs;
 
-// Date: 09/15/2025 09:22:06
+// Date: 01/01/2026 19:04:23
 
 namespace fennecs
 {
