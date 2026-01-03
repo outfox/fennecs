@@ -29,6 +29,7 @@ public class DespawnTests
     }
 
     //[Fact]
+    // Test for https://github.com/outfox/fennecs/issues/41
     private void DespawnWithRelationDespawnsAllEntities()
     {
         var world = new World();
