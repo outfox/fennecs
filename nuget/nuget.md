@@ -1,6 +1,6 @@
 ![fennecs logo](https://raw.githubusercontent.com/outfox/fennecs/main/nuget/fennecs-logo-nuget.svg)
 
-[**fenn**ecs](https://fennecs.tech) is a lightweight, performant, and expressive ECS library for game & simulations written in modern C#. 
+[**fenn**ecs](https://fennecs.net) is a lightweight, performant, and expressive ECS library for game & simulations written in modern C#. 
 
 It's designed to be easy to use, with minimal boilerplate and no code generation or reflection required.
 
@@ -43,7 +43,7 @@ stream.For(
 
 ## 📚 Learn More
 
-Check out the [fennecs website](https://fennecs.tech) for:
+Check out the [fennecs website](https://fennecs.net) for:
 
 - 📖 API documentation
 - 🍳 Cookbook with tasty recipes
