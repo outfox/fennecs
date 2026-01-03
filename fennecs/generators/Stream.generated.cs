@@ -8,8 +8,9 @@ using System.Collections;
 using System.Collections.Immutable;
 using fennecs.pools;
 using fennecs;
+using System.Runtime.Versioning;
 
-// Date: 01/01/2026 21:14:36
+// Date: 01/03/2026 12:43:35
 
 namespace fennecs
 {
@@ -174,6 +175,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -216,6 +218,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -575,6 +578,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -618,6 +622,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1004,6 +1009,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1048,6 +1054,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1461,6 +1468,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2, C3> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1506,6 +1514,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1946,6 +1955,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2, C3, C4> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1992,6 +2002,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
         {
             AssertNoWildcards(_streamTypes);

@@ -48,6 +48,7 @@ using System.Collections;
 using System.Collections.Immutable;
 using fennecs.pools;
 using fennecs;
+using System.Runtime.Versioning;
 
 // Date: <#= DateTime.UtcNow #>
 
@@ -222,6 +223,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<<#= types #>> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -266,6 +268,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, <#= types #>> action)
         {
             AssertNoWildcards(_streamTypes);
