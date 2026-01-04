@@ -158,8 +158,8 @@ internal readonly record struct Identity : IComparable<Identity>
     /// <remarks>
     /// <para>⚠️ Using wildcards can lead to a CROSS JOIN effect, iterating over entities multiple times for
     /// each matching component. While querying is efficient, this increases the number of operations per entity.</para>
-    /// <para>This is an intentional feature, and <c>Match.Any</c> is the default as usually the same backing types are not re-used across
-    /// relations or links; but if they are, the user likely wants their Query to enumerate all of them.</para>
+    /// <para>⚠️ Note: <c>Match.Plain</c> is the default, not <c>Match.Any</c>. This protects users from accidentally
+    /// triggering cross-join behavior. Use wildcards deliberately when you need to match multiple relation targets.</para>
     /// <para>This effect is more pronounced in large archetypes with many matching components, potentially
     /// multiplying the workload significantly. However, for smaller archetypes or simpler tasks, impacts are minimal.</para>
     /// <para>Risks and considerations include:</para>
