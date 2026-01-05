@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Numerics;
+// ReSharper disable HeapView.CanAvoidClosure
 
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
@@ -490,7 +491,7 @@ public class QueryTests
 
 
     [Fact]
-    private void Query_Containss_Type_Superset()
+    private void Query_Contains_Type_Superset()
     {
         using var world = new World();
         var query = world.Query<int>(Match.Any).Compile();
@@ -641,7 +642,7 @@ public class QueryTests
 #pragma warning disable CS0618 // Type or member is obsolete
         query.Clear();
 #pragma warning restore CS0618 // Type or member is obsolete
-        Assert.Equal(0, query.Count);
+        Assert.Empty(query);
     }
 
 
@@ -654,7 +655,7 @@ public class QueryTests
         for (var i = 0; i < 420; i++) world.Spawn().Add(i);
 
         query.Despawn();
-        Assert.Equal(0, query.Count);
+        Assert.Empty(query);
     }
 
 
@@ -703,7 +704,7 @@ public class QueryTests
 
         world.Entity()
             .Add(42)
-            .Add("replaceme")
+            .Add("blit me, senpai")
             .Add(Vector2.Zero)
             .Add(Vector3.Zero)
             .Add(Vector4.Zero)

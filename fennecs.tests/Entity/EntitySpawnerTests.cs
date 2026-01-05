@@ -146,14 +146,14 @@ public class EntitySpawnerTests
         spawner1.Spawn();
         
         using var query1 = world.Query<Type69>().Compile();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(1, world.Count);
 
         using var spawner2 = world.Entity().Add<Type42>(); 
         spawner2.Spawn();
         
         using var query2 = world.Query<Type42>().Compile();
-        Assert.Equal(1, query2.Count);
+        Assert.Single(query2);
         Assert.Equal(2, world.Count);
 
         var entity = world.Spawn();
@@ -174,14 +174,14 @@ public class EntitySpawnerTests
         spawner1.Spawn();
         
         using var query1 = world.Query<Type69>(other).Compile();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(2, world.Count);
 
         using var spawner2 = world.Entity().Add<Type42>(other);  // Newable implcit new()
         spawner2.Spawn();
         
         using var query2 = world.Query<Type42>(other).Compile();
-        Assert.Equal(1, query2.Count);
+        Assert.Single(query2);
         Assert.Equal(3, world.Count);
 
         var entity = world.Spawn();
@@ -202,11 +202,11 @@ public class EntitySpawnerTests
         spawner1.Spawn();
         
         using var query1 = world.Query<Type69>(other).Compile();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(2, world.Count);
         
         spawner1.Remove<Type69>(other).Spawn();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(3, world.Count);
     }
 
@@ -219,11 +219,11 @@ public class EntitySpawnerTests
         spawner1.Spawn();
         
         using var query1 = world.Query<string>(Link.With("hello")).Compile();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(2, world.Count);
         
         spawner1.Remove("hello").Spawn();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(3, world.Count);
     }
 }

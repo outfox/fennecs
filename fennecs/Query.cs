@@ -16,7 +16,7 @@ namespace fennecs;
 ///         See <see cref="Stream{C}" /> Views with configurable output Stream Types for fast iteration.
 ///     </para>
 /// </summary>
-public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegin
+public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBegin
 {
     /// <summary>
     ///     The sum of all distinct Entities currently matched by this Query.
@@ -112,7 +112,7 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
 
     #endregion
 
-    #region IEnumerable<Entity>
+    #region IReadOnlySet<Entity>
 
     /// <summary>
     ///     Enumerator over all the Entities in the Query (dependent on filter state).
@@ -154,6 +154,85 @@ public sealed partial class Query : IEnumerable<Entity>, IDisposable, IBatchBegi
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+
+    /// <inheritdoc />
+    public bool IsProperSubsetOf(IEnumerable<Entity> other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+        var otherSet = other as ISet<Entity> ?? new HashSet<Entity>(other);
+        if (Count >= otherSet.Count) return false;
+        foreach (var entity in this)
+        {
+            if (!otherSet.Contains(entity)) return false;
+        }
+        return true;
+    }
+
+
+    /// <inheritdoc />
+    public bool IsProperSupersetOf(IEnumerable<Entity> other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+        var otherSet = other as ISet<Entity> ?? new HashSet<Entity>(other);
+        if (Count <= otherSet.Count) return false;
+        foreach (var entity in otherSet)
+        {
+            if (!Contains(entity)) return false;
+        }
+        return true;
+    }
+
+
+    /// <inheritdoc />
+    public bool IsSubsetOf(IEnumerable<Entity> other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+        var otherSet = other as ISet<Entity> ?? new HashSet<Entity>(other);
+        foreach (var entity in this)
+        {
+            if (!otherSet.Contains(entity)) return false;
+        }
+        return true;
+    }
+
+
+    /// <inheritdoc />
+    public bool IsSupersetOf(IEnumerable<Entity> other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+        foreach (var entity in other)
+        {
+            if (!Contains(entity)) return false;
+        }
+        return true;
+    }
+
+
+    /// <inheritdoc />
+    public bool Overlaps(IEnumerable<Entity> other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+        foreach (var entity in other)
+        {
+            if (Contains(entity)) return true;
+        }
+        return false;
+    }
+
+
+    /// <inheritdoc />
+    public bool SetEquals(IEnumerable<Entity> other)
+    {
+        ArgumentNullException.ThrowIfNull(other);
+        var otherSet = other as ISet<Entity> ?? new HashSet<Entity>(other);
+        if (Count != otherSet.Count) return false;
+        foreach (var entity in this)
+        {
+            if (!otherSet.Contains(entity)) return false;
+        }
+        return true;
     }
 
     #endregion

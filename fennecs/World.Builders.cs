@@ -36,7 +36,7 @@ public partial class World
     public QueryBuilder<C1, C2> Query<C1, C2>() where C1 : notnull where C2 : notnull => new(this, Match.Plain);
     
     /// <inheritdoc cref="Query{C1}()"/>
-    public QueryBuilder<C1, C2> Query<C1, C2>(Match matchAll) where C1 : notnull where C2 : notnull => new(this, matchAll,matchAll);
+    public QueryBuilder<C1, C2> Query<C1, C2>(Match matchAll) where C1 : notnull where C2 : notnull => new(this, matchAll, matchAll);
     
     /// <inheritdoc cref="Query{C1}()"/>
     public QueryBuilder<C1, C2> Query<C1, C2>(Match match1, Match match2) where C1 : notnull where C2 : notnull => new(this, match1, match2);

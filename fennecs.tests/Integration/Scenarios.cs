@@ -95,4 +95,37 @@ public class Scenarios
         world.Stream<int>().For((ref _) => count++);
         Assert.Equal(count, world.Count);
     }
+
+    record struct MemberOf;
+    record struct LeftClicked;
+    [Fact]
+    public void NarrowedQueryAndSpecificQueryMatchTheSameRelations()
+    {
+        var world = new World();
+        var platoon = world.Spawn();
+        var unit = world.Spawn();
+        var target = world.Spawn();
+        unit.Add<MemberOf>(platoon);
+        unit.Add<LeftClicked>(target);
+
+        var debug1 = world.Query().Has<MemberOf>(Entity.Any).Compile().Stream<MemberOf>(Entity.Any);
+        var debug2 = world.Query<MemberOf>(Entity.Any).Stream();
+        var debug3 = world.Query().Compile().Stream<MemberOf>(Entity.Any);
+        var debug4 = world.Stream<MemberOf>(Entity.Any);
+
+        var debug5 = world.Query().Has<MemberOf>(Entity.Any).Has<LeftClicked>(Entity.Any).Compile().Stream<MemberOf,LeftClicked>(Entity.Any);
+        var debug6 = world.Query<MemberOf,LeftClicked>(Entity.Any).Stream();
+        var debug7 = world.Query().Compile().Stream<MemberOf,LeftClicked>(Entity.Any);
+        var debug8 = world.Stream<MemberOf,LeftClicked>(Entity.Any);
+
+        Assert.Single(debug1);
+        Assert.Single(debug2);
+        Assert.Single(debug3);
+        Assert.Single(debug4);
+        
+        Assert.Single(debug5);
+        Assert.Single(debug6);
+        Assert.Single(debug7);
+        Assert.Single(debug8);
+    }
 }

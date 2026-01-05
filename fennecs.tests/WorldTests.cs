@@ -717,11 +717,11 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var query = world.All;
         Assert.NotNull(query);
-        Assert.Equal(0, query.Count);
+        Assert.Empty(query);
         var entity = world.Spawn();
-        Assert.Equal(1, query.Count);
+        Assert.Single(query);
         entity.Add<float>();
-        Assert.Equal(1, query.Count);
+        Assert.Single(query);
         Assert.Equal(1, world.Count);
     }
     
