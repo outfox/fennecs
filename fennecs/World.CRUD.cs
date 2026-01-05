@@ -9,7 +9,7 @@ public partial class World
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
         
-        if (typeExpression.isWildcard) throw new ArgumentException("Cannot add a wildcard component");
+        if (typeExpression.isWildcard) throw new ArgumentException("Cannot add a Wildcard Component");
 
         if (Mode == WorldMode.Deferred)
         {
@@ -22,7 +22,7 @@ public partial class World
         ref var meta = ref _meta[identity.Index];
         var oldArchetype = meta.Archetype;
 
-        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} already has a component of type {typeExpression}");
+        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} already has a Component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -45,7 +45,7 @@ public partial class World
 
         var oldArchetype = meta.Archetype;
 
-        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} does not have a component of type {typeExpression}");
+        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} does not have a Component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -66,7 +66,7 @@ public partial class World
 
         if (!HasComponent<T>(identity, match))
         {
-            if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot create bew mutable reference to component in deferred mode. (the Entity did must already have the component)");
+            if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot create bew mutable reference to Component in deferred mode. (the Entity did must already have the Component)");
             AddComponent<T>(identity, TypeExpression.Of<T>(match), new());
         }
 
@@ -82,7 +82,7 @@ public partial class World
 
         if (!HasComponent<T>(identity, match))
         {
-            throw new InvalidOperationException($"Entity {identity} does not have a reference type component of type {typeof(T)} / {match}");
+            throw new InvalidOperationException($"Entity {identity} does not have a reference type Component of type {typeof(T)} / {match}");
         }
 
         var (table, row, _) = _meta[identity.Index];
@@ -92,7 +92,7 @@ public partial class World
     
     internal bool GetComponent(Identity identity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
-        if (type.isWildcard) throw new ArgumentException("Cannot get a wildcard component", nameof(type));
+        if (type.isWildcard) throw new ArgumentException("Cannot get a Wildcard Component", nameof(type));
         
         AssertAlive(identity);
 

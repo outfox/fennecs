@@ -34,7 +34,7 @@ ringsOfPower.For((in Entity ring, ref RingBearer bearer, ref OneRing link) =>
 
 Console.WriteLine("\nDirected by: Peter Foxen");
 
-// The Ring Bearer component represents the owner of a Ring of Power.
+// The Ring Bearer Component represents the owner of a Ring of Power.
 internal record struct RingBearer(string race, bool corrupted = false);
 
 //But they were, all of them, deceived, for another ring was made!

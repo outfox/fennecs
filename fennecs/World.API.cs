@@ -112,9 +112,9 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <remarks>
     /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
     /// </remarks>
-    /// <param name="components">TypeExpressions and boxed objects to spawn</param>
+    /// <param name="Components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count"></param>
-    /// <param name="values">component values</param>
+    /// <param name="values">Component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
         var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.Expression);
@@ -125,7 +125,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Despawn (destroy) an Entity from this World.
     /// </summary>
-    /// <param name="entity">the entity to despawn.</param>
+    /// <param name="Entity">the Entity to despawn.</param>
     public void Despawn(Entity entity) => DespawnImpl(entity);
 
     
@@ -138,7 +138,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
 
 
     /// <summary>
-    /// The number of living entities in the World.
+    /// The number of living Entities in the World.
     /// </summary>
     public int Count => _identityPool.Count;
 
@@ -155,7 +155,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Despawn (destroy) all Entities matching a given Type and Match Expression.
     /// </summary>
-    /// <typeparam name="T">any component type</typeparam>
+    /// <typeparam name="T">any Component type</typeparam>
     /// <param name="match">default <see cref="Match.Plain"/>.<br/>Can alternatively be one
     /// of <see cref="Match.Any"/>, <see cref="Match.Target"/>, or <see cref="Match.Object"/>, <see cref="Match.Entity"/>
     /// </param>
@@ -173,7 +173,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Bulk Despawn Entities from a World.
     /// </summary>
-    /// <param name="toDelete">the entities to despawn (remove)</param>
+    /// <param name="toDelete">the Entities to despawn (remove)</param>
     internal void Despawn(ReadOnlySpan<Entity> toDelete)
     {
         //Deleting backwards is usually faster when deleting one-by one (saves a memcpy for each)

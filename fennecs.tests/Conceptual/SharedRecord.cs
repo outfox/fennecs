@@ -14,7 +14,7 @@ public class SharedRecord(ITestOutputHelper output)
         var stream = world.Query<SharedData>().Stream();
 
         var sharedData = new SharedData(42);     // shared instance
-        world.Entity().Add(sharedData).Spawn(5); // add it to 5 fresh entities
+        world.Entity().Add(sharedData).Spawn(5); // add it to 5 fresh Entities
 
         stream.For((ref data) =>
         {

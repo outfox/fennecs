@@ -51,8 +51,8 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <summary>
     /// QueryBuilder includes only Entities that have the given Component, Relation, or Object Link.
     /// </summary>
-    /// <param name="match">defaults th Plain Components. Can be a match wildcard or specific relation target / or object link</param>
-    /// <typeparam name="T">component's backing type</typeparam>
+    /// <param name="match">Defaults to Plain Components. Can be a match Wildcard or specific relation target / or object link</param>
+    /// <typeparam name="T">Component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Has<T>(Match match = default)
@@ -66,7 +66,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// QueryBuilder includes only Entities that have the given Component, Relation, or Object Link.
     /// </summary>
     /// <param name="link">an object link</param>
-    /// <typeparam name="T">component's backing type</typeparam>
+    /// <typeparam name="T">Component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Has<T>(Link<T> link) where T : class
@@ -80,8 +80,8 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <summary>
     /// Exclude all Entities that have the given Component or Relation.
     /// </summary>
-    /// <param name="match">defaults th Plain Components. Can be a match wildcard or specific relation target / or object link</param>
-    /// <typeparam name="T">component's backing type</typeparam>
+    /// <param name="match">Defaults the Plain Components. Can be a match Wildcard or specific relation target / or object link</param>
+    /// <typeparam name="T">Component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Not<T>(Match match = default)
@@ -94,7 +94,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// Exclude all Entities that have the given Component or Relation.
     /// </summary>
     /// <param name="link">an object link</param>
-    /// <typeparam name="T">component's backing type</typeparam>
+    /// <typeparam name="T">Component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Not<T>(Link<T> link) where T : class
@@ -107,8 +107,8 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// Include Entities that have the given Component or Relation, or any other Relation that is
     /// given in other <see cref="Any{T}(Match)"/> calls.
     /// </summary>
-    /// <param name="match">defaults th Plain Components. Can be a match wildcard or specific relation target / or object link</param>
-    /// <typeparam name="T">component's backing type</typeparam>
+    /// <param name="match">Defaults the Plain Components. Can be a match Wildcard or specific relation target / or object link</param>
+    /// <typeparam name="T">Component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Any<T>(Match match = default)
@@ -122,7 +122,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// given in other <see cref="Any{T}(Match)"/> calls.
     /// </summary>
     /// <param name="link">an object link</param>
-    /// <typeparam name="T">component's backing type</typeparam>
+    /// <typeparam name="T">Component's backing type</typeparam>
     /// <returns>itself (fluent pattern)</returns>
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Any<T>(Link<T> link) where T : class

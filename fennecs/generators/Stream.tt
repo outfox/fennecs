@@ -3,7 +3,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ output extension=".generated.cs" #> 
 <#
-    const int maxArity = 5; // Maximum number of components in the stream
+    const int maxArity = 5; // Maximum number of Components in the stream
 
     // <summary>
     // Generates a list of "prefix + index + suffix" values.

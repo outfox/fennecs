@@ -10,7 +10,7 @@ internal readonly record struct Relate
     internal Relate(Identity identity) => Value = identity;
     
     /// <summary>
-    /// Create a Relation expression to the Target entity.
+    /// Create a Relation expression to the Target Entity.
     /// </summary>
     public static Relate To(Entity entity) => new(entity.Id);
 

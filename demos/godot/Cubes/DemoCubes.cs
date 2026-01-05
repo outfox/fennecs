@@ -89,10 +89,10 @@ public partial class DemoCubes : Node
 	/// <summary>
 	///     Spawn or Remove Entities to match the desired count.
 	/// </summary>
-	/// <param name="spawnCount">the count of entities to simulate</param>
+	/// <param name="spawnCount">the count of Entities to simulate</param>
 	private void SetEntityCount(int spawnCount)
 	{
-		// Spawn new entities if needed.
+		// Spawn new Entities if needed.
 		var difference = spawnCount - _stream.Count;
 
 		if (difference > 0)
@@ -103,12 +103,12 @@ public partial class DemoCubes : Node
 				.Add<Vector3>()
 				.Spawn(difference);
 
-			// Number all the entities
+			// Number all the Entities
 			var i = 0;
 			_stream.For((ref Matrix4X3 _, ref Vector3 _, ref int index) => index = i++);
 		}
 		
-		// Cut off excess entities, if any.
+		// Cut off excess Entities, if any.
 		if (difference < 0) _stream.Query.Truncate(spawnCount);
 		
 	}
@@ -123,7 +123,7 @@ public partial class DemoCubes : Node
 		_stream = _world.Query<Matrix4X3, Vector3, int>().Stream();
 		_exportStream = _world.Query<Matrix4X3>().Stream();
 
-		// Boilerplate: Users can change the number of entities, so pre-warm the memory allocator a bit.
+		// Boilerplate: Users can change the number of Entities, so pre-warm the memory allocator a bit.
 		SetEntityCount(MaxEntities);
 
 		// Boilerplate: Apply the initial state of the UI.

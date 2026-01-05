@@ -127,7 +127,7 @@ public partial class World
         // Collect Archetypes that have any of these relations
         var toMigrate = _archetypes.Where(a => a.Signature.Matches(types)).ToList();
 
-        // Do not change the home archetype of the entity (relating to entities having a relation with themselves)
+        // Do not change the home archetype of the entity (relating to Entities having a relation with themselves)
         var homeArchetype = _meta[entity.Id.Index].Archetype;
 
         // And migrate them to a new Archetype without the relation

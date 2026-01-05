@@ -38,7 +38,7 @@ public partial class Ship : Sprite2D
 		// This is a ship ...
 		_entity.Add(this);
 
-		// ... and its state components
+		// ... and its state Components
 		var goal = Faction.FleetObjective.GlobalPosition + new Godot.Vector2(GD.RandRange(-500, 500), GD.RandRange(-500, 500));
 		var course = GlobalPosition.AngleToPoint(goal);
 		Rotation = course;

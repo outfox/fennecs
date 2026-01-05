@@ -56,7 +56,7 @@ public class RelationDespawn
         var subjects = new List<Entity>();
         var rnd = new Random(1234 + relations);
         
-        // Spawn the other entities
+        // Spawn the other Entities
         for (var i = 0; i < relations; i++)
         {
             subjects.Add(world.Spawn());

@@ -1,6 +1,7 @@
-﻿// KillBill.cs (type declarations at bottom of file)
+﻿// KillBill.cs (type declarations at the bottom of this file)
 
 using fennecs;
+// ReSharper disable HeapView.CanAvoidClosure
 
 if (!Console.IsOutputRedirected) Console.Clear();
 Console.WriteLine("Directed by: Trentin Quarantino");
@@ -27,7 +28,7 @@ for (var i = 0; i < 5; i++)
 }
 
 // We query for their Locations; to pay them a visit;
-// and their Entity Id. It's a surprise tool that will help us later!
+// and their Entity ID. It's a surprise tool that will help us later!
 var betrayingVipers = world.Query<Location>()
     .Has<Betrayed>(us)
     .Stream();
@@ -52,7 +53,7 @@ Console.WriteLine("This is us (and our grudges): \n" + us);
 // Choose your weapon:
 //    query.Despawn();
 //    query.Truncate(0);
-// -> visiting each entity personally
+// -> visiting each Entity personally
 betrayingVipers.For((in Entity them, ref Location theirLocation) =>
 {
     Console.WriteLine();
@@ -86,11 +87,11 @@ Console.WriteLine($"We'll be {us.Ref<Location>()} for a while.");
 
 
 # region Components
-// "tag" (size-less) component, used here to back a Relation
+// "tag" (size-less) Component, used here to back a Relation
 internal struct Grudge;
 
 
-// "tag" (size-less) component, used here to back a Relation
+// "tag" (size-less) Component, used here to back a Relation
 internal struct Betrayed;
 
 

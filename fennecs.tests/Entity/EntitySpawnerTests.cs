@@ -126,7 +126,7 @@ public class EntitySpawnerTests
     public void Safe_to_Spawn_Negative_Amounts()
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123); //Must add component to cause inner loop to run
+        using var spawner = world.Entity().Add(123); //Must add Component to cause inner loop to run
         spawner.Spawn(-1);
         spawner.Spawn(-2);
         spawner.Spawn(-69);

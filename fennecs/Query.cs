@@ -27,7 +27,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// <summary>
     ///     Does this Query match ("contain") the Entity, and would enumerate it?
     /// </summary>
-    /// <param name="entity">an entity</param>
+    /// <param name="Entity">an Entity</param>
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
@@ -40,7 +40,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     ///     Does this Query match ("contain") a subset of the Type and Match Expression in its Stream Types?
     /// </summary>
     /// <param name="match">
-    ///     Match Expression for the component type <see cref="Cross" />.
+    ///     Match Expression for the Component type <see cref="Cross" />.
     ///     The default is <see cref="Identity.Plain"/>
     /// </param>
     /// <returns>true if the Query contains the Type with the given Match Expression</returns>
@@ -75,13 +75,13 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
 
     /*
     /// <summary>
-    ///     Array of TypeExpressions for the Output Stream of this Query.
-    ///     Mutated by Filter Expressions.
+    /// Array of TypeExpressions for the Output Stream of this Query.
+    /// Mutated by Filter Expressions.
     /// </summary>
     internal readonly ReadOnlySpan<TypeExpression> streamTypes;
 
     /// <summary>
-    ///  Filters for the Archetypes matched by the StreamTypes (must match)
+    /// Filters for the Archetypes matched by the StreamTypes (must match)
     /// </summary>
     private readonly List<TypeExpression> _streamFilters;
     */
@@ -241,7 +241,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     #region Random Access
 
     /// <summary>
-    ///     Does this query match any entities?
+    ///     Does this query match any Entities?
     /// </summary>
     public bool IsEmpty => Count == 0;
 
@@ -309,7 +309,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     #region Bulk Operations
 
     /// <summary>
-    ///     Adds a Component (using default constructor) to all Entities matched by this query.
+    ///     Adds a Component (using the default constructor) to all Entities matched by this query.
     /// </summary>
     /// <inheritdoc cref="Add{T}(T)" />
     public void Add<T>() where T : notnull, new() => Add(new T());
@@ -339,7 +339,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
 
     /// <summary>
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
-    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+    /// Allows configuring custom handling of conflicts when adding Components that might already be on some Entities in the
     /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
     /// </summary>
     /// <remarks>
@@ -355,7 +355,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
 
     /// <summary>
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
-    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+    /// Allows configuring custom handling of conflicts when adding Components that might already be on some Entities in the
     /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
     /// </summary>
     /// <remarks>
@@ -371,7 +371,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
 
     /// <summary>
     /// Provide a Builder Struct that allows to enqueue multiple operations on the Entities matched by this Query.
-    /// Allows configuring custom handling of conflicts when adding components that might already be on some entities in the
+    /// Allows configuring custom handling of conflicts when adding Components that might already be on some Entities in the
     /// query, see <see cref="Batch.AddConflict"/> and <see cref="Batch.AddConflict"/>.
     /// </summary>
     /// <remarks>
@@ -405,7 +405,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// Despawn all Entities above the specified count in the Query, using the specified mode of distribution.
     /// The default is a balanced distribution (with rounding).
     /// </summary>
-    /// <param name="maxEntityCount">number of entities to preserve</param>
+    /// <param name="maxEntityCount">number of Entities to preserve</param>
     /// <param name="mode">
     /// <ul>
     /// <li><see cref="TruncateMode.Proportional"/> (default) Truncate matched Archetypes proportionally to their contents (approximation by rounding).</li>
@@ -450,7 +450,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
         /// <summary>
         /// Truncate matched Archetypes proportionally to their contents (approximation by rounding).
         /// </summary>
-        Proportional = default,
+        Proportional = 0,
         /// <summary>
         /// Truncate each matched Archetype to the specified maximum count.
         /// </summary>

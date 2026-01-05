@@ -2,21 +2,21 @@ namespace fennecs.tests.Query;
 
 /// <summary>
 /// Tests to ensure that QueryBuilder&lt;C1, ..., Cn&gt; correctly requires ALL stream type
-/// components in the query mask. These tests verify that entities missing any combination
-/// of the stream type components are correctly excluded from query results.
+/// Components in the query mask. These tests verify that Entities missing any combination
+/// of the stream type Components are correctly excluded from query results.
 /// 
 /// A past bug in QueryBuilder&lt;C1,C2,C3,C4,C5&gt; had C1 missing from the streamTypes array,
-/// causing entities without C1 to incorrectly match the query.
+/// causing Entities without C1 to incorrectly match the query.
 /// 
-/// These tests exhaustively check all 2^n combinations of component presence for each arity,
-/// ensuring only entities with ALL required components match.
+/// These tests exhaustively check all 2^n combinations of Component presence for each arity,
+/// ensuring only Entities with ALL required Components match.
 /// </summary>
 public class QueryBuilderStreamTypesBugTests
 {
     #region QueryBuilder<C1> Tests (Arity 1) - 2 combinations
 
     [Theory]
-    [InlineData(false, false)]  // No components - should not match
+    [InlineData(false, false)]  // No Components - should not match
     [InlineData(true, true)]    // C1 only - should match
     public void QueryBuilder1_Matches_Only_Entities_With_All_Components(bool hasC1, bool shouldMatch)
     {
@@ -25,7 +25,7 @@ public class QueryBuilderStreamTypesBugTests
         var entity = world.Spawn();
         if (hasC1) entity.Add(42);  // C1 - int
         
-        // Add a decoy component to ensure entity exists in some archetype
+        // Add a decoy Component to ensure entity exists in some archetype
         if (!hasC1) entity.Add('x');  // char as decoy
         
         using var builder = world.Query<int>();
@@ -47,11 +47,11 @@ public class QueryBuilderStreamTypesBugTests
     {
         using var world = new World();
         
-        // Entity with C1 plus extra components should still match
+        // Entity with C1 plus extra Components should still match
         var entity = world.Spawn()
             .Add(42)       // C1 - int (required)
-            .Add("extra")  // Extra component
-            .Add(3.14f);   // Another extra component
+            .Add("extra")  // Extra Component
+            .Add(3.14f);   // Another extra Component
         
         using var builder = world.Query<int>();
         var query = builder.Compile();
@@ -142,7 +142,7 @@ public class QueryBuilderStreamTypesBugTests
     {
         using var world = new World();
         
-        // Entity with C1+C2 plus extra components should still match
+        // Entity with C1+C2 plus extra Components should still match
         var entity = world.Spawn()
             .Add(42)       // C1 - int (required)
             .Add("hello")  // C2 - string (required)
@@ -252,7 +252,7 @@ public class QueryBuilderStreamTypesBugTests
     {
         using var world = new World();
         
-        // Entity with C1+C2+C3 plus extra components should still match
+        // Entity with C1+C2+C3 plus extra Components should still match
         var entity = world.Spawn()
             .Add(42)       // C1 - int (required)
             .Add("hello")  // C2 - string (required)
@@ -389,7 +389,7 @@ public class QueryBuilderStreamTypesBugTests
     {
         using var world = new World();
         
-        // Entity with C1+C2+C3+C4 plus extra components should still match
+        // Entity with C1+C2+C3+C4 plus extra Components should still match
         var entity = world.Spawn()
             .Add(42)       // C1 - int (required)
             .Add("hello")  // C2 - string (required)
@@ -459,7 +459,7 @@ public class QueryBuilderStreamTypesBugTests
 
     [Theory]
     // All 32 combinations (only the last one should match)
-    // 0 components
+    // 0 Components
     [InlineData(false, false, false, false, false, false)]  // None
     // 1 component
     [InlineData(true, false, false, false, false, false)]   // C1
@@ -467,7 +467,7 @@ public class QueryBuilderStreamTypesBugTests
     [InlineData(false, false, true, false, false, false)]   // C3
     [InlineData(false, false, false, true, false, false)]   // C4
     [InlineData(false, false, false, false, true, false)]   // C5
-    // 2 components
+    // 2 Components
     [InlineData(true, true, false, false, false, false)]    // C1+C2
     [InlineData(true, false, true, false, false, false)]    // C1+C3
     [InlineData(true, false, false, true, false, false)]    // C1+C4
@@ -478,7 +478,7 @@ public class QueryBuilderStreamTypesBugTests
     [InlineData(false, false, true, true, false, false)]    // C3+C4
     [InlineData(false, false, true, false, true, false)]    // C3+C5
     [InlineData(false, false, false, true, true, false)]    // C4+C5
-    // 3 components
+    // 3 Components
     [InlineData(true, true, true, false, false, false)]     // C1+C2+C3
     [InlineData(true, true, false, true, false, false)]     // C1+C2+C4
     [InlineData(true, true, false, false, true, false)]     // C1+C2+C5
@@ -489,13 +489,13 @@ public class QueryBuilderStreamTypesBugTests
     [InlineData(false, true, true, false, true, false)]     // C2+C3+C5
     [InlineData(false, true, false, true, true, false)]     // C2+C4+C5
     [InlineData(false, false, true, true, true, false)]     // C3+C4+C5
-    // 4 components
+    // 4 Components
     [InlineData(true, true, true, true, false, false)]      // C1+C2+C3+C4
     [InlineData(true, true, true, false, true, false)]      // C1+C2+C3+C5
     [InlineData(true, true, false, true, true, false)]      // C1+C2+C4+C5
     [InlineData(true, false, true, true, true, false)]      // C1+C3+C4+C5
     [InlineData(false, true, true, true, true, false)]      // C2+C3+C4+C5
-    // 5 components - should match
+    // 5 Components - should match
     [InlineData(true, true, true, true, true, true)]        // C1+C2+C3+C4+C5
     public void QueryBuilder5_Matches_Only_Entities_With_All_Components(
         bool hasC1, bool hasC2, bool hasC3, bool hasC4, bool hasC5, bool shouldMatch)
@@ -532,7 +532,7 @@ public class QueryBuilderStreamTypesBugTests
         using var world = new World();
         
         // Create all 32 combinations (31 non-matching)
-        // 0 components
+        // 0 Components
         world.Spawn().Add('x');
         // 1 component
         world.Spawn().Add(1);
@@ -540,7 +540,7 @@ public class QueryBuilderStreamTypesBugTests
         world.Spawn().Add(1.0f);
         world.Spawn().Add(1.0);
         world.Spawn().Add(1L);
-        // 2 components
+        // 2 Components
         world.Spawn().Add(1).Add("c2");
         world.Spawn().Add(1).Add(1.0f);
         world.Spawn().Add(1).Add(1.0);
@@ -551,7 +551,7 @@ public class QueryBuilderStreamTypesBugTests
         world.Spawn().Add(1.0f).Add(1.0);
         world.Spawn().Add(1.0f).Add(1L);
         world.Spawn().Add(1.0).Add(1L);
-        // 3 components
+        // 3 Components
         world.Spawn().Add(1).Add("c2").Add(1.0f);
         world.Spawn().Add(1).Add("c2").Add(1.0);
         world.Spawn().Add(1).Add("c2").Add(1L);
@@ -562,13 +562,13 @@ public class QueryBuilderStreamTypesBugTests
         world.Spawn().Add("c2").Add(1.0f).Add(1L);
         world.Spawn().Add("c2").Add(1.0).Add(1L);
         world.Spawn().Add(1.0f).Add(1.0).Add(1L);
-        // 4 components
+        // 4 Components
         world.Spawn().Add(1).Add("c2").Add(1.0f).Add(1.0);
         world.Spawn().Add(1).Add("c2").Add(1.0f).Add(1L);
         world.Spawn().Add(1).Add("c2").Add(1.0).Add(1L);
         world.Spawn().Add(1).Add(1.0f).Add(1.0).Add(1L);
         world.Spawn().Add("c2").Add(1.0f).Add(1.0).Add(1L);
-        // 5 components - should match
+        // 5 Components - should match
         world.Spawn().Add(42).Add("found").Add(3.14f).Add(2.71).Add(999L);
         world.Spawn().Add(43).Add("found-2").Add(2.71f).Add(3.14).Add(888L);
         
@@ -583,7 +583,7 @@ public class QueryBuilderStreamTypesBugTests
     {
         using var world = new World();
         
-        // Entity with C1+C2+C3+C4+C5 plus extra components should still match
+        // Entity with C1+C2+C3+C4+C5 plus extra Components should still match
         var entity = world.Spawn()
             .Add(42)       // C1 - int (required)
             .Add("hello")  // C2 - string (required)

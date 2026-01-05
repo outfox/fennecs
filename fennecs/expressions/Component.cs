@@ -46,7 +46,7 @@ public readonly record struct Component
     /// The boxed Value of this Component.
     /// </summary>
     /// <remarks>
-    /// This is guaranteed to be assignable to the backing System.<see cref="Type"/> used by the component.
+    /// This is guaranteed to be assignable to the backing System.<see cref="Type"/> used by the Component.
     /// </remarks>
     public IStrongBox Box { get; }
     
@@ -67,35 +67,35 @@ public readonly record struct Component
     
     #region DEPRECATED
     /// <summary>
-    /// Strongly-Typed Wildcard for a specific component type, with or without a Target. Used for Stream Filtering and CRUD.
+    /// Strongly-Typed Wildcard for a specific Component type, with or without a Target. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Match.Any)")]
     [ExcludeFromCodeCoverage]
     public static Comp<T> Any<T>() => new(Match.Any);
 
     /// <summary>
-    /// Strongly-Typed Wildcard for a specific component type, with any (but not no) Target. Used for Stream Filtering and CRUD.
+    /// Strongly-Typed Wildcard for a specific Component type, with any (but not no) Target. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Match.Target)")]
     [ExcludeFromCodeCoverage]
     public static Comp<T> AnyRelation<T>() => new(Match.Target);
 
     /// <summary>
-    /// Wildcard for a specific component type, with any Entity-Entity Relation. Used for Stream Filtering and CRUD.
+    /// Wildcard for a specific Component type, with any Entity-Entity Relation. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Entity.Any)")]
     [ExcludeFromCodeCoverage]
     public static Comp<T> AnyEntity<T>() => new(Match.Entity);
 
     /// <summary>
-    /// Strongly-Typed for a specific component type, with any Object Link. Used for Stream Filtering and CRUD.
+    /// Strongly-Typed for a specific Component type, with any Object Link. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Matching(Link.Any)")]
     [ExcludeFromCodeCoverage]
     public static Comp<T> AnyObject<T>() => new(Link.Any); //new(Match.Object);
 
     /// <summary>
-    /// Strongly-Typed for a specific component type, with no Relation. Used for Stream Filtering and CRUD.
+    /// Strongly-Typed for a specific Component type, with no Relation. Used for Stream Filtering and CRUD.
     /// </summary>
     [Obsolete("use Comp<T>.Plain")]
     [ExcludeFromCodeCoverage]
@@ -166,7 +166,7 @@ public readonly record struct Comp
 /// <remarks>
 /// Variables of this type describe a Component, Relation, or Link, but not the actual values.
 /// </remarks>
-/// <param name="match">optional match expression for relation-backing components</param>
+/// <param name="match">optional match expression for relation-backing Components</param>
 /// <typeparam name="T">any type</typeparam>
 public readonly record struct Comp<T>(Match match = default)
 {

@@ -72,7 +72,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             Storages[index] = IStorage.Instantiate(type);
         }
         
-        // Get quick lookup for Identity component (non-relational)
+        // Get quick lookup for Identity Component (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
         // TypeExpression may have been created before the first TE of Identity.
         IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
@@ -196,8 +196,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// Moves all Entities from this Archetype to the destination Archetype back-filling with the provided Components.
     /// </summary>
-    /// <param name="destination">the Archetype to move the entities to</param>
-    /// <param name="additions">the new components and their TypeExpressions to add to the destination Archetype</param>
+    /// <param name="destination">the Archetype to move the Entities to</param>
+    /// <param name="additions">the new Components and their TypeExpressions to add to the destination Archetype</param>
     /// <param name="backFills">values for each addition to add</param>
     /// <param name="addMode"></param>
     internal void Migrate(Archetype destination, PooledList<TypeExpression> additions, PooledList<object> backFills, Batch.AddConflict addMode)
@@ -236,7 +236,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             }
             else
             {
-                // Discard values not in the destination (subtract components)
+                // Discard values not in the destination (subtract Components)
                 srcStorage.Clear();
             }
         }
@@ -248,16 +248,16 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             destination.BackFill(type, value, addedCount);
         }
         
-        // Update all Meta info to mark entities as moved.
+        // Update all Meta info to mark Entities as moved.
         destination.PatchMetas(addedStart, addedCount);
     }
 
 
     /// <summary>
     /// Moves all Entities from this Archetype to the destination Archetype,
-    /// discarding any components not present in the destination.
+    /// discarding any Components not present in the destination.
     /// </summary>
-    /// <param name="destination">the Archetype to move the entities to</param>
+    /// <param name="destination">the Archetype to move the Entities to</param>
     internal void Migrate(Archetype destination) => Migrate(destination, PooledList<TypeExpression>.Rent(), PooledList<object>.Rent(), Batch.AddConflict.Strict);
 
 
@@ -331,7 +331,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             oldStorage.Move(entry, newStorage);
         }
 
-        // If we cycled an entity from the end of the storages, need Row update.
+        // If we cycled an Entity from the end of the storages, need Row update.
         if (source.Count > entry) source.PatchMetas(entry);
         
         // Entity was moved, needs both Archetype and Row update.

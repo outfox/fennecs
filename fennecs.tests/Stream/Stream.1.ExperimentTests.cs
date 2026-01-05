@@ -51,16 +51,16 @@ public class Stream1TestsExperiment
 
     private Type[] GetComponentTypes(int count)
     {
-        // Return an array of component types based on the count
+        // Return an array of Component types based on the count
         // You can use your own logic to determine the types
         // For example, you can use a dictionary or switch statement
-        // to map the count to specific component types
+        // to map the count to specific Component types
         return [];
     }
 
     private object GetComponentValue(int index)
     {
-        // Return a value for the component based on the index
+        // Return a value for the Component based on the index
         // You can use your own logic to generate test data
         return null!;
     }

@@ -11,13 +11,13 @@ It's designed to be easy to use, with minimal boilerplate and no code generation
 Here's a simple example to get you started:
 
 ```cs
-// Declare a component record. (we can also use most existing value & reference types)
+// Declare a Component record. (we can also use most existing value & reference types)
 record struct Velocity(Vector3 Value);
 
 // Create a world. (fyi, World implements IDisposable)
 var world = new fennecs.World();
 
-// Spawn an entity into the world with a choice of components. (or add/remove them later)
+// Spawn an entity into the world with a choice of Components. (or add/remove them later)
 var entity = world.Spawn().Add<Velocity>();
 
 // Queries are cached & we use ultra-lightweight Stream Views to feed data to our code!
@@ -37,7 +37,7 @@ stream.For(
 
 - Modern C# codebase targeting .NET 8, 9, and 10
 - Archetype-based storage for cache-friendly iteration
-- Expressive, queryable relations between entities and components
+- Expressive, queryable relations between entities and Components
 - Easy parallelization of workloads across and within archetypes
 - Zero codegen and minimal boilerplate
 

@@ -27,7 +27,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// </para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
-    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over Entities if they match multiple Component types. This is due to the Wildcard's nature of matching all Components.</para>
     /// </summary>
     /// <inheritdoc cref="Match.Any"/>
     public static Match Any => new(Identity.Entity);
@@ -65,28 +65,28 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     #region IAddRemoveComponent
 
     /// <summary>
-    /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
+    /// Gets a reference to the Component of type <typeparamref name="C"/> for the Entity.
     /// </summary>
     /// <remarks>
-    /// Adds the component before if possible.
+    /// Adds the Component before if possible.
     /// </remarks>
-    /// <param name="match">specific (targeted) Match Expression for the component type. No wildcards!</param>
+    /// <param name="match">specific (targeted) Match Expression for the Component type. No Wildcards!</param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity.</exception>
     public ref C Ref<C>(Match match) where C : struct => ref _world.GetComponent<C>(this, match);
 
     /// <summary>
-    /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the entity.
+    /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the Entity.
     /// </summary>
     /// <param name="link">object link match expressioon</param>
     /// <typeparam name="L">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
     /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity.</exception>
     public ref L Ref<L>(Link<L> link) where L : class => ref _world.GetComponent<L>(this, link);
 
 
@@ -102,7 +102,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     }
 
     /// <summary>
-    /// Adds a object link to the current entity.
+    /// Adds a object link to the current Entity.
     /// Object links, in addition to making the object available as a Component,
     /// place all Entities with a link to the same object into a single Archetype,
     /// which can optimize processing them in queries.
@@ -113,7 +113,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
-    /// <typeparam name="T">Any reference type. The type the object to be linked with the entity.</typeparam>
+    /// <typeparam name="T">Any reference type. The type the object to be linked with the Entity.</typeparam>
     /// <param name="link">The target of the link.</param>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(Link<T> link) where T : class
@@ -129,7 +129,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// Adds a Plain Component of a specific type, with specific data, to the current entity. 
     /// </summary>
     /// <param name="data">The data associated with the relation.</param>
-    /// <typeparam name="T">Any value or reference component type.</typeparam>
+    /// <typeparam name="T">Any value or reference Component type.</typeparam>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(T data) where T : notnull => Add(data, default);
 
@@ -207,11 +207,11 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// </ul>
     /// </summary>
     /// <remarks>
-    /// This is not intended as the main way to get a component from an entity. Consider <see cref="Stream"/>s instead.
+    /// This is not intended as the main way to get a Component from an entity. Consider <see cref="Stream"/>s instead.
     /// </remarks>
-    /// <param name="match">match expression, supports wildcards</param>
-    /// <typeparam name="T">backing type of the component</typeparam>
-    /// <returns>array with all the component values stored for this entity</returns>
+    /// <param name="match">match expression, supports Wildcards</param>
+    /// <typeparam name="T">backing type of the Component</typeparam>
+    /// <returns>array with all the Component values stored for this entity</returns>
     public T[] Get<T>(Match match) => _world.Get<T>(Id, match);
 
     #endregion

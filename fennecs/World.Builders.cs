@@ -24,7 +24,7 @@ public partial class World
     /// Call <see cref="QueryBuilder{C1}.Stream"/> to Compile and immediately return a Stream View for this Query.
     /// </para>
     /// </remarks>
-    /// <typeparam name="C1">(C2 .. Cx) - component type(s) that the Stream View will expose</typeparam>
+    /// <typeparam name="C1">(C2 .. Cx) - Component type(s) that the Stream View will expose</typeparam>
     /// <returns><see cref="QueryBuilder{C1}"/></returns>
 // A set of generic QueryBuilder methods with type constraints for building queries with varying numbers of targets.
     public QueryBuilder<C1> Query<C1>() where C1 : notnull => new(this, Match.Plain);
