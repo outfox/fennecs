@@ -9,7 +9,7 @@
         <IsTestProject>true</IsTestProject>
         <PackageId>fennecs.tests</PackageId> 
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
