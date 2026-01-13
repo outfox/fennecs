@@ -16,14 +16,14 @@ namespace fennecs;
 /// </para>
 /// </summary>
 /// <remarks>
-/// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
+/// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently, a no-op.
 /// </remarks>
 public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemoveBoxed<Entity>, IComparable<Entity>
 {
     #region Match Expressions
 
     /// <summary>
-    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/> This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
     /// </para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
@@ -70,22 +70,22 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// <remarks>
     /// Adds the Component before if possible.
     /// </remarks>
-    /// <param name="match">specific (targeted) Match Expression for the Component type. No Wildcards!</param>
+    /// <param name="match">Specific (targeted) Match Expression for the Component type. No Wildcards!</param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
-    /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
+    /// <exception cref="ObjectDisposedException">If the Entity is not Alive.</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity.</exception>
-    public ref C Ref<C>(Match match) where C : struct => ref _world.GetComponent<C>(this, match);
+    public ref C Ref<C>(Match match) where C : notnull => ref _world.GetComponent<C>(this, match);
 
     /// <summary>
     /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the Entity.
     /// </summary>
-    /// <param name="link">object link match expressioon</param>
+    /// <param name="link">object link match expression</param>
     /// <typeparam name="L">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
-    /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
+    /// <exception cref="ObjectDisposedException">If the Entity is not Alive.</exception>
     /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity.</exception>
     public ref L Ref<L>(Link<L> link) where L : class => ref _world.GetComponent<L>(this, link);
 
@@ -102,7 +102,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     }
 
     /// <summary>
-    /// Adds a object link to the current Entity.
+    /// Adds an object link to the current Entity.
     /// Object links, in addition to making the object available as a Component,
     /// place all Entities with a link to the same object into a single Archetype,
     /// which can optimize processing them in queries.
@@ -113,7 +113,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
-    /// <typeparam name="T">Any reference type. The type the object to be linked with the Entity.</typeparam>
+    /// <typeparam name="T">Any reference type. The type of the object to be linked with the Entity.</typeparam>
     /// <param name="link">The target of the link.</param>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(Link<T> link) where T : class
@@ -124,7 +124,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
     /// <inheritdoc />
     public Entity Add<C>() where C : notnull, new() => Add(new C());
-
+    
     /// <summary>
     /// Adds a Plain Component of a specific type, with specific data, to the current entity. 
     /// </summary>
@@ -179,7 +179,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// Despawns the Entity from the World.
     /// </summary>
     /// <remarks>
-    /// The entity builder struct still exists afterwards, but the entity is no longer alive and subsequent CRUD operations will throw.
+    /// The entity builder struct still exists afterward, but the entity is no longer alive and later CRUD operations will throw.
     /// </remarks>
     public void Despawn() => _world.Despawn(this);
     
@@ -246,6 +246,19 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     
     #endregion
     
+    /// <summary>
+    /// Reference & Ensure a component is present, with an optional default value.
+    /// </summary>
+    /// <param name="defaultValue">optional default value; otherwise it will be the type default</param>
+    /// <param name="match">relation target, optional</param>
+    public ref C Ensure<C>(C defaultValue = default(C), Match match = default) 
+        where C : notnull
+    {
+        if (!Has<C>(match)) Add(defaultValue);
+        return ref Ref<C>(match);
+    }
+    
+
     #region IBoxedComponent
 
     /// <inheritdoc />

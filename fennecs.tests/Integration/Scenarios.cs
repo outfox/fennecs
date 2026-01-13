@@ -1,4 +1,6 @@
 ﻿using System.Buffers;
+using System.ComponentModel;
+using System.Numerics;
 
 namespace fennecs.tests.Integration;
 
@@ -128,4 +130,48 @@ public class Scenarios
         Assert.Single(debug7);
         Assert.Single(debug8);
     }
+
+    public record struct Moving(Vector3 Direction, float RotateX, float RotateY, float RotateZ)
+    {
+    };
+
+    
+    [Fact]
+    private void CanWorkOnLowCountEntitiesWithComfortableAddSemantics()
+    {
+        using var world = new World();
+        var camera1 = world.Spawn();
+        var camera2 = world.Spawn().Add<Moving>();
+
+        Entity[] cameras = [camera1, camera2];
+
+        const float rotX = 131.2f;
+        const float rotY = 16.1f;
+
+        ref var original = ref camera2.Ref<Moving>();
+
+        foreach (var cameraEntity in cameras)
+        {
+            if (!cameraEntity.Has<Moving>()) cameraEntity.Add<Moving>();
+
+            ref var moving = ref cameraEntity.Ref<Moving>();
+            moving.RotateX -= rotX;
+            moving.RotateY -= rotY;
+        }
+
+        foreach (var cameraEntity in cameras)
+        {
+            ref var moving = ref cameraEntity.Ensure<Moving>();
+            moving.RotateX -= rotX;
+            moving.RotateY -= rotY;
+        }
+
+        ref var modified = ref camera2.Ref<Moving>();
+        
+        Assert.Equal(original, modified);
+        Assert.True(camera1.Has<Moving>());
+    }
+}
+public static class EntityExtensions
+{
 }
