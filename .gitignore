@@ -10,6 +10,10 @@ Temp
 s3/
 .dist
 
+# IDE & agent litter
+knowledge.md
+AGENTS.md
+
 # Godot and other backups
 *.old
 *.old.*
