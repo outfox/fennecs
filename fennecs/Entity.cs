@@ -247,14 +247,51 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     #endregion
     
     /// <summary>
-    /// Reference & Ensure a component is present, with an optional default value.
+    /// Ensures a component of type <typeparamref name="C"/> exists on the Entity and returns a reference to it.
+    /// If the component doesn't exist, it is added with the specified default value.
+    /// If the component already exists, its value is unchanged.
     /// </summary>
-    /// <param name="defaultValue">optional default value; otherwise it will be the type default</param>
-    /// <param name="match">relation target, optional</param>
+    /// <typeparam name="C">The struct component type to ensure.</typeparam>
+    /// <param name="defaultValue">The value to initialize the component with if it doesn't exist. Defaults to <c>default(C)</c>.</param>
+    /// <param name="match">Optional relation target. Use to ensure relation components to specific entities. Defaults to <see cref="Match.Plain"/>.</param>
+    /// <returns>A reference to the component, which can be read or modified directly.</returns>
+    /// <remarks>
+    /// <para>
+    /// ⚠️ <b>Dangling Reference Warning:</b> The returned reference becomes invalid if the Entity's archetype changes
+    /// (e.g., by adding or removing other components). Do not hold references across structural changes.
+    /// </para>
+    /// <para>
+    /// This method is ideal for "get or create" patterns where you want to ensure a component exists
+    /// before working with it, without checking separately.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <para><b>Basic usage - ensure and modify:</b></para>
+    /// <code>
+    /// // Ensure entity has a Health component, defaulting to 100
+    /// ref var health = ref entity.Ensure(new Health { Value = 100 });
+    /// health.Value -= 10; // Take damage
+    /// </code>
+    /// <para><b>Counter/accumulator pattern:</b></para>
+    /// <code>
+    /// // Increment a counter, creating it if needed
+    /// entity.Ensure&lt;int&gt;()++;
+    /// </code>
+    /// <para><b>With entity relations:</b></para>
+    /// <code>
+    /// // Ensure a relation component to another entity
+    /// var target = world.Spawn();
+    /// ref var damage = ref entity.Ensure(50, target);
+    /// </code>
+    /// </example>
+    /// <exception cref="ObjectDisposedException">If the Entity is not Alive.</exception>
     public ref C Ensure<C>(C defaultValue = default, Match match = default) 
         where C : struct
     {
-        if (!Has<C>(match)) Add(defaultValue);
+        if (!Has<C>(match))
+        {
+            _world.AddComponent(Id, TypeExpression.Of<C>(match), defaultValue);
+        }
         return ref Ref<C>(match);
     }
 
