@@ -58,23 +58,7 @@ public partial class World
         var type = TypeExpression.Of<T>(match);
         return HasComponent(identity, type);
     }
-
-    /* This is sad but can't be done syntactically at the moment (without bloating the interface)
-    internal ref T GetOrCreateComponent<T>(Identity identity, Match match) where T : notnull, new()
-    {
-        AssertAlive(identity);
-
-        if (!HasComponent<T>(identity, match))
-        {
-            if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot create bew mutable reference to Component in deferred mode. (the Entity did must already have the Component)");
-            AddComponent<T>(identity, TypeExpression.Of<T>(match), new());
-        }
-
-        var (table, row, _) = _meta[identity.Index];
-        var storage = table.GetStorage<T>(match);
-        return ref storage.Span[row];
-    }
-    */
+    
     
     internal ref T GetComponent<T>(Identity identity, Match match)
     {
