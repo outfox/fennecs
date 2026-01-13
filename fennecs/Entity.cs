@@ -251,14 +251,14 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// </summary>
     /// <param name="defaultValue">optional default value; otherwise it will be the type default</param>
     /// <param name="match">relation target, optional</param>
-    public ref C Ensure<C>(C defaultValue = default(C), Match match = default) 
-        where C : notnull
+    public ref C Ensure<C>(C defaultValue = default, Match match = default) 
+        where C : struct
     {
         if (!Has<C>(match)) Add(defaultValue);
         return ref Ref<C>(match);
     }
-    
 
+    
     #region IBoxedComponent
 
     /// <inheritdoc />
