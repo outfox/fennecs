@@ -13,6 +13,8 @@ s3/
 # IDE & agent litter
 knowledge.md
 AGENTS.md
+.agents/
+.codebuff/
 
 # Godot and other backups
 *.old
