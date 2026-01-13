@@ -54,7 +54,7 @@ public partial class World
 
     internal enum WorldMode
     {
-        Immediate = default,
+        Immediate = 0,
         CatchUp,
         Deferred,
     }

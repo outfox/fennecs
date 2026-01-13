@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests;
+// SPDX-License-Identifier: MIT
+
+namespace fennecs.tests;
 
 public class RelationDespawn
 {
