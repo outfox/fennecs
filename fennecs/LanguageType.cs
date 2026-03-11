@@ -1,9 +1,7 @@
 ﻿global using TypeID = short;
-using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace fennecs;
 
@@ -15,10 +13,14 @@ internal class LanguageType
     // Shared ID counter
     protected static TypeID Counter;
 
-    protected static readonly ConcurrentDictionary<TypeID, Type> Types = new();
-    protected static readonly ConcurrentDictionary<Type, TypeID> Ids = new();
-
+    protected static readonly Dictionary<TypeID, Type> Types = new();
+    protected static readonly Dictionary<Type, TypeID> Ids = new();
+    
+    #if NET9_0_OR_GREATER
+    protected static readonly Lock RegistryLock = new();
+    #else
     protected static readonly object RegistryLock = new();
+    #endif
 
 
     protected internal static TypeID Identify(Type type)
@@ -65,7 +67,7 @@ internal class LanguageType
 
     private struct None;
 
-    private static readonly ConcurrentDictionary<Type, TypeFlags> CachedFlags = new();
+    private static readonly Dictionary<Type, TypeFlags> CachedFlags = new();
 
     public static TypeFlags Flags(Type type)
     {
@@ -81,42 +83,27 @@ internal class LanguageType
     {
         if (CachedFlags.TryGetValue(typeof(T), out var flags)) return flags;
 
-        if (IsBlittable<T>())
+        if (IsUnmanaged<T>())
         {
-            var size = Unsafe.SizeOf<T>();
-
-            // Arbitrary: 2048 bytes is the maximum size of a SIMD-able type.
-            // It is recommended to keep this much lower - 64 bytes or fewer.
-            if (size <= 0x1000) flags |= (TypeFlags) size;
-
             flags |= TypeFlags.Unmanaged;
+            flags |= (TypeFlags) LanguageType<T>.Size;
         }
+
 
         CachedFlags.TryAdd(typeof(T), flags);
         return flags;
     }
 
-    private static bool IsBlittable<U>()
-    {
-        if (RuntimeHelpers.IsReferenceOrContainsReferences<U>()) return false;
-        
-        try
-        {
-            _ = Marshal.SizeOf<U>();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
+    private static bool IsUnmanaged<U>() => !RuntimeHelpers.IsReferenceOrContainsReferences<U>();
 }
 
 internal class LanguageType<T> : LanguageType
 {
     // ReSharper disable once StaticMemberInGenericType (we indeed want this unique for each T)
     public static readonly TypeID Id;
-
+    
+    public static readonly int Size = Unsafe.SizeOf<T>();
+    
     static LanguageType()
     {
         lock (RegistryLock)
@@ -135,6 +122,6 @@ internal class LanguageType<T> : LanguageType
 [Flags]
 internal enum TypeFlags : ushort
 {
-    SIMDSize = 0x1fff, // bottom 12 bits.
-    Unmanaged = 0x8000, // top bit.
+    SIMDSize = 0b0000111111111111,
+    Unmanaged = 0b1000000000000000, // top bit.
 }
