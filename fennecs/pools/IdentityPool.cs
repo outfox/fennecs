@@ -35,7 +35,7 @@ internal class IdentityPool
 
         if (recycled <= requested)
         {
-            // Reuse all entities in the recycler.
+            // Reuse all Entities in the recycler.
             identities.AddRange(_recycled);
             _recycled.Clear();
 

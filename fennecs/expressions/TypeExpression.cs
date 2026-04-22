@@ -18,9 +18,9 @@ namespace fennecs;
 /// <para> If <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
 ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>
 /// <para> If <see cref="fennecs.Identity.Entity"/>, the type expression acts as a Wildcard 
-///   expression that matches ONLY Entity-entity relations.</para>
+///   expression that matches ONLY Entity-Entity relations.</para>
 /// <para> If <see cref="fennecs.Identity.Object"/>, the type expression acts as a Wildcard 
-///   expression that matches ONLY entity-object relations.</para>
+///   expression that matches ONLY Entity-object relations.</para>
 /// </remarks>
 internal readonly record struct TypeExpression : IComparable<TypeExpression>
 {
@@ -112,10 +112,10 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// </remarks>
     /// <example>
     /// <para>
-    /// Non-Commutative: <br/><c>Match.Plain</c> doesn't match wildcard <c>Match.Any</c>, but <c>Match.Any</c> <i><b>does</b> match</i> <c>Match.Plain</c>.
+    /// Non-Commutative: <br/><c>Match.Plain</c> doesn't match Wildcard <c>Match.Any</c>, but <c>Match.Any</c> <i><b>does</b> match</i> <c>Match.Plain</c>.
     /// </para>
     /// <para>
-    /// Pseudo-Commutative: <br/><see cref="Identity"/> <c>E-0000007b:00456</c> matches itself, as well as the three wildcards <c>Match.Target</c>, <c>Match.Entity</c>, and <c>Match.Any</c>. Vice versa, it is also matched by all of them! 
+    /// Pseudo-Commutative: <br/><see cref="Identity"/> <c>E-0000007b:00456</c> matches itself, as well as the three Wildcards <c>Match.Target</c>, <c>Match.Entity</c>, and <c>Match.Any</c>. Vice versa, it is also matched by all of them! 
     /// </para>
     /// </example>
     /// <param name="other">another type expression</param>
@@ -152,7 +152,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     }
 
     /// <summary>
-    /// Creates a new <see cref="TypeExpression"/> for a given Component type and target entity.
+    /// Creates a new <see cref="TypeExpression"/> for a given Component type and target Entity.
     /// This may express a plain Component if <paramref name="match"/> is <see cref="fennecs.Identity.Plain"/>, 
     /// or a relation if <paramref name="match"/> is a normal Entity or an object Entity obtained 
     /// from <c>Entity.Of&lt;T&gt;(T target)</c>.
@@ -166,7 +166,7 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Target"/>, the type expression acts as a Wildcard 
     ///   expression that matches relations and their targets, EXCEPT <see cref="fennecs.Identity.Plain"/>.</para>
     /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Entity"/>, the type expression acts as a Wildcard 
-    ///   expression that matches ONLY entity-entity relations.</para>
+    ///   expression that matches ONLY Entity-entity relations.</para>
     /// <para> If <paramref name="match"/> is <see cref="fennecs.Identity.Object"/>, the type expression acts as a Wildcard 
     ///   expression that matches ONLY entity-object relations.</para>
     /// </remarks>

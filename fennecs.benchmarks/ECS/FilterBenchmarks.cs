@@ -14,7 +14,7 @@ namespace Benchmark.ECS;
 public class FilterBenchmarks
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    [Params(10_000)]
+    [Params(100_000)]
     public int EntityCount { get; set; }
 
     private static readonly Random Random = new(1337);

@@ -17,7 +17,7 @@ public record SIMD(Query Query)
     private static void AssertCongruence<T, U>(int size) where T : unmanaged where U : unmanaged
     {
         if (size > 0 && Unsafe.SizeOf<T>() % Unsafe.SizeOf<U>() == 0 || size % Unsafe.SizeOf<U>() == 0) return;
-        throw new DataMisalignedException($"sizeof {nameof(T)} must be an integer multiple of sizeof {typeof(Int32)} and also of the destination component's size.");
+        throw new DataMisalignedException($"sizeof {nameof(T)} must be an integer multiple of sizeof {typeof(Int32)} and also of the destination Component's size.");
     }
 
     private static void AssertEqualSize(int size, int otherSize)
@@ -41,10 +41,10 @@ public record SIMD(Query Query)
     }
 
     /// <summary>
-    /// Adds a uniform value to a component on all Entities in a Query.
+    /// Adds a uniform value to a Component on all Entities in a Query.
     /// </summary>
     /// <remarks>
-    /// The destination component must be backed by an unmanaged type, and be be (a multiple of) the same size as the uniform value.
+    /// The destination Component must be backed by an unmanaged type, and be be (a multiple of) the same size as the uniform value.
     /// </remarks>
     public void Add<T>(Comp<T> destination, Single uniform) where T : unmanaged
     {
@@ -61,7 +61,7 @@ public record SIMD(Query Query)
     /// <param name="operand2"></param>
     /// <param name="destination"></param>
     /// <param name="operand1"></param>
-    /// <exception cref="DataMisalignedException">all operand components must be congruent with Int32, and the same size.</exception>
+    /// <exception cref="DataMisalignedException">all operand Components must be congruent with Int32, and the same size.</exception>
     public void AddAsI32<O1, O2, DEST>(Comp<O1> operand1, Comp<O2> operand2, Comp<DEST> destination) 
         where O1 : unmanaged
         where O2 : unmanaged

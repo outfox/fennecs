@@ -8,7 +8,7 @@ if (!Console.IsOutputRedirected) Console.Clear();
 using var world = new World();
 
 // Oh don't be dramatic! It's not that finite.
-// (fennecs can handle millions of entities)
+// (fennecs can handle millions of Entities)
 const int initialPopulation = 1_000_000;
 using var entities = world.Entity()
     .Add<Alive>()

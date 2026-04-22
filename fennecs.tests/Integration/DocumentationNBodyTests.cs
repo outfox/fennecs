@@ -88,7 +88,7 @@ public class DocumentationNBodyTests
         // Used to calculate the the forces into the velocities and positions
         var integrator = world.Query<Acceleration, Velocity, Position>().Stream();
         
-        // Used to copy the Position into the Body components of the same object (plain = non-relation component)
+        // Used to copy the Position into the Body Components of the same object (plain = non-relation Component)
         var consolidator = world.Query<Position, Body>(Match.Plain, Match.Plain).Stream();
         
         const int bodyCount = 3;
@@ -127,8 +127,8 @@ public class DocumentationNBodyTests
         Assert.Equal(bodyCount, iterations2);
 
         
-        // Copy the Position back to the Body components of the same object
-        // (the plain and relation components are backed by the same instances of Body!)
+        // Copy the Position back to the Body Components of the same object
+        // (the plain and relation Components are backed by the same instances of Body!)
         consolidator.For((ref position, ref body) =>
         {
             iterations3++;

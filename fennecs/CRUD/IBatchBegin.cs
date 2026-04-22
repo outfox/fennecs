@@ -1,7 +1,7 @@
 ﻿namespace fennecs.CRUD;
 
 /// <summary>
-/// Objects of this type can perform Batch operations on entities or sets of entities.
+/// Objects of this type can perform Batch operations on Entities or sets of Entities.
 /// </summary>
 public interface IBatchBegin
 {

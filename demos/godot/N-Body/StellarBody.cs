@@ -46,7 +46,7 @@ public partial class StellarBody : EntityNode2D
 			.Where(body => body.entity.Alive);
 
 		// Add all attractor relations to our own entity;
-		// we include ourselves - this means that all entities in
+		// we include ourselves - this means that all Entities in
 		// this star system will end up in the same Archetype.
 		// It's not strictly necessary, but improves cache coherence at
 		// the cost of a single reference compare and 1 additional stored

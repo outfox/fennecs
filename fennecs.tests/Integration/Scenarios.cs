@@ -1,4 +1,6 @@
 ﻿using System.Buffers;
+using System.ComponentModel;
+using System.Numerics;
 
 namespace fennecs.tests.Integration;
 
@@ -95,4 +97,81 @@ public class Scenarios
         world.Stream<int>().For((ref _) => count++);
         Assert.Equal(count, world.Count);
     }
+
+    record struct MemberOf;
+    record struct LeftClicked;
+    [Fact]
+    public void NarrowedQueryAndSpecificQueryMatchTheSameRelations()
+    {
+        var world = new World();
+        var platoon = world.Spawn();
+        var unit = world.Spawn();
+        var target = world.Spawn();
+        unit.Add<MemberOf>(platoon);
+        unit.Add<LeftClicked>(target);
+
+        var debug1 = world.Query().Has<MemberOf>(Entity.Any).Compile().Stream<MemberOf>(Entity.Any);
+        var debug2 = world.Query<MemberOf>(Entity.Any).Stream();
+        var debug3 = world.Query().Compile().Stream<MemberOf>(Entity.Any);
+        var debug4 = world.Stream<MemberOf>(Entity.Any);
+
+        var debug5 = world.Query().Has<MemberOf>(Entity.Any).Has<LeftClicked>(Entity.Any).Compile().Stream<MemberOf,LeftClicked>(Entity.Any);
+        var debug6 = world.Query<MemberOf,LeftClicked>(Entity.Any).Stream();
+        var debug7 = world.Query().Compile().Stream<MemberOf,LeftClicked>(Entity.Any);
+        var debug8 = world.Stream<MemberOf,LeftClicked>(Entity.Any);
+
+        Assert.Single(debug1);
+        Assert.Single(debug2);
+        Assert.Single(debug3);
+        Assert.Single(debug4);
+        
+        Assert.Single(debug5);
+        Assert.Single(debug6);
+        Assert.Single(debug7);
+        Assert.Single(debug8);
+    }
+
+    public record struct Moving(Vector3 Direction, float RotateX, float RotateY, float RotateZ)
+    {
+    };
+
+    
+    [Fact]
+    private void CanWorkOnLowCountEntitiesWithComfortableAddSemantics()
+    {
+        using var world = new World();
+        var camera1 = world.Spawn();
+        var camera2 = world.Spawn().Add<Moving>();
+
+        Entity[] cameras = [camera1, camera2];
+
+        const float rotX = 131.2f;
+        const float rotY = 16.1f;
+
+        ref var original = ref camera2.Ref<Moving>();
+
+        foreach (var cameraEntity in cameras)
+        {
+            if (!cameraEntity.Has<Moving>()) cameraEntity.Add<Moving>();
+
+            ref var moving = ref cameraEntity.Ref<Moving>();
+            moving.RotateX -= rotX;
+            moving.RotateY -= rotY;
+        }
+
+        foreach (var cameraEntity in cameras)
+        {
+            ref var moving = ref cameraEntity.Ensure<Moving>();
+            moving.RotateX -= rotX;
+            moving.RotateY -= rotY;
+        }
+
+        ref var modified = ref camera2.Ref<Moving>();
+        
+        Assert.Equal(original, modified);
+        Assert.True(camera1.Has<Moving>());
+    }
+}
+public static class EntityExtensions
+{
 }

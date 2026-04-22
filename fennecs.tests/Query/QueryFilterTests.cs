@@ -122,34 +122,34 @@ public class QueryFilterTests
 
 public struct ComponentA
 {
-    // Add properties or fields relevant to the component here
+    // Add properties or fields relevant to the Component here
     // For testing purposes, it can be left empty
 }
 
 
 public struct ComponentB
 {
-    // Add properties or fields relevant to the component here
+    // Add properties or fields relevant to the Component here
     // For testing purposes, it can be left empty
 }
 
 
 public struct ComponentC
 {
-    // Add properties or fields relevant to the component here
+    // Add properties or fields relevant to the Component here
     // For testing purposes, it can be left empty
 }
 
 
 public struct ComponentD
 {
-    // Add properties or fields relevant to the component here
+    // Add properties or fields relevant to the Component here
     // For testing purposes, it can be left empty
 }
 
 
 public struct ComponentE
 {
-    // Add properties or fields relevant to the component here
+    // Add properties or fields relevant to the Component here
     // For testing purposes, it can be left empty
 }

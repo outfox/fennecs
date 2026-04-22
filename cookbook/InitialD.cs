@@ -14,8 +14,8 @@ var takumi = new Driver("Takumi Fujiwara");
 var ae86 = world.Spawn()
     .Add<Car>()
     .Add<Model>("Toyota Sprinter Trueno AE86")
-    .Add(takumi) // Add<Driver> reference type component
-    .Add(new Engine // Add<Engine> value type component
+    .Add(takumi) // Add<Driver> reference type Component
+    .Add(new Engine // Add<Engine> value type Component
     {
         Horsepower = 130, Torque = 149,
     });
@@ -33,7 +33,7 @@ var racers =
 
 Console.WriteLine($"Cars on the street: {racers.Count}");
 
-// Drivers, get ready! (mutative per-entity operation on Query)
+// Drivers, get ready! (mutative per-Entity operation on Query)
 racers.For((in Entity raceCar, ref Driver driver, ref Model name) =>
 {
     driver.ReportForRace();
@@ -41,7 +41,7 @@ racers.For((in Entity raceCar, ref Driver driver, ref Model name) =>
     raceCar.Add<Ready>();
 });
 
-// Adding component conditionally outside a Query runner
+// Adding Component conditionally outside a Query runner
 if (ae86.Has<Ready>()) ae86.Add<Steady>();
 
 // Or do bulk operations on the Query!
@@ -52,7 +52,7 @@ Console.WriteLine("--> https://behance.net/gallery/101574771/D-CG-Animation");
 
 
 #region Components
-// "tags", size-less components we use to mark & classify entities
+// "tags", size-less Components we use to mark & classify Entities
 internal struct Car;
 
 internal struct Ready;
@@ -62,7 +62,7 @@ internal struct Steady;
 internal struct Vroom;
 
 
-// data component
+// data Component
 internal struct Engine
 {
     public float Horsepower;
@@ -70,7 +70,7 @@ internal struct Engine
 }
 
 
-// data component wrapping another type, here: a string
+// data Component wrapping another type, here: a string
 internal readonly struct Model(string value)
 {
     public static implicit operator Model(string value) => new(value);
@@ -78,7 +78,7 @@ internal readonly struct Model(string value)
 }
 
 
-// a class component, here also wrapping a string
+// a class Component, here also wrapping a string
 internal class Driver(string name)
 {
     public void ReportForRace() => Console.WriteLine($"{name}: I'm Ready!");

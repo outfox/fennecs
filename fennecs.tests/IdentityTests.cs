@@ -4,7 +4,8 @@ using System.Numerics;
 
 namespace fennecs.tests;
 
-public class IdentityTests(ITestOutputHelper output)
+public class 
+    IdentityTests(ITestOutputHelper output)
 {
     [Fact]
     public void Virtual_Entities_have_no_Successors()

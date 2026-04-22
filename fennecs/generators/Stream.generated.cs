@@ -8,8 +8,9 @@ using System.Collections;
 using System.Collections.Immutable;
 using fennecs.pools;
 using fennecs;
+using System.Runtime.Versioning;
 
-// Date: 09/15/2025 09:22:06
+// Date: 01/05/2026 10:24:02
 
 namespace fennecs
 {
@@ -23,7 +24,7 @@ namespace fennecs
     {
         #region Stream Fields
 
-        // The component TypeExpressions that this Stream operates on.
+        // The Component TypeExpressions that this Stream operates on.
         private readonly ImmutableArray<TypeExpression> _streamTypes;
 
         /// <summary>
@@ -32,13 +33,13 @@ namespace fennecs
         public Query Query { get; }
 
         /// <summary>
-        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// Subset Stream Filter - if not empty, only Entities with these Components 
         /// will be included in the Stream. 
         /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
         
         /// <summary>
-        /// Exclude Stream Filter - any entities with these components 
+        /// Exclude Stream Filter - any Entities with these Components 
         /// will be excluded from the Stream. (none if empty)
         /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
@@ -64,7 +65,7 @@ namespace fennecs
             !candidate.MatchSignature.Matches(Exclude);
 
         /// <summary>
-        /// The number of entities that match the underlying Query.
+        /// The number of Entities that match the underlying Query.
         /// </summary>
         public int Count => Filtered.Sum(f => f.Count);
         
@@ -73,7 +74,7 @@ namespace fennecs
 
         #region Constructor
         /// <summary>
-        /// Constructs a for a Query operating on the given component types.
+        /// Constructs a for a Query operating on the given Component types.
         /// </summary>
         public Stream(Query query, Match match0)
         {
@@ -86,11 +87,11 @@ namespace fennecs
 
         #region Filter State
         /// <summary>
-        /// Filter for component C0.             
+        /// Filter for Component C0.             
         /// </summary>
         /// <remarks> Return true to include the Entity in the Stream, false to skip it. </remarks>
         public ComponentFilter<C0> Filter0 { private get; init; } = (in C0 _) => true;
-        // Internally used default filter that lets all entities pass.
+        // Internally used default filter that lets all Entities pass.
         private bool Pass(in C0 c0) =>
             Filter0(c0);
 
@@ -174,6 +175,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -216,6 +218,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -381,7 +384,7 @@ namespace fennecs
         {
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
-                    $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+                    $"Cannot run this operation on Wildcard Stream Types (write destination Aliasing). {streamTypes}");
         }
         #endregion
 
@@ -421,13 +424,13 @@ namespace fennecs
         public Query Query { get; }
 
         /// <summary>
-        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// Subset Stream Filter - if not empty, only entities with these Components 
         /// will be included in the Stream. 
         /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
         
         /// <summary>
-        /// Exclude Stream Filter - any entities with these components 
+        /// Exclude Stream Filter - any entities with these Components 
         /// will be excluded from the Stream. (none if empty)
         /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
@@ -575,6 +578,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -618,6 +622,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -797,7 +802,7 @@ namespace fennecs
         {
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
-                    $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+                    $"Cannot run this operation on Wildcard Stream Types (write destination Aliasing). {streamTypes}");
         }
         #endregion
 
@@ -838,13 +843,13 @@ namespace fennecs
         public Query Query { get; }
 
         /// <summary>
-        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// Subset Stream Filter - if not empty, only entities with these Components 
         /// will be included in the Stream. 
         /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
         
         /// <summary>
-        /// Exclude Stream Filter - any entities with these components 
+        /// Exclude Stream Filter - any entities with these Components 
         /// will be excluded from the Stream. (none if empty)
         /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
@@ -1004,6 +1009,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1048,6 +1054,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1241,7 +1248,7 @@ namespace fennecs
         {
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
-                    $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+                    $"Cannot run this operation on Wildcard Stream Types (write destination Aliasing). {streamTypes}");
         }
         #endregion
 
@@ -1283,13 +1290,13 @@ namespace fennecs
         public Query Query { get; }
 
         /// <summary>
-        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// Subset Stream Filter - if not empty, only entities with these Components 
         /// will be included in the Stream. 
         /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
         
         /// <summary>
-        /// Exclude Stream Filter - any entities with these components 
+        /// Exclude Stream Filter - any entities with these Components 
         /// will be excluded from the Stream. (none if empty)
         /// </summary>
         public ImmutableSortedSet<Comp> Exclude { get; init; } = [];
@@ -1461,6 +1468,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2, C3> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1506,6 +1514,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1713,7 +1722,7 @@ namespace fennecs
         {
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
-                    $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+                    $"Cannot run this operation on Wildcard Stream Types (write destination Aliasing). {streamTypes}");
         }
         #endregion
 
@@ -1756,7 +1765,7 @@ namespace fennecs
         public Query Query { get; }
 
         /// <summary>
-        /// Subset Stream Filter - if not empty, only entities with these components 
+        /// Subset Stream Filter - if not empty, only entities with these Components 
         /// will be included in the Stream. 
         /// </summary>
         public ImmutableSortedSet<Comp> Subset { get; init; } = [];
@@ -1946,6 +1955,7 @@ namespace fennecs
 
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2, C3, C4> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -1992,6 +2002,7 @@ namespace fennecs
         }
 
         /// <inheritdoc cref="Stream{C0}.Job{U}"/>
+        [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
         {
             AssertNoWildcards(_streamTypes);
@@ -2213,7 +2224,7 @@ namespace fennecs
         {
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
-                    $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+                    $"Cannot run this operation on Wildcard Stream Types (write destination Aliasing). {streamTypes}");
         }
         #endregion
 

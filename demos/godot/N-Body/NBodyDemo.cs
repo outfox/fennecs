@@ -23,7 +23,7 @@ public partial class NBodyDemo : Node2D
 		// Used to calculate the the forces into the velocities and positions
 		_integrator = world.Query<Acceleration, Velocity, Position>(Match.Plain, Match.Plain, Match.Plain).Stream();
 
-		// Used to copy the Position into the Body components of the same object (plain = non-relation component)
+		// Used to copy the Position into the Body Components of the same object (plain = non-relation Component)
 		_consolidator = world.Query<Position, Body, StellarBody>(Match.Plain, Match.Plain, Match.Plain).Stream();
 
 		world.GC();
@@ -58,8 +58,8 @@ public partial class NBodyDemo : Node2D
 		});
 		// #endregion Showcase
 
-		// Copy the Position back to the Body components of the same object
-		// (the plain and relation components are backed by the same instances of Body!)
+		// Copy the Position back to the Body Components of the same object
+		// (the plain and relation Components are backed by the same instances of Body!)
 		_consolidator.For((ref Position position, ref Body body, ref StellarBody node) =>
 		{
 			body.position = position.Value;

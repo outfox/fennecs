@@ -101,7 +101,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         var queryInt = world.Query().Has<int>().Compile();
         
         Assert.Equal(2, queryAll.Count);
-        Assert.Equal(1, queryInt.Count);
+        Assert.Single(queryInt);
     }
     
     // Verifies fix to https://github.com/outfox/fennecs/issues/23

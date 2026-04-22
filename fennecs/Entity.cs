@@ -16,18 +16,18 @@ namespace fennecs;
 /// </para>
 /// </summary>
 /// <remarks>
-/// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently a no-op.
+/// Implements <see cref="IDisposable"/> to later release shared builder resources. Currently, a no-op.
 /// </remarks>
 public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemoveBoxed<Entity>, IComparable<Entity>
 {
     #region Match Expressions
 
     /// <summary>
-    /// <para><b>Wildcard match expression for Entity iteration.</b><br/>This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
+    /// <para><b>Wildcard match expression for Entity iteration.</b><br/> This matches only <b>Entity-Entity</b> Relations of the given Stream Type.
     /// </para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.
     /// </para>
-    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over entities if they match multiple component types. This is due to the wildcard's nature of matching all components.</para>
+    /// <para>Applying this to a Query's Stream Type can result in multiple iterations over Entities if they match multiple Component types. This is due to the Wildcard's nature of matching all Components.</para>
     /// </summary>
     /// <inheritdoc cref="Match.Any"/>
     public static Match Any => new(Identity.Entity);
@@ -65,28 +65,28 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     #region IAddRemoveComponent
 
     /// <summary>
-    /// Gets a reference to the Component of type <typeparamref name="C"/> for the entity.
+    /// Gets a reference to the Component of type <typeparamref name="C"/> for the Entity.
     /// </summary>
     /// <remarks>
-    /// Adds the component before if possible.
+    /// Adds the Component before if possible.
     /// </remarks>
-    /// <param name="match">specific (targeted) Match Expression for the component type. No wildcards!</param>
+    /// <param name="match">Specific (targeted) Match Expression for the Component type. No Wildcards!</param>
     /// <typeparam name="C">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
-    /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
-    public ref C Ref<C>(Match match) where C : struct => ref _world.GetComponent<C>(this, match);
+    /// <exception cref="ObjectDisposedException">If the Entity is not Alive.</exception>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity.</exception>
+    public ref C Ref<C>(Match match) where C : notnull => ref _world.GetComponent<C>(this, match);
 
     /// <summary>
-    /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the entity.
+    /// Gets a reference to the Object Link Target of type <typeparamref name="L"/> for the Entity.
     /// </summary>
-    /// <param name="link">object link match expressioon</param>
+    /// <param name="link">object link match expression</param>
     /// <typeparam name="L">any Component type</typeparam>
     /// <returns>ref C, reference to the Component</returns>
     /// <remarks>The reference may be left dangling if changes to the world are made after acquiring it. Use with caution.</remarks>
-    /// <exception cref="ObjectDisposedException">If the Entity is not Alive..</exception>
-    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for entity.</exception>
+    /// <exception cref="ObjectDisposedException">If the Entity is not Alive.</exception>
+    /// <exception cref="KeyNotFoundException">If no C or C(Target) exists in any of the World's tables for Entity.</exception>
     public ref L Ref<L>(Link<L> link) where L : class => ref _world.GetComponent<L>(this, link);
 
 
@@ -102,7 +102,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     }
 
     /// <summary>
-    /// Adds a object link to the current entity.
+    /// Adds an object link to the current Entity.
     /// Object links, in addition to making the object available as a Component,
     /// place all Entities with a link to the same object into a single Archetype,
     /// which can optimize processing them in queries.
@@ -113,7 +113,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// which negatively impacts processing speed and memory usage.
     /// Try to keep the size of your Archetypes as large as possible for maximum performance.
     /// </remarks>
-    /// <typeparam name="T">Any reference type. The type the object to be linked with the entity.</typeparam>
+    /// <typeparam name="T">Any reference type. The type of the object to be linked with the Entity.</typeparam>
     /// <param name="link">The target of the link.</param>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(Link<T> link) where T : class
@@ -124,12 +124,12 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
 
     /// <inheritdoc />
     public Entity Add<C>() where C : notnull, new() => Add(new C());
-
+    
     /// <summary>
     /// Adds a Plain Component of a specific type, with specific data, to the current entity. 
     /// </summary>
     /// <param name="data">The data associated with the relation.</param>
-    /// <typeparam name="T">Any value or reference component type.</typeparam>
+    /// <typeparam name="T">Any value or reference Component type.</typeparam>
     /// <returns>Entity struct itself, allowing for method chaining.</returns>
     public Entity Add<T>(T data) where T : notnull => Add(data, default);
 
@@ -179,7 +179,7 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// Despawns the Entity from the World.
     /// </summary>
     /// <remarks>
-    /// The entity builder struct still exists afterwards, but the entity is no longer alive and subsequent CRUD operations will throw.
+    /// The entity builder struct still exists afterward, but the entity is no longer alive and later CRUD operations will throw.
     /// </remarks>
     public void Despawn() => _world.Despawn(this);
     
@@ -207,11 +207,11 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// </ul>
     /// </summary>
     /// <remarks>
-    /// This is not intended as the main way to get a component from an entity. Consider <see cref="Stream"/>s instead.
+    /// This is not intended as the main way to get a Component from an entity. Consider <see cref="Stream"/>s instead.
     /// </remarks>
-    /// <param name="match">match expression, supports wildcards</param>
-    /// <typeparam name="T">backing type of the component</typeparam>
-    /// <returns>array with all the component values stored for this entity</returns>
+    /// <param name="match">match expression, supports Wildcards</param>
+    /// <typeparam name="T">backing type of the Component</typeparam>
+    /// <returns>array with all the Component values stored for this entity</returns>
     public T[] Get<T>(Match match) => _world.Get<T>(Id, match);
 
     #endregion
@@ -245,6 +245,56 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     public bool Has<T>(Link<T> link) where T : class => _world.HasComponent<T>(Id, link);
     
     #endregion
+    
+    /// <summary>
+    /// Ensures a component of type <typeparamref name="C"/> exists on the Entity and returns a reference to it.
+    /// If the component doesn't exist, it is added with the specified default value.
+    /// If the component already exists, its value is unchanged.
+    /// </summary>
+    /// <typeparam name="C">The struct component type to ensure.</typeparam>
+    /// <param name="defaultValue">The value to initialize the component with if it doesn't exist. Defaults to <c>default(C)</c>.</param>
+    /// <param name="match">Optional relation target. Use to ensure relation components to specific entities. Defaults to <see cref="Match.Plain"/>.</param>
+    /// <returns>A reference to the component, which can be read or modified directly.</returns>
+    /// <remarks>
+    /// <para>
+    /// ⚠️ <b>Dangling Reference Warning:</b> The returned reference becomes invalid if the Entity's archetype changes
+    /// (e.g., by adding or removing other components). Do not hold references across structural changes.
+    /// </para>
+    /// <para>
+    /// This method is ideal for "get or create" patterns where you want to ensure a component exists
+    /// before working with it, without checking separately.
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// <para><b>Basic usage - ensure and modify:</b></para>
+    /// <code>
+    /// // Ensure entity has a Health component, defaulting to 100
+    /// ref var health = ref entity.Ensure(new Health { Value = 100 });
+    /// health.Value -= 10; // Take damage
+    /// </code>
+    /// <para><b>Counter/accumulator pattern:</b></para>
+    /// <code>
+    /// // Increment a counter, creating it if needed
+    /// entity.Ensure&lt;int&gt;()++;
+    /// </code>
+    /// <para><b>With entity relations:</b></para>
+    /// <code>
+    /// // Ensure a relation component to another entity
+    /// var target = world.Spawn();
+    /// ref var damage = ref entity.Ensure(50, target);
+    /// </code>
+    /// </example>
+    /// <exception cref="ObjectDisposedException">If the Entity is not Alive.</exception>
+    public ref C Ensure<C>(C defaultValue = default, Match match = default) 
+        where C : struct
+    {
+        if (!Has<C>(match))
+        {
+            _world.AddComponent(Id, TypeExpression.Of<C>(match), defaultValue);
+        }
+        return ref Ref<C>(match);
+    }
+
     
     #region IBoxedComponent
 
@@ -322,11 +372,26 @@ public readonly record struct Entity : IAddRemove<Entity>, IHasTyped, IAddRemove
     /// </summary>
     public bool Alive => _world != null && _world.IsAlive(Id);
 
+    
     /// <inheritdoc/>
-    public override string ToString()
+    /// <remarks>
+    /// This function formerly created what <see cref="Dump"/> returns now.
+    /// </remarks>
+    public override string ToString() => Id.ToString();
+    
+    /// <summary>
+    /// Returns the raw value of this entity.
+    /// </summary>
+    public ulong ToRaw() => Id.Value;
+    
+    /// <summary>
+    /// Simple Multiline Dump that lists the attached components. (formerly ToString())
+    /// </summary>
+    public string Dump()
     {
         var sb = new System.Text.StringBuilder(Id.ToString());
         sb.Append(' ');
+        
         if (_world.IsAlive(Id))
         {
             sb.AppendJoin("\n  |-", _world.GetSignature(Id));

@@ -59,7 +59,7 @@ public class NumberingTests
     {
         var stream = Setup(count);
 
-        // Build a range enumerator to number the entities.
+        // Build a range enumerator to number the Entities.
         // We actually create the Index structs directly (ints are kaka-poopoo)
         using var range = Enumerable.Range(0, count).Select(i => new Index(i)).GetEnumerator();
 
@@ -157,7 +157,7 @@ public class NumberingTests
 
     private static void VerifyCountAndOrder(Stream<Index> stream, int count)
     {
-        // Check that the entities are numbered correctly.
+        // Check that the Entities are numbered correctly.
         var accumulator = new List<Index>();
         stream.Raw(
             action: indices =>

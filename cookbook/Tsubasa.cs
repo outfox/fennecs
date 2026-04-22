@@ -121,7 +121,7 @@ internal readonly struct Talent(bool value)
 }
 
 
-// Position component wrapping a Vector2.
+// Position Component wrapping a Vector2.
 internal readonly struct Position(Vector2 value)
 {
     public Vector2 value { get; } = value;

@@ -4,7 +4,7 @@ using fennecs.pools;
 namespace fennecs;
 
 /// <summary>
-/// A builder than spawns Entities after adding pre-configured components.
+/// A builder than spawns Entities after adding pre-configured Components.
 /// </summary>
 /// <remarks>
 /// Call <see cref="Spawn"/> to actually spawn the Entities.
@@ -52,8 +52,8 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
 
     
     /// <inheritdoc cref="Entity.Add{T}()"/>
-    /// <summary> Adds a component of the given type to the Spawner's configuration state.
-    /// If the EntitySpawner already contains a component of the same type, it will be replaced.
+    /// <summary> Adds a Component of the given type to the Spawner's configuration state.
+    /// If the EntitySpawner already contains a Component of the same type, it will be replaced.
     /// </summary>
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Add<T>(T component) where T : notnull
@@ -88,7 +88,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
 
     /// <inheritdoc cref="Entity.Remove{C}()"/>
     /// <summary>
-    /// Removes the plain component of the given type from the Spawner.
+    /// Removes the plain Component of the given type from the Spawner.
     /// </summary>
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Remove<T>() where T : notnull
@@ -99,7 +99,7 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
 
     /// <inheritdoc cref="Entity.Remove{C}()"/>
     /// <summary>
-    /// Removes the Relation component of the given type from the Spawner.
+    /// Removes the Relation Component of the given type from the Spawner.
     /// </summary>
     /// <returns>EntitySpawner (fluent interface)</returns>
     public EntitySpawner Remove<T>(Entity entity) where T : notnull
@@ -122,9 +122,9 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     }
     
     /// <summary>
-    /// Spawns <c>count</c> entities with the configured components.
+    /// Spawns <c>count</c> Entities with the configured Components.
     /// </summary>
-    /// <param name="count">number of entities to spawn</param>
+    /// <param name="count">number of Entities to spawn</param>
     public EntitySpawner Spawn(int count = 1)
     {
         _world.Spawn(count, _components, _values);

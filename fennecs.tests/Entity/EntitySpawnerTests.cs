@@ -1,4 +1,6 @@
-﻿namespace fennecs.tests;
+// SPDX-License-Identifier: MIT
+
+namespace fennecs.tests;
 
 public class EntitySpawnerTests
 {
@@ -126,7 +128,7 @@ public class EntitySpawnerTests
     public void Safe_to_Spawn_Negative_Amounts()
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123); //Must add component to cause inner loop to run
+        using var spawner = world.Entity().Add(123); //Must add Component to cause inner loop to run
         spawner.Spawn(-1);
         spawner.Spawn(-2);
         spawner.Spawn(-69);
@@ -146,14 +148,14 @@ public class EntitySpawnerTests
         spawner1.Spawn();
         
         using var query1 = world.Query<Type69>().Compile();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(1, world.Count);
 
         using var spawner2 = world.Entity().Add<Type42>(); 
         spawner2.Spawn();
         
         using var query2 = world.Query<Type42>().Compile();
-        Assert.Equal(1, query2.Count);
+        Assert.Single(query2);
         Assert.Equal(2, world.Count);
 
         var entity = world.Spawn();
@@ -174,14 +176,14 @@ public class EntitySpawnerTests
         spawner1.Spawn();
         
         using var query1 = world.Query<Type69>(other).Compile();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(2, world.Count);
 
         using var spawner2 = world.Entity().Add<Type42>(other);  // Newable implcit new()
         spawner2.Spawn();
         
         using var query2 = world.Query<Type42>(other).Compile();
-        Assert.Equal(1, query2.Count);
+        Assert.Single(query2);
         Assert.Equal(3, world.Count);
 
         var entity = world.Spawn();
@@ -202,11 +204,11 @@ public class EntitySpawnerTests
         spawner1.Spawn();
         
         using var query1 = world.Query<Type69>(other).Compile();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(2, world.Count);
         
         spawner1.Remove<Type69>(other).Spawn();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(3, world.Count);
     }
 
@@ -219,11 +221,11 @@ public class EntitySpawnerTests
         spawner1.Spawn();
         
         using var query1 = world.Query<string>(Link.With("hello")).Compile();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(2, world.Count);
         
         spawner1.Remove("hello").Spawn();
-        Assert.Equal(1, query1.Count);
+        Assert.Single(query1);
         Assert.Equal(3, world.Count);
     }
 }

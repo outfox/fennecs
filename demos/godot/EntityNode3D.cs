@@ -13,18 +13,18 @@ public partial class EntityNode3D : Node3D
     protected Entity entity;
 	
     // Unfortunately, _EnterTree can happen repeatedly.		
-    // Easy route: only make new entity if not alive.
+    // Easy route: only make new Entity if not alive.
     public override void _EnterTree()
     {
-        // Already got an entity? Don't make a new one.
+        // Already got an Entity? Don't make a new one.
         if (!entity.Alive) 
         {
             entity = World.Spawn();
         }
 
-        // "Our" entity has "us ourselves" as a component.
+        // "Our" Entity has "us ourselves" as a Component.
         // This makes it possible for queries and other code to
-        // access the node - e.g. via entity.Ref<EntityNode3D>()
+        // access the node - e.g. via Entity.Ref<EntityNode3D>()
         // or world.Query<EntityNode3D>()!
         entity.Add(this);
     }
@@ -34,7 +34,7 @@ public partial class EntityNode3D : Node3D
         entity.Remove<EntityNode3D>();
     }
 
-    // This is an ok place to handle the final deletion of the entity.
+    // This is an ok place to handle the final deletion of the Entity.
     protected override void Dispose(bool disposing)
     {
         if (disposing) entity.Despawn();
