@@ -5,6 +5,8 @@ bin
 obj
 Library
 Temp
+Build
+Builds
 
 *.Artifacts
 s3/

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdfvsd3p00icf"]
+[gd_scene format=3 uid="uid://bdfvsd3p00icf"]
 
 [ext_resource type="Theme" uid="uid://xobxg8yxjsmu" path="res://zzzShared/fennecs_theme.tres" id="1_v1386"]
 [ext_resource type="Texture2D" uid="uid://bmw4r15o3hat4" path="res://zzzShared/fennecs-logo.png" id="2_cxve1"]
@@ -8,7 +8,7 @@
 font = ExtResource("3_8haj3")
 font_size = 24
 
-[node name="User Interface" type="Control"]
+[node name="User Interface" type="Control" unique_id=1804619192]
 use_parent_material = true
 layout_mode = 3
 anchors_preset = 15
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_v1386")
 
-[node name="Fennecs Logo" type="TextureRect" parent="."]
+[node name="Fennecs Logo" type="TextureRect" parent="." unique_id=1760331751]
 modulate = Color(1, 1, 1, 0.25098)
 use_parent_material = true
 layout_mode = 1
@@ -39,7 +39,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_cxve1")
 stretch_mode = 3
 
-[node name="Hyperlink" type="Label" parent="."]
+[node name="Hyperlink" type="Label" parent="." unique_id=1118151918]
 modulate = Color(1, 1, 1, 0.501961)
 show_behind_parent = true
 use_parent_material = true
@@ -53,6 +53,6 @@ offset_right = 239.0
 offset_bottom = -10.0
 grow_vertical = 0
 size_flags_horizontal = 8
-text = "https://fennecs.tech"
+text = "https://fennecs.net"
 label_settings = SubResource("LabelSettings_e5jui")
 vertical_alignment = 1
