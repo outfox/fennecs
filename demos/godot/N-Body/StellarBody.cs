@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Godot;
 
-namespace fennecs.demos.godot;
+namespace fennecs.demos.godot.N_Body;
 
 [GlobalClass]
 public partial class StellarBody : EntityNode2D

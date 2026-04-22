@@ -2,7 +2,7 @@ using System;
 using Godot;
 using Vector2 = System.Numerics.Vector2;
 
-namespace fennecs.demos.godot;
+namespace fennecs.demos.godot.N_Body;
 
 [GlobalClass]
 public partial class NBodyDemo : Node2D

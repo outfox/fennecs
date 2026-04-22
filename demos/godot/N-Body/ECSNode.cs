@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace fennecs.demos.godot;
+namespace fennecs.demos.godot.N_Body;
 
 public interface LifeCycle
 {

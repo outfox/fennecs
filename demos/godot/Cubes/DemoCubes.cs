@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Godot;
 using Vector3 = System.Numerics.Vector3;
 
-namespace fennecs.demos.godot;
+namespace fennecs.demos.godot.Cubes;
 
 /// <summary>
 ///     <para>

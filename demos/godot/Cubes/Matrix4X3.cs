@@ -3,7 +3,7 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
 
-namespace fennecs.demos.godot;
+namespace fennecs.demos.godot.Cubes;
 
 /// <summary>
 ///     A 4x3 matrix / 3x4 matrix comprised of 12 floats.

@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace fennecs.demos.godot;
+namespace fennecs.demos.godot.N_Body;
 
 public struct Velocity : Fox<Vector2>
 {

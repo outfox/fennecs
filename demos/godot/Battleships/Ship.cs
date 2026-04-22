@@ -14,17 +14,29 @@ public partial class Ship : Sprite2D
 
 	[Export] internal int Points = 1;
 
+	[Export] public int MaxHealth = 5;
+
+	[Export] public float Radius = 30f;
+
+	[Export] public float TurnRate = 0.8f;
+
 	public Admiralty Faction;
 
+	public int Health;
+
+	internal Entity Entity => _entity;
 
 	private Entity _entity;
+	private readonly List<Entity> _gunEntities = [];
 	private readonly List<Gun> _guns = [];
 
 	public override void _Ready()
 	{
 		base._Ready();
 
-		var demo = GetParent<godot.BattleShipsDemo>();
+		Health = MaxHealth;
+
+		var demo = GetParent<BattleShipsDemo>();
 
 		var hull = GetNode<Sprite2D>("Hull");
 
@@ -52,10 +64,23 @@ public partial class Ship : Sprite2D
 		{
 			if (candidate is not Gun gun) continue;
 			_guns.Add(gun);
+			gun.OwnerShip = this;
 
 			var gunEntity = demo.World.Spawn();
 			gunEntity.Add(gun);
+			_gunEntities.Add(gunEntity);
 		}
+	}
+
+
+	public void TakeDamage(int damage)
+	{
+		Health -= damage;
+		if (Health > 0) return;
+
+		foreach (var ge in _gunEntities) ge.Despawn();
+		_entity.Despawn();
+		QueueFree();
 	}
 }
 
