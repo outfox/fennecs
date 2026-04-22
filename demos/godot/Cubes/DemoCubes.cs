@@ -257,7 +257,7 @@ public partial class DemoCubes : Node
 	/// </summary>
 	private static float Fir(float from, float to, float k, float dt)
 	{
-		var exponent = dt * 120f; // reference frame rate, it's 2024, for fox sake!
+		var exponent = dt * 120f; // reference frame rate, it's 2026, for fox’s sake!
 
 		var alpha = Mathf.Pow(k, exponent);
 
@@ -270,7 +270,7 @@ public partial class DemoCubes : Node
 	/// </summary>
 	private static Vector3 Fir(Vector3 from, Vector3 to, float k, float dt)
 	{
-		var exponent = dt * 120f; // reference frame rate, it's 2024, for fox sake!
+		var exponent = dt * 120f; // reference frame rate, it's 2026, for fox’s sake!
 
 		var alpha = Mathf.Pow(k, exponent);
 
