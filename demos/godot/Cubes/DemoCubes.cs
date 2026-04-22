@@ -38,7 +38,7 @@ public partial class DemoCubes : Node
 	private const int MaxEntities = 313370;
 
 	// Calculation: Internal Speed of the Simulation.
-	private const float BaseTimeScale = 0.0005f;
+	private const float BaseTimeScale = 0.0003f;
 
 	// Fennecs: The World that will contain the Entities.
 	private readonly World _world = new(MaxEntities);
@@ -194,18 +194,18 @@ public partial class DemoCubes : Node
 
 		var entityRatio = uniform.CubeCount / MaxEntities;
 
-		var phase1 = motionIndex * Mathf.Sin(motionIndex / 1500f * Mathf.Tau) * 7f * Mathf.Tau / uniform.CubeCount;
-		var phase2 = motionIndex * Mathf.Sin(motionIndex / 1700f * Mathf.Tau) * (Mathf.Sin(uniform.Time * 23f) + 1.5f) * 5f * Mathf.Tau / uniform.CubeCount;
-		var phase3 = motionIndex * Mathf.Sin(motionIndex / 1000f * Mathf.Tau) * (Mathf.Sin(uniform.Time * 13f) + 1.5f) * 11f * entityRatio * Mathf.Tau / uniform.CubeCount;
+		var phase1 = motionIndex / 3f * Mathf.Sin(motionIndex / 1500f * Mathf.Tau) * 7f * Mathf.Tau / uniform.CubeCount;
+		var phase2 = motionIndex / 3f * Mathf.Sin(motionIndex / 1700f * Mathf.Tau) * (Mathf.Sin(uniform.Time * 23f) + 1.5f) * 5f * Mathf.Tau / uniform.CubeCount;
+		var phase3 = motionIndex / 3f * Mathf.Sin(motionIndex / 1000f * Mathf.Tau) * (Mathf.Sin(uniform.Time * 13f) + 1.5f) * 11f * entityRatio * Mathf.Tau / uniform.CubeCount;
 
 		var vector = new Vector3
 		{
-			X = Mathf.Sin(phase1 + uniform.Time * 2f + motionIndex / 1500f),
-			Y = Mathf.Sin(phase2 + uniform.Time * 3f + motionIndex / 1000f),
-			Z = Mathf.Sin(phase3 + uniform.Time * 5f + motionIndex / 2000f),
+			X = Mathf.Sin(phase1 + uniform.Time * 500f + motionIndex / 150f),
+			Y = Mathf.Sin(phase2 + uniform.Time * 500f + motionIndex / 100f),
+			Z = Mathf.Sin(phase3 + uniform.Time * 500f + motionIndex / 200f),
 		};
 
-		var cubic = Mathf.Sin(uniform.Time * 100f * Mathf.Tau) * 0.5f + 0.5f;
+		var cubic = Mathf.Sin(uniform.Time * 300f * Mathf.Tau) * 0.5f + 0.5f;
 		var shell = Mathf.Clamp(vector.Length(), 0, 1);
 		vector = (1.0f - cubic) * shell * vector / vector.Length() + cubic * vector;
 

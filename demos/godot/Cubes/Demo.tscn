@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dr2uc3nf0w2sy"]
+[gd_scene format=3 uid="uid://dr2uc3nf0w2sy"]
 
 [ext_resource type="Script" uid="uid://cgl3nr4rt2ivg" path="res://Cubes/DemoCubes.cs" id="1_1jicl"]
 [ext_resource type="BoxMesh" uid="uid://dqwvifxnefio3" path="res://Cubes/Materials/box-mesh.tres" id="2_e3y7g"]
@@ -45,9 +45,9 @@ material = SubResource("StandardMaterial3D_py15u")
 font = ExtResource("4_plwtk")
 font_size = 32
 
-[node name="fennecs Cube Demo" type="Node3D"]
+[node name="fennecs Cube Demo" type="Node3D" unique_id=1095857023]
 
-[node name="Demo" type="Node" parent="." node_paths=PackedStringArray("Camera", "MeshInstance", "RenderedSlider", "SimulatedSlider")]
+[node name="Demo" type="Node" parent="." unique_id=697463136 node_paths=PackedStringArray("Camera", "MeshInstance", "RenderedSlider", "SimulatedSlider")]
 unique_name_in_owner = true
 script = ExtResource("1_1jicl")
 Camera = NodePath("../Camera Pivot/Camera3D")
@@ -55,14 +55,14 @@ MeshInstance = NodePath("MultiMeshInstance3D")
 RenderedSlider = NodePath("../User Interface/Spawn Controls/Sliders/VisibleSlider")
 SimulatedSlider = NodePath("../User Interface/Spawn Controls/Sliders/SimulatedSlider")
 
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="Demo"]
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="Demo" unique_id=640308170]
 multimesh = SubResource("MultiMesh_fdhkq")
 
-[node name="User Interface" parent="." instance=ExtResource("5_gh02a")]
+[node name="User Interface" parent="." unique_id=75621677 instance=ExtResource("5_gh02a")]
 offset_left = 0.0
 offset_right = 0.0
 
-[node name="Info Text" type="RichTextLabel" parent="User Interface"]
+[node name="Info Text" type="RichTextLabel" parent="User Interface" unique_id=784464453]
 modulate = Color(1, 1, 1, 0.501961)
 show_behind_parent = true
 layout_mode = 1
@@ -85,7 +85,7 @@ The state is transferred into the Godot Engine in bulk each frame using Query.Ra
 
 This static buffer is then used by Godot's Forward+ Renderer and a MultiMeshInstance3D to display the Cubes."
 
-[node name="Spawn Controls" type="VBoxContainer" parent="User Interface"]
+[node name="Spawn Controls" type="VBoxContainer" parent="User Interface" unique_id=1836634285]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = 3
@@ -101,7 +101,7 @@ grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
 
-[node name="FPS Label" type="Label" parent="User Interface/Spawn Controls"]
+[node name="FPS Label" type="Label" parent="User Interface/Spawn Controls" unique_id=1309327721]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -113,11 +113,11 @@ label_settings = SubResource("LabelSettings_tpdu5")
 horizontal_alignment = 2
 script = ExtResource("6_wvaw7")
 
-[node name="Sliders" type="HBoxContainer" parent="User Interface/Spawn Controls"]
+[node name="Sliders" type="HBoxContainer" parent="User Interface/Spawn Controls" unique_id=1840239460]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="VisibleSlider" type="VSlider" parent="User Interface/Spawn Controls/Sliders"]
+[node name="VisibleSlider" type="VSlider" parent="User Interface/Spawn Controls/Sliders" unique_id=182146218]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 500)
 layout_mode = 2
@@ -129,24 +129,24 @@ value = 0.31
 tick_count = 20
 ticks_on_borders = true
 
-[node name="SimulatedSlider" type="VSlider" parent="User Interface/Spawn Controls/Sliders"]
+[node name="SimulatedSlider" type="VSlider" parent="User Interface/Spawn Controls/Sliders" unique_id=918559502]
 custom_minimum_size = Vector2(60, 500)
 layout_mode = 2
 theme = ExtResource("3_h31e3")
 min_value = 0.05
 max_value = 1.0
 step = 0.05
-value = 0.4
+value = 0.39999999999999997
 tick_count = 20
 ticks_on_borders = true
 
-[node name="Panel" type="Panel" parent="User Interface/Spawn Controls"]
+[node name="Panel" type="Panel" parent="User Interface/Spawn Controls" unique_id=1007398208]
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
-[node name="HBoxContainer2" type="VBoxContainer" parent="User Interface/Spawn Controls/Panel"]
+[node name="HBoxContainer2" type="VBoxContainer" parent="User Interface/Spawn Controls/Panel" unique_id=673743279]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -160,7 +160,7 @@ grow_vertical = 2
 rotation = 1.5708
 mouse_filter = 2
 
-[node name="SimulatedLabel" type="Label" parent="User Interface/Spawn Controls/Panel/HBoxContainer2"]
+[node name="SimulatedLabel" type="Label" parent="User Interface/Spawn Controls/Panel/HBoxContainer2" unique_id=2029318210]
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -169,7 +169,7 @@ label_settings = SubResource("LabelSettings_d0l4f")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="RenderedLabel" type="Label" parent="User Interface/Spawn Controls/Panel/HBoxContainer2"]
+[node name="RenderedLabel" type="Label" parent="User Interface/Spawn Controls/Panel/HBoxContainer2" unique_id=1406322171]
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -179,48 +179,48 @@ label_settings = SubResource("LabelSettings_d0l4f")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Camera Pivot" type="Node3D" parent="."]
+[node name="Camera Pivot" type="Node3D" parent="." unique_id=1197047102]
 script = ExtResource("7_1fct3")
 
-[node name="Camera3D" type="Camera3D" parent="Camera Pivot"]
+[node name="Camera3D" type="Camera3D" parent="Camera Pivot" unique_id=203527369]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200)
 
-[node name="Light Pivot" type="Node3D" parent="."]
+[node name="Light Pivot" type="Node3D" parent="." unique_id=347604594]
 script = ExtResource("8_cipfs")
 
-[node name="Orange Light" type="OmniLight3D" parent="Light Pivot"]
+[node name="Orange Light" type="OmniLight3D" parent="Light Pivot" unique_id=1126256928]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200)
 light_color = Color(0.933333, 0.501961, 0, 1)
-light_energy = 10.0
-omni_range = 250.0
-omni_attenuation = 0.233258
+light_energy = 12.0
+omni_range = 300.0
+omni_attenuation = 0.2
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Light Pivot/Orange Light"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Light Pivot/Orange Light" unique_id=38900453]
 mesh = SubResource("SphereMesh_1qaly")
 
-[node name="Blue Light" type="OmniLight3D" parent="Light Pivot"]
+[node name="Blue Light" type="OmniLight3D" parent="Light Pivot" unique_id=1646263032]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -200)
 light_color = Color(0.243137, 0.462745, 0.996078, 1)
 light_energy = 10.0
 omni_range = 250.0
 omni_attenuation = 0.233258
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Light Pivot/Blue Light"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Light Pivot/Blue Light" unique_id=174582758]
 mesh = SubResource("SphereMesh_s2td0")
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="." unique_id=1734049846]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1323583824]
 mesh = SubResource("BoxMesh_0w8j8")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=239621578]
 shape = SubResource("BoxShape3D_smlxl")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=590417837]
 environment = ExtResource("11_jg0sh")
 
-[node name="Info Text2" type="Label" parent="."]
+[node name="Info Text2" type="Label" parent="." unique_id=121963235]
 modulate = Color(1, 1, 1, 0.501961)
 show_behind_parent = true
 use_parent_material = true
