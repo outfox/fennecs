@@ -6,9 +6,12 @@
     <RootNamespace>fennecs.demos.godot</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="fennecs" Version="0.6.0" />
+    <!--<PackageReference Include="fennecs" Version="0.6.9" />-->
+    <ProjectReference Include="..\..\fennecs\fennecs.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <!--<ProjectReference Include="..\..\fennecs\fennecs.csproj" />-->
+    <None Include="**/*.gd"/>
+    <None Include="**/*.tscn"/>
+    <None Include="**/*.tres"/>
   </ItemGroup>
 </Project>
