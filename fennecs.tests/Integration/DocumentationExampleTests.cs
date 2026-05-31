@@ -29,7 +29,7 @@ public class DocumentationExampleTests
         Assert.Equal(expected, pos1);
 
         var pos2 = world.GetComponent<Position>(entity2, Match.Plain);
-        expected = new Position( new Vector3(1, 2, 3) * multiplier);
+        expected = new Position( new Vector3(1, 2, 3) * multiplier * multiplier);
         Assert.Equal(expected, pos2);
     }
 }
