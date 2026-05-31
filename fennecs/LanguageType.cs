@@ -1,4 +1,5 @@
 ﻿global using TypeID = short;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -89,8 +90,8 @@ internal class LanguageType
             flags |= (TypeFlags) LanguageType<T>.Size;
         }
 
+        lock (RegistryLock) CachedFlags.TryAdd(typeof(T), flags);
 
-        CachedFlags.TryAdd(typeof(T), flags);
         return flags;
     }
 
