@@ -1,6 +1,6 @@
 {
   "name": "fennecs.net",
-  "version": "0.4.0",
+  "version": "0.7.0",
   "description": "fennecs documentation site",
   "main": "index.js",
   "type": "module",
@@ -17,7 +17,7 @@
   "author": "Moritz Voss",
   "license": "MIT",
   "devDependencies": {
-    "vitepress": "^2.0.0-alpha.15",
+    "vitepress": "^2.0.0-alpha.17",
     "vitepress-sidebar": "^1.33.1"
   }
 }
