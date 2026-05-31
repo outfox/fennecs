@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmxrpg865t8wt"]
+
+[ext_resource type="Script" uid="uid://cxhmsolfqeuhd" path="res://N-Body/SimulationCell.gd" id="1_gsr88"]
+[ext_resource type="PackedScene" uid="uid://5jx5gqeanxar" path="res://N-Body/StellarBody.tscn" id="1_olciv"]
+
+[node name="Cell" type="Node2D"]
+script = ExtResource("1_gsr88")
+
+[node name="StellarBody2" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(-84, 80)
+
+[node name="StellarBody3" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(21, 75)
+
+[node name="StellarBody4" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(-32, -39)
+spawnChance = 0.5
+
+[node name="StellarBody5" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(-34, 117)
+spawnChance = 0.3
+
+[node name="StellarBody6" parent="." instance=ExtResource("1_olciv")]
+position = Vector2(36, -34)
+spawnChance = 0.2

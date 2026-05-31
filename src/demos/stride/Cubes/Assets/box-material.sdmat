@@ -1,0 +1,54 @@
+!MaterialAsset
+Id: 27dbebba-32fe-42db-b3ec-571dce9b3dbf
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Attributes:
+    Diffuse: !MaterialDiffuseMapFeature
+        DiffuseMap: !ComputeTextureColor
+            FallbackValue:
+                PremultiplyAlpha: false
+                Value: {R: 1.0, G: 1.0, B: 1.0, A: 0.3764706}
+            Scale: {X: 1.0, Y: 1.0}
+            Offset: {X: 0.0, Y: 0.0}
+            Swizzle: null
+    DiffuseModel: !MaterialDiffuseLambertModelFeature {}
+    Specular: !MaterialSpecularMapFeature
+        SpecularMap: !ComputeTextureColor
+            Texture: 5362646f-6224-4f97-a4d4-21cc177a1754:cube-diffuse
+            FallbackValue:
+                Value: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+            Scale: {X: 1.0, Y: 1.0}
+            Offset: {X: 0.0, Y: 0.0}
+            Swizzle: null
+        Intensity: !ComputeFloat
+            Value: 0.8
+    SpecularModel: !MaterialSpecularCelShadingModelFeature
+        RampFunction: !MaterialCelShadingLightDefault
+            IsBlackAndWhite: false
+        Fresnel: !MaterialSpecularMicrofacetFresnelSchlick {}
+        Visibility: !MaterialSpecularMicrofacetVisibilitySmithSchlickGGX {}
+        NormalDistribution: !MaterialSpecularMicrofacetNormalDistributionGGX {}
+        Environment: !MaterialSpecularMicrofacetEnvironmentGGXLUT {}
+    Emissive: !MaterialEmissiveMapFeature
+        Enabled: false
+        EmissiveMap: !ComputeTextureColor
+            Texture: 5362646f-6224-4f97-a4d4-21cc177a1754:cube-diffuse
+            FallbackValue:
+                Value: {R: 0.1254902, G: 0.1254902, B: 0.1254902, A: 0.1254902}
+            Scale: {X: 1.0, Y: 1.0}
+            Offset: {X: 0.0, Y: 0.0}
+            Enabled: false
+            Swizzle: null
+        Intensity: !ComputeFloat
+            Value: 0.1
+        UseAlpha: true
+    Transparency: !MaterialTransparencyAdditiveFeature
+        Alpha: !ComputeFloat
+            Value: 0.8
+        Tint: !ComputeColor
+            PremultiplyAlpha: false
+            Value: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+        DitheredShadows: false
+    Overrides:
+        UVScale: {X: 1.0, Y: 1.0}
+Layers: {}

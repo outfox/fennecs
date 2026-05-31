@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Cookbook/">
+    <Project Path="cookbook/InitialD.csproj" />
+    <Project Path="cookbook/KillBill.csproj" />
+    <Project Path="cookbook/OneRing.csproj" />
+    <Project Path="cookbook/StarTrek.csproj" />
+    <Project Path="cookbook/Thanos.csproj" />
+    <Project Path="cookbook/Tsubasa.csproj" />
+  </Folder>
+  <Folder Name="/Demos/">
+    <Project Path="demos/godot/fennecs.demos.godot.csproj">
+      <BuildType Project="Debug" />
+    </Project>
+  </Folder>
+  <Project Path="fennecs.benchmarks/fennecs.benchmarks.csproj" />
+  <Project Path="fennecs.tests/fennecs.tests.csproj" />
+  <Project Path="fennecs/fennecs.csproj" />
+</Solution>

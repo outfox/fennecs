@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://bm5fnxtudky7e"]
+
+[ext_resource type="Texture2D" uid="uid://fvtqnic4vy3m" path="res://Battleships/Sprites/flag_captured.png" id="1_k3htd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k00sy"]
+atlas = ExtResource("1_k3htd")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mqmk4"]
+atlas = ExtResource("1_k3htd")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pabxm"]
+atlas = ExtResource("1_k3htd")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_newm8"]
+atlas = ExtResource("1_k3htd")
+region = Rect2(96, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k00sy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mqmk4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pabxm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_newm8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]

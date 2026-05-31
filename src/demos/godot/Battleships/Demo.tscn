@@ -1,0 +1,304 @@
+[gd_scene load_steps=22 format=3 uid="uid://dbsfli58h85j1"]
+
+[ext_resource type="Texture2D" uid="uid://cksybw015ecn5" path="res://Battleships/Sprites/water_ripple_medium_000.png" id="1_36tmx"]
+[ext_resource type="Texture2D" uid="uid://dml80u5fkcf3h" path="res://Battleships/Sprites/ship_medium_body.png" id="1_mpdiq"]
+[ext_resource type="Script" uid="uid://bbmdbvx452yy7" path="res://Battleships/BattleShipsDemo.cs" id="1_wuhof"]
+[ext_resource type="Texture2D" uid="uid://c8tiu4pl00u1i" path="res://Battleships/Sprites/water_ripple_medium_001.png" id="2_kdxpr"]
+[ext_resource type="Texture2D" uid="uid://b3o314u5nbtc3" path="res://Battleships/Sprites/ship_big_gun_dual_hit.png" id="3_fu8pa"]
+[ext_resource type="Texture2D" uid="uid://csjqy4cgeidmh" path="res://Battleships/Sprites/water_ripple_medium_002.png" id="3_jr5lu"]
+[ext_resource type="Texture2D" uid="uid://d2qtptja8xkih" path="res://Battleships/Sprites/ship_big_gun_dual.png" id="4_gfkv0"]
+[ext_resource type="Texture2D" uid="uid://ctj0ep35r7j2" path="res://Battleships/Sprites/water_ripple_medium_003.png" id="4_i5xih"]
+[ext_resource type="Texture2D" uid="uid://ci3taoovbw6a5" path="res://Battleships/Sprites/water_ripple_medium_004.png" id="5_7wb2b"]
+[ext_resource type="Texture2D" uid="uid://ks3f84kp8lki" path="res://Battleships/Sprites/ship_big_gun.png" id="5_ida0b"]
+[ext_resource type="Script" uid="uid://dr1djepej8dj3" path="res://Battleships/AutoPlayAnimation.gd" id="6_nk4bq"]
+[ext_resource type="PackedScene" uid="uid://dflthu5dnjmkt" path="res://Battleships/Vessels/battleship.tscn" id="13_auviu"]
+[ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="16_um5ly"]
+[ext_resource type="Script" uid="uid://dnincmifv8y1b" path="res://Battleships/Objective.cs" id="17_0i071"]
+[ext_resource type="SpriteFrames" uid="uid://bm5fnxtudky7e" path="res://Battleships/Sprites/sheet_flag.tres" id="17_a473v"]
+[ext_resource type="Script" uid="uid://bsmmu5e1wwdds" path="res://Battleships/Admiralty.cs" id="17_kr6vl"]
+[ext_resource type="Script" uid="uid://bafbqqxjrhc5x" path="res://Battleships/Gun.cs" id="20_tj12v"]
+[ext_resource type="Script" uid="uid://cd7naxk1n1n8f" path="res://Battleships/CameraZoomAndPan.gd" id="22_n6gg5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q1es4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_36tmx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_kdxpr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_jr5lu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_i5xih")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_7wb2b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_80l2o"]
+font = ExtResource("16_um5ly")
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_sms3j"]
+font = ExtResource("16_um5ly")
+font_size = 80
+font_color = Color(1, 1, 1, 0.25098)
+
+[node name="Battleships Demo" type="Node2D"]
+texture_filter = 3
+script = ExtResource("1_wuhof")
+
+[node name="Destroyer" type="Sprite2D" parent="."]
+visible = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer"]
+z_index = -42
+position = Vector2(-11, -2)
+sprite_frames = SubResource("SpriteFrames_q1es4")
+frame = 3
+frame_progress = 0.961274
+script = ExtResource("6_nk4bq")
+
+[node name="HullSprite" type="Sprite2D" parent="Destroyer"]
+z_index = -5
+position = Vector2(0, -1)
+texture = ExtResource("1_mpdiq")
+
+[node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer"]
+position = Vector2(26, -1)
+texture = ExtResource("4_gfkv0")
+offset = Vector2(-6, 0)
+script = ExtResource("20_tj12v")
+
+[node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer/ShipBigGunDual"]
+visible = false
+texture = ExtResource("3_fu8pa")
+offset = Vector2(-6, 0)
+
+[node name="Muzzle1" type="Node2D" parent="Destroyer/ShipBigGunDual"]
+position = Vector2(22.5, -3.5)
+
+[node name="Muzzle2" type="Node2D" parent="Destroyer/ShipBigGunDual"]
+position = Vector2(22.5, 3.5)
+
+[node name="ShipBigGun" type="Sprite2D" parent="Destroyer"]
+position = Vector2(-56, -1)
+texture = ExtResource("5_ida0b")
+script = ExtResource("20_tj12v")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+top_level = true
+script = ExtResource("22_n6gg5")
+useFallbackButtons = "Never"
+panSmoothing = 0.1
+zoomSmoothing = 0.1
+
+[node name="Ui Layer" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="Label" type="Label" parent="Ui Layer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -39.5
+offset_right = 39.5
+offset_bottom = 30.0
+grow_horizontal = 2
+text = "123456"
+label_settings = SubResource("LabelSettings_80l2o")
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ObjectiveA" type="Node2D" parent="." groups=["Objective"]]
+z_index = -69
+position = Vector2(-1520, -3559)
+scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
+
+[node name="Label" type="Label" parent="ObjectiveA"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.8
+offset_top = -26.8
+offset_right = 82.2
+offset_bottom = 73.2
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Alpha"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveB" type="Node2D" parent="." groups=["Objective"]]
+z_index = -69
+position = Vector2(-3869, 481)
+scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
+
+[node name="Label" type="Label" parent="ObjectiveB"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -126.4
+offset_top = -27.8
+offset_right = 82.6
+offset_bottom = 72.2
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Bravo"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveC" type="Node2D" parent="." groups=["Objective"]]
+z_index = -69
+position = Vector2(-2283, 3080)
+scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
+
+[node name="Label" type="Label" parent="ObjectiveC"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.2
+offset_top = -18.2
+offset_right = 108.8
+offset_bottom = 81.8
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Charlie"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveD" type="Node2D" parent="." groups=["Objective"]]
+z_index = -69
+position = Vector2(4638, -74)
+scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
+
+[node name="Label" type="Label" parent="ObjectiveD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -116.6
+offset_top = -23.6
+offset_right = 77.4
+offset_bottom = 76.4
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Delta"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveE" type="Node2D" parent="." groups=["Objective"]]
+z_index = -69
+position = Vector2(1895, -1551)
+scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
+
+[node name="Label" type="Label" parent="ObjectiveE"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.2
+offset_top = -29.0
+offset_right = 69.7999
+offset_bottom = 71.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Echo
+"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveF" type="Node2D" parent="." groups=["Objective"]]
+z_index = -69
+scale = Vector2(5, 5)
+script = ExtResource("17_0i071")
+
+[node name="Label" type="Label" parent="ObjectiveF"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.4
+offset_top = -14.6
+offset_right = 118.6
+offset_bottom = 85.4
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.253073
+text = "Foxtrot"
+label_settings = SubResource("LabelSettings_sms3j")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Admiralty1" type="Node2D" parent="." groups=["Admiralty"]]
+position = Vector2(-5178, -3708)
+script = ExtResource("17_kr6vl")
+Blueprints = [ExtResource("13_auviu")]
+MaxFleetValue = 300
+SpawnRadius = 500.0
+Color = Color(1, 0.594265, 0.582941, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty1"]
+z_index = -69
+scale = Vector2(5, 5)
+sprite_frames = ExtResource("17_a473v")
+frame_progress = 0.894212
+script = ExtResource("6_nk4bq")
+
+[node name="Admiralty2" type="Node2D" parent="." groups=["Admiralty"]]
+position = Vector2(3788, -3532)
+script = ExtResource("17_kr6vl")
+Blueprints = [ExtResource("13_auviu")]
+MaxFleetValue = 300
+SpawnRadius = 500.0
+Color = Color(0, 0.87547, 0.189829, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty2"]
+z_index = -69
+scale = Vector2(5, 5)
+sprite_frames = ExtResource("17_a473v")
+script = ExtResource("6_nk4bq")
+
+[node name="Admiralty3" type="Node2D" parent="." groups=["Admiralty"]]
+position = Vector2(2016, 2691)
+script = ExtResource("17_kr6vl")
+Blueprints = [ExtResource("13_auviu")]
+MaxFleetValue = 300
+SpawnRadius = 500.0
+Color = Color(0.670588, 0.694118, 1, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty3"]
+z_index = -69
+scale = Vector2(5, 5)
+sprite_frames = ExtResource("17_a473v")
+script = ExtResource("6_nk4bq")

@@ -1,0 +1,17 @@
+<Project Sdk="Godot.NET.Sdk/4.6.2">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>fennecs.demos.godot</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--<PackageReference Include="fennecs" Version="0.6.9" />-->
+    <ProjectReference Include="..\..\fennecs\fennecs.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="**/*.gd"/>
+    <None Include="**/*.tscn"/>
+    <None Include="**/*.tres"/>
+  </ItemGroup>
+</Project>

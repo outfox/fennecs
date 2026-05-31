@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="GdSdk" type="GdScript">
-    <CLASSES />
-    <JAVADOC />
-    <SOURCES>
-      <root url="file://$APPLICATION_HOME_DIR$/plugins/rider-gdscript/sdk/extracted/Master" />
-    </SOURCES>
-  </library>
-</component>

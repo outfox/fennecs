@@ -1,0 +1,23 @@
+{
+  "name": "fennecs.net",
+  "version": "0.4.0",
+  "description": "fennecs documentation site",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview .",
+    "fix-typography": "node fix-typography.mjs"
+  },
+  "keywords": [
+    "documentation", "fennecs", "ecs", "entity component system"
+  ],
+  "author": "Moritz Voss",
+  "license": "MIT",
+  "devDependencies": {
+    "vitepress": "^2.0.0-alpha.15",
+    "vitepress-sidebar": "^1.33.1"
+  }
+}

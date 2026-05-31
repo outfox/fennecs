@@ -15,6 +15,7 @@ s3/
 # IDE & agent litter
 knowledge.md
 AGENTS.md
+CLAUDE.md
 .agents/
 .codebuff/
 

@@ -1,0 +1,79 @@
+[gd_resource type="SpriteFrames" load_steps=11 format=3 uid="uid://ixj0uyy7kvlq"]
+
+[ext_resource type="Texture2D" uid="uid://n438jgpstwra" path="res://Battleships/Sprites/Projectiles/sheet_hit.png" id="1_4phjf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tc0hu"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5q2vx"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ywtdr"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5idxk"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5fmna"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77ubs"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdfur"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bqjw2"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_phuxm"]
+atlas = ExtResource("1_4phjf")
+region = Rect2(256, 0, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tc0hu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5q2vx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ywtdr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5idxk")
+}],
+"loop": true,
+"name": &"01",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5fmna")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_77ubs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xdfur")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bqjw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_phuxm")
+}],
+"loop": true,
+"name": &"02",
+"speed": 20.0
+}]

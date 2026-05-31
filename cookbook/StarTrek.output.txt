@@ -1,8 +1,0 @@
-﻿Directed by Renard Nimoy.
-James Tiberius Kirk, Starfleet identification
-E-00000001:00001 <fennecs.Identity>
-(Kirk despawned)
-Jean-Luc Picard, (The Next Generation!) identification
-E-00000001:00002 <fennecs.Identity>
-Kathryn Janeway, (New Series!) identification
-E-00000002:00001 <fennecs.Identity>

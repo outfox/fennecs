@@ -1,0 +1,9 @@
+!SpriteFont
+Id: a1b45771-ffff-4b57-aaeb-4861a5608432
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+FontSource: !SystemFontProvider
+    FontName: Bai Jamjuree
+    Style: Regular
+FontType: !RuntimeRasterizedSpriteFontType
+    Size: 16.0

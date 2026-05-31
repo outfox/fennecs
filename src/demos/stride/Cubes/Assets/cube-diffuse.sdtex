@@ -1,0 +1,7 @@
+!Texture
+Id: 5362646f-6224-4f97-a4d4-21cc177a1754
+SerializedVersion: {Stride: 2.0.0.0}
+Tags: []
+Source: !file ../Resources/cube-diffuse.png
+Type: !ColorTextureType
+    ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}
