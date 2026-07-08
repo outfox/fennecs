@@ -1,0 +1,42 @@
+<#+
+    // Shared helpers for the generated Stream test batteries.
+    // Component types (ValA..ValE, RefA..RefE) live in StreamTestComponents.cs.
+
+    const int MaxArity = 5;
+
+    // Component type sets each battery is generated for. "Mixed" is skipped
+    // at arity 1 (it would duplicate "Value" there).
+    readonly string[] SetNames = { "Value", "Ref", "Mixed" };
+
+    readonly string[][] SetTypes =
+    {
+        new[] { "ValA", "ValB", "ValC", "ValD", "ValE" },
+        new[] { "RefA", "RefB", "RefC", "RefD", "RefE" },
+        new[] { "ValA", "RefB", "ValC", "RefD", "ValE" },
+    };
+
+    // "ValA, ValB" for n = 2
+    string TypeList(string[] t, int n)
+    {
+        return string.Join(", ", t.Take(n));
+    }
+
+    // ".Add(ValA.New(expr(0))).Add(ValB.New(expr(1)))" for n = 2
+    string AddChain(string[] t, int n, Func<int, string> expr)
+    {
+        return string.Concat(Enumerable.Range(0, n).Select(i => ".Add(" + t[i] + ".New(" + expr(i) + "))"));
+    }
+
+    // Component lambda parameters; slots in `named` become "ref c{i}", the rest "ref _".
+    // (a lone "_" is a legal parameter name; two or more underscores are discards)
+    string RefArgs(int n, params int[] named)
+    {
+        return string.Join(", ", Enumerable.Range(0, n).Select(i => named.Contains(i) ? "ref c" + i : "ref _"));
+    }
+
+    // Raw lambda parameters; slots in `named` become "mem{i}", the rest "_".
+    string MemArgs(int n, params int[] named)
+    {
+        return string.Join(", ", Enumerable.Range(0, n).Select(i => named.Contains(i) ? "mem" + i : "_"));
+    }
+#>

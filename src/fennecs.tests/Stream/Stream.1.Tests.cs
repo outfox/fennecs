@@ -1,64 +1,10 @@
-﻿using System.Collections;
-
 namespace fennecs.tests.Stream;
 
-public class Stream1Tests(ITestOutputHelper output)
+// The shared Stream test battery (enumeration, runners, filters, counts, etc.)
+// is generated for all arities and component type sets by generators/Stream.Tests.tt.
+// This file keeps only the tests that are unique to arity 1 / not arity-shaped.
+public class Stream1Tests
 {
-    [Fact]
-    public void Can_Enumerate_Stream()
-    {
-        using var world = new World();
-        var arnold = world.Spawn().Add("Arnold");
-        var dolph = world.Spawn().Add("Dolph");
-
-        List<(Entity, string)> list = [(arnold, "Arnold"), (dolph, "Dolph")];
-
-        var stream = world.Stream<string>();
-        foreach (var row in stream)
-        {
-            Assert.True(list.Remove(row));
-        }
-
-        Assert.Empty(list);
-    }
-
-
-    [Fact]
-    public void Can_Enumerate_Boxed()
-    {
-        using var world = new World();
-        var arnold = world.Spawn().Add("Arnold");
-        var dolph = world.Spawn().Add("Dolph");
-
-        List<object> list = [(arnold, "Arnold"), (dolph, "Dolph")];
-
-        IEnumerable stream = world.Stream<string>();
-        foreach (var row in stream)
-        {
-            Assert.True(list.Remove(row));
-        }
-
-        Assert.Empty(list);
-    }
-
-    [Fact]
-    public void Cannot_Structural_Chane_While_Enumerating()
-    {
-        using var world = new World();
-        world.Spawn().Add("Arnold");
-        world.Spawn().Add("Dolph");
-
-        var stream = world.Stream<string>();
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            foreach (var unused in stream)
-            {
-                world.Spawn().Add("Sylvester");
-            }
-        });
-    }
-
-
     [Fact]
     public void Can_Create_Stream_From_Query()
     {
@@ -138,35 +84,6 @@ public class Stream1Tests(ITestOutputHelper output)
 
         Assert.Equal(stream1.Query, stream2.Query);
         Assert.Equal(stream1.Query, stream3.Query);
-    }
-
-
-    [Fact]
-    public void Cannot_Run_Job_on_Wildcard_Query()
-    {
-        using var world = new World();
-        world.Spawn().Add("jason");
-
-        var stream = world.Query<string>(Match.Any).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str) => { output.WriteLine(str); }));
-
-        stream = world.Query<string>(Match.Entity).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str) => { output.WriteLine(str); }));
-
-        stream = world.Query<string>(Match.Target).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str) => { output.WriteLine(str); }));
-
-        stream = world.Query<string>(Match.Object).Stream();
-        Assert.Throws<InvalidOperationException>(() => stream.Job((ref str) => { output.WriteLine(str); }));
-
-        stream = world.Query<string>(Match.Plain).Stream();
-        var ran = false;
-        stream.Job((ref str) =>
-        {
-            output.WriteLine(str);
-            ran = true;
-        });
-        Assert.True(ran);
     }
 
     [Fact]
@@ -249,41 +166,18 @@ public class Stream1Tests(ITestOutputHelper output)
     {
         using var world = new World();
         world.Spawn().Add("69").Add(420).Add(1.0f).Add(new object()).Add('a');
-        
+
         var query = world.All;
         var stream1 = query.Stream<string>(Match.Any);
         var stream2 = query.Stream<string, int>(Match.Any);
         var stream3 = query.Stream<string, int, float>(Match.Any);
         var stream4 = query.Stream<string, int, float, object>(Match.Any);
         var stream5 = query.Stream<string, int, float, object, char>(Match.Any);
-        
+
         Assert.Single(stream1);
         Assert.Single(stream2);
         Assert.Single(stream3);
         Assert.Single(stream4);
         Assert.Single(stream5);
     }
-    
-    [Fact]
-    public void Has_Batch_Interface()
-    {
-        using var world = new World();
-        
-        world.Spawn().Add(1);
-        
-        var stream = world.Query<int>().Not<string>().Stream();
-        var batch = stream.Batch();
-        batch.Add<string>("visited");
-        batch.Submit();
-
-        var check = world.Query<int>().Compile();
-        var i = 0;
-        foreach (var entity in check)
-        {
-            i++;
-            Assert.True(entity.Has<string>());
-        }
-        Assert.Equal(1, i);
-    }
-
 }

@@ -25,4 +25,25 @@
     <ItemGroup>
       <ProjectReference Include="..\fennecs\fennecs.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Stream\generators\Stream.Tests.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>Stream.Tests.generated.cs</LastGenOutput>
+        </None>
+        <None Update="Stream\generators\Stream.Filter.Tests.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>Stream.Filter.Tests.generated.cs</LastGenOutput>
+        </None>
+        <Compile Update="Stream\generators\Stream.Tests.generated.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Stream.Tests.tt</DependentUpon>
+        </Compile>
+        <Compile Update="Stream\generators\Stream.Filter.Tests.generated.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>Stream.Filter.Tests.tt</DependentUpon>
+        </Compile>
+    </ItemGroup>
 </Project>

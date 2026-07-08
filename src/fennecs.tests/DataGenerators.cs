@@ -32,6 +32,36 @@ public class QueryCountGenerator : IEnumerable<object[]>
 }
 
 
+// Leaner count source for the generated Stream test matrix (Stream.Tests.tt).
+// The battery runs at 14 arity/type-set combinations, so per-theory rows are
+// trimmed vs. QueryCountGenerator: keep the induction range (off-by-one bugs),
+// counts above Concurrency (job chunking), primes, and one large count.
+public class StreamCountGenerator : IEnumerable<object[]>
+{
+    public IEnumerator<object[]> GetEnumerator()
+    {
+        // base induction range
+        for (var i = 0; i <= 8; i++)
+        {
+            yield return [i, true];
+            yield return [i, false];
+        }
+
+        yield return [128, true]; // > Concurrency, multiple job chunks
+        yield return [128, false];
+        yield return [151, true]; // prime number
+        yield return [1_024, false];
+        yield return [4_096, true];
+    }
+
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}
+
+
 public class QueryChunkGenerator : IEnumerable<object[]>
 {
     // There were issues with confusing storage.Length and table.Count.

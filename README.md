@@ -72,7 +72,7 @@ And there's more: all that simplicity doesn't force any performance trade-offs! 
 
 ## 💡Highlights / Design Goals
 
-- [x] Modern C# 12 codebase, targeting .NET 8.
+- [x] Modern C# 14 codebase, targeting .NET 10 and .NET 11 (preview).
 - [x] Full Unit Test coverage.
 - [x] Powerfully intuitive ways to access data... _fast!_
 - [x] Workloads can be easily parallelized across *and within* Archetypes

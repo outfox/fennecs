@@ -17,11 +17,7 @@ internal class LanguageType
     protected static readonly Dictionary<TypeID, Type> Types = new();
     protected static readonly Dictionary<Type, TypeID> Ids = new();
     
-    #if NET9_0_OR_GREATER
     protected static readonly Lock RegistryLock = new();
-    #else
-    protected static readonly object RegistryLock = new();
-    #endif
 
 
     protected internal static TypeID Identify(Type type)
