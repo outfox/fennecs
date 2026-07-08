@@ -3,7 +3,6 @@
 
 # _... the tiny, tiny, high-energy Entity-Component System!_
 > [![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)  
-> *to use the beta versions, append `--prerelease`*  
 
 <table style="width: 100%">
    <tr>
