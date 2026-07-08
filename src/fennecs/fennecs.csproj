@@ -17,7 +17,7 @@
         <RepositoryType>Github</RepositoryType>
 
         <PackageProjectUrl>https://fennecs.net</PackageProjectUrl>
-        <PackageReadmeFile>./nuget.md</PackageReadmeFile>
+        <PackageReadmeFile>nuget.md</PackageReadmeFile>
         <PackageReleaseNotes>https://github.com/outfox/fennecs/releases</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>ecs, entity, component, system, game, gamedev, game-development, godot, monogame, flax, stride, entity-component, entity-component-system</PackageTags>
@@ -31,13 +31,10 @@
     <PropertyGroup>
         <AssemblyName>fennecs</AssemblyName>
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        <TargetFrameworks Condition="'$(Configuration)' == 'Debug'">net10.0</TargetFrameworks>
 
         <IsTrimmable>true</IsTrimmable>
         <VerifyReferenceTrimCompatibility>true</VerifyReferenceTrimCompatibility>
-        
-        <LangVersion>14</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
 
         <Configurations>Release;Debug</Configurations>
         <Platforms>AnyCPU</Platforms>
@@ -47,24 +44,12 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-
-        <TransformOnBuild>true</TransformOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <Optimize>true</Optimize>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <EnablePackageValidation>true</EnablePackageValidation>
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <DocumentationFile>bin\Release\fennecs.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <EnablePackageValidation>false</EnablePackageValidation>
     </PropertyGroup>
 
     <ItemGroup>
@@ -92,10 +77,6 @@
           <Generator>TextTemplatingFileGenerator</Generator>
           <LastGenOutput>Delegates.generated.cs</LastGenOutput>
         </None>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}"/>
     </ItemGroup>
 
     <ItemGroup>

@@ -27,7 +27,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// <summary>
     ///     Does this Query match ("contain") the Entity, and would enumerate it?
     /// </summary>
-    /// <param name="Entity">an Entity</param>
+    /// <param name="entity">an Entity</param>
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {

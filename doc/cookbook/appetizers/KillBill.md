@@ -12,7 +12,7 @@ This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fen
 
 Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
 
-All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/tree/main/src/cookbook) 
 
 :::
 
@@ -25,6 +25,6 @@ Next, we query for the Relation, say hello, and ~~unalive~~ interact with the En
 
 ### Recipe
 ::: code-group
-<<< ../../../src/cookbook/KillBill.cs {cs:line-numbers} [Implementation]
-<<< ../../../src/cookbook/KillBill.output.txt{txt} [Output]
+<<< ../../../src/cookbook/KillBill/KillBill.cs {cs:line-numbers} [Implementation]
+<<< ../../../src/cookbook/KillBill/KillBill.output.txt{txt} [Output]
 :::

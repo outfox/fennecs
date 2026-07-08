@@ -11,7 +11,7 @@ This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fen
 
 Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
 
-All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/tree/main/src/cookbook) 
 
 :::
 
@@ -26,6 +26,6 @@ We spawn a unique [Entity](/docs/Entities/index.md) for each captain; but `kirk`
 
 ### Recipe
 ::: code-group
-<<< ../../../src/cookbook/StarTrek.cs {cs:line-numbers} [Implementation]
-<<< ../../../src/cookbook/StarTrek.output.txt{txt} [Output]
+<<< ../../../src/cookbook/StarTrek/StarTrek.cs {cs:line-numbers} [Implementation]
+<<< ../../../src/cookbook/StarTrek/StarTrek.output.txt{txt} [Output]
 :::

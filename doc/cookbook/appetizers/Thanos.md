@@ -11,7 +11,7 @@ This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fen
 
 Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
 
-All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/tree/main/src/cookbook) 
 
 :::
 
@@ -33,6 +33,6 @@ I'm sure you already see that nothing can go wrong! Let's get snapping!
 
 
 ::: code-group
-<<< ../../../src/cookbook/Thanos.cs {cs:line-numbers} [Implementation]
-<<< ../../../src/cookbook/Thanos.output.txt{txt} [Output]
+<<< ../../../src/cookbook/Thanos/Thanos.cs {cs:line-numbers} [Implementation]
+<<< ../../../src/cookbook/Thanos/Thanos.output.txt{txt} [Output]
 :::

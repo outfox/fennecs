@@ -11,7 +11,7 @@ This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fen
 
 Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
 
-All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/tree/main/src/cookbook) 
 
 :::
 
@@ -26,8 +26,8 @@ Then, we bind them all in darkness with a `Stream<>.For` runner.
 
 ### Recipe
 ::: code-group
-<<< ../../../src/cookbook/OneRing.cs {cs:line-numbers} [Implementation]
-<<< ../../../src/cookbook/OneRing.output.txt{txt} [Output]
+<<< ../../../src/cookbook/OneRing/OneRing.cs {cs:line-numbers} [Implementation]
+<<< ../../../src/cookbook/OneRing/OneRing.output.txt{txt} [Output]
 :::
 
 In this example:

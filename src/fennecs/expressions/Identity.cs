@@ -57,9 +57,9 @@ internal readonly record struct Identity : IComparable<Identity>
     public int CompareTo(Identity other) => Value.CompareTo(other.Value);
 
     /// <summary>
-    /// Casts an Entity to its Identity. (extracting the appropriatefield)
+    /// Casts an Entity to its Identity. (extracting the appropriate field)
     /// </summary>
-    /// <param name="Entity">an Entity</param>
+    /// <param name="entity">an Entity</param>
     /// <returns>the Identity</returns>
     public static implicit operator Identity(Entity entity) => entity.Id;
     

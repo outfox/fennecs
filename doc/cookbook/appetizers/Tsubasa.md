@@ -11,7 +11,7 @@ This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fen
 
 Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
 
-All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/tree/main/src/cookbook) 
 
 :::
 
@@ -24,6 +24,6 @@ In our "game" loop, we get the current position of our ball Entity, and let each
 
 ### Recipe
 ::: code-group
-<<< ../../../src/cookbook/Tsubasa.cs{cs:line-numbers} [Implementation]
-<<< ../../../src/cookbook/Tsubasa.output.txt{txt} [Output]
+<<< ../../../src/cookbook/Tsubasa/Tsubasa.cs{cs:line-numbers} [Implementation]
+<<< ../../../src/cookbook/Tsubasa/Tsubasa.output.txt{txt} [Output]
 :::

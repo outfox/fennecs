@@ -11,7 +11,7 @@ This **RUNS**! *Playful premises aside*, this is a functioning showcase of **fen
 
 Get comfy, grab a cup of ~~Java~~ ~~CoffeeScript~~ ~~Visual J#~~ whatever, and get your paws dirty playing around in the code! It's good fun!
 
-All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/blob/main/cookbook) 
+All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outfox/fennecs/tree/main/src/cookbook) 
 
 :::
 
@@ -20,6 +20,6 @@ Let's build a sleeper drift racing championship car out of nothing but Entities 
 
 ### Recipe
 ::: code-group
-<<< ../../../src/cookbook/InitialD.cs {cs:line-numbers} [Implementation]
-<<< ../../../src/cookbook/InitialD.output.txt{txt} [Output]
+<<< ../../../src/cookbook/InitialD/InitialD.cs {cs:line-numbers} [Implementation]
+<<< ../../../src/cookbook/InitialD/InitialD.output.txt{txt} [Output]
 :::

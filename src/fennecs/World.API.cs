@@ -112,8 +112,8 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <remarks>
     /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
     /// </remarks>
-    /// <param name="Components">TypeExpressions and boxed objects to spawn</param>
-    /// <param name="count"></param>
+    /// <param name="components">TypeExpressions and boxed objects to spawn</param>
+    /// <param name="count">number of Entities to spawn</param>
     /// <param name="values">Component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
@@ -125,7 +125,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// Despawn (destroy) an Entity from this World.
     /// </summary>
-    /// <param name="Entity">the Entity to despawn.</param>
+    /// <param name="entity">the Entity to despawn.</param>
     public void Despawn(Entity entity) => DespawnImpl(entity);
 
     

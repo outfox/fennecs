@@ -1,16 +1,11 @@
 <Solution>
   <Folder Name="/Cookbook/">
-    <Project Path="cookbook/InitialD.csproj" />
-    <Project Path="cookbook/KillBill.csproj" />
-    <Project Path="cookbook/OneRing.csproj" />
-    <Project Path="cookbook/StarTrek.csproj" />
-    <Project Path="cookbook/Thanos.csproj" />
-    <Project Path="cookbook/Tsubasa.csproj" />
-  </Folder>
-  <Folder Name="/Demos/">
-    <Project Path="demos/godot/fennecs.demos.godot.csproj">
-      <BuildType Project="Debug" />
-    </Project>
+    <Project Path="cookbook/InitialD/InitialD.csproj" />
+    <Project Path="cookbook/KillBill/KillBill.csproj" />
+    <Project Path="cookbook/OneRing/OneRing.csproj" />
+    <Project Path="cookbook/StarTrek/StarTrek.csproj" />
+    <Project Path="cookbook/Thanos/Thanos.csproj" />
+    <Project Path="cookbook/Tsubasa/Tsubasa.csproj" />
   </Folder>
   <Project Path="fennecs.benchmarks/fennecs.benchmarks.csproj" />
   <Project Path="fennecs.tests/fennecs.tests.csproj" />
