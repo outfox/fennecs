@@ -8,6 +8,8 @@ Temp
 Build
 Builds
 
+dotnet-tools.json
+
 *.Artifacts
 s3/
 .dist
