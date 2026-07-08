@@ -135,7 +135,7 @@ internal class Storage<T> : IStorage
 
 
     /// <summary>
-    /// Number of Elements actually stored.
+    /// Capacity of storage elements.
     /// </summary>
     public int Capacity => _data.Length;
 

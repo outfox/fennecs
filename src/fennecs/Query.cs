@@ -162,12 +162,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     {
         ArgumentNullException.ThrowIfNull(other);
         var otherSet = other as ISet<Entity> ?? new HashSet<Entity>(other);
-        if (Count >= otherSet.Count) return false;
-        foreach (var entity in this)
-        {
-            if (!otherSet.Contains(entity)) return false;
-        }
-        return true;
+        return Count < otherSet.Count && this.All(otherSet.Contains);
     }
 
 
@@ -176,12 +171,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     {
         ArgumentNullException.ThrowIfNull(other);
         var otherSet = other as ISet<Entity> ?? new HashSet<Entity>(other);
-        if (Count <= otherSet.Count) return false;
-        foreach (var entity in otherSet)
-        {
-            if (!Contains(entity)) return false;
-        }
-        return true;
+        return Count > otherSet.Count && otherSet.All(Contains);
     }
 
 

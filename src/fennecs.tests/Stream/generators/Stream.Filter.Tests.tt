@@ -27,7 +27,6 @@ namespace fennecs.tests.Stream;
 
         var T = SetTypes[s];
         var types = TypeList(T, n);
-        var T0 = T[0];
 #>
 
 /// <summary>
@@ -48,29 +47,32 @@ public class Stream<#= n #><#= setName #>FilterTests
 
         for (var i = 0; i < count; i++)
         {
-            world.Spawn()<#= AddChain(T, n, j => j == 0 ? "Random.Shared.Next(100)" : "i") #>;
+            world.Spawn()<#= AddChain(T, n, j => "Random.Shared.Next(100)") #>;
         }
 
         var all = world.Stream<<#= types #>>();
+<# for (var j = 0; j < n; j++) { #>
 
-        var topHalf = all.Where((in <#= T0 #> c) => c.Value > 50);
-        var botHalf = all.Where((in <#= T0 #> c) => c.Value <= 50);
+        // filter on component <#= j #> (<#= T[j] #>)
+        var top<#= j #> = all.Where((in <#= T[j] #> c) => c.Value > 50);
+        var bot<#= j #> = all.Where((in <#= T[j] #> c) => c.Value <= 50);
 
-        var top = 0;
-        var bot = 0;
-        topHalf.For((<#= RefArgs(n, 0) #>) =>
+        var topCount<#= j #> = 0;
+        var botCount<#= j #> = 0;
+        top<#= j #>.For((<#= RefArgs(n, j) #>) =>
         {
-            top++;
-            Assert.True(c0.Value > 50);
+            topCount<#= j #>++;
+            Assert.True(c<#= j #>.Value > 50);
         });
 
-        botHalf.For((<#= RefArgs(n, 0) #>) =>
+        bot<#= j #>.For((<#= RefArgs(n, j) #>) =>
         {
-            bot++;
-            Assert.True(c0.Value <= 50);
+            botCount<#= j #>++;
+            Assert.True(c<#= j #>.Value <= 50);
         });
 
-        Assert.Equal(count, top + bot);
+        Assert.Equal(count, topCount<#= j #> + botCount<#= j #>);
+<# } #>
     }
 
     [Theory]
@@ -86,29 +88,32 @@ public class Stream<#= n #><#= setName #>FilterTests
 
         for (var i = 0; i < count; i++)
         {
-            world.Spawn()<#= AddChain(T, n, j => j == 0 ? "Random.Shared.Next(100)" : "i") #>;
+            world.Spawn()<#= AddChain(T, n, j => "Random.Shared.Next(100)") #>;
         }
 
         var all = world.Stream<<#= types #>>();
+<# for (var j = 0; j < n; j++) { #>
 
-        var topHalf = all.Where((in <#= T0 #> c) => c.Value > 50);
-        var botHalf = all.Where((in <#= T0 #> c) => c.Value <= 50);
+        // filter on component <#= j #> (<#= T[j] #>)
+        var top<#= j #> = all.Where((in <#= T[j] #> c) => c.Value > 50);
+        var bot<#= j #> = all.Where((in <#= T[j] #> c) => c.Value <= 50);
 
-        var top = 0;
-        var bot = 0;
-        topHalf.Job((<#= RefArgs(n, 0) #>) =>
+        var topCount<#= j #> = 0;
+        var botCount<#= j #> = 0;
+        top<#= j #>.Job((<#= RefArgs(n, j) #>) =>
         {
-            Interlocked.Increment(ref top);
-            Assert.True(c0.Value > 50);
+            Interlocked.Increment(ref topCount<#= j #>);
+            Assert.True(c<#= j #>.Value > 50);
         });
 
-        botHalf.Job((<#= RefArgs(n, 0) #>) =>
+        bot<#= j #>.Job((<#= RefArgs(n, j) #>) =>
         {
-            Interlocked.Increment(ref bot);
-            Assert.True(c0.Value <= 50);
+            Interlocked.Increment(ref botCount<#= j #>);
+            Assert.True(c<#= j #>.Value <= 50);
         });
 
-        Assert.Equal(count, top + bot);
+        Assert.Equal(count, topCount<#= j #> + botCount<#= j #>);
+<# } #>
     }
 }
 <#

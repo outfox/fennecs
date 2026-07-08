@@ -559,6 +559,141 @@ public class Stream<#= n #><#= setName #>Tests(ITestOutputHelper output)
         }
         Assert.Equal(1, i);
     }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn()<#= AddChain(T, n, i => "i") #>;
+        world.Spawn()<#= AddChain(T, n, i => "9") #>.Add("extended");
+
+        var stream = world.Query<<#= types #>>().Stream();
+        Assert.Equal(5, stream.Count);
+
+<# for (var j = 0; j < n; j++) { #>
+        stream.Blit(<#= T[j] #>.New(<#= 600 + j #>));
+<# } #>
+
+        var visited = 0;
+        stream.For((<#= RefArgs(n, Enumerable.Range(0, n).ToArray()) #>) =>
+        {
+            visited++;
+<# for (var j = 0; j < n; j++) { #>
+            Assert.Equal(<#= 600 + j #>, c<#= j #>.Value);
+<# } #>
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn()<#= AddChain(T, n, i => "0") #>;
+
+        var stream = world.Query<<#= types #>>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn()<#= AddChain(T, n, i => "i") #>;
+        for (var i = 0; i < 4; i++) world.Spawn()<#= AddChain(T, n, i => "i") #>.Add("extended");
+
+        var stream = world.Query<<#= types #>>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn()<#= AddChain(T, n, i => "0") #>;
+        world.Spawn()<#= AddChain(T, n, i => "1") #>;
+        world.Spawn()<#= AddChain(T, n, i => "2") #>.Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<<#= types #>>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn()<#= AddChain(T, n, i => "0") #>;
+        world.Spawn()<#= AddChain(T, n, i => "1") #>.Add("extended");
+        world.Spawn()<#= AddChain(T, n, i => "2") #>.Add("extended");
+
+        var stream = world.Query<<#= types #>>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((<#= RefArgs(n) #>) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn()<#= AddChain(T, n, i => "0") #>;
+        world.Spawn()<#= AddChain(T, n, i => "1") #>.Add("survivor");
+
+        var stream = world.Query<<#= types #>>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<<#= types #>>().Stream().Count);
+    }
 }
 <#
     } // end for set / arity

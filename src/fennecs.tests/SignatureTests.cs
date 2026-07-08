@@ -117,6 +117,89 @@ public class SignatureTests
     }
 
     [Fact]
+    public void Signature_IsSubsetOf_Enumerable()
+    {
+        var tInt = TypeExpression.Of<int>(Match.Plain);
+        var tString = TypeExpression.Of<string>(Match.Plain);
+        var tFloat = TypeExpression.Of<float>(Match.Plain);
+
+        var signature = new Signature(tInt, tString);
+
+        IEnumerable<TypeExpression> superset = new List<TypeExpression> { tInt, tString, tFloat };
+        IEnumerable<TypeExpression> equal = new List<TypeExpression> { tInt, tString };
+        IEnumerable<TypeExpression> disjoint = new List<TypeExpression> { tFloat };
+
+        Assert.True(signature.IsSubsetOf(superset));
+        Assert.True(signature.IsSubsetOf(equal)); // a set is a subset of itself
+        Assert.False(signature.IsSubsetOf(disjoint));
+    }
+
+    [Fact]
+    public void Signature_IsProperSubsetOf_Enumerable()
+    {
+        var tInt = TypeExpression.Of<int>(Match.Plain);
+        var tString = TypeExpression.Of<string>(Match.Plain);
+        var tFloat = TypeExpression.Of<float>(Match.Plain);
+
+        var signature = new Signature(tInt, tString);
+
+        IEnumerable<TypeExpression> superset = new List<TypeExpression> { tInt, tString, tFloat };
+        IEnumerable<TypeExpression> equal = new List<TypeExpression> { tInt, tString };
+
+        Assert.True(signature.IsProperSubsetOf(superset));
+        Assert.False(signature.IsProperSubsetOf(equal)); // proper subset must be strictly smaller
+    }
+
+    [Fact]
+    public void Signature_IsProperSupersetOf_Enumerable()
+    {
+        var tInt = TypeExpression.Of<int>(Match.Plain);
+        var tString = TypeExpression.Of<string>(Match.Plain);
+
+        var signature = new Signature(tInt, tString);
+
+        IEnumerable<TypeExpression> subset = new List<TypeExpression> { tInt };
+        IEnumerable<TypeExpression> equal = new List<TypeExpression> { tInt, tString };
+
+        Assert.True(signature.IsProperSupersetOf(subset));
+        Assert.False(signature.IsProperSupersetOf(equal)); // proper superset must be strictly larger
+    }
+
+    [Fact]
+    public void Signature_SetEquals_Enumerable()
+    {
+        var tInt = TypeExpression.Of<int>(Match.Plain);
+        var tString = TypeExpression.Of<string>(Match.Plain);
+        var tFloat = TypeExpression.Of<float>(Match.Plain);
+
+        var signature = new Signature(tInt, tString);
+
+        IEnumerable<TypeExpression> equal = new List<TypeExpression> { tInt, tString };
+        IEnumerable<TypeExpression> equalWithDuplicates = new List<TypeExpression> { tString, tInt, tInt };
+        IEnumerable<TypeExpression> different = new List<TypeExpression> { tInt, tFloat };
+
+        Assert.True(signature.SetEquals(equal));
+        Assert.True(signature.SetEquals(equalWithDuplicates)); // set semantics: order and duplicates are irrelevant
+        Assert.False(signature.SetEquals(different));
+    }
+
+    [Fact]
+    public void Signature_Overlaps_ImmutableSortedSet()
+    {
+        var tInt = TypeExpression.Of<int>(Match.Plain);
+        var tString = TypeExpression.Of<string>(Match.Plain);
+        var tFloat = TypeExpression.Of<float>(Match.Plain);
+
+        var signature = new Signature(tInt, tString);
+
+        ImmutableSortedSet<TypeExpression> intersecting = [tString, tFloat];
+        ImmutableSortedSet<TypeExpression> disjoint = [tFloat];
+
+        Assert.True(signature.Overlaps(intersecting));
+        Assert.False(signature.Overlaps(disjoint));
+    }
+
+    [Fact]
     public void Signature_Union_Intersect_SymmetricExcept()
     {
         var signatureA = new Signature(TypeExpression.Of<int>(Match.Plain), TypeExpression.Of<string>(Match.Plain));

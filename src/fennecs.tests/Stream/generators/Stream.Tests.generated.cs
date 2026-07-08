@@ -518,6 +518,137 @@ public class Stream1ValueTests(ITestOutputHelper output)
         }
         Assert.Equal(1, i);
     }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i));
+        world.Spawn().Add(ValA.New(9)).Add("extended");
+
+        var stream = world.Query<ValA>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+
+        var visited = 0;
+        stream.For((ref c0) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0));
+
+        var stream = world.Query<ValA>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add("extended");
+
+        var stream = world.Query<ValA>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0));
+        world.Spawn().Add(ValA.New(1));
+        world.Spawn().Add(ValA.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0));
+        world.Spawn().Add(ValA.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add("extended");
+
+        var stream = world.Query<ValA>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0));
+        world.Spawn().Add(ValA.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA>().Stream().Count);
+    }
 }
 
 /// <summary>
@@ -1030,6 +1161,139 @@ public class Stream2ValueTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i));
+        world.Spawn().Add(ValA.New(9)).Add(ValB.New(9)).Add("extended");
+
+        var stream = world.Query<ValA, ValB>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+        stream.Blit(ValB.New(601));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0)).Add(ValB.New(0));
+
+        var stream = world.Query<ValA, ValB>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add("extended");
+
+        var stream = world.Query<ValA, ValB>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1));
+        world.Spawn().Add(ValA.New(2)).Add(ValB.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA, ValB>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add(ValB.New(2)).Add("extended");
+
+        var stream = world.Query<ValA, ValB>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA, ValB>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA, ValB>().Stream().Count);
     }
 }
 
@@ -1547,6 +1811,141 @@ public class Stream3ValueTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i));
+        world.Spawn().Add(ValA.New(9)).Add(ValB.New(9)).Add(ValC.New(9)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+        stream.Blit(ValB.New(601));
+        stream.Blit(ValC.New(602));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0));
+
+        var stream = world.Query<ValA, ValB, ValC>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1));
+        world.Spawn().Add(ValA.New(2)).Add(ValB.New(2)).Add(ValC.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA, ValB, ValC>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add(ValB.New(2)).Add(ValC.New(2)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA, ValB, ValC>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA, ValB, ValC>().Stream().Count);
     }
 }
 
@@ -2068,6 +2467,143 @@ public class Stream4ValueTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i)).Add(ValD.New(i));
+        world.Spawn().Add(ValA.New(9)).Add(ValB.New(9)).Add(ValC.New(9)).Add(ValD.New(9)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+        stream.Blit(ValB.New(601));
+        stream.Blit(ValC.New(602));
+        stream.Blit(ValD.New(603));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2, ref c3) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+            Assert.Equal(603, c3.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0)).Add(ValD.New(0));
+
+        var stream = world.Query<ValA, ValB, ValC, ValD>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i)).Add(ValD.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i)).Add(ValD.New(i)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0)).Add(ValD.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add(ValD.New(1));
+        world.Spawn().Add(ValA.New(2)).Add(ValB.New(2)).Add(ValC.New(2)).Add(ValD.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0)).Add(ValD.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add(ValD.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add(ValB.New(2)).Add(ValC.New(2)).Add(ValD.New(2)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0)).Add(ValD.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add(ValD.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA, ValB, ValC, ValD>().Stream().Count);
     }
 }
 
@@ -2594,6 +3130,145 @@ public class Stream5ValueTests(ITestOutputHelper output)
         }
         Assert.Equal(1, i);
     }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i)).Add(ValD.New(i)).Add(ValE.New(i));
+        world.Spawn().Add(ValA.New(9)).Add(ValB.New(9)).Add(ValC.New(9)).Add(ValD.New(9)).Add(ValE.New(9)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD, ValE>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+        stream.Blit(ValB.New(601));
+        stream.Blit(ValC.New(602));
+        stream.Blit(ValD.New(603));
+        stream.Blit(ValE.New(604));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2, ref c3, ref c4) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+            Assert.Equal(603, c3.Value);
+            Assert.Equal(604, c4.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0)).Add(ValD.New(0)).Add(ValE.New(0));
+
+        var stream = world.Query<ValA, ValB, ValC, ValD, ValE>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i)).Add(ValD.New(i)).Add(ValE.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(ValB.New(i)).Add(ValC.New(i)).Add(ValD.New(i)).Add(ValE.New(i)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD, ValE>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0)).Add(ValD.New(0)).Add(ValE.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add(ValD.New(1)).Add(ValE.New(1));
+        world.Spawn().Add(ValA.New(2)).Add(ValB.New(2)).Add(ValC.New(2)).Add(ValD.New(2)).Add(ValE.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD, ValE>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0)).Add(ValD.New(0)).Add(ValE.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add(ValD.New(1)).Add(ValE.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add(ValB.New(2)).Add(ValC.New(2)).Add(ValD.New(2)).Add(ValE.New(2)).Add("extended");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD, ValE>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(ValB.New(0)).Add(ValC.New(0)).Add(ValD.New(0)).Add(ValE.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add(ValD.New(1)).Add(ValE.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA, ValB, ValC, ValD, ValE>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA, ValB, ValC, ValD, ValE>().Stream().Count);
+    }
 }
 
 /// <summary>
@@ -3096,6 +3771,137 @@ public class Stream1RefTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i));
+        world.Spawn().Add(RefA.New(9)).Add("extended");
+
+        var stream = world.Query<RefA>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(RefA.New(600));
+
+        var visited = 0;
+        stream.For((ref c0) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(RefA.New(0));
+
+        var stream = world.Query<RefA>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(RefA.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add("extended");
+
+        var stream = world.Query<RefA>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0));
+        world.Spawn().Add(RefA.New(1));
+        world.Spawn().Add(RefA.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<RefA>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0));
+        world.Spawn().Add(RefA.New(1)).Add("extended");
+        world.Spawn().Add(RefA.New(2)).Add("extended");
+
+        var stream = world.Query<RefA>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0));
+        world.Spawn().Add(RefA.New(1)).Add("survivor");
+
+        var stream = world.Query<RefA>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<RefA>().Stream().Count);
     }
 }
 
@@ -3609,6 +4415,139 @@ public class Stream2RefTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i));
+        world.Spawn().Add(RefA.New(9)).Add(RefB.New(9)).Add("extended");
+
+        var stream = world.Query<RefA, RefB>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(RefA.New(600));
+        stream.Blit(RefB.New(601));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(RefA.New(0)).Add(RefB.New(0));
+
+        var stream = world.Query<RefA, RefB>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add("extended");
+
+        var stream = world.Query<RefA, RefB>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1));
+        world.Spawn().Add(RefA.New(2)).Add(RefB.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<RefA, RefB>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add("extended");
+        world.Spawn().Add(RefA.New(2)).Add(RefB.New(2)).Add("extended");
+
+        var stream = world.Query<RefA, RefB>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add("survivor");
+
+        var stream = world.Query<RefA, RefB>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<RefA, RefB>().Stream().Count);
     }
 }
 
@@ -4126,6 +5065,141 @@ public class Stream3RefTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i));
+        world.Spawn().Add(RefA.New(9)).Add(RefB.New(9)).Add(RefC.New(9)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(RefA.New(600));
+        stream.Blit(RefB.New(601));
+        stream.Blit(RefC.New(602));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0));
+
+        var stream = world.Query<RefA, RefB, RefC>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1));
+        world.Spawn().Add(RefA.New(2)).Add(RefB.New(2)).Add(RefC.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<RefA, RefB, RefC>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add("extended");
+        world.Spawn().Add(RefA.New(2)).Add(RefB.New(2)).Add(RefC.New(2)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add("survivor");
+
+        var stream = world.Query<RefA, RefB, RefC>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<RefA, RefB, RefC>().Stream().Count);
     }
 }
 
@@ -4647,6 +5721,143 @@ public class Stream4RefTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i)).Add(RefD.New(i));
+        world.Spawn().Add(RefA.New(9)).Add(RefB.New(9)).Add(RefC.New(9)).Add(RefD.New(9)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(RefA.New(600));
+        stream.Blit(RefB.New(601));
+        stream.Blit(RefC.New(602));
+        stream.Blit(RefD.New(603));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2, ref c3) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+            Assert.Equal(603, c3.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0)).Add(RefD.New(0));
+
+        var stream = world.Query<RefA, RefB, RefC, RefD>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i)).Add(RefD.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i)).Add(RefD.New(i)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0)).Add(RefD.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add(RefD.New(1));
+        world.Spawn().Add(RefA.New(2)).Add(RefB.New(2)).Add(RefC.New(2)).Add(RefD.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0)).Add(RefD.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add(RefD.New(1)).Add("extended");
+        world.Spawn().Add(RefA.New(2)).Add(RefB.New(2)).Add(RefC.New(2)).Add(RefD.New(2)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0)).Add(RefD.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add(RefD.New(1)).Add("survivor");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<RefA, RefB, RefC, RefD>().Stream().Count);
     }
 }
 
@@ -5173,6 +6384,145 @@ public class Stream5RefTests(ITestOutputHelper output)
         }
         Assert.Equal(1, i);
     }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i)).Add(RefD.New(i)).Add(RefE.New(i));
+        world.Spawn().Add(RefA.New(9)).Add(RefB.New(9)).Add(RefC.New(9)).Add(RefD.New(9)).Add(RefE.New(9)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD, RefE>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(RefA.New(600));
+        stream.Blit(RefB.New(601));
+        stream.Blit(RefC.New(602));
+        stream.Blit(RefD.New(603));
+        stream.Blit(RefE.New(604));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2, ref c3, ref c4) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+            Assert.Equal(603, c3.Value);
+            Assert.Equal(604, c4.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0)).Add(RefD.New(0)).Add(RefE.New(0));
+
+        var stream = world.Query<RefA, RefB, RefC, RefD, RefE>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i)).Add(RefD.New(i)).Add(RefE.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(RefA.New(i)).Add(RefB.New(i)).Add(RefC.New(i)).Add(RefD.New(i)).Add(RefE.New(i)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD, RefE>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0)).Add(RefD.New(0)).Add(RefE.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add(RefD.New(1)).Add(RefE.New(1));
+        world.Spawn().Add(RefA.New(2)).Add(RefB.New(2)).Add(RefC.New(2)).Add(RefD.New(2)).Add(RefE.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD, RefE>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0)).Add(RefD.New(0)).Add(RefE.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add(RefD.New(1)).Add(RefE.New(1)).Add("extended");
+        world.Spawn().Add(RefA.New(2)).Add(RefB.New(2)).Add(RefC.New(2)).Add(RefD.New(2)).Add(RefE.New(2)).Add("extended");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD, RefE>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(RefA.New(0)).Add(RefB.New(0)).Add(RefC.New(0)).Add(RefD.New(0)).Add(RefE.New(0));
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add(RefD.New(1)).Add(RefE.New(1)).Add("survivor");
+
+        var stream = world.Query<RefA, RefB, RefC, RefD, RefE>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<RefA, RefB, RefC, RefD, RefE>().Stream().Count);
+    }
 }
 
 /// <summary>
@@ -5685,6 +7035,139 @@ public class Stream2MixedTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i));
+        world.Spawn().Add(ValA.New(9)).Add(RefB.New(9)).Add("extended");
+
+        var stream = world.Query<ValA, RefB>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+        stream.Blit(RefB.New(601));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0)).Add(RefB.New(0));
+
+        var stream = world.Query<ValA, RefB>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add("extended");
+
+        var stream = world.Query<ValA, RefB>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1));
+        world.Spawn().Add(ValA.New(2)).Add(RefB.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA, RefB>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add(RefB.New(2)).Add("extended");
+
+        var stream = world.Query<ValA, RefB>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA, RefB>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA, RefB>().Stream().Count);
     }
 }
 
@@ -6202,6 +7685,141 @@ public class Stream3MixedTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i));
+        world.Spawn().Add(ValA.New(9)).Add(RefB.New(9)).Add(ValC.New(9)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+        stream.Blit(RefB.New(601));
+        stream.Blit(ValC.New(602));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0));
+
+        var stream = world.Query<ValA, RefB, ValC>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1));
+        world.Spawn().Add(ValA.New(2)).Add(RefB.New(2)).Add(ValC.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA, RefB, ValC>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add(RefB.New(2)).Add(ValC.New(2)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA, RefB, ValC>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA, RefB, ValC>().Stream().Count);
     }
 }
 
@@ -6723,6 +8341,143 @@ public class Stream4MixedTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i)).Add(RefD.New(i));
+        world.Spawn().Add(ValA.New(9)).Add(RefB.New(9)).Add(ValC.New(9)).Add(RefD.New(9)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+        stream.Blit(RefB.New(601));
+        stream.Blit(ValC.New(602));
+        stream.Blit(RefD.New(603));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2, ref c3) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+            Assert.Equal(603, c3.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0)).Add(RefD.New(0));
+
+        var stream = world.Query<ValA, RefB, ValC, RefD>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i)).Add(RefD.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i)).Add(RefD.New(i)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0)).Add(RefD.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add(RefD.New(1));
+        world.Spawn().Add(ValA.New(2)).Add(RefB.New(2)).Add(ValC.New(2)).Add(RefD.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0)).Add(RefD.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add(RefD.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add(RefB.New(2)).Add(ValC.New(2)).Add(RefD.New(2)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0)).Add(RefD.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add(RefD.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA, RefB, ValC, RefD>().Stream().Count);
     }
 }
 
@@ -7248,5 +9003,144 @@ public class Stream5MixedTests(ITestOutputHelper output)
             Assert.True(entity.Has<string>());
         }
         Assert.Equal(1, i);
+    }
+
+
+    [Fact]
+    public void Can_Blit()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i)).Add(RefD.New(i)).Add(ValE.New(i));
+        world.Spawn().Add(ValA.New(9)).Add(RefB.New(9)).Add(ValC.New(9)).Add(RefD.New(9)).Add(ValE.New(9)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD, ValE>().Stream();
+        Assert.Equal(5, stream.Count);
+
+        stream.Blit(ValA.New(600));
+        stream.Blit(RefB.New(601));
+        stream.Blit(ValC.New(602));
+        stream.Blit(RefD.New(603));
+        stream.Blit(ValE.New(604));
+
+        var visited = 0;
+        stream.For((ref c0, ref c1, ref c2, ref c3, ref c4) =>
+        {
+            visited++;
+            Assert.Equal(600, c0.Value);
+            Assert.Equal(601, c1.Value);
+            Assert.Equal(602, c2.Value);
+            Assert.Equal(603, c3.Value);
+            Assert.Equal(604, c4.Value);
+        });
+        Assert.Equal(5, visited);
+    }
+
+
+    [Fact]
+    public void Can_Batch_With_Conflict_Modes()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0)).Add(RefD.New(0)).Add(ValE.New(0));
+
+        var stream = world.Query<ValA, RefB, ValC, RefD, ValE>().Stream();
+
+        // Batch(AddConflict) overload
+        stream.Batch(Batch.AddConflict.Replace).Add("added").Submit();
+        Assert.True(entity.Has<string>());
+
+        // Batch(RemoveConflict) overload
+        stream.Batch(Batch.RemoveConflict.Allow).Remove<string>().Submit();
+        Assert.False(entity.Has<string>());
+
+        // Batch(AddConflict, RemoveConflict) overload
+        stream.Batch(Batch.AddConflict.Replace, Batch.RemoveConflict.Allow).Add("both").Submit();
+        Assert.True(entity.Has<string>());
+    }
+
+
+    [Fact]
+    public void Can_Truncate()
+    {
+        using var world = new World();
+
+        // two matching archetypes (the second is extended by a string component)
+        for (var i = 0; i < 8; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i)).Add(RefD.New(i)).Add(ValE.New(i));
+        for (var i = 0; i < 4; i++) world.Spawn().Add(ValA.New(i)).Add(RefB.New(i)).Add(ValC.New(i)).Add(RefD.New(i)).Add(ValE.New(i)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD, ValE>().Stream();
+        Assert.Equal(12, stream.Count);
+
+        // Proportional (default): ratio 0.5 -> 8 becomes 4, 4 becomes 2
+        stream.Truncate(6);
+        Assert.Equal(6, stream.Count);
+
+        // fully qualified: the fennecs.tests.Query test namespace shadows the type here
+        stream.Truncate(1, fennecs.Query.TruncateMode.PerArchetype);
+        Assert.Equal(2, stream.Count);
+    }
+
+
+    [Fact]
+    public void Can_Despawn_All_Matching()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0)).Add(RefD.New(0)).Add(ValE.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add(RefD.New(1)).Add(ValE.New(1));
+        world.Spawn().Add(ValA.New(2)).Add(RefB.New(2)).Add(ValC.New(2)).Add(RefD.New(2)).Add(ValE.New(2)).Add("extended");
+        var outsider = world.Spawn().Add("outsider");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD, ValE>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.True(outsider.Alive);
+    }
+
+
+    [Fact]
+    public void Subset_and_Exclude_Filter_Archetypes()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0)).Add(RefD.New(0)).Add(ValE.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add(RefD.New(1)).Add(ValE.New(1)).Add("extended");
+        world.Spawn().Add(ValA.New(2)).Add(RefB.New(2)).Add(ValC.New(2)).Add(RefD.New(2)).Add(ValE.New(2)).Add("extended");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD, ValE>().Stream();
+        Assert.Equal(3, stream.Count);
+
+        var subset = stream with { Subset = [Comp<string>.Plain] };
+        Assert.Equal(2, subset.Count);
+
+        var exclude = stream with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, exclude.Count);
+
+        // runners iterate only the filtered archetypes
+        var visited = 0;
+        subset.For((ref _, ref _, ref _, ref _, ref _) => { visited++; });
+        Assert.Equal(2, visited);
+    }
+
+
+    [Fact]
+    public void Despawn_Honors_Exclude_Filter()
+    {
+        using var world = new World();
+
+        world.Spawn().Add(ValA.New(0)).Add(RefB.New(0)).Add(ValC.New(0)).Add(RefD.New(0)).Add(ValE.New(0));
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add(RefD.New(1)).Add(ValE.New(1)).Add("survivor");
+
+        var stream = world.Query<ValA, RefB, ValC, RefD, ValE>().Stream() with { Exclude = [Comp<string>.Plain] };
+        Assert.Equal(1, stream.Count);
+
+        stream.Despawn();
+
+        Assert.Equal(0, stream.Count);
+        Assert.Equal(1, world.Query<ValA, RefB, ValC, RefD, ValE>().Stream().Count);
     }
 }
