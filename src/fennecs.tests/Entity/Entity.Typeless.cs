@@ -56,7 +56,7 @@ public class EntityTypelessTests
         var entity = world.Spawn();
         entity.Add(123);
 
-        entity.Clear(typeof(int), default);
+        entity.Clear(typeof(int));
         
         Assert.Null(entity.Get(typeof(int)));
         Assert.False(entity.Get(out _, typeof(int)));
@@ -84,6 +84,17 @@ public class EntityTypelessTests
         object boxed = 123;
         
         Assert.Throws<ArgumentException>(() => entity.Set(boxed, Match.Object));
+    }
+    
+    [Fact]
+    public void Cannot_Get_Wildcard()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add<int>(world.Spawn());
+
+#pragma warning disable CA2263
+        Assert.Throws<ArgumentException>(() => entity.Get(typeof(int), Match.Any));
+#pragma warning restore CA2263
     }
     
     [Fact]
