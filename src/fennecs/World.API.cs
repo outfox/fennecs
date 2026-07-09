@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using fennecs.pools;
@@ -10,8 +11,16 @@ namespace fennecs;
 /// <summary>
 /// A fennecs.World contains Entities, their Components, compiled Queries, and manages the lifecycles of these objects.
 /// </summary>
-public partial class World : IDisposable, IEnumerable<Entity>
+public partial class World : IDisposable, IEnumerable<Entity>, IAspect
 {
+    /// <summary>
+    /// The World this IAspect surface belongs to: itself.
+    /// (Worlds delegate their query surface to their <see cref="Main"/> Aspect,
+    /// resolving other Aspects from the queried Component types.)
+    /// </summary>
+    World IAspect.World => this;
+
+
     #region Config
         /// <summary>
         /// Optional name for the World.
@@ -117,9 +126,42 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <param name="values">Component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.Expression);
-        var archetype = GetArchetype(signature);
-        archetype.Spawn(count, components, values);
+        if (_aspects.Count == 1)
+        {
+            var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.Expression);
+            var archetype = Main.GetArchetype(signature);
+            archetype.Spawn(count, components, values);
+            return;
+        }
+
+        using var worldLock = Lock();
+        using var identities = SpawnBare(count);
+
+        // Group the configured components by their owning Aspect.
+        var groups = new Dictionary<Aspect, (List<TypeExpression> components, List<object> values)>();
+        for (var i = 0; i < components.Count; i++)
+        {
+            var owner = AspectOf(components[i]);
+            if (!groups.TryGetValue(owner, out var group))
+            {
+                group = ([], []);
+                groups[owner] = group;
+            }
+            group.components.Add(components[i]);
+            group.values.Add(values[i]);
+        }
+
+        // Main always receives the Entities, at minimum into its Root archetype.
+        if (!groups.ContainsKey(Main)) groups[Main] = ([], []);
+
+        foreach (var aspect in _aspects)
+        {
+            if (!groups.TryGetValue(aspect, out var group)) continue;
+
+            var signature = new Signature(group.components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.Expression);
+            aspect.EnsureCapacity(_identityPool.Created + 1);
+            aspect.GetArchetype(signature).SpawnWith(identities, group.components, group.values);
+        }
     }
 
     /// <summary>
@@ -134,7 +176,8 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// </summary>
     /// <param name="identity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
-    internal bool IsAlive(Identity identity) => identity == _meta[identity.Index].Identity;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal bool IsAlive(Identity identity) => Main.IsAlive(identity);
 
 
     /// <summary>
@@ -145,7 +188,17 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <summary>
     /// All Queries that exist in this World.
     /// </summary>
-    public IReadOnlySet<Query> Queries => _queries;
+    public IReadOnlySet<Query> Queries
+    {
+        get
+        {
+            if (_aspects.Count == 1) return Main.Queries;
+
+            var queries = new HashSet<Query>();
+            foreach (var aspect in _aspects) queries.UnionWith(aspect.Queries);
+            return queries;
+        }
+    }
 
     #endregion
 
@@ -187,15 +240,22 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// Bulk Recycle Entities from a World.
     /// </summary>
     /// <remarks>
-    /// MUST BE REMOVED FROM ITS ARCHETYPE STORAGE! (used by Archetype.Truncate)
+    /// MUST BE REMOVED FROM THE SOURCE ARCHETYPE'S STORAGE! (used by Archetype.Truncate)
+    /// Other Aspects still evict the Entities' rows normally.
     /// </remarks>
+    /// <param name="source">the Archetype the Entities were truncated from</param>
     /// <param name="identities">the entities to despawn (remove)</param>
-    internal void Recycle(ReadOnlySpan<Identity> identities)
+    internal void Recycle(Archetype source, ReadOnlySpan<Identity> identities)
     {
         foreach (var identity in identities)
         {
-            DespawnDependencies(new(this, identity));
-            _meta[identity.Index] = default;
+            var entity = new Entity(this, identity);
+            foreach (var aspect in _aspects)
+            {
+                // The source Archetype already removed its own rows.
+                if (aspect == source.Aspect) aspect.Forget(entity);
+                else aspect.Despawn(entity);
+            }
         }
         _identityPool.Recycle(identities);
     }
@@ -211,13 +271,12 @@ public partial class World : IDisposable, IEnumerable<Entity>
     public World(int initialCapacity = 4096)
     {
         Name = nameof(World);
-        
+
+        _initialCapacity = initialCapacity;
         _identityPool = new(initialCapacity);
 
-        _meta = new Meta[initialCapacity];
-
-        //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        _root = GetArchetype(new(Comp<Identity>.Plain.Expression));
+        Main = new(this, "main", initialCapacity);
+        _aspects.Add(Main);
     }
 
 
@@ -228,34 +287,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     {
         if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
 
-        foreach (var archetype in _archetypes.ToArray())
-        {
-            if (archetype.IsEmpty) DisposeArchetype(archetype);
-        }
-    }
-
-
-    internal void DisposeArchetype(Archetype archetype)
-    {
-        Debug.Assert(archetype.IsEmpty, $"{archetype} is not empty?!");
-        Debug.Assert(_typeGraph.ContainsKey(archetype.Signature), $"{archetype} is not in type graph?!");
-            
-        _typeGraph.Remove(archetype.Signature);
-            
-        foreach (var type in archetype.Signature)
-        {
-            // Same here, if all Archetypes with a Type are gone, we can clear the entry.
-            _tablesByType[type].Remove(archetype);
-            if (_tablesByType[type].Count == 0) _tablesByType.Remove(type);
-        }
-
-        foreach (var query in _queries)
-        {
-            // TODO: Will require some optimization later.
-            query.ForgetArchetype(archetype);
-        }
-            
-        _archetypes.Remove(archetype);
+        foreach (var aspect in _aspects) aspect.GC();
     }
 
 
@@ -283,7 +315,7 @@ public partial class World : IDisposable, IEnumerable<Entity>
     /// <inheritdoc />
     public IEnumerator<Entity> GetEnumerator()
     {
-        return _archetypes.SelectMany(archetype => archetype).GetEnumerator();
+        return Main.GetEnumerator();
     }
 
     /// <inheritdoc />
@@ -307,9 +339,9 @@ public partial class World : IDisposable, IEnumerable<Entity>
     {
         var sb = new StringBuilder("World:");
         sb.AppendLine();
-        sb.AppendLine($" {_archetypes.Count} Archetypes");
+        sb.AppendLine($" {_aspects.Sum(aspect => aspect.ArchetypeCount)} Archetypes");
         sb.AppendLine($" {Count} Entities");
-        sb.AppendLine($" {_queries.Count} Queries");
+        sb.AppendLine($" {_aspects.Sum(aspect => aspect.Queries.Count)} Queries");
         sb.AppendLine($"{nameof(WorldMode)}.{Mode}");
         return sb.ToString();
     }

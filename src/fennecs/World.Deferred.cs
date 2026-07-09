@@ -87,7 +87,7 @@ public partial class World
             Opcode = Opcode.Batch;
             Data = operation;
 
-            Archetype = default!;
+            Archetype = null!;
             TypeExpression = default;
             Identity = default;
         }

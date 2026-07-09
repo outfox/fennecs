@@ -1,15 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace fennecs;
 
 public partial class World
 {
     #region CRUD
+
+    // These facades perform the World-level concerns (deferred mode, liveness assertions)
+    // and delegate the structural work to the Aspect that stores the component type.
+
     internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data) where T : notnull
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
-        
+
         if (typeExpression.isWildcard) throw new ArgumentException("Cannot add a Wildcard Component");
+
+        // Resolve before deferring: fails fast at the call site under StrictAspects.
+        var aspect = AspectOf(typeExpression);
 
         if (Mode == WorldMode.Deferred)
         {
@@ -19,37 +26,21 @@ public partial class World
 
         AssertAlive(identity);
 
-        ref var meta = ref _meta[identity.Index];
-        var oldArchetype = meta.Archetype;
-
-        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} already has a Component of type {typeExpression}");
-
-        var newSignature = oldArchetype.Signature.Add(typeExpression);
-        var newArchetype = GetArchetype(newSignature);
-        Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
-
-        // Back-fill the new value
-        newArchetype.BackFill(typeExpression, data, 1);
+        aspect.AddComponent(identity, typeExpression, data);
     }
 
 
     internal void RemoveComponent(Identity identity, TypeExpression typeExpression)
     {
+        var aspect = AspectOf(typeExpression);
+
         if (Mode == WorldMode.Deferred)
         {
             _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Identity = identity, TypeExpression = typeExpression});
             return;
         }
 
-        ref var meta = ref _meta[identity.Index];
-
-        var oldArchetype = meta.Archetype;
-
-        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} does not have a Component of type {typeExpression}");
-
-        var newSignature = oldArchetype.Signature.Remove(typeExpression);
-        var newArchetype = GetArchetype(newSignature);
-        Archetype.MoveEntry(meta.Row, oldArchetype, newArchetype);
+        aspect.RemoveComponent(identity, typeExpression);
     }
 
 
@@ -58,54 +49,37 @@ public partial class World
         var type = TypeExpression.Of<T>(match);
         return HasComponent(identity, type);
     }
-    
-    
+
+
     internal ref T GetComponent<T>(Identity identity, Match match)
     {
         AssertAlive(identity);
-
-        if (!HasComponent<T>(identity, match))
-        {
-            throw new InvalidOperationException($"Entity {identity} does not have a reference type Component of type {typeof(T)} / {match}");
-        }
-
-        var (table, row, _) = _meta[identity.Index];
-        var storage = table.GetStorage<T>(match);
-        return ref storage.Span[row];
+        return ref AspectOf(TypeExpression.Of<T>(match)).GetComponent<T>(identity, match);
     }
-    
+
     internal bool GetComponent(Identity identity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
         if (type.isWildcard) throw new ArgumentException("Cannot get a Wildcard Component", nameof(type));
-        
+
         AssertAlive(identity);
 
-        if (!HasComponent(identity, type))
-        {
-            value = null;
-            return false;
-        }
-
-        var (table, row, _) = _meta[identity.Index];
-        var storage = table.GetStorage(type);
-        value = storage.Get(row);
-        return true;
+        return AspectOf(type).GetComponent(identity, type, out value);
     }
-    
+
     internal Signature GetSignature(Identity identity)
     {
         AssertAlive(identity);
-        var meta = _meta[identity.Index];
-        var array = meta.Archetype.Signature;
-        return array;
+
+        var signature = Main.GetSignature(identity);
+        for (var i = 1; i < _aspects.Count; i++)
+        {
+            var aspect = _aspects[i];
+            if (!aspect.Contains(identity)) continue;
+            signature = signature.Union(aspect.GetSignature(identity));
+        }
+        return signature;
     }
     #endregion
 
-    internal T[] Get<T>(Identity id, Match match)
-    {
-        var type = TypeExpression.Of<T>(match);
-        var meta = _meta[id.Index];
-        using var storages = meta.Archetype.Match<T>(type);
-        return storages.Select(s => s[meta.Row]).ToArray();
-    }
+    internal T[] Get<T>(Identity id, Match match) => AspectOf(TypeExpression.Of<T>(match)).Get<T>(id, match);
 }

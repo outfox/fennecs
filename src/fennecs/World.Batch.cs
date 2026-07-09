@@ -18,14 +18,8 @@ public partial class World
     }
 
 
-    private void Commit(Batch operation)
+    private static void Commit(Batch operation)
     {
-        foreach (var archetype in operation.Archetypes)
-        {
-            var preAddSignature = archetype.Signature.Except(operation.Removals);
-            var destinationSignature = preAddSignature.Union(operation.Additions);
-            var destination = GetArchetype(destinationSignature);
-            archetype.Migrate(destination, operation.Additions, operation.BackFill, operation.AddMode);
-        }
+        operation.Aspect.Commit(operation);
     }
 }

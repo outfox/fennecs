@@ -31,7 +31,9 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
-        var meta = World.GetEntityMeta(entity);
+        if (!Aspect.Contains(entity.Id)) return false;
+
+        var meta = Aspect.GetEntityMeta(entity);
         var table = meta.Archetype;
         return Archetypes.Contains(table);
     }
@@ -93,20 +95,25 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     internal readonly SortedSet<Archetype> Archetypes;
 
     /// <summary>
-    /// The World this Query is associated with.
-    /// The World will notify the Query of new matched Archetypes, or Archetypes to forget.
+    /// The Aspect this Query is associated with. All of a Query's Archetypes belong to one Aspect.
+    /// The Aspect will notify the Query of new matched Archetypes, or Archetypes to forget.
     /// </summary>
-    internal World World { get; init; }
+    internal readonly Aspect Aspect;
+
+    /// <summary>
+    /// The World this Query is associated with.
+    /// </summary>
+    internal World World => Aspect.World;
 
     /// <summary>
     ///  Mask for the Query. Used for matching (including/excluding/filtering) Archetypes.
     /// </summary>
     internal readonly Mask Mask;
 
-    internal Query(World world, Mask mask, SortedSet<Archetype> matchingTables)
+    internal Query(Aspect aspect, Mask mask, SortedSet<Archetype> matchingTables)
     {
         Archetypes = matchingTables;
-        World = world;
+        Aspect = aspect;
         Mask = mask;
     }
 
@@ -324,7 +331,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
 
 
     /// <inheritdoc />
-    public Batch Batch() => new(Archetypes, World, Mask.Clone(), default, default);
+    public Batch Batch() => new(Archetypes, Aspect, Mask.Clone(), default, default);
 
 
     /// <summary>
@@ -339,7 +346,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.AddConflict addConflict)
     {
-        return new Batch(Archetypes, World, Mask.Clone(), addConflict, default);
+        return new Batch(Archetypes, Aspect, Mask.Clone(), addConflict, default);
     }
 
 
@@ -355,7 +362,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.RemoveConflict removeConflict)
     {
-        return new Batch(Archetypes, World, Mask.Clone(), default, removeConflict);
+        return new Batch(Archetypes, Aspect, Mask.Clone(), default, removeConflict);
     }
 
 
@@ -371,7 +378,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// <returns>a BatchOperation that needs to be executed by calling <see cref="Batch.Submit"/></returns>
     public Batch Batch(Batch.AddConflict addConflict, Batch.RemoveConflict removeConflict)
     {
-        return new(Archetypes, World, Mask.Clone(), addConflict, removeConflict);
+        return new(Archetypes, Aspect, Mask.Clone(), addConflict, removeConflict);
     }
 
 
@@ -463,7 +470,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
 
         //Archetypes.Dispose();
 
-        World.RemoveQuery(this);
+        Aspect.RemoveQuery(this);
         Mask.Dispose();
     }
 

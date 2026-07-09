@@ -17,6 +17,20 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
 
     private readonly World _world;
 
+    // When set, the Query compiles against this specific Aspect instead of
+    // resolving one from the Mask's types. (see Aspect.Query<...>())
+    private Aspect? _aspect;
+
+
+    /// <summary>
+    /// Scopes this builder to compile its Queries against the given Aspect.
+    /// </summary>
+    internal QB Within(Aspect aspect)
+    {
+        _aspect = aspect;
+        return (QB)this;
+    }
+
     /// <summary>
     /// A QueryBuilder provides a fluent API to construct Queries into a <see cref="fennecs.World"/>.
     /// Queries use Query Expressions to Match Entities based on their Components, Relations, or Object Links.
@@ -42,7 +56,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// or any of its overloads.
     /// </remarks>
     /// <returns>compiled query (you can compile more than one query from the same builder)</returns>
-    public Query Compile() => _world.CompileQuery(_mask);
+    public Query Compile() => _aspect?.CompileQuery(_mask) ?? _world.CompileQuery(_mask);
 
     #endregion
 

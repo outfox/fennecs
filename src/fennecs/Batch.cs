@@ -8,7 +8,8 @@ namespace fennecs;
 /// </summary>
 public readonly struct Batch : IDisposable, IAddRemove<Batch>
 {
-    private readonly World _world;
+    internal readonly Aspect Aspect;
+    private World World => Aspect.World;
     private readonly Mask _mask;
 
     internal readonly PooledList<Archetype> Archetypes = PooledList<Archetype>.Rent();
@@ -28,16 +29,16 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     /// </summary>
     public void Submit()
     {
-        if (_world.Submit(this))
+        if (World.Submit(this))
         {
             Dispose();
         }
     }
 
 
-    internal Batch(SortedSet<Archetype> archetypes, World world, Mask mask, AddConflict addMode, RemoveConflict removeMode)
+    internal Batch(SortedSet<Archetype> archetypes, Aspect aspect, Mask mask, AddConflict addMode, RemoveConflict removeMode)
     {
-        _world = world;
+        Aspect = aspect;
         _mask = mask;
 
         Archetypes.AddRange(archetypes);
@@ -51,6 +52,8 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     private Batch AddComponent<T>(T data, Match match)
     {
         var typeExpression = TypeExpression.Of<T>(match);
+
+        AssertSameAspect(typeExpression);
 
         if (AddMode == AddConflict.Strict && !_mask.SafeForAddition(typeExpression))
             throw new InvalidOperationException(
@@ -71,6 +74,8 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
     {
         var typeExpression = TypeExpression.Of<T>(match);
 
+        AssertSameAspect(typeExpression);
+
         if (RemoveMode == RemoveConflict.Strict && !_mask.SafeForRemoval(typeExpression))
             throw new InvalidOperationException(
                 $"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals could cause unintended runtime state. See QueryBuilder.Has<T>(). See RemoveConflict.Disallow, RemoveConflict.Skip.");
@@ -83,6 +88,17 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
 
         Removals.Add(typeExpression);
         return this;
+    }
+
+
+    private void AssertSameAspect(TypeExpression typeExpression)
+    {
+        var owner = World.AspectOf(typeExpression);
+        if (owner == Aspect) return;
+
+        throw new InvalidOperationException(
+            $"Batch on Aspect \"{Aspect.Name}\" cannot operate on {typeExpression}, which is stored in Aspect \"{owner.Name}\". " +
+            "Batches migrate Archetypes within a single Aspect.");
     }
 
     #endregion
