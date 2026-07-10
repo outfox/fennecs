@@ -18,6 +18,12 @@ if (!Sse3.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse3)));
 if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
-//BenchmarkRunner.Run<DorakuBenchmarks>(config);
-//BenchmarkRunner.Run<FilterBenchmarks>(config);
-BenchmarkRunner.Run<AspectFragmentationBenchmarks>(config, args);
+// Add benchmark classes here; run all with `dotnet run -c Release -f net10.0`,
+// or a subset with e.g. `dotnet run -c Release -f net10.0 -- --filter "*Aspect*"`.
+BenchmarkSwitcher.FromTypes(
+[
+    //typeof(DorakuBenchmarks),
+    //typeof(FilterBenchmarks),
+    typeof(AspectFragmentationBenchmarks),
+    typeof(MicrocodeBenchmarks),
+]).Run(args.Length > 0 ? args : ["--filter", "*"], config);
