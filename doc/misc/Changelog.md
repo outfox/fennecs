@@ -48,6 +48,7 @@ Here be ~~dragons~~ more foxes. *What did you expect?*
 
 ::: details
 
+- **Aspects** (0.7.0): Worlds can host multiple self-contained Archetype collections ("Aspects") to group hot data and fight fragmentation. ([documentation](/docs/Advanced/Aspects/index.md))
 - Stream runners return their own Stream, allowing chaining operations.
 - Chunked Component Storage (global, or maybe each World may have its own chunk size)
 - `Match.Object` becomes internal / deprecated, use `Link.Any` instead.
@@ -299,8 +300,8 @@ public static class ReflectionExtensions
 
 ## Version 0.5.8-beta
 
-- `Component` factory class has most of its members deprecated. It is now a storage for a Boxed Component. ([updated documentation](/docs/Components/Expressions.md))
-- `Comp<T>` is a new factory class for Component Expressions. ([updated documentation](/docs/Components/Expressions.md))
+- `Component` factory class has most of its members deprecated. It is now a storage for a Boxed Component. ([updated documentation](/docs/Advanced/Expressions.md))
+- `Comp<T>` is a new factory class for Component Expressions. ([updated documentation](/docs/Advanced/Expressions.md))
 - get (read) a specific component using `entity.Get<T>(Match match)`, e.g. `entity.Get<MyLinkType>(Link.Any)` to get all the Links
 
 ### 0.5.8 Upgrading

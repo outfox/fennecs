@@ -84,11 +84,11 @@ var enemy = world.Spawn()
 | **Relation** | `Add<Likes>(otherEntity)` | Entity-to-entity relationships |
 | **Object Link** | `Add(Link.With(gameObject))` | Links to managed objects |
 
-Entities can also serve as the *secondary key* in a [Relation](/docs/Keys/Relation.md) between two entities.
+Entities can also serve as the *secondary key* in a [Relation](/docs/Advanced/Keys/Relation.md) between two entities.
 
 ### Archetypes
 
-Entities with identical combinations of component [Type Expressions](/docs/Components/Expressions.md) share the same **Archetype**. This is how **fenn**ecs achieves blazing-fast iteration – entities with the same "shape" are stored together in contiguous memory.
+Entities with identical combinations of component [Type Expressions](/docs/Advanced/Expressions.md) share the same **Archetype**. This is how **fenn**ecs achieves blazing-fast iteration – entities with the same "shape" are stored together in contiguous memory.
 
 ::: warning :neofox_think: A Dead Entity Has No Components
 When an entity is despawned, all its components are removed. The entity handle becomes a stale reference to a recycled identity.

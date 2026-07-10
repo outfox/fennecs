@@ -41,9 +41,9 @@ Whenever a Component is added or removed, the Entity moves to a new [Archetype](
 | **Value Types** | Structs stored contiguously – fast & cache-friendly | [Values](ValueTypes.md) |
 | **Tags** | Zero-size markers for categorization | [Tags](Tags.md) |
 | **Shareables** | Reference types shared between entities | [Shareables](Shareables.md) |
-| **Relations** | Entity-to-entity relationships | [Relations](/docs/Keys/Relation.md) |
-| **Object Links** | Links to managed objects | [Links](/docs/Keys/Link.md) |
-| **Expressions** | Meta-level component references | [Expressions](Expressions.md) |
+| **Relations** | Entity-to-entity relationships | [Relations](/docs/Advanced/Keys/Relation.md) |
+| **Object Links** | Links to managed objects | [Links](/docs/Advanced/Keys/Link.md) |
+| **Expressions** | Meta-level component references | [Expressions](/docs/Advanced/Expressions.md) |
 
 ## Component Rules :neofox_comfy:
 

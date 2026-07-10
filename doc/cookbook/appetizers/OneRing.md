@@ -18,7 +18,7 @@ All `.csproj` and `.cs` files are [over here on Github!](https://github.com/outf
 ### Premise
 In this example, we'll recreate the forging of the Rings of Power in the Land of Mordor, as told in the legendary story. 
 
-We'll use the [Object Link](/docs/Keys/Link.md) system to model the binding relationship between the One Ring and the other Rings it rules.
+We'll use the [Object Link](/docs/Advanced/Keys/Link.md) system to model the binding relationship between the One Ring and the other Rings it rules.
 
 First, we [group spawn](/docs/Entities/Spawning.md#fast-flexible-spawns) Entities for each of the other Rings and its Bearer, and link all of them to our singleton instance of the One Ring.
 

@@ -1,6 +1,6 @@
 ---
 title: Expressions
-order: 12
+order: 4
 outline: [1, 2]
 ---
 

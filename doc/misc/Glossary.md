@@ -12,10 +12,15 @@ Feeling a little whelmed by all those new and weird terms that **fenn**ecs casua
 Here we hope to explain some of them a little more in depth, without creating a whole documentation chapter for each.
 
 
+## Aspect
+An Aspect is a self-contained collection of Archetypes within a World  –  its own contiguously laid-out component storage universe. All Aspects of a World share the same Entities; each World starts with one Aspect, `Main`, and you can add more via `World.AddAspect` to group hot data and fight ==Fragmentation==. Component types are assigned to an Aspect via `Aspect.Owns<T>()`, and a Query can only match types stored in a single Aspect.
+
+Read all about them in the [Aspects documentation](/docs/Advanced/Aspects/index.md). *(new in 0.7.0)*
+
 ## Contains
 We contextually sometimes say:
 
-- "the Query contains" a set of Entities, and the base `Query` class also exposes these "contents" via a `IEnumerable<Entity>` interface. This is usable for world setup and in unit tests - but your game logic might want to do its heavy lifting with [Streams](/docs/Streams/index.md) and [SIMD](/docs/Streams/SIMD.md) operations.
+- "the Query contains" a set of Entities, and the base `Query` class also exposes these "contents" via a `IEnumerable<Entity>` interface. This is usable for world setup and in unit tests - but your game logic might want to do its heavy lifting with [Streams](/docs/Streams/index.md) and [SIMD](/docs/Advanced/SIMD.md) operations.
 - "the World contains", which can refer to both Entites and Archetypes.
 - "the Archetype contains", which can refer both to the Entities that share this Archetype, but also the Types that constitute said Archetype.
 
@@ -38,7 +43,9 @@ For instance adding a unique "name" string to each entity using an Object Link w
 A certain amount of Fragmentation is natural and often relatively harmless if you have low counts of entities (up to a few thousand), but it can become a detriment to performance when your Entity counts being processed each tick climbs into the hundreds of thousands.
 
 ### Mitigating Fragmentation
-Mitigations for everyday fragmentation may include enabling/disabling components with a flag and just skipping over them in the runner code (if it's a minority of entities affected), but usually each use case will need custom optimizations when that time comes. 
+Since 0.7.0, [Aspects](/docs/Advanced/Aspects/index.md) are the first-class mitigation: they let you group your hot component types into their own contiguous storage universe, where the comings and goings of other components can't fragment them.
+
+Other mitigations for everyday fragmentation may include enabling/disabling components with a flag and just skipping over them in the runner code (if it's a minority of entities affected), but usually each use case will need custom optimizations when that time comes. 
 
 It's also recommended to perform large bulk operations such as adding or removing components to a large number of Entities through the [Query CRUD](/docs/Queries/CRUD.md), instead of the [per-Entity CRUD](/docs/Entities/ComponentAdd.md).
 

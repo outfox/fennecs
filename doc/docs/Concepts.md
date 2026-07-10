@@ -42,13 +42,16 @@ Structurally similar Entities are packed into [Archetypes](/docs/Components/inde
 
 ::: warning *(~~weird~~ cool stuff that gets us all wide-eyed and bushy tailed)*
 ### [Streams](Streams/) expose *fast* Iteration and SIMD Operations 
-Quickly & safely [iterate entities](Streams/Stream.For.md), or [modify](Streams/SIMD.md#streamblitc) Components in bulk, or process entire [memory blocks](Streams/Stream.Raw.md).
+Quickly & safely [iterate entities](Streams/Stream.For.md), or [modify](Advanced/SIMD.md#streamblitc) Components in bulk, or process entire [memory blocks](Streams/Stream.Raw.md).
 
-### [Relations](/docs/Keys/Relation.md) are Components with an [Entity Target](Queries/Matching.md#match-targets).
+### [Relations](/docs/Advanced/Keys/Relation.md) are Components with an [Entity Target](Queries/Matching.md#match-targets).
 These add expressive, powerful grouping semantics. Relations can be backed by any type.
 
-### [Links](/docs/Keys/Link.md) are Components backed by an [Object Target](Queries/Matching.md#match-targets).
+### [Links](/docs/Advanced/Keys/Link.md) are Components backed by an [Object Target](Queries/Matching.md#match-targets).
 Group Entities logically and in memory by linking them to shared data, like a physics world.
+
+### [Aspects](Advanced/Aspects/index.md) split a World into contiguous storage universes.
+Group hot Components into their own memory neighborhood to fight fragmentation. *(new in 0.7.0)*
 
 ### Queries expose Structural Changes (just as Entities do)
 Efficiently and safely [add](Queries/CRUD.md), [remove](Queries/CRUD.md) from individual Entities or entire matched Queries.

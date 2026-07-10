@@ -1,11 +1,11 @@
 ---
 title: SIMD
-order: 5
+order: 3
 content: SIMD Query Interface
 ---
 
 # SIMD Query Interface
-Queries expose a set of SIMD operations that allow you to perform *bulk mutations* of *components* on all matched entities. Simple writes and arithmetic operations finish at blazing speeds, and are a great complement to your [Runners](Stream.For.md) that deal in more complex logic.
+Queries expose a set of SIMD operations that allow you to perform *bulk mutations* of *components* on all matched entities. Simple writes and arithmetic operations finish at blazing speeds, and are a great complement to your [Runners](/docs/Streams/Stream.For.md) that deal in more complex logic.
 
 **fenn**ecs SIMD operations make use of `System.Intrinsics`, especailly the AVX2, SSE2 and ARM AdvSIMD vector instructions where available.
 
@@ -14,7 +14,7 @@ Queries expose a set of SIMD operations that allow you to perform *bulk mutation
 ![a fennec splashes a paintbucket at an entire wall ](/img/fennec-blit.png)
 *"Imagine getting all your work done at once!"*
 
-The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Stream's Query. `C` must be one of the [Stream Types](index.md#stream-types). It requires no additional setup and is always safe.
+The most prominent SIMD operation is `Blit`, which writes the component value to all entities in the Stream's Query. `C` must be one of the [Stream Types](/docs/Streams/index.md#stream-types). It requires no additional setup and is always safe.
 
 ```csharp
 var myStream = new Query<Velocity, Position>().Stream();
@@ -74,6 +74,6 @@ But because Jobs execute in non-deterministic order, you will not be able to Bli
 
 
 ::: tip QUAD :neofox_glasses: WORD :neofox_glasses: QUAD :neofox_glasses: NERD :neofox_glasses: HACK
-Psst... until then, you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](Stream.Raw.md#realistic-examples). And since we like to live fast and foxy, try the new extension types in C# 13 for that!
+Psst... until then, you can implement your own arbitrary SIMD operations as seen in the  [Stream.Raw Example](/docs/Streams/Stream.Raw.md#realistic-examples). And since we like to live fast and foxy, try the new extension types in C# 13 for that!
 :::
 

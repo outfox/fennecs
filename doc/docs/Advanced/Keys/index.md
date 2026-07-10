@@ -1,6 +1,6 @@
 ---
 title: Keys
-order: 4
+order: 2
 outline: [1, 2]
 ---
 # :neofox_key: Secondary Keys
@@ -19,7 +19,7 @@ Secondary Keys let components reference Entities or Objects, enabling powerful r
 
 | Key Type | Description | Use Case |
 |----------|-------------|----------|
-| [Plain Component](../Components/index.md) | No secondary key | Standard component data |
+| [Plain Component](/docs/Components/index.md) | No secondary key | Standard component data |
 | [Relation](Relation.md) | Target is an Entity | Entity-to-Entity relationships |
 | [Object Link](Link.md) | Target is an Object | Entity-to-Object associations |
 

@@ -57,6 +57,8 @@ There - *Tres Commas...* happy now?
 
 A `fennecs.World` is the root object that contains all your Entities, their Components, Queries, and the data structures that group them. It's the central hub for all things **fenn**ecs in your game or simulation.
 
+Under the hood, a World implements `IAspect` and delegates its entire query surface to its `Main` [Aspect](/docs/Advanced/Aspects/index.md)  –  the built-in storage universe where all your component data lives, until you decide otherwise.
+
 ::: details :neofox_magnify: BEHIND THE SCENES - Multiple Worlds
 
 Yes, you can have up to 256 of them. Disposing a World returns it to the pool. Instantiate to your heart's content! You usually only need one World... now go ... ... shoo!
@@ -151,6 +153,10 @@ You do not have to dispose worlds unless you want a clean slate. **fenn**ecs (or
 Under the hood, a World stores Entities with identical Component setups together in data structures called ==Archetypes==. This keeps **fenn**ecs fast as a fox, letting it blaze through hundreds of thousands of Entities in a flash.
 
 You usually don't need to think about Archetypes yourself - **fenn**ecs handles them automagically based on the Components you give to each Entity.
+:::
+
+::: details :neofox_magnify: BEHIND THE SCENES - Aspects
+Since 0.7.0, a World's Archetypes are grouped into [Aspects](/docs/Advanced/Aspects/index.md)  –  separate contiguous storage universes sharing the same Entities. Every World has one built-in Aspect, `Main`, and you can add more to group hot data and fight ==Fragmentation==. If you've never heard of them, that's by design: with just `Main`, everything behaves exactly as it always did.
 :::
 
 ::: details :neofox_magnify: BEHIND THE SCENES - IdentityPool

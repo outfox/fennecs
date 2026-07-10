@@ -151,7 +151,7 @@ bob.Add(Link.With(chase));
 bob.Add(Link.With(targo));
 ```
 
-See [Object Links](/docs/Keys/Link.md) for more on relation-style object references.
+See [Object Links](/docs/Advanced/Keys/Link.md) for more on relation-style object references.
 
 ## Performance Considerations :neofox_think:
 
@@ -198,4 +198,4 @@ var stream = world.Query<Position>()
 - Must be a reference type (`class` or `record`, not `struct`)
 - Must be `notnull`
 - Entity can only have one plain component of each type
-- For multiple of same type, use [Object Links](/docs/Keys/Link.md)
+- For multiple of same type, use [Object Links](/docs/Advanced/Keys/Link.md)

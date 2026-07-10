@@ -60,6 +60,13 @@ Pull Requests especially welcome (please open an issue first to discuss the feat
 
 ### Q2 2026
 
+::: details `0.7.0` Aspects
+Worlds gain [Aspects](/docs/Advanced/Aspects/index.md): self-contained collections of Archetypes with their own contiguous memory layout, sharing the World's Entities. Group hot data, fight fragmentation.
+
+- ✅ first iteration: registration (`Owns<T>`), lazy membership, per-Aspect queries & streams, strict mode
+- 🦊 still cooking: query bookkeeping optimizations, more docs and cookbook recipes
+:::
+
 ::: details `0.7.x` Unified Entity
 The entity struct needs a refactor for higher memory bandwidth and more consistency, freeing bit fields for new key types, such as hash keys. Previous attempts at this refactor weren't successful, so I'm moving this into its own milestone out of ~~fear~~ respect for its complexity
 :::

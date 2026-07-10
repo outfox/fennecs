@@ -43,6 +43,7 @@ All the deets & don'ts and core facets of the **fenn**ecs API. Use the navigatio
 
 ### Where to begin?
 #### 👉 [**Concepts**](Concepts.md) - an overview of **fenn**ecs (and ECS in general)
+#### 👉 [**Advanced**](Advanced/index.md) - sharp tools for big simulations *(new: [Aspects](Advanced/Aspects/index.md))*
 
 The nuget package also has extensive XMLdoc coverage to keep you informed while you code and explore in your IDE of choice. (neovim obviously, but also Rider or VSCode, any IDE, really)
 
