@@ -2,8 +2,7 @@
 [![fennecs logo](https://fennecs.tech/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech#gh-light-mode-only)
 
 # _... the tiny, tiny, high-energy Entity-Component System!_
-> [![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)  
-> *to use the beta versions, append `--prerelease`*  
+[![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)
 
 <table style="width: 100%">
    <tr>
@@ -73,7 +72,7 @@ And there's more: all that simplicity doesn't force any performance trade-offs! 
 
 ## 💡Highlights / Design Goals
 
-- [x] Modern C# 12 codebase, targeting .NET 8.
+- [x] Modern C# 14 codebase, targeting .NET 10 and .NET 11 (preview).
 - [x] Full Unit Test coverage.
 - [x] Powerfully intuitive ways to access data... _fast!_
 - [x] Workloads can be easily parallelized across *and within* Archetypes

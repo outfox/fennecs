@@ -14,28 +14,30 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: src
+
     steps:
     - name: Checkout
       uses: actions/checkout@v5
     
-    - name: Setup .NET 8
-      uses: actions/setup-dotnet@v5
-      with:
-        dotnet-version: 8.0.x
-    
-    - name: Setup .NET 9
-      uses: actions/setup-dotnet@v5
-      with:
-        dotnet-version: 9.0.x
-
     - name: Setup .NET 10
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 10.0.x
+
+    - name: Setup .NET 11 (preview)
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 11.0.x
+        dotnet-quality: preview
         
     - name: Restore dependencies
       run: dotnet restore fennecs.tests/fennecs.tests.csproj
+    - name: Build library (all target frameworks)
+      run: dotnet build fennecs/fennecs.csproj -c Release
     - name: Build
-      run: dotnet build --no-restore fennecs.tests/fennecs.tests.csproj 
+      run: dotnet build --no-restore fennecs.tests/fennecs.tests.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal fennecs.tests/fennecs.tests.csproj 
+      run: dotnet test --no-build --verbosity normal fennecs.tests/fennecs.tests.csproj

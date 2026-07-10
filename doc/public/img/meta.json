@@ -1,0 +1,2572 @@
+{
+  "metaVersion": 2,
+  "host": "is-a.wyvern.rip",
+  "exportedAt": "2023-12-28T10:03:54Z",
+  "emojis": [
+    {
+      "downloaded": true,
+      "fileName": "neofox_0_0_256.png",
+      "emoji": {
+        "name": "neofox_0_0",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_256.png",
+      "emoji": {
+        "name": "neofox",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_3c_256.png",
+      "emoji": {
+        "name": "neofox_3c",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_amogus_256.png",
+      "emoji": {
+        "name": "neofox_amogus",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_angel_256.png",
+      "emoji": {
+        "name": "neofox_angel",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_angel_pleading_256.png",
+      "emoji": {
+        "name": "neofox_angel_pleading",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_angry_256.png",
+      "emoji": {
+        "name": "neofox_angry",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_approve_256.png",
+      "emoji": {
+        "name": "neofox_approve",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_astronaut_256.png",
+      "emoji": {
+        "name": "neofox_astronaut",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_astronaut_gun_256.png",
+      "emoji": {
+        "name": "neofox_astronaut_gun",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_aww_256.png",
+      "emoji": {
+        "name": "neofox_aww",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_baa_256.png",
+      "emoji": {
+        "name": "neofox_baa",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_blank_256.png",
+      "emoji": {
+        "name": "neofox_blank",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_blep_256.png",
+      "emoji": {
+        "name": "neofox_blep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_blush_256.png",
+      "emoji": {
+        "name": "neofox_blush",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_blush_hide_256.png",
+      "emoji": {
+        "name": "neofox_blush_hide",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_bongo_down_256.png",
+      "emoji": {
+        "name": "neofox_bongo_down",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_bongo_up_256.png",
+      "emoji": {
+        "name": "neofox_bongo_up",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_book_256.png",
+      "emoji": {
+        "name": "neofox_book",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_book_owo_256.png",
+      "emoji": {
+        "name": "neofox_book_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_256.png",
+      "emoji": {
+        "name": "neofox_boop",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_blep_256.png",
+      "emoji": {
+        "name": "neofox_boop_blep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_blush_256.png",
+      "emoji": {
+        "name": "neofox_boop_blush",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_cute_256.png",
+      "emoji": {
+        "name": "neofox_boop_cute",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_googly_256.png",
+      "emoji": {
+        "name": "neofox_boop_googly",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_happy_256.png",
+      "emoji": {
+        "name": "neofox_boop_happy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_nervous_256.png",
+      "emoji": {
+        "name": "neofox_boop_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_owo_256.png",
+      "emoji": {
+        "name": "neofox_boop_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_boop_woozy_256.png",
+      "emoji": {
+        "name": "neofox_boop_woozy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_bottom_256.png",
+      "emoji": {
+        "name": "neofox_bottom",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_box_256.png",
+      "emoji": {
+        "name": "neofox_box",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_catmask_256.png",
+      "emoji": {
+        "name": "neofox_catmask",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_catmode_256.png",
+      "emoji": {
+        "name": "neofox_catmode",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_cofe_256.png",
+      "emoji": {
+        "name": "neofox_cofe",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_comfy_256.png",
+      "emoji": {
+        "name": "neofox_comfy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_comfy_happy_256.png",
+      "emoji": {
+        "name": "neofox_comfy_happy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_comfy_mug_256.png",
+      "emoji": {
+        "name": "neofox_comfy_mug",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_comfy_sip_256.png",
+      "emoji": {
+        "name": "neofox_comfy_sip",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_comfy__w__256.png",
+      "emoji": {
+        "name": "neofox_comfy__w_",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_confused_256.png",
+      "emoji": {
+        "name": "neofox_confused",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_cool_256.png",
+      "emoji": {
+        "name": "neofox_cool",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_cool_fingerguns_256.png",
+      "emoji": {
+        "name": "neofox_cool_fingerguns",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_cry_256.png",
+      "emoji": {
+        "name": "neofox_cry",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_cry_loud_256.png",
+      "emoji": {
+        "name": "neofox_cry_loud",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_cute_256.png",
+      "emoji": {
+        "name": "neofox_cute",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_cute_reach_256.png",
+      "emoji": {
+        "name": "neofox_cute_reach",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_devil_256.png",
+      "emoji": {
+        "name": "neofox_devil",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_dizzy_256.png",
+      "emoji": {
+        "name": "neofox_dizzy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_drowsy_256.png",
+      "emoji": {
+        "name": "neofox_drowsy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_evil_256.png",
+      "emoji": {
+        "name": "neofox_evil",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_evil_3c_256.png",
+      "emoji": {
+        "name": "neofox_evil_3c",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_facepalm_256.png",
+      "emoji": {
+        "name": "neofox_facepalm",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_fingerguns_256.png",
+      "emoji": {
+        "name": "neofox_fingerguns",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_ace_256.png",
+      "emoji": {
+        "name": "neofox_flag_ace",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_agender_256.png",
+      "emoji": {
+        "name": "neofox_flag_agender",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_ambiamorous_256.png",
+      "emoji": {
+        "name": "neofox_flag_ambiamorous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_androgyne_256.png",
+      "emoji": {
+        "name": "neofox_flag_androgyne",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_aro_256.png",
+      "emoji": {
+        "name": "neofox_flag_aro",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_aroflux_256.png",
+      "emoji": {
+        "name": "neofox_flag_aroflux",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_bi_256.png",
+      "emoji": {
+        "name": "neofox_flag_bi",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_bigender_256.png",
+      "emoji": {
+        "name": "neofox_flag_bigender",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_demiace_256.png",
+      "emoji": {
+        "name": "neofox_flag_demiace",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_demiaro_256.png",
+      "emoji": {
+        "name": "neofox_flag_demiaro",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_demiflux_256.png",
+      "emoji": {
+        "name": "neofox_flag_demiflux",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_demigirl_256.png",
+      "emoji": {
+        "name": "neofox_flag_demigirl",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_demiguy_256.png",
+      "emoji": {
+        "name": "neofox_flag_demiguy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_demilesbian_256.png",
+      "emoji": {
+        "name": "neofox_flag_demilesbian",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_deminb_256.png",
+      "emoji": {
+        "name": "neofox_flag_deminb",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_disabled_256.png",
+      "emoji": {
+        "name": "neofox_flag_disabled",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_finsexual_256.png",
+      "emoji": {
+        "name": "neofox_flag_finsexual",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_gay_256.png",
+      "emoji": {
+        "name": "neofox_flag_gay",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_genderfluid_256.png",
+      "emoji": {
+        "name": "neofox_flag_genderfluid",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_intersex_256.png",
+      "emoji": {
+        "name": "neofox_flag_intersex",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_lesbian_256.png",
+      "emoji": {
+        "name": "neofox_flag_lesbian",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_nb_256.png",
+      "emoji": {
+        "name": "neofox_flag_nb",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_pan_256.png",
+      "emoji": {
+        "name": "neofox_flag_pan",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_plural_256.png",
+      "emoji": {
+        "name": "neofox_flag_plural",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_polyam_256.png",
+      "emoji": {
+        "name": "neofox_flag_polyam",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_salmacian_256.png",
+      "emoji": {
+        "name": "neofox_flag_salmacian",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_sapphic_256.png",
+      "emoji": {
+        "name": "neofox_flag_sapphic",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flag_trans_256.png",
+      "emoji": {
+        "name": "neofox_flag_trans",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_256.png",
+      "emoji": {
+        "name": "neofox_floof",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_angel_256.png",
+      "emoji": {
+        "name": "neofox_floof_angel",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_cute_256.png",
+      "emoji": {
+        "name": "neofox_floof_cute",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_devil_256.png",
+      "emoji": {
+        "name": "neofox_floof_devil",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_happy_256.png",
+      "emoji": {
+        "name": "neofox_floof_happy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_mug_256.png",
+      "emoji": {
+        "name": "neofox_floof_mug",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_owo_256.png",
+      "emoji": {
+        "name": "neofox_floof_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_reach_256.png",
+      "emoji": {
+        "name": "neofox_floof_reach",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_sad_256.png",
+      "emoji": {
+        "name": "neofox_floof_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof_sad_reach_256.png",
+      "emoji": {
+        "name": "neofox_floof_sad_reach",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_floof__w__256.png",
+      "emoji": {
+        "name": "neofox_floof__w_",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flop_256.png",
+      "emoji": {
+        "name": "neofox_flop",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flop_blep_256.png",
+      "emoji": {
+        "name": "neofox_flop_blep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flop_happy_256.png",
+      "emoji": {
+        "name": "neofox_flop_happy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flop_sleep_256.png",
+      "emoji": {
+        "name": "neofox_flop_sleep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flop__w__256.png",
+      "emoji": {
+        "name": "neofox_flop__w_",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_flush_256.png",
+      "emoji": {
+        "name": "neofox_flush",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_glare_256.png",
+      "emoji": {
+        "name": "neofox_glare",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_glare_sob_256.png",
+      "emoji": {
+        "name": "neofox_glare_sob",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_glasses_256.png",
+      "emoji": {
+        "name": "neofox_glasses",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_googly_256.png",
+      "emoji": {
+        "name": "neofox_googly",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_googly_blep_256.png",
+      "emoji": {
+        "name": "neofox_googly_blep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_googly_drool_256.png",
+      "emoji": {
+        "name": "neofox_googly_drool",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_googly_shocked_256.png",
+      "emoji": {
+        "name": "neofox_googly_shocked",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_googly_woozy_256.png",
+      "emoji": {
+        "name": "neofox_googly_woozy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_gun_256.png",
+      "emoji": {
+        "name": "neofox_gun",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_happy_256.png",
+      "emoji": {
+        "name": "neofox_happy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_happy_blep_256.png",
+      "emoji": {
+        "name": "neofox_happy_blep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_heart_256.png",
+      "emoji": {
+        "name": "neofox_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_256.png",
+      "emoji": {
+        "name": "neofox_hug",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_blob_256.png",
+      "emoji": {
+        "name": "neofox_hug_blob",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_blob_heart_256.png",
+      "emoji": {
+        "name": "neofox_hug_blob_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_blob_sad_256.png",
+      "emoji": {
+        "name": "neofox_hug_blob_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_bun_256.png",
+      "emoji": {
+        "name": "neofox_hug_bun",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_bun_heart_256.png",
+      "emoji": {
+        "name": "neofox_hug_bun_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_bun_sad_256.png",
+      "emoji": {
+        "name": "neofox_hug_bun_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_cat_256.png",
+      "emoji": {
+        "name": "neofox_hug_cat",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_cat_heart_256.png",
+      "emoji": {
+        "name": "neofox_hug_cat_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_cat_sad_256.png",
+      "emoji": {
+        "name": "neofox_hug_cat_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_dragn_256.png",
+      "emoji": {
+        "name": "neofox_hug_dragn",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_dragn_alt_256.png",
+      "emoji": {
+        "name": "neofox_hug_dragn_alt",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_dragn_heart_256.png",
+      "emoji": {
+        "name": "neofox_hug_dragn_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_dragn_sad_256.png",
+      "emoji": {
+        "name": "neofox_hug_dragn_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_dragn_sad_alt_256.png",
+      "emoji": {
+        "name": "neofox_hug_dragn_sad_alt",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_duck_256.png",
+      "emoji": {
+        "name": "neofox_hug_duck",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_duck_heart_256.png",
+      "emoji": {
+        "name": "neofox_hug_duck_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_duck_sad_256.png",
+      "emoji": {
+        "name": "neofox_hug_duck_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_haj_256.png",
+      "emoji": {
+        "name": "neofox_hug_haj",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_haj_heart_256.png",
+      "emoji": {
+        "name": "neofox_hug_haj_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_haj_sad_256.png",
+      "emoji": {
+        "name": "neofox_hug_haj_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_heart_256.png",
+      "emoji": {
+        "name": "neofox_hug_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hug_sad_256.png",
+      "emoji": {
+        "name": "neofox_hug_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_hyper_256.png",
+      "emoji": {
+        "name": "neofox_hyper",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_kirby_256.png",
+      "emoji": {
+        "name": "neofox_kirby",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_kirby_succ_256.png",
+      "emoji": {
+        "name": "neofox_kirby_succ",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_kisser_256.png",
+      "emoji": {
+        "name": "neofox_kisser",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_knife_256.png",
+      "emoji": {
+        "name": "neofox_knife",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_knives_256.png",
+      "emoji": {
+        "name": "neofox_knives",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_laptop_256.png",
+      "emoji": {
+        "name": "neofox_laptop",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_laptop_notice_256.png",
+      "emoji": {
+        "name": "neofox_laptop_notice",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_laptop_owo_256.png",
+      "emoji": {
+        "name": "neofox_laptop_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_laugh_256.png",
+      "emoji": {
+        "name": "neofox_laugh",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_laugh_nervous_256.png",
+      "emoji": {
+        "name": "neofox_laugh_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_laugh_sweat_256.png",
+      "emoji": {
+        "name": "neofox_laugh_sweat",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_laugh_tears_256.png",
+      "emoji": {
+        "name": "neofox_laugh_tears",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_lul_256.png",
+      "emoji": {
+        "name": "neofox_lul",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_magnify_256.png",
+      "emoji": {
+        "name": "neofox_magnify",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_2_256.png",
+      "emoji": {
+        "name": "neofox_melt_2",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_256.png",
+      "emoji": {
+        "name": "neofox_melt",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_3_256.png",
+      "emoji": {
+        "name": "neofox_melt_3",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_blep_256.png",
+      "emoji": {
+        "name": "neofox_melt_blep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_blush_256.png",
+      "emoji": {
+        "name": "neofox_melt_blush",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_happy_256.png",
+      "emoji": {
+        "name": "neofox_melt_happy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_reach_256.png",
+      "emoji": {
+        "name": "neofox_melt_reach",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_sob_256.png",
+      "emoji": {
+        "name": "neofox_melt_sob",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_melt_sob_heart_256.png",
+      "emoji": {
+        "name": "neofox_melt_sob_heart",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_mug_256.png",
+      "emoji": {
+        "name": "neofox_mug",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_mug_drink_256.png",
+      "emoji": {
+        "name": "neofox_mug_drink",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_mug_owo_256.png",
+      "emoji": {
+        "name": "neofox_mug_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_mug__w__256.png",
+      "emoji": {
+        "name": "neofox_mug__w_",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nervous_256.png",
+      "emoji": {
+        "name": "neofox_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_blob_256.png",
+      "emoji": {
+        "name": "neofox_nom_blob",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_blob_nervous_256.png",
+      "emoji": {
+        "name": "neofox_nom_blob_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_bread_256.png",
+      "emoji": {
+        "name": "neofox_nom_bread",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_bun_256.png",
+      "emoji": {
+        "name": "neofox_nom_bun",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_bun_nervous_256.png",
+      "emoji": {
+        "name": "neofox_nom_bun_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_burger_256.png",
+      "emoji": {
+        "name": "neofox_nom_burger",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_cat_256.png",
+      "emoji": {
+        "name": "neofox_nom_cat",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_cat_nervous_256.png",
+      "emoji": {
+        "name": "neofox_nom_cat_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_cookie_256.png",
+      "emoji": {
+        "name": "neofox_nom_cookie",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_donut_256.png",
+      "emoji": {
+        "name": "neofox_nom_donut",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_dragn_256.png",
+      "emoji": {
+        "name": "neofox_nom_dragn",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_dragn_nervous_256.png",
+      "emoji": {
+        "name": "neofox_nom_dragn_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_egg_256.png",
+      "emoji": {
+        "name": "neofox_nom_egg",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_fox_256.png",
+      "emoji": {
+        "name": "neofox_nom_fox",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_fox_nervous_256.png",
+      "emoji": {
+        "name": "neofox_nom_fox_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_haj_256.png",
+      "emoji": {
+        "name": "neofox_nom_haj",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_haj_nervous_256.png",
+      "emoji": {
+        "name": "neofox_nom_haj_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_melon_256.png",
+      "emoji": {
+        "name": "neofox_nom_melon",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_pita_256.png",
+      "emoji": {
+        "name": "neofox_nom_pita",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_pizza_256.png",
+      "emoji": {
+        "name": "neofox_nom_pizza",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_toblerone_256.png",
+      "emoji": {
+        "name": "neofox_nom_toblerone",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_verified_256.png",
+      "emoji": {
+        "name": "neofox_nom_verified",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_nom_waffle_256.png",
+      "emoji": {
+        "name": "neofox_nom_waffle",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_notice_256.png",
+      "emoji": {
+        "name": "neofox_notice",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_o_o_256.png",
+      "emoji": {
+        "name": "neofox_o_o",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_owo_256.png",
+      "emoji": {
+        "name": "neofox_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_owo_blep_256.png",
+      "emoji": {
+        "name": "neofox_owo_blep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_256.png",
+      "emoji": {
+        "name": "neofox_pat",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_floof_256.png",
+      "emoji": {
+        "name": "neofox_pat_floof",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_flop_256.png",
+      "emoji": {
+        "name": "neofox_pat_flop",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_googly_256.png",
+      "emoji": {
+        "name": "neofox_pat_googly",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_happy_256.png",
+      "emoji": {
+        "name": "neofox_pat_happy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_sad_256.png",
+      "emoji": {
+        "name": "neofox_pat_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_snug_256.png",
+      "emoji": {
+        "name": "neofox_pat_snug",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_sob_256.png",
+      "emoji": {
+        "name": "neofox_pat_sob",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_up_256.png",
+      "emoji": {
+        "name": "neofox_pat_up",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pat_woozy_256.png",
+      "emoji": {
+        "name": "neofox_pat_woozy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_peek_256.png",
+      "emoji": {
+        "name": "neofox_peek",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_peek_bread_256.png",
+      "emoji": {
+        "name": "neofox_peek_bread",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_peek_comfy_256.png",
+      "emoji": {
+        "name": "neofox_peek_comfy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_peek_knife_256.png",
+      "emoji": {
+        "name": "neofox_peek_knife",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_peek_owo_256.png",
+      "emoji": {
+        "name": "neofox_peek_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pensive_256.png",
+      "emoji": {
+        "name": "neofox_pensive",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_phone_256.png",
+      "emoji": {
+        "name": "neofox_phone",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pleading_256.png",
+      "emoji": {
+        "name": "neofox_pleading",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pleading_reach_256.png",
+      "emoji": {
+        "name": "neofox_pleading_reach",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_police_256.png",
+      "emoji": {
+        "name": "neofox_police",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_pout_256.png",
+      "emoji": {
+        "name": "neofox_pout",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_rainbow_256.png",
+      "emoji": {
+        "name": "neofox_rainbow",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_reach_256.png",
+      "emoji": {
+        "name": "neofox_reach",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_reach_drool_256.png",
+      "emoji": {
+        "name": "neofox_reach_drool",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_reject_256.png",
+      "emoji": {
+        "name": "neofox_reject",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sad_256.png",
+      "emoji": {
+        "name": "neofox_sad",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sad_reach_256.png",
+      "emoji": {
+        "name": "neofox_sad_reach",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_santa_256.png",
+      "emoji": {
+        "name": "neofox_santa",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_science_256.png",
+      "emoji": {
+        "name": "neofox_science",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_scream_256.png",
+      "emoji": {
+        "name": "neofox_scream",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_scream_angry_256.png",
+      "emoji": {
+        "name": "neofox_scream_angry",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_scream_scared_256.png",
+      "emoji": {
+        "name": "neofox_scream_scared",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_scream_stare_256.png",
+      "emoji": {
+        "name": "neofox_scream_stare",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_shocked_256.png",
+      "emoji": {
+        "name": "neofox_shocked",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_shy_256.png",
+      "emoji": {
+        "name": "neofox_shy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sign_aaa_256.png",
+      "emoji": {
+        "name": "neofox_sign_aaa",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sign_no_256.png",
+      "emoji": {
+        "name": "neofox_sign_no",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sign_nya_256.png",
+      "emoji": {
+        "name": "neofox_sign_nya",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sign_thx_256.png",
+      "emoji": {
+        "name": "neofox_sign_thx",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sign_yes_256.png",
+      "emoji": {
+        "name": "neofox_sign_yes",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sign_yip_256.png",
+      "emoji": {
+        "name": "neofox_sign_yip",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sip_256.png",
+      "emoji": {
+        "name": "neofox_sip",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sip_glare_256.png",
+      "emoji": {
+        "name": "neofox_sip_glare",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sip_nervous_256.png",
+      "emoji": {
+        "name": "neofox_sip_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sip_owo_256.png",
+      "emoji": {
+        "name": "neofox_sip_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_smol_256.png",
+      "emoji": {
+        "name": "neofox_smol",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_smug_256.png",
+      "emoji": {
+        "name": "neofox_smug",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_snug_256.png",
+      "emoji": {
+        "name": "neofox_snug",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_snug_glare_256.png",
+      "emoji": {
+        "name": "neofox_snug_glare",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_snuggle_256.png",
+      "emoji": {
+        "name": "neofox_snuggle",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_snuggle_cat_256.png",
+      "emoji": {
+        "name": "neofox_snuggle_cat",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_snug_nervous_256.png",
+      "emoji": {
+        "name": "neofox_snug_nervous",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_snug_owo_256.png",
+      "emoji": {
+        "name": "neofox_snug_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sob_256.png",
+      "emoji": {
+        "name": "neofox_sob",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_solder_256.png",
+      "emoji": {
+        "name": "neofox_solder",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_solder_googly_256.png",
+      "emoji": {
+        "name": "neofox_solder_googly",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_dl_256.png",
+      "emoji": {
+        "name": "neofox_stretch_dl",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_down_256.png",
+      "emoji": {
+        "name": "neofox_stretch_down",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_down_end_256.png",
+      "emoji": {
+        "name": "neofox_stretch_down_end",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_dr_256.png",
+      "emoji": {
+        "name": "neofox_stretch_dr",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_h_256.png",
+      "emoji": {
+        "name": "neofox_stretch_h",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_left_256.png",
+      "emoji": {
+        "name": "neofox_stretch_left",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_right_256.png",
+      "emoji": {
+        "name": "neofox_stretch_right",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_ul_256.png",
+      "emoji": {
+        "name": "neofox_stretch_ul",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_up_256.png",
+      "emoji": {
+        "name": "neofox_stretch_up",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_ur_256.png",
+      "emoji": {
+        "name": "neofox_stretch_ur",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_stretch_v_256.png",
+      "emoji": {
+        "name": "neofox_stretch_v",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_surprised_256.png",
+      "emoji": {
+        "name": "neofox_surprised",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_surprised_pika_256.png",
+      "emoji": {
+        "name": "neofox_surprised_pika",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_sweat_256.png",
+      "emoji": {
+        "name": "neofox_sweat",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_thief_256.png",
+      "emoji": {
+        "name": "neofox_thief",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_think_256.png",
+      "emoji": {
+        "name": "neofox_think",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_think_anime_256.png",
+      "emoji": {
+        "name": "neofox_think_anime",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_think_cool_256.png",
+      "emoji": {
+        "name": "neofox_think_cool",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_think_googly_256.png",
+      "emoji": {
+        "name": "neofox_think_googly",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_thinking_256.png",
+      "emoji": {
+        "name": "neofox_thinking",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_think_owo_256.png",
+      "emoji": {
+        "name": "neofox_think_owo",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_think_woozy_256.png",
+      "emoji": {
+        "name": "neofox_think_woozy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_thonk_256.png",
+      "emoji": {
+        "name": "neofox_thonk",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_thumbsdown_256.png",
+      "emoji": {
+        "name": "neofox_thumbsdown",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_thumbsup_256.png",
+      "emoji": {
+        "name": "neofox_thumbsup",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_up_256.png",
+      "emoji": {
+        "name": "neofox_up",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_up_paws_256.png",
+      "emoji": {
+        "name": "neofox_up_paws",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_up_sleep_256.png",
+      "emoji": {
+        "name": "neofox_up_sleep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_up__w__256.png",
+      "emoji": {
+        "name": "neofox_up__w_",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_uwu_256.png",
+      "emoji": {
+        "name": "neofox_uwu",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_verified_256.png",
+      "emoji": {
+        "name": "neofox_verified",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_vr_256.png",
+      "emoji": {
+        "name": "neofox_vr",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox__w__256.png",
+      "emoji": {
+        "name": "neofox__w_",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_what_256.png",
+      "emoji": {
+        "name": "neofox_what",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_wink_256.png",
+      "emoji": {
+        "name": "neofox_wink",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_wink_blep_256.png",
+      "emoji": {
+        "name": "neofox_wink_blep",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_woozy_256.png",
+      "emoji": {
+        "name": "neofox_woozy",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_x_x_256.png",
+      "emoji": {
+        "name": "neofox_x_x",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_yeet_256.png",
+      "emoji": {
+        "name": "neofox_yeet",
+        "category": "neofox",
+        "aliases": []
+      }
+    },
+    {
+      "downloaded": true,
+      "fileName": "neofox_yell_256.png",
+      "emoji": {
+        "name": "neofox_yell",
+        "category": "neofox",
+        "aliases": []
+      }
+    }
+  ]
+}

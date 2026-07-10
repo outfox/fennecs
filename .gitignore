@@ -8,6 +8,8 @@ Temp
 Build
 Builds
 
+dotnet-tools.json
+
 *.Artifacts
 s3/
 .dist
@@ -15,6 +17,7 @@ s3/
 # IDE & agent litter
 knowledge.md
 AGENTS.md
+CLAUDE.md
 .agents/
 .codebuff/
 
