@@ -19,4 +19,5 @@ if (!Sse2.IsSupported) config.AddFilter(new CategoryExclusion(nameof(Sse2)));
 if (!AdvSimd.IsSupported) config.AddFilter(new CategoryExclusion(nameof(AdvSimd)));
 
 //BenchmarkRunner.Run<DorakuBenchmarks>(config);
-BenchmarkRunner.Run<FilterBenchmarks>(config);
+//BenchmarkRunner.Run<FilterBenchmarks>(config);
+BenchmarkRunner.Run<AspectFragmentationBenchmarks>(config, args);
