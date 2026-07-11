@@ -42,24 +42,24 @@ var world = new fennecs.World(initialCapacity: 0)
 }
 ```
 
-### You can have over two Billion Entities in a World.
+### You can have up to a Billion Entities in a World.
 Optimistically, **fenn**ecs might help you handle around 1 or 2 <u>M</u>illion Entities at a reasonable performance level for games, depending on your Component layouts.
 
 ::: details :neofox_cry_loud: I WANT MORE!
-Listen, Jeff Jr. - the difference between 1 million and 2 billion is pretty much exactly 2 billion. Can you even begin to fathom how much that is? ... *sigh* ... sure, we'll chip in a couple more!
+Listen, Jeff Jr. - the difference between 1 million and 1 billion is pretty much exactly 1 billion. Can you even begin to fathom how much a billion is? ... *sigh* ... sure, we'll chip in a couple more! 
 
 Easy to remember, too - the limit is now your mom's weight and/or phone number:
-`2,147,483,647`<br/>
+`1,073,741,824`<br/>
 There - *Tres Commas...* happy now?
 
-*(that's `int.MaxValue` - the Entity encoding itself would go to 4,294,967,295, but .NET array sizes bind first. Your RAM taps out way, way before either.)*
+*(that's 2³⁰ - storage capacities grow in powers of two, and that's the last power of two a .NET array can hold. The Entity encoding itself would go to 4,294,967,295. Your RAM taps out way, way before either.)*
 :::
 
 ::: details :neofox_magnify: LIMITS - for nerds who need numbers (as of 0.7.0)
 
 | What | Limit | Why |
 |---|---|---|
-| Entities per World | `2,147,483,647` (~2.1 billion) | 32-bit Entity index; .NET array sizes bind first |
+| Entities per World | `1,073,741,824` (2³⁰, ~1 billion) | capacities grow in powers of two, and 2³⁰ is the largest a .NET array allows (the 32-bit Entity index itself would go to 4.29G) |
 | Concurrent Worlds | `255` | 8-bit World tag (tag 0 is reserved); slots are recycled on `Dispose()` |
 | Respawns per Entity index | `65,535` | 16-bit Generation; exhausted indices are retired, never recycled |
 | Component Types (per process) | `4,094` | 12-bit TypeId (ids 0, 1, and 0xFFF are reserved) |
