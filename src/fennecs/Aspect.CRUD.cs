@@ -30,7 +30,7 @@ public partial class Aspect
         ref var meta = ref _meta[entity.Index];
         var oldArchetype = meta.Archetype;
 
-        if (oldArchetype.Signature.Matches(typeExpression)) ThrowAlreadyHasComponent(entity, typeExpression);
+        if (oldArchetype.HasStorage(typeExpression)) ThrowAlreadyHasComponent(entity, typeExpression);
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -49,7 +49,7 @@ public partial class Aspect
 
         var oldArchetype = meta.Archetype;
 
-        if (!oldArchetype.Signature.Matches(typeExpression)) ThrowDoesNotHaveComponent(entity, typeExpression);
+        if (!oldArchetype.HasStorage(typeExpression)) ThrowDoesNotHaveComponent(entity, typeExpression);
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
 
@@ -72,9 +72,14 @@ public partial class Aspect
     {
         if (entity.Index >= (uint) _meta.Length) return false;
 
-        var meta = _meta[entity.Index];
-        return meta.Archetype is not null
-               && typeExpression.Matches(meta.Archetype.MatchSignature);
+        var archetype = _meta[entity.Index].Archetype;
+        if (archetype is null) return false;
+
+        // Concrete expressions are exactly the Archetype's storage keys: one dictionary probe.
+        if (!typeExpression.isWildcard) return archetype.HasStorage(typeExpression);
+
+        // Wildcards match against the expanded signature (which contains the wildcard entries).
+        return typeExpression.Matches(archetype.MatchSignature);
     }
 
 

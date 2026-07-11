@@ -312,6 +312,13 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         storage = null!;
         return false;
     }
+
+
+    /// <summary>
+    /// Does this Archetype have a storage for the given concrete (non-wildcard) expression?
+    /// (a single dictionary probe — for wildcards, match against <see cref="MatchSignature"/> instead)
+    /// </summary>
+    internal bool HasStorage(TypeExpression typeExpression) => _storageIndices.ContainsKey(typeExpression);
     
     
     internal void BackFill<T>(TypeExpression typeExpression, T value, int additions) where T: notnull
