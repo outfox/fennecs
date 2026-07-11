@@ -4,110 +4,159 @@ using System.Numerics;
 
 namespace fennecs.tests;
 
-public class 
-    IdentityTests(ITestOutputHelper output)
+public class EntityEncodingTests(ITestOutputHelper output)
 {
     [Fact]
-    public void Virtual_Entities_have_no_Successors()
+    public void Wildcards_have_no_Payload()
     {
-        Assert.Throws<InvalidOperationException>(() => new Identity(-1, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Identity(-4, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Identity(-2, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => new Identity(-3, 0).Successor);
-        Assert.Throws<InvalidOperationException>(() => default(Identity).Successor);
+        Assert.True(Key.Any.IsWildcard);
+        Assert.True(Key.Target.IsWildcard);
+        Assert.True(Key.AnyEntity.IsWildcard);
+        Assert.True(Key.AnyObject.IsWildcard);
+        Assert.False(Key.Plain.IsWildcard);
+
+        Assert.Equal(0ul, Key.Any.Payload);
+        Assert.Equal(0ul, Key.Target.Payload);
+        Assert.Equal(0ul, Key.AnyEntity.Payload);
+        Assert.Equal(0ul, Key.AnyObject.Payload);
     }
 
 
     [Fact]
-    public void Entity_Resolves_as_Type()
+    public void Object_Key_Resolves_as_Type()
     {
-        var entity = new Identity(123);
-        Assert.Equal(typeof(Identity), entity.Type);
-
-        var objEntity = Identity.Of("hello world");
-        Assert.Equal(typeof(string), objEntity.Type);
+        var objKey = Key.Of("hello world");
+        Assert.Equal(typeof(string), objKey.Type);
+        Assert.True(objKey.IsObject);
+        Assert.False(objKey.IsEntity);
+        Assert.False(objKey.IsWildcard);
     }
 
 
     [Fact]
-    public void Identity_Plain_is_default()
+    public void Key_Plain_is_default()
     {
-        var none = default(Identity);
-        Assert.Equal(default, none.Generation);
-        output.WriteLine(none.Generation.ToString());
+        var none = default(Key);
+        Assert.Equal(Key.Plain, none);
         output.WriteLine(none.ToString());
         Assert.Equal(default, none);
     }
 
 
     [Fact]
-    public void Identity_ToString()
+    public void Key_ToString()
     {
         _ = Match.Any.ToString();
         _ = Match.Entity.ToString();
         _ = Match.Target.ToString();
         _ = Match.Object.ToString();
         _ = Match.Plain.ToString();
-        _ = Identity.Of("hello world").ToString();
-        _ = new Identity(123, 456).ToString();
-        _ = new Identity(-1, 2).ToString();
+        _ = Key.Of("hello world").ToString();
 
         output.WriteLine(Match.Any.ToString());
         output.WriteLine(Match.Entity.ToString());
         output.WriteLine(Match.Target.ToString());
         output.WriteLine(Match.Object.ToString());
         output.WriteLine(Match.Plain.ToString());
-        output.WriteLine(Identity.Of("hello world").ToString());
-        output.WriteLine(new Identity(123, 456).ToString());
-        output.WriteLine(new Identity(-1, 2).ToString());
+        output.WriteLine(Key.Of("hello world").ToString());
+
+        using var world = new World();
+        var entity = world.Spawn();
+        output.WriteLine(entity.Key.ToString());
+        output.WriteLine(entity.ToString());
     }
 
 
     [Fact]
-    public void Identity_None_cannot_Match_One()
+    public void Entity_Key_does_not_Match_Plain()
     {
-        var zero = new Identity(0);
-        Assert.NotEqual(Match.Plain, new Match(zero));
-
-        var one = new Identity(1);
-        Assert.NotEqual(Match.Plain, new Match(one));
+        using var world = new World();
+        var entity = world.Spawn();
+        Assert.NotEqual(Match.Plain, new Match(entity.Key));
     }
 
 
     [Fact]
-    public void Identity_Matches_Only_Self()
+    public void Entity_Encoding_Roundtrip()
     {
-        var self = new Identity(12345);
-        Assert.Equal(self, self);
+        using var world = new World();
+        var entity = world.Spawn();
 
-        var successor = new Identity(12345, 3);
-        Assert.NotEqual(self, successor);
+        Assert.NotEqual(0u, entity.Index);
+        Assert.Equal(world.Tag, entity.WorldTag);
+        Assert.Equal((ushort) 1, entity.Generation);
 
-        var other = new Identity(9000, 3);
-        Assert.NotEqual(self, other);
+        // The Key drops the generation but keeps kind, world, and index.
+        var key = entity.Key;
+        Assert.True(key.IsEntity);
+        Assert.Equal(entity.Index, key.Index);
+        Assert.Equal(entity.WorldTag, key.WorldTag);
+
+        // Reconstructing the live handle from the Key yields the same Entity.
+        Assert.Equal(entity, world.EntityFor(key));
+    }
+
+
+    [Fact]
+    public void Default_Entity_is_never_Alive()
+    {
+        Assert.False(default(Entity).Alive);
+
+        using var world = new World();
+        Assert.False(world.IsAlive(default));
+    }
+
+
+    [Fact]
+    public void Stale_Generation_is_not_Alive()
+    {
+        using var world = new World(0);
+        var entity1 = world.Spawn();
+        world.Despawn(entity1);
+
+        var entity2 = world.Spawn();
+
+        // Index gets recycled with a bumped generation.
+        Assert.Equal(entity1.Index, entity2.Index);
+        Assert.NotEqual(entity1.Generation, entity2.Generation);
+
+        Assert.False(entity1.Alive);
+        Assert.True(entity2.Alive);
+    }
+
+
+    [Fact]
+    public void Foreign_Entity_is_not_Alive_in_other_World()
+    {
+        using var world1 = new World();
+        using var world2 = new World();
+
+        var entity = world1.Spawn();
+        Assert.True(world1.IsAlive(entity));
+        Assert.False(world2.IsAlive(entity));
     }
 
 
     [Theory]
-    [InlineData(1500, 1500)]
-    public void Identity_HashCodes_are_Unique(TypeID idCount, TypeID genCount)
+    [InlineData(1500, 64)]
+    public void Entity_HashCodes_are_Unique(int idCount, int genCount)
     {
-        var ids = new Dictionary<int, Identity>((int)(idCount * genCount * 4f));
+        var ids = new Dictionary<int, Entity>(idCount * genCount * 4);
 
-        //Identities
-        for (var i = 0; i < idCount; i++)
+        //Indices
+        for (var i = 1; i < idCount; i++)
         //Generations
-        for (TypeID g = 1; g < genCount; g++)
+        for (ushort g = 1; g < genCount; g++)
         {
-            var identity = new Identity(i, g);
+            var entity = new Entity(1, (uint) i, g);
 
-            Assert.NotEqual(new(identity), Match.Any);
-            Assert.NotEqual(new(identity), Match.Plain);
+            Assert.NotEqual<Match>(new(entity.Key), Match.Any);
+            Assert.NotEqual<Match>(new(entity.Key), Match.Plain);
 
-            if (ids.ContainsKey(identity.GetHashCode()))
-                Assert.Fail($"Collision of {identity} with {ids[identity.GetHashCode()]}, {identity.GetHashCode()}#==#{ids[identity.GetHashCode()].GetHashCode()}");
+            if (ids.ContainsKey(entity.GetHashCode()))
+                Assert.Fail($"Collision of {entity} with {ids[entity.GetHashCode()]}, {entity.GetHashCode()}#==#{ids[entity.GetHashCode()].GetHashCode()}");
             else
-                ids.Add(identity.GetHashCode(), identity);
+                ids.Add(entity.GetHashCode(), entity);
         }
     }
 
@@ -120,32 +169,20 @@ public class
 
 
     [Fact]
-    public void Identity_Matches_Self_if_Same()
+    public void Entity_Matches_Self_if_Same()
     {
         var random = new Random(420960);
         for (var i = 0; i < 1_000; i++)
         {
-            var id = random.Next();
-            var gen = (TypeID)(random.Next() % TypeID.MaxValue);
+            var index = (uint) random.Next();
+            var gen = (ushort) random.Next(1, ushort.MaxValue);
 
-            var self = new Identity(id, gen);
-            var other = new Identity(id, gen);
+            var self = new Entity(1, index, gen);
+            var other = new Entity(1, index, gen);
 
             Assert.Equal(self, other);
         }
     }
-
-
-    /*
-    [Fact]
-    private void Entity_ToString_Facades_Identity_ToString()
-    {
-        var identity = new Identity(123, 456);
-        var identity = new Identity(identity);
-        output.WriteLine(identity.ToString());
-        Assert.Equal(identity.ToString(), identity.ToString());
-    }
-    */
 
 
     [Fact]
@@ -163,19 +200,19 @@ public class
 
 
     [Fact]
-    private void Identity_is_Equal_to_Itself()
+    private void Entity_is_Equal_to_Itself()
     {
         using var world = new World();
-        var identity = world.Spawn();
-        Assert.Equal(identity, identity);
+        var entity = world.Spawn();
+        Assert.Equal(entity, entity);
     }
 
 
     [Fact]
     private void Same_Entity_is_Equal()
     {
-        var entity1 = new Identity(123, 999);
-        var entity2 = new Identity(123, 999);
+        var entity1 = new Entity(1, 123, 999);
+        var entity2 = new Entity(1, 123, 999);
         Assert.Equal(entity1, entity2);
         Assert.True(entity1 == entity2);
     }
@@ -184,11 +221,11 @@ public class
     [Fact]
     private void Different_Entity_is_Not_Equal()
     {
-        var entity1 = new Identity(69, 420);
-        var entity2 = new Identity(420, 69);
+        var entity1 = new Entity(1, 69, 420);
+        var entity2 = new Entity(1, 420, 69);
 
-        var entity3 = new Identity(69, 69);
-        var entity4 = new Identity(420, 420);
+        var entity3 = new Entity(1, 69, 69);
+        var entity4 = new Entity(2, 69, 69);
 
         Assert.NotEqual(entity1, entity2);
         Assert.True(entity1 != entity2);
@@ -208,8 +245,8 @@ public class
     public void Entity_is_Alive_after_Spawn()
     {
         using var world = new World();
-        var identity = world.Spawn();
-        Assert.True(world.IsAlive(identity));
+        var entity = world.Spawn();
+        Assert.True(world.IsAlive(entity));
     }
 
 
@@ -217,9 +254,9 @@ public class
     private void Entity_is_Not_Alive_after_Despawn()
     {
         using var world = new World();
-        var identity = world.Spawn();
-        world.Despawn(identity);
-        Assert.False(world.IsAlive(identity));
+        var entity = world.Spawn();
+        world.Despawn(entity);
+        Assert.False(world.IsAlive(entity));
     }
 
 
@@ -227,9 +264,9 @@ public class
     private void Entity_has_no_Components_after_Spawn()
     {
         using var world = new World();
-        var identity = world.Spawn();
-        var components = world.GetSignature(identity);
-        Assert.False(world.HasComponent<int>(identity, default));
+        var entity = world.Spawn();
+        var components = world.GetSignature(entity);
+        Assert.False(world.HasComponent<int>(entity, default));
         Assert.True(components.Count() == 1);
     }
 
@@ -239,10 +276,10 @@ public class
     private void Entity_can_Add_Component<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn();
-        identity.Add(t1);
-        Assert.True(world.HasComponent<T>(identity, default));
-        var components = world.GetSignature(identity);
+        var entity = world.Spawn();
+        entity.Add(t1);
+        Assert.True(world.HasComponent<T>(entity, default));
+        var components = world.GetSignature(entity);
         Assert.True(components.Count() == 2);
     }
 
@@ -268,7 +305,7 @@ public class
         world.Despawn(entity1);
         var entity2 = world.Spawn().Add(t1);
 
-        Assert.Equal(entity1.Id.Index, entity2.Id.Index);
+        Assert.Equal(entity1.Index, entity2.Index);
         Assert.Throws<ObjectDisposedException>(() => world.GetComponent<T>(entity1, default));
     }
 
@@ -278,8 +315,8 @@ public class
     private void Entity_can_Get_Component<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn().Add(t1).Id;
-        var x = world.GetComponent<T>(identity, default);
+        var entity = world.Spawn().Add(t1);
+        var x = world.GetComponent<T>(entity, default);
         Assert.Equal(t1, x);
     }
 
@@ -289,10 +326,10 @@ public class
     private void Entity_can_Remove_Component<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn();
-        identity.Add(t1);
-        identity.Remove<T>();
-        Assert.False(world.HasComponent<T>(identity, default));
+        var entity = world.Spawn();
+        entity.Add(t1);
+        entity.Remove<T>();
+        Assert.False(world.HasComponent<T>(entity, default));
     }
 
 
@@ -301,11 +338,11 @@ public class
     private void Entity_can_ReAdd_Component<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn();
-        identity.Add(t1);
-        identity.Remove<T>();
-        identity.Add(t1);
-        Assert.True(world.HasComponent<T>(identity, default));
+        var entity = world.Spawn();
+        entity.Add(t1);
+        entity.Remove<T>();
+        entity.Add(t1);
+        Assert.True(world.HasComponent<T>(entity, default));
     }
 
 
@@ -314,9 +351,9 @@ public class
     private void Entity_cannot_Add_Component_twice<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn();
-        identity.Add(t1);
-        Assert.Throws<InvalidOperationException>(() => identity.Add(t1));
+        var entity = world.Spawn();
+        entity.Add(t1);
+        Assert.Throws<InvalidOperationException>(() => entity.Add(t1));
     }
 
 
@@ -325,10 +362,10 @@ public class
     private void Entity_cannot_Remove_Component_twice<T>(T t1) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn();
-        identity.Add(t1);
-        identity.Remove<T>();
-        Assert.Throws<InvalidOperationException>(() => identity.Remove<T>());
+        var entity = world.Spawn();
+        entity.Add(t1);
+        entity.Remove<T>();
+        Assert.Throws<InvalidOperationException>(() => entity.Remove<T>());
     }
 
 
@@ -338,8 +375,8 @@ public class
     private void Entity_cannot_Remove_Component_without_Adding<T>(T _) where T : struct
     {
         using var world = new World();
-        var identity = world.Spawn();
-        Assert.Throws<InvalidOperationException>(() => identity.Remove<T>());
+        var entity = world.Spawn();
+        Assert.Throws<InvalidOperationException>(() => entity.Remove<T>());
     }
 #pragma warning restore xUnit1026
 

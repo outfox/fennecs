@@ -92,12 +92,12 @@ public class AspectRegistrationTests
 
 
     [Fact]
-    public void Owns_Identity_Throws()
+    public void Owns_Entity_Throws()
     {
         using var world = new World();
         var visuals = world.AddAspect("visuals");
-        Assert.Throws<InvalidOperationException>(() => visuals.Owns<Identity>());
-        Assert.Throws<InvalidOperationException>(() => visuals.Owns(typeof(Identity)));
+        Assert.Throws<InvalidOperationException>(() => visuals.Owns<Entity>());
+        Assert.Throws<InvalidOperationException>(() => visuals.Owns(typeof(Entity)));
     }
 
 
@@ -107,7 +107,7 @@ public class AspectRegistrationTests
         using var world = new World { StrictAspects = true };
         world.AddAspect("game").Owns<CrewData>();
 
-        // Spawning works (Identity is exempt from registration).
+        // Spawning works (the Entity column is exempt from registration).
         var entity = world.Spawn();
 
         // Registered type works.

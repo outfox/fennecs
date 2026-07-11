@@ -92,7 +92,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
         get
         {
             using var mask = MaskPool.Rent();
-            mask.Has(TypeExpression.Of<Identity>(Match.Plain));
+            mask.Has(TypeExpression.Of<Entity>(Match.Plain));
             return CompileQuery(mask);
         }
     }
@@ -106,7 +106,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// Reuses previously despawned Entities, whose Identities will differ in Generation after respawn. 
     /// </summary>
     /// <returns>an Entity to operate on</returns>
-    public Entity Spawn() => new(this, NewEntity()); //TODO: Check if semantically legal to spawn in Deferred mode.
+    public Entity Spawn() => NewEntity(); //TODO: Check if semantically legal to spawn in Deferred mode.
 
 
     /// <summary>
@@ -128,14 +128,14 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     {
         if (_aspects.Count == 1)
         {
-            var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.Expression);
+            var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Entity>.Plain.Expression);
             var archetype = Main.GetArchetype(signature);
             archetype.Spawn(count, components, values);
             return;
         }
 
         using var worldLock = Lock();
-        using var identities = SpawnBare(count);
+        using var entities = SpawnBare(count);
 
         // Group the configured components by their owning Aspect.
         var groups = new Dictionary<Aspect, (List<TypeExpression> components, List<object> values)>();
@@ -158,9 +158,9 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
         {
             if (!groups.TryGetValue(aspect, out var group)) continue;
 
-            var signature = new Signature(group.components.ToImmutableSortedSet()).Add(Comp<Identity>.Plain.Expression);
-            aspect.EnsureCapacity(_identityPool.Created + 1);
-            aspect.GetArchetype(signature).SpawnWith(identities, group.components, group.values);
+            var signature = new Signature(group.components.ToImmutableSortedSet()).Add(Comp<Entity>.Plain.Expression);
+            aspect.EnsureCapacity(_entityPool.Created + 1);
+            aspect.GetArchetype(signature).SpawnWith(entities, group.components, group.values);
         }
     }
 
@@ -174,16 +174,16 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// <summary>
     /// Checks if the entity is alive (was not despawned).
     /// </summary>
-    /// <param name="identity">an Entity</param>
+    /// <param name="entity">an Entity</param>
     /// <returns>true if the Entity is Alive, false if it was previously Despawned</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal bool IsAlive(Identity identity) => Main.IsAlive(identity);
+    internal bool IsAlive(Entity entity) => _entityPool.IsAlive(entity);
 
 
     /// <summary>
     /// The number of living Entities in the World.
     /// </summary>
-    public int Count => _identityPool.Count;
+    public int Count => _entityPool.Count;
 
     /// <summary>
     /// All Queries that exist in this World.
@@ -214,11 +214,10 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// </param>
     public void DespawnAllWith<T>(Match match = default)
     {
-        var query = Query<Identity>().Has<T>(match).Stream();
-        query.Raw(delegate(Memory<Identity> entities)
+        var query = Query<Entity>().Has<T>(match).Stream();
+        query.Raw(delegate(Memory<Entity> entities)
         {
-            //TODO: This is not good. Need to untangle the types here.
-            foreach (var identity in entities.Span) DespawnImpl(new(this, identity));
+            foreach (var entity in entities.Span) DespawnImpl(entity);
         });
     }
 
@@ -244,12 +243,11 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// Other Aspects still evict the Entities' rows normally.
     /// </remarks>
     /// <param name="source">the Archetype the Entities were truncated from</param>
-    /// <param name="identities">the entities to despawn (remove)</param>
-    internal void Recycle(Archetype source, ReadOnlySpan<Identity> identities)
+    /// <param name="entities">the entities to despawn (remove)</param>
+    internal void Recycle(Archetype source, ReadOnlySpan<Entity> entities)
     {
-        foreach (var identity in identities)
+        foreach (var entity in entities)
         {
-            var entity = new Entity(this, identity);
             foreach (var aspect in _aspects)
             {
                 // The source Archetype already removed its own rows.
@@ -257,7 +255,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
                 else aspect.Despawn(entity);
             }
         }
-        _identityPool.Recycle(identities);
+        _entityPool.Recycle(entities);
     }
     #endregion
 
@@ -272,8 +270,10 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     {
         Name = nameof(World);
 
+        ClaimTag();
+
         _initialCapacity = initialCapacity;
-        _identityPool = new(initialCapacity);
+        _entityPool = new(Tag, initialCapacity);
 
         Main = new(this, "main", initialCapacity);
         _aspects.Add(Main);
@@ -292,11 +292,13 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
 
 
     /// <summary>
-    /// Disposes of the World. Currently, a no-op.
+    /// Disposes of the World, releasing its tag in the process-wide registry.
+    /// Stored Entities of a disposed World can no longer resolve it (and are no longer Alive).
     /// </summary>
     public void Dispose()
     {
         //TODO: Dispose all Object Links, Queries, etc.?
+        ReleaseTag();
     }
 
 

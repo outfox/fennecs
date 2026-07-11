@@ -32,7 +32,7 @@ public readonly record struct Component
     {
         get
         {
-            if (Expression.isRelation) return new(World, Expression.Identity);
+            if (Expression.Key.IsEntity) return World.EntityFor(Expression.Key);
             throw new InvalidOperationException("Component is not a relation.");
         }
     }

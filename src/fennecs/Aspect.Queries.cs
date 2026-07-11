@@ -16,7 +16,7 @@ public partial class Aspect : IAspect
         get
         {
             using var mask = MaskPool.Rent();
-            mask.Has(TypeExpression.Of<Identity>(Match.Plain));
+            mask.Has(TypeExpression.Of<Entity>(Match.Plain));
             return CompileQuery(mask);
         }
     }

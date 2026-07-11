@@ -15,7 +15,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Any).ToString());
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Object).ToString());
         output.WriteLine(TypeExpression.Of<TypeEmpty>(Match.Entity).ToString());
-        output.WriteLine(TypeExpression.Of<TypeEmpty>(new(new(123))).ToString());
+        output.WriteLine(TypeExpression.Of<TypeEmpty>(new Match(new Entity(1, 123, 1).Key)).ToString());
     }
 
 
@@ -50,12 +50,13 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void Is_Sorted_By_TypeId_Ascending()
     {
         var random = new Random(4711);
-        for (var i = 0; i < 10_000; i++)
+        for (var i = 1; i < 4_094; i++)
         {
-            var id = random.Next();
-            var deco = (TypeID)(random.Next() % TypeID.MaxValue);
-            var t1 = new TypeExpression((new Identity(id, deco)), (TypeID)i, default);
-            var t2 = new TypeExpression((new Identity(id, deco)), (TypeID)(i + 1), default);
+            var index = (uint) random.Next();
+            var gen = (ushort) random.Next(1, ushort.MaxValue);
+            var key = new Entity(1, index, gen).Key;
+            var t1 = new TypeExpression(PrimaryKind.Data, (TypeID)i, key);
+            var t2 = new TypeExpression(PrimaryKind.Data, (TypeID)(i + 1), key);
 
             //  If this test fails, Archetypes will not be able to build immutable buckets for Wildcards.
             Assert.True(t1.CompareTo(t2) < 0);
@@ -100,7 +101,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     {
         var tx1 = TypeExpression.Of(typeof(TypeEmpty), Match.Plain);
         var tx2 = TypeExpression.Of(typeof(TypeEmpty), Match.Any);
-        var tx3 = TypeExpression.Of(typeof(TypeEmpty), new Entity(null!, new(123)));
+        var tx3 = TypeExpression.Of(typeof(TypeEmpty), new Entity(1, 123, 1));
 
         Assert.False(tx1.isRelation);
         Assert.True(tx2.isWildcard);
@@ -116,7 +117,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var obj = TypeExpression.Of<TypeEmpty>(Match.Object);
         var rel = TypeExpression.Of<TypeEmpty>(Match.Entity);
 
-        var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
+        var ent = TypeExpression.Of<TypeEmpty>(new Entity(1, 123, 1));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
         Assert.True(none.Matches(none));
@@ -134,7 +135,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var any = TypeExpression.Of<TypeEmpty>(Match.Any);
 
         var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
+        var ent = TypeExpression.Of<TypeEmpty>(new Entity(1, 123, 1));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
         Assert.True(any.Matches(typ));
@@ -149,7 +150,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var obj = TypeExpression.Of<TypeEmpty>(Match.Object);
 
         var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
+        var ent = TypeExpression.Of<TypeEmpty>(new Entity(1, 123, 1));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
         Assert.False(obj.Matches(typ));
@@ -164,7 +165,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var rel = TypeExpression.Of<TypeEmpty>(Match.Entity);
 
         var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
+        var ent = TypeExpression.Of<TypeEmpty>(new Entity(1, 123, 1));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
         Assert.False(rel.Matches(typ));
@@ -179,7 +180,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
         var rel = TypeExpression.Of<TypeEmpty>(Match.Target);
 
         var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
+        var ent = TypeExpression.Of<TypeEmpty>(new Entity(1, 123, 1));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
         Assert.False(rel.Matches(typ));
@@ -192,7 +193,7 @@ public class TypeExpressionTests(ITestOutputHelper output)
     public void Entity_only_matches_Entity()
     {
         var typ = TypeExpression.Of<TypeEmpty>(Match.Plain);
-        var ent = TypeExpression.Of<TypeEmpty>(new Entity(null!, new(123)));
+        var ent = TypeExpression.Of<TypeEmpty>(new Entity(1, 123, 1));
         var lnk = TypeExpression.Of<TypeEmpty>(Link.With("hello world"));
 
         Assert.False(ent.Matches(typ));

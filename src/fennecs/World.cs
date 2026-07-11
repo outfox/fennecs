@@ -9,7 +9,7 @@ public partial class World
 {
     #region World State & Storage
 
-    private readonly IdentityPool _identityPool;
+    private readonly EntityPool _entityPool;
 
     private readonly Guid _guid = Guid.NewGuid();
 
@@ -53,27 +53,38 @@ public partial class World
 
     #region CRUD
 
-    private Identity NewEntity()
+    private Entity NewEntity()
     {
-        var identity = _identityPool.Spawn();
+        var entity = _entityPool.Spawn();
 
-        Main.EnsureCapacity(_identityPool.Created + 1);
-        Main.Join(identity);
+        Main.EnsureCapacity(_entityPool.Created + 1);
+        Main.Join(entity);
 
-        return identity;
+        return entity;
     }
 
-    internal PooledList<Identity> SpawnBare(int count)
+    internal PooledList<Entity> SpawnBare(int count)
     {
-        var identities = _identityPool.Spawn(count);
-        Main.EnsureCapacity(_identityPool.Created + 1);
-        return identities;
+        var entities = _entityPool.Spawn(count);
+        Main.EnsureCapacity(_entityPool.Created + 1);
+        return entities;
     }
 
 
-    internal bool HasComponent(Identity identity, TypeExpression typeExpression)
+    internal bool HasComponent(Entity entity, TypeExpression typeExpression)
     {
-        return AspectOf(typeExpression).HasComponent(identity, typeExpression);
+        return IsAlive(entity) && AspectOf(typeExpression).HasComponent(entity, typeExpression);
+    }
+
+
+    /// <summary>
+    /// Mints the current (live) Entity handle for a relation Key.
+    /// </summary>
+    internal Entity EntityFor(Key key)
+    {
+        System.Diagnostics.Debug.Assert(key.IsEntity, "Key does not target an Entity.");
+        System.Diagnostics.Debug.Assert(key.WorldTag == Tag, "Key belongs to another World.");
+        return _entityPool.EntityFor(key.Index);
     }
 
 
@@ -83,7 +94,7 @@ public partial class World
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Identity = entity });
+            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Despawn, Entity = entity });
             return;
         }
 
@@ -101,7 +112,7 @@ public partial class World
             }
         }
 
-        _identityPool.Recycle(entity);
+        _entityPool.Recycle(entity);
     }
 
     #endregion
@@ -112,17 +123,19 @@ public partial class World
     internal Query CompileQuery(Mask mask) => ResolveAspect(mask).CompileQuery(mask);
 
 
-    internal ref Meta GetEntityMeta(Identity identity) => ref Main.GetEntityMeta(identity);
+    internal ref Meta GetEntityMeta(Entity entity) => ref Main.GetEntityMeta(entity);
 
 
-    internal IReadOnlyList<Component> GetComponents(Identity id)
+    internal IReadOnlyList<Component> GetComponents(Entity entity)
     {
-        if (_aspects.Count == 1) return Main.GetComponents(id);
+        if (!IsAlive(entity)) return [];
 
-        var components = new List<Component>(Main.GetComponents(id));
+        if (_aspects.Count == 1) return Main.GetComponents(entity);
+
+        var components = new List<Component>(Main.GetComponents(entity));
         for (var i = 1; i < _aspects.Count; i++)
         {
-            components.AddRange(_aspects[i].GetComponents(id));
+            components.AddRange(_aspects[i].GetComponents(entity));
         }
         return components;
     }
@@ -136,11 +149,11 @@ public partial class World
     #region Assert Helpers
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void AssertAlive(Identity identity)
+    private void AssertAlive(Entity entity)
     {
-        if (IsAlive(identity)) return;
+        if (IsAlive(entity)) return;
 
-        throw new ObjectDisposedException($"Identity {identity} is no longer alive.");
+        throw new ObjectDisposedException($"Entity {entity} is no longer alive.");
     }
 
     #endregion

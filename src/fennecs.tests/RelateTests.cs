@@ -10,6 +10,6 @@ public class RelateTests(ITestOutputHelper output)
         
         var target = Relate.To(entity);
         output.WriteLine(target.ToString());
-        Assert.Equal(entity.Id.ToString(), target.ToString());
+        Assert.Equal(entity.Key.ToString(), target.ToString());
     }
 }

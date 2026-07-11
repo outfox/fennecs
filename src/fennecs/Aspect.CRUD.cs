@@ -10,25 +10,25 @@ public partial class Aspect
     #region CRUD
 
     // Deferred-mode checks and liveness asserts live on the World facades (World.CRUD.cs);
-    // these cores operate immediately on this Aspect's Archetypes.
+    // these cores operate immediately on this Aspect's Archetypes, trusting the Entity's index.
 
-    internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data) where T : notnull
+    internal void AddComponent<T>(Entity entity, TypeExpression typeExpression, T data) where T : notnull
     {
-        if (!Contains(identity))
+        if (!Contains(entity))
         {
             // Lazy membership: the first Component owned by this Aspect joins the Entity
-            // directly into the {Identity, T} Archetype. (single insert, no intermediate move)
-            EnsureCapacity(identity.Index + 1);
-            var signature = new Signature(Comp<Identity>.Plain.Expression).Add(typeExpression);
+            // directly into the {Entity, T} Archetype. (single insert, no intermediate move)
+            EnsureCapacity((int) entity.Index + 1);
+            var signature = new Signature(Comp<Entity>.Plain.Expression).Add(typeExpression);
             var archetype = GetArchetype(signature);
-            archetype.JoinWith(identity, typeExpression, data);
+            archetype.JoinWith(entity, typeExpression, data);
             return;
         }
 
-        ref var meta = ref _meta[identity.Index];
+        ref var meta = ref _meta[entity.Index];
         var oldArchetype = meta.Archetype;
 
-        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} already has a Component of type {typeExpression}");
+        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} already has a Component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -39,15 +39,15 @@ public partial class Aspect
     }
 
 
-    internal void RemoveComponent(Identity identity, TypeExpression typeExpression)
+    internal void RemoveComponent(Entity entity, TypeExpression typeExpression)
     {
-        if (!Contains(identity)) throw new InvalidOperationException($"Entity {identity} does not have a Component of type {typeExpression}");
+        if (!Contains(entity)) throw new InvalidOperationException($"Entity {entity} does not have a Component of type {typeExpression}");
 
-        ref var meta = ref _meta[identity.Index];
+        ref var meta = ref _meta[entity.Index];
 
         var oldArchetype = meta.Archetype;
 
-        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {identity} does not have a Component of type {typeExpression}");
+        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} does not have a Component of type {typeExpression}");
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
 
@@ -56,7 +56,7 @@ public partial class Aspect
         if (!IsMain && newSignature.Count == 1)
         {
             oldArchetype.Delete(meta.Row);
-            _meta[identity.Index] = default;
+            _meta[entity.Index] = default;
             return;
         }
 
@@ -66,70 +66,69 @@ public partial class Aspect
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal bool HasComponent(Identity identity, TypeExpression typeExpression)
+    internal bool HasComponent(Entity entity, TypeExpression typeExpression)
     {
-        if (identity.Index >= _meta.Length) return false;
+        if (entity.Index >= (uint) _meta.Length) return false;
 
-        var meta = _meta[identity.Index];
-        return meta.Identity != default
-               && meta.Identity == identity
+        var meta = _meta[entity.Index];
+        return meta.Archetype is not null
                && typeExpression.Matches(meta.Archetype.MatchSignature);
     }
 
 
-    internal ref T GetComponent<T>(Identity identity, Match match)
+    internal ref T GetComponent<T>(Entity entity, Match match)
     {
-        if (!HasComponent(identity, TypeExpression.Of<T>(match)))
+        if (!HasComponent(entity, TypeExpression.Of<T>(match)))
         {
-            throw new InvalidOperationException($"Entity {identity} does not have a reference type Component of type {typeof(T)} / {match}");
+            throw new InvalidOperationException($"Entity {entity} does not have a reference type Component of type {typeof(T)} / {match}");
         }
 
-        var (table, row, _) = _meta[identity.Index];
+        var (table, row) = _meta[entity.Index];
         var storage = table.GetStorage<T>(match);
         return ref storage.Span[row];
     }
 
 
-    internal bool GetComponent(Identity identity, TypeExpression type, [MaybeNullWhen(false)] out object value)
+    internal bool GetComponent(Entity entity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
-        if (!HasComponent(identity, type))
+        if (!HasComponent(entity, type))
         {
             value = null;
             return false;
         }
 
-        var (table, row, _) = _meta[identity.Index];
+        var (table, row) = _meta[entity.Index];
         var storage = table.GetStorage(type);
         value = storage.Get(row);
         return true;
     }
 
 
-    internal Signature GetSignature(Identity identity)
+    internal Signature GetSignature(Entity entity)
     {
-        var meta = _meta[identity.Index];
+        var meta = _meta[entity.Index];
         var array = meta.Archetype.Signature;
         return array;
     }
 
 
-    internal T[] Get<T>(Identity id, Match match)
+    internal T[] Get<T>(Entity entity, Match match)
     {
-        if (!Contains(id)) return [];
+        if (!Contains(entity)) return [];
 
         var type = TypeExpression.Of<T>(match);
-        var meta = _meta[id.Index];
+        var meta = _meta[entity.Index];
         using var storages = meta.Archetype.Match<T>(type);
         return storages.Select(s => s[meta.Row]).ToArray();
     }
 
 
-    internal IReadOnlyList<Component> GetComponents(Identity id)
+    internal IReadOnlyList<Component> GetComponents(Entity entity)
     {
-        if (!Contains(id)) return [];
+        if (!Contains(entity)) return [];
 
-        var archetype = _meta[id.Index].Archetype;
-        return archetype.GetRow(_meta[id.Index].Row);
+        var archetype = _meta[entity.Index].Archetype;
+        return archetype.GetRow(_meta[entity.Index].Row);
     }
 
     #endregion
@@ -159,9 +158,9 @@ public partial class Aspect
 
     private void BulkEvict(Archetype archetype)
     {
-        foreach (var identity in archetype.IdentityStorage.Span)
+        foreach (var entity in archetype.EntityStorage.Span)
         {
-            _meta[identity.Index] = default;
+            _meta[entity.Index] = default;
         }
         archetype.Clear();
     }

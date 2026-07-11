@@ -48,7 +48,7 @@ public class Scenarios
             if (i % shortRate == 0)
             {
                 shorts++;
-                builder.Add<ushort>(new Entity(world, entities[random.Next(entities.Count)]));
+                builder.Add<ushort>(entities[random.Next(entities.Count)]);
             }
 
             entities.Add(builder);

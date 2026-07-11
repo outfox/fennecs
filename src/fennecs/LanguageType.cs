@@ -1,7 +1,5 @@
-﻿global using TypeID = short;
-using System.Collections.Concurrent;
+global using TypeID = short;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace fennecs;
@@ -9,6 +7,23 @@ namespace fennecs;
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)]
 internal class LanguageType
 {
+    /// <summary>
+    /// TypeId of the entity column type present in every Archetype. (reserved)
+    /// </summary>
+    internal const TypeID EntityId = 1;
+
+    /// <summary>
+    /// Highest assignable TypeId. TypeIds occupy 12 bits of a <see cref="TypeExpression"/>;
+    /// 0 (None), 1 (<see cref="EntityId"/>), and 0xFFF (<see cref="AnyId"/>) are reserved.
+    /// </summary>
+    internal const TypeID MaxTypeId = 0xFFE;
+
+    /// <summary>
+    /// Reserved TypeId for future Wildcards / the exhaustion sentinel.
+    /// </summary>
+    internal const TypeID AnyId = 0xFFF;
+
+
     protected internal static Type Resolve(TypeID typeId) => Types[typeId];
 
     // Shared ID counter
@@ -16,8 +31,18 @@ internal class LanguageType
 
     protected static readonly Dictionary<TypeID, Type> Types = new();
     protected static readonly Dictionary<Type, TypeID> Ids = new();
-    
+
     protected static readonly Lock RegistryLock = new();
+
+    // Side-table of TypeFlags, indexed by TypeId. (flags are type-derived, so they
+    // live here instead of inside the packed TypeExpression)
+    private static readonly TypeFlags[] FlagTable = new TypeFlags[AnyId + 1];
+
+
+    /// <summary>
+    /// The <see cref="TypeFlags"/> of the type registered with the given TypeId.
+    /// </summary>
+    internal static TypeFlags FlagsById(TypeID typeId) => FlagTable[typeId];
 
 
     protected internal static TypeID Identify(Type type)
@@ -46,16 +71,15 @@ internal class LanguageType
             Types[0] = typeof(None);
             Ids[typeof(None)] = 0;
 
-            // Register the 1st ID as Identity's type, used for Entity identities.
-            Types[1] = typeof(Identity);
-            Ids[typeof(Identity)] = 1;
-            Counter = 1;
+            // Reserve the 1st ID for the entity column type present in every Archetype.
+            // LanguageType<Entity> adopts this reservation when constructed.
+            Types[EntityId] = typeof(Entity);
+            Ids[typeof(Entity)] = EntityId;
+            Counter = EntityId;
 
-            // Register the last (MaxValue) ID as Any type, reserved used for future Wildcards and as
-            // a simple stopgap for when all TypeIDs are exhausted. This will raise an Exception in the
-            // type initializer of LanguageType<T> (the same way as any other type collision)
-            Types[TypeID.MaxValue] = typeof(Any);
-            Ids[typeof(Any)] = TypeID.MaxValue;
+            // Register the last (0xFFF) ID as Any type, reserved for future Wildcards.
+            Types[AnyId] = typeof(Any);
+            Ids[typeof(Any)] = AnyId;
         }
     }
 
@@ -64,56 +88,52 @@ internal class LanguageType
 
     private struct None;
 
-    private static readonly Dictionary<Type, TypeFlags> CachedFlags = new();
 
-    public static TypeFlags Flags(Type type)
+    public static TypeFlags Flags(Type type) => FlagTable[Identify(type)];
+
+    public static TypeFlags FlagsOf<T>() => FlagTable[LanguageType<T>.Id];
+
+    protected static TypeFlags ComputeFlags<T>()
     {
-        if (CachedFlags.TryGetValue(type, out var flags)) return flags;
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>()) return default;
 
-        // Call generic method for T
-        var method = typeof(LanguageType).GetMethod(nameof(FlagsOf), BindingFlags.Public | BindingFlags.Static);
-        var generic = method!.MakeGenericMethod(type);
-        return (TypeFlags) generic.Invoke(null, null)!;
+        return TypeFlags.Unmanaged | ((TypeFlags) Unsafe.SizeOf<T>() & TypeFlags.SIMDSize);
     }
 
-    public static TypeFlags FlagsOf<T>()
-    {
-        if (CachedFlags.TryGetValue(typeof(T), out var flags)) return flags;
-
-        if (IsUnmanaged<T>())
-        {
-            flags |= TypeFlags.Unmanaged;
-            flags |= (TypeFlags) LanguageType<T>.Size;
-        }
-
-        lock (RegistryLock) CachedFlags.TryAdd(typeof(T), flags);
-
-        return flags;
-    }
-
-    private static bool IsUnmanaged<U>() => !RuntimeHelpers.IsReferenceOrContainsReferences<U>();
+    protected static void StoreFlags(TypeID id, TypeFlags flags) => FlagTable[id] = flags;
 }
 
 internal class LanguageType<T> : LanguageType
 {
     // ReSharper disable once StaticMemberInGenericType (we indeed want this unique for each T)
     public static readonly TypeID Id;
-    
+
     public static readonly int Size = Unsafe.SizeOf<T>();
-    
+
     static LanguageType()
     {
         lock (RegistryLock)
         {
-            Id = ++Counter;
-            Types.TryAdd(Id, typeof(T));
-            Ids.TryAdd(typeof(T), Id);
+            if (Ids.TryGetValue(typeof(T), out var reserved))
+            {
+                // Adopt a reserved registration (e.g. the entity column type).
+                Id = reserved;
+            }
+            else
+            {
+                if (Counter >= MaxTypeId)
+                {
+                    throw new InvalidOperationException($"TypeID space exhausted: no more than {MaxTypeId - 1} distinct Component types can be registered per process.");
+                }
+
+                Id = ++Counter;
+                Types.Add(Id, typeof(T));
+                Ids.Add(typeof(T), Id);
+            }
+
+            StoreFlags(Id, ComputeFlags<T>());
         }
     }
-
-
-    //FIXME: This collides with certain Entity types and generations.
-    public static TypeID TargetId => (TypeID) (-Id);
 }
 
 [Flags]

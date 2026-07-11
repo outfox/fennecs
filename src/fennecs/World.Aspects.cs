@@ -45,7 +45,7 @@ public partial class World
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         if (_aspects.Any(aspect => aspect.Name == name)) throw new ArgumentException($"An Aspect named \"{name}\" already exists in this World.", nameof(name));
 
-        var aspect = new Aspect(this, name, Math.Max(_initialCapacity, _identityPool.Created + 1));
+        var aspect = new Aspect(this, name, Math.Max(_initialCapacity, _entityPool.Created + 1));
         _aspects.Add(aspect);
         return aspect;
     }
@@ -77,7 +77,7 @@ public partial class World
     [MethodImpl(MethodImplOptions.NoInlining)]
     private Aspect AssertRegistered(TypeExpression type)
     {
-        if (type.TypeId == LanguageType<Identity>.Id) return Main;
+        if (type.TypeId == LanguageType.EntityId) return Main;
 
         throw new InvalidOperationException(
             $"World \"{Name}\" requires Aspect ownership for all Component types (StrictAspects = true), " +
@@ -87,10 +87,9 @@ public partial class World
 
     internal void RegisterOwnership(Aspect aspect, TypeID typeId, Type type)
     {
-        // (checked by Type, not TypeID — Identity has both a reserved and a registry-assigned TypeID)
-        if (type == typeof(Identity))
+        if (type == typeof(Entity))
         {
-            throw new InvalidOperationException("The Identity component is present in every Aspect and cannot be owned by one.");
+            throw new InvalidOperationException("The Entity column is present in every Aspect and cannot be owned by one.");
         }
 
         var existing = (uint)typeId < (uint)_aspectByTypeId.Length ? _aspectByTypeId[typeId] : null;
@@ -131,7 +130,7 @@ public partial class World
 
         foreach (var type in mask.HasTypes.Concat(mask.NotTypes).Concat(mask.AnyTypes))
         {
-            if (type.TypeId == LanguageType<Identity>.Id) continue;
+            if (type.TypeId == LanguageType.EntityId) continue;
 
             var aspect = AspectOf(type);
             resolved ??= aspect;
@@ -141,7 +140,7 @@ public partial class World
         if (!mixed) return resolved ?? Main;
 
         var listing = string.Join("\n", mask.HasTypes.Concat(mask.NotTypes).Concat(mask.AnyTypes)
-            .Where(type => type.TypeId != LanguageType<Identity>.Id)
+            .Where(type => type.TypeId != LanguageType.EntityId)
             .Select(type => $"  {type} -> Aspect \"{AspectOf(type).Name}\""));
 
         throw new InvalidOperationException(

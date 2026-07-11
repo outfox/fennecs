@@ -51,15 +51,15 @@ public partial class World
             switch (op.Opcode)
             {
                 case Opcode.Add:
-                    AddComponent(op.Identity, op.TypeExpression, op.Data);
+                    AddComponent(op.Entity, op.TypeExpression, op.Data);
                     break;
 
                 case Opcode.Remove:
-                    RemoveComponent(op.Identity, op.TypeExpression);
+                    RemoveComponent(op.Entity, op.TypeExpression);
                     break;
 
                 case Opcode.Despawn:
-                    DespawnImpl(new(this, op.Identity));
+                    DespawnImpl(op.Entity);
                     break;
 
                 case Opcode.Batch:
@@ -75,7 +75,7 @@ public partial class World
     {
         internal required Opcode Opcode;
         internal TypeExpression TypeExpression;
-        internal Identity Identity;
+        internal Entity Entity;
         internal object Data;
         internal Archetype Archetype;
 
@@ -89,7 +89,7 @@ public partial class World
 
             Archetype = null!;
             TypeExpression = default;
-            Identity = default;
+            Entity = default;
         }
     }
 

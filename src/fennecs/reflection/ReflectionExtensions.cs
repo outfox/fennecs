@@ -19,7 +19,7 @@ public static class ReflectionExtensions
     /// </remarks>
     public static Entity AddVirtual(this Entity entity, object value, Match match = default)
     {
-        entity._world.AddComponent(entity.Id, TypeExpression.Of(value.GetType(), match), value);
+        entity.World.AddComponent(entity, TypeExpression.Of(value.GetType(), match), value);
         return entity;
     }
 

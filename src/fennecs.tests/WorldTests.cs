@@ -35,9 +35,9 @@ public class WorldTests(ITestOutputHelper output)
     {
         using var world = new World();
         var entity = world.Spawn();
-        Assert.True(entity.Id.IsEntity);
-        Assert.False(entity.Id.IsWildcard);
-        Assert.False(entity.Id.IsObject);
+        Assert.True(entity.Key.IsEntity);
+        Assert.False(entity.Key.IsWildcard);
+        Assert.False(entity.Key.IsObject);
     }
 
 
@@ -52,9 +52,9 @@ public class WorldTests(ITestOutputHelper output)
         for (var i = 0; i < count; i++)
         {
             var entity = world.Spawn();
-            Assert.True(entity.Id.IsEntity);
-            Assert.False(entity.Id.IsWildcard);
-            Assert.False(entity.Id.IsObject);
+            Assert.True(entity.Key.IsEntity);
+            Assert.False(entity.Key.IsWildcard);
+            Assert.False(entity.Key.IsObject);
         }
     }
 
@@ -67,7 +67,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Batch_Spawn_Bare(int count)
     {
         using var world = new World();
-        var identities = world.SpawnBare(count);
+        using var identities = world.SpawnBare(count);
         Assert.Equal(count, identities.Count);
         Assert.Equal(count, identities.ToImmutableSortedSet().Count);
     }
@@ -225,7 +225,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Match.Plain).Stream();
+        var query = world.Query<Entity>(Match.Plain).Stream();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -245,15 +245,15 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Match.Plain).Stream();
+        var query = world.Query<Entity>(Match.Plain).Stream();
         query.Raw(world, (uniform, _) =>
         {
             for (var i = 0; i < count; i++)
             {
                 var entity = uniform.Spawn();
-                Assert.True(entity.Id.IsEntity);
-                Assert.False(entity.Id.IsWildcard);
-                Assert.False(entity.Id.IsObject);
+                Assert.True(entity.Key.IsEntity);
+                Assert.False(entity.Key.IsWildcard);
+                Assert.False(entity.Key.IsObject);
             }
         });
 
@@ -272,13 +272,13 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Identity>(Match.Plain).Stream();
+        var query = world.Query<Entity>(Match.Plain).Stream();
         query.For(world, (uniform, ref _) =>
         {
             var entity = uniform.Spawn();
-            Assert.True(entity.Id.IsEntity);
-            Assert.False(entity.Id.IsWildcard);
-            Assert.False(entity.Id.IsObject);
+            Assert.True(entity.Key.IsEntity);
+            Assert.False(entity.Key.IsWildcard);
+            Assert.False(entity.Key.IsObject);
             Thread.Yield();
         });
 
@@ -317,8 +317,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().Add(444, target2);
         }
 
-        var query1 = world.Query<Identity>(Match.Plain).Has<int>(target1).Stream();
-        var query2 = world.Query<Identity>(Match.Plain).Has<int>(target2).Stream();
+        var query1 = world.Query<Entity>(Match.Plain).Has<int>(target1).Stream();
+        var query2 = world.Query<Entity>(Match.Plain).Has<int>(target2).Stream();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);
@@ -332,7 +332,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Added_Newable_Class_is_not_Null()
     {
         using var world = new World();
-        var identity = world.Spawn().Add<NewableClass>().Id;
+        var identity = world.Spawn().Add<NewableClass>();
         Assert.True(world.HasComponent<NewableClass>(identity, Match.Plain));
         Assert.NotNull(world.GetComponent<NewableClass>(identity, Match.Plain));
     }
@@ -342,7 +342,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Added_Newable_Struct_is_default()
     {
         using var world = new World();
-        var identity = world.Spawn().Add<NewableStruct>().Id;
+        var identity = world.Spawn().Add<NewableStruct>();
         Assert.True(world.HasComponent<NewableStruct>(identity, Match.Plain));
         Assert.Equal(default, world.GetComponent<NewableStruct>(identity, Match.Plain));
     }
@@ -352,7 +352,7 @@ public class WorldTests(ITestOutputHelper output)
     public void Can_add_Non_Newable()
     {
         using var world = new World();
-        var identity = world.Spawn().Add<string>("12").Id;
+        var identity = world.Spawn().Add<string>("12");
         Assert.True(world.HasComponent<string>(identity, Match.Plain));
         Assert.NotNull(world.GetComponent<string>(identity, Match.Plain));
     }
@@ -537,9 +537,9 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var entity = world.Spawn();
         var other = world.Spawn();
-        var data = new Identity(123);
+        var data = new NewableStruct();
         entity.Add(data, other);
-        Assert.True(entity.Has<Identity>(other));
+        Assert.True(entity.Has<NewableStruct>(other));
     }
 
 

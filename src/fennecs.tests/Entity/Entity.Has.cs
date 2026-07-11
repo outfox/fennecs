@@ -68,7 +68,7 @@ public class EntityHasTests
         Assert.True(entity.Has<int>(Match.Target));
         Assert.True(entity.Has<int>(Match.Any));
 
-        Assert.False(entity.Has<int>(new Entity(world, new(9001))));
+        Assert.False(entity.Has<int>(new Entity(world.Tag, 9001, 1)));
         Assert.False(entity.Has<int>(Match.Object));
     }
 

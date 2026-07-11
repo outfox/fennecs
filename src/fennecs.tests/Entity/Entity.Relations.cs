@@ -10,10 +10,9 @@ public class EntityRelationsTests
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        var builder = new Entity(world, entity);
-        builder.Add<int>(target);
+        entity.Add<int>(target);
         Assert.True(entity.Has<int>(target));
-        Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
+        Assert.False(entity.Has<int>(new Entity(world.Tag, 9001, 1)));
     }
 
     [Fact]
@@ -22,9 +21,8 @@ public class EntityRelationsTests
         using var world = new World();
         var entity = world.Spawn();
         var target = world.Spawn();
-        var builder = new Entity(world, entity);
-        builder.Add(123, target);
+        entity.Add(123, target);
         Assert.True(entity.Has<int>(target));
-        Assert.False(entity.Has<int>(new Entity(world, new Identity(9001))));
+        Assert.False(entity.Has<int>(new Entity(world.Tag, 9001, 1)));
     }
 }

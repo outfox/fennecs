@@ -13,7 +13,7 @@ public class ArchetypeTests(ITestOutputHelper output)
         var table = world.GetEntityMeta(identity).Archetype;
 
         output.WriteLine(table.ToString());
-        Assert.Contains(typeof(Identity).ToString(), table.ToString());
+        Assert.Contains(typeof(Entity).ToString(), table.ToString());
         Assert.Contains(typeof(string).ToString(), table.ToString());
         Assert.Contains(typeof(int).ToString(), table.ToString());
         Assert.Contains(typeof(float).ToString(), table.ToString());
@@ -35,7 +35,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Table_Matches_TypeExpression()
     {
         using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(identity).Archetype;
 
         var typeExpression = TypeExpression.Of<string>(Match.Plain);
@@ -50,7 +50,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Table_Can_be_Generically_Enumerated()
     {
         using var world = new World();
-        var other = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var other = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(other).Archetype;
 
         var count = 0;
@@ -68,7 +68,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Can_Truncate_Nothing()
     {
         using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(identity).Archetype;
 
         table.Truncate(2000);
@@ -82,7 +82,7 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Can_Truncate_Negative()
     {
         using var world = new World();
-        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
+        var identity = world.Spawn().Add("foo").Add(123).Add(17.0f);
         var table = world.GetEntityMeta(identity).Archetype;
 
         table.Truncate(-2);
@@ -179,7 +179,7 @@ public class ArchetypeTests(ITestOutputHelper output)
             Assert.True(world.IsAlive(entity));
 
             // Metas patched?
-            Assert.Equal(entity, world.GetEntityMeta(entity).Identity);
+            Assert.Equal(entity, world.GetEntityMeta(entity).Archetype[world.GetEntityMeta(entity).Row]);
         }
     }
     
@@ -267,8 +267,8 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void IsComparable_Same_As_Signature()
     {
         using var world = new World();
-        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
-        _ = world.Spawn().Add(123).Add(17.0f).Id;
+        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f);
+        _ = world.Spawn().Add(123).Add(17.0f);
         
         var table1 = world.GetEntityMeta(entity1).Archetype;
         var table2 = world.GetEntityMeta(entity1).Archetype;
@@ -282,8 +282,8 @@ public class ArchetypeTests(ITestOutputHelper output)
     public void Has_Signature_HashCode()
     {
         using var world = new World();
-        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f).Id;
-        var entity2 = world.Spawn().Add(123).Add(17.0f).Id;
+        var entity1 = world.Spawn().Add("foo").Add(123).Add(17.0f);
+        var entity2 = world.Spawn().Add(123).Add(17.0f);
         
         var table1 = world.GetEntityMeta(entity1).Archetype;
         var table2 = world.GetEntityMeta(entity2).Archetype;

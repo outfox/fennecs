@@ -34,7 +34,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        Root = GetArchetype(new(Comp<Identity>.Plain.Expression));
+        Root = GetArchetype(new(Comp<Entity>.Plain.Expression));
     }
 
 
@@ -54,7 +54,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
     private readonly Dictionary<Signature, Archetype> _typeGraph = new();
 
     private readonly Dictionary<TypeExpression, List<Archetype>> _tablesByType = new();
-    private readonly Dictionary<Relate, HashSet<TypeExpression>> _typesByRelationTarget = new();
+    private readonly Dictionary<Key, HashSet<TypeExpression>> _typesByRelationTarget = new();
 
     #endregion
 
@@ -102,10 +102,14 @@ public sealed partial class Aspect : IEnumerable<Entity>
 
 
     /// <summary>
-    /// Is the Entity a member of this Aspect? (i.e. does it have any Component stored here)
+    /// Is the Entity's index a member of this Aspect? (i.e. does it have any Component stored here)
     /// </summary>
+    /// <remarks>
+    /// This is an occupancy check by index only — callers must validate liveness (generation)
+    /// via <see cref="fennecs.World.IsAlive"/> before trusting the index for a stored handle.
+    /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal bool Contains(Identity identity) => identity.Index < _meta.Length && _meta[identity.Index].Identity == identity;
+    internal bool Contains(Entity entity) => entity.Index < (uint) _meta.Length && _meta[entity.Index].Archetype is not null;
 
 
     internal void EnsureCapacity(int capacity)
@@ -118,10 +122,10 @@ public sealed partial class Aspect : IEnumerable<Entity>
     /// <summary>
     /// Adds the Entity to this Aspect, placing it in the Root archetype.
     /// </summary>
-    internal void Join(Identity identity)
+    internal void Join(Entity entity)
     {
-        _meta[identity.Index] = new(Root, Root.Count, identity);
-        Root.IdentityStorage.Append(identity);
+        _meta[entity.Index] = new(Root, Root.Count);
+        Root.EntityStorage.Append(entity);
         Root.Invalidate();
     }
 
@@ -132,9 +136,9 @@ public sealed partial class Aspect : IEnumerable<Entity>
     /// </summary>
     internal void Despawn(Entity entity)
     {
-        if (Contains(entity.Id))
+        if (Contains(entity))
         {
-            ref var meta = ref _meta[entity.Id.Index];
+            ref var meta = ref _meta[entity.Index];
 
             var table = meta.Archetype;
             table.Delete(meta.Row);
@@ -142,7 +146,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
             DespawnDependencies(entity);
 
             // Patch Meta
-            _meta[entity.Id.Index] = default;
+            _meta[entity.Index] = default;
         }
         else
         {
@@ -159,20 +163,20 @@ public sealed partial class Aspect : IEnumerable<Entity>
     internal void Forget(Entity entity)
     {
         DespawnDependencies(entity);
-        _meta[entity.Id.Index] = default;
+        _meta[entity.Index] = default;
     }
 
 
     private void DespawnDependencies(Entity entity)
     {
-        // Find identity-identity relation reverse lookup (if applicable)
-        if (!_typesByRelationTarget.TryGetValue(Relate.To(entity), out var types)) return;
+        // Find entity-entity relation reverse lookup (if applicable)
+        if (!_typesByRelationTarget.TryGetValue(entity.Key, out var types)) return;
 
         // Collect Archetypes that have any of these relations
         var toMigrate = _archetypes.Where(a => a.Signature.Matches(types)).ToList();
 
         // Do not change the home archetype of the entity (relating to Entities having a relation with themselves)
-        var homeArchetype = entity.Id.Index < _meta.Length ? _meta[entity.Id.Index].Archetype : null;
+        var homeArchetype = entity.Index < (uint) _meta.Length ? _meta[entity.Index].Archetype : null;
 
         // And migrate them to a new Archetype without the relation
         foreach (var archetype in toMigrate)
@@ -194,18 +198,14 @@ public sealed partial class Aspect : IEnumerable<Entity>
         }
 
         // No longer tracking this Entity
-        _typesByRelationTarget.Remove(Relate.To(entity));
+        _typesByRelationTarget.Remove(entity.Key);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal bool IsAlive(Identity identity) => identity == _meta[identity.Index].Identity;
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal ref Meta GetEntityMeta(Identity identity)
+    internal ref Meta GetEntityMeta(Entity entity)
     {
-        return ref _meta[identity.Index];
+        return ref _meta[entity.Index];
     }
 
     #endregion
@@ -318,7 +318,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
         // (cached queries were already validated when first compiled)
         foreach (var type in mask.HasTypes.Concat(mask.NotTypes).Concat(mask.AnyTypes))
         {
-            if (type.TypeId == LanguageType<Identity>.Id) continue;
+            if (type.TypeId == LanguageType.EntityId) continue;
 
             var owner = World.AspectOf(type);
             if (owner == this) continue;

@@ -1,15 +1,15 @@
-﻿// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 namespace fennecs;
 
 /// <summary>
-/// Meta Table that holds the Archetype, Row, and Identity of an "Entity"
-/// (the semantic concept, not the <see cref="Entity"/> builder struct).
+/// Meta Table entry that holds the Archetype and Row where an Entity's data lives.
+/// (indexed by the Entity's index; liveness is validated out-of-band via the World's generation table)
 /// </summary>
-internal readonly record struct Meta(Archetype Archetype, int Row, Identity Identity)
+internal readonly record struct Meta(Archetype Archetype, int Row)
 {
     /// <summary>
-    /// Archetype the Entity lives in.
+    /// Archetype the Entity lives in. (null if the Entity is not a member of the Aspect)
     /// </summary>
     public Archetype Archetype { get; init; } = Archetype;
 
@@ -17,9 +17,4 @@ internal readonly record struct Meta(Archetype Archetype, int Row, Identity Iden
     /// Position within the Archetype Table
     /// </summary>
     public int Row { get; init; } = Row;
-
-    /// <summary>
-    /// Entity Identity
-    /// </summary>
-    public Identity Identity { get; init; } = Identity;
 }

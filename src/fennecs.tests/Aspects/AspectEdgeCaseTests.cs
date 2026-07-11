@@ -122,13 +122,13 @@ public class AspectEdgeCaseTests
 
 
     [Fact]
-    public void Strict_Mode_Permits_Identity_Expressions()
+    public void Strict_Mode_Permits_Entity_Expressions()
     {
         using var world = new World { StrictAspects = true };
         world.AddAspect("game").Owns<CrewData>();
 
-        // Identity is exempt from ownership registration, even in strict mode.
+        // The Entity column is exempt from ownership registration, even in strict mode.
         var entity = world.Spawn();
-        Assert.True(entity.Has<Identity>());
+        Assert.True(entity.Has<Entity>());
     }
 }

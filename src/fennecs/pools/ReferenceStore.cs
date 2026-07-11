@@ -1,5 +1,3 @@
-﻿using System.Diagnostics;
-
 namespace fennecs.pools;
 
 /// <summary>
@@ -8,28 +6,27 @@ namespace fennecs.pools;
 /// <param name="capacity">initial capacity (count) of references dictionary</param>
 internal class ReferenceStore(int capacity = 4096)
 {
-    private readonly Dictionary<Identity, StoredReference<object>> _storage = new(capacity);
+    private readonly Dictionary<Key, StoredReference<object>> _storage = new(capacity);
 
-    public Identity Request<T>(T item) where T : class
+    public Key Request<T>(T item) where T : class
     {
-        var identity = Identity.Of(item);
+        var key = Key.Of(item);
 
         lock (_storage)
         {
             // Already tracking this item.
-            if (_storage.TryGetValue(identity, out var reference))
+            if (_storage.TryGetValue(key, out var reference))
             {
                 //TODO: Consider replacing exception with assert.
-                //Debug.Assert(reference.Item != item, $"GetHashCode() collision in {typeof(T)}, causing Identity collision between {item} and {reference.Item} in {reference}.");
                 if (reference.Item != item)
                 {
                     //TODO: Maybe disable the exception handling here, gives better inlining performance.
-                    throw new InvalidOperationException($"GetHashCode() collision in {typeof(T)}, causing Identity collision between {item} and {reference.Item} in {reference}.");
+                    throw new InvalidOperationException($"GetHashCode() collision in {typeof(T)}, causing Key collision between {item} and {reference.Item} in {reference}.");
                 }
 
                 reference.Count++;
-                _storage[identity] = reference;
-                return identity;
+                _storage[key] = reference;
+                return key;
             }
 
             // First time tracking this item.
@@ -39,19 +36,19 @@ internal class ReferenceStore(int capacity = 4096)
                 Count = 1,
             };
 
-            _storage[identity] = reference;
-            return identity;
+            _storage[key] = reference;
+            return key;
         }
     }
 
 
-    public T Get<T>(Identity identity) where T : class
+    public T Get<T>(Key key) where T : class
     {
         lock (_storage)
         {
-            if (!_storage.TryGetValue(identity, out var reference))
+            if (!_storage.TryGetValue(key, out var reference))
             {
-                throw new KeyNotFoundException($"Identity is not tracking an instance of {typeof(T)}.");
+                throw new KeyNotFoundException($"Key is not tracking an instance of {typeof(T)}.");
             }
 
             return (T) reference.Item;
@@ -59,25 +56,25 @@ internal class ReferenceStore(int capacity = 4096)
     }
 
 
-    public void Release(Identity identity)
+    public void Release(Key key)
     {
         lock (_storage)
         {
-            if (_storage.TryGetValue(identity, out var reference))
+            if (_storage.TryGetValue(key, out var reference))
             {
                 reference.Count--;
                 if (reference.Count == 0)
                 {
-                    _storage.Remove(identity);
+                    _storage.Remove(key);
                 }
                 else
                 {
-                    _storage[identity] = reference;
+                    _storage[key] = reference;
                 }
             }
             else
             {
-                throw new KeyNotFoundException($"Identity {identity} is not tracked.");
+                throw new KeyNotFoundException($"Key {key} is not tracked.");
             }
         }
     }

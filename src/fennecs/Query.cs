@@ -31,7 +31,8 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// <returns>true if Entity is in the Query</returns>
     public bool Contains(Entity entity)
     {
-        if (!Aspect.Contains(entity.Id)) return false;
+        if (!World.IsAlive(entity)) return false;
+        if (!Aspect.Contains(entity)) return false;
 
         var meta = Aspect.GetEntityMeta(entity);
         var table = meta.Archetype;

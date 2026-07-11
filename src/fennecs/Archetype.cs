@@ -32,7 +32,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// Number of Entities contained in this Archetype.
     /// </summary>
-    public int Count => IdentityStorage.Count;
+    public int Count => EntityStorage.Count;
 
     /// <summary>
     /// Does this Archetype currently contain no Entities?
@@ -53,7 +53,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// <summary>
     /// The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
     /// </summary>
-    internal readonly Storage<Identity> IdentityStorage;
+    internal readonly Storage<Entity> EntityStorage;
 
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
 
@@ -77,10 +77,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             Storages[index] = IStorage.Instantiate(type);
         }
         
-        // Get quick lookup for Identity Component (non-relational)
+        // Get quick lookup for the Entity column (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
-        // TypeExpression may have been created before the first TE of Identity.
-        IdentityStorage = GetStorage<Identity>(fennecs.Match.Plain);
+        // TypeExpression may have been created before the first TE of Entity.
+        EntityStorage = GetStorage<Entity>(fennecs.Match.Plain);
     }
 
 
@@ -164,20 +164,20 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         var excess = Math.Clamp(Count - maxEntityCount, 0, Count);
         if (excess <= 0) return;
         
-        var toDelete = ((ReadOnlySpan<Identity>)IdentityStorage.Span).Slice(Count - excess, excess);
+        var toDelete = ((ReadOnlySpan<Entity>)EntityStorage.Span).Slice(Count - excess, excess);
 
         foreach (var storage in Storages)
         {
-            // HACK... 
-            if (storage == IdentityStorage) continue;
-            
+            // HACK...
+            if (storage == EntityStorage) continue;
+
             //Must call before World removes Dependencies (can have dependencies in same archetype!)
             //TODO: Urgently needs unit test to rule out dangerous conflicts!
             storage.Delete(Count-excess, excess);
         }
 
         World.Recycle(this, toDelete);
-        IdentityStorage.Delete(Count - excess, excess);
+        EntityStorage.Delete(Count - excess, excess);
     }
 
     /// <summary>
@@ -192,9 +192,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     {
         for (var i = 0; i < count; i++)
         {
-            var identity = IdentityStorage[entry + i];
-            ref var meta = ref Aspect.GetEntityMeta(identity);
-            meta = new() { Identity = identity, Archetype = this, Row = entry + i };
+            var entity = EntityStorage[entry + i];
+            ref var meta = ref Aspect.GetEntityMeta(entity);
+            meta = new() { Archetype = this, Row = entry + i };
         }
     }
 
@@ -345,13 +345,13 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     internal Component[] GetRow(int row)
     {
-        // -1 because we skip IdentityStorage
+        // -1 because we skip the Entity column
         using var components = PooledList<Component>.Rent();
-        
+
         foreach (var (expression, index) in _storageIndices)
         {
             var storage = Storages[index];
-            if (storage == IdentityStorage) continue;
+            if (storage == EntityStorage) continue;
             components.Add(new(expression, storage.Box(row), World));
         }
         
@@ -380,7 +380,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         for (var i = 0; i < Count; i++)
         {
             if (snapshot != Volatile.Read(ref Version)) throw new InvalidOperationException("Collection modified while enumerating.");
-            yield return new Entity(World, IdentityStorage[i]);
+            yield return EntityStorage[i];
         }
     }
 
@@ -397,13 +397,13 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     
 
     /// <summary>
-    /// Returns (constructs) the Entity at the given index, associated with the World this Archetype belongs to.
+    /// Returns the Entity at the given index.
     /// </summary>
     /// <remarks>
     /// There's no bounds checking, so be sure to check against the Count property before using this method.
     /// (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
     /// </remarks>
-    public Entity this[int index] => new(World, IdentityStorage[index]);
+    public Entity this[int index] => EntityStorage[index];
 
 
     #region Cross Joins
@@ -492,11 +492,11 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// Inserts an Entity that is not yet a member of this Archetype's Aspect,
     /// back-filling the given Component value. (lazy Aspect membership join)
     /// </summary>
-    internal void JoinWith<T>(Identity identity, TypeExpression typeExpression, T data) where T : notnull
+    internal void JoinWith<T>(Entity entity, TypeExpression typeExpression, T data) where T : notnull
     {
         Invalidate();
 
-        IdentityStorage.Append(identity);
+        EntityStorage.Append(entity);
         BackFill(typeExpression, data, 1);
         PatchMetas(Count - 1);
     }
@@ -506,8 +506,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     {
         using var worldLock = World.Lock();
 
-        using var identities = World.SpawnBare(count);
-        SpawnWith(identities, components, values);
+        using var entities = World.SpawnBare(count);
+        SpawnWith(entities, components, values);
     }
 
 
@@ -515,10 +515,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// Bulk-inserts pre-minted Entities with the given Component values.
     /// (used to spawn the same Entities into several Aspects)
     /// </summary>
-    internal void SpawnWith(PooledList<Identity> identities, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    internal void SpawnWith(PooledList<Entity> entities, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
         var first = Count;
-        var count = identities.Count;
+        var count = entities.Count;
 
         for (var i = 0; i < components.Count; i++)
         {
@@ -526,7 +526,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             storage.Append(values[i], count);
         }
 
-        IdentityStorage.Append(identities);
+        EntityStorage.Append(entities);
         PatchMetas(first, count);
     }
     

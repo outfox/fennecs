@@ -56,7 +56,7 @@ public class ReferenceStoreTests(ITestOutputHelper output)
     {
         var store = new ReferenceStore();
         var item = new object();
-        Identity identity = default;
+        Key identity = default;
 
         for (var i = 0; i < count; i++) identity = store.Request(item);
 

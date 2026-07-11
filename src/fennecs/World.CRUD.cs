@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace fennecs;
@@ -9,77 +10,86 @@ public partial class World
     // These facades perform the World-level concerns (deferred mode, liveness assertions)
     // and delegate the structural work to the Aspect that stores the component type.
 
-    internal void AddComponent<T>(Identity identity, TypeExpression typeExpression, T data) where T : notnull
+    internal void AddComponent<T>(Entity entity, TypeExpression typeExpression, T data) where T : notnull
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
 
         if (typeExpression.isWildcard) throw new ArgumentException("Cannot add a Wildcard Component");
+
+        // Entities are world-relative; relations may not target Entities of another World.
+        Debug.Assert(!typeExpression.Key.IsEntity || typeExpression.Key.WorldTag == Tag, $"Relation target {typeExpression.Key} belongs to another World.");
 
         // Resolve before deferring: fails fast at the call site under StrictAspects.
         var aspect = AspectOf(typeExpression);
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Identity = identity, TypeExpression = typeExpression, Data = data});
+            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Add, Entity = entity, TypeExpression = typeExpression, Data = data});
             return;
         }
 
-        AssertAlive(identity);
+        AssertAlive(entity);
 
-        aspect.AddComponent(identity, typeExpression, data);
+        aspect.AddComponent(entity, typeExpression, data);
     }
 
 
-    internal void RemoveComponent(Identity identity, TypeExpression typeExpression)
+    internal void RemoveComponent(Entity entity, TypeExpression typeExpression)
     {
         var aspect = AspectOf(typeExpression);
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Identity = identity, TypeExpression = typeExpression});
+            _deferredOperations.Enqueue(new DeferredOperation {Opcode = Opcode.Remove, Entity = entity, TypeExpression = typeExpression});
             return;
         }
 
-        aspect.RemoveComponent(identity, typeExpression);
+        AssertAlive(entity);
+
+        aspect.RemoveComponent(entity, typeExpression);
     }
 
 
-    internal bool HasComponent<T>(Identity identity, Match match)
+    internal bool HasComponent<T>(Entity entity, Match match)
     {
         var type = TypeExpression.Of<T>(match);
-        return HasComponent(identity, type);
+        return HasComponent(entity, type);
     }
 
 
-    internal ref T GetComponent<T>(Identity identity, Match match)
+    internal ref T GetComponent<T>(Entity entity, Match match)
     {
-        AssertAlive(identity);
-        return ref AspectOf(TypeExpression.Of<T>(match)).GetComponent<T>(identity, match);
+        AssertAlive(entity);
+        return ref AspectOf(TypeExpression.Of<T>(match)).GetComponent<T>(entity, match);
     }
 
-    internal bool GetComponent(Identity identity, TypeExpression type, [MaybeNullWhen(false)] out object value)
+    internal bool GetComponent(Entity entity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
         if (type.isWildcard) throw new ArgumentException("Cannot get a Wildcard Component", nameof(type));
 
-        AssertAlive(identity);
+        AssertAlive(entity);
 
-        return AspectOf(type).GetComponent(identity, type, out value);
+        return AspectOf(type).GetComponent(entity, type, out value);
     }
 
-    internal Signature GetSignature(Identity identity)
+    internal Signature GetSignature(Entity entity)
     {
-        AssertAlive(identity);
+        AssertAlive(entity);
 
-        var signature = Main.GetSignature(identity);
+        var signature = Main.GetSignature(entity);
         for (var i = 1; i < _aspects.Count; i++)
         {
             var aspect = _aspects[i];
-            if (!aspect.Contains(identity)) continue;
-            signature = signature.Union(aspect.GetSignature(identity));
+            if (!aspect.Contains(entity)) continue;
+            signature = signature.Union(aspect.GetSignature(entity));
         }
         return signature;
     }
     #endregion
 
-    internal T[] Get<T>(Identity id, Match match) => AspectOf(TypeExpression.Of<T>(match)).Get<T>(id, match);
+    internal T[] Get<T>(Entity entity, Match match)
+    {
+        if (!IsAlive(entity)) return [];
+        return AspectOf(TypeExpression.Of<T>(match)).Get<T>(entity, match);
+    }
 }

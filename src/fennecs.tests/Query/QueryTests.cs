@@ -126,7 +126,7 @@ public class QueryTests
         /*var charlie = */
         world.Spawn().Add(p3).Add(222, bob);
 
-        var query = world.Query<Identity, Vector3>(Match.Plain, default)
+        var query = world.Query<Entity, Vector3>(Match.Plain, default)
             .Any<int>(Match.Plain)
             .Stream();
 
@@ -154,7 +154,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).Add(111, alice);
         var charlie = world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain).Any<int>(eve).Stream();
+        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain).Any<int>(eve).Stream();
 
         var count = 0;
         query.Raw((me, mp) =>
@@ -182,7 +182,7 @@ public class QueryTests
         var eve = world.Spawn().Add(p2).Add(111, alice);
         var charlie = world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain)
             .Any<int>(eve)
             .Any<int>(alice)
             .Stream();
@@ -232,7 +232,7 @@ public class QueryTests
         /*var charlie = */
         world.Spawn().Add(p3).Add(222, eve);
 
-        var query = world.Query<Identity, Vector3>(Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3>(Match.Plain, Match.Plain)
             .Not<int>(bob)
             .Any<int>(alice)
             .Stream();
@@ -277,7 +277,7 @@ public class QueryTests
         world.Spawn().Add(p3).Add(555, bob);
         world.Spawn().Add(p3).Add(666, eve);
 
-        var query = world.Query<Identity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
+        var query = world.Query<Entity, Vector3, int>(Match.Plain, Match.Plain, Match.Plain)
             .Not<int>(bob)
             .Stream();
 
@@ -324,17 +324,17 @@ public class QueryTests
         var query1A = world.Query().Compile();
         var query1B = world.Query().Compile();
 
-        var query2A = world.Query<Identity>(Match.Plain).Compile();
-        var query2B = world.Query<Identity>(Match.Plain).Compile();
+        var query2A = world.Query<Entity>(Match.Plain).Compile();
+        var query2B = world.Query<Entity>(Match.Plain).Compile();
 
         var query3A = world.Query().Has<int>().Compile();
         var query3B = world.Query().Has<int>().Compile();
 
-        var query4A = world.Query<Identity>(Match.Plain).Not<int>().Compile();
-        var query4B = world.Query<Identity>(Match.Plain).Not<int>().Compile();
+        var query4A = world.Query<Entity>(Match.Plain).Not<int>().Compile();
+        var query4B = world.Query<Entity>(Match.Plain).Not<int>().Compile();
 
-        var query5A = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Compile();
-        var query5B = world.Query<Identity>(Match.Plain).Any<int>().Any<float>().Compile();
+        var query5A = world.Query<Entity>(Match.Plain).Any<int>().Any<float>().Compile();
+        var query5B = world.Query<Entity>(Match.Plain).Any<int>().Any<float>().Compile();
 
         Assert.Equal(query1A, query1B);
         Assert.True(ReferenceEquals(query1A, query1B));
@@ -515,7 +515,7 @@ public class QueryTests
     public void Filtered_Enumerator_Filters()
     {
         using var world = new World();
-        var query = world.Query<Identity, int>(Match.Plain, Match.Any).Compile();
+        var query = world.Query<Entity, int>(Match.Plain, Match.Any).Compile();
 
         var entity1 = world.Spawn().Add(444);
         var entity2 = world.Spawn().Add(555, entity1);
