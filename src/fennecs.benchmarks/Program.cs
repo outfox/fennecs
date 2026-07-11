@@ -27,4 +27,5 @@ BenchmarkSwitcher.FromTypes(
     typeof(AspectFragmentationBenchmarks),
     typeof(MicrocodeBenchmarks),
     typeof(SimpleEntityBenchmarks),
+    typeof(EntityPassingBenchmarks),
 ]).Run(args.Length > 0 ? args : ["--filter", "*"], config);
