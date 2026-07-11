@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -18,8 +17,8 @@ public partial class World
 
         if (typeExpression.isWildcard) ThrowWildcard("Cannot add a Wildcard Component", nameof(typeExpression));
 
-        // Entities are world-relative; relations may not target Entities of another World.
-        Debug.Assert(!typeExpression.Key.IsEntity || typeExpression.Key.WorldTag == Tag, $"Relation target {typeExpression.Key} belongs to another World.");
+        // Fails fast at the call site, even in Deferred mode.
+        AssertSameWorld(typeExpression);
 
         // Resolve before deferring: fails fast at the call site under StrictAspects.
         var aspect = AspectOf(typeExpression);
@@ -96,7 +95,26 @@ public partial class World
     }
 
 
-    #region Throw Helpers
+    #region Assert & Throw Helpers
+
+    /// <summary>
+    /// Entities are world-relative: relations may not target Entities of another World.
+    /// (a single byte compare — the relation Key carries its target's world tag)
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal void AssertSameWorld(TypeExpression typeExpression)
+    {
+        var key = typeExpression.Key;
+        if (key.IsEntity && key.WorldTag != Tag) ThrowForeignRelation(key);
+    }
+
+
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private void ThrowForeignRelation(Key key) =>
+        throw new InvalidOperationException(
+            $"Relation target {key} belongs to another World — relations cannot target Entities of other Worlds. (this is World \"{Name}\", tag {Tag})");
+
 
     [DoesNotReturn]
     [MethodImpl(MethodImplOptions.NoInlining)]

@@ -126,6 +126,9 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// <param name="values">Component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
+        // Covers the EntitySpawner path, which bypasses AddComponent.
+        foreach (var component in components) AssertSameWorld(component);
+
         if (_aspects.Count == 1)
         {
             var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);

@@ -54,6 +54,7 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         var typeExpression = TypeExpression.Of<T>(match);
 
         AssertSameAspect(typeExpression);
+        World.AssertSameWorld(typeExpression);
 
         if (AddMode == AddConflict.Strict && !_mask.SafeForAddition(typeExpression))
             throw new InvalidOperationException(
@@ -75,6 +76,7 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         var typeExpression = TypeExpression.Of<T>(match);
 
         AssertSameAspect(typeExpression);
+        World.AssertSameWorld(typeExpression);
 
         if (RemoveMode == RemoveConflict.Strict && !_mask.SafeForRemoval(typeExpression))
             throw new InvalidOperationException(
