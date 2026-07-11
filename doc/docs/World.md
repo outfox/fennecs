@@ -10,10 +10,10 @@ Worlds represent the universe of Entities and their Components (as well as the c
 ![A fennec leaning casually on a World](/img/fennec-world.png)
 
 It is possible to have multiple Worlds, each with its own set of Queries and Entities.
-- Entities are unique to a World
-- Relations can bridge across Worlds (from fennecs 0.6.0+)
+- Entities are unique to (and live their whole lives in) a World
+- Relations are World-local: they cannot target Entities of another World (as of fennecs 0.7.0)
 - Component Types are shared between Worlds
-- (this facilitates moving entities between Worlds) (planned fennecs 0.6.5+)
+- (this facilitates moving entities between Worlds) (planned)
 
 ![World Example: blue circle labeled world filled with fox emojis with many different traits](/img/diagram-world.png)
 *"A world, populated by Entities with different traits (Components)"*
@@ -42,15 +42,31 @@ var world = new fennecs.World(initialCapacity: 0)
 }
 ```
 
-### You can have up to a Billion Entities in a World.
+### You can have over two Billion Entities in a World.
 Optimistically, **fenn**ecs might help you handle around 1 or 2 <u>M</u>illion Entities at a reasonable performance level for games, depending on your Component layouts.
 
 ::: details :neofox_cry_loud: I WANT MORE!
-Listen, Jeff Jr. - the difference between 1 million and 1 billion is pretty much exactly 1 billion. Can you even begin to fathom how much a billion is? ... *sigh* ... sure, we'll chip in a couple more! 
+Listen, Jeff Jr. - the difference between 1 million and 2 billion is pretty much exactly 2 billion. Can you even begin to fathom how much that is? ... *sigh* ... sure, we'll chip in a couple more!
 
 Easy to remember, too - the limit is now your mom's weight and/or phone number:
-`1,073,741,824`<br/>
+`2,147,483,647`<br/>
 There - *Tres Commas...* happy now?
+
+*(that's `int.MaxValue` - the Entity encoding itself would go to 4,294,967,295, but .NET array sizes bind first. Your RAM taps out way, way before either.)*
+:::
+
+::: details :neofox_magnify: LIMITS - for nerds who need numbers (as of 0.7.0)
+
+| What | Limit | Why |
+|---|---|---|
+| Entities per World | `2,147,483,647` (~2.1 billion) | 32-bit Entity index; .NET array sizes bind first |
+| Concurrent Worlds | `255` | 8-bit World tag (tag 0 is reserved); slots are recycled on `Dispose()` |
+| Respawns per Entity index | `65,535` | 16-bit Generation; exhausted indices are retired, never recycled |
+| Component Types (per process) | `4,094` | 12-bit TypeId (ids 0, 1, and 0xFFF are reserved) |
+
+An Entity is a single 64-bit value: `[generation:16] [kind:4] [flags:4] [world:8] [index:32]`.
+Its low **48 bits** double as its *Key* for Relations - and because the Key carries the World tag,
+Relations are World-local: each World cleans up Relations to its own despawned Entities, eagerly and automatically.
 :::
 
 ## What's a World, anyway?
@@ -61,7 +77,7 @@ Under the hood, a World implements `IAspect` and delegates its entire query surf
 
 ::: details :neofox_magnify: BEHIND THE SCENES - Multiple Worlds
 
-Yes, you can have up to 256 of them. Disposing a World returns it to the pool. Instantiate to your heart's content! You usually only need one World... now go ... ... shoo!
+Yes, you can have up to 255 of them at the same time. Disposing a World returns its slot to the pool. Instantiate to your heart's content! You usually only need one World... now go ... ... shoo!
 
 ::: details DON'T SHOO ME!
 There are at least two traditional use cases for multiple worlds:
@@ -70,7 +86,7 @@ There are at least two traditional use cases for multiple worlds:
 
 Each World is a separate, isolated universe of Entities and Components, with its own set of Archetypes and Queries.
 
-Entities know their World, including Entities as parts of Relation Expressions. Cross-World relations are fully supported, and if an Entity Despawns, any Relations to it are automatically cleaned up.
+Entities know their World, including Entities as parts of Relation Expressions. Relations are World-local: creating a Relation that targets an Entity of another World throws. Within a World, when an Entity Despawns, any Relations targeting it are automatically cleaned up. *(need to segregate data domains within one World? That's what [Aspects](/docs/Advanced/Aspects/index.md) are for!)*
 
 Other than that, Worlds don't know about each other. They're like parallel dimensions, each with its own set of rules and inhabitants.
 
@@ -159,21 +175,21 @@ You usually don't need to think about Archetypes yourself - **fenn**ecs handles 
 Since 0.7.0, a World's Archetypes are grouped into [Aspects](/docs/Advanced/Aspects/index.md)  –  separate contiguous storage universes sharing the same Entities. Every World has one built-in Aspect, `Main`, and you can add more to group hot data and fight ==Fragmentation==. If you've never heard of them, that's by design: with just `Main`, everything behaves exactly as it always did.
 :::
 
-::: details :neofox_magnify: BEHIND THE SCENES - IdentityPool
-Entities have an internal Id, their Identity, which they receive from - and return to - an internal pool. There, the Identities recycled when Entities despawn.
+::: details :neofox_magnify: BEHIND THE SCENES - EntityPool
+Entities have an internal index which they receive from - and return to - an internal pool. There, the indices are recycled when Entities despawn.
 
-Identiy stores an internal Generation number that prevents an Entity's successor from being mistaken for the real McCoy.
+The pool keeps a Generation number per index (baked into each 64-bit Entity you hold) that prevents an Entity's successor from being mistaken for the real McCoy - stale handles report `Alive == false`, and operating on one throws with a message that tells you whether the Entity was despawned or its index respawned as a new Generation.
 :::
 
 
 ::: danger RELATIONS :neofox_astronaut: :neofox_astronaut_gun:
-*"Wait, it's all Identities? - Always has been!"*
+*"Wait, it's all World-local? - Always should have been!"*
 
-#### Entity-Entity relations **do care and know about other worlds.** 
+#### Entity-Entity relations **are World-local.** (as of 0.7.0)
 
-- Essentially your Relation keys are unique across world boundaries, and if an Entity despawns, any Relations targeting it in any world are cleaned up accordingly (the components are removed from their respective Entities). 
+- Relation Keys carry their target's World tag, so they can never collide across World boundaries - and creating a Relation that targets an Entity of another World throws right at the call site. When an Entity despawns, its World cleans up all Relations targeting it (the components are removed from their respective Entities).
 
-- Entities cannot automagically move between worlds yet, but when that feature comes, their Relations will be kept intact. You currently have to do all that housekeeping yourself if you need this functionality.
+- Entities cannot automagically move between worlds yet. You currently have to do that housekeeping yourself if you need this functionality.
 
 #### Keyed Components don't care.
 
@@ -182,7 +198,7 @@ Keys are just snapshots of momentary Hash values. This means if something has th
 - Keys can trivially move between worlds if needed, they are just values; no cleanup is needed.
 
 #### Entity-Object links work as expected, too.
-- And yay! This is another one of their main uses, for example a Network Socket, Asset Provider, or Sound System might be a good candidate for an Object Link used by Entities in multiple Worlds.
+- And yay! This is one of their main uses: for example a Network Socket, Asset Provider, or Sound System might be a good candidate for an Object Link used by Entities in multiple Worlds.
 :::
 
 
