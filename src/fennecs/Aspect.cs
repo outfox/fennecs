@@ -34,7 +34,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
         _meta = new Meta[initialCapacity];
 
         //Create the "Entity" Archetype, which is also the root of the Archetype Graph.
-        Root = GetArchetype(new(Comp<Entity>.Plain.Expression));
+        Root = GetArchetype(new(Comp<EntityIndex>.Plain.Expression));
     }
 
 
@@ -125,7 +125,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
     internal void Join(Entity entity)
     {
         _meta[entity.Index] = new(Root, Root.Count);
-        Root.EntityStorage.Append(entity);
+        Root.EntityStorage.Append(new EntityIndex(entity.Index));
         Root.Invalidate();
     }
 
@@ -206,6 +206,13 @@ public sealed partial class Aspect : IEnumerable<Entity>
     internal ref Meta GetEntityMeta(Entity entity)
     {
         return ref _meta[entity.Index];
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal ref Meta GetEntityMeta(EntityIndex index)
+    {
+        return ref _meta[index.Raw];
     }
 
     #endregion

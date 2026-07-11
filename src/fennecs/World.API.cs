@@ -92,7 +92,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
         get
         {
             using var mask = MaskPool.Rent();
-            mask.Has(TypeExpression.Of<Entity>(Match.Plain));
+            mask.Has(TypeExpression.Of<EntityIndex>(Match.Plain));
             return CompileQuery(mask);
         }
     }
@@ -128,7 +128,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     {
         if (_aspects.Count == 1)
         {
-            var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<Entity>.Plain.Expression);
+            var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);
             var archetype = Main.GetArchetype(signature);
             archetype.Spawn(count, components, values);
             return;
@@ -158,7 +158,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
         {
             if (!groups.TryGetValue(aspect, out var group)) continue;
 
-            var signature = new Signature(group.components.ToImmutableSortedSet()).Add(Comp<Entity>.Plain.Expression);
+            var signature = new Signature(group.components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);
             aspect.EnsureCapacity(_entityPool.Created + 1);
             aspect.GetArchetype(signature).SpawnWith(entities, group.components, group.values);
         }
@@ -214,10 +214,10 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// </param>
     public void DespawnAllWith<T>(Match match = default)
     {
-        var query = Query<Entity>().Has<T>(match).Stream();
-        query.Raw(delegate(Memory<Entity> entities)
+        var query = Query<EntityIndex>().Has<T>(match).Stream();
+        query.Raw(delegate(Memory<EntityIndex> entities)
         {
-            foreach (var entity in entities.Span) DespawnImpl(entity);
+            foreach (var index in entities.Span) DespawnImpl(EntityFor(index));
         });
     }
 
@@ -243,19 +243,20 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// Other Aspects still evict the Entities' rows normally.
     /// </remarks>
     /// <param name="source">the Archetype the Entities were truncated from</param>
-    /// <param name="entities">the entities to despawn (remove)</param>
-    internal void Recycle(Archetype source, ReadOnlySpan<Entity> entities)
+    /// <param name="indices">the entities to despawn (remove)</param>
+    internal void Recycle(Archetype source, ReadOnlySpan<EntityIndex> indices)
     {
-        foreach (var entity in entities)
+        foreach (var index in indices)
         {
+            var entity = EntityFor(index);
             foreach (var aspect in _aspects)
             {
                 // The source Archetype already removed its own rows.
                 if (aspect == source.Aspect) aspect.Forget(entity);
                 else aspect.Despawn(entity);
             }
+            _entityPool.Recycle(entity);
         }
-        _entityPool.Recycle(entities);
     }
     #endregion
 

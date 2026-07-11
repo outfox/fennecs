@@ -88,6 +88,13 @@ public partial class World
     }
 
 
+    /// <summary>
+    /// Mints the current (live) Entity handle for an entity column entry.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal Entity EntityFor(EntityIndex index) => _entityPool.EntityFor(index.Raw);
+
+
     private void DespawnImpl(Entity entity)
     {
         AssertAlive(entity);

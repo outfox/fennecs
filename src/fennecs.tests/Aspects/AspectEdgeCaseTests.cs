@@ -129,6 +129,6 @@ public class AspectEdgeCaseTests
 
         // The Entity column is exempt from ownership registration, even in strict mode.
         var entity = world.Spawn();
-        Assert.True(entity.Has<Entity>());
+        Assert.True(entity.Has<EntityIndex>());
     }
 }

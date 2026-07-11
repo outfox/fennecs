@@ -52,8 +52,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     /// <summary>
     /// The Entities in this Archetype (filled contiguously from the bottom, as are the storages).
+    /// Stores bare 32-bit indices; world and generation are implicit (see <see cref="EntityIndex"/>).
     /// </summary>
-    internal readonly Storage<Entity> EntityStorage;
+    internal readonly Storage<EntityIndex> EntityStorage;
 
     private readonly Dictionary<TypeExpression, int> _storageIndices = new();
 
@@ -77,10 +78,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             Storages[index] = IStorage.Instantiate(type);
         }
         
-        // Get quick lookup for the Entity column (non-relational)
+        // Get quick lookup for the entity column (non-relational)
         // CAVEAT: This isn't necessarily at index 0 because another
-        // TypeExpression may have been created before the first TE of Entity.
-        EntityStorage = GetStorage<Entity>(fennecs.Match.Plain);
+        // TypeExpression may have been created before the first TE of EntityIndex.
+        EntityStorage = GetStorage<EntityIndex>(fennecs.Match.Plain);
     }
 
 
@@ -164,7 +165,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         var excess = Math.Clamp(Count - maxEntityCount, 0, Count);
         if (excess <= 0) return;
         
-        var toDelete = ((ReadOnlySpan<Entity>)EntityStorage.Span).Slice(Count - excess, excess);
+        var toDelete = ((ReadOnlySpan<EntityIndex>)EntityStorage.Span).Slice(Count - excess, excess);
 
         foreach (var storage in Storages)
         {
@@ -192,8 +193,8 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     {
         for (var i = 0; i < count; i++)
         {
-            var entity = EntityStorage[entry + i];
-            ref var meta = ref Aspect.GetEntityMeta(entity);
+            var index = EntityStorage[entry + i];
+            ref var meta = ref Aspect.GetEntityMeta(index);
             meta = new() { Archetype = this, Row = entry + i };
         }
     }
@@ -298,6 +299,19 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
 
     internal IStorage GetStorage(TypeExpression typeExpression) => Storages[_storageIndices[typeExpression]];
+
+
+    internal bool TryGetStorage(TypeExpression typeExpression, out IStorage storage)
+    {
+        if (_storageIndices.TryGetValue(typeExpression, out var index))
+        {
+            storage = Storages[index];
+            return true;
+        }
+
+        storage = null!;
+        return false;
+    }
     
     
     internal void BackFill<T>(TypeExpression typeExpression, T value, int additions) where T: notnull
@@ -380,7 +394,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         for (var i = 0; i < Count; i++)
         {
             if (snapshot != Volatile.Read(ref Version)) throw new InvalidOperationException("Collection modified while enumerating.");
-            yield return EntityStorage[i];
+            yield return World.EntityFor(EntityStorage[i]);
         }
     }
 
@@ -397,13 +411,13 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     
 
     /// <summary>
-    /// Returns the Entity at the given index.
+    /// Returns (mints) the Entity at the given index, injecting its World tag and current generation.
     /// </summary>
     /// <remarks>
     /// There's no bounds checking, so be sure to check against the Count property before using this method.
     /// (This is a performance optimization to avoid the overhead of bounds checking and exceptions in tight loops.)
     /// </remarks>
-    public Entity this[int index] => EntityStorage[index];
+    public Entity this[int index] => World.EntityFor(EntityStorage[index]);
 
 
     #region Cross Joins
@@ -496,7 +510,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     {
         Invalidate();
 
-        EntityStorage.Append(entity);
+        EntityStorage.Append(new EntityIndex(entity.Index));
         BackFill(typeExpression, data, 1);
         PatchMetas(Count - 1);
     }
@@ -526,7 +540,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             storage.Append(values[i], count);
         }
 
-        EntityStorage.Append(entities);
+        foreach (var entity in entities) EntityStorage.Append(new EntityIndex(entity.Index));
         PatchMetas(first, count);
     }
     

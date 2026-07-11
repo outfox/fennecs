@@ -19,7 +19,7 @@ public partial class Aspect
             // Lazy membership: the first Component owned by this Aspect joins the Entity
             // directly into the {Entity, T} Archetype. (single insert, no intermediate move)
             EnsureCapacity((int) entity.Index + 1);
-            var signature = new Signature(Comp<Entity>.Plain.Expression).Add(typeExpression);
+            var signature = new Signature(Comp<EntityIndex>.Plain.Expression).Add(typeExpression);
             var archetype = GetArchetype(signature);
             archetype.JoinWith(entity, typeExpression, data);
             return;
@@ -158,9 +158,9 @@ public partial class Aspect
 
     private void BulkEvict(Archetype archetype)
     {
-        foreach (var entity in archetype.EntityStorage.Span)
+        foreach (var index in archetype.EntityStorage.Span)
         {
-            _meta[entity.Index] = default;
+            _meta[index.Raw] = default;
         }
         archetype.Clear();
     }

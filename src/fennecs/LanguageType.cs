@@ -72,9 +72,9 @@ internal class LanguageType
             Ids[typeof(None)] = 0;
 
             // Reserve the 1st ID for the entity column type present in every Archetype.
-            // LanguageType<Entity> adopts this reservation when constructed.
-            Types[EntityId] = typeof(Entity);
-            Ids[typeof(Entity)] = EntityId;
+            // LanguageType<EntityIndex> adopts this reservation when constructed.
+            Types[EntityId] = typeof(EntityIndex);
+            Ids[typeof(EntityIndex)] = EntityId;
             Counter = EntityId;
 
             // Register the last (0xFFF) ID as Any type, reserved for future Wildcards.

@@ -225,7 +225,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Entity>(Match.Plain).Stream();
+        var query = world.Query<EntityIndex>(Match.Plain).Stream();
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -245,7 +245,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World();
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Entity>(Match.Plain).Stream();
+        var query = world.Query<EntityIndex>(Match.Plain).Stream();
         query.Raw(world, (uniform, _) =>
         {
             for (var i = 0; i < count; i++)
@@ -272,7 +272,7 @@ public class WorldTests(ITestOutputHelper output)
         var world = new World(1);
         for (var i = 0; i < count; i++) world.Spawn();
 
-        var query = world.Query<Entity>(Match.Plain).Stream();
+        var query = world.Query<EntityIndex>(Match.Plain).Stream();
         query.For(world, (uniform, ref _) =>
         {
             var entity = uniform.Spawn();
@@ -317,8 +317,8 @@ public class WorldTests(ITestOutputHelper output)
             world.Spawn().Add(444, target2);
         }
 
-        var query1 = world.Query<Entity>(Match.Plain).Has<int>(target1).Stream();
-        var query2 = world.Query<Entity>(Match.Plain).Has<int>(target2).Stream();
+        var query1 = world.Query<EntityIndex>(Match.Plain).Has<int>(target1).Stream();
+        var query2 = world.Query<EntityIndex>(Match.Plain).Has<int>(target2).Stream();
 
         Assert.Equal(1000, query1.Count);
         Assert.Equal(1000, query2.Count);
@@ -756,7 +756,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var quickCount = 0;
         quickStream.For(
-            (in _, ref _) =>
+            (_, ref _) =>
             {
                 quickCount++;
             }
@@ -764,7 +764,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var queryCount = 0;
         queryStream.For(
-            (in _, ref _) =>
+            (_, ref _) =>
             {
                 queryCount++;
             }
@@ -790,7 +790,7 @@ public class WorldTests(ITestOutputHelper output)
         
         var quickCount = 0;
         quickStream.For(
-            (in _, ref _) =>
+            (_, ref _) =>
             {
                 quickCount++;
             }
@@ -798,7 +798,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var queryCount = 0;
         queryStream.For(
-            (in _, ref _) =>
+            (_, ref _) =>
             {
                 queryCount++;
             }

@@ -154,7 +154,7 @@ public delegate void UniformComponentAction<#= modKey #><in U, <#= GenList("C", 
 // EntityComponentAction - base version (all ref)
 // ============================================================================
 <# for (var n = 1; n <= maxArity; n++) { #>
-public delegate void EntityComponentAction<<#= GenList("C", n) #>>(in Entity entity, <#= string.Join(", ", Enumerable.Range(0, n).Select(i => $"ref C{i} comp{i}")) #>);
+public delegate void EntityComponentAction<<#= GenList("C", n) #>>(EntityRef entity, <#= string.Join(", ", Enumerable.Range(0, n).Select(i => $"ref C{i} comp{i}")) #>);
 <# } #>
 
 // ============================================================================
@@ -171,7 +171,7 @@ for (var n = 1; n <= maxArity; n++)
         var modSig = ModifierSignature(mods, n);
 #>
 /// <summary>EntityComponentAction with modifiers: <#= string.Join(", ", mods) #></summary>
-public delegate void EntityComponentAction<#= modKey #><<#= GenList("C", n) #>>(in Entity entity, <#= modSig #>);
+public delegate void EntityComponentAction<#= modKey #><<#= GenList("C", n) #>>(EntityRef entity, <#= modSig #>);
 <# 
     }
 } 
@@ -181,7 +181,7 @@ public delegate void EntityComponentAction<#= modKey #><<#= GenList("C", n) #>>(
 // UniformEntityComponentAction - base version (all ref)
 // ============================================================================
 <# for (var n = 1; n <= maxArity; n++) { #>
-public delegate void UniformEntityComponentAction<in U, <#= GenList("C", n) #>>(U uniform, in Entity entity, <#= string.Join(", ", Enumerable.Range(0, n).Select(i => $"ref C{i} comp{i}")) #>);
+public delegate void UniformEntityComponentAction<in U, <#= GenList("C", n) #>>(U uniform, EntityRef entity, <#= string.Join(", ", Enumerable.Range(0, n).Select(i => $"ref C{i} comp{i}")) #>);
 <# } #>
 
 // ============================================================================
@@ -198,7 +198,7 @@ for (var n = 1; n <= maxArity; n++)
         var modSig = ModifierSignature(mods, n);
 #>
 /// <summary>UniformEntityComponentAction with modifiers: <#= string.Join(", ", mods) #></summary>
-public delegate void UniformEntityComponentAction<#= modKey #><in U, <#= GenList("C", n) #>>(U uniform, in Entity entity, <#= modSig #>);
+public delegate void UniformEntityComponentAction<#= modKey #><in U, <#= GenList("C", n) #>>(U uniform, EntityRef entity, <#= modSig #>);
 <# 
     }
 } 

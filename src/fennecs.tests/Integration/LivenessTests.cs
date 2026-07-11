@@ -50,7 +50,7 @@ public class LivenessTests(ITestOutputHelper output)
         var despawns = new HashSet<Entity>();
         stream.For(
             uniform: despawns, 
-            action: (killSet, in entity, ref value) => 
+            action: (killSet, entity, ref value) => 
         {
             if (value == 69) killSet.Add(entity); // Can also just use a closure here, i.e. despawns.
             if (value == 60 + 9 && killSet.Count % 3 == 0) killSet.Add(entity); // fake redundant addition ;)

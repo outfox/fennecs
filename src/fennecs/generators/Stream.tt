@@ -410,7 +410,7 @@ namespace fennecs
             for (var i=0;i<length;i++)
             {
                 if (!Pass(<#= FormatList(n,"in span{0}[i]") #>)) continue;
-                action(table[i], <#= FormatList(n,"ref span{0}[i]") #>);
+                action(new EntityRef(table, i), <#= FormatList(n,"ref span{0}[i]") #>);
             }
         }
 
@@ -430,7 +430,7 @@ namespace fennecs
             for (var i=0;i<length;i++)
             {
                 if (!Pass(<#= FormatList(n,"in span{0}[i]") #>)) continue;
-                action(uniform, table[i], <#= FormatList(n,"ref span{0}[i]") #>);
+                action(uniform, new EntityRef(table, i), <#= FormatList(n,"ref span{0}[i]") #>);
             }
         }
         #endregion

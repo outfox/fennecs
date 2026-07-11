@@ -87,9 +87,9 @@ public partial class World
 
     internal void RegisterOwnership(Aspect aspect, TypeID typeId, Type type)
     {
-        if (type == typeof(Entity))
+        if (type == typeof(Entity) || type == typeof(EntityIndex))
         {
-            throw new InvalidOperationException("The Entity column is present in every Aspect and cannot be owned by one.");
+            throw new InvalidOperationException("The entity column is present in every Aspect and cannot be owned by one.");
         }
 
         var existing = (uint)typeId < (uint)_aspectByTypeId.Length ? _aspectByTypeId[typeId] : null;

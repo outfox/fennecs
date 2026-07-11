@@ -233,14 +233,14 @@ public class Stream<#= n #><#= setName #>Tests(ITestOutputHelper output)
             }
         });
 
-        stream.For((in e, <#= RefArgs(n, L) #>) =>
+        stream.For((e, <#= RefArgs(n, L) #>) =>
         {
-            Assert.True(e.Alive);
+            Assert.True(e.Entity.Alive);
             Assert.Equal(9, <#= cL #>.Value);
             <#= cL #> = <#= TL #>.New(10);
         });
 
-        stream.For(11, (uniform, in _, <#= RefArgs(n, L) #>) =>
+        stream.For(11, (uniform, _, <#= RefArgs(n, L) #>) =>
         {
             Assert.Equal(10, <#= cL #>.Value);
             <#= cL #> = <#= TL #>.New(uniform);
@@ -465,7 +465,7 @@ public class Stream<#= n #><#= setName #>Tests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((in e, <#= RefArgs(n) #>) =>
+        stream.For((e, <#= RefArgs(n) #>) =>
         {
             found.Add(e);
         });
@@ -488,7 +488,7 @@ public class Stream<#= n #><#= setName #>Tests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, in e, <#= RefArgs(n) #>) =>
+        stream.For(3.1415f, (uniform, e, <#= RefArgs(n) #>) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);

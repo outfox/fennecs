@@ -65,7 +65,7 @@ public class FilterBenchmarks
     [Benchmark]
     public void ManualIntegerEntity()
     {
-        _streamV3.For(delegate (in Entity _, ref Vector3 v, ref int i)
+        _streamV3.For(delegate (EntityRef _, ref Vector3 v, ref int i)
         {
             if (i < Threshold) return;
             v = UniformConstantVector + v;
@@ -84,7 +84,7 @@ public class FilterBenchmarks
     [Benchmark]
     public void FilterIntegerEntity()
     {
-        _streamV3Top10Percent.For(delegate (in Entity _, ref Vector3 v, ref int _)
+        _streamV3Top10Percent.For(delegate (EntityRef _, ref Vector3 v, ref int _)
         {
             v = UniformConstantVector + v;
         });
