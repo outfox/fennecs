@@ -130,12 +130,6 @@ internal class EntityPool
     }
 
 
-    internal void Recycle(ReadOnlySpan<Entity> toDelete)
-    {
-        foreach (var entity in toDelete) Recycle(entity);
-    }
-
-
     private void EnsureGenerations(uint maxIndex)
     {
         if (maxIndex < (uint) _generations.Length) return;

@@ -13,6 +13,7 @@ public partial class World
     internal void AddComponent<T>(Entity entity, TypeExpression typeExpression, T data) where T : notnull
     {
         // (manual null check: the JIT eliminates the branch entirely for value type T)
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (data == null) ThrowDataNull();
 
         if (typeExpression.isWildcard) ThrowWildcard("Cannot add a Wildcard Component", nameof(typeExpression));
@@ -118,6 +119,7 @@ public partial class World
 
     [DoesNotReturn]
     [MethodImpl(MethodImplOptions.NoInlining)]
+    // ReSharper disable once NotResolvedInText
     private static void ThrowDataNull() => throw new ArgumentNullException("data");
 
 

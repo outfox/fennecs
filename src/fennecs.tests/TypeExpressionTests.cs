@@ -263,6 +263,27 @@ public class TypeExpressionTests(ITestOutputHelper output)
         private int _value;
     };
 
+    [Fact]
+    public void Kind_is_Data()
+    {
+        Assert.Equal(PrimaryKind.Data, TypeExpression.Of<TypeEmpty>(Match.Plain).Kind);
+        Assert.Equal(PrimaryKind.Data, TypeExpression.Of<TypeEmpty>(Match.Any).Kind);
+    }
+
+
+    [Fact]
+    public void Forged_Wildcard_Matches_only_Itself()
+    {
+        // A Wildcard nibble outside the recognized categories (reserved: Family).
+        var forged = new Key((ulong) SecondaryKind.Family << Key.KindShift);
+        Assert.True(forged.IsWildcard);
+
+        var expression = new TypeExpression(PrimaryKind.Data, (TypeID) 5, forged);
+        Assert.True(expression.Matches(expression));
+        Assert.False(expression.Matches(new TypeExpression(PrimaryKind.Data, (TypeID) 5, Key.Plain)));
+    }
+
+
     private struct TypeIntInt
     {
         private int _value;

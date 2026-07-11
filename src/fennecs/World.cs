@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using fennecs.pools;
 
@@ -163,7 +164,7 @@ public partial class World
         ThrowDead(entity);
     }
 
-
+    [DoesNotReturn]
     [MethodImpl(MethodImplOptions.NoInlining)]
     private void ThrowDead(Entity entity) => throw new ObjectDisposedException(null, DescribeDead(entity));
 

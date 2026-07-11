@@ -95,6 +95,120 @@ public class Stream1ValueFilterTests
 
         Assert.Equal(count, topCount0 + botCount0);
     }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+    }
 }
 
 /// <summary>
@@ -213,6 +327,202 @@ public class Stream2ValueFilterTests
 
         bot1.Job((ref _, ref c1) =>
         {
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(ValB.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, ValB>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (ValB)
+        var top1 = all.Where((in ValB c) => c.Value > 50);
+        var bot1 = all.Where((in ValB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(ValB.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, ValB>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (ValB)
+        var top1 = all.Where((in ValB c) => c.Value > 50);
+        var bot1 = all.Where((in ValB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount1);
             Assert.True(c1.Value <= 50);
         });
@@ -377,6 +687,284 @@ public class Stream3ValueFilterTests
 
         bot2.Job((ref _, ref _, ref c2) =>
         {
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(ValB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, ValB, ValC>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (ValB)
+        var top1 = all.Where((in ValB c) => c.Value > 50);
+        var bot1 = all.Where((in ValB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(ValB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, ValB, ValC>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (ValB)
+        var top1 = all.Where((in ValB c) => c.Value > 50);
+        var bot1 = all.Where((in ValB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount2);
             Assert.True(c2.Value <= 50);
         });
@@ -581,6 +1169,366 @@ public class Stream4ValueFilterTests
 
         bot3.Job((ref _, ref _, ref _, ref c3) =>
         {
+            Interlocked.Increment(ref botCount3);
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(ValB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100))).Add(ValD.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, ValB, ValC, ValD>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (ValB)
+        var top1 = all.Where((in ValB c) => c.Value > 50);
+        var bot1 = all.Where((in ValB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (ValD)
+        var top3 = all.Where((in ValD c) => c.Value > 50);
+        var bot3 = all.Where((in ValD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.For((in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For((in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(ValB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100))).Add(ValD.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, ValB, ValC, ValD>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (ValB)
+        var top1 = all.Where((in ValB c) => c.Value > 50);
+        var bot1 = all.Where((in ValB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (ValD)
+        var top3 = all.Where((in ValD c) => c.Value > 50);
+        var bot3 = all.Where((in ValD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.Job(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount3);
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.Job(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount3);
             Assert.True(c3.Value <= 50);
         });
@@ -831,6 +1779,448 @@ public class Stream5ValueFilterTests
 
         Assert.Equal(count, topCount4 + botCount4);
     }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(ValB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100))).Add(ValD.New(Random.Shared.Next(100))).Add(ValE.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, ValB, ValC, ValD, ValE>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (ValB)
+        var top1 = all.Where((in ValB c) => c.Value > 50);
+        var bot1 = all.Where((in ValB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (ValD)
+        var top3 = all.Where((in ValD c) => c.Value > 50);
+        var bot3 = all.Where((in ValD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.For((in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For((in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        // filter on component 4 (ValE)
+        var top4 = all.Where((in ValE c) => c.Value > 50);
+        var bot4 = all.Where((in ValE c) => c.Value <= 50);
+
+        var topCount4 = 0;
+        var botCount4 = 0;
+        top4.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.True(e.Alive);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.True(e.Alive);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+
+        topCount4 = 0;
+        botCount4 = 0;
+        top4.For(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+
+        topCount4 = 0;
+        botCount4 = 0;
+        top4.For(4711, (uniform, in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For(4711, (uniform, in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(ValB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100))).Add(ValD.New(Random.Shared.Next(100))).Add(ValE.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, ValB, ValC, ValD, ValE>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (ValB)
+        var top1 = all.Where((in ValB c) => c.Value > 50);
+        var bot1 = all.Where((in ValB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (ValD)
+        var top3 = all.Where((in ValD c) => c.Value > 50);
+        var bot3 = all.Where((in ValD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.Job(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount3);
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.Job(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount3);
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        // filter on component 4 (ValE)
+        var top4 = all.Where((in ValE c) => c.Value > 50);
+        var bot4 = all.Where((in ValE c) => c.Value <= 50);
+
+        var topCount4 = 0;
+        var botCount4 = 0;
+        top4.Job(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount4);
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.Job(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount4);
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+    }
 }
 
 /// <summary>
@@ -909,6 +2299,120 @@ public class Stream1RefFilterTests
 
         bot0.Job((ref c0) =>
         {
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount0);
             Assert.True(c0.Value <= 50);
         });
@@ -1033,6 +2537,202 @@ public class Stream2RefFilterTests
 
         bot1.Job((ref _, ref c1) =>
         {
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA, RefB>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA, RefB>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount1);
             Assert.True(c1.Value <= 50);
         });
@@ -1197,6 +2897,284 @@ public class Stream3RefFilterTests
 
         bot2.Job((ref _, ref _, ref c2) =>
         {
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(RefC.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA, RefB, RefC>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (RefC)
+        var top2 = all.Where((in RefC c) => c.Value > 50);
+        var bot2 = all.Where((in RefC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(RefC.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA, RefB, RefC>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (RefC)
+        var top2 = all.Where((in RefC c) => c.Value > 50);
+        var bot2 = all.Where((in RefC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount2);
             Assert.True(c2.Value <= 50);
         });
@@ -1401,6 +3379,366 @@ public class Stream4RefFilterTests
 
         bot3.Job((ref _, ref _, ref _, ref c3) =>
         {
+            Interlocked.Increment(ref botCount3);
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(RefC.New(Random.Shared.Next(100))).Add(RefD.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA, RefB, RefC, RefD>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (RefC)
+        var top2 = all.Where((in RefC c) => c.Value > 50);
+        var bot2 = all.Where((in RefC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (RefD)
+        var top3 = all.Where((in RefD c) => c.Value > 50);
+        var bot3 = all.Where((in RefD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.For((in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For((in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(RefC.New(Random.Shared.Next(100))).Add(RefD.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA, RefB, RefC, RefD>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (RefC)
+        var top2 = all.Where((in RefC c) => c.Value > 50);
+        var bot2 = all.Where((in RefC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (RefD)
+        var top3 = all.Where((in RefD c) => c.Value > 50);
+        var bot3 = all.Where((in RefD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.Job(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount3);
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.Job(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount3);
             Assert.True(c3.Value <= 50);
         });
@@ -1651,6 +3989,448 @@ public class Stream5RefFilterTests
 
         Assert.Equal(count, topCount4 + botCount4);
     }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(RefC.New(Random.Shared.Next(100))).Add(RefD.New(Random.Shared.Next(100))).Add(RefE.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA, RefB, RefC, RefD, RefE>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (RefC)
+        var top2 = all.Where((in RefC c) => c.Value > 50);
+        var bot2 = all.Where((in RefC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (RefD)
+        var top3 = all.Where((in RefD c) => c.Value > 50);
+        var bot3 = all.Where((in RefD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.For((in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For((in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        // filter on component 4 (RefE)
+        var top4 = all.Where((in RefE c) => c.Value > 50);
+        var bot4 = all.Where((in RefE c) => c.Value <= 50);
+
+        var topCount4 = 0;
+        var botCount4 = 0;
+        top4.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.True(e.Alive);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.True(e.Alive);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+
+        topCount4 = 0;
+        botCount4 = 0;
+        top4.For(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+
+        topCount4 = 0;
+        botCount4 = 0;
+        top4.For(4711, (uniform, in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For(4711, (uniform, in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(RefA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(RefC.New(Random.Shared.Next(100))).Add(RefD.New(Random.Shared.Next(100))).Add(RefE.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<RefA, RefB, RefC, RefD, RefE>();
+
+        // filter on component 0 (RefA)
+        var top0 = all.Where((in RefA c) => c.Value > 50);
+        var bot0 = all.Where((in RefA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (RefC)
+        var top2 = all.Where((in RefC c) => c.Value > 50);
+        var bot2 = all.Where((in RefC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (RefD)
+        var top3 = all.Where((in RefD c) => c.Value > 50);
+        var bot3 = all.Where((in RefD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.Job(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount3);
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.Job(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount3);
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        // filter on component 4 (RefE)
+        var top4 = all.Where((in RefE c) => c.Value > 50);
+        var bot4 = all.Where((in RefE c) => c.Value <= 50);
+
+        var topCount4 = 0;
+        var botCount4 = 0;
+        top4.Job(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount4);
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.Job(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount4);
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+    }
 }
 
 /// <summary>
@@ -1769,6 +4549,202 @@ public class Stream2MixedFilterTests
 
         bot1.Job((ref _, ref c1) =>
         {
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, RefB>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, RefB>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount1);
             Assert.True(c1.Value <= 50);
         });
@@ -1933,6 +4909,284 @@ public class Stream3MixedFilterTests
 
         bot2.Job((ref _, ref _, ref c2) =>
         {
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, RefB, ValC>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, RefB, ValC>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount2);
             Assert.True(c2.Value <= 50);
         });
@@ -2137,6 +5391,366 @@ public class Stream4MixedFilterTests
 
         bot3.Job((ref _, ref _, ref _, ref c3) =>
         {
+            Interlocked.Increment(ref botCount3);
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100))).Add(RefD.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, RefB, ValC, RefD>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (RefD)
+        var top3 = all.Where((in RefD c) => c.Value > 50);
+        var bot3 = all.Where((in RefD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.For((in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For((in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100))).Add(RefD.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, RefB, ValC, RefD>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (RefD)
+        var top3 = all.Where((in RefD c) => c.Value > 50);
+        var bot3 = all.Where((in RefD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.Job(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount3);
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.Job(4711, (uniform, ref _, ref _, ref _, ref c3) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount3);
             Assert.True(c3.Value <= 50);
         });
@@ -2381,6 +5995,448 @@ public class Stream5MixedFilterTests
 
         bot4.Job((ref _, ref _, ref _, ref _, ref c4) =>
         {
+            Interlocked.Increment(ref botCount4);
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100))).Add(RefD.New(Random.Shared.Next(100))).Add(ValE.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, RefB, ValC, RefD, ValE>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.For((in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For((in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        topCount0 = 0;
+        botCount0 = 0;
+        top0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount0++;
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.For(4711, (uniform, in e, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount0++;
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.For((in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For((in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        topCount1 = 0;
+        botCount1 = 0;
+        top1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount1++;
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.For(4711, (uniform, in e, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount1++;
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.For((in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For((in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        topCount2 = 0;
+        botCount2 = 0;
+        top2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount2++;
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.For(4711, (uniform, in e, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount2++;
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (RefD)
+        var top3 = all.Where((in RefD c) => c.Value > 50);
+        var bot3 = all.Where((in RefD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.For((in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For((in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        topCount3 = 0;
+        botCount3 = 0;
+        top3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount3++;
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.For(4711, (uniform, in e, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount3++;
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        // filter on component 4 (ValE)
+        var top4 = all.Where((in ValE c) => c.Value > 50);
+        var bot4 = all.Where((in ValE c) => c.Value <= 50);
+
+        var topCount4 = 0;
+        var botCount4 = 0;
+        top4.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.True(e.Alive);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.True(e.Alive);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+
+        topCount4 = 0;
+        botCount4 = 0;
+        top4.For(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+
+        topCount4 = 0;
+        botCount4 = 0;
+        top4.For(4711, (uniform, in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount4++;
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.For(4711, (uniform, in e, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount4++;
+            Assert.True(c4.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount4 + botCount4);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn().Add(ValA.New(Random.Shared.Next(100))).Add(RefB.New(Random.Shared.Next(100))).Add(ValC.New(Random.Shared.Next(100))).Add(RefD.New(Random.Shared.Next(100))).Add(ValE.New(Random.Shared.Next(100)));
+        }
+
+        var all = world.Stream<ValA, RefB, ValC, RefD, ValE>();
+
+        // filter on component 0 (ValA)
+        var top0 = all.Where((in ValA c) => c.Value > 50);
+        var bot0 = all.Where((in ValA c) => c.Value <= 50);
+
+        var topCount0 = 0;
+        var botCount0 = 0;
+        top0.Job(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount0);
+            Assert.True(c0.Value > 50);
+        });
+
+        bot0.Job(4711, (uniform, ref c0, ref _, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount0);
+            Assert.True(c0.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount0 + botCount0);
+
+        // filter on component 1 (RefB)
+        var top1 = all.Where((in RefB c) => c.Value > 50);
+        var bot1 = all.Where((in RefB c) => c.Value <= 50);
+
+        var topCount1 = 0;
+        var botCount1 = 0;
+        top1.Job(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount1);
+            Assert.True(c1.Value > 50);
+        });
+
+        bot1.Job(4711, (uniform, ref _, ref c1, ref _, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount1);
+            Assert.True(c1.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount1 + botCount1);
+
+        // filter on component 2 (ValC)
+        var top2 = all.Where((in ValC c) => c.Value > 50);
+        var bot2 = all.Where((in ValC c) => c.Value <= 50);
+
+        var topCount2 = 0;
+        var botCount2 = 0;
+        top2.Job(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount2);
+            Assert.True(c2.Value > 50);
+        });
+
+        bot2.Job(4711, (uniform, ref _, ref _, ref c2, ref _, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount2);
+            Assert.True(c2.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount2 + botCount2);
+
+        // filter on component 3 (RefD)
+        var top3 = all.Where((in RefD c) => c.Value > 50);
+        var bot3 = all.Where((in RefD c) => c.Value <= 50);
+
+        var topCount3 = 0;
+        var botCount3 = 0;
+        top3.Job(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount3);
+            Assert.True(c3.Value > 50);
+        });
+
+        bot3.Job(4711, (uniform, ref _, ref _, ref _, ref c3, ref _) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount3);
+            Assert.True(c3.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount3 + botCount3);
+
+        // filter on component 4 (ValE)
+        var top4 = all.Where((in ValE c) => c.Value > 50);
+        var bot4 = all.Where((in ValE c) => c.Value <= 50);
+
+        var topCount4 = 0;
+        var botCount4 = 0;
+        top4.Job(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount4);
+            Assert.True(c4.Value > 50);
+        });
+
+        bot4.Job(4711, (uniform, ref _, ref _, ref _, ref _, ref c4) =>
+        {
+            Assert.Equal(4711, uniform);
             Interlocked.Increment(ref botCount4);
             Assert.True(c4.Value <= 50);
         });

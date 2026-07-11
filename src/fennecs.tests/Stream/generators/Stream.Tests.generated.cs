@@ -219,6 +219,28 @@ public class Stream1ValueTests(ITestOutputHelper output)
     }
 
 
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1));
+
+        var stream = world.Stream<ValA>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
+    }
+
+
     [Theory]
     [ClassData(typeof(StreamCountGenerator))]
     public void Query_Count_Accurate(int count, bool createEmptyTable)
@@ -856,6 +878,28 @@ public class Stream2ValueTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref c1) => { Assert.Equal(11, c1.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1));
+
+        var stream = world.Stream<ValA, ValB>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA, ValB>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 
@@ -1506,6 +1550,28 @@ public class Stream3ValueTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref _, ref c2) => { Assert.Equal(11, c2.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1));
+
+        var stream = world.Stream<ValA, ValB, ValC>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA, ValB, ValC>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 
@@ -2162,6 +2228,28 @@ public class Stream4ValueTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref _, ref _, ref c3) => { Assert.Equal(11, c3.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add(ValD.New(1));
+
+        var stream = world.Stream<ValA, ValB, ValC, ValD>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA, ValB, ValC, ValD>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 
@@ -2827,6 +2915,28 @@ public class Stream5ValueTests(ITestOutputHelper output)
     }
 
 
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1)).Add(ValB.New(1)).Add(ValC.New(1)).Add(ValD.New(1)).Add(ValE.New(1));
+
+        var stream = world.Stream<ValA, ValB, ValC, ValD, ValE>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA, ValB, ValC, ValD, ValE>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
+    }
+
+
     [Theory]
     [ClassData(typeof(StreamCountGenerator))]
     public void Query_Count_Accurate(int count, bool createEmptyTable)
@@ -3473,6 +3583,28 @@ public class Stream1RefTests(ITestOutputHelper output)
     }
 
 
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(RefA.New(1));
+
+        var stream = world.Stream<RefA>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<RefA>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
+    }
+
+
     [Theory]
     [ClassData(typeof(StreamCountGenerator))]
     public void Query_Count_Accurate(int count, bool createEmptyTable)
@@ -4110,6 +4242,28 @@ public class Stream2RefTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref c1) => { Assert.Equal(11, c1.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1));
+
+        var stream = world.Stream<RefA, RefB>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<RefA, RefB>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 
@@ -4760,6 +4914,28 @@ public class Stream3RefTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref _, ref c2) => { Assert.Equal(11, c2.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1));
+
+        var stream = world.Stream<RefA, RefB, RefC>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<RefA, RefB, RefC>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 
@@ -5416,6 +5592,28 @@ public class Stream4RefTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref _, ref _, ref c3) => { Assert.Equal(11, c3.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add(RefD.New(1));
+
+        var stream = world.Stream<RefA, RefB, RefC, RefD>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<RefA, RefB, RefC, RefD>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 
@@ -6081,6 +6279,28 @@ public class Stream5RefTests(ITestOutputHelper output)
     }
 
 
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(RefA.New(1)).Add(RefB.New(1)).Add(RefC.New(1)).Add(RefD.New(1)).Add(RefE.New(1));
+
+        var stream = world.Stream<RefA, RefB, RefC, RefD, RefE>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<RefA, RefB, RefC, RefD, RefE>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
+    }
+
+
     [Theory]
     [ClassData(typeof(StreamCountGenerator))]
     public void Query_Count_Accurate(int count, bool createEmptyTable)
@@ -6733,6 +6953,28 @@ public class Stream2MixedTests(ITestOutputHelper output)
     }
 
 
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1));
+
+        var stream = world.Stream<ValA, RefB>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA, RefB>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
+    }
+
+
     [Theory]
     [ClassData(typeof(StreamCountGenerator))]
     public void Query_Count_Accurate(int count, bool createEmptyTable)
@@ -7380,6 +7622,28 @@ public class Stream3MixedTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref _, ref c2) => { Assert.Equal(11, c2.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1));
+
+        var stream = world.Stream<ValA, RefB, ValC>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA, RefB, ValC>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 
@@ -8036,6 +8300,28 @@ public class Stream4MixedTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref _, ref _, ref c3) => { Assert.Equal(11, c3.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add(RefD.New(1));
+
+        var stream = world.Stream<ValA, RefB, ValC, RefD>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA, RefB, ValC, RefD>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 
@@ -8698,6 +8984,28 @@ public class Stream5MixedTests(ITestOutputHelper output)
         });
 
         stream.For((ref _, ref _, ref _, ref _, ref c4) => { Assert.Equal(11, c4.Value); });
+    }
+
+
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn().Add(ValA.New(1)).Add(RefB.New(1)).Add(ValC.New(1)).Add(RefD.New(1)).Add(ValE.New(1));
+
+        var stream = world.Stream<ValA, RefB, ValC, RefD, ValE>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<ValA, RefB, ValC, RefD, ValE>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
     }
 
 

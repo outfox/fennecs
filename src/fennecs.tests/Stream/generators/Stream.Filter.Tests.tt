@@ -115,6 +115,124 @@ public class Stream<#= n #><#= setName #>FilterTests
         Assert.Equal(count, topCount<#= j #> + botCount<#= j #>);
 <# } #>
     }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void EntityAndUniformForFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn()<#= AddChain(T, n, j => "Random.Shared.Next(100)") #>;
+        }
+
+        var all = world.Stream<<#= types #>>();
+<# for (var j = 0; j < n; j++) { #>
+
+        // filter on component <#= j #> (<#= T[j] #>)
+        var top<#= j #> = all.Where((in <#= T[j] #> c) => c.Value > 50);
+        var bot<#= j #> = all.Where((in <#= T[j] #> c) => c.Value <= 50);
+
+        var topCount<#= j #> = 0;
+        var botCount<#= j #> = 0;
+        top<#= j #>.For((in e, <#= RefArgs(n, j) #>) =>
+        {
+            Assert.True(e.Alive);
+            topCount<#= j #>++;
+            Assert.True(c<#= j #>.Value > 50);
+        });
+
+        bot<#= j #>.For((in e, <#= RefArgs(n, j) #>) =>
+        {
+            Assert.True(e.Alive);
+            botCount<#= j #>++;
+            Assert.True(c<#= j #>.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount<#= j #> + botCount<#= j #>);
+
+        topCount<#= j #> = 0;
+        botCount<#= j #> = 0;
+        top<#= j #>.For(4711, (uniform, <#= RefArgs(n, j) #>) =>
+        {
+            Assert.Equal(4711, uniform);
+            topCount<#= j #>++;
+            Assert.True(c<#= j #>.Value > 50);
+        });
+
+        bot<#= j #>.For(4711, (uniform, <#= RefArgs(n, j) #>) =>
+        {
+            Assert.Equal(4711, uniform);
+            botCount<#= j #>++;
+            Assert.True(c<#= j #>.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount<#= j #> + botCount<#= j #>);
+
+        topCount<#= j #> = 0;
+        botCount<#= j #> = 0;
+        top<#= j #>.For(4711, (uniform, in e, <#= RefArgs(n, j) #>) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            topCount<#= j #>++;
+            Assert.True(c<#= j #>.Value > 50);
+        });
+
+        bot<#= j #>.For(4711, (uniform, in e, <#= RefArgs(n, j) #>) =>
+        {
+            Assert.Equal(4711, uniform);
+            Assert.True(e.Alive);
+            botCount<#= j #>++;
+            Assert.True(c<#= j #>.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount<#= j #> + botCount<#= j #>);
+<# } #>
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(1312)]
+    public void UniformJobFilterWithLambda(int count)
+    {
+        using var world = new World();
+
+        for (var i = 0; i < count; i++)
+        {
+            world.Spawn()<#= AddChain(T, n, j => "Random.Shared.Next(100)") #>;
+        }
+
+        var all = world.Stream<<#= types #>>();
+<# for (var j = 0; j < n; j++) { #>
+
+        // filter on component <#= j #> (<#= T[j] #>)
+        var top<#= j #> = all.Where((in <#= T[j] #> c) => c.Value > 50);
+        var bot<#= j #> = all.Where((in <#= T[j] #> c) => c.Value <= 50);
+
+        var topCount<#= j #> = 0;
+        var botCount<#= j #> = 0;
+        top<#= j #>.Job(4711, (uniform, <#= RefArgs(n, j) #>) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref topCount<#= j #>);
+            Assert.True(c<#= j #>.Value > 50);
+        });
+
+        bot<#= j #>.Job(4711, (uniform, <#= RefArgs(n, j) #>) =>
+        {
+            Assert.Equal(4711, uniform);
+            Interlocked.Increment(ref botCount<#= j #>);
+            Assert.True(c<#= j #>.Value <= 50);
+        });
+
+        Assert.Equal(count, topCount<#= j #> + botCount<#= j #>);
+<# } #>
+    }
 }
 <#
     } // end for set / arity

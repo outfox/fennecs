@@ -145,6 +145,20 @@ public class WorldRegistryTests
         var real = world1.Spawn();
         var forged = new Entity(world1.Tag, real.Index, (ushort) (real.Generation + 1));
         Assert.Contains("does not exist yet", world1.DescribeDead(forged));
+
+        // Fall-through: diagnosing a handle that is, in fact, alive.
+        Assert.Contains("is not alive", world1.DescribeDead(real));
+    }
+
+
+    [Fact]
+    public void Worlds_have_Distinct_HashCodes()
+    {
+        using var world1 = new World(0);
+        using var world2 = new World(0);
+
+        Assert.Equal(world1.GetHashCode(), world1.GetHashCode());
+        Assert.NotEqual(world1.GetHashCode(), world2.GetHashCode());
     }
 
 

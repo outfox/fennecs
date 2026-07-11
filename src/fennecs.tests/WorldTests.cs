@@ -826,6 +826,49 @@ public class WorldTests(ITestOutputHelper output)
         Assert.True(world.IsAlive(entity));
     }
 
+    [Fact]
+    public void GetComponents_Merges_Aspects_and_Empties_on_Dead()
+    {
+        using var world = new World();
+        world.AddAspect("strings").Owns<string>();
+
+        var entity = world.Spawn().Add(123).Add("hello");
+        var components = entity.Components;
+        Assert.Contains(components, c => c.Type == typeof(int));
+        Assert.Contains(components, c => c.Type == typeof(string));
+
+        world.Despawn(entity);
+        Assert.Empty(entity.Components);
+    }
+
+
+    [Fact]
+    public void GetSignature_Merges_Aspects_that_Contain_the_Entity()
+    {
+        using var world = new World();
+        world.AddAspect("strings").Owns<string>();
+
+        var withBoth = world.Spawn().Add(123).Add("hello");
+        var mainOnly = world.Spawn().Add(123);
+
+        var stringPlain = TypeExpression.Of<string>(Match.Plain);
+        Assert.True(world.GetSignature(withBoth).Contains(stringPlain));
+        Assert.False(world.GetSignature(mainOnly).Contains(stringPlain));
+    }
+
+
+    [Fact]
+    public void Get_on_Dead_Entity_is_Empty()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(123);
+        Assert.NotEmpty(entity.Get<int>(Match.Plain));
+
+        world.Despawn(entity);
+        Assert.Empty(entity.Get<int>(Match.Plain));
+    }
+
+
     private class NewableClass;
 
     private struct NewableStruct;

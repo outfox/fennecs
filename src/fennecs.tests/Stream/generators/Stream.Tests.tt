@@ -250,6 +250,28 @@ public class Stream<#= n #><#= setName #>Tests(ITestOutputHelper output)
     }
 
 
+    [Fact]
+    public void Has_Value_Equality_and_ToString()
+    {
+        using var world = new World();
+        world.Spawn()<#= AddChain(T, n, i => "1") #>;
+
+        var stream = world.Stream<<#= types #>>();
+
+        var copy = stream with { };
+        Assert.True(stream == copy);
+        Assert.True(stream.Equals((object) copy));
+        Assert.Equal(stream.GetHashCode(), copy.GetHashCode());
+
+        // A separately-created Stream is a distinct value.
+        var other = world.Stream<<#= types #>>();
+        Assert.True(stream != other);
+
+        output.WriteLine(stream.ToString());
+        Assert.NotEmpty(stream.ToString());
+    }
+
+
     [Theory]
     [ClassData(typeof(StreamCountGenerator))]
     public void Query_Count_Accurate(int count, bool createEmptyTable)
