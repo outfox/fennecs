@@ -54,7 +54,7 @@ Console.WriteLine("This is us (and our grudges): \n" + us);
 //    query.Despawn();
 //    query.Truncate(0);
 // -> visiting each Entity personally
-betrayingVipers.For((in Entity them, ref Location theirLocation) =>
+betrayingVipers.For((EntityRef them, ref Location theirLocation) =>
 {
     Console.WriteLine();
     

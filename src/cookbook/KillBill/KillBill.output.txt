@@ -1,4 +1,4 @@
-﻿Directed by: Trentin Quarantino
+Directed by: Trentin Quarantino
 As we said, there were 5 of them.
 One hides in hideout 0x12736da2.
 One hides in hideout 0x4474dd11.
@@ -10,53 +10,36 @@ We are still here, though.
 
 Do we hold grudges? True.
 This is us (and our grudges): 
-E-00000001:00001 <fennecs.Identity>
-  |-<Location>
-  |-<Grudge> >> E-00000002:00001
-  |-<Grudge> >> E-00000003:00001
-  |-<Grudge> >> E-00000004:00001
-  |-<Grudge> >> E-00000005:00001
-  |-<Grudge> >> E-00000006:00001
+E-00000001:00001
 
 Suddenly, in hideout 0x12736da2:
-Oh, hello E-00000002:00001 <fennecs.Identity>
-  |-<Location>
-  |-<Betrayed> >> E-00000001:00001!
+Oh, hello E-00000002:00001!
 Remember us?
-They do. They remember everything! They admit their Betral is True!
+They do. They remember everything! They admit their Betrayal is True!
 
 Suddenly, in hideout 0x4474dd11:
-Oh, hello E-00000003:00001 <fennecs.Identity>
-  |-<Location>
-  |-<Betrayed> >> E-00000001:00001!
+Oh, hello E-00000003:00001!
 Remember us?
-They do. They remember everything! They admit their Betral is True!
+They do. They remember everything! They admit their Betrayal is True!
 
 Suddenly, in hideout 0x6ba4d3ab:
-Oh, hello E-00000004:00001 <fennecs.Identity>
-  |-<Location>
-  |-<Betrayed> >> E-00000001:00001!
+Oh, hello E-00000004:00001!
 Remember us?
-They do. They remember everything! They admit their Betral is True!
+They do. They remember everything! They admit their Betrayal is True!
 
 Suddenly, in hideout 0x0acc04c4:
-Oh, hello E-00000005:00001 <fennecs.Identity>
-  |-<Location>
-  |-<Betrayed> >> E-00000001:00001!
+Oh, hello E-00000005:00001!
 Remember us?
-They do. They remember everything! They admit their Betral is True!
+They do. They remember everything! They admit their Betrayal is True!
 
 Suddenly, in hideout 0x441796fe:
-Oh, hello E-00000006:00001 <fennecs.Identity>
-  |-<Location>
-  |-<Betrayed> >> E-00000001:00001!
+Oh, hello E-00000006:00001!
 Remember us?
-They do. They remember everything! They admit their Betral is True!
+They do. They remember everything! They admit their Betrayal is True!
 
 Now, there are 0 of them.
 Let's get out of hideout 0x441796fe.
 Any more grudges? False.
 This is us now:
-E-00000001:00001 <fennecs.Identity>
-  |-<Location>
+E-00000001:00001
 We'll be traveling for a while.
