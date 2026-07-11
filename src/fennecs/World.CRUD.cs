@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace fennecs;
 
@@ -12,9 +13,10 @@ public partial class World
 
     internal void AddComponent<T>(Entity entity, TypeExpression typeExpression, T data) where T : notnull
     {
-        if (data == null) throw new ArgumentNullException(nameof(data));
+        // (manual null check: the JIT eliminates the branch entirely for value type T)
+        if (data == null) ThrowDataNull();
 
-        if (typeExpression.isWildcard) throw new ArgumentException("Cannot add a Wildcard Component");
+        if (typeExpression.isWildcard) ThrowWildcard("Cannot add a Wildcard Component", nameof(typeExpression));
 
         // Entities are world-relative; relations may not target Entities of another World.
         Debug.Assert(!typeExpression.Key.IsEntity || typeExpression.Key.WorldTag == Tag, $"Relation target {typeExpression.Key} belongs to another World.");
@@ -65,7 +67,7 @@ public partial class World
 
     internal bool GetComponent(Entity entity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
-        if (type.isWildcard) throw new ArgumentException("Cannot get a Wildcard Component", nameof(type));
+        if (type.isWildcard) ThrowWildcard("Cannot get a Wildcard Component", nameof(type));
 
         AssertAlive(entity);
 
@@ -92,4 +94,18 @@ public partial class World
         if (!IsAlive(entity)) return [];
         return AspectOf(TypeExpression.Of<T>(match)).Get<T>(entity, match);
     }
+
+
+    #region Throw Helpers
+
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void ThrowDataNull() => throw new ArgumentNullException("data");
+
+
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void ThrowWildcard(string message, string paramName) => throw new ArgumentException(message, paramName);
+
+    #endregion
 }

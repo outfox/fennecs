@@ -3,6 +3,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
+// ReSharper disable once RedundantUsingDirective (used by throw helpers)
+
 namespace fennecs;
 
 public partial class Aspect
@@ -28,7 +30,7 @@ public partial class Aspect
         ref var meta = ref _meta[entity.Index];
         var oldArchetype = meta.Archetype;
 
-        if (oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} already has a Component of type {typeExpression}");
+        if (oldArchetype.Signature.Matches(typeExpression)) ThrowAlreadyHasComponent(entity, typeExpression);
 
         var newSignature = oldArchetype.Signature.Add(typeExpression);
         var newArchetype = GetArchetype(newSignature);
@@ -41,13 +43,13 @@ public partial class Aspect
 
     internal void RemoveComponent(Entity entity, TypeExpression typeExpression)
     {
-        if (!Contains(entity)) throw new InvalidOperationException($"Entity {entity} does not have a Component of type {typeExpression}");
+        if (!Contains(entity)) ThrowDoesNotHaveComponent(entity, typeExpression);
 
         ref var meta = ref _meta[entity.Index];
 
         var oldArchetype = meta.Archetype;
 
-        if (!oldArchetype.Signature.Matches(typeExpression)) throw new InvalidOperationException($"Entity {entity} does not have a Component of type {typeExpression}");
+        if (!oldArchetype.Signature.Matches(typeExpression)) ThrowDoesNotHaveComponent(entity, typeExpression);
 
         var newSignature = oldArchetype.Signature.Remove(typeExpression);
 
@@ -78,14 +80,18 @@ public partial class Aspect
 
     internal ref T GetComponent<T>(Entity entity, Match match)
     {
-        if (!HasComponent(entity, TypeExpression.Of<T>(match)))
+        // Single lookup: the storage dictionary probe subsumes the signature match
+        // (for the specific, non-wildcard expressions this method is documented for).
+        if (entity.Index < (uint) _meta.Length)
         {
-            throw new InvalidOperationException($"Entity {entity} does not have a reference type Component of type {typeof(T)} / {match}");
+            var (table, row) = _meta[entity.Index];
+            if (table is not null && table.TryGetStorage(TypeExpression.Of<T>(match), out var storage))
+            {
+                return ref ((Storage<T>) storage).Span[row];
+            }
         }
 
-        var (table, row) = _meta[entity.Index];
-        var storage = table.GetStorage<T>(match);
-        return ref storage.Span[row];
+        return ref ThrowMissingComponent<T>(entity, match);
     }
 
 
@@ -164,6 +170,31 @@ public partial class Aspect
         }
         archetype.Clear();
     }
+
+    #endregion
+
+
+    #region Throw Helpers
+
+    // Out-of-line throw helpers keep the CRUD methods small (inlineable) and free of
+    // interpolated-string handler code; messages are only constructed when actually thrown.
+
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void ThrowAlreadyHasComponent(Entity entity, TypeExpression typeExpression) =>
+        throw new InvalidOperationException($"Entity {entity} already has a Component of type {typeExpression}");
+
+
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void ThrowDoesNotHaveComponent(Entity entity, TypeExpression typeExpression) =>
+        throw new InvalidOperationException($"Entity {entity} does not have a Component of type {typeExpression}");
+
+
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static ref T ThrowMissingComponent<T>(Entity entity, Match match) =>
+        throw new InvalidOperationException($"Entity {entity} does not have a reference type Component of type {typeof(T)} / {match}");
 
     #endregion
 }

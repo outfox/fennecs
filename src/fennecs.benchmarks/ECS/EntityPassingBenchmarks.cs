@@ -19,16 +19,18 @@ public class EntityPassingBenchmarks
 
     private World _world = null!;
     private Stream<Vector3> _stream;
+    private Entity[] _entities = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         _world = new World(entityCount);
         _stream = _world.Query<Vector3>().Stream();
+        _entities = new Entity[entityCount];
 
         for (var i = 0; i < entityCount; i++)
         {
-            _world.Spawn().Add(new Vector3(i, i, i));
+            _entities[i] = _world.Spawn().Add(new Vector3(i, i, i));
         }
     }
 
@@ -54,5 +56,29 @@ public class EntityPassingBenchmarks
             Entity stored = e;
             v = Vector3.Cross(v, UniformConstantVector) + new Vector3((int) (stored.ToRaw() & 1), 0, 0);
         });
+    }
+
+    [Benchmark]
+    public Vector3 Fluent_Ref_Per_Entity()
+    {
+        var sum = Vector3.Zero;
+        var entities = _entities;
+        for (var i = 0; i < entities.Length; i++)
+        {
+            sum += entities[i].Ref<Vector3>(default);
+        }
+        return sum;
+    }
+
+    [Benchmark]
+    public int Fluent_Has_Per_Entity()
+    {
+        var count = 0;
+        var entities = _entities;
+        for (var i = 0; i < entities.Length; i++)
+        {
+            if (entities[i].Has<Vector3>()) count++;
+        }
+        return count;
     }
 }

@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+
 namespace fennecs;
 
 public partial class World
@@ -23,15 +26,16 @@ public partial class World
 
 
     /// <summary>
-    /// Resolves a World by its tag.
+    /// Resolves a World by its tag. (hot: every fluent operation on a stored Entity resolves here)
     /// </summary>
     /// <exception cref="InvalidOperationException">if no World with that tag exists (default Entity, or its World was Disposed)</exception>
-    internal static World Get(byte tag)
-    {
-        var world = Worlds[tag];
-        if (world is null) throw new InvalidOperationException($"No World with tag {tag} — the Entity is default, or its World has been Disposed.");
-        return world;
-    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static World Get(byte tag) => Worlds[tag] ?? ThrowNoWorld(tag);
+
+
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static World ThrowNoWorld(byte tag) => throw new InvalidOperationException($"No World with tag {tag} — the Entity is default, or its World has been Disposed.");
 
 
     /// <summary>
