@@ -756,7 +756,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var quickCount = 0;
         quickStream.For(
-            (_, ref _) =>
+            (in _, ref _) =>
             {
                 quickCount++;
             }
@@ -764,7 +764,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var queryCount = 0;
         queryStream.For(
-            (_, ref _) =>
+            (in _, ref _) =>
             {
                 queryCount++;
             }
@@ -790,7 +790,7 @@ public class WorldTests(ITestOutputHelper output)
         
         var quickCount = 0;
         quickStream.For(
-            (_, ref _) =>
+            (in _, ref _) =>
             {
                 quickCount++;
             }
@@ -798,7 +798,7 @@ public class WorldTests(ITestOutputHelper output)
 
         var queryCount = 0;
         queryStream.For(
-            (_, ref _) =>
+            (in _, ref _) =>
             {
                 queryCount++;
             }

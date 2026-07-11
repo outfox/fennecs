@@ -87,14 +87,14 @@ public class SimpleEntityBenchmarks
     {
         // Entity-enumerating runner; the EntityRef is constructed but not promoted,
         // so no entity column reads occur at all.
-        _streamV3.For(delegate (EntityRef _, ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
+        _streamV3.For(delegate (in EntityRef _, ref Vector3 v) { v = Vector3.Cross(v, UniformConstantVector); });
     }
 
     [Benchmark]
     public void CrossProduct_Single_ECS_EntityRef_Promote()
     {
         // Promotes every EntityRef to a stored 64-bit Entity (4-byte column read + generation lookup).
-        _streamV3.For(delegate (EntityRef e, ref Vector3 v)
+        _streamV3.For(delegate (in EntityRef e, ref Vector3 v)
         {
             Entity stored = e;
             v = Vector3.Cross(v, UniformConstantVector) + new Vector3(stored.Index & 1, 0, 0);

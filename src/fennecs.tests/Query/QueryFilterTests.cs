@@ -79,7 +79,7 @@ public class QueryFilterTests
         };
 
         var results = new List<Entity>();
-        filtered.For((entity, ref _) => results.Add(entity));
+        filtered.For((in entity, ref _) => results.Add(entity));
         
         // Assert
         Assert.Contains(entity1, results);
@@ -108,7 +108,7 @@ public class QueryFilterTests
         };
 
         var results = new List<Entity>();
-        filtered.For((entity, ref _) => results.Add(entity));
+        filtered.For((in entity, ref _) => results.Add(entity));
         
         // Assert
         Assert.Contains(entity1, results);

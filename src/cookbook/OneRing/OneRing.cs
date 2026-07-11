@@ -26,7 +26,7 @@ var ringsOfPower = world
     .Stream();
 
 // Use the Query to corrupt the Ring Bearers
-ringsOfPower.For((EntityRef ring, ref RingBearer bearer, ref OneRing link) =>
+ringsOfPower.For((in EntityRef ring, ref RingBearer bearer, ref OneRing link) =>
 {
     bearer = bearer with { corrupted = true };
     link.CallOut(ring, bearer);  // it calls out to its master!

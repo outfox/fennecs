@@ -202,14 +202,14 @@ public class Stream1ValueTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref c0) =>
+        stream.For((in e, ref c0) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c0.Value);
             c0 = ValA.New(10);
         });
 
-        stream.For(11, (uniform, _, ref c0) =>
+        stream.For(11, (uniform, in _, ref c0) =>
         {
             Assert.Equal(10, c0.Value);
             c0 = ValA.New(uniform);
@@ -424,7 +424,7 @@ public class Stream1ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _) =>
+        stream.For((in e, ref _) =>
         {
             found.Add(e);
         });
@@ -447,7 +447,7 @@ public class Stream1ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -842,14 +842,14 @@ public class Stream2ValueTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref c1) =>
+        stream.For((in e, ref _, ref c1) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c1.Value);
             c1 = ValB.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref c1) =>
+        stream.For(11, (uniform, in _, ref _, ref c1) =>
         {
             Assert.Equal(10, c1.Value);
             c1 = ValB.New(uniform);
@@ -1068,7 +1068,7 @@ public class Stream2ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _) =>
+        stream.For((in e, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -1091,7 +1091,7 @@ public class Stream2ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -1492,14 +1492,14 @@ public class Stream3ValueTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref c2) =>
+        stream.For((in e, ref _, ref _, ref c2) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c2.Value);
             c2 = ValC.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref c2) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref c2) =>
         {
             Assert.Equal(10, c2.Value);
             c2 = ValC.New(uniform);
@@ -1718,7 +1718,7 @@ public class Stream3ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -1741,7 +1741,7 @@ public class Stream3ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -2148,14 +2148,14 @@ public class Stream4ValueTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref _, ref c3) =>
+        stream.For((in e, ref _, ref _, ref _, ref c3) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c3.Value);
             c3 = ValD.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref _, ref c3) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref _, ref c3) =>
         {
             Assert.Equal(10, c3.Value);
             c3 = ValD.New(uniform);
@@ -2374,7 +2374,7 @@ public class Stream4ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -2397,7 +2397,7 @@ public class Stream4ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -2810,14 +2810,14 @@ public class Stream5ValueTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref _, ref _, ref c4) =>
+        stream.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c4.Value);
             c4 = ValE.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref _, ref _, ref c4) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref _, ref _, ref c4) =>
         {
             Assert.Equal(10, c4.Value);
             c4 = ValE.New(uniform);
@@ -3036,7 +3036,7 @@ public class Stream5ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -3059,7 +3059,7 @@ public class Stream5ValueTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -3456,14 +3456,14 @@ public class Stream1RefTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref c0) =>
+        stream.For((in e, ref c0) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c0.Value);
             c0 = RefA.New(10);
         });
 
-        stream.For(11, (uniform, _, ref c0) =>
+        stream.For(11, (uniform, in _, ref c0) =>
         {
             Assert.Equal(10, c0.Value);
             c0 = RefA.New(uniform);
@@ -3678,7 +3678,7 @@ public class Stream1RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _) =>
+        stream.For((in e, ref _) =>
         {
             found.Add(e);
         });
@@ -3701,7 +3701,7 @@ public class Stream1RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -4096,14 +4096,14 @@ public class Stream2RefTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref c1) =>
+        stream.For((in e, ref _, ref c1) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c1.Value);
             c1 = RefB.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref c1) =>
+        stream.For(11, (uniform, in _, ref _, ref c1) =>
         {
             Assert.Equal(10, c1.Value);
             c1 = RefB.New(uniform);
@@ -4322,7 +4322,7 @@ public class Stream2RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _) =>
+        stream.For((in e, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -4345,7 +4345,7 @@ public class Stream2RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -4746,14 +4746,14 @@ public class Stream3RefTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref c2) =>
+        stream.For((in e, ref _, ref _, ref c2) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c2.Value);
             c2 = RefC.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref c2) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref c2) =>
         {
             Assert.Equal(10, c2.Value);
             c2 = RefC.New(uniform);
@@ -4972,7 +4972,7 @@ public class Stream3RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -4995,7 +4995,7 @@ public class Stream3RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -5402,14 +5402,14 @@ public class Stream4RefTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref _, ref c3) =>
+        stream.For((in e, ref _, ref _, ref _, ref c3) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c3.Value);
             c3 = RefD.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref _, ref c3) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref _, ref c3) =>
         {
             Assert.Equal(10, c3.Value);
             c3 = RefD.New(uniform);
@@ -5628,7 +5628,7 @@ public class Stream4RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -5651,7 +5651,7 @@ public class Stream4RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -6064,14 +6064,14 @@ public class Stream5RefTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref _, ref _, ref c4) =>
+        stream.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c4.Value);
             c4 = RefE.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref _, ref _, ref c4) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref _, ref _, ref c4) =>
         {
             Assert.Equal(10, c4.Value);
             c4 = RefE.New(uniform);
@@ -6290,7 +6290,7 @@ public class Stream5RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -6313,7 +6313,7 @@ public class Stream5RefTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -6716,14 +6716,14 @@ public class Stream2MixedTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref c1) =>
+        stream.For((in e, ref _, ref c1) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c1.Value);
             c1 = RefB.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref c1) =>
+        stream.For(11, (uniform, in _, ref _, ref c1) =>
         {
             Assert.Equal(10, c1.Value);
             c1 = RefB.New(uniform);
@@ -6942,7 +6942,7 @@ public class Stream2MixedTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _) =>
+        stream.For((in e, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -6965,7 +6965,7 @@ public class Stream2MixedTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -7366,14 +7366,14 @@ public class Stream3MixedTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref c2) =>
+        stream.For((in e, ref _, ref _, ref c2) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c2.Value);
             c2 = ValC.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref c2) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref c2) =>
         {
             Assert.Equal(10, c2.Value);
             c2 = ValC.New(uniform);
@@ -7592,7 +7592,7 @@ public class Stream3MixedTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -7615,7 +7615,7 @@ public class Stream3MixedTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -8022,14 +8022,14 @@ public class Stream4MixedTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref _, ref c3) =>
+        stream.For((in e, ref _, ref _, ref _, ref c3) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c3.Value);
             c3 = RefD.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref _, ref c3) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref _, ref c3) =>
         {
             Assert.Equal(10, c3.Value);
             c3 = RefD.New(uniform);
@@ -8248,7 +8248,7 @@ public class Stream4MixedTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -8271,7 +8271,7 @@ public class Stream4MixedTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
@@ -8684,14 +8684,14 @@ public class Stream5MixedTests(ITestOutputHelper output)
             }
         });
 
-        stream.For((e, ref _, ref _, ref _, ref _, ref c4) =>
+        stream.For((in e, ref _, ref _, ref _, ref _, ref c4) =>
         {
-            Assert.True(e.Entity.Alive);
+            Assert.True(e.Alive);
             Assert.Equal(9, c4.Value);
             c4 = ValE.New(10);
         });
 
-        stream.For(11, (uniform, _, ref _, ref _, ref _, ref _, ref c4) =>
+        stream.For(11, (uniform, in _, ref _, ref _, ref _, ref _, ref c4) =>
         {
             Assert.Equal(10, c4.Value);
             c4 = ValE.New(uniform);
@@ -8910,7 +8910,7 @@ public class Stream5MixedTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For((e, ref _, ref _, ref _, ref _, ref _) =>
+        stream.For((in e, ref _, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
         });
@@ -8933,7 +8933,7 @@ public class Stream5MixedTests(ITestOutputHelper output)
 
         var found = new List<Entity>();
 
-        stream.For(3.1415f, (uniform, e, ref _, ref _, ref _, ref _, ref _) =>
+        stream.For(3.1415f, (uniform, in e, ref _, ref _, ref _, ref _, ref _) =>
         {
             found.Add(e);
             Assert.Equal(3.1415f, uniform);
