@@ -160,7 +160,39 @@ public partial class World
     {
         if (IsAlive(entity)) return;
 
-        throw new ObjectDisposedException($"Entity {entity} is no longer alive.");
+        ThrowDead(entity);
+    }
+
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private void ThrowDead(Entity entity) => throw new ObjectDisposedException(null, DescribeDead(entity));
+
+
+    /// <summary>
+    /// Diagnoses why an Entity handle is not alive in this World, using the handle's
+    /// exact-generation snapshot against the current generation of its index.
+    /// </summary>
+    internal string DescribeDead(Entity entity)
+    {
+        if (entity == default) return "default(Entity) is not a spawned Entity.";
+
+        if (entity.WorldTag != Tag) return $"Entity {entity} belongs to another World (world tag {entity.WorldTag}; this is World \"{Name}\" with tag {Tag}).";
+
+        if (entity.Index == 0 || entity.Index > (uint) _entityPool.Created) return $"Entity {entity} was never spawned in this World.";
+
+        var current = _entityPool.GenerationOf(entity.Index);
+
+        if (entity.Generation < current)
+        {
+            // The handle's generation snapshot predates a despawn of its index.
+            return Main.Contains(entity)
+                ? $"Entity {entity} was already despawned — its index now exists as a new generation: {_entityPool.EntityFor(entity.Index)}."
+                : $"Entity {entity} was already despawned.";
+        }
+
+        if (entity.Generation > current) return $"Entity {entity} has a generation that does not exist yet (forged or corrupted handle? index {entity.Index} is at generation {current}).";
+
+        return $"Entity {entity} is not alive.";
     }
 
     #endregion

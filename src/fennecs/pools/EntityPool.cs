@@ -52,6 +52,12 @@ internal class EntityPool
 
 
     /// <summary>
+    /// The current generation of an index. (caller guarantees the index was spawned at least once)
+    /// </summary>
+    internal ushort GenerationOf(uint index) => _generations[index];
+
+
+    /// <summary>
     /// Is this handle's generation current for its index (and does it belong to this World)?
     /// </summary>
     internal bool IsAlive(Entity entity)
@@ -108,6 +114,12 @@ internal class EntityPool
     internal void Recycle(Entity entity)
     {
         var index = entity.Index;
+
+        // Despawns must present the exact-generation snapshot of the Entity they kill; this is
+        // what lets the World diagnose stale handles ("already despawned" vs "respawned since"),
+        // and is the hook point for future despawn journaling (entity.Value + call site).
+        System.Diagnostics.Debug.Assert(entity.Generation == _generations[index],
+            $"Recycling a stale Entity snapshot: {entity} has generation {entity.Generation}, but its index is at generation {_generations[index]}.");
 
         // Bump the generation, invalidating all stored handles to this index.
         var next = ++_generations[index];

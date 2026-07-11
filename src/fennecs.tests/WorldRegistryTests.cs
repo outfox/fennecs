@@ -99,6 +99,56 @@ public class WorldRegistryTests
 
 
     [Fact]
+    public void Stale_Handle_Reports_Already_Despawned()
+    {
+        using var world = new World(0);
+        var entity = world.Spawn();
+        world.Despawn(entity);
+
+        var ex = Assert.Throws<ObjectDisposedException>(() => entity.Add(123));
+        Assert.Contains("already despawned", ex.Message);
+        Assert.DoesNotContain("new generation", ex.Message);
+    }
+
+
+    [Fact]
+    public void Stale_Handle_Reports_Respawned_Index()
+    {
+        using var world = new World(0);
+        var entity = world.Spawn();
+        world.Despawn(entity);
+
+        var successor = world.Spawn();
+        Assert.Equal(entity.Index, successor.Index);
+
+        var ex = Assert.Throws<ObjectDisposedException>(() => entity.Add(123));
+        Assert.Contains("already despawned", ex.Message);
+        Assert.Contains("new generation", ex.Message);
+        Assert.Contains(successor.ToString(), ex.Message);
+    }
+
+
+    [Fact]
+    public void Diagnostics_Describe_Dead_Handles()
+    {
+        using var world1 = new World(0);
+        using var world2 = new World(0);
+
+        Assert.Contains("default(Entity)", world1.DescribeDead(default));
+
+        var foreign = world2.Spawn();
+        Assert.Contains("another World", world1.DescribeDead(foreign));
+
+        var neverSpawned = new Entity(world1.Tag, 9001, 1);
+        Assert.Contains("never spawned", world1.DescribeDead(neverSpawned));
+
+        var real = world1.Spawn();
+        var forged = new Entity(world1.Tag, real.Index, (ushort) (real.Generation + 1));
+        Assert.Contains("does not exist yet", world1.DescribeDead(forged));
+    }
+
+
+    [Fact]
     public void Deferred_Double_Despawn_Throws_on_CatchUp()
     {
         using var world = new World(0);
