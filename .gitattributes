@@ -1,12 +1,10 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-/fennecs.tech linguist-detectable=false
-/fennecs.benchmarks linguist-detectable=false
-/examples linguist-detectable=false
-/cookbook linguist-detectable=false
-/demos linguist-detectable=false
-/docs linguist-detectable=false
+/doc linguist-detectable=false
+/src/fennecs.benchmarks linguist-detectable=false
+/src/cookbook linguist-detectable=false
+/src/demos linguist-detectable=false
 
 *.html linguist-detectable=false
 *.mts linguist-detectable=false

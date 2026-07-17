@@ -11,7 +11,7 @@ public interface Streamable
     /// <summary>
     /// Creates a Stream View of the Query with 1 Stream Type.
     /// </summary>
-    /// <param name="match">Match Target for the Component (defaults to Any)</param>
+    /// <param name="match">Match Target for the Component (defaults to Plain)</param>
     /// <typeparam name="C">Component stream type</typeparam>
     /// <returns>Stream View</returns>
     Stream<C> Stream<C>(Match match = default)
@@ -32,7 +32,7 @@ public interface Streamable
     /// <summary>
     /// Creates a Stream View of the Query with multiple Stream Types
     /// </summary>
-    /// <param name="matchAll">Match Target for ALL Components (defaults to Any)</param>
+    /// <param name="matchAll">Match Target for ALL Components (defaults to Plain)</param>
     /// <typeparam name="C0">1st Component stream type</typeparam>
     /// <typeparam name="C1">2nd Component stream type</typeparam>
     /// <returns>Stream View</returns>

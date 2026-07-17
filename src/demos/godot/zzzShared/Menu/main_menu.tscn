@@ -1,0 +1,125 @@
+[gd_scene load_steps=9 format=3 uid="uid://bfxmenudemos"]
+
+[ext_resource type="Script" uid="uid://cmainmenufnx" path="res://zzzShared/Menu/main_menu.gd" id="1_mmenu"]
+[ext_resource type="Theme" uid="uid://xobxg8yxjsmu" path="res://zzzShared/fennecs_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" uid="uid://bdfvsd3p00icf" path="res://zzzShared/user_interface.tscn" id="3_uibgd"]
+[ext_resource type="FontFile" uid="uid://cvmp81n8dc3uk" path="res://zzzShared/BaiJamjuree-Regular.ttf" id="4_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font = ExtResource("4_font")
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_subtitle"]
+font = ExtResource("4_font")
+font_size = 26
+font_color = Color(1, 1, 1, 0.627451)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hint"]
+font = ExtResource("4_font")
+font_size = 18
+font_color = Color(1, 1, 1, 0.501961)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_descr"]
+bg_color = Color(0.02, 0.08, 0.11, 0.627451)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.101961)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 24.0
+content_margin_top = 20.0
+content_margin_right = 24.0
+content_margin_bottom = 20.0
+
+[node name="Main Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_mmenu")
+
+[node name="User Interface" parent="." instance=ExtResource("3_uibgd")]
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 72.0
+offset_right = 500.0
+offset_bottom = 168.0
+grow_horizontal = 2
+text = "fennecs Godot Demos"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 172.0
+offset_right = 500.0
+offset_bottom = 212.0
+grow_horizontal = 2
+text = "... the tiny, high-energy Entity-Component System for C#"
+label_settings = SubResource("LabelSettings_subtitle")
+horizontal_alignment = 1
+
+[node name="Content" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 220.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layout" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+theme_override_constants/separation = 48
+
+[node name="DemoButtons" type="VBoxContainer" parent="Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 14
+
+[node name="Description Panel" type="PanelContainer" parent="Content/Layout"]
+custom_minimum_size = Vector2(540, 480)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_descr")
+
+[node name="Description" type="RichTextLabel" parent="Content/Layout/Description Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "Pick a demo on the left."
+
+[node name="Hint" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -52.0
+offset_right = 500.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "F1 returns to this menu at any time - F2, F3, F4 jump straight to a demo"
+label_settings = SubResource("LabelSettings_hint")
+horizontal_alignment = 1

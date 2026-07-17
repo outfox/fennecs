@@ -1,20 +1,20 @@
-[![fennecs logo](https://fennecs.tech/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only)](https://fennecs.tech#gh-dark-mode-only)
-[![fennecs logo](https://fennecs.tech/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.tech#gh-light-mode-only)
+[![fennecs logo](https://fennecs.net/logos/fennecs-logo-darkmode.svg#gh-dark-mode-only)](https://fennecs.net#gh-dark-mode-only)
+[![fennecs logo](https://fennecs.net/logos/fennecs-logo-lightmode.svg#gh-light-mode-only)](https://fennecs.net#gh-light-mode-only)
 
 # _... the tiny, tiny, high-energy Entity-Component System!_
-[![dotnet add package fennecs](https://fennecs.tech/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.tech/cookbook/)
+[![dotnet add package fennecs](https://fennecs.net/video/animation-dotnet-add-package-fennecs.svg)](https://fennecs.net/cookbook/)
 
 <table style="width: 100%">
    <tr>
    </tr>
    <tr>
       <td>
-         <img src="https://fennecs.tech/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px; max-width: 320px"/>
+         <img src="https://fennecs.net/logos/fennecs.png" alt="a box of fennecs, 8-color pixel art" style="min-width: 320px; max-width: 320px"/>
       </td>
       <td style="width: fit-content">
          <h1>Okay, what the fox!<br/><em>Another ECS?!</em></h1>
          <p>We know... oh, <em>we know.</em> 😩</p>
-         <p>But in a nutshell, <a href="https://fennecs.tech"><b>fenn</b>ecs</a> is...</p>
+         <p>But in a nutshell, <a href="https://fennecs.net"><b>fenn</b>ecs</a> is...</p>
          <p>
             🐾 zero codegen<br/>
             🐾 minimal boilerplate<br/>
@@ -35,8 +35,8 @@
 </table>
 
 ## Quickstart
-> *Brand new? Try the [cookbook](https://fennecs.tech/cookbook/) for a quick & tasty intro, or [dive into the docs](https://fennecs.tech/docs/)!*</br>
-> *Familiar with ECS architectures? Get an [overview](https://fennecs.tech/docs/Concepts.html) of new & unique concepts!*
+> *Brand new? Try the [cookbook](https://fennecs.net/cookbook/) for a quick & tasty intro, or [dive into the docs](https://fennecs.net/docs/)!*</br>
+> *Familiar with ECS architectures? Get an [overview](https://fennecs.net/docs/Concepts.html) of new & unique concepts!*
 
 At the basic level, all you need is a 🧩**component type**, a number of ~~small foxes~~ 🦊**entities**, and a query to ⚙️**iterate and modify** components, occasionally passing in some uniform 💾**data**.
 ```cs
@@ -55,9 +55,9 @@ var stream = world.Query<Velocity>().Stream();
 // Run code on all entities in the query. (exchange 'For' with 'Job' for parallel processing)
 stream.For(
     uniform: DeltaTime * 9.81f * Vector3.UnitZ,
-    action: (Vector3 uniform, ref Velocity velocity) =>
+    action: (Gdt, ref velocity) =>
     {
-        velocity.Value -= uniform;
+        velocity.Value -= Gdt;
     }
 );
 ```
@@ -81,9 +81,9 @@ And there's more: all that simplicity doesn't force any performance trade-offs! 
 
 ------------------------
 
-## 📕 DOCUMENTATION: [fennecs.tech](https://fennecs.tech) (official website)
-Grab a cup of coffee to [get started](https://fennecs.tech), try [the Cookbook](https://fennecs.tech/cookbook/), view [the Demos](https://fennecs.tech/examples/) , and more!  
-![coffee cup](https://fennecs.tech/emoji/neofox_cofe.png)
+## 📕 DOCUMENTATION: [fennecs.net](https://fennecs.net) (official website)
+Grab a cup of coffee to [get started](https://fennecs.net), try [the Cookbook](https://fennecs.net/cookbook/), view [the Demos](https://fennecs.net/examples/) , and more!  
+![coffee cup](https://fennecs.net/emoji/neofox_cofe.png)
 
 ------------------------
 ## ⏩ Nimble: _**fenn**ecs_ benchmarks
@@ -97,7 +97,7 @@ Using Doraku's synthetic [Ecs.CSharp.Benchmark](https://github.com/Doraku/Ecs.CS
 > These are synthetic benchmarks, using a **BETA BUILD** of **fenn**ecs. Real-world performance will vary wildly.
 > If you need a production-ready ECS *today*, 9 out of 10 foxes endorse [Friflo.Engine.ECS](https://github.com/friflo/Friflo.Json.Fliox/tree/main/Engine)👍 and [Flecs.NET](https://github.com/BeanCheeseBurrito/Flecs.NET)👍
 
-Another optimization pass for **fenn**ecs is [on the Roadmap](https://fennecs.tech/misc/Roadmap.html).
+Another optimization pass for **fenn**ecs is [on the Roadmap](https://fennecs.net/misc/Roadmap.html).
 
 
 ### Benchmark: CreateEntityWithThreeComponents

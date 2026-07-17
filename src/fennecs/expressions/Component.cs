@@ -128,7 +128,7 @@ public readonly record struct Component
 /// <li><see cref="Comp{T}.Matching"/></li>
 /// </ul>
 /// </remarks>
-public readonly record struct Comp
+public readonly record struct Comp : IComparable<Comp>
 {
     /*
     /// <summary>
@@ -158,6 +158,9 @@ public readonly record struct Comp
     /// Creates a Comp expression for a specific type, potentially determined at runtime.
     /// </summary>
     public static Comp Virtual(Type type, Match match = default) => new(TypeExpression.Of(type, match));
+
+    /// <inheritdoc/>
+    public int CompareTo(Comp other) => Expression.CompareTo(other.Expression);
 }
 
 /// <summary>

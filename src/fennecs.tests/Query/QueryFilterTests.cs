@@ -113,10 +113,40 @@ public class QueryFilterTests
         // Assert
         Assert.Contains(entity1, results);
         Assert.DoesNotContain(entity2, results);
-        
+
         //Ensure count is reduced
         Assert.Single(results);
-    }    
+    }
+
+    [Fact]
+    public void Filters_SupportMultipleExpressions()
+    {
+        using var world = new World();
+
+        // Arrange
+        var target = world.Spawn();
+        var entity1 = world.Spawn().Add(new ComponentA()).Add(new ComponentC());
+        var entity2 = world.Spawn().Add(new ComponentA()).Add(new ComponentC()).Add(new ComponentB());
+        var entity3 = world.Spawn().Add(new ComponentA()).Add(new ComponentC()).Add(new ComponentD(), target);
+
+        var stream = world.Query<ComponentA>().Stream();
+
+        // Act - Comp must be comparable for ImmutableSortedSet to hold more than one expression
+        var filtered = stream with
+        {
+            Subset = [Comp<ComponentA>.Plain, Comp<ComponentC>.Plain],
+            Exclude = [Comp<ComponentB>.Plain, Comp<ComponentD>.Matching(target)],
+        };
+
+        var results = new List<Entity>();
+        filtered.For((in entity, ref _) => results.Add(entity));
+
+        // Assert
+        Assert.Contains(entity1, results);
+        Assert.DoesNotContain(entity2, results);
+        Assert.DoesNotContain(entity3, results);
+        Assert.Single(results);
+    }
 }
 
 

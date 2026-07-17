@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.6.2">
+<Project Sdk="Godot.NET.Sdk/4.7.0">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
@@ -10,8 +10,8 @@
     <ProjectReference Include="..\..\fennecs\fennecs.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="**/*.gd"/>
-    <None Include="**/*.tscn"/>
-    <None Include="**/*.tres"/>
+    <None Include="**/*.gd" />
+    <None Include="**/*.tscn" />
+    <None Include="**/*.tres" />
   </ItemGroup>
 </Project>

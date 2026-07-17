@@ -16,11 +16,15 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="fennecs.demos.godot"
 config/description="A set of examples using the fennecs Entity Component System"
-run/main_scene="uid://dr2uc3nf0w2sy"
+run/main_scene="res://zzzShared/Menu/main_menu.tscn"
 config/quit_on_go_back=false
-config/features=PackedStringArray("4.6", "C#", "Forward Plus")
+config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 boot_splash/image="res://zzzShared/fennecs-logo.png"
 config/icon="res://icon.svg"
+
+[autoload]
+
+DemoNavigator="*res://zzzShared/Navigation/demo_navigator.gd"
 
 [display]
 

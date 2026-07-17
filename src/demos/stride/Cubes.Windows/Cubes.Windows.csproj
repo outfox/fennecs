@@ -14,7 +14,7 @@
         <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
-        <Company>fennecs.tech</Company>
+        <Company>fennecs.net</Company>
         <Product>fennecs Demo: Cube </Product>
     </PropertyGroup>
 
