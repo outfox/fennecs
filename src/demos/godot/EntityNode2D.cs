@@ -19,14 +19,14 @@ public partial class EntityNode2D : Node2D
 	// Easy route: only make new Entity if not alive.
 	public override void _EnterTree()
 	{
+		// Already got an Entity? Don't make a new one (and don't re-roll the spawn chance).
+		if (entity.Alive) return;
+
 		if (GD.Randf() > spawnChance)
 		{
 			QueueFree();
 			return;
 		}
-		
-		// Already got an Entity? Don't make a new one.
-		if (entity.Alive) return;
 
 		entity = World.Spawn();
 		// "Our" Entity has "us ourselves" as a Component.
@@ -37,9 +37,10 @@ public partial class EntityNode2D : Node2D
 	}
 
 	// This is an ok place to handle the final deletion of the Entity.
+	// (nodes that failed the spawn chance roll never had one, hence the Alive check)
 	protected override void Dispose(bool disposing)
 	{
-		//if (disposing) Entity.Despawn();
+		if (disposing && entity.Alive) entity.Despawn();
 		base.Dispose(disposing);
 	}
 

@@ -37,7 +37,7 @@ public partial class EntityNode3D : Node3D
     // This is an ok place to handle the final deletion of the Entity.
     protected override void Dispose(bool disposing)
     {
-        if (disposing) entity.Despawn();
+        if (disposing && entity.Alive) entity.Despawn();
         base.Dispose(disposing);
     }
 }

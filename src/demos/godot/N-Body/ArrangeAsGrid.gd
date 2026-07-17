@@ -7,6 +7,6 @@ func _enter_tree() -> void:
 	var dimension : int = ceil(sqrt(len(children)))
 	for i in range(len(children)):
 		var x := i % dimension - dimension * 0.5
-		var y := i / dimension - dimension * 0.5
+		var y := float(i) / dimension - dimension * 0.5
 		var child := children[i] as Node2D
 		child.position = Vector2(x * spacing, y * spacing)
