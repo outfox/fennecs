@@ -31,7 +31,6 @@
     <PropertyGroup>
         <AssemblyName>fennecs</AssemblyName>
         <TargetFramework>net10.0</TargetFramework>
-        <TargetFrameworks Condition="'$(Configuration)' == 'Debug'">net10.0</TargetFrameworks>
 
         <IsTrimmable>true</IsTrimmable>
         <VerifyReferenceTrimCompatibility>true</VerifyReferenceTrimCompatibility>

@@ -1,0 +1,8 @@
+{
+  "$comment": "Pin general development to the .NET 10 SDK (any 10.x feature band, no previews). The .NET 11 preview SDK stays installed for experiments; opt in per-directory with a nested global.json (nearest file wins).",
+  "sdk": {
+    "version": "10.0.100",
+    "rollForward": "latestFeature",
+    "allowPrerelease": false
+  }
+}
