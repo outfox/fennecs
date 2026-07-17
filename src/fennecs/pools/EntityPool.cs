@@ -80,34 +80,22 @@ internal class EntityPool
     }
 
 
-    internal PooledList<Entity> Spawn(int requested)
+    internal void Spawn(Span<Entity> destination)
     {
-        var entities = PooledList<Entity>.Rent();
-        var recycled = _recycled.Count;
+        var i = 0;
 
-        if (recycled <= requested)
+        // Reuse recycled indices first.
+        while (i < destination.Length && _recycled.TryDequeue(out var index))
         {
-            // Reuse all Entities in the recycler.
-            while (_recycled.TryDequeue(out var index)) entities.Add(MakeEntity(index));
-
-            // If we don't have enough recycled indices, create more.
-            for (var i = 0; i < requested - recycled; i++)
-            {
-                var newIndex = (uint) ++_created;
-                EnsureGenerations(newIndex);
-                entities.Add(MakeEntity(newIndex));
-            }
-        }
-        else
-        {
-            // Otherwise, take the requested amount from the recycled pool.
-            for (var i = 0; i < requested; i++)
-            {
-                entities.Add(MakeEntity(_recycled.Dequeue()));
-            }
+            destination[i++] = MakeEntity(index);
         }
 
-        return entities;
+        // Mint fresh indices for the remainder.
+        if (i < destination.Length)
+        {
+            EnsureGenerations((uint) (_created + destination.Length - i));
+            while (i < destination.Length) destination[i++] = MakeEntity((uint) ++_created);
+        }
     }
 
 

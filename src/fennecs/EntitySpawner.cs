@@ -7,7 +7,7 @@ namespace fennecs;
 /// A builder than spawns Entities after adding pre-configured Components.
 /// </summary>
 /// <remarks>
-/// Call <see cref="Spawn"/> to actually spawn the Entities.
+/// Call <see cref="Spawn(int)"/> to actually spawn the Entities.
 /// </remarks>
 public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
 {
@@ -122,12 +122,40 @@ public sealed class EntitySpawner : IDisposable, IAddRemove<EntitySpawner>
     }
     
     /// <summary>
+    /// Spawns a single Entity with the configured Components.
+    /// </summary>
+    /// <returns>the spawned Entity</returns>
+    public Entity Spawn()
+    {
+        Span<Entity> spawned = stackalloc Entity[1];
+        _world.Spawn(spawned, _components, _values);
+        return spawned[0];
+    }
+
+    /// <summary>
     /// Spawns <c>count</c> Entities with the configured Components.
     /// </summary>
     /// <param name="count">number of Entities to spawn</param>
-    public EntitySpawner Spawn(int count = 1)
+    /// <returns>EntitySpawner (fluent interface)</returns>
+    public EntitySpawner Spawn(int count)
     {
         _world.Spawn(count, _components, _values);
+        return this;
+    }
+
+    /// <summary>
+    /// Spawns one Entity per element of <paramref name="destination"/> with the configured
+    /// Components, and writes their handles into the span.
+    /// </summary>
+    /// <remarks>
+    /// The handles remain valid indefinitely (until despawned) - they are plain
+    /// <see cref="Entity"/> values, not views into World storage.
+    /// </remarks>
+    /// <param name="destination">span to fill; its length determines the number of Entities spawned</param>
+    /// <returns>EntitySpawner (fluent interface)</returns>
+    public EntitySpawner Spawn(Span<Entity> destination)
+    {
+        _world.Spawn(destination, _components, _values);
         return this;
     }
 

@@ -10,7 +10,7 @@ using var world = new World();
 // Oh don't be dramatic! It's not that finite.
 // (fennecs can handle millions of Entities)
 const int initialPopulation = 1_000_000;
-using var entities = world.Entity()
+using var spawner = world.Entity()
     .Add<Alive>()
     .Spawn(initialPopulation);
 

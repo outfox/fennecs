@@ -127,11 +127,13 @@ entity.Add<Velocity>();
 ...or using the `EntitySpawner` for a bit of extra ✨flair✨:
 
 ```csharp
-var entities = world.Entity()
+var spawner = world.Entity()
     .Add<Position>()
     .Add<Velocity>()
     .Spawn(count: 100); 
 ```
+
+Want the spawned Entities handed right back? `Spawn()` without arguments returns the single Entity it spawned, and `Spawn(Span<Entity>)` fills your buffer with a whole wave  –  see [Spawning](Entities/Spawning.md#getting-your-entities-back)!
 
 ### ... and completing the Circle of Life! 🌄
 

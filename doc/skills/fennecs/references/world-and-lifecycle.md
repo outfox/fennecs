@@ -40,6 +40,11 @@ using var spawner = world.Entity()            // EntitySpawner: preconfigure onc
 spawner.Spawn(10_000);                        // spawn any number, reuse freely
 spawner.Remove<Enemy>();                      // tweak config between spawns
 
+var single = spawner.Spawn();                 // Spawn() returns the one spawned Entity
+Span<Entity> wave = stackalloc Entity[64];
+spawner.Spawn(wave);                          // spawns wave.Length entities, handles
+                                              // written into the span (stays fluent)
+
 e.Despawn();                // or world.Despawn(e)
 world.DespawnAllWith<Projectile>();           // by component (optional Match)
 query.Despawn();  stream.Despawn();           // bulk despawn matched

@@ -67,9 +67,10 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Batch_Spawn_Bare(int count)
     {
         using var world = new World();
-        using var identities = world.SpawnBare(count);
-        Assert.Equal(count, identities.Count);
-        Assert.Equal(count, identities.ToImmutableSortedSet().Count);
+        var entities = new Entity[count];
+        world.SpawnBare(entities);
+        Assert.All(entities, entity => Assert.NotEqual(default, entity));
+        Assert.Equal(count, entities.ToImmutableSortedSet().Count);
     }
 
     [Theory]

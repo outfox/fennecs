@@ -31,11 +31,11 @@ Now, let's create some entities representing characters, both vampires and non-v
 ```csharp
 var world = new World();
 
-var human = world.Entity()
+world.Entity()
     .Add(new Health { Value = 100 })
     .Spawn(4); // Left 4 Undead?!
 
-var vampires = world.Entity()
+world.Entity()
     .Add(new Health { Value = 100 })
     .Add<Vampirism>()
     .Spawn(100_000); // Not looking good for the humans!

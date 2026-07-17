@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Buffers;
+using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -126,19 +127,36 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// <param name="values">Component values</param>
     internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
+        if (count <= 0) return;
+
+        var rented = ArrayPool<Entity>.Shared.Rent(count);
+        Spawn(rented.AsSpan(0, count), components, values);
+        ArrayPool<Entity>.Shared.Return(rented);
+    }
+
+
+    /// <summary>
+    /// Spawns one pre-configured Entity per element of <paramref name="destination"/>,
+    /// writing the minted handles into the span.
+    /// </summary>
+    /// <inheritdoc cref="Spawn(int, IReadOnlyList{TypeExpression}, IReadOnlyList{object})"/>
+    internal void Spawn(Span<Entity> destination, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    {
         // Covers the EntitySpawner path, which bypasses AddComponent.
         foreach (var component in components) AssertSameWorld(component);
+
+        if (destination.IsEmpty) return;
 
         if (_aspects.Count == 1)
         {
             var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);
             var archetype = Main.GetArchetype(signature);
-            archetype.Spawn(count, components, values);
+            archetype.Spawn(destination, components, values);
             return;
         }
 
         using var worldLock = Lock();
-        using var entities = SpawnBare(count);
+        SpawnBare(destination);
 
         // Group the configured components by their owning Aspect.
         var groups = new Dictionary<Aspect, (List<TypeExpression> components, List<object> values)>();
@@ -163,7 +181,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
 
             var signature = new Signature(group.components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);
             aspect.EnsureCapacity(_entityPool.Created + 1);
-            aspect.GetArchetype(signature).SpawnWith(entities, group.components, group.values);
+            aspect.GetArchetype(signature).SpawnWith(destination, group.components, group.values);
         }
     }
 

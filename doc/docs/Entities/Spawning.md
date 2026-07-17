@@ -2,7 +2,7 @@
 title: Spawn
 order: 1
 outline: [1, 2]
-description: 'Creating entities in fennecs with World.Spawn for one-offs and the EntitySpawner (World.Entity) for fast bulk spawning and reusable templates.'
+description: 'Creating entities in fennecs with World.Spawn for one-offs and the EntitySpawner (World.Entity) for fast bulk spawning, reusable templates, and getting spawned Entity handles back via Span.'
 ---
 
 # Spawning Entities :neofox_hyper:
@@ -66,14 +66,15 @@ using var spawner = world.Entity() // Requests an EntitySpawner
 Spawners can be modified and reused:
 
 ```cs
-world.Entity()
+using var humanSpawner = world.Entity()
     .Add(new Health { Value = 100 })
     .Add<Dexterity>(12) // Stats do well with conversion operators for int!
     .Add<Charisma>(15)
     //.Add<...> (more omitted here)
-    .Add<Human>()
-    .Spawn()    // Spawn a single human
-    .Dispose(); // immediately dispose the spawner after we used it
+    .Add<Human>();
+
+var him = humanSpawner.Spawn(); // Spawn a single human... 
+var her = humanSpawner.Spawn(); // ... and another! (Spawn() returns the Entity)
 
 // The using statement disposes the spawner at end of scope/function
 using var werewolfSpawner = world.Entity()
@@ -86,6 +87,39 @@ werewolfSpawner.Spawn(5); //+5 Elites, giving the BEST NUMBER of werewolves: 14!
 
 return; // werewolfSpawner is automatically disposed here by the using statement.
 ```
+
+
+### Getting Your Entities Back
+
+Sometimes you spawn a wave and want the handles right away — to wire up relations, hand them to game logic, or track them somewhere. Each `Spawn` overload has you covered:
+
+| Overload | Returns | Use When |
+|----------|---------|----------|
+| `Spawn()` | `Entity` | You want one entity and its handle |
+| `Spawn(int count)` | `EntitySpawner` (fluent) | Fire-and-forget bulk spawning |
+| `Spawn(Span<Entity> destination)` | `EntitySpawner` (fluent) | You want the handles of a whole wave |
+
+The `Span` overload spawns **one entity per element** of the span and writes their handles into it — the span's length *is* the spawn count. The handles are plain `Entity` values (not views into World storage), so they stay valid until the entities despawn. Keep them as long as you like!
+
+```cs
+// A single entity, handle returned directly:
+var leader = world.Entity()
+    .Add<Werewolf>()
+    .Spawn();
+
+// A whole pack, delivered into your buffer (array, stackalloc, wherever):
+var pack = new Entity[13];
+using var spawner = world.Entity()
+    .Add<Werewolf>()
+    .Spawn(pack); // fills all 13 slots, still fluent!
+
+foreach (var wolf in pack) wolf.Add<PackMember>(leader); // relation to the leader
+
+```
+
+::: tip :neofox_science: Zero-Cost Delivery
+The handles are minted directly into your span during the spawn — no copying, no allocation. Fire-and-forget `Spawn(count)` stays just as fast as before.
+:::
 
 
 ## Quick Reference

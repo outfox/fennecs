@@ -64,11 +64,10 @@ public partial class World
         return entity;
     }
 
-    internal PooledList<Entity> SpawnBare(int count)
+    internal void SpawnBare(Span<Entity> destination)
     {
-        var entities = _entityPool.Spawn(count);
+        _entityPool.Spawn(destination);
         Main.EnsureCapacity(_entityPool.Created + 1);
-        return entities;
     }
 
 

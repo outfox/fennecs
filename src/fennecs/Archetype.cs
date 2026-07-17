@@ -523,12 +523,12 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal void Spawn(int count, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    internal void Spawn(Span<Entity> destination, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
         using var worldLock = World.Lock();
 
-        using var entities = World.SpawnBare(count);
-        SpawnWith(entities, components, values);
+        World.SpawnBare(destination);
+        SpawnWith(destination, components, values);
     }
 
 
@@ -536,10 +536,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// Bulk-inserts pre-minted Entities with the given Component values.
     /// (used to spawn the same Entities into several Aspects)
     /// </summary>
-    internal void SpawnWith(PooledList<Entity> entities, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    internal void SpawnWith(ReadOnlySpan<Entity> entities, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
         var first = Count;
-        var count = entities.Count;
+        var count = entities.Length;
 
         for (var i = 0; i < components.Count; i++)
         {

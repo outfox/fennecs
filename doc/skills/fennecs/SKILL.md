@@ -146,7 +146,10 @@ foreach (var (e, pos) in stream) { … }    // LINQ/tuples: tests, prototyping
 ```csharp
 using var spawner = world.Entity()                 // EntitySpawner
     .Add<Enemy>().Add(new Health(50)).Add(Link.With(level));
-spawner.Spawn(10_000);
+spawner.Spawn(10_000);             // fire-and-forget (fluent)
+var boss = spawner.Spawn();        // Spawn() returns the single spawned Entity
+var wave = new Entity[64];
+spawner.Spawn(wave.AsSpan());      // fills the span: one entity per element (fluent)
 
 query.Add(new Cooldown(2f));   // bulk add — throws if query already matches it
 query.Remove<Loaded>();        // bulk remove — throws unless query guarantees it
