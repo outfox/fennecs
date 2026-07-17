@@ -4,7 +4,7 @@ order: 2
 outline: [1, 2]
 description: 'Secondary Keys in fennecs let component types target an Entity or Object, turning plain components into Relations and Object Links between Entities.'
 ---
-# :neofox_key: Secondary Keys
+# Secondary Keys
 
 ::: tip :neofox_thumbsup: UNLOCK NEW RELATIONSHIPS
 Secondary Keys let components reference Entities or Objects, enabling powerful relationship patterns!

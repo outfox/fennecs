@@ -1,6 +1,6 @@
 ---
 title: Expressions
-order: 4
+order: 5
 outline: [1, 2]
 description: 'Component Expressions (Comp<C>) reference fennecs components at a meta level for dynamic query building, stream filters, and boxed runtime inspection.'
 ---

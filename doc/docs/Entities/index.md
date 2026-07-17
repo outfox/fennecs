@@ -45,7 +45,7 @@ You can store entities anywhere: in variables, collections, or even as component
 
 Entities have a simple, predictable lifecycle:
 
-1. **Spawn** - Created via `World.Spawn()` or `EntitySpawner`
+1. **Spawn** - Created via [`World.Spawn()`](Spawning.md) or the [`EntitySpawner`](/docs/Advanced/BulkSpawn.md)
 2. **Live** - Exists in the world, can have components attached
 3. **Despawn** - Removed from world, recycled for reuse
 

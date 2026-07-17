@@ -60,7 +60,7 @@ Every living Entity is a member of `Main`, always  –  even one whose component
 
 Bulk operations are fully Aspect-aware, and mostly Just Work™:
 
-**[EntitySpawners](/docs/Entities/Spawning.md)** split their template across Aspects automatically  –  no special ceremony needed:
+**[EntitySpawners](/docs/Advanced/BulkSpawn.md)** split their template across Aspects automatically  –  no special ceremony needed:
 
 ```csharp
 world.Entity()

@@ -18,6 +18,9 @@ Split a World into multiple contiguous storage universes to fight ==Fragmentatio
 ### [Keys](Keys/index.md)
 Secondary Keys unlock [Relations](Keys/Relation.md) between Entities and [Object Links](Keys/Link.md) to shared data.
 
+### [Bulk Spawn](BulkSpawn.md)
+Spawn waves of entities straight into their final Archetype with the `EntitySpawner`  –  reusable templates included, handles delivered into your `Span<Entity>` on request.
+
 ### [SIMD](SIMD.md)
 Bulk mutations at blazing speeds with `Blit` and friends, courtesy of `System.Intrinsics`.
 

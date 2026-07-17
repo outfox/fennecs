@@ -4,7 +4,7 @@ order: 12
 outline: [1, 2]
 description: 'Object Links in fennecs ECS attach a reference type as both component data and secondary key, grouping Entities by shared objects via Link.With.'
 ---
-# :neofox_link: Object Links
+# Object Links
 
 ::: tip :neofox_thumbsup: BRIDGE ENTITIES TO OBJECTS
 Object Links connect Entities to reference types - perfect for game engine nodes, shared resources, and external systems!

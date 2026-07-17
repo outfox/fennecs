@@ -4,7 +4,7 @@ order: 1
 outline: [1, 2]
 description: 'Entity-Entity Relations in fennecs are components with an Entity secondary key - added via Add<T>(data, target) and queried with wildcards like Entity.Any.'
 ---
-# :neofox_heart: Relations between Entities
+# Relations between Entities
 
 ::: tip :neofox_thumbsup: CONNECT YOUR ENTITIES
 Relations link Entities together, perfect for hierarchies, social connections, and game mechanics!

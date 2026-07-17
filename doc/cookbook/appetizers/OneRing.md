@@ -21,7 +21,7 @@ In this example, we'll recreate the forging of the Rings of Power in the Land of
 
 We'll use the [Object Link](/docs/Advanced/Keys/Link.md) system to model the binding relationship between the One Ring and the other Rings it rules.
 
-First, we [group spawn](/docs/Entities/Spawning.md#fast-flexible-spawns) Entities for each of the other Rings and its Bearer, and link all of them to our singleton instance of the One Ring.
+First, we [group spawn](/docs/Advanced/BulkSpawn.md) Entities for each of the other Rings and its Bearer, and link all of them to our singleton instance of the One Ring.
 
 Then, we bind them all in darkness with a `Stream<>.For` runner.
 
