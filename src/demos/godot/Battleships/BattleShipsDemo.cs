@@ -28,13 +28,13 @@ public partial class BattleShipsDemo : Node2D
 	private InstanceBuffer _smoke;
 	private InstanceBuffer _explosions;
 
-	// Per-frame snapshot of the live fleet, shared by targeting, avoidance,
-	// collision, and objective control.
-	private readonly List<ShipInfo> _armada = [];
+	// Per-frame orthogonal view of the live fleet (contiguous per-field
+	// arrays + spatial hash), shared by targeting, avoidance, collision,
+	// and objective control.
+	private readonly FleetIndex _fleet = new();
 
-	// Spawns queued while runners iterate, applied between systems.
-	private readonly List<Projectile> _salvo = [];
-	private readonly List<Vfx> _bursts = [];
+	// Beyond this, turrets don't even track a target.
+	private const float AcquisitionRange = 1800f;
 
 	private readonly List<Admiralty> _admiralties = [];
 	private readonly List<Objective> _objectives = [];
@@ -43,8 +43,6 @@ public partial class BattleShipsDemo : Node2D
 	private Label _hud;
 	private double _fps = 120;
 	private float _time;
-
-	internal readonly record struct ShipInfo(Ship Node, NVec2 Position, NVec2 Velocity, float Radius, Admiralty Faction);
 
 
 	public override void _Ready()
@@ -78,7 +76,7 @@ public partial class BattleShipsDemo : Node2D
 		_time += dt;
 		_fps = _fps * 0.95 + 0.05 / Math.Max(delta, 0.0001);
 
-		SnapshotFleets();
+		_fleet.Rebuild(_ships);
 		AcquireTargets();
 
 		_tracers.Begin();
@@ -87,17 +85,13 @@ public partial class BattleShipsDemo : Node2D
 		_smoke.Begin();
 		_explosions.Begin();
 
+		// Shells and effects spawned inside these runners are deferred
+		// automatically and materialize when each runner's scope closes.
 		SteerShips(dt);
 		DriftWrecks(dt);
 		LayGuns(dt);
 		FlyShells(dt);
 		AgeAndRenderVfx(dt);
-
-		// Entities queued while the runners were iterating spawn now.
-		foreach (var shell in _salvo) World.Spawn().Add(shell);
-		foreach (var burst in _bursts) World.Spawn().Add(burst);
-		_salvo.Clear();
-		_bursts.Clear();
 
 		_tracers.Commit();
 		_flashes.Commit();
@@ -110,36 +104,24 @@ public partial class BattleShipsDemo : Node2D
 	}
 
 
-	private void SnapshotFleets()
-	{
-		_armada.Clear();
-		_ships.For(_armada, (armada, ref ship, ref motion) =>
-		{
-			if (!IsInstanceValid(ship)) return;
-			armada.Add(new ShipInfo(ship, motion.Position, ship.CurrentVelocity, ship.Radius, ship.Faction));
-		});
-	}
-
-
 	// Fire control: each ship designates its nearest enemy once per frame,
-	// and every turret aboard trains on that designation — one O(N²) pass
-	// instead of one per gun.
+	// and every turret aboard trains on that designation. The spatial hash
+	// narrows the search to the cells within acquisition range.
 	private void AcquireTargets()
 	{
-		for (var i = 0; i < _armada.Count; i++)
+		for (var i = 0; i < _fleet.Count; i++)
 		{
-			var self = _armada[i];
 			var best = -1;
-			var bestSq = float.MaxValue;
-			for (var j = 0; j < _armada.Count; j++)
+			var bestSq = AcquisitionRange * AcquisitionRange;
+			foreach (var j in _fleet.Nearby(_fleet.Positions[i], AcquisitionRange))
 			{
-				if (_armada[j].Faction == self.Faction) continue;
-				var ds = NVec2.DistanceSquared(self.Position, _armada[j].Position);
+				if (_fleet.Factions[j] == _fleet.Factions[i]) continue;
+				var ds = NVec2.DistanceSquared(_fleet.Positions[i], _fleet.Positions[j]);
 				if (ds >= bestSq) continue;
 				bestSq = ds;
 				best = j;
 			}
-			self.Node.TargetIndex = best;
+			_fleet.Nodes[i].TargetIndex = best;
 		}
 	}
 
@@ -171,14 +153,15 @@ public partial class BattleShipsDemo : Node2D
 
 			// Keep formation with friends; merely avoid scraping hulls with
 			// enemies — fleets should close to brawling range, not stand off.
+			var fleet = demo._fleet;
 			var avoid = NVec2.Zero;
 			var crowding = 0f;
-			foreach (var other in demo._armada)
+			foreach (var j in fleet.Nearby(motion.Position, (ship.Radius + fleet.MaxRadius) * 4.5f))
 			{
-				if (other.Node == ship) continue;
-				var friendly = other.Faction == ship.Faction;
-				var away = motion.Position - other.Position;
-				var range = (ship.Radius + other.Radius) * (friendly ? 4.5f : 2.2f);
+				if (fleet.Nodes[j] == ship) continue;
+				var friendly = fleet.Factions[j] == ship.Faction;
+				var away = motion.Position - fleet.Positions[j];
+				var range = (ship.Radius + fleet.Radii[j]) * (friendly ? 4.5f : 2.2f);
 				var distSq = away.LengthSquared();
 				if (distSq >= range * range || distSq < 1e-3f) continue;
 				var dist = MathF.Sqrt(distSq);
@@ -218,7 +201,7 @@ public partial class BattleShipsDemo : Node2D
 					var rand = Random.Shared;
 					var severity = 1f - (float) ship.Health / ship.MaxHealth;
 					ship.SmokeTimer = Mathf.Lerp(0.5f, 0.12f, severity);
-					demo._bursts.Add(new Vfx
+					demo.World.Spawn().Add(new Vfx
 					{
 						Kind = VfxKind.Smoke,
 						Position = motion.Position - dir * (ship.Radius * 0.9f),
@@ -273,15 +256,19 @@ public partial class BattleShipsDemo : Node2D
 			gun.Offset = gun.BaseOffset - new Vector2(5f * gun.Recoil * gun.Recoil, 0f);
 
 			// The ship's designated target, if this gun can reach it.
-			var found = ship.TargetIndex >= 0 && ship.TargetIndex < demo._armada.Count;
-			ShipInfo target = default;
+			var fleet = demo._fleet;
+			var idx = ship.TargetIndex;
+			var found = idx >= 0 && idx < fleet.Count;
+			var targetPosition = NVec2.Zero;
+			var targetVelocity = NVec2.Zero;
 			var bestSq = 0f;
 			var origin = gun.GlobalPosition;
 			if (found)
 			{
-				target = demo._armada[ship.TargetIndex];
-				var dx = target.Position.X - origin.X;
-				var dy = target.Position.Y - origin.Y;
+				targetPosition = fleet.Positions[idx];
+				targetVelocity = fleet.Velocities[idx];
+				var dx = targetPosition.X - origin.X;
+				var dy = targetPosition.Y - origin.Y;
 				bestSq = dx * dx + dy * dy;
 				found = bestSq < gun.Range * gun.Range;
 			}
@@ -292,7 +279,7 @@ public partial class BattleShipsDemo : Node2D
 			{
 				// Lead the target: shells are slow, ships are not.
 				var distance = MathF.Sqrt(bestSq);
-				var predicted = target.Position + target.Velocity * (distance / gun.BulletSpeed);
+				var predicted = targetPosition + targetVelocity * (distance / gun.BulletSpeed);
 				goal = MathF.Atan2(predicted.Y - origin.Y, predicted.X - origin.X);
 			}
 			else
@@ -339,7 +326,7 @@ public partial class BattleShipsDemo : Node2D
 			var position = new NVec2(muzzle.X, muzzle.Y);
 			var velocity = new NVec2(MathF.Cos(angle), MathF.Sin(angle)) * speed;
 
-			_salvo.Add(new Projectile
+			World.Spawn().Add(new Projectile
 			{
 				Position = position,
 				Velocity = velocity,
@@ -350,7 +337,7 @@ public partial class BattleShipsDemo : Node2D
 				Color = ship.Faction.Color.Lightened(0.4f),
 			});
 
-			_bursts.Add(new Vfx
+			World.Spawn().Add(new Vfx
 			{
 				Kind = VfxKind.MuzzleFlash,
 				Position = position,
@@ -363,7 +350,7 @@ public partial class BattleShipsDemo : Node2D
 
 			if (rand.NextSingle() < 0.6f)
 			{
-				_bursts.Add(new Vfx
+				World.Spawn().Add(new Vfx
 				{
 					Kind = VfxKind.Smoke,
 					Position = position,
@@ -399,13 +386,15 @@ public partial class BattleShipsDemo : Node2D
 				return;
 			}
 
-			foreach (var target in demo._armada)
+			var fleet = demo._fleet;
+			foreach (var j in fleet.Nearby(shell.Position, fleet.MaxRadius))
 			{
-				if (target.Faction == shell.Faction) continue;
-				if (!IsInstanceValid(target.Node) || target.Node.Sinking) continue;
-				if (NVec2.DistanceSquared(shell.Position, target.Position) > target.Radius * target.Radius) continue;
+				if (fleet.Factions[j] == shell.Faction) continue;
+				var target = fleet.Nodes[j];
+				if (!IsInstanceValid(target) || target.Sinking) continue;
+				if (NVec2.DistanceSquared(shell.Position, fleet.Positions[j]) > fleet.Radii[j] * fleet.Radii[j]) continue;
 
-				target.Node.TakeDamage(shell.Damage);
+				target.TakeDamage(shell.Damage);
 				demo.AddHit(shell.Position);
 				entity.Despawn();
 				return;
@@ -473,7 +462,7 @@ public partial class BattleShipsDemo : Node2D
 	internal void AddHit(NVec2 position)
 	{
 		var rand = Random.Shared;
-		_bursts.Add(new Vfx
+		World.Spawn().Add(new Vfx
 		{
 			Kind = VfxKind.Hit,
 			Position = position,
@@ -489,7 +478,7 @@ public partial class BattleShipsDemo : Node2D
 	internal void AddSplash(NVec2 position)
 	{
 		var rand = Random.Shared;
-		_bursts.Add(new Vfx
+		World.Spawn().Add(new Vfx
 		{
 			Kind = VfxKind.Splash,
 			Position = position,
@@ -511,7 +500,7 @@ public partial class BattleShipsDemo : Node2D
 		var position = new NVec2(ship.GlobalPosition.X, ship.GlobalPosition.Y);
 		var along = new NVec2(MathF.Cos(ship.Rotation), MathF.Sin(ship.Rotation));
 
-		_bursts.Add(new Vfx
+		World.Spawn().Add(new Vfx
 		{
 			Kind = VfxKind.Explosion,
 			Position = position,
@@ -527,7 +516,7 @@ public partial class BattleShipsDemo : Node2D
 		{
 			var offset = along * ((rand.NextSingle() * 2f - 1f) * ship.Radius)
 				+ new NVec2(-along.Y, along.X) * ((rand.NextSingle() * 2f - 1f) * ship.Radius * 0.3f);
-			_bursts.Add(new Vfx
+			World.Spawn().Add(new Vfx
 			{
 				Kind = VfxKind.Explosion,
 				Position = position + offset,
@@ -543,7 +532,7 @@ public partial class BattleShipsDemo : Node2D
 
 		for (var i = 0; i < 5; i++)
 		{
-			_bursts.Add(new Vfx
+			World.Spawn().Add(new Vfx
 			{
 				Kind = VfxKind.Smoke,
 				Position = position + new NVec2(rand.NextSingle() * 2f - 1f, rand.NextSingle() * 2f - 1f) * ship.Radius * 0.5f,
@@ -568,14 +557,15 @@ public partial class BattleShipsDemo : Node2D
 			_presence.Clear();
 			var op = objective.GlobalPosition;
 			var total = 0;
-			foreach (var ship in _armada)
+			foreach (var j in _fleet.Nearby(new NVec2(op.X, op.Y), objective.Radius))
 			{
-				if (ship.Faction == null) continue;
-				var dx = ship.Position.X - op.X;
-				var dy = ship.Position.Y - op.Y;
+				var faction = _fleet.Factions[j];
+				if (faction == null) continue;
+				var dx = _fleet.Positions[j].X - op.X;
+				var dy = _fleet.Positions[j].Y - op.Y;
 				if (dx * dx + dy * dy > objective.Radius * objective.Radius) continue;
-				_presence.TryGetValue(ship.Faction, out var count);
-				_presence[ship.Faction] = count + 1;
+				_presence.TryGetValue(faction, out var count);
+				_presence[faction] = count + 1;
 				total++;
 			}
 
