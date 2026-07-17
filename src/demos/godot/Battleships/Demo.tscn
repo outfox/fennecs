@@ -55,44 +55,6 @@ font_color = Color(1, 1, 1, 0.25098)
 texture_filter = 3
 script = ExtResource("1_wuhof")
 
-[node name="Destroyer" type="Sprite2D" parent="."]
-visible = false
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Destroyer"]
-z_index = -42
-position = Vector2(-11, -2)
-sprite_frames = SubResource("SpriteFrames_q1es4")
-frame = 3
-frame_progress = 0.961274
-script = ExtResource("6_nk4bq")
-
-[node name="HullSprite" type="Sprite2D" parent="Destroyer"]
-z_index = -5
-position = Vector2(0, -1)
-texture = ExtResource("1_mpdiq")
-
-[node name="ShipBigGunDual" type="Sprite2D" parent="Destroyer"]
-position = Vector2(26, -1)
-texture = ExtResource("4_gfkv0")
-offset = Vector2(-6, 0)
-script = ExtResource("20_tj12v")
-
-[node name="ShipBigGunDualHit" type="Sprite2D" parent="Destroyer/ShipBigGunDual"]
-visible = false
-texture = ExtResource("3_fu8pa")
-offset = Vector2(-6, 0)
-
-[node name="Muzzle1" type="Node2D" parent="Destroyer/ShipBigGunDual"]
-position = Vector2(22.5, -3.5)
-
-[node name="Muzzle2" type="Node2D" parent="Destroyer/ShipBigGunDual"]
-position = Vector2(22.5, 3.5)
-
-[node name="ShipBigGun" type="Sprite2D" parent="Destroyer"]
-position = Vector2(-56, -1)
-texture = ExtResource("5_ida0b")
-script = ExtResource("20_tj12v")
-
 [node name="Camera2D" type="Camera2D" parent="."]
 top_level = true
 script = ExtResource("22_n6gg5")
@@ -261,7 +223,7 @@ label_settings = SubResource("LabelSettings_sms3j")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Admiralty1" type="Node2D" parent="." groups=["Admiralty"]]
+[node name="Red" type="Node2D" parent="." groups=["Admiralty"]]
 position = Vector2(-5178, -3708)
 script = ExtResource("17_kr6vl")
 Blueprints = [ExtResource("13_auviu")]
@@ -269,14 +231,14 @@ MaxFleetValue = 300
 SpawnRadius = 500.0
 Color = Color(1, 0.594265, 0.582941, 1)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty1"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Red"]
 z_index = -69
 scale = Vector2(5, 5)
 sprite_frames = ExtResource("17_a473v")
 frame_progress = 0.894212
 script = ExtResource("6_nk4bq")
 
-[node name="Admiralty2" type="Node2D" parent="." groups=["Admiralty"]]
+[node name="Green" type="Node2D" parent="." groups=["Admiralty"]]
 position = Vector2(3788, -3532)
 script = ExtResource("17_kr6vl")
 Blueprints = [ExtResource("13_auviu")]
@@ -284,13 +246,13 @@ MaxFleetValue = 300
 SpawnRadius = 500.0
 Color = Color(0, 0.87547, 0.189829, 1)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty2"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Green"]
 z_index = -69
 scale = Vector2(5, 5)
 sprite_frames = ExtResource("17_a473v")
 script = ExtResource("6_nk4bq")
 
-[node name="Admiralty3" type="Node2D" parent="." groups=["Admiralty"]]
+[node name="Blue" type="Node2D" parent="." groups=["Admiralty"]]
 position = Vector2(2016, 2691)
 script = ExtResource("17_kr6vl")
 Blueprints = [ExtResource("13_auviu")]
@@ -298,7 +260,7 @@ MaxFleetValue = 300
 SpawnRadius = 500.0
 Color = Color(0.670588, 0.694118, 1, 1)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Admiralty3"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Blue"]
 z_index = -69
 scale = Vector2(5, 5)
 sprite_frames = ExtResource("17_a473v")

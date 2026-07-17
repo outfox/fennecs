@@ -37,12 +37,13 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="Battleship" type="Sprite2D" node_paths=PackedStringArray("Guns")]
+[node name="Battleship" type="Sprite2D"]
 top_level = true
 texture_filter = 5
 script = ExtResource("1_dsb5r")
-Guns = [null, null, null, null, null, null, null, null, null, null]
 Points = 4
+MaxHealth = 8
+Radius = 55.0
 
 [node name="Hull" type="Sprite2D" parent="."]
 z_index = -5
@@ -64,16 +65,15 @@ rotation = -3.14159
 texture = ExtResource("9_xabas")
 offset = Vector2(-6, 0)
 script = ExtResource("10_24wpl")
+Range = 1150.0
+ReloadTime = 3.5
+Turning = 1.2
+Damage = 2
+BulletSpeed = 700.0
+SpreadDegrees = 2.0
 
 [node name="Muzzle0" type="Node2D" parent="GunHeavy0"]
 position = Vector2(27, 0)
-
-[node name="Flash0" type="AnimatedSprite2D" parent="GunHeavy0/Muzzle0"]
-position = Vector2(12, 5.5)
-sprite_frames = ExtResource("12_dxm0s")
-animation = &"01"
-frame_progress = 0.165101
-script = ExtResource("7_gq6ax")
 
 [node name="GunHeavy2" type="Sprite2D" parent="."]
 z_index = 3
@@ -83,61 +83,103 @@ rotation = -3.14159
 texture = ExtResource("9_xabas")
 offset = Vector2(-6, 0)
 script = ExtResource("10_24wpl")
+Range = 1150.0
+ReloadTime = 3.5
+Turning = 1.2
+Damage = 2
+BulletSpeed = 700.0
+SpreadDegrees = 2.0
 
 [node name="Muzzle0" type="Node2D" parent="GunHeavy2"]
 z_index = 1
 position = Vector2(27, 0)
-
-[node name="Flash0" type="AnimatedSprite2D" parent="GunHeavy2/Muzzle0"]
-position = Vector2(12, 5.5)
-sprite_frames = ExtResource("12_dxm0s")
-animation = &"01"
-script = ExtResource("7_gq6ax")
 
 [node name="ShipGunRed" type="Sprite2D" parent="."]
 position = Vector2(-73, -45)
 rotation = -1.5708
 texture = ExtResource("12_it1cs")
 script = ExtResource("10_24wpl")
+Range = 700.0
+ReloadTime = 1.7
+Turning = 4.0
+BulletSpeed = 800.0
+SpreadDegrees = 3.5
 
 [node name="ShipGunRed2" type="Sprite2D" parent="."]
 position = Vector2(-45, -45)
 rotation = -1.5708
 texture = ExtResource("12_it1cs")
 script = ExtResource("10_24wpl")
+Range = 700.0
+ReloadTime = 1.7
+Turning = 4.0
+BulletSpeed = 800.0
+SpreadDegrees = 3.5
 
 [node name="ShipGunRed3" type="Sprite2D" parent="."]
 position = Vector2(-46, 41)
 rotation = 1.5708
 texture = ExtResource("12_it1cs")
 script = ExtResource("10_24wpl")
+Range = 700.0
+ReloadTime = 1.7
+Turning = 4.0
+BulletSpeed = 800.0
+SpreadDegrees = 3.5
 
 [node name="ShipGunRed4" type="Sprite2D" parent="."]
 position = Vector2(-72, 42)
 rotation = 1.5708
 texture = ExtResource("12_it1cs")
 script = ExtResource("10_24wpl")
+Range = 700.0
+ReloadTime = 1.7
+Turning = 4.0
+BulletSpeed = 800.0
+SpreadDegrees = 3.5
 
 [node name="ShipGunHuge" type="Sprite2D" parent="."]
 z_index = 2
 position = Vector2(22, -1)
 texture = ExtResource("9_xabas")
 script = ExtResource("10_24wpl")
+Range = 1150.0
+ReloadTime = 3.5
+Turning = 1.2
+Damage = 2
+BulletSpeed = 700.0
+SpreadDegrees = 2.0
 
 [node name="ShipGunHuge2" type="Sprite2D" parent="."]
 z_index = 1
 position = Vector2(60, 0)
 texture = ExtResource("9_xabas")
 script = ExtResource("10_24wpl")
+Range = 1150.0
+ReloadTime = 3.5
+Turning = 1.2
+Damage = 2
+BulletSpeed = 700.0
+SpreadDegrees = 2.0
 
 [node name="ShipGunDualGray" type="Sprite2D" parent="."]
 position = Vector2(25, -34)
 texture = ExtResource("13_set35")
 offset = Vector2(-6, 0)
 script = ExtResource("10_24wpl")
+Range = 850.0
+ReloadTime = 2.2
+Turning = 3.0
+BulletSpeed = 750.0
+SpreadDegrees = 3.0
 
 [node name="ShipGunDualGray2" type="Sprite2D" parent="."]
 position = Vector2(25, 32)
 texture = ExtResource("13_set35")
 offset = Vector2(-6, 0)
 script = ExtResource("10_24wpl")
+Range = 850.0
+ReloadTime = 2.2
+Turning = 3.0
+BulletSpeed = 750.0
+SpreadDegrees = 3.0

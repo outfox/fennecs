@@ -67,6 +67,15 @@ public partial class Admiralty : Node2D
         AddShip(blueprint);
     }
     
+    /// <summary>
+    /// Losses free up fleet value, so the admiralty keeps requisitioning
+    /// reinforcements and the battle never burns out.
+    /// </summary>
+    public void NotifyShipLost(Ship ship)
+    {
+        _fleetValue = Mathf.Max(0, _fleetValue - ship.Points);
+    }
+
     public void AddShip(PackedScene blueprint)
     {
         var ship = blueprint.Instantiate<Ship>();
@@ -109,7 +118,6 @@ public partial class Admiralty : Node2D
             if (objective.Controller == this) continue;
             
             FleetObjective = objective;
-            GD.Print("Fleet Objective Updated!", objective.Name);
             return;
         }
     }

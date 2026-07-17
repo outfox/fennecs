@@ -37,9 +37,9 @@ Pan with the right or middle mouse button, zoom with the mouse wheel.",
 		"scene": "res://Battleships/Demo.tscn",
 		"key": KEY_F4,
 		"key_label": "F4",
-		"blurb": "A naval free-for-all: factions of ships steer toward their fleet objectives, aim their guns, and open fire.
+		"blurb": "A naval free-for-all: fleets swirl around contested objectives, turrets traverse and lead their targets, and salvos bracket ships with shell splashes until something blows up.
 
-Ships, guns, and bullets are Entities that mix plain C# structs with Godot nodes stored directly as Components - ECS simulation and the classic scene tree working side by side. Targeting is a brute-force pass over all live ships each frame, kept fast by fennecs' tight iteration.
+Ships and guns are Entities that store Godot nodes directly as Components; shells and every effect - tracers, muzzle flashes, splashes, smoke, explosions - are pure data Entities with no nodes at all, drawn as MultiMeshInstance2D batches in one draw call per family.
 
 Pan with the right or middle mouse button, zoom with the mouse wheel.",
 	},
