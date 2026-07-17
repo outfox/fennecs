@@ -62,7 +62,7 @@ return; // werewolfSpawner is automatically disposed here by the using statement
 ```
 
 
-## Getting Your Entities Back
+## Entity Returns (for further processing)
 
 Sometimes you spawn a wave and want the handles right away — to wire up relations, hand them to game logic, or track them somewhere. Each `Spawn` overload has you covered:
 
