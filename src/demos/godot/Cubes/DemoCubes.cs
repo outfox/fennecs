@@ -64,16 +64,16 @@ public partial class DemoCubes : Node
 	private float _time;
 
 	// Godot: Exports to interact with the UI
-	[Export] public Camera3D Camera;
+	[Export] public Camera3D Camera = null!;
 
 	// Godot: The main MultiMeshInstance3D that will be used to render the cubes.
-	[Export] public MultiMeshInstance3D MeshInstance;
+	[Export] public MultiMeshInstance3D MeshInstance = null!;
 
 	// Config: Size of the simulation space
 	[Export] public float MaxAmplitude = 400;
 	[Export] public float MinAmplitude = 250;
-	[Export] public Slider RenderedSlider;
-	[Export] public Slider SimulatedSlider;
+	[Export] public Slider RenderedSlider = null!;
+	[Export] public Slider SimulatedSlider = null!;
 
 	// Godot: Read by the UI to show the simulated Entity count. (not just the visible ones)
 	private int QueryCount => _stream.Count;

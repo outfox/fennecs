@@ -22,11 +22,11 @@ public partial class BattleShipsDemo : Node2D
 
 	// One MultiMeshInstance2D per effect family: thousands of shells and
 	// explosions cost one draw call each, and add zero scene tree nodes.
-	private InstanceBuffer _tracers;
-	private InstanceBuffer _flashes;
-	private InstanceBuffer _hits;
-	private InstanceBuffer _smoke;
-	private InstanceBuffer _explosions;
+	private InstanceBuffer _tracers = null!;
+	private InstanceBuffer _flashes = null!;
+	private InstanceBuffer _hits = null!;
+	private InstanceBuffer _smoke = null!;
+	private InstanceBuffer _explosions = null!;
 
 	// Per-frame orthogonal view of the live fleet (contiguous per-field
 	// arrays + spatial hash), shared by targeting, avoidance, collision,
@@ -40,7 +40,7 @@ public partial class BattleShipsDemo : Node2D
 	private readonly List<Objective> _objectives = [];
 	private readonly Dictionary<Admiralty, int> _presence = [];
 
-	private Label _hud;
+	private Label _hud = null!;
 	private double _fps = 120;
 	private float _time;
 
@@ -569,7 +569,7 @@ public partial class BattleShipsDemo : Node2D
 				total++;
 			}
 
-			Admiralty leader = null;
+			Admiralty? leader = null;
 			var leaderCount = 0;
 			foreach (var (faction, count) in _presence)
 			{
@@ -581,9 +581,7 @@ public partial class BattleShipsDemo : Node2D
 			}
 
 			// Strict majority required — contested objectives stall the timer.
-			var uncontested = leader != null && leaderCount > total - leaderCount;
-
-			if (uncontested && objective.Controller != leader)
+			if (leader != null && leaderCount > total - leaderCount && objective.Controller != leader)
 			{
 				objective.Timer += dt;
 				if (objective.Timer >= Objective.CaptureTime)

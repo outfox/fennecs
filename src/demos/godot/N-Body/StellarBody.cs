@@ -9,7 +9,7 @@ public partial class StellarBody : EntityNode2D
 {
 	public float mass = 1.0f;
 
-	private Body _body;
+	private Body _body = null!; // assigned in _EnterTree; siblings filter on entity.Alive
 
 	public override void _EnterTree()
 	{

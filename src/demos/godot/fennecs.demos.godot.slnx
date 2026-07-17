@@ -1,0 +1,17 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="ExportDebug" />
+    <BuildType Name="ExportRelease" />
+  </Configurations>
+  <Project Path="fennecs.demos.godot.2dog/fennecs.demos.godot.2dog.csproj">
+    <BuildType Project="Debug" />
+  </Project>
+  <Project Path="fennecs.demos.godot.csproj" />
+  <Project Path="fennecs.demos.godot.tests/fennecs.demos.godot.tests.csproj">
+    <BuildType Project="Debug" />
+  </Project>
+  <Project Path="fennecs.demos.godot.web/fennecs.demos.godot.web.csproj">
+    <BuildType Project="Debug" />
+  </Project>
+</Solution>

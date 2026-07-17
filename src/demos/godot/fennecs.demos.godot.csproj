@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.7.0">
+<Project Sdk="Godot.NET.Sdk/4.7.1">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
@@ -14,4 +14,10 @@
     <None Include="**/*.tscn" />
     <None Include="**/*.tres" />
   </ItemGroup>
+    <!-- added by 2dog convert: properties 2dog hosts need that were not already set -->
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <DefineConstants>$(DefineConstants);LIBGODOT_ENABLED</DefineConstants>
+        <DefaultItemExcludes>$(DefaultItemExcludes);fennecs.demos.godot.2dog/**;fennecs.demos.godot.web/**;fennecs.demos.godot.tests/**</DefaultItemExcludes>
+    </PropertyGroup>
 </Project>

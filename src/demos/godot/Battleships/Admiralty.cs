@@ -27,7 +27,7 @@ public partial class Admiralty : Node2D
     public int Score;
     
     public readonly List<Objective> Objectives = [];
-    public Objective FleetObjective;
+    public Objective? FleetObjective;
     
     [Export]
     public Color Color;

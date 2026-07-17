@@ -1,0 +1,8 @@
+<Project>
+    <!-- Remove all configuration outputs on clean. Web hosts extend this with
+         their AppBundle cleanup. -->
+    <Target Name="TwoDogDeepClean" AfterTargets="Clean">
+        <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
+        <RemoveDir Directories="$(BaseOutputPath)" />
+    </Target>
+</Project>

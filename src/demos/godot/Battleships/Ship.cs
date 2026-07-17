@@ -17,7 +17,7 @@ public partial class Ship : Sprite2D
 
 	[Export] public float TurnRate = 0.8f;
 
-	public Admiralty Faction;
+	public Admiralty Faction = null!; // assigned by Admiralty.AddShip before entering the tree
 
 	public int Health;
 
@@ -41,7 +41,7 @@ public partial class Ship : Sprite2D
 
 	private Entity _entity;
 	private readonly List<Entity> _gunEntities = [];
-	private BattleShipsDemo _demo;
+	private BattleShipsDemo _demo = null!;
 
 	public override void _Ready()
 	{

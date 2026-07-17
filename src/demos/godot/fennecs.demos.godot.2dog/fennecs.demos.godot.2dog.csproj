@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <!-- The assembly keeps the folder name, but 'fennecs.demos.godot.2dog' is
+             not a valid C# namespace (digit-leading segment). -->
+        <RootNamespace>fennecs.demos.godot</RootNamespace>
+        <!-- comctl32 v6 + long paths for Godot's Windows display server -->
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="2dog.engine" Version="4.7.1.46"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../fennecs.demos.godot.csproj"/>
+    </ItemGroup>
+
+    <!-- Godot project location: the parent directory (the Godot project is the
+         solution root; hosts are nested inside it, hidden from the Godot
+         editor by their .gdignore) -->
+    <PropertyGroup>
+        <GodotProjectDir>..</GodotProjectDir>
+        <TwoDogVariant Condition="'$(Configuration)' == 'Debug'">debug</TwoDogVariant>
+        <TwoDogVariant Condition="'$(Configuration)' == 'Editor'">editor</TwoDogVariant>
+        <TwoDogRemoveDuplicateGodotAnalyzers>true</TwoDogRemoveDuplicateGodotAnalyzers>
+    </PropertyGroup>
+</Project>

@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--
+      Browser (wasm) host: your C# code hosts the Godot engine in the browser.
+
+      Publish:  dotnet publish fennecs.demos.godot.web   (from the project root;
+                the root global.json pins a wasm-capable SDK. Defaults to
+                Release via Directory.Build.props; pass -c Debug to override.)
+      Output:   AppBundle/ - serve with any static file server.
+
+      Requires the wasm-tools workload:  dotnet workload install wasm-tools
+      The 2dog.browser-wasm package statically links the Godot engine into
+      dotnet.native.wasm during publish and exports the Godot project's
+      content as godot.pck (using the desktop editor packages on this machine).
+    -->
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <!-- Keep host namespaces uniform with the desktop host (whose
+             '.2dog' assembly name is not a valid namespace). -->
+        <RootNamespace>fennecs.demos.godot.Web</RootNamespace>
+    </PropertyGroup>
+    <!-- Godot project location: the parent directory (hosts are nested inside
+         the Godot project, hidden from the Godot editor by their .gdignore) -->
+    <PropertyGroup>
+        <GodotProjectDir>..</GodotProjectDir>
+        <TwoDogRemoveDuplicateGodotAnalyzers>true</TwoDogRemoveDuplicateGodotAnalyzers>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="2dog.engine" Version="4.7.1.46"/>
+        <PackageReference Include="2dog.browser-wasm" Version="[4.7.1.17]"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../fennecs.demos.godot.csproj"/>
+    </ItemGroup>
+
+    <!-- Root the game assembly: scripts are resolved by reflection. Add a
+         TrimmerRootAssembly for any NuGet package your game code reaches via
+         reflection (e.g. an ECS or serializer library). -->
+    <ItemGroup>
+        <TrimmerRootAssembly Include="fennecs.demos.godot"/>
+        <TrimmerRootAssembly Include="$(TargetName)"/>
+    </ItemGroup>
+
+    <Target Name="DeepClean" AfterTargets="Clean">
+        <RemoveDir Directories="AppBundle"/>
+    </Target>
+</Project>

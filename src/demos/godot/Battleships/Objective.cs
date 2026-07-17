@@ -10,5 +10,5 @@ public partial class Objective : Node2D
 
 	public float Timer;
 
-	public Admiralty Controller;
+	public Admiralty? Controller;
 }

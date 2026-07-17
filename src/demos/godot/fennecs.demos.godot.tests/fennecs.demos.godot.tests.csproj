@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <!-- Keep host namespaces uniform with the desktop host (whose
+             '.2dog' assembly name is not a valid namespace). -->
+        <RootNamespace>fennecs.demos.godot.Tests</RootNamespace>
+    </PropertyGroup>
+
+    <!-- 2dog packages (2dog.xunit pulls in 2dog.engine for the fixtures and ships the xUnit
+         collection definitions as compile-in source) -->
+    <ItemGroup>
+        <PackageReference Include="2dog.xunit" Version="4.7.1.46"/>
+    </ItemGroup>
+
+    <!-- Native library packages arrive transitively: 2dog exact-pins the platform
+         packages it was built against, and their buildTransitive targets handle
+         copying the native library. No direct natives reference needed. -->
+
+    <!-- Test framework packages -->
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="10.*"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*"/>
+        <PackageReference Include="xunit.v3" Version="3.*"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.*"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../fennecs.demos.godot.csproj"/>
+    </ItemGroup>
+
+    <!-- Godot project location: the parent directory (hosts are nested inside
+         the Godot project, hidden from the Godot editor by their .gdignore) -->
+    <PropertyGroup>
+        <GodotProjectDir>..</GodotProjectDir>
+        <TwoDogVariant Condition="'$(Configuration)' == 'Debug'">debug</TwoDogVariant>
+        <TwoDogVariant Condition="'$(Configuration)' == 'Editor'">editor</TwoDogVariant>
+        <TwoDogRemoveDuplicateGodotAnalyzers>true</TwoDogRemoveDuplicateGodotAnalyzers>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Editor'">
+        <DefineConstants>$(DefineConstants);EDITOR</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Editor'">
+        <PackageReference Include="GodotSharpEditor" Version="4.7.1" />
+    </ItemGroup>
+</Project>

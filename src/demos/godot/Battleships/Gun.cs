@@ -26,7 +26,7 @@ public partial class Gun : Sprite2D
 	public float Cooldown;
 	public float Recoil;
 
-	internal Ship OwnerShip;
+	internal Ship OwnerShip = null!; // assigned by the owning Ship in its _Ready
 	internal float MountRotation;
 	internal Vector2 BaseOffset;
 	internal float BarrelLength;
