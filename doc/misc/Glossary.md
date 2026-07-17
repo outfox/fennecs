@@ -1,6 +1,7 @@
 ---
 title: Glossary
 order: 2
+description: Definitions of ECS terms used in the fennecs documentation, including Aspects, Fragmentation, Identity, Structural Changes, and the World Lock.
 ---
 
 ![a stylized fennec fox in a huge archive with of stacks of papers](/img/fennec-glossary.png)

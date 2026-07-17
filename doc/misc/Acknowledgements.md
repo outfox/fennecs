@@ -1,5 +1,6 @@
 ---
 title: Acknowledgements
+description: 'Credits for fennecs, the tiny C# Entity-Component System: thanks to HypEcs creator Byteron, illustrator Maria Angelica, Volpeon''s Neofox emoji, and more.'
 ---
 
 ![stylized fennec fox in front of a sky full of hearts](/img/fennec-acknowledgements.png)

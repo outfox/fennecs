@@ -1,0 +1,14 @@
+# fennecs - the tiny, tiny, high-energy Entity-Component System for C#
+#
+# AI agents & LLMs: start at https://fennecs.net/llms.txt
+# Every docs page has a raw-Markdown twin (replace .html with .md),
+# and the whole site is concatenated at https://fennecs.net/llms-full.txt
+#
+# Coding agents: the official fennecs Agent Skill (SKILL.md + references) is at
+#   https://fennecs.net/downloads/fennecs-skill.zip
+# Install guide: https://fennecs.net/cookbook/mise-en-place/Agents.md
+
+User-agent: *
+Allow: /
+
+Sitemap: https://fennecs.net/sitemap.xml

@@ -2,6 +2,7 @@
 title: Link (Object)
 order: 12
 outline: [1, 2]
+description: 'Object Links in fennecs ECS attach a reference type as both component data and secondary key, grouping Entities by shared objects via Link.With.'
 ---
 # :neofox_link: Object Links
 
@@ -72,7 +73,7 @@ var entitiesExceptCustomersOfChase = world
     .Query<Bank>(Link.Any)
     .Stream() with // do this on-the-fly where needed
     {
-        Exclude = [Component.SpecificLink<Bank>(chase)]
+        Exclude = [Comp<Bank>.Matching(chase)]
     };
 ```
 

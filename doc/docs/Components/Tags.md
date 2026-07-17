@@ -2,6 +2,7 @@
 title: Tags
 order: 2
 outline: [1, 2]
+description: 'Tag components in fennecs are zero-size empty structs that mark and categorize entities, filtered in Queries with Has, Not, and Any expressions.'
 ---
 
 # Tag Components :neofox_bongo_down:
@@ -147,7 +148,7 @@ Tags can be used as Stream Types, but they're not particularly useful there sinc
 
 ```cs
 // This works, but the Enemy ref is useless
-stream.For((ref Position pos, ref Enemy tag) =>
+stream.For((ref pos, ref tag) =>
 {
     // 'tag' has no data - waste of a stream slot!
 });
@@ -157,7 +158,7 @@ var enemyStream = world.Query<Position>()
     .Has<Enemy>()
     .Stream();
 
-enemyStream.For((ref Position pos) =>
+enemyStream.For((ref pos) =>
 {
     // Cleaner, and you have all 5 stream slots for real data!
 });

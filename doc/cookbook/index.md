@@ -1,11 +1,6 @@
 ---
 title: Cookbook
-
-head:
-  - - meta
-    - name: description
-      content: Beginner Cookbook for fennecs, the tiny, tiny, high-energy Entity-Component System
-
+description: 'The fennecs cookbook: install the tiny C# Entity-Component System via NuGet or git and start with hands-on recipes for entities, components, and queries.'
 ---
 
 # Welcome to the Kitchen

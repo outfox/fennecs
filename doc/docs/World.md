@@ -1,6 +1,7 @@
 ---
 title: Worlds
 order: 10
+description: 'How fennecs Worlds hold Entities, Components, and Queries - instantiation, limits (up to a billion Entities), spawning, disposal, and the Main Aspect.'
 ---
 
 # Worlds

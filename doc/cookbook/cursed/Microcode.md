@@ -2,11 +2,7 @@
 title: Microcode
 order: 1
 outline: [2, 3]
-
-head:
-  - - meta
-    - name: description
-      content: How subnormal floats and FP assists can silently make identical code 3x slower - a fennecs benchmark ghost story, with reproducible code.
+description: How subnormal floats and FP assists can silently make identical code 3x slower - a fennecs benchmark ghost story, with reproducible code.
 ---
 
 # The Ghost in the Microcode

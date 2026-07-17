@@ -1,6 +1,7 @@
 ---
 title: Self-Modifying Systems
 outline: [2, 3]
+description: Work-in-progress sketch of self-modifying systems in fennecs, storing runner delegates in component data to build data-driven state machines.
 ---
 
 # Lambda Calculus... in an ECS? :neofox_shocked: 

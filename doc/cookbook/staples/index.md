@@ -1,11 +1,6 @@
 ---
 title: Staple Foods
-
-head:
-  - - meta
-    - name: description
-      content: Beginner Cookbook for fennecs, the tiny, tiny, high-energy Entity-Component System
-
+description: 'Staple recipes for fennecs: engine-agnostic snippets of good practice for indexing entities, damage over time, relations, and OOP interop.'
 ---
 
 # TV Dinner won't cut it?

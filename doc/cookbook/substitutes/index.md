@@ -1,11 +1,6 @@
 ---
 title: Exotics (WIP)
-
-head:
-  - - meta
-    - name: fennecs  –  tiny ECS
-      content: Documentation
-
+description: 'Introduction to the exotic fennecs recipes: experimental architecture substitutes and refactoring tricks for adventurous ECS developers.'
 ---
 
 # Exotic Foods & Substitutes

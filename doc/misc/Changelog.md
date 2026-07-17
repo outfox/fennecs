@@ -2,14 +2,12 @@
 title: Changelog
 order: 1
 outline: [2,2]
+description: 'Release notes for fennecs, the tiny C# Entity-Component System: every version''s new features, breaking changes, bug fixes, and upgrade guidance.'
 
 head:
   - - meta
-    - name: title
-      content: fennecs  –  Release Notes
-  - - meta
     - property: og:description
-      content: Changelog for fennecs, the tiny, fast, modern C# Entity-Component System for games and simulations!
+      content: 'Release notes for fennecs, the tiny C# Entity-Component System: every version''s new features, breaking changes, bug fixes, and upgrade guidance.'
   - - meta
     - property: og:type
       content: website
@@ -33,7 +31,7 @@ head:
       content: https://fennecs.net/img/fennecs-changelog-panel.png
   - - meta
     - name: twitter:description
-      content: Changelog for fennecs, the tiny, fast, modern C# Entity-Component System for games and simulations!
+      content: 'Release notes for fennecs, the tiny C# Entity-Component System: every version''s new features, breaking changes, bug fixes, and upgrade guidance.'
 ---
 
 ## Change Log & Release Notes

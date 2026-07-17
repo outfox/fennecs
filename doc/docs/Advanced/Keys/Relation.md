@@ -2,6 +2,7 @@
 title: Relation (Entity)
 order: 1
 outline: [1, 2]
+description: 'Entity-Entity Relations in fennecs are components with an Entity secondary key - added via Add<T>(data, target) and queried with wildcards like Entity.Any.'
 ---
 # :neofox_heart: Relations between Entities
 
@@ -102,7 +103,7 @@ var entitiesOwingAnyoneExceptEve = world
     .Query<Owes>(Entity.Any)
     .Stream() with // do this on-the-fly where needed
     {
-        Exclude = [Component.SpecificEntity<Owes>(eve)]  
+        Exclude = [Comp<Owes>.Matching(eve)]
     };
 ```
 ::: danger :neofox_googly_reverse: DUDE, where's my ENTITY?
@@ -132,7 +133,7 @@ var debtors = world.Query<Owes>(Entity.Any).Stream();
 
 var tom = world.Spawn();
 var eve = world.Spawn();
-var bob = world.Spawn(); //E-000000003:0001
+var bob = world.Spawn(); //E-00000003:00001
 
 bob.Add<Owes>(new(10M), eve);
 bob.Add<Owes>(new(23M), tom);
@@ -145,8 +146,8 @@ foreach (var (Entity entity, Owes owes) in debtors)
 ```
 
 ```plaintext [Output]
-E-000000003:0001 owes 10 to someone!
-E-000000003:0001 owes 23 to someone!
+E-00000003:00001 owes 10 to someone!
+E-00000003:00001 owes 23 to someone!
 ```
 :::
 

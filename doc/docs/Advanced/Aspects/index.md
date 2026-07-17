@@ -2,11 +2,7 @@
 title: Aspects
 order: 1
 outline: [1, 2]
-
-head:
-  - - meta
-    - name: description
-      content: Aspects give a fennecs World multiple contiguous component storage universes - group hot data and fight fragmentation.
+description: 'Aspects split a fennecs World into contiguous component storage universes - declare them with AddAspect and Owns to group hot data and fight fragmentation.'
 ---
 
 # Aspects

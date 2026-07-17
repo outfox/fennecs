@@ -2,6 +2,7 @@
 title: 1. Star Trek (Entities)
 outline: [2, 3]
 order: 1
+description: 'Explores fennecs entity identity: how entities print in logs, what happens on despawn, and how IDs are recycled with rising generations in a World.'
 ---
 
 # Famous ~~Captains~~ Entities - none alike!

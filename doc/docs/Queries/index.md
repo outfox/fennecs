@@ -3,6 +3,7 @@ title: Queries
 layout: doc
 outline: [1, 2]
 order: 5
+description: 'fennecs Queries are fast, reactive views matching Entities by component signature - the basis for Stream Views, bulk CRUD, and Match Expressions.'
 ---
 
 # :neofox_magnify: Queries
@@ -50,7 +51,7 @@ The most powerful feature of Queries is that they provide a [Stream View](../Str
 
 ```cs
 // Update all positions based on velocity
-movers.For((ref Position pos, ref Velocity vel) =>
+movers.For((ref pos, ref vel) =>
 {
     pos.X += vel.X * deltaTime;
     pos.Y += vel.Y * deltaTime;

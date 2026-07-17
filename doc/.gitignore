@@ -165,3 +165,9 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+# generated skill download (built by make-skill-zip.mjs)
+public/downloads/
+
+# generated agent indexes (built by make-llms.mjs)
+public/llms.txt
+public/llms-full.txt

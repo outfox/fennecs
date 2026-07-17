@@ -1,6 +1,7 @@
 ---
 title: Queries as Components
 outline: [2, 3]
+description: Work-in-progress recipe exploring metaprogramming in fennecs by storing Query objects inside components; a placeholder with more content coming soon.
 ---
 
 # Metaprogramming in an ECS?

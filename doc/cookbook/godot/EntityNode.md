@@ -1,6 +1,7 @@
 ---
 title: EntityNode
 outline: [2, 3]
+description: 'Pattern for pairing fennecs entities with Godot nodes: spawn an entity in _EnterTree, expose the node as a component, and despawn on Dispose.'
 ---
 
 # Associating an Entity with a Node

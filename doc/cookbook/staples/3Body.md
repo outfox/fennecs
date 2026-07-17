@@ -2,6 +2,7 @@
 title: 3-Body Problem
 outline: [2, 3]
 order: 2
+description: 'Simulate three gravitating bodies with fennecs entity relations, modeling N:M influence inside cache-friendly query loops without reverse lookups.'
 ---
 
 # 3-Body Problem
@@ -134,8 +135,7 @@ var consolidator = world
 accumulator.Blit(new Force { Value = Vector3.Zero });
 
 // Accumulate gravitational forces between bodies
-accumulator.For(static 
-    (ref Force force, ref Position position, ref Body attractor) =>
+accumulator.For(static (ref force, ref position, ref attractor) =>
     {
         var distanceSquared = Vector3.DistanceSquared(attractor.position, position.Value);
         if (distanceSquared < float.Epsilon) return; // Avoid self-interaction
@@ -145,16 +145,14 @@ accumulator.For(static
     });
 
 // Update velocities and positions based on the accumulated forces
-integrator.For(static 
-    (ref Force force, ref Velocity velocity, ref Position position, float dt) =>
+integrator.For(0.01f, static (dt, ref force, ref velocity, ref position) =>
     {
         velocity.Value += dt * force.Value;
         position.Value += dt * velocity.Value;
-    }, 0.01f);
+    });
 
 // Copy the updated positions back to the Body components
-consolidator.For(static
-    (ref Position position, ref Body body) =>
+consolidator.For(static (ref position, ref body) =>
     {
         body.position = position.Value;
     });

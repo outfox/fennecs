@@ -2,6 +2,7 @@
 title: OOP & Inheritance
 outline: [2, 3]
 order: 4
+description: 'Using inheritance with fennecs components: register one instance under base and derived types to opt into polymorphic queries and shared methods.'
 ---
 
 # Object Oriented Programming

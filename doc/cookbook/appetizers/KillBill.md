@@ -2,7 +2,7 @@
 title: 4. Kill Bill (Relations)
 outline: [2, 3]
 order: 4
-
+description: 'Demonstrates fennecs entity-entity relations: attach relation components between entities, query for them, and clean up grudges in a Stream.For loop.'
 ---
 
 # Paying a Visit to Old Friends

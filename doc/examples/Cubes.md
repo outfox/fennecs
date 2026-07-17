@@ -1,6 +1,7 @@
 ---
 layout: doc
 title: "Demo: Lots of Cubes"
+description: 'fennecs demo walkthrough: simulate masses of cube entities on the CPU and bulk-transfer their transforms into the Godot and Stride renderers.'
 ---
 
 ## Demo: Lots of Cubes

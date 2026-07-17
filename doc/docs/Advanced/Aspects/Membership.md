@@ -2,11 +2,7 @@
 title: Membership
 order: 2
 outline: [1, 2]
-
-head:
-  - - meta
-    - name: description
-      content: How Entities lazily join, leave, and live across fennecs Aspects - spawners, batches, deferred mode, and despawning.
+description: 'How Entities join and leave fennecs Aspects - lazy membership, eviction, the Main Aspect, EntitySpawners, Batches, deferred mode, and despawning.'
 ---
 
 # Membership & Lifecycle

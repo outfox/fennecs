@@ -2,6 +2,7 @@
 title: 6. One Ring (Links)
 outline: [2, 3]
 order: 6
+description: 'Shows fennecs Object Links: spawn ring bearers with an EntitySpawner, link them to a shared object instance, and query all linked entities at once.'
 ---
 
 #  One Ring to Find Them

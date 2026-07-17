@@ -1,6 +1,7 @@
 ---
 title: 🥇For
 order: 1
+description: 'Stream.For runs your delegate for every Entity in a fennecs Query on the calling thread, with ref component parameters, uniforms, and EntityRef access.'
 ---
 
 # FOR: Flexible Query Workloads
@@ -23,7 +24,7 @@ Call a Runner on a Query to have it execute the delegate you're passing in. You 
 ::: code-group
 ```cs [For(...) plain]
 var myStream = world.Stream<Vector3>(); //tip: save this in a field
-myStream.For((ref Vector3 velocity) => 
+myStream.For((ref velocity) => 
 {
     velocity += 9.81f * Vector3.DOWN * Time.deltaTime;
 });
@@ -33,7 +34,7 @@ myStream.For((ref Vector3 velocity) =>
 var myStream = World.Stream<Vector3>();
 myStream.For(
     uniform: 9.81f * Vector3.DOWN * Time.deltaTime,  // pre-calculating gravity
-    action: static (Vector3 Gdt, ref Vector3 velocity) => 
+    action: static (Gdt, ref velocity) => 
     {
         velocity += Gdt; // our uniform can have any parameter name
     }
@@ -42,25 +43,26 @@ myStream.For(
 ```cs [For&lt;U&gt;(...) with uniform tuple]
 var myStream = world.Stream<Vector3>();
 myStream.For(
-    uniform: (9.81f, Vector3.DOWN, Time.deltaTime),
-    action: ((float g, Vector3 dir, float dt) uniform, ref Vector3 velocity) => 
+    uniform: (g: 9.81f, dir: Vector3.DOWN, dt: Time.deltaTime),
+    action: (uniform, ref velocity) => 
     {
         velocity += uniform.g * uniform.dir * uniform.dt;
-    } // not as optimal as precalc, but an example how to submit complex tuples
+    } // named tuple members carry over! not as optimal as precalc,
+      // but an example of how to submit complex tuples
 ); 
 ```
 :::
 
 ### Syntax... with Entity!
 
-Sometimes you need to know about the Entities that you're working on, often to add/remove components (or despawn) them. Each Entity is passed in as the first reference parameter, which must use the `in` keyword.
+Sometimes you need to know about the Entities that you're working on, often to add/remove components (or despawn) them. An `EntityRef` is passed in right before the Component parameters, and must use the `in` keyword. Any structural changes you make through it are deferred until the Runner completes.
 
 ::: code-group
 ```cs [For(...) plain]
 var myStream = world.Stream<Vector3>();
-myStream.For((in Entity entity, ref Vector3 position) => 
+myStream.For((in entity, ref position) => 
 {
-    if (position.y < 0) 
+    if (position.Y < 0) 
     {
         entity.Despawn(); // splat...
     }
@@ -71,9 +73,9 @@ myStream.For((in Entity entity, ref Vector3 position) =>
 var myStream = world.Query<Vector3>().Not<ImpactTime>().Stream();
 myStream.For(
     DateTimeOffset.UtcNow,
-    (DateTimeOffset when, in Entity entity, ref Vector3 velocity) => 
+    (when, in entity, ref position) => 
     {
-        if (position.y < 0) entity.Add<ImpactTime>(when);
+        if (position.Y < 0) entity.Add<ImpactTime>(when);
     }
 ); 
 ```
@@ -82,15 +84,15 @@ myStream.For(
 var myStream = world.Query<Vector3>().Not<ImpactTime>().Stream();
 myStream.For(
     uniform: DateTimeOffset.UtcNow,
-    action: static (DateTimeOffset when, in Entity entity, ref Vector3 velocity) => 
+    action: static (when, in entity, ref position) => 
     {
-        if (position.y < 0) entity.Add<ImpactTime>(when);
+        if (position.Y < 0) entity.Add<ImpactTime>(when);
     }
 ); 
 ```
 
 ## Description
-Calls a [`ComponentAction`](Delegates.md#ComponentAction-and-UniformComponentAction) or  [`EntityComponentAction`](Delegates.md#entitycomponentaction-and-entityuniformcomponentaction) delegate for each Entity in the Query, providing the Components that match the ==Stream Types== as `ref` parameters, and the Entity itself as an `in` parameter.
+Calls a [`ComponentAction`](Delegates.md#ComponentAction-and-UniformComponentAction) or  [`EntityComponentAction`](Delegates.md#entitycomponentaction-and-uniformentitycomponentaction) delegate for each Entity in the Query, providing the Components that match the ==Stream Types== as `ref` parameters, and an `EntityRef` as an `in` parameter.
 
 > "**For**" is always there "**For U**"... and _gets it done_ in a quick, predictable, reliable way.  Chances are you can ship your entire game with just this one. Let us know how it went!
 ::: tip :neofox_glasses::neofox_glasses: DOUBLE SUPERNERD PRO TIP
@@ -114,7 +116,7 @@ Want more nuance? `ComponentActions` can be passed to runners in several ways. C
 ```cs [🆗 lambda/delegate]
 // The classic. Fast to write, fast to execute. Easy!
 // 💩 Allocates memory for closure on each call!
-myStream.For((ref Vector3 thrust, ref Vector3 velocity) => 
+myStream.For((ref thrust, ref velocity) => 
 {
     velocity += thrust * Time.deltaTime;
 });
@@ -124,7 +126,7 @@ myStream.For((ref Vector3 thrust, ref Vector3 velocity) =>
 myStream.For(delegate (ref Vector3 thrust, ref Vector3 velocity) 
 {
     velocity += thrust * Time.deltaTime;
-});
+}); // (anonymous delegates always need their parameter types spelled out)
 ```
 
 ```cs [🥇 static method]
@@ -137,7 +139,7 @@ myStream.For(Physics.ApplyThrust);
 ```cs [🥈 static lambda/delegate]
 // Fast, very flexible. Use For<U>+uniform delegate to "capture" values.
 // ✅ No additional memory allocation! A bit meh to log/debug.
-myStream.For(static (ref Vector3 thrust, ref Vector3 velocity) =>
+myStream.For(static (ref thrust, ref velocity) =>
 {
     velocity += thrust * Time.deltaTime;
 });
@@ -175,10 +177,10 @@ But amazingly, a **Uniform** can be anything: a primitive type like `int`, a `st
 
 ::: tip REMINDER - What was that again?
 ```cs
-// Declaring a uniform as a System.ValueTuple for the win!
+// Declaring a uniform as a named System.ValueTuple for the win!
 myStream.For(
-    uniform: (Vector3.DOWN, Time.deltaTime),
-    static ((Vector3 gravity, float dt) uniform, ref Vector3 velocity) =>
+    uniform: (gravity: Vector3.DOWN, dt: Time.deltaTime),
+    static (uniform, ref velocity) =>
     {
         velocity += uniform.gravity * uniform.dt;
     }); 

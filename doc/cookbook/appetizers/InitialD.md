@@ -2,6 +2,7 @@
 title: 2. Initial D (Components)
 outline: [2, 3]
 order: 2
+description: Build a drift car from plain entities and components, learning tag components and bulk add, remove, and query operations in fennecs.
 ---
 
 # Revving up a Sleeper

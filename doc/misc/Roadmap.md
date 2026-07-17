@@ -1,6 +1,7 @@
 ---
 title: Roadmap
 order: 3
+description: Planned features and milestones for the fennecs Entity-Component System, from Aspects and the unified entity refactor to SIMD math and a benchmark suite.
 ---
 
 ![a stylized fennec fox looking at an endless horizon](/img/fennec-roadmap.png)

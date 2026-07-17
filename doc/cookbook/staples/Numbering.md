@@ -2,6 +2,7 @@
 title: 1,2,3 Numbering Entities
 outline: [2, 3]
 order: 1
+description: Five ways to assign contiguous index numbers to entities in fennecs, comparing enumerator uniforms, closures, concurrent queues, and Raw spans.
 ---
 
 # Numbering Entities (with an Index)
@@ -52,7 +53,7 @@ var stream = world.Stream<Index>();
 // This is the cleanest way and overall has good characteristics.
 stream.For(
     uniform: Index.Ascending(from: 0),
-    action: static (IEnumerator<Index> enumerator, ref Index index) =>
+    action: static (enumerator, ref index) =>
     {
         enumerator.MoveNext();
         index = enumerator.Current;
@@ -66,7 +67,7 @@ stream.For(
 ```csharp [Closure]
 // This is the shortest way. It's so simple that we can't help but love it.
 var i = 0; 
-stream.For((ref Index index) => index = new(i++));
+stream.For((ref index) => index = new(i++));
 
 // Not only that, but YOU actually clicked here to read further. 
 // You earned this. 🦊
@@ -83,7 +84,7 @@ using var range =
 
 stream.For(
     uniform: range,
-    action: static (IEnumerator<Index> enumerator, ref Index index) =>
+    action: static (enumerator, ref index) =>
     {
         enumerator.MoveNext();
         index = enumerator.Current;
@@ -96,7 +97,7 @@ stream.For(
 var queue = new ConcurrentQueue<Index>(Enumerable.Range(0, stream.Count)
     .Select(i => new Index(i)));
 
-stream.Job((ref Index index) => queue.TryDequeue(index));
+stream.Job((ref index) => queue.TryDequeue(out index));
 
 // Queue could also be passed as uniform. It's so chunky as a
 // data object that it does not matter at all. 

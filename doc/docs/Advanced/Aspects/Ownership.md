@@ -2,11 +2,7 @@
 title: Ownership
 order: 1
 outline: [1, 2]
-
-head:
-  - - meta
-    - name: description
-      content: Declaring component ownership with Aspect.Owns, strict mode, and the freeze-at-first-use rule.
+description: 'Declaring component ownership in fennecs with Aspect.Owns, the StrictAspects mode, and the freeze-at-first-use rule for component storage routing.'
 ---
 
 # Ownership & Registration
@@ -85,7 +81,7 @@ For those who like their storage layout *load-bearing*, `StrictAspects` turns im
 using var world = new World { StrictAspects = true };
 world.AddAspect("game").Owns<CrewData>();
 
-var entity = world.Spawn();     // fine - Identity is always exempt
+var entity = world.Spawn();     // fine - the entity column is always exempt
 entity.Add(new CrewData(5));    // fine - registered
 
 entity.Add(new Position(1, 2)); // 💥 InvalidOperationException:
@@ -97,13 +93,16 @@ entity.Add(new Position(1, 2)); // 💥 InvalidOperationException:
 Strict mode is a great safety net for larger projects: a typo'd or forgotten registration fails *loudly at the first `Add`*, instead of silently fragmenting `Main` and showing up months later in a profiler trace at 2am.
 :::
 
-## The Identity Exception
+## The Entity Exception
 
-The built-in `Identity` component lives in **every** Aspect (it's how each Aspect tracks its members), so no single Aspect may own it  –  `Owns<Identity>()` throws. It's also why plain `Spawn()` and `Has<Identity>()` work even in strict mode: Identity is always exempt from registration.
+The entity column lives in **every** Aspect (it's how each Aspect tracks its members), so no single Aspect may own it  –  `Owns<Entity>()` throws:
 
-::: details :neofox_magnify: BEHIND THE SCENES  –  a fox with two passports
-`Identity` is special enough to carry **two** TypeIDs: a *reserved* one used in expressions, and a *registry-assigned* one from the global type registry. That's why ownership registration guards against it by `Type` rather than by TypeID  –  and why every spot that resolves a Query to its Aspect deliberately skips Identity, so it never drags a Query toward any particular Aspect.
-:::
+```plaintext
+InvalidOperationException: The entity column is present in every Aspect
+and cannot be owned by one.
+```
+
+It's also why plain `Spawn()` works even in strict mode: the entity column is always exempt from registration, and every spot that resolves a Query to its Aspect deliberately skips it, so it never drags a Query toward any particular Aspect.
 
 ## Where to next?
 

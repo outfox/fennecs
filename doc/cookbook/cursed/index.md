@@ -1,11 +1,7 @@
 ---
 title: Cursed Meals
 order: 9
-
-head:
-  - - meta
-    - name: description
-      content: Performance hexes, haunted benchmarks, and other kitchen nightmares - debugging war stories from the fennecs den.
+description: Performance hexes, haunted benchmarks, and other kitchen nightmares - debugging war stories from the fennecs den.
 ---
 
 # Cursed Meals
@@ -14,7 +10,9 @@ head:
 
 ## NOT FOR HUMAN CONSUMPTION
 
-### [Microcode](Microcode.md) and Subnormal numbers.
+These are **BAD EXAMPLES** and their back stories. Learn from our mistakes, but don't repeat them.
+
+### [Microcode](Microcode.md) and Subnormal numbers
 
 A routine benchmark that got 3× slower, but only when it ran more than 12000 iterations. A ghost story about very, very small numbers.
 

@@ -2,6 +2,7 @@
 title: Despawn
 order: 2
 outline: [1, 2]
+description: 'Despawning entities in fennecs with Entity.Despawn - component cleanup, automatic relation removal, identity recycling, and deferred despawns in runners.'
 ---
 
 # Despawning Entities :neofox_x_x:
@@ -83,7 +84,7 @@ foreach (var entity in deadQuery)
 // Inside a Stream runner, despawns are deferred
 var stream = world.Query<Health>().Stream();
 
-stream.For((Entity entity, ref Health health) =>
+stream.For((in entity, ref health) =>
 {
     if (health.Value <= 0)
     {
@@ -98,7 +99,7 @@ stream.For((Entity entity, ref Health health) =>
 When you're inside a [Stream](/docs/Streams/) runner (like `For`, `Job`, or `Raw`), despawns are **deferred** until the runner completes. This is important!
 
 ```cs
-stream.For((Entity entity, ref Health health) =>
+stream.For((in entity, ref health) =>
 {
     entity.Despawn();
     

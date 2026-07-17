@@ -1,6 +1,7 @@
 ---
 layout: doc
 title: "Demo: N-Body Problem"
+description: 'fennecs demo walkthrough: an N-body gravity simulation built with entity-entity relations, shown running in the Godot engine with a concise update loop.'
 
 ---
 

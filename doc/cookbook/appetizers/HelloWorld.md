@@ -1,10 +1,7 @@
 ---
 title: 0. Hello! (Basics)
 order: 0
-head:
-  - - meta
-    - name: description 
-      content: Beginner Cookbook for fennecs, the tiny, tiny, high-energy Entity-Component System
+description: 'Hello World in fennecs: define components, spawn entities in a World, and build Stream queries with Has and Not filters to greet matching entities.'
 ---
 
 # Say hello to **fenn**ecs!
@@ -69,7 +66,7 @@ var noHumans = world.Query<Name>()
     .Not<Human>()
     .Stream();
 
-noHumans.For(static (ref Name name) =>
+noHumans.For(static (ref name) =>
 {
     Console.WriteLine($"Hello, {name}!");
 });
@@ -82,7 +79,7 @@ var onlyFennecs = world.Query<Name>()
     .Has<Fennec>()
     .Stream();
 
-onlyFennecs.For(static (ref Name name) =>
+onlyFennecs.For(static (ref name) =>
 {
     Console.WriteLine($"Hello, {name}!");
 });

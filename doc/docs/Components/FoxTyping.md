@@ -2,6 +2,7 @@
 title: Fox Typing
 order: 15
 outline: [1, 2]
+description: 'Best practices for designing fennecs components in C# - record structs, type wrapping to avoid ambiguous data, and implicit conversion operators.'
 ---
 
 # Fox Typing :neofox_hug_duck_heart:

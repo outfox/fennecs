@@ -1,7 +1,7 @@
 ---
 title: Job
 order: 2
-
+description: 'Stream.Job executes a ComponentAction across CPU cores in parallel chunks - the multithreaded counterpart to Stream.For in the fennecs ECS.'
 ---
 # JOB: Parallel Query Workloads
 ::: info ENTITY BY ENTITY, ONE BY ONE (IN PARALLEL!)
@@ -21,7 +21,7 @@ The nice part is, you can easily swap out `Stream.Job` for `Stream.For` and vice
 ::: code-group
 
 ```cs [Job(...) plain]
-myStream.Job((ref Vector3 velocity) => 
+myStream.Job((ref velocity) => 
 {
     velocity += 9.81f * Vector3.DOWN * Time.deltaTime;
 });
@@ -30,7 +30,7 @@ myStream.Job((ref Vector3 velocity) =>
 ```cs [Job&lt;U&gt;(...) with uniform float]
 myStream.Job(
     uniform: 9.81f * Vector3.DOWN * Time.deltaTime,  // pre-calculating gravity
-    action: static (Vector3 Gdt, ref Vector3 velocity) => 
+    action: static (Gdt, ref velocity) => 
     {
         velocity += Gdt; // our uniform can have any parameter name
     }
@@ -38,8 +38,8 @@ myStream.Job(
 ```
 ```cs [Job&lt;U&gt;(...) with uniform tuple]
 myStream.Job(
-    uniform: (9.81f, Vector3.DOWN, Time.deltaTime),
-    action: ((float g, Vector3 dir, float dt) uniform, ref Vector3 velocity) => 
+    uniform: (g: 9.81f, dir: Vector3.DOWN, dt: Time.deltaTime),
+    action: static (uniform, ref velocity) => 
     {
         velocity += uniform.g * uniform.dir * uniform.dt;
     } // not as optimal as precalc, but an example how to submit complex tuples

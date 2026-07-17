@@ -9,6 +9,13 @@ const vitePressConfigs : UserConfig = {
   title: "fennecs.NET",
   description: "tiny C# ECS",
 
+  // the agent skill sources are downloadables (see make-skill-zip.mjs), not pages
+  srcExclude: ['skills/**'],
+
+  sitemap: {
+    hostname: 'https://fennecs.net'
+  },
+
   head: [
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
@@ -63,7 +70,7 @@ const vitePressConfigs : UserConfig = {
     ],
 
     footer: {
-      message: '<a href="https://github.com/outfox/fennecs/?tab=MIT-1-ov-file#readme"><b>fenn</b>ecs</a> is released under the MIT License. <a href="https://volpeon.ink/emojis/neofox/">Neofox</a> is released under the CC BY-NC-SA 4.0 License.',
+      message: '<a href="https://github.com/outfox/fennecs/?tab=MIT-1-ov-file#readme"><b>fenn</b>ecs</a> is released under the MIT License. <a href="https://volpeon.ink/emojis/neofox/">Neofox</a> is released under the CC BY-NC-SA 4.0 License.<br/>🤖 Agents: <a href="/llms.txt">llms.txt</a> · <a href="/downloads/fennecs-skill.zip">fennecs skill (zip)</a> · <a href="/cookbook/mise-en-place/Agents.html">install guide</a>',
       copyright: '<b>fenn</b>ecs is made with love & foxes, copyright © 2025 <a href="https://github.com/outfox/fennecs/graphs/contributors"> its contributors</a>'
     },
   }
@@ -103,7 +110,7 @@ const sidebarConfigs = {
   // folderLinkNotIncludesFileName: false,
   //
   // ============ [ INCLUDE / EXCLUDE ] ============
-  excludeByGlobPattern: ['README.md'],
+  excludeByGlobPattern: ['README.md', 'skills/**'],
   // excludeFilesByFrontmatterFieldName: 'exclude',
   // excludeByFolderDepth: undefined,
   // includeDotFiles: false,

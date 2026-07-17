@@ -2,11 +2,7 @@
 title: Queries & Streams
 order: 3
 outline: [1, 2]
-
-head:
-  - - meta
-    - name: description
-      content: Querying and streaming fennecs Aspects - the single-Aspect rule, crossing Aspects with Ref, and the shared query cache.
+description: 'Querying fennecs Aspects: the single-Aspect rule for Queries and Streams, crossing Aspects with entity.Ref, and the shared per-Aspect query cache.'
 ---
 
 # Queries & Streams

@@ -2,6 +2,7 @@
 title: 🌈 Streams
 outline: [1, 3]
 order: 5
+description: 'Stream Views are lightweight typed views over fennecs Queries, exposing the For, Job, and Raw runners for fast component iteration and processing.'
 ---
 
 # Stream Views

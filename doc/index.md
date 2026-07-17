@@ -4,6 +4,7 @@ title: fennecs
 titleTemplate: :title  –  tiny ECS
 menu: Home
 order: 9000
+description: fennecs is a tiny, fast, free Entity-Component System for C# and .NET games and simulations, with zero dependencies and zero code generation.
 
 hero:
   image: 
@@ -35,12 +36,6 @@ features:
 
 head:
   - - meta
-    - name: title
-      content: fennecs  –  tiny ECS
-  - - meta
-    - name: description
-      content: A free, fast, foxy C# Entity-Component System for games and simulations!
-  - - meta
     - property: og:type
       content: website
   - - meta
@@ -60,7 +55,7 @@ head:
 ## Ok, what the fox? *Another ECS?!*
 
 ::: info :neofox_facepalm: We know... oh, *we know.*
-**fenn**ecs is an ECS for .NET 8/9/10 with zero codegen, zero dependencies, and the lowest boilerplate in its class.  
+**fenn**ecs is an ECS for .NET 10+ with zero codegen, zero dependencies, and the lowest boilerplate in its class. *(best served with C# 14!)*  
 
 Relations, SIMD-ready streams, and wildcard queries - all in a tiny package.
 :::

@@ -1,11 +1,6 @@
 ---
 title: Godot Cuisine
-
-head:
-  - - meta
-    - name: fennecs - Godot Recipes
-      content: Cool snippets of stuff that fennecs does really well!
-
+description: 'Landing page for Godot-specific fennecs recipes: patterns for combining the ECS with Godot''s scene tree, starting with entity-node association.'
 ---
 
 # Godot Recipes

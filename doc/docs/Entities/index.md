@@ -3,6 +3,7 @@ layout: doc
 title: Entities
 order: 3
 outline: [1, 2]
+description: 'Entities in fennecs are lightweight 64-bit handles you attach components to - covering lifecycle, composition, Archetypes, and per-Entity CRUD.'
 ---
 
 # Entities
@@ -97,14 +98,14 @@ When an entity is despawned, all its components are removed. The entity handle b
 ## Internals
 
 ::: details :neofox_magnify: Tidbits for the Curious
-The defining property of an entity is its `Identity` – a 64-bit value combining an index and a generation counter. Paired with a specific [World](/docs/World.md), this gives us a unique handle to operate on.
+The `Entity` itself *is* its identity – a single 64-bit value combining a 32-bit index, a 16-bit generation counter, and a tag identifying the [World](/docs/World.md) it belongs to. This gives us a unique, self-contained handle to operate on.
 
-A dead Entity doesn't exist in any World – it's just stale data with a leftover `Identity` whose successor was already returned to the internal `IdentityPool`.
+A dead Entity doesn't exist in any World – it's just a stale handle whose slot was already returned to the internal `EntityPool`.
 
 Living Entities occupy a slot in the world's storage structure:
 
 - A `Meta` entry in the world's Meta-Set (tracking archetype membership)
-- A row in their current Archetype's storage (`Storage<Identity>`)
+- A row in their current Archetype's storage (the entity column)
 
-The generation counter ensures that even recycled entity slots produce unique identities, preventing accidental access to "wrong" entities.
+The generation counter ensures that even recycled entity slots produce unique handles, preventing accidental access to "wrong" entities.
 :::

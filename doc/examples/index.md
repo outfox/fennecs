@@ -1,12 +1,7 @@
 ---
 layout: doc
 title: Examples
-
-head:
-  - - meta
-    - name: description
-      content: Real-World Demos for fennecs, the tiny, tiny, high-energy Entity-Component System
-
+description: 'Gallery of fennecs example projects: the Cubes and N-Body demos integrated with game engines like Godot and Stride, with videos and source links.'
 ---
 
 # In-Engine Examples

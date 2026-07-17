@@ -1,10 +1,6 @@
 ---
 title: Appetizers
-
-head:
-  - - meta
-    - name: description
-      content: Appetizers, goofy recipes to get new developers an overview over the features of the **fenn**ecs!
+description: 'Overview of the fennecs appetizer recipes: short runnable C# examples that tour entities, components, queries, relations, links, and stream filters.'
 ---
 
 # How to cook a fox.

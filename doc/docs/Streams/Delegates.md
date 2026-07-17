@@ -1,6 +1,7 @@
 ---
 title: Delegates 
 order: 5
+description: 'Delegate signatures for fennecs Stream runners - ComponentAction, EntityComponentAction, and MemoryAction, with uniform variants for passing data in.'
 ---
 # Delegates
 Runner methods on Steam Queries expect delegates (Actions) to call. The delegate signatures mirror the count and order of the Query's Stream Types.
@@ -27,24 +28,26 @@ delegate void UniformComponentAction<in U, C0, C1, C2, C3, C4>(U uniform, ref C0
 :::
 
 
-## `EntityComponentAction<>` and `EntityUniformComponentAction<>`
-These are invokable through [`Stream<>.For`](Stream.For.md). In addition to the Components and optional Uniform, they also receive the Entity that can be used to interact structurally with an Entity right then and there.
+## `EntityComponentAction<>` and `UniformEntityComponentAction<>`
+These are invokable through [`Stream<>.For`](Stream.For.md). In addition to the Components and optional Uniform, they also receive an `EntityRef` that can be used to interact structurally with the Entity right then and there (structural changes are deferred until the Runner completes).
+
+`EntityRef` is a `ref struct` and cannot leave the delegate's scope  –  to keep a handle around, store its `Entity` property (or rely on the implicit conversion to `Entity`).
 
 ::: code-group
 ```cs [basic]
-delegate void EntityComponentAction<C0>(in Entity entity, ref C0 comp0);
-delegate void EntityComponentAction<C0, C1>(in Entity entity, ref C0 comp0, ref C1 comp1);
-delegate void EntityComponentAction<C0, C1, C2>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
-delegate void EntityComponentAction<C0, C1, C2, C3>(in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3); 
-delegate void EntityComponentAction<C0, C1, C2, C3, C4>(in in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
+delegate void EntityComponentAction<C0>(in EntityRef entity, ref C0 comp0);
+delegate void EntityComponentAction<C0, C1>(in EntityRef entity, ref C0 comp0, ref C1 comp1);
+delegate void EntityComponentAction<C0, C1, C2>(in EntityRef entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
+delegate void EntityComponentAction<C0, C1, C2, C3>(in EntityRef entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3); 
+delegate void EntityComponentAction<C0, C1, C2, C3, C4>(in EntityRef entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 ```
 
 ```cs [with uniform]
-delegate void UniformEntityComponentAction<in U, C0>(U uniform, in Entity entity, ref C0 comp0);
-delegate void UniformEntityComponentAction<in U, C0, C1>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1);
-delegate void UniformEntityComponentAction<in U, C0, C1, C2>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
-delegate void UniformEntityComponentAction<in U, C0, C1, C2, C3>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
-delegate void UniformEntityComponentAction<in U, C0, C1, C2, C3, C4>(U uniform, in Entity entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
+delegate void UniformEntityComponentAction<in U, C0>(U uniform, in EntityRef entity, ref C0 comp0);
+delegate void UniformEntityComponentAction<in U, C0, C1>(U uniform, in EntityRef entity, ref C0 comp0, ref C1 comp1);
+delegate void UniformEntityComponentAction<in U, C0, C1, C2>(U uniform, in EntityRef entity, ref C0 comp0, ref C1 comp1, ref C2 comp2);
+delegate void UniformEntityComponentAction<in U, C0, C1, C2, C3>(U uniform, in EntityRef entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3);
+delegate void UniformEntityComponentAction<in U, C0, C1, C2, C3, C4>(U uniform, in EntityRef entity, ref C0 comp0, ref C1 comp1, ref C2 comp2, ref C3 comp3, ref C4 comp4);
 ```
 :::
 

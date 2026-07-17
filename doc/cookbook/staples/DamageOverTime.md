@@ -2,6 +2,7 @@
 title: Damage over Time
 outline: [2, 3]
 order: 3
+description: Implement damage over time in fennecs by passing a scaled uniform into Stream.For and despawning entities whose health reaches zero.
 ---
 
 # Turns out, Vampires aren't Survivors?!
@@ -48,11 +49,11 @@ Now, let's create a query that applies damage to all vampires based on the sunli
 var sunIntensity = 10.0f;
 var vampireHealth = world.Query<Health>().Has<Vampirism>().Stream();
 
-// We use an EntityAction to apply the damage and also queue the
-// structural change - in this case, full despawn of the Vampire
+// We use an EntityComponentAction to apply the damage and also queue
+// the structural change - in this case, full despawn of the Vampire
 vampireHealth.For(
-    uniform: Time.deltaTime * sunIntensity
-    static (float sunBurn, Entity vampire, ref Health health) => 
+    uniform: Time.deltaTime * sunIntensity,
+    action: static (sunBurn, in vampire, ref health) => 
     {   
         health.Value -= sunBurn;
         if (health.Value <= 0) vampire.Despawn();

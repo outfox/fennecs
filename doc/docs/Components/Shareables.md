@@ -2,6 +2,7 @@
 title: Shareables
 order: 9
 outline: [1, 2]
+description: 'Shareable components in fennecs use reference types so many entities point at one instance - ideal for shared state, configs, and heavyweight objects.'
 ---
 
 # Shareable Components :neofox_hug_duck_heart:
@@ -86,7 +87,7 @@ var stream = world.Query<SharedData>().Stream();
 var sharedData = new SharedData(42);
 world.Entity().Add(sharedData).Spawn(5); // 5 entities share this
 
-stream.For((ref SharedData data) =>
+stream.For((ref data) =>
 {
     data.Value++;  // Increments once per entity!
     Console.WriteLine(data.ToString());
@@ -95,7 +96,7 @@ stream.For((ref SharedData data) =>
 sharedData.Value++;  // Increment outside of runner
 Console.WriteLine();
 
-stream.For((ref SharedData data) =>
+stream.For((ref data) =>
 {
     Console.WriteLine(data.ToString());
 });
@@ -167,7 +168,7 @@ Queries that include reference components in their Stream Types will have slight
 
 ```cs
 // Slower: iterating through shared references
-stream.For((ref SharedData data) => { ... });
+stream.For((ref data) => { ... });
 
 // Not affected: SharedData not in stream types
 var stream = world.Query<Position>()

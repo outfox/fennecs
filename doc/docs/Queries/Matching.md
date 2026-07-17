@@ -3,6 +3,7 @@ title: Matching
 layout: doc
 outline: [1, 2]
 order: 1
+description: 'Match Expressions define what a fennecs Query contains - Has, Not, Any clauses and target wildcards like Match.Plain (the default) and Match.Entity.'
 ---
 
 # :neofox_snug_glare: Matching
@@ -18,8 +19,8 @@ Match Expressions define which Entities your Query contains  –  by the Compone
 | `Has<C>()` | Include only Entities that have component C |
 | `Not<C>()` | Exclude Entities that have component C |
 | `Any<C>()` | Match Entities with at least one of the Any components |
-| `Match.Plain` | Match only plain components (no relations) |
-| `Match.Any` | Match any target (default for Stream Types) |
+| `Match.Plain` | Match only plain components (no relations) *(the default)* |
+| `Match.Any` | Match any target, including plain |
 | `Match.Target` | Match any actual target (Object or Entity) |
 | `Match.Object` | Match only Object Links |
 | `Match.Entity` | Match only Entity Relations |
@@ -61,7 +62,7 @@ A match expression combines a `Match Type` and a `Target` (or `Identity`). Any n
 This query is a party invitation! It includes each entity with a Name and PlayList component, but then gets picky:
 
 ```cs
-var partyGoers = world.Query<Name, PlayList>() // "()" means Match.Any
+var partyGoers = world.Query<Name, PlayList>() // "()" means Match.Plain
     .Has<Fox>()                    // must be a fox
     .Has<Friendship>(you)          // has friendship relation to "you"
     .Has<Friendship>(me)           // and to "me"
@@ -69,12 +70,15 @@ var partyGoers = world.Query<Name, PlayList>() // "()" means Match.Any
     .Any<Pet>()                    // has either a pet...
     .Any<Plush>()                  // ...or a plush
     .Has<Pizza>()                  // has pizza
-    .Not<Likes>(Identity.Of("pineapple"))  // doesn't like pineapple
+    .Not<Likes>(pineapple)         // no Likes relation to the pineapple Entity
     .Stream();
 
-// Last minute additions via filters!
-partyGoers.Subset<Vaccinated>(Match.Plain);
-partyGoers.Exclude<Sick>();
+// Last minute additions via stream filters!
+partyGoers = partyGoers with
+{
+    Subset = [Comp<Vaccinated>.Plain],
+    Exclude = [Comp<Sick>.Plain],
+};
 
 partyGoers.For((ref name, ref playlist) =>
 {
@@ -116,7 +120,7 @@ Technically, these are methods on `QueryBuilder<>` instances. In practice, you a
 
 ## Match Targets
 
-Stream Types and Match Expressions can both specify targets. `world.Query<ST1, ST2>()` is equivalent to `world.Query<ST1, ST2>(Match.Any, Match.Any)`.
+Stream Types and Match Expressions can both specify targets. `world.Query<ST1, ST2>()` is equivalent to `world.Query<ST1, ST2>(Match.Plain, Match.Plain)` — to match Relations or Object Links, say so explicitly.
 
 ::: tip :neofox_solder: THIS IS OUR MAIN TOOL
 In ECS, the presence of a component often carries meaning in itself. Queries expose powerful, performant matching based on such presence.
@@ -126,8 +130,8 @@ In ECS, the presence of a component often carries meaning in itself. Queries exp
 
 | Wildcard | Matches |
 |----------|--------|
-| `Match.Any` | Any target, including plain *(default for Stream Types)* |
-| `Match.Plain` | Only plain components (no relations) |
+| `Match.Plain` | Only plain components (no relations) *(default for Stream Types)* |
+| `Match.Any` | Any target, including plain |
 | `Match.Target` | Any actual target (Object or Entity, not Plain) |
 | `Match.Object` | Only Object Links |
 | `Match.Entity` | Only Entity Relations |
@@ -181,7 +185,9 @@ var friendsInNeed = world.Query<Friend>()
 :::
 
 ::: tip :neofox_thumbsup: USE FILTERS INSTEAD!
-Filters have similar performance but can be dynamically reconfigured:
+Filters have similar performance but can be reconfigured on the fly. Streams
+are lightweight value types  –  `with` creates a filtered view, and the
+original stream stays around, unfiltered:
 
 ```cs
 var friendsInNeed = world.Query<Friend>()
@@ -189,12 +195,14 @@ var friendsInNeed = world.Query<Friend>()
     .Stream();
 
 // Dynamic filtering!
-friendsInNeed.Subset<Owes>(bob);
-friendsInNeed.Exclude<Owes>(me);
-friendsInNeed.For(PayOffDebt);
+var owingBobNotMe = friendsInNeed with
+{
+    Subset = [Comp<Owes>.Matching(bob)],
+    Exclude = [Comp<Owes>.Matching(me)],
+};
+owingBobNotMe.For(PayOffDebt);
 
-// Reconfigure when needed
-friendsInNeed.ClearFilters();
+// Reconfigure when needed - just make another filtered view!
 ```
 :::
 

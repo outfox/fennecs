@@ -2,6 +2,7 @@
 title: 3. Tsubasa (Runners)
 outline: [2, 3]
 order: 3
+description: 'A soccer mini-game showing fennecs runners: read one entity''s position each frame and pass it as a uniform so every player entity can chase the ball.'
 ---
 
 # Nankatsu High School Team's first Practice

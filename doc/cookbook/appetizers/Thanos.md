@@ -2,6 +2,7 @@
 title: 5. Thanos (Filters)
 outline: [2, 3]
 order: 5
+description: Teaches fennecs query filtering with Subset and Exclude, then uses Stream.Despawn to bulk-remove half the entity population in one call.
 ---
 
 # How to Snap ~25% of the World away

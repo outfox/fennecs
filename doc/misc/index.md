@@ -1,5 +1,6 @@
 ---
 title: Misc, etm.
+description: Landing page for the miscellaneous section of the fennecs docs, which collects the changelog, glossary, roadmap, and acknowledgements.
 ---
 
 ![stylized fennec fox spraying "using fennecs;" against an industrial wall](/img/fennec-using-fennecs.png)

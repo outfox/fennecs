@@ -3,6 +3,7 @@ title: Filtering
 layout: doc
 outline: [2, 3]
 order: 8
+description: 'Stream filters in fennecs narrow a Query on the fly - clone a Stream with a with-expression and set its Subset and Exclude component sets.'
 ---
 
 # Filters
@@ -25,8 +26,8 @@ var stream = world.Stream<Position, Velocity>();
 
 var filteredStream = stream with 
 {
-    Subset = [ Component.PlainComponent<Alive>() ], // collection initializer
-    Exclude = [ Link.With(TheOneRing) ] // (the collections are immutable sets)
+    Subset = [ Comp<Alive>.Plain ], // collection initializer
+    Exclude = [ Comp<OneRing>.Matching(TheOneRing) ] // (the collections are immutable sets)
 };
 ```
 
@@ -49,11 +50,11 @@ var stream = world.Stream<Position, Velocity>();
 var filteredStream = stream with 
 {
     Subset = otherFilter.Subset
-        .Add(Component.PlainComponent<Alive>())
-        .Remove(Component.PlainComponent<Dead>()),
-    Exclude = otherFilter.Subset.Union([Component.AnyRelation<Owes>()]),
+        .Add(Comp<Alive>.Plain)
+        .Remove(Comp<Dead>.Plain),
+    Exclude = otherFilter.Exclude.Union([(Comp) Comp<Owes>.Matching(Match.Entity)]),
 };
 ```
 
 ## Future Features
-The `Component` utility class to create the necessary filter expressions is likely to have its API reviewed and tightened, to make the syntax more readable and easier to use. It might get unified into a Mask-like system as used internally to power QueryBuilders.
+The `Comp<T>` expression API used to create the necessary filter expressions is likely to have its API reviewed and tightened, to make the syntax more readable and easier to use. It might get unified into a Mask-like system as used internally to power QueryBuilders.

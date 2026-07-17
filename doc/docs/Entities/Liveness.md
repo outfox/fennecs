@@ -3,6 +3,7 @@ title: Liveness
 layout: doc
 order: 8
 outline: [1, 2]
+description: 'Entity.Alive tells you whether a fennecs entity still exists - generational identity recycling, implicit bool conversion, and deferred despawn behavior.'
 ---
 
 # Entity Liveness :neofox_comfy:
@@ -26,13 +27,13 @@ Console.WriteLine(fox.Alive);  // false
 ::: code-group
 ```cs [Code]
 var entity = world.Spawn();
-if (entity.Alive) Console.WriteLine(entity);
+Console.WriteLine($"{entity} alive: {entity.Alive}");
 entity.Despawn();
-if (!entity.Alive) Console.WriteLine(entity);
+Console.WriteLine($"{entity} alive: {entity.Alive}");
 ```
 ```plaintext [Output]
-E-00000001:00001 <fennecs.Identity>
-E-00000001:00001 -DEAD-
+E-00000001:00001 alive: True
+E-00000001:00001 alive: False
 ```
 :::
 
@@ -88,7 +89,7 @@ When inside a [Stream](/docs/Streams/) runner or while holding a World lock, str
 ```cs
 var stream = world.Query<Health>().Stream();
 
-stream.For((Entity entity, ref Health health) =>
+stream.For((in entity, ref health) =>
 {
     entity.Despawn();
     

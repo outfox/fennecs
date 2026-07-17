@@ -2,6 +2,7 @@
 title: Bulk CRUD
 outline: [1, 2]
 order: 3
+description: 'Bulk CRUD on fennecs Queries - Add, Remove, Despawn, and Truncate across all matched Entities, plus Batch operations with conflict strategies.'
 ---
 
 # :neofox_hyper: Bulk CRUD
@@ -25,10 +26,10 @@ order: 3
 ::: code-group
 ```cs [Damage System]
 // Query for all entities with Health that also took Damage
-var whoTookDamage = world.Query<Health, Damage, Identity>().Stream();
+var whoTookDamage = world.Query<Health, Damage>().Stream();
 
 // Do something for each Entity in Query
-whoTookDamage.For((in Entity entity, ref Health health, ref Damage damage) => 
+whoTookDamage.For((in entity, ref health, ref damage) => 
 {
     health.hp -= damage.amount;
     if (health.hp < 0) entity.Add<Exploding>();
@@ -43,7 +44,7 @@ whoTookDamage.Remove<Damage>();
 var whosExplodingWhere = world.Query<Position>().Has<Exploding>().Stream();
 
 // Do something for each Entity in Query
-whosExplodingWhere.For((ref Position position) => Game.SpawnExplosion(position));
+whosExplodingWhere.For((ref position) => Game.SpawnExplosion(position));
 
 // 👇 Despawn all Entities matched by Query
 whosExplodingWhere.Despawn();
@@ -79,14 +80,19 @@ These safety checks prevent silent no-ops. If you're adding a component the Quer
 
 ## Adding Links & Relations
 
-Object Links and Entity Relations can also be added/removed in bulk using the same pattern:
+Object Links and Entity Relations can also be added/removed in bulk  –  via a
+[Batch](#batch-operations), which offers the same `Add`/`Remove` surface as an
+individual `Entity`:
 
 ```cs
 // Add an object link to all matched entities
-query.Add(Link.With(sharedTexture));
+query.Batch().Add(Link.With(sharedTexture)).Submit();
 
-// Add a relation to all matched entities  
-query.Add(Relate.To(targetEntity));
+// Add a relation (with backing data) to all matched entities
+query.Batch().Add(new Attacking(damage), targetEntity).Submit();
+
+// Remove a relation from all matched entities
+query.Batch().Remove<Attacking>(targetEntity).Submit();
 ```
 
 ## Batch Operations
@@ -115,26 +121,26 @@ Batch operations can encounter semantic conflicts when adding/removing component
 | `Add<T>` conflict | Some or all Entities already have that component |
 | `Remove<T>` conflict | Not every Entity has that component |
 
-Pass conflict resolution strategies to `Query.Batch(AddConflict, RemoveConflict)`:
+Pass conflict resolution strategies to `Query.Batch(Batch.AddConflict, Batch.RemoveConflict)`:
 
-#### AddConflict Options
+#### Batch.AddConflict Options
 
 | Option | Behavior |
 |--------|----------|
-| `Disallow` *(default)* | Throw if adding a component not explicitly excluded from query |
+| `Strict` *(default)* | Throw if adding a component not explicitly excluded from query |
 | `Preserve` | Keep existing values, add only where not present |
 | `Replace` | Overwrite existing values, add where not present |
 
-#### RemoveConflict Options
+#### Batch.RemoveConflict Options
 
 | Option | Behavior |
 |--------|----------|
-| `Disallow` *(default)* | Throw unless component is expressly included in Query |
+| `Strict` *(default)* | Throw unless component is expressly included in Query |
 | `Allow` | Skip Archetypes where component isn't present (idempotent, near-zero cost) |
 
 ```cs
 // Example: Replace health values on all entities, even those that already have Health
-query.Batch(AddConflict.Replace, RemoveConflict.Allow)
-    .Add<Health>(100)
+query.Batch(Batch.AddConflict.Replace)
+    .Add(new Health(100))
     .Submit();
 ```

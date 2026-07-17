@@ -1,17 +1,17 @@
 ---
 title: Raw
 order: 3
-
+description: 'Stream.Raw hands your delegate whole Archetypes as contiguous Memory<T> blocks - ideal for SIMD work, GPU upload, and serialization in fennecs.'
 ---
 # RAW: Custom Query Workloads
 ::: danger ARCHETYPE BY ARCHETYPE
 Entire Archetypes, delivered as contiguous memory. Here's your truckload of stuff - dig in!
 ![a fennec with a big stack of pizza in boxes](/img/fennec-raw.png)
-Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryUniformAction) or [`UniformMemoryAction`](Delegates.md#memoryaction-and-memoryUniformAction), delivers the *entire stream data* of each Archetype directly ~~into your fox~~ to your delegate in one `Memory<T>` per Stream Type.
+Using a [`MemoryAction`](Delegates.md#memoryaction-and-memoryuniformaction) or [`MemoryUniformAction`](Delegates.md#memoryaction-and-memoryuniformaction), delivers the *entire stream data* of each Archetype directly ~~into your fox~~ to your delegate in one `Memory<T>` per Stream Type.
 :::
 
 #### `Stream<>.Raw(MemoryAction<>)`
-#### `Stream<>.Raw<U>(U, UniformMemoryAction<>)`
+#### `Stream<>.Raw<U>(U, MemoryUniformAction<>)`
 ----------------------
 > ... tfw you really figured out what you want your code to be doing, and it's time to apply drastic optimizations to your workloads.
 
@@ -35,7 +35,7 @@ Copying memory regions is hard, and **Multiprocessing is HARDER.** Currently, **
 // This is NOT how Raw is usually used, but you can, in the trivial
 // case, use it to iterate the Memory<T> yourself. A nice use case for
 // this is to perform some sort of early-out iteration, e.g. search)
-myStream.Raw((Memory<Vector3> velocities) => 
+myStream.Raw(velocities => 
 {
     foreach (ref var velocity in velocities.Span) 
     {
@@ -49,8 +49,8 @@ myStream.Raw((Memory<Vector3> velocities) =>
 // case, use it to iterate the Memory<T> yourself. A nice use case for
 // this is to perform some sort of early-out iteration, e.g. search)
 myStream.Raw(
-    uniform: (Time.deltaTime, 9.81f * Vector3.DOWN), 
-    action: static ((float dt, Vector3 g) uniform, Memory<Vector3> velocities) => 
+    uniform: (dt: Time.deltaTime, g: 9.81f * Vector3.DOWN), 
+    action: static (uniform, velocities) => 
     {
         var Gdt = uniform.g * uniform.dt; //example precalc per archetype
         foreach (ref var velocity in velocities.Span) 
@@ -84,27 +84,31 @@ You can either access this memory as a `Span`, cast it to the desired type, etc.
 ::: code-group
 ```cs [🦋 use as span]
 var movers = World.Query<Position, Velocity>().Stream();
-movers.Raw((Memory<Position> positions, Memory<Velocity> velocities, float dt) => 
-{
-    Engine.Physics.Integrate(positions.Span, velocities.Span, dt);
-},
-Time.deltaTime); 
+movers.Raw(
+    uniform: Time.deltaTime,
+    action: static (dt, positions, velocities) => 
+    {
+        Engine.Physics.Integrate(positions.Span, velocities.Span, dt);
+    }
+); 
 ```
 
 ```cs [☠️ cast to type]
-_Stream.Raw(static delegate(Memory<Matrix4X3> transforms)
-{
-    var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
+_Stream.Raw(
+    uniform: mesh,
+    action: static (mesh, transforms) =>
+    {
+        var floatSpan = MemoryMarshal.Cast<Matrix4X3, float>(transforms.Span);
     
-    RenderingServer.MultimeshSetBuffer(uniform.mesh, floatSpan);
-});
+        RenderingServer.MultimeshSetBuffer(mesh, floatSpan);
+    });
 //This is a Godot-Pseudo-Example, because RenderingServer doesn't 
 //support undersize arrays or spans at the moment. See Cubes Demo for
 //workaround if stumped (it's easy)! 🦊
 ```
 
 ```cs [☠️☠️ process with SIMD  ]
-_Stream.Raw(static delegate(Memory<IntComp1> c1V, Memory<IntComp2> c2V)
+_Stream.Raw(static (c1V, c2V) =>
 {
     var count = c1V.Length;
 

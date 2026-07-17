@@ -2,6 +2,7 @@
 title: Values
 order: 1
 outline: [1, 2]
+description: 'Value type components in fennecs are stored contiguously per Archetype for cache-friendly iteration - record structs are the recommended pattern.'
 ---
 
 # Value Type Components :neofox_verified:
@@ -79,7 +80,7 @@ var player = world.Spawn()
 ```cs
 var stream = world.Query<Position, Velocity>().Stream();
 
-stream.For((ref Position position, ref Velocity velocity) =>
+stream.For((ref position, ref velocity) =>
 {
     position.X += velocity.X;
     position.Y += velocity.Y;

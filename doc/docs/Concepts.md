@@ -4,13 +4,14 @@ order: 0
 outline: [2,2]
 
 prev: using fennecs;
+description: 'Overview of ECS concepts in fennecs: Entities, Components, Queries, and Streams, plus unique features like Relations, Object Links, and Aspects.'
 
 head:
   - - meta
     - property: og:title
       content: Concepts of the fennecs Entity-Component System
     - property: og:description
-      content: A comparison of typical ECS concepts with unique fennecs features.
+      content: 'Overview of ECS concepts in fennecs: Entities, Components, Queries, and Streams, plus unique features like Relations, Object Links, and Aspects.'
 ---
 
 #  :neofox_heart: ... the little ECS that loves you back!

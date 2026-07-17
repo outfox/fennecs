@@ -2,6 +2,7 @@
 title: Spawn
 order: 1
 outline: [1, 2]
+description: 'Creating entities in fennecs with World.Spawn for one-offs and the EntitySpawner (World.Entity) for fast bulk spawning and reusable templates.'
 ---
 
 # Spawning Entities :neofox_hyper:

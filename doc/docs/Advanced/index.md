@@ -1,11 +1,7 @@
 ---
 title: Advanced
 order: 11
-
-head:
-  - - meta
-    - name: description
-      content: Advanced fennecs topics - Aspects, Keys, SIMD, and other sharp tools for big simulations.
+description: 'Advanced fennecs topics for big simulations: Aspects storage universes, secondary Keys for Relations and Links, SIMD Blit, and Comp expressions.'
 ---
 
 # Advanced Foxery

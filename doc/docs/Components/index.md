@@ -2,6 +2,7 @@
 title: Components
 order: 4
 outline: [1, 2]
+description: 'Components in fennecs ECS - value types, tags, shareables, relations, and object links, and how Archetypes keep component data packed contiguously.'
 ---
 
 # Components
