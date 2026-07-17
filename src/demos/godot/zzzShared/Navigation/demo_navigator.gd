@@ -10,10 +10,8 @@ const DemoRegistry := preload("res://zzzShared/Navigation/demo_registry.gd")
 
 const BAR_HEIGHT := 40.0
 
-## fennecs flame orange — marks the demo that is currently running.
-const ACTIVE_COLOR := Color("FF4E03")
-
 var _buttons := {} # scene path (String) -> Button
+var _tab_group := ButtonGroup.new() # radio behavior: exactly one tab active
 
 
 func _ready() -> void:
@@ -76,27 +74,20 @@ func _add_button(row: Control, label: String, scene: String) -> void:
 	button.text = label
 	button.flat = true
 	button.focus_mode = Control.FOCUS_NONE
-	button.modulate = Color(1, 1, 1, 0.75)
+	button.toggle_mode = true
+	button.button_group = _tab_group
 	button.pressed.connect(goto_scene.bind(scene))
 	row.add_child(button)
 	_buttons[scene] = button
 
 
-# Marks the button of the scene we are in (or headed to): disabled against
-# redundant clicks, but shown in flame orange rather than the theme's grey.
-# Pass "" to detect the currently running scene.
+# Presses the tab of the scene we are in (or headed to) — the theme styles
+# the pressed state in fennecs flame orange. Pass "" to detect the
+# currently running scene.
 func _highlight_scene(path: String) -> void:
 	if path.is_empty():
 		var current := get_tree().current_scene
 		if current != null:
 			path = current.scene_file_path
 	for scene: String in _buttons:
-		var button: Button = _buttons[scene]
-		var active := scene == path
-		button.disabled = active
-		if active:
-			button.add_theme_color_override("font_disabled_color", ACTIVE_COLOR)
-			button.modulate = Color.WHITE
-		else:
-			button.remove_theme_color_override("font_disabled_color")
-			button.modulate = Color(1, 1, 1, 0.75)
+		_buttons[scene].set_pressed_no_signal(scene == path)

@@ -5,5 +5,9 @@
 
 [resource]
 default_font = ExtResource("1_3etec")
+Button/colors/font_color = Color(1, 1, 1, 0.75)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 0.305882, 0.011765, 1)
+Button/colors/font_hover_pressed_color = Color(1, 0.305882, 0.011765, 1)
 VSlider/icons/grabber = ExtResource("2_h55xb")
 VSlider/icons/grabber_highlight = ExtResource("2_h55xb")
