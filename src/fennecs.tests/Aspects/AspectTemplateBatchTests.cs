@@ -79,6 +79,116 @@ public class AspectTemplateBatchTests
 
 
     [Fact]
+    public void Template_Splits_Three_Ways_Including_Main()
+    {
+        var (world, visuals, game) = CreateWorld();
+        using var _1 = world;
+
+        world.Template()
+            .Add(42)                  // int is unregistered -> Main
+            .Add(new Position(1, 2))  // -> visuals
+            .Add(new CrewData(5))     // -> game
+            .Spawn(100)
+            .Dispose();
+
+        Assert.Equal(100, world.Count);
+        Assert.Equal(100, visuals.Count);
+        Assert.Equal(100, game.Count);
+
+        foreach (var entity in world)
+        {
+            Assert.Equal(42, entity.Ref<int>());
+            Assert.Equal(new(1, 2), entity.Ref<Position>());
+            Assert.Equal(new(5), entity.Ref<CrewData>());
+        }
+    }
+
+
+    [Fact]
+    public void Template_Relations_And_Links_Route_To_Owning_Aspects()
+    {
+        var (world, visuals, game) = CreateWorld();
+        using var _1 = world;
+
+        var station = world.Spawn();
+
+        world.Template()
+            .Add(new CrewData(3), station)  // relation: backing type owned by game
+            .Add(Link.With("depot"))        // object link: string unregistered -> Main
+            .Spawn(10)
+            .Dispose();
+
+        Assert.Equal(11, world.Count); // 10 spawned + station
+        Assert.Equal(10, game.Count);  // relation storage followed its backing type
+        Assert.Equal(0, visuals.Count);
+
+        foreach (var entity in world)
+        {
+            if (entity == station) continue;
+            Assert.True(entity.Has<CrewData>(station));
+            Assert.Equal(new(3), entity.Ref<CrewData>(Match.Relation(station)));
+            Assert.True(entity.Has(Link.With("depot")));
+        }
+    }
+
+
+    [Fact]
+    public void Typed_Template_Blits_Per_Entity_Values_Across_Aspects()
+    {
+        var (world, visuals, game) = CreateWorld();
+        using var _1 = world;
+
+        var station = world.Spawn();
+
+        using var template = world.Template()
+            .Add(new Cargo(50))          // baked, game-owned
+            .Needs<Position>()           // required, visuals-owned
+            .Needs<CrewData>(station);   // required relation, game-owned
+
+        var wave = new Entity[25];
+        template.Spawn(wave, i => (new Position(i, -i), new CrewData(i)));
+
+        Assert.Equal(25, visuals.Count);
+        Assert.Equal(25, game.Count);
+
+        for (var i = 0; i < wave.Length; i++)
+        {
+            Assert.Equal(new Position(i, -i), wave[i].Ref<Position>());
+            Assert.Equal(new CrewData(i), wave[i].Ref<CrewData>(Match.Relation(station)));
+            Assert.Equal(new Cargo(50), wave[i].Ref<Cargo>());
+        }
+    }
+
+
+    [Fact]
+    public void Large_Wave_Grows_Aspect_Capacities()
+    {
+        var (world, visuals, game) = CreateWorld();
+        using var _1 = world;
+
+        world.Template()
+            .Add(42)
+            .Add(new Position(7, 7))
+            .Add(new CrewData(9))
+            .Spawn(10_000)
+            .Dispose();
+
+        Assert.Equal(10_000, world.Count);
+        Assert.Equal(10_000, visuals.Count);
+        Assert.Equal(10_000, game.Count);
+
+        // spot-check across the wave (start, middle, end of storage)
+        var entities = world.ToArray();
+        foreach (var entity in new[] { entities[0], entities[4_999], entities[^1] })
+        {
+            Assert.Equal(42, entity.Ref<int>());
+            Assert.Equal(new(7, 7), entity.Ref<Position>());
+            Assert.Equal(new(9), entity.Ref<CrewData>());
+        }
+    }
+
+
+    [Fact]
     public void Batch_With_Foreign_Aspect_Type_Throws()
     {
         var (world, _, game) = CreateWorld();
