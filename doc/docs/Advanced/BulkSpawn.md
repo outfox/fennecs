@@ -1,7 +1,7 @@
 ---
 title: Bulk Spawn
 menu: Bulk Spawn
-order: 3
+order: 2
 outline: [1, 2]
 description: 'Fast bulk spawning in fennecs with the EntitySpawner (World.Entity): reusable templates, spawning waves straight into their final Archetype, and getting spawned Entity handles back via Span.'
 ---

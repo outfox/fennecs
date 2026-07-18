@@ -1,6 +1,6 @@
 ---
 title: SIMD
-order: 4
+order: 6
 content: SIMD Query Interface
 description: 'Bulk component mutations in fennecs with the SIMD query interface - Stream.Blit writes values to all matched entities using vectorized operations.'
 ---

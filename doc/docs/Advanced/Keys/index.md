@@ -1,6 +1,6 @@
 ---
 title: Keys
-order: 2
+order: 3
 outline: [1, 2]
 description: 'Secondary Keys in fennecs let component types target an Entity or Object, turning plain components into Relations and Object Links between Entities.'
 ---
