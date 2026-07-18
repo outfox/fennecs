@@ -1,6 +1,6 @@
 ---
 title: Add Component
-order: 3
+order: 4
 outline: [1, 2]
 description: 'Entity.Add attaches plain components, tags, Entity relations, and object links in fennecs, with fluent chaining and match expression uniqueness rules.'
 ---

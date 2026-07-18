@@ -18,9 +18,6 @@ Split a World into multiple contiguous storage universes to fight ==Fragmentatio
 ### [Keys](Keys/index.md)
 Secondary Keys unlock [Relations](Keys/Relation.md) between Entities and [Object Links](Keys/Link.md) to shared data.
 
-### [Bulk Spawn](BulkSpawn.md)
-Spawn waves of entities straight into their final Archetype with the `EntitySpawner`  –  reusable templates included, handles delivered into your `Span<Entity>` on request.
-
 ### [SIMD](SIMD.md)
 Bulk mutations at blazing speeds with `Blit` and friends, courtesy of `System.Intrinsics`.
 
@@ -31,6 +28,7 @@ Meta-level Component references (`Comp<C>`) for dynamic query building, filterin
 
 Some advanced topics live with their families instead of in this section:
 
+- [Templates](/docs/Entities/Templates.md)  –  spawn waves of entities straight into their final Archetype with the `EntityTemplate`.
 - [Stream.Raw](/docs/Streams/Stream.Raw.md)  –  get handed entire memory blocks and do your worst *(best)*.
 - [Fox Typing](/docs/Components/FoxTyping.md)  –  **fenn**ecs's delightfully loose take on component typing.
 - [Batch Operations](/docs/Queries/CRUD.md#batch-operations)  –  structural changes in bulk, straight from a Query.

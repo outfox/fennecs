@@ -585,8 +585,8 @@ public class QueryTests
     public void Truncate_Honors_Filter_Exclude(int entityCount)
     {
         using var world = new World(entityCount * 2 + 2);
-        world.Entity().Add<int>().Spawn(entityCount).Dispose();
-        world.Entity().Add<int>().Add<string>("don't truncate me, senpai").Spawn(entityCount).Dispose();
+        world.Template().Add<int>().Spawn(entityCount).Dispose();
+        world.Template().Add<int>().Add<string>("don't truncate me, senpai").Spawn(entityCount).Dispose();
 
         var query = world.Query<int>().Compile();
         Assert.Equal(entityCount * 2, query.Count);
@@ -611,8 +611,8 @@ public class QueryTests
     public void Truncate_Honors_Filter_Subset(int entityCount)
     {
         using var world = new World();
-        world.Entity().Add<int>().Spawn(entityCount).Dispose();
-        world.Entity().Add<int>().Add<string>("PLEASE TRUNCATE ME!").Spawn(entityCount).Dispose();
+        world.Template().Add<int>().Spawn(entityCount).Dispose();
+        world.Template().Add<int>().Add<string>("PLEASE TRUNCATE ME!").Spawn(entityCount).Dispose();
 
         var query = world.Query<int>().Compile();
         Assert.Equal(entityCount * 2, query.Count);
@@ -702,7 +702,7 @@ public class QueryTests
         using var world = new World();
         var query = world.Query<int, string, Vector2, Vector3, Vector4>().Stream();
 
-        world.Entity()
+        world.Template()
             .Add(42)
             .Add("blit me, senpai")
             .Add(Vector2.Zero)

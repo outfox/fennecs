@@ -65,6 +65,10 @@ public partial class World
         return ref AspectOf(TypeExpression.Of<T>(match)).GetComponent<T>(entity, match);
     }
 
+    /// <inheritdoc cref="Aspect.ContiguousSlice{T}"/>
+    internal Span<T> ContiguousSlice<T>(Entity first, Match match, int count)
+        => AspectOf(TypeExpression.Of<T>(match)).ContiguousSlice<T>(first, match, count);
+
     internal bool GetComponent(Entity entity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
         if (type.isWildcard) ThrowWildcard("Cannot get a Wildcard Component", nameof(type));

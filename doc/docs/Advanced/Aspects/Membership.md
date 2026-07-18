@@ -2,7 +2,7 @@
 title: Membership
 order: 2
 outline: [1, 2]
-description: 'How Entities join and leave fennecs Aspects - lazy membership, eviction, the Main Aspect, EntitySpawners, Batches, deferred mode, and despawning.'
+description: 'How Entities join and leave fennecs Aspects - lazy membership, eviction, the Main Aspect, EntityTemplates, Batches, deferred mode, and despawning.'
 ---
 
 # Membership & Lifecycle
@@ -56,14 +56,14 @@ Eviction never despawns. An Aspect losing interest in an Entity is a structural 
 
 Every living Entity is a member of `Main`, always  –  even one whose components live entirely in *other* Aspects. `world.Count` (which is `Main`'s count) is therefore always your total population, while `aspect.Count` counts that Aspect's members only.
 
-## Spawners, Batches & Deferred Mode
+## Templates, Batches & Deferred Mode
 
 Bulk operations are fully Aspect-aware, and mostly Just Work™:
 
-**[EntitySpawners](/docs/Advanced/BulkSpawn.md)** split their template across Aspects automatically  –  no special ceremony needed:
+**[EntityTemplates](/docs/Entities/Templates.md)** split their template across Aspects automatically  –  no special ceremony needed:
 
 ```csharp
-world.Entity()
+world.Template()
     .Add(new Position(1, 2))   // -> "visuals"
     .Add(new CrewData(5))      // -> "game"
     .Spawn(100)

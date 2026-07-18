@@ -32,18 +32,30 @@ Entities are world-bound: handles from a disposed World stop resolving
 ```csharp
 var e = world.Spawn();                        // one entity, then .Add(...) fluently
 
-using var spawner = world.Entity()            // EntitySpawner: preconfigure once
+using var template = world.Template()            // EntityTemplate: preconfigure once
     .Add<Enemy>()
     .Add(new Health(50))
     .Add(new Owes(10M), creditor)             // relations & links work too
     .Add(Link.With(level));
-spawner.Spawn(10_000);                        // spawn any number, reuse freely
-spawner.Remove<Enemy>();                      // tweak config between spawns
+template.Spawn(10_000);                        // spawn any number, reuse freely
+template.Remove<Enemy>();                      // tweak config between spawns
 
-var single = spawner.Spawn();                 // Spawn() returns the one spawned Entity
+var single = template.Spawn();                 // Spawn() returns the one spawned Entity
 Span<Entity> wave = stackalloc Entity[64];
-spawner.Spawn(wave);                          // spawns wave.Length entities, handles
+template.Spawn(wave);                          // spawns wave.Length entities, handles
                                               // written into the span (stays fluent)
+
+using var pack = world.Template()              // required per-spawn components:
+    .Add<Werewolf>()                           // each Needs<C>() widens the type,
+    .Needs<Name>()                             // ⇒ EntityTemplate<Name>
+    .Needs<Health>();                          // ⇒ EntityTemplate<Name, Health> (max 6)
+pack.Spawn(new Name("Chonker"), new Health(9000));  // typed, compile-time enforced
+pack.Spawn(10, new Name("W"), new Health(1));       // uniform wave
+pack.Spawn(64, i => (new Name($"W{i}"), new Health(i))); // per-entity factory
+pack.Spawn(dest, names, healths);              // parallel ReadOnlySpans, by index
+world.Template().Needs<Loyalty>(alpha);        // relation: target baked, value per-spawn
+// Conflicts throw: Add of a required comp, Needs of an added comp, duplicate Needs.
+// Needs consumes its source template (dispose becomes no-op; further use throws).
 
 e.Despawn();                // or world.Despawn(e)
 world.DespawnAllWith<Projectile>();           // by component (optional Match)

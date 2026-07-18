@@ -1,6 +1,6 @@
 ---
 title: Despawn
-order: 2
+order: 3
 outline: [1, 2]
 description: 'Despawning entities in fennecs with Entity.Despawn - component cleanup, automatic relation removal, identity recycling, and deferred despawns in runners.'
 ---

@@ -1,6 +1,6 @@
 ---
 title: Check for Component
-order: 5
+order: 6
 outline: [1, 2]
 description: 'Entity.Has checks a fennecs entity for plain components, relations, and object links, including wildcard match expressions like Match.Any and Entity.Any.'
 ---

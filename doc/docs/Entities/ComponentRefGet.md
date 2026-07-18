@@ -1,6 +1,6 @@
 ---
 title: Read/Write Component
-order: 6
+order: 7
 outline: [1, 2]
 description: 'Reading and writing fennecs component data with Entity.Ref, Get for wildcard matches, and the boxed Components property for runtime inspection.'
 ---

@@ -124,16 +124,16 @@ entity.Add<Position>();
 entity.Add<Velocity>();
 ```
 
-...or using the `EntitySpawner` for a bit of extra ✨flair✨:
+...or using the `EntityTemplate` for a bit of extra ✨flair✨:
 
 ```csharp
-var spawner = world.Entity()
+var template = world.Template()
     .Add<Position>()
     .Add<Velocity>()
     .Spawn(count: 100); 
 ```
 
-Want the spawned Entities handed right back? `Spawn()` without arguments returns the single Entity it spawned, and `Spawn(Span<Entity>)` fills your buffer with a whole wave  –  see [Bulk Spawn](Advanced/BulkSpawn.md#entity-returns-for-further-processing)!
+Want the spawned Entities handed right back? `Spawn()` without arguments returns the single Entity it spawned, and `Spawn(Span<Entity>)` fills your buffer with a whole wave  –  see [Templates](/docs/Entities/Templates.md#entity-returns-for-further-processing)!
 
 ### ... and completing the Circle of Life! 🌄
 

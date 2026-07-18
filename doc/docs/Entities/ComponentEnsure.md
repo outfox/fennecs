@@ -1,6 +1,6 @@
 ---
 title: Ensure Component
-order: 7
+order: 8
 outline: [1, 2]
 description: 'Entity.Ensure guarantees a component exists on a fennecs entity and returns a ref to it - the get-or-create pattern for counters and lazy initialization.'
 ---

@@ -82,7 +82,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Batch_Spawn(int count)
     {
         using var world = new World();
-        using var spawner = world.Entity()
+        using var template = world.Template()
             .Add(555)
             .Add("hallo")
             .Spawn(count);
@@ -108,14 +108,14 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Batch_Spawn_Twice(int count)
     {
         using var world = new World();
-        using var spawner = world.Entity();
+        using var template = world.Template();
 
-        spawner.Add(555)
+        template.Add(555)
             .Add("hallo")
             .Spawn(count);
 
-        spawner.Add(420.0f);
-        spawner.Spawn(count);
+        template.Add(420.0f);
+        template.Spawn(count);
 
         var query = world.Query<int, string>().Stream();
         Assert.Equal(count * 2, query.Count);
@@ -137,7 +137,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Batch_Spawn_with_Duplicate_Replaces(int count)
     {
         using var world = new World();
-        world.Entity()
+        world.Template()
             .Add(555)
             .Add(666)
             .Spawn(count);
@@ -157,7 +157,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Batch_Spawn_Linked(int count)
     {
         using var world = new World();
-        world.Entity()
+        world.Template()
             .Add(555)
             .Add(Link.With("dieter"))
             .Spawn(count);
@@ -184,7 +184,7 @@ public class WorldTests(ITestOutputHelper output)
         using var world = new World();
         var other = world.Spawn();
 
-        world.Entity()
+        world.Template()
             .Add(555)
             .Add("relation", other)
             .Spawn(count);
@@ -210,7 +210,7 @@ public class WorldTests(ITestOutputHelper output)
     private void Can_Batch_Spawn_Entity_With_No_Components(int count)
     {
         using var world = new World();
-        world.Entity().Spawn(count);
+        world.Template().Spawn(count);
 
         var query = world.Query().Compile();
         Assert.Equal(count, query.Count);

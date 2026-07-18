@@ -2,7 +2,7 @@
 title: 6. One Ring (Links)
 outline: [2, 3]
 order: 6
-description: 'Shows fennecs Object Links: spawn ring bearers with an EntitySpawner, link them to a shared object instance, and query all linked entities at once.'
+description: 'Shows fennecs Object Links: spawn ring bearers with an EntityTemplate, link them to a shared object instance, and query all linked entities at once.'
 ---
 
 #  One Ring to Find Them
@@ -21,7 +21,7 @@ In this example, we'll recreate the forging of the Rings of Power in the Land of
 
 We'll use the [Object Link](/docs/Advanced/Keys/Link.md) system to model the binding relationship between the One Ring and the other Rings it rules.
 
-First, we [group spawn](/docs/Advanced/BulkSpawn.md) Entities for each of the other Rings and its Bearer, and link all of them to our singleton instance of the One Ring.
+First, we [group spawn](/docs/Entities/Templates.md) Entities for each of the other Rings and its Bearer, and link all of them to our singleton instance of the One Ring.
 
 Then, we bind them all in darkness with a `Stream<>.For` runner.
 
@@ -35,7 +35,7 @@ In this example:
 
 1. We define the `RingBearer` and `OneRing` components to represent the bearers of the Rings and the power of the One Ring respectively.
 2. We refer to a singleton instnace of `OneRing` to represent the One Ring.
-3. We create Entities for each group of Rings (Elven, Dwarven, and Human) using the `EntitySpawner`, adding a `RingBearer` component and a Link to the One Ring for each.
+3. We create Entities for each group of Rings (Elven, Dwarven, and Human) using the `EntityTemplate`, adding a `RingBearer` component and a Link to the One Ring for each.
 4. We create a Query to find all `RingBearer` Entities that are linked to our `OneRing` instance (the One Ring).
 5. We use the Query's `For` method to iterate over the linked Rings and corrupt their bearers, updating the `corrupted` flag in the `RingBearer` record.
 

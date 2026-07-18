@@ -17,7 +17,7 @@ public class RelationDespawn
         
         var subject = world.Spawn();
         
-        world.Entity()
+        world.Template()
             .Add<int>(default, subject)
             .Add(Link.With("relation target"))
             .Spawn(relations)

@@ -32,7 +32,7 @@ record struct Index(int Value)
 ```csharp [(then) Test Data]
 // Simply spawn some entities with zero-initialized Index components
 var world = new World();
-world.Entity()
+world.Template()
     .Add<Index>(default)
     .Spawn(99_999)
     .Dispose();

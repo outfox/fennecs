@@ -1,6 +1,6 @@
 ---
 title: Remove Component
-order: 4
+order: 5
 outline: [1, 2]
 description: 'Entity.Remove detaches components, relations, and object links from a fennecs entity - a structural change that moves it to a new Archetype.'
 ---

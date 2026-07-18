@@ -1,7 +1,7 @@
 ---
 title: Liveness
 layout: doc
-order: 8
+order: 9
 outline: [1, 2]
 description: 'Entity.Alive tells you whether a fennecs entity still exists - generational identity recycling, implicit bool conversion, and deferred despawn behavior.'
 ---

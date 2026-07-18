@@ -86,6 +86,21 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Update="generators\EntityTemplate.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>EntityTemplate.generated.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="generators\EntityTemplate.generated.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EntityTemplate.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
       <Compile Update="generators\Delegates.generated.cs">
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>

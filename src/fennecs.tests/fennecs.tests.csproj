@@ -45,5 +45,14 @@
             <DesignTime>True</DesignTime>
             <DependentUpon>Stream.Filter.Tests.tt</DependentUpon>
         </Compile>
+        <None Update="Entity\generators\EntityTemplate.Tests.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>EntityTemplate.Tests.generated.cs</LastGenOutput>
+        </None>
+        <Compile Update="Entity\generators\EntityTemplate.Tests.generated.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>EntityTemplate.Tests.tt</DependentUpon>
+        </Compile>
     </ItemGroup>
 </Project>

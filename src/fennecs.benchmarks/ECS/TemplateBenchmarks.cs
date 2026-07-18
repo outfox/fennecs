@@ -14,7 +14,7 @@ namespace Benchmark.ECS;
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [AnyCategoriesFilter("spawn")]
 // ReSharper disable once IdentifierTypo
-public class SpawnerBenchmarks
+public class TemplateBenchmarks
 {
     private World _world = null!;
 
@@ -49,10 +49,10 @@ public class SpawnerBenchmarks
     }
 
     [BenchmarkCategory("spawn")]
-    [Benchmark(Description = "Spawn via Spawner")]
-    public int Spawn_Spawner()
+    [Benchmark(Description = "Spawn via Template")]
+    public int Spawn_Template()
     {
-        _world.Entity()
+        _world.Template()
             .Add(1337)
             .Add("string string")
             .Add(MathF.E)

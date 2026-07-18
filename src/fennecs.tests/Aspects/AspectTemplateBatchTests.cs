@@ -1,6 +1,6 @@
 namespace fennecs.tests.Aspects;
 
-public class AspectSpawnerBatchTests
+public class AspectTemplateBatchTests
 {
     private record struct Position(float X, float Y);
     private record struct CrewData(int Count);
@@ -17,12 +17,12 @@ public class AspectSpawnerBatchTests
 
 
     [Fact]
-    public void Spawner_Splits_Components_Across_Aspects()
+    public void Template_Splits_Components_Across_Aspects()
     {
         var (world, visuals, game) = CreateWorld();
         using var _1 = world;
 
-        world.Entity()
+        world.Template()
             .Add(new Position(1, 2))
             .Add(new CrewData(5))
             .Spawn(100)
@@ -41,12 +41,12 @@ public class AspectSpawnerBatchTests
 
 
     [Fact]
-    public void Spawner_With_Only_Foreign_Components_Still_Populates_Main()
+    public void Template_With_Only_Foreign_Components_Still_Populates_Main()
     {
         var (world, _, game) = CreateWorld();
         using var _1 = world;
 
-        world.Entity()
+        world.Template()
             .Add(new CrewData(5))
             .Spawn(10)
             .Dispose();
@@ -64,7 +64,7 @@ public class AspectSpawnerBatchTests
         var (world, visuals, game) = CreateWorld();
         using var _1 = world;
 
-        world.Entity()
+        world.Template()
             .Add(new Position(1, 2))
             .Add(new CrewData(5))
             .Spawn(10)

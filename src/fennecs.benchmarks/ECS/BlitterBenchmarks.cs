@@ -29,7 +29,7 @@ public class BlitterBenchmarks
         _world = new World(entityCount);
         _stream = _world.Query<int, string>().Stream();
 
-        _world.Entity()
+        _world.Template()
             .Add(1337)
             .Add("string string")
             .Add(MathF.E)

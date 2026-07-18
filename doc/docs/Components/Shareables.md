@@ -85,7 +85,7 @@ using var world = new World();
 var stream = world.Query<SharedData>().Stream();
 
 var sharedData = new SharedData(42);
-world.Entity().Add(sharedData).Spawn(5); // 5 entities share this
+world.Template().Add(sharedData).Spawn(5); // 5 entities share this
 
 stream.For((ref data) =>
 {
@@ -117,13 +117,13 @@ SharedData { Value = 48 }
 ```
 :::
 
-### With EntitySpawner
+### With EntityTemplate
 
 ```cs
 var sharedTexture = LoadTexture("enemy.png");
 
 // Bulk spawn entities with shared reference
-world.Entity()
+world.Template()
     .Add(new Position())
     .Add(new Health { Value = 100 })
     .Add(sharedTexture)  // All share this texture

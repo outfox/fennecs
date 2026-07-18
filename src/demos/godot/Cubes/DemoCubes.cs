@@ -97,7 +97,7 @@ public partial class DemoCubes : Node
 
 		if (difference > 0)
 		{
-			_world.Entity()
+			_world.Template()
 				.Add<int>()
 				.Add<Matrix4X3>()
 				.Add<Vector3>()

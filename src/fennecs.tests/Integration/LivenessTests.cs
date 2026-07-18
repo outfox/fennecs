@@ -23,7 +23,7 @@ public class LivenessTests(ITestOutputHelper output)
     public void CanDespawnWithWorldLocks(int count)
     {
         using var world = new World();
-        world.Entity().Spawn(count);
+        world.Template().Spawn(count);
 
         var worldLock = world.Lock();
         foreach (var entity in world) // world is a query
@@ -43,8 +43,8 @@ public class LivenessTests(ITestOutputHelper output)
     public void CanDespawnViaUniformSet()
     {
         using var world = new World();
-        world.Entity().Add(69).Spawn(1234);
-        world.Entity().Add(42).Spawn(4567);
+        world.Template().Add(69).Spawn(1234);
+        world.Template().Add(42).Spawn(4567);
 
         var stream = world.Query<int>().Stream();
         var despawns = new HashSet<Entity>();

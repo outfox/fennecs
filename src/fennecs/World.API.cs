@@ -111,16 +111,22 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
 
 
     /// <summary>
-    /// Spawns a number of pre-configured Entities. 
+    /// Creates a reusable Entity template: an <see cref="EntityTemplate"/> pre-configured with
+    /// Components, able to spawn any number of identical Entities directly into their final Archetype.
     /// </summary>
-    public EntitySpawner Entity() => new(this);
+    public EntityTemplate Template() => new(this);
+
+
+    /// <inheritdoc cref="Template"/>
+    [Obsolete("Renamed to World.Template(). Use that instead.")]
+    public EntityTemplate Entity() => Template();
 
 
     /// <summary>
-    /// Spawns a number of pre-configured Entities 
+    /// Spawns a number of pre-configured Entities
     /// </summary>
     /// <remarks>
-    /// It's more comfortable to spawn via <see cref="EntitySpawner"/>, from <c>world.Entity()</c>
+    /// It's more comfortable to spawn via <see cref="EntityTemplate"/>, from <c>world.Template()</c>
     /// </remarks>
     /// <param name="components">TypeExpressions and boxed objects to spawn</param>
     /// <param name="count">number of Entities to spawn</param>
@@ -142,7 +148,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     /// <inheritdoc cref="Spawn(int, IReadOnlyList{TypeExpression}, IReadOnlyList{object})"/>
     internal void Spawn(Span<Entity> destination, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
     {
-        // Covers the EntitySpawner path, which bypasses AddComponent.
+        // Covers the EntityTemplate path, which bypasses AddComponent.
         foreach (var component in components) AssertSameWorld(component);
 
         if (destination.IsEmpty) return;

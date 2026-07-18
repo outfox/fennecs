@@ -100,6 +100,22 @@ public partial class Aspect
     }
 
 
+    /// <summary>
+    /// Returns a writable slice of Component storage covering <paramref name="count"/> contiguous
+    /// rows, starting at <paramref name="first"/>'s row.
+    /// </summary>
+    /// <remarks>
+    /// Callers must guarantee the Entities actually occupy contiguous rows in order — as minted by
+    /// a single Spawn wave (<see cref="Archetype.SpawnWith"/> appends). Not verified in release builds.
+    /// </remarks>
+    internal Span<T> ContiguousSlice<T>(Entity first, Match match, int count)
+    {
+        var (table, row) = _meta[first.Index];
+        var storage = (Storage<T>) table!.GetStorage(TypeExpression.Of<T>(match));
+        return storage.AsMemory(row, count).Span;
+    }
+
+
     internal bool GetComponent(Entity entity, TypeExpression type, [MaybeNullWhen(false)] out object value)
     {
         if (!HasComponent(entity, type))

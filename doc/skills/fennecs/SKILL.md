@@ -144,12 +144,20 @@ foreach (var (e, pos) in stream) { … }    // LINQ/tuples: tests, prototyping
 ## Bulk operations
 
 ```csharp
-using var spawner = world.Entity()                 // EntitySpawner
+using var template = world.Template()                 // EntityTemplate
     .Add<Enemy>().Add(new Health(50)).Add(Link.With(level));
-spawner.Spawn(10_000);             // fire-and-forget (fluent)
-var boss = spawner.Spawn();        // Spawn() returns the single spawned Entity
+template.Spawn(10_000);             // fire-and-forget (fluent)
+var boss = template.Spawn();        // Spawn() returns the single spawned Entity
 var wave = new Entity[64];
-spawner.Spawn(wave.AsSpan());      // fills the span: one entity per element (fluent)
+template.Spawn(wave.AsSpan());      // fills the span: one entity per element (fluent)
+
+using var pack = world.Template()   // Needs<C>: required per-spawn components,
+    .Add<Werewolf>()                // enforced at compile time (up to 6)
+    .Needs<Name>().Needs<Health>(); // ⇒ EntityTemplate<Name, Health>
+pack.Spawn(new Name("A"), new Health(9000));       // typed Spawn
+pack.Spawn(10, i => (new Name($"W{i}"), new Health(250 + i))); // per-entity factory
+// also: Spawn(count, c0, c1) uniform; Spawn(span, ReadOnlySpan<C0>, ...) data-driven.
+// Add of a required comp, Needs of an added comp, duplicate Needs: all throw.
 
 query.Add(new Cooldown(2f));   // bulk add — throws if query already matches it
 query.Remove<Loaded>();        // bulk remove — throws unless query guarantees it
@@ -212,7 +220,7 @@ isn't guaranteed valid for every matched entity.
   Entity-Entity Relations, Object Links, wildcard semantics, and Aspects
   (0.7.0's storage universes for fighting fragmentation).
 - **[references/world-and-lifecycle.md](references/world-and-lifecycle.md)** —
-  World configuration, deferred mode/`Lock()`, GC behavior, EntitySpawner,
+  World configuration, deferred mode/`Lock()`, GC behavior, EntityTemplate,
   Batch semantics, limits, liveness.
 
 Full documentation: https://fennecs.net (cookbook, demos for Godot/Stride/

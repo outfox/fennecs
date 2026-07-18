@@ -4,24 +4,44 @@ using System.Collections.Immutable;
 
 namespace fennecs.tests;
 
-public class EntitySpawnerTests
+public class EntityTemplateTests
 {
     [Fact]
-    public void Can_Obtain_Spawner()
+    public void Can_Obtain_Template()
     {
         using var world = new World();
-        using var spawner = world.Entity();
-        Assert.NotNull(spawner);
+        using var template = world.Template();
+        Assert.NotNull(template);
     }
 
     
     [Fact]
-    public void Can_Dispose_Spawner_Once()
+    public void Can_Dispose_Template_Once()
     {
         using var world = new World();
-        var spawner = world.Entity();
-        spawner.Dispose();
-        Assert.Throws<ObjectDisposedException>(spawner.Dispose);
+        var template = world.Template();
+        template.Dispose();
+        Assert.Throws<ObjectDisposedException>(template.Dispose);
+    }
+
+
+    [Fact]
+    public void Disposed_Template_Cannot_Be_Used()
+    {
+        using var world = new World();
+        var template = world.Template();
+        template.Dispose();
+
+        Assert.Throws<ObjectDisposedException>(() => template.Add(123));
+        Assert.Throws<ObjectDisposedException>(() => template.Remove<int>());
+        Assert.Throws<ObjectDisposedException>(() => template.Spawn());
+        Assert.Throws<ObjectDisposedException>(() => template.Spawn(5));
+        Assert.Throws<ObjectDisposedException>(() =>
+        {
+            var wave = new Entity[2];
+            template.Spawn(wave);
+        });
+        Assert.Throws<ObjectDisposedException>(() => template.Needs<int>());
     }
 
     
@@ -29,12 +49,12 @@ public class EntitySpawnerTests
     public void Can_Spawn_One_Entity()
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123);
-        var entity = spawner.Spawn();
+        using var template = world.Template().Add(123);
+        var entity = template.Spawn();
         Assert.Equal(1, world.Count);
         Assert.True(entity.Alive);
         Assert.Equal(123, entity.Ref<int>());
-        spawner.Spawn(1);
+        template.Spawn(1);
         Assert.Equal(2, world.Count);
     }
 
@@ -43,9 +63,9 @@ public class EntitySpawnerTests
     public void Spawn_Returns_Distinct_Entities()
     {
         using var world = new World();
-        using var spawner = world.Entity();
-        var first = spawner.Spawn();
-        var second = spawner.Spawn();
+        using var template = world.Template();
+        var first = template.Spawn();
+        var second = template.Spawn();
         Assert.NotEqual(first, second);
         Assert.True(first.Alive);
         Assert.True(second.Alive);
@@ -56,10 +76,10 @@ public class EntitySpawnerTests
     public void Spawn_Recycles_With_New_Generation()
     {
         using var world = new World();
-        using var spawner = world.Entity();
-        var first = spawner.Spawn();
+        using var template = world.Template();
+        var first = template.Spawn();
         world.Despawn(first);
-        var second = spawner.Spawn();
+        var second = template.Spawn();
         Assert.False(first.Alive);
         Assert.True(second.Alive);
         Assert.NotEqual(first, second);
@@ -77,8 +97,8 @@ public class EntitySpawnerTests
     public void Can_Spawn_Specific_Numbers_of_Entities(int amount)
     {
         using var world = new World();
-        using var spawner = world.Entity();
-        spawner.Spawn(amount);
+        using var template = world.Template();
+        template.Spawn(amount);
         Assert.Equal(amount, world.Count);
     }
 
@@ -92,9 +112,9 @@ public class EntitySpawnerTests
     public void Can_Spawn_With_Component(int amount)
     {
         using var world = new World();
-        using var spawner = world.Entity();
-        spawner.Add(Random.Shared.Next());
-        spawner.Spawn(amount);
+        using var template = world.Template();
+        template.Add(Random.Shared.Next());
+        template.Spawn(amount);
 
         using var query = world.Query<int>().Compile();
         Assert.Equal(amount, query.Count);
@@ -112,12 +132,12 @@ public class EntitySpawnerTests
     public void Can_Add_Component_and_Spawn_Again(int amount)
     {
         using var world = new World();
-        using var spawner = world.Entity();
-        spawner.Add(Random.Shared.Next());
-        spawner.Spawn(amount);
+        using var template = world.Template();
+        template.Add(Random.Shared.Next());
+        template.Spawn(amount);
 
-        spawner.Add(Random.Shared.NextSingle());
-        spawner.Spawn(amount * 2);
+        template.Add(Random.Shared.NextSingle());
+        template.Spawn(amount * 2);
 
         using var query0 = world.Query<int>().Compile();
         using var query1 = world.Query<float>().Compile();
@@ -137,14 +157,14 @@ public class EntitySpawnerTests
     public void Can_Remove_Component_and_Spawn_Again(int amount)
     {
         using var world = new World();
-        using var spawner = world.Entity();
+        using var template = world.Template();
         
-        spawner
+        template
             .Add(Random.Shared.Next())
             .Add(Random.Shared.NextSingle())
             .Spawn(amount);
 
-        spawner.Remove<int>()
+        template.Remove<int>()
             .Spawn(amount);
 
         using var query0 = world.Query<int>().Compile();
@@ -158,10 +178,10 @@ public class EntitySpawnerTests
     public void Safe_to_Spawn_Negative_Amounts()
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123); //Must add Component to cause inner loop to run
-        spawner.Spawn(-1);
-        spawner.Spawn(-2);
-        spawner.Spawn(-69);
+        using var template = world.Template().Add(123); //Must add Component to cause inner loop to run
+        template.Spawn(-1);
+        template.Spawn(-2);
+        template.Spawn(-69);
         
         Assert.Equal(0, world.Count);
     }
@@ -174,15 +194,15 @@ public class EntitySpawnerTests
     public void Can_Add_Plain_Newable()
     {
         using var world = new World();
-        using var spawner1 = world.Entity().Add<Type69>(); 
-        spawner1.Spawn();
+        using var template1 = world.Template().Add<Type69>(); 
+        template1.Spawn();
         
         using var query1 = world.Query<Type69>().Compile();
         Assert.Single(query1);
         Assert.Equal(1, world.Count);
 
-        using var spawner2 = world.Entity().Add<Type42>(); 
-        spawner2.Spawn();
+        using var template2 = world.Template().Add<Type42>(); 
+        template2.Spawn();
         
         using var query2 = world.Query<Type42>().Compile();
         Assert.Single(query2);
@@ -202,15 +222,15 @@ public class EntitySpawnerTests
     {
         using var world = new World();
         var other = world.Spawn();
-        using var spawner1 = world.Entity().Add<Type69>(new(), other); 
-        spawner1.Spawn();
+        using var template1 = world.Template().Add<Type69>(new(), other); 
+        template1.Spawn();
         
         using var query1 = world.Query<Type69>(other).Compile();
         Assert.Single(query1);
         Assert.Equal(2, world.Count);
 
-        using var spawner2 = world.Entity().Add<Type42>(other);  // Newable implcit new()
-        spawner2.Spawn();
+        using var template2 = world.Template().Add<Type42>(other);  // Newable implcit new()
+        template2.Spawn();
         
         using var query2 = world.Query<Type42>(other).Compile();
         Assert.Single(query2);
@@ -230,14 +250,14 @@ public class EntitySpawnerTests
     {
         using var world = new World();
         var other = world.Spawn();
-        using var spawner1 = world.Entity().Add<Type69>(new(), other); 
-        spawner1.Spawn();
+        using var template1 = world.Template().Add<Type69>(new(), other); 
+        template1.Spawn();
         
         using var query1 = world.Query<Type69>(other).Compile();
         Assert.Single(query1);
         Assert.Equal(2, world.Count);
         
-        spawner1.Remove<Type69>(other).Spawn();
+        template1.Remove<Type69>(other).Spawn();
         Assert.Single(query1);
         Assert.Equal(3, world.Count);
     }
@@ -247,14 +267,14 @@ public class EntitySpawnerTests
     {
         using var world = new World();
         var other = world.Spawn();
-        using var spawner1 = world.Entity().Add(Link.With("hello")); 
-        spawner1.Spawn();
+        using var template1 = world.Template().Add(Link.With("hello")); 
+        template1.Spawn();
         
         using var query1 = world.Query<string>(Link.With("hello")).Compile();
         Assert.Single(query1);
         Assert.Equal(2, world.Count);
         
-        spawner1.Remove("hello").Spawn();
+        template1.Remove("hello").Spawn();
         Assert.Single(query1);
         Assert.Equal(3, world.Count);
     }
@@ -267,10 +287,10 @@ public class EntitySpawnerTests
     public void Can_Spawn_Into_Span(int amount)
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123);
+        using var template = world.Template().Add(123);
 
         var entities = new Entity[amount];
-        spawner.Spawn(entities.AsSpan());
+        template.Spawn(entities.AsSpan());
 
         Assert.Equal(amount, world.Count);
         Assert.Equal(amount, entities.ToImmutableSortedSet().Count);
@@ -285,10 +305,10 @@ public class EntitySpawnerTests
     public void Can_Spawn_Into_Stackalloc_Span()
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123);
+        using var template = world.Template().Add(123);
 
         Span<Entity> entities = stackalloc Entity[16];
-        spawner.Spawn(entities);
+        template.Spawn(entities);
 
         Assert.Equal(16, world.Count);
         foreach (var entity in entities) Assert.True(entity.Alive);
@@ -298,8 +318,8 @@ public class EntitySpawnerTests
     public void Empty_Span_Spawns_Nothing()
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123);
-        spawner.Spawn(Span<Entity>.Empty);
+        using var template = world.Template().Add(123);
+        template.Spawn(Span<Entity>.Empty);
         Assert.Equal(0, world.Count);
     }
 
@@ -307,11 +327,11 @@ public class EntitySpawnerTests
     public void Span_Spawn_Is_Fluent()
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123);
+        using var template = world.Template().Add(123);
 
         var first = new Entity[3];
         var second = new Entity[5];
-        spawner.Spawn(first).Add(2.0f).Spawn(second);
+        template.Spawn(first).Add(2.0f).Spawn(second);
 
         using var ints = world.Query<int>().Compile();
         using var floats = world.Query<float>().Compile();
@@ -321,16 +341,16 @@ public class EntitySpawnerTests
     }
 
     [Fact]
-    public void Spawner_Reusable_After_Span_Spawn()
+    public void Template_Reusable_After_Span_Spawn()
     {
         using var world = new World();
-        using var spawner = world.Entity().Add(123);
+        using var template = world.Template().Add(123);
 
         var first = new Entity[4];
-        spawner.Spawn(first);
-        spawner.Spawn(2);
+        template.Spawn(first);
+        template.Spawn(2);
         var second = new Entity[4];
-        spawner.Spawn(second);
+        template.Spawn(second);
 
         Assert.Equal(10, world.Count);
         Assert.Equal(8, first.Concat(second).ToImmutableSortedSet().Count);
@@ -340,14 +360,14 @@ public class EntitySpawnerTests
     public void Span_Spawn_Recycles_With_New_Generations()
     {
         using var world = new World();
-        using var spawner = world.Entity();
+        using var template = world.Template();
 
         var first = new Entity[10];
-        spawner.Spawn(first.AsSpan());
+        template.Spawn(first.AsSpan());
         world.Despawn(first);
 
         var second = new Entity[10];
-        spawner.Spawn(second.AsSpan());
+        template.Spawn(second.AsSpan());
 
         Assert.All(first, entity => Assert.False(entity.Alive));
         Assert.All(second, entity => Assert.True(entity.Alive));
@@ -364,12 +384,12 @@ public class EntitySpawnerTests
         var visuals = world.AddAspect("visuals").Owns<Position>();
         var game = world.AddAspect("game").Owns<CrewData>();
 
-        using var spawner = world.Entity()
+        using var template = world.Template()
             .Add(new Position(1, 2))
             .Add(new CrewData(5));
 
         var entities = new Entity[100];
-        spawner.Spawn(entities.AsSpan());
+        template.Spawn(entities.AsSpan());
 
         Assert.Equal(100, world.Count);
         Assert.Equal(100, visuals.Count);

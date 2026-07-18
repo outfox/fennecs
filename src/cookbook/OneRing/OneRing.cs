@@ -4,17 +4,17 @@ if (!Console.IsOutputRedirected) Console.Clear();
 
 var world = new World();
 
-world.Entity() // Three Rings for the Elven-kings under the sky,
+world.Template() // Three Rings for the Elven-kings under the sky,
     .Add(new RingBearer("elven"))
     .Add(Link.With(OneRing.Instance)) // One Ring to rule them all,
     .Spawn(3);
 
-world.Entity() //Seven for the Dwarf-lords in their halls of stone,
+world.Template() //Seven for the Dwarf-lords in their halls of stone,
     .Add(new RingBearer("dwarven"))
     .Add(Link.With(OneRing.Instance)) // One Ring to find them,
     .Spawn(7);
 
-world.Entity() //Nine for Mortal Men doomed to die...
+world.Template() //Nine for Mortal Men doomed to die...
     .Add(new RingBearer("human"))     // ("Human Rings"? I like it!)
     .Add(Link.With(OneRing.Instance)) // One Ring to bring them all, 
     .Spawn(9);

@@ -66,15 +66,15 @@ public class CrossWorldRelationTests
 
 
     [Fact]
-    public void Spawner_Rejects_Foreign_Relation_Target()
+    public void Template_Rejects_Foreign_Relation_Target()
     {
         using var world1 = new World(0);
         using var world2 = new World(0);
 
         var foreign = world2.Spawn();
 
-        using var spawner = world1.Entity().Add(123, foreign);
-        Assert.Throws<InvalidOperationException>(() => spawner.Spawn(1));
+        using var template = world1.Template().Add(123, foreign);
+        Assert.Throws<InvalidOperationException>(() => template.Spawn(1));
     }
 
 

@@ -10,7 +10,7 @@ public sealed class ArchExample
     {     
         // Create a world and Entities with position and velocity.
         var world = new World();
-        world.Entity()
+        world.Template()
             .Add(default(Position))
             .Add(new Velocity(1,1))
             .Spawn(1000); //can also world.Spawn().Add<...> 1000 times

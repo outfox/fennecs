@@ -28,7 +28,7 @@ In this example, we create a new entity using `World.Spawn()` and add two compon
 The handle you get back is a plain `Entity` value — store it in variables, collections, or even as a component on another entity. It stays valid until the entity [despawns](Despawning.md), and it always knows whether it's still [alive](Liveness.md).
 
 ::: info :neofox_think: Paws for Thought: Archetype Churning
-Each `Add` call moves the entity to a new archetype. For simple entities, this is fine! But for complex entities with many components — or when spawning whole waves — reach for the [`EntitySpawner`](/docs/Advanced/BulkSpawn.md) instead, which spawns entities directly into their final archetype.
+Each `Add` call moves the entity to a new archetype. For simple entities, this is fine! But for complex entities with many components — or when spawning whole waves — reach for the [`EntityTemplate`](/docs/Entities/Templates.md) instead, which spawns entities directly into their final archetype.
 :::
 
 ## Quick Reference
@@ -37,10 +37,10 @@ Each `Add` call moves the entity to a new archetype. For simple entities, this i
 |----------|-------------|
 | Single entity, few components | `World.Spawn()` |
 | Prototyping/debugging | `World.Spawn()` |
-| Single entity, many components | [`EntitySpawner`](/docs/Advanced/BulkSpawn.md) |
-| Bulk spawning (10+ entities) | [`EntitySpawner`](/docs/Advanced/BulkSpawn.md) |
-| Entity templates/factories | [`EntitySpawner`](/docs/Advanced/BulkSpawn.md) |
+| Single entity, many components | [`EntityTemplate`](/docs/Entities/Templates.md) |
+| Bulk spawning (10+ entities) | [`EntityTemplate`](/docs/Entities/Templates.md) |
+| Entity templates/factories | [`EntityTemplate`](/docs/Entities/Templates.md) |
 
 ::: tip :neofox_science: Need a Wave, not a Fox?
-[Bulk Spawn](/docs/Advanced/BulkSpawn.md) covers the `EntitySpawner`: reusable templates, spawning 100,000 entities in one call, and getting all their handles delivered straight into your `Span<Entity>`.
+[Templates](/docs/Entities/Templates.md) covers the `EntityTemplate`: reusable templates, spawning 100,000 entities in one call, and getting all their handles delivered straight into your `Span<Entity>`.
 :::
