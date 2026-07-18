@@ -19,7 +19,7 @@ TODOs.md
 # IDE & agent litter
 .codebuffignore
 knowledge.md
-AGENTS.md
+/AGENTS.md
 .agents/
 .codebuff/
 .devcontainer/

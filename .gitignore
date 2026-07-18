@@ -20,6 +20,8 @@ AGENTS.md
 CLAUDE.md
 .agents/
 .codebuff/
+# doc content page; on case-insensitive systems git matches it against AGENTS.md above
+!doc/cookbook/mise-en-place/Agents.md
 
 # Godot and other backups
 *.old
