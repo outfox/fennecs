@@ -14,7 +14,7 @@ Seriously, we won't judge. We're all adults here; adulterate your code as you pl
 
 ## Installing the Skill
 
-Voilá: le official **fenn**ecs **skill**  –  a compact, source-verified
+Voilà: le official **fenn**ecs **skill**  –  a compact, source-verified
 guide to the **fenn**ecs API that turns your coding agent (Claude Code, and
 friends) into a seasoned **fenn**ecs chef. Every snippet in it is compiled and
 run against the actual library before release.
