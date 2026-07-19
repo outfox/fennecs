@@ -10,14 +10,14 @@ description: How to install the official fennecs skill for AI coding agents like
 
 :::info :neofox_wink:
 Seriously, we won't judge. We're all adults here; adulterate your code as you please.
-
-Below is the official **fenn**ecs **skill**  –  a compact, source-verified
-guide to the **fenn**ecs API that turns your coding agent (Claude Code, and
-friends) into a seasoned **fenn**ecs chef. Every snippet in it is compiled and
-run against the actual library before release.
 :::
 
 ## Installing the Skill
+
+Voilá: le official **fenn**ecs **skill**  –  a compact, source-verified
+guide to the **fenn**ecs API that turns your coding agent (Claude Code, and
+friends) into a seasoned **fenn**ecs chef. Every snippet in it is compiled and
+run against the actual library before release.
 
 The skill is four Markdown files: `SKILL.md` plus three reference files it links to.
 
