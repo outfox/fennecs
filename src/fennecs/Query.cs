@@ -50,7 +50,7 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     public bool Contains<T>(Match match = default)
     {
         var typeExpression = TypeExpression.Of<T>(match);
-        return Archetypes.Any(a => typeExpression.Matches(a.MatchSignature));
+        return Archetypes.Any(a => a.Matches(typeExpression));
     }
 
 
@@ -111,11 +111,17 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// </summary>
     internal readonly Mask Mask;
 
+    /// <summary>
+    /// The Mask compiled to bit-testable form, cached for matching newly created Archetypes.
+    /// </summary>
+    internal readonly MaskBits MaskBits;
+
     internal Query(Aspect aspect, Mask mask, SortedSet<Archetype> matchingTables)
     {
         Archetypes = matchingTables;
         Aspect = aspect;
         Mask = mask;
+        MaskBits = MaskBits.Of(mask);
     }
 
     #endregion

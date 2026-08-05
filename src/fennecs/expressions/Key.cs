@@ -156,6 +156,12 @@ internal readonly record struct Key : IComparable<Key>
     /// <summary>Wildcard: matches only Entity-Object Link targets.</summary>
     public static Key AnyObject => new((ulong)SecondaryKind.Object << KindShift);
 
+    /// <summary>
+    /// Wildcard: matches plain Components of the expression's type OR any type derived from it.
+    /// Inheritance-aware matching happens in <see cref="ArchetypeBits"/>; filter-only, never a Stream Type.
+    /// </summary>
+    public static Key Family => new((ulong)SecondaryKind.Family << KindShift);
+
     #endregion
 
 

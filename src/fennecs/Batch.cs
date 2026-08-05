@@ -64,7 +64,7 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
             throw new InvalidOperationException($"Duplicate addition {typeExpression} : {data}  in same batch!");
 
         // Matches is checked both ways so Wildcard removals conflict with concrete additions of the same type.
-        if (typeExpression.Matches(Removals))
+        if (ConflictsWith(typeExpression, Removals))
             throw new InvalidOperationException($"Addition {typeExpression} conflicts with removal  in same batch!");
 
         Additions.Add(typeExpression);
@@ -84,7 +84,7 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
                 $"TypeExpression {typeExpression} is not included via Has<T> or Any<T> by this Query/Mask, removals could cause unintended runtime state. See QueryBuilder.Has<T>(). See RemoveConflict.Disallow, RemoveConflict.Skip.");
 
         // Matches is checked both ways so Wildcard removals conflict with concrete additions of the same type.
-        if (typeExpression.Matches(Additions))
+        if (ConflictsWith(typeExpression, Additions))
             throw new InvalidOperationException($"Removal of {typeExpression} conflicts with addition in same batch!");
 
         if (Removals.Contains(typeExpression))
@@ -92,6 +92,18 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
 
         Removals.Add(typeExpression);
         return this;
+    }
+
+
+    // Pairwise, both directions: optimal for the handful of operations a single Batch accumulates.
+    private static bool ConflictsWith(TypeExpression expression, PooledList<TypeExpression> others)
+    {
+        foreach (var other in others)
+        {
+            if (expression.Equals(other) || expression.Matches(other) || other.Matches(expression)) return true;
+        }
+
+        return false;
     }
 
 

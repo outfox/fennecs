@@ -274,13 +274,28 @@ public class TypeExpressionTests(ITestOutputHelper output)
     [Fact]
     public void Forged_Wildcard_Matches_only_Itself()
     {
-        // A Wildcard nibble outside the recognized categories (reserved: Family).
-        var forged = new Key((ulong)SecondaryKind.Family << Key.KindShift);
+        // A Wildcard nibble outside the recognized categories (reserved: Data).
+        var forged = new Key((ulong)SecondaryKind.Data << Key.KindShift);
         Assert.True(forged.IsWildcard);
 
         var expression = new TypeExpression(PrimaryKind.Data, (TypeID)5, forged);
         Assert.True(expression.Matches(expression));
         Assert.False(expression.Matches(new TypeExpression(PrimaryKind.Data, (TypeID)5, Key.Plain)));
+    }
+
+
+    [Fact]
+    public void Family_Wildcard_Pairwise_Matches_Plain_Of_Its_Type()
+    {
+        // Pairwise Family semantics cover only the same TypeId (self); derived-type
+        // matching crosses TypeIds and is handled by ArchetypeBits.
+        var family = new TypeExpression(PrimaryKind.Data, (TypeID)5, Key.Family);
+        var plain = new TypeExpression(PrimaryKind.Data, (TypeID)5, Key.Plain);
+        var otherPlain = new TypeExpression(PrimaryKind.Data, (TypeID)6, Key.Plain);
+
+        Assert.True(family.Matches(plain));
+        Assert.False(family.Matches(otherPlain));
+        Assert.False(plain.Matches(family));
     }
 
 

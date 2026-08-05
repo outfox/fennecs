@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Collections;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using fennecs.pools;
@@ -20,9 +21,9 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     internal readonly Signature Signature;
 
     /// <summary>
-    /// Expanded Signature with all Wildcards resolved for fast, set-level matching.
+    /// The Signature in bit-testable form: per-key-kind TypeId planes plus a keyed-expression bloom.
     /// </summary>
-    internal readonly Signature MatchSignature;
+    internal readonly ArchetypeBits Bits;
 
     /// <summary>
     /// Actual Component data storages. It' is a fixed size array because an Archetype doesn't change.
@@ -68,7 +69,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         Storages = new IStorage[signature.Count];
 
         Signature = signature;
-        MatchSignature = signature.Expand();
+        Bits = new(signature);
 
         // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
         for (var index = 0; index < signature.Count; index++)
@@ -109,30 +110,10 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
-    internal bool Matches(TypeExpression type)
-    {
-        var yes = MatchSignature.Matches(type);
-        return yes;
-    }
+    internal bool Matches(TypeExpression type) => Bits.MatchesElement(type);
 
 
-    // A method that checks if a given Mask parameter matches certain criteria using boolean logic and short circuiting.
-    internal bool Matches(Mask mask)
-    {
-        //Not overrides both Any and Has.
-        var matchesNot = !MatchSignature.Matches(mask.NotTypes);
-        if (!matchesNot) return false;
-
-        //If already matching, no need to check any further. 
-        var matchesHas = MatchSignature.IsSupersetOf(mask.HasTypes);
-        if (!matchesHas) return false;
-
-        //Short circuit to avoid enumerating all AnyTypes if already matching; or if none present.
-        var matchesAny = mask.AnyTypes.Count == 0;
-        matchesAny |= MatchSignature.Matches(mask.AnyTypes);
-
-        return matchesHas && matchesNot && matchesAny;
-    }
+    internal bool Matches(in MaskBits mask) => Bits.Matches(mask);
 
     /// <summary>
     /// Remove one or more Entities and all associated Component data from the Archetype.
@@ -313,7 +294,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
     /// <summary>
     /// Does this Archetype have a storage for the given concrete (non-wildcard) expression?
-    /// (a single dictionary probe — for wildcards, match against <see cref="MatchSignature"/> instead)
+    /// (a single dictionary probe — for wildcards, match against <see cref="Bits"/> instead)
     /// </summary>
     internal bool HasStorage(TypeExpression typeExpression) => _storageIndices.ContainsKey(typeExpression);
 

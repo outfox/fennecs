@@ -38,11 +38,21 @@ internal class LanguageType
     // live here instead of inside the packed TypeExpression)
     private static readonly TypeFlags[] FlagTable = new TypeFlags[AnyId + 1];
 
+    // Side-table of registered base-class TypeIds per TypeId, nearest first; null = none.
+    // Feeds Match.Family (inheritance-aware) matching. Interfaces are not seeded (policy choice).
+    private static readonly TypeID[]?[] AncestorTable = new TypeID[]?[AnyId + 1];
+
 
     /// <summary>
     /// The <see cref="TypeFlags"/> of the type registered with the given TypeId.
     /// </summary>
     internal static TypeFlags FlagsById(TypeID typeId) => FlagTable[typeId];
+
+
+    /// <summary>
+    /// The TypeIds of the registered type's base classes, nearest first. (empty for structs)
+    /// </summary>
+    internal static ReadOnlySpan<TypeID> AncestorsById(TypeID typeId) => AncestorTable[typeId] ?? [];
 
 
     protected internal static TypeID Identify(Type type)
@@ -101,6 +111,23 @@ internal class LanguageType
     }
 
     protected static void StoreFlags(TypeID id, TypeFlags flags) => FlagTable[id] = flags;
+
+
+    // Walks the base-class chain, registering each ancestor. (framework roots are not Components)
+    protected static void StoreAncestors(TypeID id, Type type)
+    {
+        List<TypeID>? ancestors = null;
+
+        for (var baseType = type.BaseType;
+             baseType is not null
+             && baseType != typeof(object) && baseType != typeof(ValueType) && baseType != typeof(Enum);
+             baseType = baseType.BaseType)
+        {
+            (ancestors ??= []).Add(Identify(baseType));
+        }
+
+        if (ancestors is not null) AncestorTable[id] = ancestors.ToArray();
+    }
 }
 
 internal class LanguageType<T> : LanguageType
@@ -132,6 +159,7 @@ internal class LanguageType<T> : LanguageType
             }
 
             StoreFlags(Id, ComputeFlags<T>());
+            StoreAncestors(Id, typeof(T));
         }
     }
 }

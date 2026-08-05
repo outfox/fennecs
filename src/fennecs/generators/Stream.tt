@@ -107,6 +107,15 @@ namespace fennecs
             StreamTypes = ImmutableArray.Create(
 <# for (var i = 0; i < n; i++) { #>                TypeExpression.Of<C<#= i #>>(match<#= i #>)<#= i < n - 1 ? "," : "" #>
 <# } #>);
+
+            foreach (var type in StreamTypes)
+            {
+                if (type.Key == Key.Family)
+                    throw new InvalidOperationException(
+                        $"Match.Family cannot be a Stream Type ({type}): derived Component storages cannot be " +
+                        "iterated as their base type. Use Match.Family in Has/Not/Any filters instead.");
+            }
+
             Query = query;
         }
         #endregion

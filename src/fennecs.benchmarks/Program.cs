@@ -24,6 +24,7 @@ BenchmarkSwitcher.FromTypes(
 [
     //typeof(DorakuBenchmarks),
     //typeof(FilterBenchmarks),
+    typeof(ArchetypeMatchingBenchmarks),
     typeof(AspectFragmentationBenchmarks),
     typeof(MicrocodeBenchmarks),
     typeof(SimpleEntityBenchmarks),

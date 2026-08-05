@@ -99,8 +99,8 @@ public partial class Aspect
         // Concrete expressions are exactly the Archetype's storage keys: one dictionary probe.
         if (!typeExpression.isWildcard) return archetype.HasStorage(typeExpression);
 
-        // Wildcards match against the expanded signature (which contains the wildcard entries).
-        return typeExpression.Matches(archetype.MatchSignature);
+        // Wildcards match against the per-kind TypeId presence planes.
+        return archetype.Matches(typeExpression);
     }
 
 

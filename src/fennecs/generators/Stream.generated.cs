@@ -56,6 +56,15 @@ namespace fennecs
             StreamTypes = ImmutableArray.Create(
                 TypeExpression.Of<C0>(match0)
 );
+
+            foreach (var type in StreamTypes)
+            {
+                if (type.Key == Key.Family)
+                    throw new InvalidOperationException(
+                        $"Match.Family cannot be a Stream Type ({type}): derived Component storages cannot be " +
+                        "iterated as their base type. Use Match.Family in Has/Not/Any filters instead.");
+            }
+
             Query = query;
         }
         #endregion
@@ -509,6 +518,15 @@ namespace fennecs
                 TypeExpression.Of<C0>(match0),
                 TypeExpression.Of<C1>(match1)
 );
+
+            foreach (var type in StreamTypes)
+            {
+                if (type.Key == Key.Family)
+                    throw new InvalidOperationException(
+                        $"Match.Family cannot be a Stream Type ({type}): derived Component storages cannot be " +
+                        "iterated as their base type. Use Match.Family in Has/Not/Any filters instead.");
+            }
+
             Query = query;
         }
         #endregion
@@ -988,6 +1006,15 @@ namespace fennecs
                 TypeExpression.Of<C1>(match1),
                 TypeExpression.Of<C2>(match2)
 );
+
+            foreach (var type in StreamTypes)
+            {
+                if (type.Key == Key.Family)
+                    throw new InvalidOperationException(
+                        $"Match.Family cannot be a Stream Type ({type}): derived Component storages cannot be " +
+                        "iterated as their base type. Use Match.Family in Has/Not/Any filters instead.");
+            }
+
             Query = query;
         }
         #endregion
@@ -1493,6 +1520,15 @@ namespace fennecs
                 TypeExpression.Of<C2>(match2),
                 TypeExpression.Of<C3>(match3)
 );
+
+            foreach (var type in StreamTypes)
+            {
+                if (type.Key == Key.Family)
+                    throw new InvalidOperationException(
+                        $"Match.Family cannot be a Stream Type ({type}): derived Component storages cannot be " +
+                        "iterated as their base type. Use Match.Family in Has/Not/Any filters instead.");
+            }
+
             Query = query;
         }
         #endregion
@@ -2024,6 +2060,15 @@ namespace fennecs
                 TypeExpression.Of<C3>(match3),
                 TypeExpression.Of<C4>(match4)
 );
+
+            foreach (var type in StreamTypes)
+            {
+                if (type.Key == Key.Family)
+                    throw new InvalidOperationException(
+                        $"Match.Family cannot be a Stream Type ({type}): derived Component storages cannot be " +
+                        "iterated as their base type. Use Match.Family in Has/Not/Any filters instead.");
+            }
+
             Query = query;
         }
         #endregion

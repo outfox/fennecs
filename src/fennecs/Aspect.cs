@@ -233,7 +233,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
         // identifies them just by their Signature root. (?)
         foreach (var query in _queries)
         {
-            if (table.Matches(query.Mask))
+            if (table.Matches(query.MaskBits))
             {
                 query.TrackArchetype(table);
             }
@@ -340,7 +340,8 @@ public sealed partial class Aspect : IEnumerable<Entity>
         // var copy = mask.Clone(); <-- even just copying here hides the race condition
 
         // Create a new query and cache it.
-        var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(mask)));
+        var maskBits = MaskBits.Of(mask);
+        var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(maskBits)));
 
         var copy = mask.Clone();
         query = new(this, copy, matchingTables);
