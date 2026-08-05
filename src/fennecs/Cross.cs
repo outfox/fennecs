@@ -537,5 +537,94 @@ public static class Cross
 
     #endregion
 
+
+    #region Read Join
+
+    /// <summary>
+    /// Read-only Cross-Join over untyped storages: serves every stream type form, including
+    /// <see cref="fennecs.Match.Family"/>, whose derived storages are viewed covariantly as their base type.
+    /// </summary>
+    internal readonly struct ReadJoin : IDisposable
+    {
+        private readonly int[] _counter;
+        private readonly int[] _limiter;
+
+        private readonly PooledList<IStorage> _storages0;
+        private readonly PooledList<IStorage>? _storages1;
+        private readonly PooledList<IStorage>? _storages2;
+        private readonly PooledList<IStorage>? _storages3;
+        private readonly PooledList<IStorage>? _storages4;
+
+        private readonly int _arity;
+        private readonly bool _populated;
+
+
+        internal ReadJoin(Archetype archetype, ReadOnlySpan<TypeExpression> streamTypes)
+        {
+            Debug.Assert(streamTypes.Length is >= 1 and <= 5, "Unsupported stream type arity.");
+
+            _arity = streamTypes.Length;
+            _counter = ArrayPool.Rent(_arity);
+            _limiter = ArrayPool.Rent(_arity);
+            _populated = true;
+
+            _storages0 = archetype.MatchReadable(streamTypes[0]);
+            if (_arity > 1) _storages1 = archetype.MatchReadable(streamTypes[1]);
+            if (_arity > 2) _storages2 = archetype.MatchReadable(streamTypes[2]);
+            if (_arity > 3) _storages3 = archetype.MatchReadable(streamTypes[3]);
+            if (_arity > 4) _storages4 = archetype.MatchReadable(streamTypes[4]);
+
+            for (var slot = 0; slot < _arity; slot++)
+            {
+                _counter[slot] = 0;
+                _limiter[slot] = Slot(slot).Count;
+                _populated &= _limiter[slot] > 0;
+            }
+        }
+
+
+        private PooledList<IStorage> Slot(int slot) => slot switch
+        {
+            0 => _storages0,
+            1 => _storages1!,
+            2 => _storages2!,
+            3 => _storages3!,
+            _ => _storages4!,
+        };
+
+
+        /// <summary>Read-only view of the current permutation's storage for the given slot, as C.</summary>
+        internal ReadOnlySpan<C> Span<C>(int slot) => Slot(slot)[_counter[slot]].ReadAs<C>();
+
+        /// <summary>Single element of the current permutation's storage for the given slot, as C.</summary>
+        internal C Get<C>(int slot, int row) => Slot(slot)[_counter[slot]].GetAs<C>(row);
+
+
+        internal bool Iterate()
+        {
+            Debug.Assert(_counter.Length >= _arity && _limiter.Length >= _arity);
+            return FullPermutation(_counter.AsSpan(0, _arity), _limiter.AsSpan(0, _arity));
+        }
+
+
+        internal bool Empty => !_populated;
+
+
+        public void Dispose()
+        {
+            if (_counter is null) return;
+
+            _storages0.Dispose();
+            _storages1?.Dispose();
+            _storages2?.Dispose();
+            _storages3?.Dispose();
+            _storages4?.Dispose();
+            ArrayPool.Return(_counter);
+            ArrayPool.Return(_limiter);
+        }
+    }
+
+    #endregion
+
     private static readonly ArrayPool<int> ArrayPool = ArrayPool<int>.Create();
 }

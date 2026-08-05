@@ -122,13 +122,119 @@ public class FamilyMatchTests
     }
 
 
+    private class Counter
+    {
+        public int Value;
+    }
+
+
     [Fact]
-    public void Family_As_Stream_Type_Throws()
+    public void Family_Stream_Readonly_For_Visits_Self_And_Derived()
+    {
+        using var world = new World();
+        world.Spawn().Add(new Animal());
+        world.Spawn().Add(new Fox());
+        world.Spawn().Add(new Fennec());
+        world.Spawn().Add(new Rock());
+
+        var stream = world.Query<Animal>(Match.Family).Stream();
+
+        var visited = 0;
+        var fennecs = 0;
+        stream.ForRead((in Animal animal) =>
+        {
+            visited++;
+            if (animal is Fennec) fennecs++;
+        });
+
+        Assert.Equal(3, visited);
+        Assert.Equal(1, fennecs);
+    }
+
+
+    [Fact]
+    public void Family_Stream_Readonly_For_Mutates_Through_Base_Reference()
+    {
+        using var world = new World();
+        world.Spawn().Add(new Counter());
+
+        var derived = new DerivedCounter();
+        world.Spawn().Add(derived);
+
+        var stream = world.Query<Counter>(Match.Family).Stream();
+        stream.ForRead((in Counter counter) => counter.Value++);
+
+        Assert.Equal(1, derived.Value);
+    }
+
+    private class DerivedCounter : Counter;
+
+
+    [Fact]
+    public void Family_Stream_Readonly_For_Uniform_And_Entity_Variants()
+    {
+        using var world = new World();
+        world.Spawn().Add(new Fox());
+        world.Spawn().Add(new Fennec());
+
+        var stream = world.Query<Fox>(Match.Family).Stream();
+
+        var sum = new Counter();
+        stream.ForRead(sum, (Counter uniform, in Fox _) => uniform.Value++);
+        Assert.Equal(2, sum.Value);
+
+        var entities = new List<Entity>();
+        stream.ForRead((in EntityRef entity, in Fox _) => entities.Add(entity));
+        Assert.Equal(2, entities.Count);
+        Assert.Equal(2, entities.Distinct().Count());
+    }
+
+
+    [Fact]
+    public void Family_Stream_Enumeration_Yields_Derived_As_Base()
+    {
+        using var world = new World();
+        world.Spawn().Add(new Fox());
+        world.Spawn().Add(new Fennec());
+
+        var stream = world.Query<Animal>(Match.Family).Stream();
+
+        var animals = stream.Select(tuple => tuple.Item2).ToList();
+        Assert.Equal(2, animals.Count);
+        Assert.Contains(animals, animal => animal is Fennec);
+        Assert.Contains(animals, animal => animal is Fox and not Fennec);
+    }
+
+
+    [Fact]
+    public void Family_Struct_Stream_Behaves_As_Plain()
+    {
+        using var world = new World();
+        world.Spawn().Add(new Pebble());
+
+        var stream = world.Query<Pebble>(Match.Family).Stream();
+
+        var visited = 0;
+        stream.ForRead((in Pebble _) => visited++);
+        Assert.Equal(1, visited);
+    }
+
+
+    [Fact]
+    public void Family_Stream_Guards_Writable_Surfaces()
     {
         using var world = new World();
         world.Spawn().Add(new Animal());
 
-        Assert.Throws<InvalidOperationException>(() => world.Query<Animal>(Match.Family).Stream());
+        var stream = world.Query<Animal>(Match.Family).Stream();
+
+        Assert.Throws<InvalidOperationException>(() => stream.For((ref Animal _) => { }));
+        Assert.Throws<InvalidOperationException>(() => stream.For(0, (int _, ref Animal _) => { }));
+        Assert.Throws<InvalidOperationException>(() => stream.Raw(_ => { }));
+        Assert.Throws<InvalidOperationException>(() => stream.Blit(new Animal()));
+        Assert.Throws<InvalidOperationException>(() => stream.Has(Comp<Rock>.Plain));
+        Assert.Throws<InvalidOperationException>(() => stream.Not(Comp<Rock>.Plain));
+        Assert.Throws<InvalidOperationException>(() => stream.Job((ref Animal _) => { }));
     }
 
 

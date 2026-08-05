@@ -35,6 +35,7 @@ Match Expressions define which Entities your Query contains  –  by the Compone
 | `Match.Target` | Match any actual target (Object or Entity) |
 | `Match.Object` | Match only Object Links |
 | `Match.Entity` | Match only Entity Relations |
+| `Match.Family` | Match plain components of the type *or any type derived from it* |
 :::
 
 ## Two Intertwined Concepts
@@ -145,6 +146,7 @@ In ECS, the presence of a component often carries meaning in itself. Queries exp
 | `Match.Target` | Any actual target (Object or Entity, not Plain) |
 | `Match.Object` | Only Object Links |
 | `Match.Entity` | Only Entity Relations |
+| `Match.Family` | Plain components of the type *or any derived type* (see below) |
 
 ```cs
 // Match entities with any Damage relation (to any entity)
@@ -160,6 +162,49 @@ var followersOfBob = world.Query<Position>()
 
 ::: info :neofox_knives: WILDCARDS CUT BOTH WAYS
 Wildcards aren't just for matching – [`Remove<C>(Match)`](/docs/Basic/Entities/ComponentRemove.md#removing-with-wildcards) accepts them on Entities, EntityRefs (inside runners), Batches, and Templates to strip all matching components at once.
+:::
+
+### Inheritance-Aware Matching (Family)
+
+`Match.Family` matches plain components of the given type **or any type derived from it** — the type
+itself included. Base classes are registered automatically from each component type's inheritance
+chain (base classes only; interfaces do not participate).
+
+```cs
+class Animal { public int Age; }
+class Fox : Animal;
+class Fennec : Fox;
+
+// Matches entities carrying Animal, Fox, or Fennec as a plain component.
+var animals = world.Query()
+    .Has<Animal>(Match.Family)
+    .Compile();
+
+// Works in Not/Any clauses and stream filters, too.
+var noAnimals = stream.Not(Comp<Animal>.Matching(Match.Family));
+```
+
+As a **Stream Type**, `Match.Family` delivers derived components *viewed as their base type* —
+read-only. Use the `ForRead` runners (components arrive as `in` parameters) or enumeration:
+
+```cs
+var stream = world.Query<Animal>(Match.Family).Stream();
+
+// Fox and Fennec components arrive as Animal references; mutate them through their members.
+stream.ForRead((in Animal animal) => animal.Age++);
+
+foreach (var (entity, animal) in stream) { /* animal may be a Fennec */ }
+```
+
+::: warning :neofox_think: READ-ONLY REFERENCES
+A `Storage<Fennec>` holds only Fennecs, so a Family Stream Type can never hand out a *writable*
+`ref Animal` — writing a plain `Animal` into that slot would corrupt the storage. Family streams
+therefore offer only `ForRead` (mutate class components in place through `in` references; the
+component slot itself cannot be reassigned) and enumeration. The `ref`-based `For`, `Job`, `Raw`,
+`Blit`, and `FilteredStream` views throw on Family streams.
+
+`Match.Family` also matches **plain components only** — never Entity Relations or Object Links. On
+structs (which have no user base classes) it degrades to matching the type itself.
 :::
 
 ## Conflicting Match Expressions

@@ -110,6 +110,53 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     }
 
 
+    /// <summary>
+    /// Resolves the storages matched by any expression form — including Family, which admits plain
+    /// storages of derived types — as untyped storages for read-only (covariant) access.
+    /// </summary>
+    internal PooledList<IStorage> MatchReadable(TypeExpression expression)
+    {
+        var result = PooledList<IStorage>.Rent();
+
+        if (expression.Key == Key.Family)
+        {
+            foreach (var (type, index) in _storageIndices)
+            {
+                if (type.Key != default) continue;
+                if (type.TypeId == expression.TypeId)
+                {
+                    result.Add(Storages[index]);
+                    continue;
+                }
+
+                foreach (var ancestor in LanguageType.AncestorsById(type.TypeId))
+                {
+                    if (ancestor != expression.TypeId) continue;
+                    result.Add(Storages[index]);
+                    break;
+                }
+            }
+        }
+        else if (expression.isWildcard)
+        {
+            foreach (var (type, index) in _storageIndices)
+            {
+                if (expression.Matches(type)) result.Add(Storages[index]);
+            }
+        }
+        else if (TryGetStorage(expression, out var storage))
+        {
+            result.Add(storage);
+        }
+
+        return result;
+    }
+
+
+    internal Cross.ReadJoin CrossJoinRead(ReadOnlySpan<TypeExpression> streamTypes) =>
+        IsEmpty ? default : new(this, streamTypes);
+
+
     internal bool Matches(TypeExpression type) => Bits.MatchesElement(type);
 
 
