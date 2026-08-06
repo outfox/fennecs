@@ -71,13 +71,12 @@ public class ArchetypeMatchingBenchmarks
             if (i % 3 == 0) entity.Add(new DerivedThing());
         }
 
-        var query = _world.Query().Has<Position>().Compile();
-        _archetypes = query.Archetypes.ToArray();
-        _expanded = _archetypes.Select(archetype => Expand(archetype.Signature)).ToArray();
-
         _filtered = _world.Query<Position>().Stream()
             .Has(Comp<Tagged>.Plain)
             .Not(Comp<DerivedThing>.Matching(Match.Any));
+
+        _archetypes = _filtered.Stream.Query.Archetypes.ToArray();
+        _expanded = _archetypes.Select(archetype => Expand(archetype.Signature)).ToArray();
 
         // Composite: plain Has + plain Not + Entity-wildcard Has.
         var composite = new Mask()

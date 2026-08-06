@@ -269,6 +269,7 @@ internal readonly struct KeyBloom
         var bit2 = (int)((hash >> 8) & 255);
 
         Span<ulong> lanes = stackalloc ulong[4];
+        lanes.Clear();
         lanes[bit1 >> 6] |= 1ul << bit1;
         lanes[bit2 >> 6] |= 1ul << bit2;
 
