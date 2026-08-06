@@ -318,37 +318,46 @@ public sealed partial class Aspect : IEnumerable<Entity>
 
     internal Query CompileQuery(Mask mask)
     {
+        var copy = mask.Clone();
+
         // Return cached query if available.
-        if (_queryCache.TryGetValue(mask.GetHashCode(), out var query)) return query;
-
-        // A Query matches Archetypes of exactly one Aspect; reject types stored elsewhere.
-        // (cached queries were already validated when first compiled)
-        foreach (var type in mask.HasTypes.Concat(mask.NotTypes).Concat(mask.AnyTypes))
+        if (_queryCache.TryGetValue(copy.GetHashCode(), out var query))
         {
-            if (type.TypeId == LanguageType.EntityId) continue;
-
-            var owner = World.AspectOf(type);
-            if (owner == this) continue;
-
-            throw new InvalidOperationException(
-                $"Query on Aspect \"{Name}\" includes {type}, which is stored in Aspect \"{owner.Name}\". " +
-                "A Query can only match Component types of a single Aspect.");
+            copy.Dispose();
+            return query;
         }
 
-        //TODO: if we operate on the mask itself, modifications to that mask downstream cause issues.
-        //The mask should not be modifiable outside of that scope, so there's an upstream bug.
-        // var copy = mask.Clone(); <-- even just copying here hides the race condition
+        try
+        {
+            // A Query matches Archetypes of exactly one Aspect; reject types stored elsewhere.
+            // (cached queries were already validated when first compiled)
+            foreach (var type in copy.HasTypes.Concat(copy.NotTypes).Concat(copy.AnyTypes))
+            {
+                if (type.TypeId == LanguageType.EntityId) continue;
 
-        // Create a new query and cache it.
-        var maskBits = MaskBits.Of(mask);
-        var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(maskBits)));
+                var owner = World.AspectOf(type);
+                if (owner == this) continue;
 
-        var copy = mask.Clone();
-        query = new(this, copy, matchingTables);
+                throw new InvalidOperationException(
+                    $"Query on Aspect \"{Name}\" includes {type}, which is stored in Aspect \"{owner.Name}\". " +
+                    "A Query can only match Component types of a single Aspect.");
+            }
 
-        _queries.Add(query);
-        _queryCache.Add(copy.GetHashCode(), query);
-        return query;
+            // Create a new query and cache it.
+            var maskBits = copy.Bits;
+            var matchingTables = new SortedSet<Archetype>(_archetypes.Where(table => table.Matches(maskBits)));
+
+            query = new(this, copy, maskBits, matchingTables);
+
+            _queries.Add(query);
+            _queryCache.Add(copy.GetHashCode(), query);
+            return query;
+        }
+        catch
+        {
+            copy.Dispose();
+            throw;
+        }
     }
 
 

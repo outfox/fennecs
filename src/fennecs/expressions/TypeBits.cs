@@ -42,6 +42,12 @@ internal readonly struct TypeBits
     internal static void Set(ulong[] words, TypeID typeId) => words[typeId >> 6] |= 1ul << typeId;
 
 
+    private static Vector256<ulong> LoadOrZero(ulong[] words, int offset) =>
+        offset + WordsPerBlock <= words.Length
+            ? Vector256.LoadUnsafe(ref MemoryMarshal.GetArrayDataReference(words), (nuint)offset)
+            : Vector256<ulong>.Zero;
+
+
     /// <summary>Is the bit for this TypeId set? (bits beyond this bitset's length are unset)</summary>
     internal bool Get(TypeID typeId)
     {
@@ -119,8 +125,20 @@ internal readonly struct TypeBits
         var req = required._words;
         var aw = a._words;
         var bw = b._words;
+        var i = 0;
 
-        for (var i = 0; i < req.Length; i++)
+        if (Vector256.IsHardwareAccelerated)
+        {
+            ref var reqRef = ref MemoryMarshal.GetArrayDataReference(req);
+            for (; i + WordsPerBlock <= req.Length; i += WordsPerBlock)
+            {
+                var requiredBlock = Vector256.LoadUnsafe(ref reqRef, (nuint)i);
+                if (Vector256.AndNot(requiredBlock, LoadOrZero(aw, i) | LoadOrZero(bw, i))
+                    != Vector256<ulong>.Zero) return false;
+            }
+        }
+
+        for (; i < req.Length; i++)
         {
             var have = (i < aw.Length ? aw[i] : 0) | (i < bw.Length ? bw[i] : 0);
             if ((req[i] & ~have) != 0) return false;
@@ -139,8 +157,20 @@ internal readonly struct TypeBits
         var aw = a._words;
         var bw = b._words;
         var cw = c._words;
+        var i = 0;
 
-        for (var i = 0; i < req.Length; i++)
+        if (Vector256.IsHardwareAccelerated)
+        {
+            ref var reqRef = ref MemoryMarshal.GetArrayDataReference(req);
+            for (; i + WordsPerBlock <= req.Length; i += WordsPerBlock)
+            {
+                var requiredBlock = Vector256.LoadUnsafe(ref reqRef, (nuint)i);
+                var have = LoadOrZero(aw, i) | LoadOrZero(bw, i) | LoadOrZero(cw, i);
+                if (Vector256.AndNot(requiredBlock, have) != Vector256<ulong>.Zero) return false;
+            }
+        }
+
+        for (; i < req.Length; i++)
         {
             var have = (i < aw.Length ? aw[i] : 0) | (i < bw.Length ? bw[i] : 0) | (i < cw.Length ? cw[i] : 0);
             if ((req[i] & ~have) != 0) return false;
@@ -158,8 +188,17 @@ internal readonly struct TypeBits
         var pw = probe._words;
         var aw = a._words;
         var bw = b._words;
+        var i = 0;
 
-        for (var i = 0; i < pw.Length; i++)
+        if (Vector256.IsHardwareAccelerated)
+        {
+            ref var probeRef = ref MemoryMarshal.GetArrayDataReference(pw);
+            for (; i + WordsPerBlock <= pw.Length; i += WordsPerBlock)
+                if ((Vector256.LoadUnsafe(ref probeRef, (nuint)i) & (LoadOrZero(aw, i) | LoadOrZero(bw, i)))
+                    != Vector256<ulong>.Zero) return true;
+        }
+
+        for (; i < pw.Length; i++)
         {
             var have = (i < aw.Length ? aw[i] : 0) | (i < bw.Length ? bw[i] : 0);
             if ((pw[i] & have) != 0) return true;
@@ -178,8 +217,19 @@ internal readonly struct TypeBits
         var aw = a._words;
         var bw = b._words;
         var cw = c._words;
+        var i = 0;
 
-        for (var i = 0; i < pw.Length; i++)
+        if (Vector256.IsHardwareAccelerated)
+        {
+            ref var probeRef = ref MemoryMarshal.GetArrayDataReference(pw);
+            for (; i + WordsPerBlock <= pw.Length; i += WordsPerBlock)
+            {
+                var have = LoadOrZero(aw, i) | LoadOrZero(bw, i) | LoadOrZero(cw, i);
+                if ((Vector256.LoadUnsafe(ref probeRef, (nuint)i) & have) != Vector256<ulong>.Zero) return true;
+            }
+        }
+
+        for (; i < pw.Length; i++)
         {
             var have = (i < aw.Length ? aw[i] : 0) | (i < bw.Length ? bw[i] : 0) | (i < cw.Length ? cw[i] : 0);
             if ((pw[i] & have) != 0) return true;

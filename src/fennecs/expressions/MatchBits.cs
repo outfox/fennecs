@@ -161,9 +161,8 @@ internal readonly struct ClauseBits
         return key.Kind switch
         {
             SecondaryKind.Any => Plain.Get(typeId) || SpecEntity.Get(typeId) || SpecObject.Get(typeId)
-                                 || anyWildPlane || FamilyIdPresent(typeId),
-            SecondaryKind.Target => SpecEntity.Get(typeId) || SpecObject.Get(typeId) || anyWildPlane
-                                    || FamilyIdPresent(typeId),
+                                 || anyWildPlane,
+            SecondaryKind.Target => SpecEntity.Get(typeId) || SpecObject.Get(typeId) || anyWildPlane,
             SecondaryKind.Entity => SpecEntity.Get(typeId) || WildAny.Get(typeId) || WildTarget.Get(typeId)
                                     || WildEntity.Get(typeId),
             SecondaryKind.Object => SpecObject.Get(typeId) || WildAny.Get(typeId) || WildTarget.Get(typeId)
@@ -175,7 +174,7 @@ internal readonly struct ClauseBits
     }
 
 
-    // Does any Family entry cover this plain TypeId? (same type, or one of its registered base classes)
+    // Does any Family entry cover this plain TypeId? (same type, or one of its base classes)
     private bool FamilyCovers(TypeID typeId)
     {
         if (Family.Length == 0) return false;
@@ -185,8 +184,7 @@ internal readonly struct ClauseBits
             var baseId = entry.Expression.TypeId;
             if (baseId == typeId) return true;
 
-            foreach (var ancestor in LanguageType.AncestorsById(typeId))
-                if (ancestor == baseId) return true;
+            if (LanguageType.IsInFamily(baseId, typeId)) return true;
         }
 
         return false;
@@ -208,8 +206,7 @@ internal readonly struct ClauseBits
         {
             if (plainId == baseId) return true;
 
-            foreach (var ancestor in LanguageType.AncestorsById(plainId))
-                if (ancestor == baseId) return true;
+            if (LanguageType.IsInFamily(baseId, plainId)) return true;
         }
 
         return false;
@@ -266,7 +263,7 @@ internal readonly struct ArchetypeBits
     internal readonly KeyBloom Keyed;
 
     /// <summary>
-    /// Bloom over the Family expressions of every plain Component's registered base classes:
+    /// Bloom over the Family expressions of every plain Component's base classes:
     /// a base-type Family query tests one pattern; a miss is certain absence of any derived Component.
     /// </summary>
     internal readonly KeyBloom Family;
@@ -314,9 +311,7 @@ internal readonly struct ArchetypeBits
     }
 
 
-    // The raw value a Family query expression for this TypeId will carry.
-    private static ulong FamilyRaw(TypeID typeId) =>
-        new TypeExpression(PrimaryKind.Data, typeId, Key.Family).Raw;
+    private static ulong FamilyRaw(Type type) => unchecked((uint)type.GetHashCode());
 
 
     // Precise confirm after a Family bloom maybe: is any plain Component derived from the base type?
@@ -326,8 +321,7 @@ internal readonly struct ArchetypeBits
         {
             if (expression.Key != default) continue;
 
-            foreach (var ancestor in LanguageType.AncestorsById(expression.TypeId))
-                if (ancestor == baseId) return true;
+            if (LanguageType.IsInFamily(baseId, expression.TypeId)) return true;
         }
 
         return false;
@@ -335,8 +329,9 @@ internal readonly struct ArchetypeBits
 
 
     // Family test: the base type itself as a plain Component, or bloom + precise derived-type confirm.
-    private bool MatchesFamily(TypeID baseId, in KeyBloom pattern) =>
-        Plain.Get(baseId) || (Family.MayContain(pattern) && ConfirmFamily(baseId));
+    private bool MatchesFamily(TypeID baseId) =>
+        Plain.Get(baseId)
+        || (Family.MayContain(KeyBloom.Of(FamilyRaw(LanguageType.Resolve(baseId)))) && ConfirmFamily(baseId));
 
 
     private static TypeBits Plane(List<TypeID> typeIds, int maxTypeId)
@@ -368,7 +363,7 @@ internal readonly struct ArchetypeBits
             SecondaryKind.Target => Entity.Get(typeId) || Object.Get(typeId),
             SecondaryKind.Entity => Entity.Get(typeId),
             SecondaryKind.Object => Object.Get(typeId),
-            SecondaryKind.Family => MatchesFamily(typeId, KeyBloom.Of(expression.Raw)),
+            SecondaryKind.Family => MatchesFamily(typeId),
             _ => throw new NotSupportedException($"Unsupported Wildcard expression: {expression}"),
         };
     }
@@ -385,7 +380,7 @@ internal readonly struct ArchetypeBits
 
         foreach (var entry in clause.Family)
         {
-            if (!MatchesFamily(entry.Expression.TypeId, entry.Pattern)) return false;
+            if (!MatchesFamily(entry.Expression.TypeId)) return false;
         }
 
         if (clause.Keyed.Length == 0) return true;
@@ -413,7 +408,7 @@ internal readonly struct ArchetypeBits
 
         foreach (var entry in clause.Family)
         {
-            if (MatchesFamily(entry.Expression.TypeId, entry.Pattern)) return true;
+            if (MatchesFamily(entry.Expression.TypeId)) return true;
         }
 
         // Group-level certain NO in one op; a bloom maybe alone must never count as a hit.

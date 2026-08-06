@@ -129,12 +129,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
                     continue;
                 }
 
-                foreach (var ancestor in LanguageType.AncestorsById(type.TypeId))
-                {
-                    if (ancestor != expression.TypeId) continue;
-                    result.Add(Storages[index]);
-                    break;
-                }
+                if (LanguageType.IsInFamily(expression.TypeId, type.TypeId)) result.Add(Storages[index]);
             }
         }
         else if (expression.isWildcard)

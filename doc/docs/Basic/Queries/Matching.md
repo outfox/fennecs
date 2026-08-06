@@ -167,13 +167,14 @@ Wildcards aren't just for matching – [`Remove<C>(Match)`](/docs/Basic/Entities
 ### Inheritance-Aware Matching (Family)
 
 `Match.Family` matches plain components of the given type **or any type derived from it** — the type
-itself included. Base classes are registered automatically from each component type's inheritance
-chain (base classes only; interfaces do not participate).
+itself included. Base classes are discovered automatically from each component type's inheritance
+chain (base classes only; interfaces do not participate), without consuming component TypeIDs.
 
 ```cs
 class Animal { public int Age; }
-class Fox : Animal;
-class Fennec : Fox;
+class Fox : Animal { }
+class Fennec : Fox { }
+record struct Active;
 
 // Matches entities carrying Animal, Fox, or Fennec as a plain component.
 var animals = world.Query()
@@ -181,7 +182,8 @@ var animals = world.Query()
     .Compile();
 
 // Works in Not/Any clauses and stream filters, too.
-var noAnimals = stream.Not(Comp<Animal>.Matching(Match.Family));
+var noAnimals = world.Query<Active>().Stream()
+    .Not(Comp<Animal>.Matching(Match.Family));
 ```
 
 As a **Stream Type**, `Match.Family` delivers derived components *viewed as their base type* —

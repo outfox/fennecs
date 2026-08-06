@@ -235,6 +235,7 @@ public class FamilyMatchTests
         Assert.Throws<InvalidOperationException>(() => stream.Has(Comp<Rock>.Plain));
         Assert.Throws<InvalidOperationException>(() => stream.Not(Comp<Rock>.Plain));
         Assert.Throws<InvalidOperationException>(() => stream.Job((ref Animal _) => { }));
+        Assert.Throws<InvalidOperationException>(() => stream.Job(0, (int _, ref Animal _) => { }));
     }
 
 
@@ -267,6 +268,39 @@ public class FamilyMatchTests
         var plainClause = new Mask().Has(TypeExpression.Of<Fennec>(Match.Plain));
         Assert.True(plainClause.Bits.Has.MatchesBidirectional(TypeExpression.Of<Animal>(Match.Family)));
         Assert.False(plainClause.Bits.Has.MatchesBidirectional(TypeExpression.Of<Rock>(Match.Family)));
+    }
+
+
+    [Fact]
+    public void Family_Batch_Rejects_Derived_Add_Remove_Conflicts()
+    {
+        using var world = new World();
+        var query = world.Query().Compile();
+
+        using var addFirst = query.Batch(AddConflict.Preserve, RemoveConflict.Allow).Add(new Fennec());
+        Assert.Throws<InvalidOperationException>(() => addFirst.Remove<Animal>(Match.Family));
+
+        using var removeFirst = query.Batch(AddConflict.Preserve, RemoveConflict.Allow)
+            .Remove<Animal>(Match.Family);
+        Assert.Throws<InvalidOperationException>(() => removeFirst.Add(new Fennec()));
+        removeFirst.Add(new Rock());
+    }
+
+
+    [Fact]
+    public void Family_Query_Does_Not_Guarantee_Exact_Type_Wildcard_Removal()
+    {
+        using var world = new World();
+        var entity = world.Spawn().Add(new Fennec());
+        var query = world.Query().Has<Animal>(Match.Family).Compile();
+
+        using (var any = query.Batch(RemoveConflict.Strict))
+            Assert.Throws<InvalidOperationException>(() => any.Remove<Animal>(Match.Any));
+        using (var target = query.Batch(RemoveConflict.Strict))
+            Assert.Throws<InvalidOperationException>(() => target.Remove<Animal>(Match.Target));
+
+        query.Batch(RemoveConflict.Allow).Remove<Animal>(Match.Any).Submit();
+        Assert.True(entity.Has<Fennec>());
     }
 
 

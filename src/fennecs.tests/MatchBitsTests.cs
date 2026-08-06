@@ -2,6 +2,14 @@ namespace fennecs.tests;
 
 public class MatchBitsTests
 {
+    private class Animal;
+
+    private class Fox : Animal;
+
+    private class Fennec : Fox;
+
+    private class Rock;
+
     private static readonly Entity E1 = new(1, 123, 1);
     private static readonly Entity E2 = new(1, 456, 1);
 
@@ -74,6 +82,11 @@ public class MatchBitsTests
         signature.Any(expression.Matches);
 
 
+    private static bool ReferenceFamilyMatches(TypeExpression query, TypeExpression candidate) =>
+        query.Key == Key.Family && candidate.Key == default
+        && LanguageType.IsInFamily(query.TypeId, candidate.TypeId);
+
+
     [Fact]
     public void MatchesElement_Agrees_With_Pairwise_Reference()
     {
@@ -82,6 +95,44 @@ public class MatchBitsTests
 
         foreach (var expression in AllQueryForms())
             Assert.Equal(ReferenceContains(signature, expression), bits.MatchesElement(expression));
+    }
+
+
+    [Fact]
+    public void Family_Matching_Agrees_With_Inheritance_Oracle()
+    {
+        TypeExpression[] candidates =
+        [
+            TypeExpression.Of<Animal>(Match.Plain), TypeExpression.Of<Fox>(Match.Plain),
+            TypeExpression.Of<Fennec>(Match.Plain), TypeExpression.Of<Rock>(Match.Plain),
+            TypeExpression.Of<Fennec>(Match.Relation(E1)),
+        ];
+        TypeExpression[] queries =
+        [
+            TypeExpression.Of<Animal>(Match.Family), TypeExpression.Of<Fox>(Match.Family),
+            TypeExpression.Of<Fennec>(Match.Family), TypeExpression.Of<Rock>(Match.Family),
+        ];
+
+        foreach (var candidate in candidates)
+        {
+            var bits = new ArchetypeBits(new Signature(candidate));
+            foreach (var query in queries)
+                Assert.Equal(ReferenceFamilyMatches(query, candidate), bits.MatchesElement(query));
+        }
+
+        foreach (var candidate in candidates)
+        {
+            var clause = ClauseBits.Of([candidate]);
+            foreach (var query in queries)
+                Assert.Equal(ReferenceFamilyMatches(query, candidate), clause.MatchesBidirectional(query));
+        }
+
+        foreach (var query in queries)
+        {
+            var clause = ClauseBits.Of([query]);
+            foreach (var candidate in candidates)
+                Assert.Equal(ReferenceFamilyMatches(query, candidate), clause.MatchesBidirectional(candidate));
+        }
     }
 
 

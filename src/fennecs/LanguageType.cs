@@ -38,9 +38,9 @@ internal class LanguageType
     // live here instead of inside the packed TypeExpression)
     private static readonly TypeFlags[] FlagTable = new TypeFlags[AnyId + 1];
 
-    // Side-table of registered base-class TypeIds per TypeId, nearest first; null = none.
+    // Side-table of base classes per TypeId, nearest first; null = none.
     // Feeds Match.Family (inheritance-aware) matching. Interfaces are not seeded (policy choice).
-    private static readonly TypeID[]?[] AncestorTable = new TypeID[]?[AnyId + 1];
+    private static readonly Type[]?[] AncestorTable = new Type[]?[AnyId + 1];
 
 
     /// <summary>
@@ -50,9 +50,21 @@ internal class LanguageType
 
 
     /// <summary>
-    /// The TypeIds of the registered type's base classes, nearest first. (empty for structs)
+    /// The registered type's base classes, nearest first. (empty for structs)
     /// </summary>
-    internal static ReadOnlySpan<TypeID> AncestorsById(TypeID typeId) => AncestorTable[typeId] ?? [];
+    internal static ReadOnlySpan<Type> AncestorsById(TypeID typeId) => AncestorTable[typeId] ?? [];
+
+
+    internal static bool IsInFamily(TypeID baseId, TypeID candidateId)
+    {
+        if (baseId == candidateId) return true;
+
+        var baseType = Resolve(baseId);
+        foreach (var ancestor in AncestorsById(candidateId))
+            if (ancestor == baseType) return true;
+
+        return false;
+    }
 
 
     protected internal static TypeID Identify(Type type)
@@ -113,17 +125,17 @@ internal class LanguageType
     protected static void StoreFlags(TypeID id, TypeFlags flags) => FlagTable[id] = flags;
 
 
-    // Walks the base-class chain, registering each ancestor. (framework roots are not Components)
+    // Walks the base-class chain without registering ancestors as Components.
     protected static void StoreAncestors(TypeID id, Type type)
     {
-        List<TypeID>? ancestors = null;
+        List<Type>? ancestors = null;
 
         for (var baseType = type.BaseType;
              baseType is not null
              && baseType != typeof(object) && baseType != typeof(ValueType) && baseType != typeof(Enum);
              baseType = baseType.BaseType)
         {
-            (ancestors ??= []).Add(Identify(baseType));
+            (ancestors ??= []).Add(baseType);
         }
 
         if (ancestors is not null) AncestorTable[id] = ancestors.ToArray();

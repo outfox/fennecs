@@ -101,6 +101,10 @@ public readonly struct Batch : IDisposable, IAddRemove<Batch>
         foreach (var other in others)
         {
             if (expression.Equals(other) || expression.Matches(other) || other.Matches(expression)) return true;
+            if (expression.Key == Key.Family && other.Key == default
+                && LanguageType.IsInFamily(expression.TypeId, other.TypeId)) return true;
+            if (other.Key == Key.Family && expression.Key == default
+                && LanguageType.IsInFamily(other.TypeId, expression.TypeId)) return true;
         }
 
         return false;

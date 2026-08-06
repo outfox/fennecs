@@ -355,11 +355,7 @@ internal class Storage<T> : IStorage
     public ReadOnlySpan<TBase> ReadAs<TBase>() => new((TBase[])(object)_data, 0, Count);
 
     /// <inheritdoc cref="IStorage.GetAs{TBase}"/>
-    public TBase GetAs<TBase>(int row)
-    {
-        System.Diagnostics.Debug.Assert(typeof(TBase).IsAssignableFrom(typeof(T)), "GetAs requires a base or exact type.");
-        return Unsafe.As<T, TBase>(ref _data[row]);
-    }
+    public TBase GetAs<TBase>(int row) => ReadAs<TBase>()[row];
 
     private Span<T> FullSpan => _data.AsSpan();
 

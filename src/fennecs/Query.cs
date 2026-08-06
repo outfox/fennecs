@@ -116,12 +116,12 @@ public sealed partial class Query : IReadOnlySet<Entity>, IDisposable, IBatchBeg
     /// </summary>
     internal readonly MaskBits MaskBits;
 
-    internal Query(Aspect aspect, Mask mask, SortedSet<Archetype> matchingTables)
+    internal Query(Aspect aspect, Mask mask, MaskBits maskBits, SortedSet<Archetype> matchingTables)
     {
         Archetypes = matchingTables;
         Aspect = aspect;
         Mask = mask;
-        MaskBits = MaskBits.Of(mask);
+        MaskBits = maskBits;
     }
 
     #endregion

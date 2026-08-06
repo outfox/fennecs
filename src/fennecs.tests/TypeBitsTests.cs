@@ -118,6 +118,31 @@ public class TypeBitsTests
 
 
     [Fact]
+    public void Fused_Union_Operations_Agree_Across_Blocks_And_Lengths()
+    {
+        var random = new Random(20260806);
+
+        for (var round = 0; round < 500; round++)
+        {
+            var sets = Enumerable.Range(0, 4)
+                .Select(_ => new HashSet<int>(Enumerable.Range(0, random.Next(20))
+                    .Select(_ => random.Next(1, 4095))))
+                .ToArray();
+            var bits = sets.Select(set => BitsOf(set.Count == 0 ? 1 : set.Max(), set.ToArray())).ToArray();
+            var union2 = new HashSet<int>(sets[1]);
+            union2.UnionWith(sets[2]);
+            var union3 = new HashSet<int>(union2);
+            union3.UnionWith(sets[3]);
+
+            Assert.Equal(union2.IsSupersetOf(sets[0]), TypeBits.ContainsAll2(bits[0], bits[1], bits[2]));
+            Assert.Equal(union3.IsSupersetOf(sets[0]), TypeBits.ContainsAll3(bits[0], bits[1], bits[2], bits[3]));
+            Assert.Equal(sets[0].Overlaps(union2), TypeBits.Intersects2(bits[0], bits[1], bits[2]));
+            Assert.Equal(sets[0].Overlaps(union3), TypeBits.Intersects3(bits[0], bits[1], bits[2], bits[3]));
+        }
+    }
+
+
+    [Fact]
     public void Randomized_Agreement_With_Set_Reference()
     {
         var random = new Random(20260805);
@@ -185,11 +210,9 @@ public class TypeBitsTests
 
         // Overlap with itself is guaranteed; disjointness certifies absence of every group entry.
         Assert.True(present.Intersects(present));
-        if (!present.Intersects(absentGroup))
-        {
-            Assert.False(present.MayContain(KeyBloom.Of(0x9999_AAAA_BBBB_CCCCul)));
-            Assert.False(present.MayContain(KeyBloom.Of(0xDDDD_EEEE_FFFF_0000ul)));
-        }
+        Assert.False(present.Intersects(absentGroup));
+        Assert.False(present.MayContain(KeyBloom.Of(0x9999_AAAA_BBBB_CCCCul)));
+        Assert.False(present.MayContain(KeyBloom.Of(0xDDDD_EEEE_FFFF_0000ul)));
         Assert.False(present.Intersects(KeyBloom.Empty));
         Assert.False(KeyBloom.Empty.Intersects(present));
     }

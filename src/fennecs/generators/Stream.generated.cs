@@ -247,6 +247,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -331,6 +332,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -866,6 +868,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -952,6 +955,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -1515,6 +1519,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -1603,6 +1608,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -2194,6 +2200,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -2284,6 +2291,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -2903,6 +2911,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -2995,6 +3004,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
