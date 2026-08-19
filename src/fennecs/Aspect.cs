@@ -138,6 +138,9 @@ public sealed partial class Aspect : IEnumerable<Entity>
     {
         if (Contains(entity))
         {
+            // Despawn discards every Component stored here: signal them while still readable.
+            if (World.Signalling) World.SignalRemovingAll(this, entity);
+
             ref var meta = ref _meta[entity.Index];
 
             var table = meta.Archetype;
@@ -185,6 +188,10 @@ public sealed partial class Aspect : IEnumerable<Entity>
             if (archetype.Count <= 0) continue;
 
             var signatureWithoutTarget = archetype.Signature.Except(types);
+
+            // The Entities in this Archetype lose their Relations to the despawned target.
+            if (World.Signalling)
+                World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Intersect(types));
 
             // Lazy membership: losing their last owned Components evicts the Entities from this Aspect.
             if (!IsMain && signatureWithoutTarget.Count == 1)

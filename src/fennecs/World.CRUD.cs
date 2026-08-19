@@ -32,6 +32,16 @@ public partial class World
 
         AssertAlive(entity);
 
+        if (Signalling)
+        {
+            // The lock defers whatever the handlers do; our own mutation goes straight to the
+            // Aspect, which is immediate regardless of the World's Mode.
+            using var worldLock = Lock();
+            aspect.AddComponent(entity, typeExpression, data);
+            SignalAdded(aspect, entity, typeExpression);
+            return;
+        }
+
         aspect.AddComponent(entity, typeExpression, data);
     }
 
@@ -47,6 +57,15 @@ public partial class World
         }
 
         AssertAlive(entity);
+
+        if (Signalling)
+        {
+            // Removed fires before the structural change, while the outgoing values are still readable.
+            using var worldLock = Lock();
+            SignalRemoving(aspect, entity, typeExpression);
+            aspect.RemoveComponent(entity, typeExpression, mode);
+            return;
+        }
 
         aspect.RemoveComponent(entity, typeExpression, mode);
     }
