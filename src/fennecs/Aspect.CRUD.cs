@@ -225,7 +225,7 @@ public partial class Aspect
 
         var destinationSignature = Destination(operation, archetype);
 
-        World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Except(destinationSignature));
+        World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Except(destinationSignature), RemoveCause.Removed);
 
         // The handles must be taken before the migration relocates the Entities.
         var entities = new Entity[archetype.Count];

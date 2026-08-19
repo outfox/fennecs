@@ -58,7 +58,7 @@ public class SignalTests
         var entity = world.Spawn().Add(new Position(3, 4));
 
         var seen = new List<Position>();
-        world.On<Position>().Removed += (e, in p) =>
+        world.On<Position>().Removed += (e, in p, _) =>
         {
             seen.Add(p);
             Assert.True(e.Has<Position>());
@@ -92,7 +92,7 @@ public class SignalTests
         using var world = new World();
 
         var removed = 0;
-        world.On<Position>().Removed += (_, in _) => removed++;
+        world.On<Position>().Removed += (_, in _, _) => removed++;
 
         world.Spawn().Remove<Position>(default, RemoveConflict.Allow);
 
@@ -109,8 +109,8 @@ public class SignalTests
 
         var positions = 0;
         var healths = 0;
-        world.On<Position>().Removed += (_, in _) => positions++;
-        world.On<Health>().Removed += (_, in h) =>
+        world.On<Position>().Removed += (_, in _, _) => positions++;
+        world.On<Health>().Removed += (_, in h, _) =>
         {
             Assert.Equal(50, h.Value);
             healths++;
@@ -165,7 +165,7 @@ public class SignalTests
         var entity = world.Spawn().Add(new Health(1), alpha).Add(new Health(2), beta);
 
         var seen = new List<int>();
-        world.On<Health>(Match.Any).Removed += (_, in h) => seen.Add(h.Value);
+        world.On<Health>(Match.Any).Removed += (_, in h, _) => seen.Add(h.Value);
 
         entity.Remove<Health>(Match.Any);
 
@@ -184,7 +184,7 @@ public class SignalTests
         var entity = world.Spawn().Add(new Health(7), target);
 
         var seen = new List<(Entity entity, int value)>();
-        world.On<Health>(Match.Any).Removed += (e, in h) => seen.Add((e.Entity, h.Value));
+        world.On<Health>(Match.Any).Removed += (e, in h, _) => seen.Add((e.Entity, h.Value));
 
         target.Despawn();
 
@@ -205,7 +205,7 @@ public class SignalTests
         var removed = 0;
         var signal = world.On<Sprite>(Match.Any);
         signal.Added += (_, ref _) => added++;
-        signal.Removed += (_, in _) => removed++;
+        signal.Removed += (_, in _, _) => removed++;
 
         var entity = world.Spawn().Add(Link.With(sprite));
         Assert.Equal(1, added);
@@ -225,7 +225,7 @@ public class SignalTests
         var added = 0;
         var removed = 0;
         world.On<Position>().Added += (_, ref _) => added++;
-        world.On<Health>().Removed += (_, in _) => removed++;
+        world.On<Health>().Removed += (_, in _, _) => removed++;
 
         using (var _ = world.Lock())
         {
@@ -248,7 +248,7 @@ public class SignalTests
 
         // Every Entity that gains a Position also gains a Health, and loses it with the Position.
         world.On<Position>().Added += (e, ref _) => e.Add(new Health(100));
-        world.On<Position>().Removed += (e, in _) => e.Remove<Health>();
+        world.On<Position>().Removed += (e, in _, _) => e.Remove<Health>();
 
         var entity = world.Spawn().Add(new Position(1, 2));
         Assert.True(entity.Has<Health>());
@@ -315,7 +315,7 @@ public class SignalTests
         var added = new List<Position>();
         var removed = new List<int>();
         world.On<Position>().Added += (_, ref p) => added.Add(p);
-        world.On<Health>().Removed += (_, in h) => removed.Add(h.Value);
+        world.On<Health>().Removed += (_, in h, _) => removed.Add(h.Value);
 
         world.Query<Health>().Not<Position>().Compile()
             .Batch()
@@ -358,7 +358,7 @@ public class SignalTests
         for (var i = 0; i < 10; i++) world.Spawn().Add(new Health(i));
 
         var removed = 0;
-        world.On<Health>().Removed += (_, in _) => removed++;
+        world.On<Health>().Removed += (_, in _, _) => removed++;
 
         world.Query<Health>().Compile().Truncate(4);
 
@@ -432,6 +432,80 @@ public class SignalTests
     }
 
     [Fact]
+    public void Removed_Reports_A_Plain_Removal_As_Removed()
+    {
+        using var world = new World();
+
+        var causes = new List<RemoveCause>();
+        world.On<Health>().Removed += (_, in _, cause) => causes.Add(cause);
+
+        // per-Entity CRUD
+        world.Spawn().Add(new Health(1)).Remove<Health>();
+
+        // ...and the Batch path
+        world.Spawn().Add(new Health(2));
+        world.Query<Health>().Compile().Batch().Remove<Health>().Submit();
+
+        Assert.Equal([RemoveCause.Removed, RemoveCause.Removed], causes);
+    }
+
+
+    [Fact]
+    public void Removed_Reports_A_Despawn_As_Despawned()
+    {
+        using var world = new World();
+
+        var causes = new List<RemoveCause>();
+        world.On<Health>().Removed += (_, in _, cause) => causes.Add(cause);
+
+        world.Spawn().Add(new Health(1)).Despawn();
+
+        // Truncate evicts Entities wholesale - also a despawn
+        world.Spawn().Add(new Health(2));
+        world.Query<Health>().Compile().Truncate(0);
+
+        Assert.Equal([RemoveCause.Despawned, RemoveCause.Despawned], causes);
+    }
+
+
+    [Fact]
+    public void Removed_Reports_A_Dead_Relation_Target_As_TargetDespawned()
+    {
+        using var world = new World();
+
+        var target = world.Spawn();
+        var entity = world.Spawn().Add(new Health(7), target);
+
+        var causes = new List<RemoveCause>();
+        world.On<Health>(Match.Any).Removed += (_, in _, cause) => causes.Add(cause);
+
+        target.Despawn();
+
+        // the relation is gone, but the Entity holding it lives on
+        Assert.Equal([RemoveCause.TargetDespawned], causes);
+        Assert.True(entity.Alive);
+        Assert.False(entity.Has<Health>(Match.Any));
+    }
+
+
+    [Fact]
+    public void Despawn_Reports_Despawned_For_Both_Components_And_Relations()
+    {
+        using var world = new World();
+
+        var target = world.Spawn();
+        var entity = world.Spawn().Add(new Health(1)).Add(new Health(2), target);
+
+        var causes = new List<RemoveCause>();
+        world.On<Health>(Match.Any).Removed += (_, in _, cause) => causes.Add(cause);
+
+        entity.Despawn();
+
+        // the Entity took both with it - neither is a TargetDespawned
+        Assert.Equal([RemoveCause.Despawned, RemoveCause.Despawned], causes);
+    }
+
+    [Fact]
     public void A_Bulk_Deferred_Despawn_Does_Not_Recurse_Per_Entity()
     {
         using var world = new World();
@@ -439,7 +513,7 @@ public class SignalTests
         // Signal dispatch takes a World Lock of its own; releasing it must not start a nested
         // drain of the deferred queue, or a bulk despawn recurses one stack frame per Entity.
         var removed = 0;
-        world.On<Health>().Removed += (_, in _) => removed++;
+        world.On<Health>().Removed += (_, in _, _) => removed++;
 
         for (var i = 0; i < 10_000; i++) world.Spawn().Add(new Health(i));
 

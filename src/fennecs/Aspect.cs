@@ -191,7 +191,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
 
             // The Entities in this Archetype lose their Relations to the despawned target.
             if (World.Signalling)
-                World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Intersect(types));
+                World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Intersect(types), RemoveCause.TargetDespawned);
 
             // Lazy membership: losing their last owned Components evicts the Entities from this Aspect.
             if (!IsMain && signatureWithoutTarget.Count == 1)

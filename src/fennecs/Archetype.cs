@@ -170,7 +170,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
             // Storages are cleared (World.Recycle can no longer read them), then let the other
             // Aspects signal their own as they evict the Entities. The lock spans all of it.
             using var worldLock = World.Lock();
-            World.SignalRemovingRows(Aspect, toDelete, Signature.Except([Comp<EntityIndex>.Plain.Expression]));
+            World.SignalRemovingRows(Aspect, toDelete, Signature.Except([Comp<EntityIndex>.Plain.Expression]), RemoveCause.Despawned);
             TruncateRows(excess, toDelete);
             return;
         }

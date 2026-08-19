@@ -30,7 +30,35 @@ public delegate void ComponentAdded<T>(EntityRef entity, ref T value);
 /// Archetype storage directly. Convert it to a storable <see cref="fennecs.Entity"/> to keep it around.
 /// </param>
 /// <param name="value">reference to the Component value about to be discarded</param>
-public delegate void ComponentRemoved<T>(EntityRef entity, in T value);
+/// <param name="cause">why the Component is going away — in particular, whether the Entity survives it</param>
+public delegate void ComponentRemoved<T>(EntityRef entity, in T value, RemoveCause cause);
+
+
+/// <summary>
+/// Why a Component is being removed from an Entity, as reported to <see cref="ComponentRemoved{T}"/>.
+/// </summary>
+public enum RemoveCause
+{
+    /// <summary>
+    /// The Component was removed on its own — by <c>Remove</c>, a Wildcard removal, or a Batch.
+    /// <b>The Entity lives on</b> without it.
+    /// </summary>
+    Removed = 0,
+
+    /// <summary>
+    /// The Entity itself is going away — <c>Despawn</c>, or a bulk eviction such as
+    /// <see cref="Query.Truncate"/> / <c>Clear</c> — and takes all of its Components with it.
+    /// This is the last Signal you will ever see for that Entity.
+    /// </summary>
+    Despawned,
+
+    /// <summary>
+    /// A Relation or Link lost its <i>target</i>: the targeted Entity was despawned, so the
+    /// relation Component is cleaned up. <b>The Entity holding it lives on</b> — only the
+    /// relation is gone. (never reported for plain Components)
+    /// </summary>
+    TargetDespawned,
+}
 
 
 /// <summary>
@@ -57,7 +85,7 @@ public abstract class Signal
     internal abstract bool WantsRemoved { get; }
 
     internal abstract void InvokeAdded(EntityRef entity, TypeExpression expression);
-    internal abstract void InvokeRemoved(EntityRef entity, TypeExpression expression);
+    internal abstract void InvokeRemoved(EntityRef entity, TypeExpression expression, RemoveCause cause);
 
     /// <inheritdoc />
     public override string ToString() => $"Signal<{Type.Name}>({Match})";
@@ -91,6 +119,8 @@ public sealed class Signal<T> : Signal where T : notnull
     /// <summary>
     /// Raised just before a matching Component is removed from an Entity — including when the
     /// Entity is despawned, truncated away, or loses the Component to relation cleanup.
+    /// The <see cref="RemoveCause"/> tells the three apart; in particular, whether the Entity
+    /// survives the removal.
     /// </summary>
     public event ComponentRemoved<T>? Removed;
 
@@ -106,12 +136,12 @@ public sealed class Signal<T> : Signal where T : notnull
         handler(entity, ref value);
     }
 
-    internal override void InvokeRemoved(EntityRef entity, TypeExpression expression)
+    internal override void InvokeRemoved(EntityRef entity, TypeExpression expression, RemoveCause cause)
     {
         var handler = Removed;
         if (handler is null) return;
 
         ref var value = ref entity.Ref<T>(expression.Match);
-        handler(entity, in value);
+        handler(entity, in value, cause);
     }
 }
