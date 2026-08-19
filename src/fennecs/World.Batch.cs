@@ -8,7 +8,7 @@ public partial class World
     {
         if (Mode != WorldMode.Immediate)
         {
-            _deferredOperations.Enqueue(new(batch));
+            _deferredOperations.Enqueue(new(batch) { FromSignal = InSignalDispatch });
             return false;
         }
 

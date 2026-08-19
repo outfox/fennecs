@@ -16,6 +16,13 @@ public partial class World
     /// </summary>
     internal bool Signalling => _signals.Count > 0;
 
+    // Nesting depth of Signal dispatch. Structural changes enqueued while this is non-zero were
+    // requested by a handler, and are marked as such so a later failure can be attributed to it.
+    private int _dispatching;
+
+    /// <summary>Is a Signal handler on the stack right now?</summary>
+    internal bool InSignalDispatch => _dispatching > 0;
+
     #endregion
 
     #region Subscription
@@ -191,31 +198,64 @@ public partial class World
     }
 
 
-    private static void EmitAdded(List<Signal> signals, Aspect aspect, Entity entity, TypeExpression expression)
+    private void EmitAdded(List<Signal> signals, Aspect aspect, Entity entity, TypeExpression expression)
     {
         var entityRef = Live(aspect, entity);
 
-        foreach (var signal in signals)
+        _dispatching++;
+        try
         {
-            // Non-commutative on purpose: a Wildcard Signal covers concrete expressions, see summary
-            if (!signal.Expression.Matches(expression)) continue;
+            foreach (var signal in signals)
+            {
+                // Non-commutative on purpose: a Wildcard Signal covers concrete expressions, see summary
+                if (!signal.Expression.Matches(expression)) continue;
 
-            if (signal.WantsAdded)
-                signal.InvokeAdded(entityRef, expression);
+                if (!signal.WantsAdded) continue;
+
+                // A handler's fault is never the caller's fault: wrap it so the two can be told apart.
+                try
+                {
+                    signal.InvokeAdded(entityRef, expression);
+                }
+                catch (Exception exception) when (exception is not SignalException)
+                {
+                    throw new SignalException(signal, entity, "Added", exception);
+                }
+            }
+        }
+        finally
+        {
+            _dispatching--;
         }
     }
 
 
-    private static void EmitRemoved(List<Signal> signals, Aspect aspect, Entity entity, TypeExpression expression, RemoveCause cause)
+    private void EmitRemoved(List<Signal> signals, Aspect aspect, Entity entity, TypeExpression expression, RemoveCause cause)
     {
         var entityRef = Live(aspect, entity);
 
-        foreach (var signal in signals)
+        _dispatching++;
+        try
         {
-            if (!signal.Expression.Matches(expression)) continue;
+            foreach (var signal in signals)
+            {
+                if (!signal.Expression.Matches(expression)) continue;
 
-            if (signal.WantsRemoved)
-                signal.InvokeRemoved(entityRef, expression, cause);
+                if (!signal.WantsRemoved) continue;
+
+                try
+                {
+                    signal.InvokeRemoved(entityRef, expression, cause);
+                }
+                catch (Exception exception) when (exception is not SignalException)
+                {
+                    throw new SignalException(signal, entity, "Removed", exception);
+                }
+            }
+        }
+        finally
+        {
+            _dispatching--;
         }
     }
 

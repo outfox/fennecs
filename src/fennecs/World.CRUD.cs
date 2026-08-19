@@ -26,7 +26,7 @@ public partial class World
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Add, Entity = entity, TypeExpression = typeExpression, Data = data });
+            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Add, Entity = entity, TypeExpression = typeExpression, Data = data, FromSignal = InSignalDispatch });
             return;
         }
 
@@ -52,7 +52,7 @@ public partial class World
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Remove, Entity = entity, TypeExpression = typeExpression, RemoveMode = mode });
+            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Remove, Entity = entity, TypeExpression = typeExpression, RemoveMode = mode, FromSignal = InSignalDispatch });
             return;
         }
 

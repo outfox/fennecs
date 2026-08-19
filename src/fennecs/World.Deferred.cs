@@ -48,26 +48,49 @@ public partial class World
     private void CatchUp(ConcurrentQueue<DeferredOperation> operations)
     {
         while (operations.TryDequeue(out var op))
-            switch (op.Opcode)
+        {
+            if (!op.FromSignal)
             {
-                case Opcode.Add:
-                    AddComponent(op.Entity, op.TypeExpression, op.Data);
-                    break;
-
-                case Opcode.Remove:
-                    RemoveComponent(op.Entity, op.TypeExpression, op.RemoveMode);
-                    break;
-
-                case Opcode.Despawn:
-                    DespawnImpl(op.Entity);
-                    break;
-
-                case Opcode.Batch:
-                    var batch = (Batch)op.Data;
-                    Commit(batch);
-                    batch.Dispose();
-                    break;
+                Apply(op);
+                continue;
             }
+
+            // Queued by a Signal handler: a failure here belongs to that handler, not to whoever
+            // took out the Lock (they are usually several stack frames apart by now).
+            try
+            {
+                Apply(op);
+            }
+            catch (Exception exception) when (exception is not SignalException)
+            {
+                throw new SignalException(op.Describe(), op.Entity, exception);
+            }
+        }
+    }
+
+
+    private void Apply(DeferredOperation op)
+    {
+        switch (op.Opcode)
+        {
+            case Opcode.Add:
+                AddComponent(op.Entity, op.TypeExpression, op.Data);
+                break;
+
+            case Opcode.Remove:
+                RemoveComponent(op.Entity, op.TypeExpression, op.RemoveMode);
+                break;
+
+            case Opcode.Despawn:
+                DespawnImpl(op.Entity);
+                break;
+
+            case Opcode.Batch:
+                var batch = (Batch)op.Data;
+                Commit(batch);
+                batch.Dispose();
+                break;
+        }
     }
 
 
@@ -79,6 +102,18 @@ public partial class World
         internal object Data;
         internal Archetype Archetype;
         internal RemoveConflict RemoveMode;
+
+        internal bool FromSignal;
+
+        // Human-readable form of this operation, for diagnostics.
+        internal readonly string Describe() => Opcode switch
+        {
+            Opcode.Add => $"Add {TypeExpression} to {Entity}",
+            Opcode.Remove => $"Remove {TypeExpression} from {Entity}",
+            Opcode.Despawn => $"Despawn {Entity}",
+            Opcode.Batch => "Batch",
+            _ => Opcode.ToString(),
+        };
 
 
         [SetsRequiredMembers]
