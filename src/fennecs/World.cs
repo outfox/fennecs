@@ -32,13 +32,34 @@ public partial class World
     internal WorldMode Mode { get; private set; } = WorldMode.Immediate;
 
 
+    // Guards against a nested drain: a Lock taken *while* the queue is being drained (Signal
+    // dispatch does exactly that) must not start a second CatchUp when it is released.
+    private bool _catchingUp;
+
+
     private void Unlock()
     {
         if (Interlocked.Decrement(ref _locks) > 0) return;
 
+        // The enclosing drain loop picks up whatever this scope queued. Without this, a bulk
+        // deferred operation would recurse one stack frame per Entity — and overflow the stack.
+        if (_catchingUp)
+        {
+            Mode = WorldMode.CatchUp;
+            return;
+        }
+
+        _catchingUp = true;
         Mode = WorldMode.CatchUp;
-        CatchUp(_deferredOperations);
-        Mode = WorldMode.Immediate;
+        try
+        {
+            CatchUp(_deferredOperations);
+        }
+        finally
+        {
+            _catchingUp = false;
+            Mode = WorldMode.Immediate;
+        }
     }
 
 
@@ -105,8 +126,25 @@ public partial class World
             return;
         }
 
-        // Remove the Entity from every Aspect that contains it, and clean up
-        // Relations targeting it wherever they live. (Main always contains it)
+        if (Signalling)
+        {
+            // Aspect.Despawn emits Removed for everything it stores for the Entity; the lock keeps
+            // whatever the handlers do from interleaving with the despawn itself.
+            using var worldLock = Lock();
+            DespawnRows(entity);
+            return;
+        }
+
+        DespawnRows(entity);
+    }
+
+
+    /// <summary>
+    /// Removes the Entity from every Aspect that contains it, cleans up Relations targeting it
+    /// wherever they live, and returns its Identity to the pool. (Main always contains it)
+    /// </summary>
+    private void DespawnRows(Entity entity)
+    {
         if (_aspects.Count == 1)
         {
             Main.Despawn(entity);

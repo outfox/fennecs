@@ -164,6 +164,23 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
         var toDelete = ((ReadOnlySpan<EntityIndex>)EntityStorage.Span).Slice(Count - excess, excess);
 
+        if (World.Signalling)
+        {
+            // Truncation despawns these Entities: signal the Components stored here before the
+            // Storages are cleared (World.Recycle can no longer read them), then let the other
+            // Aspects signal their own as they evict the Entities. The lock spans all of it.
+            using var worldLock = World.Lock();
+            World.SignalRemovingRows(Aspect, toDelete, Signature.Except([Comp<EntityIndex>.Plain.Expression]));
+            TruncateRows(excess, toDelete);
+            return;
+        }
+
+        TruncateRows(excess, toDelete);
+    }
+
+
+    private void TruncateRows(int excess, ReadOnlySpan<EntityIndex> toDelete)
+    {
         foreach (var storage in Storages)
         {
             // HACK...

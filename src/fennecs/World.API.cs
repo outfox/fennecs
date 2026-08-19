@@ -158,6 +158,12 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
             var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);
             var archetype = Main.GetArchetype(signature);
             archetype.Spawn(destination, components, values);
+
+            if (Signalling)
+            {
+                using var spawnLock = Lock();
+                SignalSpawned(destination, components);
+            }
             return;
         }
 
@@ -189,6 +195,9 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
             aspect.EnsureCapacity(_entityPool.Created + 1);
             aspect.GetArchetype(signature).SpawnWith(destination, group.components, group.values);
         }
+
+        // (the enclosing worldLock defers whatever the handlers do until the wave is complete)
+        if (Signalling) SignalSpawned(destination, components);
     }
 
     /// <summary>
@@ -326,6 +335,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     public void Dispose()
     {
         //TODO: Dispose all Object Links, Queries, etc.?
+        _signals.Clear();
         ReleaseTag();
     }
 

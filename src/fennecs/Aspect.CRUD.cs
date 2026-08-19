@@ -186,28 +186,70 @@ public partial class Aspect
 
     internal void Commit(Batch operation)
     {
-        foreach (var archetype in operation.Archetypes)
+        if (!World.Signalling)
         {
-            var preAddSignature = archetype.Signature.Except(operation.Removals);
-
-            // Wildcard removals match stored expressions by type, not identity: strip everything they cover.
-            foreach (var removal in operation.Removals)
-            {
-                if (!removal.isWildcard) continue;
-                preAddSignature = preAddSignature.Except(preAddSignature.Where(type => removal.Matches(type)));
-            }
-            var destinationSignature = preAddSignature.Union(operation.Additions);
-
-            // Lazy membership: batch-removing all owned Components evicts the Entities from this Aspect.
-            if (!IsMain && destinationSignature.Count == 1)
-            {
-                BulkEvict(archetype);
-                continue;
-            }
-
-            var destination = GetArchetype(destinationSignature);
-            archetype.Migrate(destination, operation.Additions, operation.BackFill, operation.AddMode);
+            foreach (var archetype in operation.Archetypes)
+                Commit(operation, archetype);
+            return;
         }
+
+        // The lock defers whatever the handlers do until the entire Batch has been applied.
+        using var worldLock = World.Lock();
+        foreach (var archetype in operation.Archetypes)
+            CommitSignalling(operation, archetype);
+    }
+
+
+    private void Commit(Batch operation, Archetype archetype)
+    {
+        var destinationSignature = Destination(operation, archetype);
+
+        // Lazy membership: batch-removing all owned Components evicts the Entities from this Aspect.
+        if (!IsMain && destinationSignature.Count == 1)
+        {
+            BulkEvict(archetype);
+            return;
+        }
+
+        var destination = GetArchetype(destinationSignature);
+        archetype.Migrate(destination, operation.Additions, operation.BackFill, operation.AddMode);
+    }
+
+    private void CommitSignalling(Batch operation, Archetype archetype)
+    {
+        if (archetype.IsEmpty)
+        {
+            Commit(operation, archetype);
+            return;
+        }
+
+        var destinationSignature = Destination(operation, archetype);
+
+        World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Except(destinationSignature));
+
+        // The handles must be taken before the migration relocates the Entities.
+        var entities = new Entity[archetype.Count];
+        for (var i = 0; i < entities.Length; i++) entities[i] = World.EntityFor(archetype.EntityStorage[i]);
+
+        var additions = destinationSignature.Except(archetype.Signature);
+
+        Commit(operation, archetype);
+
+        World.SignalAddedRows(this, entities, additions);
+    }
+
+    private static Signature Destination(Batch operation, Archetype archetype)
+    {
+        var preAddSignature = archetype.Signature.Except(operation.Removals);
+
+        // Wildcard removals match stored expressions by type, not identity: strip everything they cover.
+        foreach (var removal in operation.Removals)
+        {
+            if (!removal.isWildcard) continue;
+            preAddSignature = preAddSignature.Except(preAddSignature.Where(type => removal.Matches(type)));
+        }
+
+        return preAddSignature.Union(operation.Additions);
     }
 
 
