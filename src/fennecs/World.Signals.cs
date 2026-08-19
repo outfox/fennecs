@@ -26,7 +26,7 @@ public partial class World
     /// <example>
     /// <code>
     /// world.On&lt;Position&gt;().Added += (EntityRef e, ref Position p) => index.Insert(e, p);
-    /// world.On&lt;Position&gt;().Removed += (EntityRef e, in Position p) => index.Remove(e);
+    /// world.On&lt;Position&gt;().Removed += (EntityRef e, in Position p, RemoveCause cause) => index.Remove(e);
     /// </code>
     /// </example>
     /// </summary>
@@ -75,7 +75,7 @@ public partial class World
     {
         if (!_signals.TryGetValue(expression.TypeId, out var signals)) return;
 
-        Emit(signals, aspect, entity, expression, added: true);
+        EmitAdded(signals, aspect, entity, expression);
     }
 
 
@@ -84,7 +84,7 @@ public partial class World
     /// <paramref name="pattern"/> — for every stored expression it covers.
     /// Must be called <i>before</i> the structural change, while the values are still readable.
     /// </summary>
-    internal void SignalRemoving(Aspect aspect, Entity entity, TypeExpression pattern)
+    internal void SignalRemoving(Aspect aspect, Entity entity, TypeExpression pattern, RemoveCause cause = RemoveCause.Removed)
     {
         if (!_signals.TryGetValue(pattern.TypeId, out var signals)) return;
         if (!aspect.Contains(entity)) return;
@@ -92,14 +92,14 @@ public partial class World
         if (!pattern.isWildcard)
         {
             if (aspect.HasComponent(entity, pattern))
-                Emit(signals, aspect, entity, pattern, added: false);
+                EmitRemoved(signals, aspect, entity, pattern, cause);
             return;
         }
 
         foreach (var stored in aspect.GetSignature(entity))
         {
             if (pattern.Matches(stored))
-                Emit(signals, aspect, entity, stored, added: false);
+                EmitRemoved(signals, aspect, entity, stored, cause);
         }
     }
 
@@ -108,7 +108,7 @@ public partial class World
     /// Emits Removed for every Component this Aspect stores for the Entity — the Despawn case.
     /// Must be called <i>before</i> the Entity's rows are deleted.
     /// </summary>
-    internal void SignalRemovingAll(Aspect aspect, Entity entity)
+    internal void SignalRemovingAll(Aspect aspect, Entity entity, RemoveCause cause = RemoveCause.Despawned)
     {
         if (!aspect.Contains(entity)) return;
 
@@ -116,7 +116,7 @@ public partial class World
         foreach (var stored in aspect.GetSignature(entity))
         {
             if (!_signals.TryGetValue(stored.TypeId, out var signals)) continue;
-            Emit(signals, aspect, entity, stored, added: false);
+            EmitRemoved(signals, aspect, entity, stored, cause);
         }
     }
 
@@ -125,7 +125,7 @@ public partial class World
     /// Emits Removed for a set of Components across a contiguous run of Archetype rows.
     /// Must be called <i>before</i> the structural change.
     /// </summary>
-    internal void SignalRemovingRows(Aspect aspect, ReadOnlySpan<EntityIndex> indices, IEnumerable<TypeExpression> types)
+    internal void SignalRemovingRows(Aspect aspect, ReadOnlySpan<EntityIndex> indices, IEnumerable<TypeExpression> types, RemoveCause cause)
     {
         var watched = Watched(types);
         if (watched.Count == 0) return;
@@ -135,7 +135,7 @@ public partial class World
         {
             var entity = EntityFor(index);
             foreach (var (expression, signals) in watched)
-                Emit(signals, aspect, entity, expression, added: false);
+                EmitRemoved(signals, aspect, entity, expression, cause);
         }
     }
 
@@ -153,7 +153,7 @@ public partial class World
         foreach (var entity in entities)
         {
             foreach (var (expression, signals) in watched)
-                Emit(signals, aspect, entity, expression, added: true);
+                EmitAdded(signals, aspect, entity, expression);
         }
     }
 
@@ -170,7 +170,7 @@ public partial class World
         foreach (var entity in entities)
         {
             foreach (var (expression, signals) in watched)
-                Emit(signals, AspectOf(expression), entity, expression, added: true);
+                EmitAdded(signals, AspectOf(expression), entity, expression);
         }
     }
 
@@ -191,35 +191,45 @@ public partial class World
     }
 
 
-    private static void Emit(List<Signal> signals, Aspect aspect, Entity entity, TypeExpression expression, bool added)
+    private static void EmitAdded(List<Signal> signals, Aspect aspect, Entity entity, TypeExpression expression)
     {
-        // Handed to the handlers as a live EntityRef: the World is locked for the duration of the
-        // dispatch, so the Entity cannot move rows while they hold it.
-        ref var meta = ref aspect.GetEntityMeta(entity);
-        var entityRef = new EntityRef(meta.Archetype, meta.Row);
+        var entityRef = Live(aspect, entity);
 
-        if (added)
+        foreach (var signal in signals)
         {
-            foreach (var signal in signals)
-            {
-                // Non-commutative on purpose: a Wildcard Signal covers concrete expressions, see summary
-                if (!signal.Expression.Matches(expression)) continue;
+            // Non-commutative on purpose: a Wildcard Signal covers concrete expressions, see summary
+            if (!signal.Expression.Matches(expression)) continue;
 
-                if (signal.WantsAdded)
-                    signal.InvokeAdded(entityRef, expression);
-            }
-        }
-        else
-        {
-            foreach (var signal in signals)
-            {
-                if (!signal.Expression.Matches(expression)) continue;
-
-                if (signal.WantsRemoved)
-                    signal.InvokeRemoved(entityRef, expression);
-            }
+            if (signal.WantsAdded)
+                signal.InvokeAdded(entityRef, expression);
         }
     }
+
+
+    private static void EmitRemoved(List<Signal> signals, Aspect aspect, Entity entity, TypeExpression expression, RemoveCause cause)
+    {
+        var entityRef = Live(aspect, entity);
+
+        foreach (var signal in signals)
+        {
+            if (!signal.Expression.Matches(expression)) continue;
+
+            if (signal.WantsRemoved)
+                signal.InvokeRemoved(entityRef, expression, cause);
+        }
+    }
+
+
+    /// <summary>
+    /// The Entity as handed to the handlers: a live EntityRef. The World is locked for the duration
+    /// of the dispatch, so the Entity cannot move rows while they hold it.
+    /// </summary>
+    private static EntityRef Live(Aspect aspect, Entity entity)
+    {
+        ref var meta = ref aspect.GetEntityMeta(entity);
+        return new(meta.Archetype, meta.Row);
+    }
+
 
     #endregion
 }
