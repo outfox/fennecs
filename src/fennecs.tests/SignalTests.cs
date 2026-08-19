@@ -522,4 +522,87 @@ public class SignalTests
         Assert.Equal(10_000, removed);
         Assert.Equal(0, world.Count);
     }
+
+    [Fact]
+    public void A_Throwing_Handler_Is_Wrapped_In_A_SignalException()
+    {
+        using var world = new World();
+
+        var boom = new InvalidOperationException("boom");
+        var signal = world.On<Health>();
+        signal.Added += (_, ref _) => throw boom;
+
+        var entity = world.Spawn();
+        var thrown = Assert.Throws<SignalException>(() => entity.Add(new Health(1)));
+
+        Assert.Same(boom, thrown.InnerException);
+        Assert.Same(signal, thrown.Signal);
+        Assert.Equal(entity, thrown.Entity);
+        Assert.False(thrown.Deferred);
+    }
+
+
+    [Fact]
+    public void A_Throwing_Removed_Handler_Is_Wrapped_Too()
+    {
+        using var world = new World();
+
+        var signal = world.On<Health>();
+        signal.Removed += (_, in _, _) => throw new InvalidOperationException("boom");
+
+        var entity = world.Spawn().Add(new Health(1));
+        var thrown = Assert.Throws<SignalException>(() => entity.Despawn());
+
+        Assert.Same(signal, thrown.Signal);
+        Assert.False(thrown.Deferred);
+    }
+
+
+    [Fact]
+    public void A_Handlers_Failed_Deferred_Change_Is_Wrapped_As_Deferred()
+    {
+        using var world = new World();
+
+        // Removing the Component that is already on its way out: legal to ask for, impossible to apply.
+        world.On<Health>().Removed += (e, in _, _) => e.Remove<Health>();
+
+        var entity = world.Spawn().Add(new Health(1));
+        var thrown = Assert.Throws<SignalException>(() => entity.Remove<Health>());
+
+        Assert.True(thrown.Deferred);
+        Assert.Null(thrown.Signal);
+        Assert.Equal(entity, thrown.Entity);
+        Assert.IsType<InvalidOperationException>(thrown.InnerException);
+    }
+
+
+    [Fact]
+    public void The_Callers_Own_Mistakes_Are_Not_Wrapped()
+    {
+        using var world = new World();
+
+        world.On<Health>().Added += (_, ref _) => { };
+        world.On<Health>().Removed += (_, in _, _) => { };
+
+        var entity = world.Spawn().Add(new Health(1));
+
+        // Signals are live, but these are the caller's errors - they must surface unwrapped.
+        Assert.Throws<InvalidOperationException>(() => entity.Add(new Health(2)));
+        Assert.Throws<InvalidOperationException>(() => entity.Remove<Position>());
+    }
+
+
+    [Fact]
+    public void A_Nested_SignalException_Is_Not_Wrapped_Twice()
+    {
+        using var world = new World();
+
+        world.On<Position>().Added += (e, ref _) => e.Add(new Health(1));
+        world.On<Health>().Added += (_, ref _) => throw new InvalidOperationException("boom");
+
+        var entity = world.Spawn();
+        var thrown = Assert.Throws<SignalException>(() => entity.Add(new Position(1, 2)));
+
+        Assert.IsType<InvalidOperationException>(thrown.InnerException);
+    }
 }
