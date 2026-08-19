@@ -25,7 +25,7 @@ namespace fennecs;
 /// </list>
 /// <para>
 /// The original exception is always the <see cref="Exception.InnerException"/>. Dispatch is
-/// abandoned at the first failure — remaining handlers and Entities of that operation do not run.
+/// abandoned at the first failure; remaining handlers and Entities of that operation do not run.
 /// </para>
 /// </remarks>
 public sealed class SignalException : Exception
@@ -49,7 +49,7 @@ public sealed class SignalException : Exception
     /// <remarks>
     /// A deferred operation can raise Signals of its own. If one of <i>those</i> handlers throws, what
     /// you catch is a dispatch-phase <see cref="SignalException"/> (<see cref="Deferred"/> is
-    /// <see langword="false"/>) that surfaced from the catch-up  –  never one wrapped inside another.
+    /// <see langword="false"/>) that surfaced from the catch-up, never one wrapped inside another.
     /// </remarks>
     public bool Deferred { get; }
 
