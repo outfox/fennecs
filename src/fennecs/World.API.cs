@@ -318,11 +318,25 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
 
 
     /// <summary>
-    ///  Runs the World's Garbage Collection (placeholder for future GC - currently removes all empty Archetypes).
+    ///  Runs the World's Garbage Collection (placeholder for future GC - currently removes all empty Archetypes and Signal).
     /// </summary>
     public void GC()
     {
         if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
+
+        if (Signalling)
+        {
+            var toClear = new List<TypeID>();
+
+            foreach (var (type, signals) in _signals)
+            {
+                signals.RemoveAll(static signal => !signal.WantsRemoved && !signal.WantsAdded);
+                if (signals.Count == 0) toClear.Add(type);
+            }
+
+            foreach (var key in toClear) _signals.Remove(key);
+            _signals.TrimExcess();
+        }
 
         foreach (var aspect in _aspects) aspect.GC();
     }

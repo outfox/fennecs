@@ -98,6 +98,11 @@ public abstract class Signal
 /// </summary>
 /// <remarks>
 /// <para>
+/// ⚠️ Obtain one through <see cref="fennecs.World.On{T}()"/> at every subscription, and do not keep it
+/// in a field: <see cref="fennecs.World.GC"/> drops Signals that have no subscribers left, and a stored
+/// one outlives that drop as an orphan — still accepting handlers, never firing again.
+/// </para>
+/// <para>
 /// Signals are dispatched while the World is <b>locked</b>: structural changes made by handlers are
 /// deferred and applied once dispatch completes, so handlers may freely add, remove, spawn and despawn.
 /// </para>
