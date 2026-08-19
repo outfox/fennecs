@@ -38,7 +38,16 @@ public partial class World
     /// </example>
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Signals are memoized per expression: calling this repeatedly returns the same instance.
+    /// Subscribe through this method every time — <b>do not store the returned
+    /// <see cref="Signal{T}"/></b>.
+    /// </para>
+    /// <para>
+    /// The memoization holds only between garbage collections: <see cref="GC"/> drops every Signal
+    /// left without subscribers, and a stored one survives that drop as an orphan the World no
+    /// longer knows about. Subscribing to it still succeeds — and never fires again.
+    /// </para>
     /// </remarks>
     public Signal<T> On<T>() where T : notnull => On<T>(default);
 
