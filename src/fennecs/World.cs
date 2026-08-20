@@ -126,7 +126,9 @@ public partial class World
             return;
         }
 
-        if (Signalling)
+        // Scanning what the Entity actually holds is cheaper than the Lock, and a despawn of
+        // Components nobody watches must stay as fast as it was before Signals existed.
+        if (WatchingAnyOf(entity))
         {
             // Aspect.Despawn emits Removed for everything it stores for the Entity; the lock keeps
             // whatever the handlers do from interleaving with the despawn itself.

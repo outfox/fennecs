@@ -19,6 +19,27 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     /// </summary>
     internal readonly Signature Signature;
 
+    // Memoized answer to "would despawning an Entity of this shape emit anything?", keyed on the
+    // World's subscription version. Every Entity here has the same Components, so it is asked once
+    // per Archetype per subscription change instead of once per Despawn.
+    private int _signalVersion = -1;
+    private bool _watchedForRemoval;
+
+
+    /// <summary>Does any subscribed Signal cover a Component stored in this Archetype?</summary>
+    internal bool WatchedForRemoval
+    {
+        get
+        {
+            var version = World.SignalVersion;
+            if (_signalVersion == version) return _watchedForRemoval;
+
+            _signalVersion = version;
+            _watchedForRemoval = World.WatchesAny(Signature, added: false);
+            return _watchedForRemoval;
+        }
+    }
+
     /// <summary>
     /// Expanded Signature with all Wildcards resolved for fast, set-level matching.
     /// </summary>
@@ -164,7 +185,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
         var toDelete = ((ReadOnlySpan<EntityIndex>)EntityStorage.Span).Slice(Count - excess, excess);
 
-        if (World.Signalling)
+        if (World.WatchesAny(Signature, added: false))
         {
             // Truncation despawns these Entities: signal the Components stored here before the
             // Storages are cleared (World.Recycle can no longer read them), then let the other

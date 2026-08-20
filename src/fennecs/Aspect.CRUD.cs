@@ -186,7 +186,8 @@ public partial class Aspect
 
     internal void Commit(Batch operation)
     {
-        if (!World.Signalling)
+        // The Batch's own type lists decide this once, for all of its Archetypes.
+        if (!World.WatchesAny(operation.Additions, added: true) && !World.WatchesAny(operation.Removals, added: false))
         {
             foreach (var archetype in operation.Archetypes)
                 Commit(operation, archetype);
@@ -227,11 +228,19 @@ public partial class Aspect
 
         World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Except(destinationSignature), RemoveCause.Removed);
 
+        var additions = destinationSignature.Except(archetype.Signature);
+
+        // Capturing the Entity handles is the only allocation on this path — skip it entirely
+        // when no Signal is waiting for any of the additions.
+        if (!World.WatchesAny(additions, added: true))
+        {
+            Commit(operation, archetype);
+            return;
+        }
+
         // The handles must be taken before the migration relocates the Entities.
         var entities = new Entity[archetype.Count];
         for (var i = 0; i < entities.Length; i++) entities[i] = World.EntityFor(archetype.EntityStorage[i]);
-
-        var additions = destinationSignature.Except(archetype.Signature);
 
         Commit(operation, archetype);
 

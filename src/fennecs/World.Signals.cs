@@ -10,11 +10,76 @@ public partial class World
     // several only when both plain and Wildcard expressions of the same type are watched.
     private readonly Dictionary<TypeID, List<Signal>> _signals = new();
 
+    // Number of subscribed directions (a Signal's Added and Removed count separately).
+    // Maintained by Signal<T>'s event accessors; a registered Signal nobody subscribed to is worth nothing.
+    private int _subscribers;
+
     /// <summary>
-    /// Fast bail-out for the CRUD paths: is any Signal registered in this World at all?
+    /// Fast bail-out for the CRUD paths: can any Signal in this World fire at all?
     /// (a field read and a compare — the structural change itself dwarfs it)
     /// </summary>
-    internal bool Signalling => _signals.Count > 0;
+    internal bool Signalling => _subscribers > 0;
+
+    /// <summary>
+    /// Bumped whenever the set of subscribed Signals changes, so caches keyed on it (see
+    /// <see cref="Archetype.WatchedForRemoval"/>) know when to recompute.
+    /// </summary>
+    internal int SignalVersion { get; private set; }
+
+    internal void SignalSubscribed()
+    {
+        _subscribers++;
+        SignalVersion++;
+    }
+
+    internal void SignalUnsubscribed()
+    {
+        _subscribers--;
+        SignalVersion++;
+    }
+
+    internal void ResetSubscribers()
+    {
+        _subscribers = 0;
+        SignalVersion++;
+    }
+
+
+    /// <summary>
+    /// Could a Component of this type fire anything in this direction? An over-approximation by
+    /// design: it ignores relation targets, so it stays a probe and a short scan — cheaper than
+    /// the World Lock it saves the caller from taking.
+    /// </summary>
+    internal bool Watching(TypeID typeId, bool added)
+    {
+        if (_subscribers == 0) return false;
+        if (!_signals.TryGetValue(typeId, out var signals)) return false;
+
+        foreach (var signal in signals)
+        {
+            if (added ? signal.WantsAdded : signal.WantsRemoved) return true;
+        }
+        return false;
+    }
+
+
+    /// <summary>
+    /// Would despawning this Entity fire anything? Scans what each Aspect stores for it,
+    /// so the Despawn path can skip the Lock (and the dispatch) entirely.
+    /// </summary>
+    internal bool WatchingAnyOf(Entity entity)
+    {
+        if (_subscribers == 0) return false;
+
+        // Per-Archetype, memoized: every Entity of an Archetype has the same Components, so this
+        // question is answered once per Archetype per subscription change, not once per Despawn.
+        foreach (var aspect in _aspects)
+        {
+            if (!aspect.Contains(entity)) continue;
+            if (aspect.GetEntityMeta(entity).Archetype.WatchedForRemoval) return true;
+        }
+        return false;
+    }
 
     // Nesting depth of Signal dispatch. Structural changes enqueued while this is non-zero were
     // requested by a handler, and are marked as such so a later failure can be attributed to it.
@@ -72,7 +137,7 @@ public partial class World
             if (existing.Expression == expression) return (Signal<T>)existing;
         }
 
-        var signal = new Signal<T>(expression);
+        var signal = new Signal<T>(this, expression);
         signals.Add(signal);
         return signal;
     }
@@ -131,8 +196,9 @@ public partial class World
 
         foreach (var stored in aspect.GetSignature(entity))
         {
-            if (!_signals.TryGetValue(stored.TypeId, out var signals)) continue;
-            EmitRemoved(signals, aspect, entity, stored, cause);
+            if (!Watching(stored.TypeId, added: false)) continue;
+
+            EmitRemoved(_signals[stored.TypeId], aspect, entity, stored, cause);
         }
     }
 
@@ -143,9 +209,8 @@ public partial class World
     /// </summary>
     internal void SignalRemovingRows(Aspect aspect, ReadOnlySpan<EntityIndex> indices, IEnumerable<TypeExpression> types, RemoveCause cause)
     {
-        var watched = Watched(types);
+        var watched = Watched(types, added: false);
         if (watched.Count == 0) return;
-
 
         foreach (var index in indices)
         {
@@ -162,9 +227,8 @@ public partial class World
     /// </summary>
     internal void SignalAddedRows(Aspect aspect, ReadOnlySpan<Entity> entities, IEnumerable<TypeExpression> types)
     {
-        var watched = Watched(types);
+        var watched = Watched(types, added: true);
         if (watched.Count == 0) return;
-
 
         foreach (var entity in entities)
         {
@@ -180,7 +244,7 @@ public partial class World
     /// </summary>
     internal void SignalSpawned(ReadOnlySpan<Entity> entities, IReadOnlyList<TypeExpression> types)
     {
-        var watched = Watched(types);
+        var watched = Watched(types, added: true);
         if (watched.Count == 0) return;
 
         foreach (var entity in entities)
@@ -195,15 +259,46 @@ public partial class World
     /// Pre-filters a set of expressions down to those actually watched, so the per-Entity
     /// loops of the bulk paths do not re-probe the registry.
     /// </summary>
-    private List<(TypeExpression expression, List<Signal> signals)> Watched(IEnumerable<TypeExpression> types)
+    private List<(TypeExpression expression, List<Signal> signals)> Watched(IEnumerable<TypeExpression> types, bool added)
     {
         List<(TypeExpression, List<Signal>)> watched = [];
         foreach (var type in types)
         {
-            if (_signals.TryGetValue(type.TypeId, out var signals))
-                watched.Add((type, signals));
+            if (!_signals.TryGetValue(type.TypeId, out var signals)) continue;
+
+            // A registered Signal nobody subscribed to must not cost the per-Entity loop anything.
+            if (!Subscribed(signals, type, added)) continue;
+
+            watched.Add((type, signals));
         }
         return watched;
+    }
+
+
+    /// <summary>
+    /// Does any Signal covering this expression actually have a handler for this direction?
+    /// </summary>
+    internal bool WatchesAny(IEnumerable<TypeExpression> types, bool added)
+    {
+        if (_subscribers == 0) return false;
+
+        foreach (var type in types)
+        {
+            if (!_signals.TryGetValue(type.TypeId, out var signals)) continue;
+            if (Subscribed(signals, type, added)) return true;
+        }
+        return false;
+    }
+
+
+    private static bool Subscribed(List<Signal> signals, TypeExpression expression, bool added)
+    {
+        foreach (var signal in signals)
+        {
+            if (!signal.Expression.Matches(expression)) continue;
+            if (added ? signal.WantsAdded : signal.WantsRemoved) return true;
+        }
+        return false;
     }
 
 
