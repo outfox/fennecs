@@ -159,7 +159,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
             var archetype = Main.GetArchetype(signature);
             archetype.Spawn(destination, components, values);
 
-            if (Signalling)
+            if (WatchesAny(components, added: true))
             {
                 using var spawnLock = Lock();
                 SignalSpawned(destination, components);
@@ -197,7 +197,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
         }
 
         // (the enclosing worldLock defers whatever the handlers do until the wave is complete)
-        if (Signalling) SignalSpawned(destination, components);
+        if (WatchesAny(components, added: true)) SignalSpawned(destination, components);
     }
 
     /// <summary>
@@ -350,6 +350,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     {
         //TODO: Dispose all Object Links, Queries, etc.?
         _signals.Clear();
+        ResetSubscribers();
         ReleaseTag();
     }
 

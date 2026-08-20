@@ -32,7 +32,9 @@ public partial class World
 
         AssertAlive(entity);
 
-        if (Signalling)
+        // The type-level check is cheaper than the Lock it avoids: a Signal on some other
+        // Component type must not cost this call anything.
+        if (Watching(typeExpression.TypeId, added: true))
         {
             // The lock defers whatever the handlers do; our own mutation goes straight to the
             // Aspect, which is immediate regardless of the World's Mode.
@@ -58,7 +60,7 @@ public partial class World
 
         AssertAlive(entity);
 
-        if (Signalling)
+        if (Watching(typeExpression.TypeId, added: false))
         {
             // Removed fires before the structural change, while the outgoing values are still readable.
             using var worldLock = Lock();

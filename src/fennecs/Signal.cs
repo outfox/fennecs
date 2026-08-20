@@ -68,7 +68,14 @@ public abstract class Signal
 {
     internal readonly TypeExpression Expression;
 
-    internal Signal(TypeExpression expression) => Expression = expression;
+    /// <summary>The World that hands out this Signal, and counts its live subscriptions.</summary>
+    private protected readonly World World;
+
+    internal Signal(World world, TypeExpression expression)
+    {
+        World = world;
+        Expression = expression;
+    }
 
     /// <summary>
     /// The Component type this Signal watches.
@@ -114,12 +121,32 @@ public abstract class Signal
 /// <typeparam name="T">the watched Component type</typeparam>
 public sealed class Signal<T> : Signal where T : notnull
 {
-    internal Signal(TypeExpression expression) : base(expression) { }
+    internal Signal(World world, TypeExpression expression) : base(world, expression) { }
+
+    private ComponentAdded<T>? _added;
+    private ComponentRemoved<T>? _removed;
+
+    // Explicit accessors so the World can keep an exact count of the subscribed directions:
+    // that count is what lets every structural change bail out on a single field compare.
 
     /// <summary>
     /// Raised just after a matching Component was added to an Entity.
     /// </summary>
-    public event ComponentAdded<T>? Added;
+    public event ComponentAdded<T> Added
+    {
+        add
+        {
+            var before = _added;
+            _added += value;
+            if (before is null && _added is not null) World.SignalSubscribed();
+        }
+        remove
+        {
+            var before = _added;
+            _added -= value;
+            if (before is not null && _added is null) World.SignalUnsubscribed();
+        }
+    }
 
     /// <summary>
     /// Raised just before a matching Component is removed from an Entity — including when the
@@ -127,14 +154,28 @@ public sealed class Signal<T> : Signal where T : notnull
     /// The <see cref="RemoveCause"/> tells the three apart; in particular, whether the Entity
     /// survives the removal.
     /// </summary>
-    public event ComponentRemoved<T>? Removed;
+    public event ComponentRemoved<T> Removed
+    {
+        add
+        {
+            var before = _removed;
+            _removed += value;
+            if (before is null && _removed is not null) World.SignalSubscribed();
+        }
+        remove
+        {
+            var before = _removed;
+            _removed -= value;
+            if (before is not null && _removed is null) World.SignalUnsubscribed();
+        }
+    }
 
-    internal override bool WantsAdded => Added is not null;
-    internal override bool WantsRemoved => Removed is not null;
+    internal override bool WantsAdded => _added is not null;
+    internal override bool WantsRemoved => _removed is not null;
 
     internal override void InvokeAdded(EntityRef entity, TypeExpression expression)
     {
-        var handler = Added;
+        var handler = _added;
         if (handler is null) return;
 
         ref var value = ref entity.Ref<T>(expression.Match);
@@ -143,7 +184,7 @@ public sealed class Signal<T> : Signal where T : notnull
 
     internal override void InvokeRemoved(EntityRef entity, TypeExpression expression, RemoveCause cause)
     {
-        var handler = Removed;
+        var handler = _removed;
         if (handler is null) return;
 
         ref var value = ref entity.Ref<T>(expression.Match);

@@ -138,12 +138,13 @@ public sealed partial class Aspect : IEnumerable<Entity>
     {
         if (Contains(entity))
         {
-            // Despawn discards every Component stored here: signal them while still readable.
-            if (World.Signalling) World.SignalRemovingAll(this, entity);
-
             ref var meta = ref _meta[entity.Index];
 
             var table = meta.Archetype;
+
+            // Despawn discards every Component stored here: signal them while still readable.
+            // (the Archetype answers "is anyone watching?" from a memoized flag)
+            if (World.Signalling && table.WatchedForRemoval) World.SignalRemovingAll(this, entity);
             table.Delete(meta.Row);
 
             DespawnDependencies(entity);
