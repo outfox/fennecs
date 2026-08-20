@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -238,13 +239,25 @@ public partial class Aspect
             return;
         }
 
-        // The handles must be taken before the migration relocates the Entities.
-        var entities = new Entity[archetype.Count];
-        for (var i = 0; i < entities.Length; i++) entities[i] = World.EntityFor(archetype.EntityStorage[i]);
+        // The handles must be taken before the migration relocates the Entities. Rented, because
+        // this buffer is the only allocation left on the Batch path — and returned even if a
+        // handler throws, which is why the whole dispatch sits in the try.
+        var count = archetype.Count;
+        var entities = ArrayPool<Entity>.Shared.Rent(count);
+        try
+        {
+            for (var i = 0; i < count; i++) entities[i] = World.EntityFor(archetype.EntityStorage[i]);
 
-        Commit(operation, archetype);
+            Commit(operation, archetype);
 
-        World.SignalAddedRows(this, entities, additions);
+            // Rent may hand back a longer array: only the rows we filled are Entities.
+            World.SignalAddedRows(this, entities.AsSpan(0, count), additions);
+        }
+        finally
+        {
+            // Entity is a bare 64-bit value, so the pool holds no references worth clearing.
+            ArrayPool<Entity>.Shared.Return(entities);
+        }
     }
 
     private static Signature Destination(Batch operation, Archetype archetype)
