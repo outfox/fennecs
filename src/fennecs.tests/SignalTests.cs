@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections.Concurrent;
+
 namespace fennecs.tests;
 
 public class SignalTests
 {
     private record struct Position(float X, float Y);
     private record struct Health(int Value);
+
+    private record struct Index(int Value);
 
     private sealed class Sprite;
 
@@ -604,5 +608,77 @@ public class SignalTests
         var thrown = Assert.Throws<SignalException>(() => entity.Add(new Position(1, 2)));
 
         Assert.IsType<InvalidOperationException>(thrown.InnerException);
+    }
+
+    [Fact]
+    public void Signals_Of_A_Parallel_Job_Dispatch_Once_On_A_Single_Thread()
+    {
+        using var world = new World();
+
+        const int count = 10_000;
+
+        var entities = new Entity[count];
+        for (var i = 0; i < count; i++) entities[i] = world.Spawn().Add(new Index(i));
+
+        // Materialize Position before the Job: its first use registers the type with an Aspect,
+        // and that is not what this test is about.
+        world.Spawn().Add(new Position(0, 0)).Despawn();
+
+        var dispatchThreads = new ConcurrentDictionary<int, byte>();
+
+        // Deliberately a plain increment, not Interlocked: if dispatch were concurrent, this
+        // would lose counts and the test would fail - which is exactly the guarantee under test.
+        var added = 0;
+        world.On<Position>().Added += (_, ref _) =>
+        {
+            dispatchThreads.TryAdd(Environment.CurrentManagedThreadId, 0);
+            added++;
+        };
+
+        // Worker threads request structural changes concurrently; the World is locked for the
+        // duration of the runner, so they queue up and are applied at catch-up.
+        world.Query<Index>().Stream()
+            .Job(entities, static (Entity[] all, ref Index index) => all[index.Value].Add(new Position(index.Value, 0)));
+
+        Assert.Equal(count, added);
+        Assert.Single(dispatchThreads);
+        Assert.All(entities, entity => Assert.True(entity.Has<Position>()));
+    }
+
+
+    [Fact]
+    public void A_Parallel_Job_Does_Not_Signal_While_Its_Workers_Run()
+    {
+        using var world = new World();
+
+        var work = new Workers { All = new Entity[1_000] };
+        for (var i = 0; i < work.All.Length; i++) work.All[i] = world.Spawn().Add(new Index(i));
+
+        world.Spawn().Add(new Position(0, 0)).Despawn();
+
+        var whileWorking = 0;
+        world.On<Position>().Added += (_, ref _) =>
+        {
+            if (Volatile.Read(ref work.Active) > 0) whileWorking++;
+        };
+
+        world.Query<Index>().Stream()
+            .Job(work, static (Workers workers, ref Index index) =>
+            {
+                Interlocked.Increment(ref workers.Active);
+                workers.All[index.Value].Add(new Position(index.Value, 0));
+                Interlocked.Decrement(ref workers.Active);
+            });
+
+        // The runner releases its Lock only once every worker is done, so dispatch can never
+        // interleave with the iteration - which is what makes the EntityRef handlers get safe.
+        Assert.Equal(0, whileWorking);
+    }
+
+
+    private sealed class Workers
+    {
+        public Entity[] All = [];
+        public int Active;
     }
 }
