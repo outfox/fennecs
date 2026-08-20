@@ -174,11 +174,21 @@ Dispatch stops at the first throwing handler  –  the remaining subscribers, an
 
 ## What does it cost?
 
-- **No subscribers, no Signals registered:** no Signal, no cost. Beware that `On` *creates* the Signal (an empty one)  –  if you are not going to subscribe, do not call it.
-- **With Signals:** one dictionary probe per structural change (keyed by `TypeID`), then a delegate invocation.
-- Bulk paths (Batch, Spawn, Truncate) pre-filter the watched types **once**, then loop the Entities.
+**You pay for what you subscribe to, and nothing else.** A Signal with no handlers costs a single field compare; a Signal on a Component type your loop doesn't touch costs one dictionary probe. Neither takes the World Lock, and neither allocates.
 
-To clear out unused Signals, call `World.GC`: it drops every Signal left without subscribers, taking you back to the "no Signals registered" case once the last one is gone. This is also precisely why a stored `Signal<T>` goes stale  –  always subscribe through [`On<T>()`](#quick-start).
+Measured over 10 000 Entities (`SignalBenchmarks`, .NET 10), against the same operation with no Signals at all:
+
+| Path | Signal elsewhere / unsubscribed | 1 handler | 4 handlers |
+|------|--------------------------------:|----------:|-----------:|
+| `Add` + `Remove`, per Entity | *baseline* | +14 % | +20 % |
+| `Add` + `Remove`, via Batch | *baseline* | ×6.6 | ×10.3 |
+| Spawn + Despawn wave | *baseline* | ×2.1 | ×2.6 |
+
+The Batch row is the honest worst case, and it is worth understanding rather than fearing: a Batch performs **two** Archetype migrations for ten thousand Entities, but still owes you **ten thousand Signals**. There is no bulk work left for the dispatch to hide behind. In absolute terms it is still about 7 ns per Signal.
+
+Per-Entity CRUD barely notices, because the Archetype move dwarfs the dispatch. Dispatch allocates nothing; only a Batch does, capturing the Entity handles it must signal after the migration.
+
+To clear out unused Signals, call `World.GC`: it drops every Signal left without subscribers. This is also precisely why a stored `Signal<T>` goes stale  –  always subscribe through [`On<T>()`](#quick-start).
 
 ::: info :neofox_think: MAKE SURE YOU CAN UNSUBSCRIBE
 Use named methods, so you can unsubscribe  –  `world.On<T>().Added -= Handler`. Lambdas are great for prototyping, but hard to clean up afterwards.
