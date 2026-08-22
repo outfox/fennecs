@@ -114,7 +114,11 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
 
     /// <inheritdoc />
     // ReSharper disable once NotDisposedResourceIsReturned
-    public IEnumerator<TypeExpression> GetEnumerator() => _set.GetEnumerator();
+    // Concrete struct enumerator: C#'s foreach binds to this by shape, so iterating a Signature
+    // does not box. (the IEnumerable<T> implementation below still boxes, for interface callers)
+    public ImmutableSortedSet<TypeExpression>.Enumerator GetEnumerator() => _set.GetEnumerator();
+
+    IEnumerator<TypeExpression> IEnumerable<TypeExpression>.GetEnumerator() => _set.GetEnumerator();
 
 
     /// <inheritdoc />
@@ -134,7 +138,7 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
     }
 
     /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => _set.GetEnumerator();
 
 
     private static int BakeHash(IEnumerable<TypeExpression> source)

@@ -141,6 +141,10 @@ public sealed partial class Aspect : IEnumerable<Entity>
             ref var meta = ref _meta[entity.Index];
 
             var table = meta.Archetype;
+
+            // Despawn discards every Component stored here: signal them while still readable.
+            // (the Archetype answers "is anyone watching?" from a memoized flag)
+            if (World.Signalling && table.WatchedForRemoval) World.SignalRemovingAll(this, entity);
             table.Delete(meta.Row);
 
             DespawnDependencies(entity);
@@ -167,6 +171,22 @@ public sealed partial class Aspect : IEnumerable<Entity>
     }
 
 
+    /// <summary>
+    /// Would despawning this Entity strip Relations that something is watching, from Entities
+    /// other than itself? (<see cref="DespawnDependencies"/> emits <see cref="RemoveCause.TargetDespawned"/>)
+    /// </summary>
+    internal bool WatchedDependencies(Entity entity)
+    {
+        if (!_typesByRelationTarget.TryGetValue(entity.Key, out var types)) return false;
+
+        foreach (var type in types)
+        {
+            if (World.Watching(type.TypeId, added: false)) return true;
+        }
+        return false;
+    }
+
+
     private void DespawnDependencies(Entity entity)
     {
         // Find entity-entity relation reverse lookup (if applicable)
@@ -185,6 +205,10 @@ public sealed partial class Aspect : IEnumerable<Entity>
             if (archetype.Count <= 0) continue;
 
             var signatureWithoutTarget = archetype.Signature.Except(types);
+
+            // The Entities in this Archetype lose their Relations to the despawned target.
+            if (World.Signalling)
+                World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Intersect(types), RemoveCause.TargetDespawned);
 
             // Lazy membership: losing their last owned Components evicts the Entities from this Aspect.
             if (!IsMain && signatureWithoutTarget.Count == 1)

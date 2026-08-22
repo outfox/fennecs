@@ -26,11 +26,23 @@ public partial class World
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Add, Entity = entity, TypeExpression = typeExpression, Data = data });
+            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Add, Entity = entity, TypeExpression = typeExpression, Data = data, FromSignal = InSignalDispatch });
             return;
         }
 
         AssertAlive(entity);
+
+        // The type-level check is cheaper than the Lock it avoids: a Signal on some other
+        // Component type must not cost this call anything.
+        if (Watching(typeExpression.TypeId, added: true))
+        {
+            // The lock defers whatever the handlers do; our own mutation goes straight to the
+            // Aspect, which is immediate regardless of the World's Mode.
+            using var worldLock = Lock();
+            aspect.AddComponent(entity, typeExpression, data);
+            SignalAdded(aspect, entity, typeExpression);
+            return;
+        }
 
         aspect.AddComponent(entity, typeExpression, data);
     }
@@ -42,11 +54,20 @@ public partial class World
 
         if (Mode == WorldMode.Deferred)
         {
-            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Remove, Entity = entity, TypeExpression = typeExpression, RemoveMode = mode });
+            _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Remove, Entity = entity, TypeExpression = typeExpression, RemoveMode = mode, FromSignal = InSignalDispatch });
             return;
         }
 
         AssertAlive(entity);
+
+        if (Watching(typeExpression.TypeId, added: false))
+        {
+            // Removed fires before the structural change, while the outgoing values are still readable.
+            using var worldLock = Lock();
+            SignalRemoving(aspect, entity, typeExpression);
+            aspect.RemoveComponent(entity, typeExpression, mode);
+            return;
+        }
 
         aspect.RemoveComponent(entity, typeExpression, mode);
     }
