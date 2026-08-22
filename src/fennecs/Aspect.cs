@@ -171,6 +171,22 @@ public sealed partial class Aspect : IEnumerable<Entity>
     }
 
 
+    /// <summary>
+    /// Would despawning this Entity strip Relations that something is watching, from Entities
+    /// other than itself? (<see cref="DespawnDependencies"/> emits <see cref="RemoveCause.TargetDespawned"/>)
+    /// </summary>
+    internal bool WatchedDependencies(Entity entity)
+    {
+        if (!_typesByRelationTarget.TryGetValue(entity.Key, out var types)) return false;
+
+        foreach (var type in types)
+        {
+            if (World.Watching(type.TypeId, added: false)) return true;
+        }
+        return false;
+    }
+
+
     private void DespawnDependencies(Entity entity)
     {
         // Find entity-entity relation reverse lookup (if applicable)

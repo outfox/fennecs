@@ -681,4 +681,81 @@ public class SignalTests
         public Entity[] All = [];
         public int Active;
     }
+
+    [Fact]
+    public void A_Dead_Relation_Target_Defers_What_Its_Handlers_Do()
+    {
+        using var world = new World();
+
+        var target = world.Spawn();
+        var relating = world.Spawn().Add(new Health(7), target);
+
+        // Nothing watches what the *target* holds — only the relation on the other Entity. The
+        // Despawn must still take the Lock, or this handler would mutate the relating Entity in
+        // the middle of the dependency migration.
+        world.On<Health>(Match.Any).Removed += (e, in _, cause) =>
+        {
+            Assert.Equal(RemoveCause.TargetDespawned, cause);
+            e.Add(new Position(1, 2));
+        };
+
+        target.Despawn();
+
+        Assert.True(relating.Alive);
+        Assert.True(relating.Has<Position>());
+        Assert.False(relating.Has<Health>(Match.Any));
+    }
+
+
+    [Fact]
+    public void A_Handler_May_Register_Another_Signal_Of_The_Same_Type()
+    {
+        using var world = new World();
+
+        // Subscribing from inside a handler appends to the very list the dispatch is walking.
+        world.On<Health>().Added += (_, ref _) => world.On<Health>(Match.Any);
+
+        var entity = world.Spawn();
+        entity.Add(new Health(1));   // must not throw a bare InvalidOperationException
+
+        Assert.True(entity.Has<Health>());
+    }
+
+
+    [Fact]
+    public void A_Wildcard_Batch_Removal_Reaches_A_Plain_Signal()
+    {
+        using var world = new World();
+
+        for (var i = 0; i < 4; i++) world.Spawn().Add(new Index(i)).Add(new Health(i));
+
+        var removed = 0;
+        world.On<Health>().Removed += (_, in _, _) => removed++;
+
+        // The Batch pattern is a Wildcard; the plain Signal still covers what it actually strips.
+        world.Query<Index>().Has<Health>(Match.Any).Compile()
+            .Batch()
+            .Remove<Health>(Match.Any)
+            .Submit();
+
+        Assert.Equal(4, removed);
+    }
+
+
+    [Fact]
+    public void GC_Drops_Signals_Once_Everyone_Has_Unsubscribed()
+    {
+        using var world = new World();
+
+        void Handler(EntityRef entity, ref Health health) { }
+
+        var signal = world.On<Health>();
+        signal.Added += Handler;
+        signal.Added -= Handler;
+
+        // No subscriber left anywhere, which is exactly when the empty Signal should be collected.
+        world.GC();
+
+        Assert.NotSame(signal, world.On<Health>());
+    }
 }

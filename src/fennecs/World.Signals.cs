@@ -75,8 +75,12 @@ public partial class World
         // question is answered once per Archetype per subscription change, not once per Despawn.
         foreach (var aspect in _aspects)
         {
-            if (!aspect.Contains(entity)) continue;
-            if (aspect.GetEntityMeta(entity).Archetype.WatchedForRemoval) return true;
+            if (aspect.Contains(entity) && aspect.GetEntityMeta(entity).Archetype.WatchedForRemoval) return true;
+
+            // Despawning a relation *target* strips Relations from other Entities, and those
+            // TargetDespawned Signals need the Lock just as much: a handler must not run while
+            // the dependency migration is half done.
+            if (aspect.WatchedDependencies(entity)) return true;
         }
         return false;
     }
@@ -267,7 +271,9 @@ public partial class World
             if (!_signals.TryGetValue(type.TypeId, out var signals)) continue;
 
             // A registered Signal nobody subscribed to must not cost the per-Entity loop anything.
-            if (!Subscribed(signals, type, added)) continue;
+            // Type-level only: matching keys here would skip narrower Signals when `type` is a
+            // Wildcard, and the per-Entity Emit re-checks the concrete expression anyway.
+            if (!Watching(type.TypeId, added)) continue;
 
             watched.Add((type, signals));
         }
@@ -284,22 +290,11 @@ public partial class World
 
         foreach (var type in types)
         {
-            if (!_signals.TryGetValue(type.TypeId, out var signals)) continue;
-            if (Subscribed(signals, type, added)) return true;
+            if (Watching(type.TypeId, added)) return true;
         }
         return false;
     }
 
-
-    private static bool Subscribed(List<Signal> signals, TypeExpression expression, bool added)
-    {
-        foreach (var signal in signals)
-        {
-            if (!signal.Expression.Matches(expression)) continue;
-            if (added ? signal.WantsAdded : signal.WantsRemoved) return true;
-        }
-        return false;
-    }
 
 
     private void EmitAdded(List<Signal> signals, Aspect aspect, Entity entity, TypeExpression expression)
@@ -309,8 +304,13 @@ public partial class World
         _dispatching++;
         try
         {
-            foreach (var signal in signals)
+            // By index, re-reading Count: a handler is allowed to call On<T>() for this same
+            // Component type, which appends to the very list being walked. foreach would throw an
+            // unwrapped InvalidOperationException; this simply picks the newcomer up (or not).
+            for (var i = 0; i < signals.Count; i++)
             {
+                var signal = signals[i];
+
                 // Non-commutative on purpose: a Wildcard Signal covers concrete expressions, see summary
                 if (!signal.Expression.Matches(expression)) continue;
 
@@ -341,8 +341,10 @@ public partial class World
         _dispatching++;
         try
         {
-            foreach (var signal in signals)
+            for (var i = 0; i < signals.Count; i++)
             {
+                var signal = signals[i];
+
                 if (!signal.Expression.Matches(expression)) continue;
 
                 if (!signal.WantsRemoved) continue;
