@@ -34,7 +34,11 @@ public class SignalBenchmarks
         /// <summary>A Signal exists, but for a Component type nobody touches: a registry miss.</summary>
         OtherType,
 
-        /// <summary>A Signal for the mutated type exists, with no subscribers: probe, but no invoke.</summary>
+        /// <summary>
+        /// A Signal for the mutated type exists but has no subscribers, while something else in the
+        /// World does — so the World is Signalling and the registry is actually probed for Position,
+        /// only to find nothing to invoke.
+        /// </summary>
         Idle,
 
         /// <summary>One subscriber on each of Added and Removed.</summary>
@@ -82,6 +86,10 @@ public class SignalBenchmarks
 
             case Watchers.Idle:
                 _world.On<Position>();  // materializes the Signal without subscribing
+                // Without a subscriber somewhere, the World would not be Signalling at all and this
+                // case would silently measure the very same path as None.
+                _world.On<Unwatched>().Added += Bump;
+                _world.On<Unwatched>().Removed += Drop;
                 break;
 
             case Watchers.One:
