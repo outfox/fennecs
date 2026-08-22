@@ -2,7 +2,7 @@
 title: EntityRef
 order: 10
 outline: [1, 2]
-description: 'EntityRef is a light Entity use when nowing the entity is alive. Allowing faster access to component.'
+description: 'EntityRef is a lightweight Entity handle, used when the Entity is known to be alive, giving faster access to its Components.'
 ---
 
 # EntityRef :neofox_peek_owo:
