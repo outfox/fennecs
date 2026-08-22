@@ -180,9 +180,9 @@ Measured over 10 000 Entities (`SignalBenchmarks`, .NET 10), against the same op
 
 | Path | Signal elsewhere / unsubscribed | 1 handler | 4 handlers |
 |------|--------------------------------:|----------:|-----------:|
-| `Add` + `Remove`, per Entity | *baseline* | +14 % | +20 % |
-| `Add` + `Remove`, via Batch | *baseline* | ×6.6 | ×10.3 |
-| Spawn + Despawn wave | *baseline* | ×2.1 | ×2.6 |
+| `Add` + `Remove`, per Entity | *baseline* | +14 % | +16 % |
+| `Add` + `Remove`, via Batch | *baseline* | ×6 | ×9 |
+| Spawn + Despawn wave | *baseline* | ×2 | ×3 |
 
 The Batch row is the honest worst case, and it is worth understanding rather than fearing: a Batch performs **two** Archetype migrations for ten thousand Entities, but still owes you **ten thousand Signals**. There is no bulk work left for the dispatch to hide behind. In absolute terms it is still about 7 ns per Signal.
 
