@@ -324,7 +324,9 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     {
         if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
 
-        if (Signalling)
+        // Not Signalling: that asks whether anyone is subscribed, and the Signals worth dropping
+        // here are exactly the ones nobody subscribes to any more.
+        if (_signals.Count > 0)
         {
             var toClear = new List<TypeID>();
 
