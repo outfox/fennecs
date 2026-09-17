@@ -53,6 +53,15 @@ Here be ~~dragons~~ more foxes. *What did you expect?*
   - A `FilteredStream` honors all its filters in `For`, `Job`, `Count`, enumeration, and `Despawn`. `Raw`/`Blit` remain on the unfiltered `Stream` (reachable via the `.Stream` property).
   - ✨ Two-delegate runners: every `For`/`Job` variant gains an `(included, excluded)` overload that partitions the Query in a single pass – `excluded` visits pruned Archetypes and predicate-rejected Entities.
   - Jobs no longer share `CountdownEvent` state between Stream copies; each invocation synchronizes independently.
+- **Bitwise Query Matching** (0.7.0): Archetype/Query matching now runs on dense TypeId bit planes plus a
+  256-bit bloom filter for specific relation/link keys, replacing the wildcard-expanded set operations.
+  Matching is allocation-free and several times faster in Archetype-rich Worlds; wildcard semantics are
+  unchanged.
+- ✨ **`Match.Family`** (0.7.0): inheritance-aware matching – `Has<Base>(Match.Family)` matches plain
+  Components of a type *or any type derived from it* (base classes only). As a Stream Type, derived
+  Components arrive read-only, viewed as their base type, via the new `ForRead` runners (`in`
+  parameters) and enumeration; writable surfaces (`For`/`Job`/`Raw`/`Blit`/filter views) throw.
+  ([documentation](/docs/Basic/Queries/Matching.md#inheritance-aware-matching-family))
 - Stream runners return their own Stream, allowing chaining operations.
 - Chunked Component Storage (global, or maybe each World may have its own chunk size)
 - `Match.Object` becomes internal / deprecated, use `Link.Any` instead.

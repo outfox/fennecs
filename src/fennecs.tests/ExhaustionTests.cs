@@ -38,6 +38,12 @@ public class WorldTagExhaustionTests
 
 public class TypeIdExhaustionTests
 {
+    private class RegistrationRoot;
+
+    private class RegistrationMiddle : RegistrationRoot;
+
+    private class RegistrationLeaf : RegistrationMiddle;
+
     [Fact]
     public void TypeId_Space_Exhaustion_Throws()
     {
@@ -47,9 +53,26 @@ public class TypeIdExhaustionTests
     }
 
 
+    [Fact]
+    public void Registering_Derived_Component_Consumes_One_TypeId()
+    {
+        Assert.Equal(1, RegistryProbe.RegisterAndCount<RegistrationLeaf>());
+    }
+
+
     // Grants test access to the protected registry internals of LanguageType.
     private class RegistryProbe : LanguageType
     {
+        internal static int RegisterAndCount<T>()
+        {
+            lock (RegistryLock)
+            {
+                var before = Counter;
+                _ = LanguageType<T>.Id;
+                return Counter - before;
+            }
+        }
+
         internal static TypeInitializationException ProvokeExhaustion()
         {
             lock (RegistryLock)

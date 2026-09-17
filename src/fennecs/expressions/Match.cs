@@ -85,6 +85,17 @@ public readonly record struct Match
 
 
     /// <summary>
+    /// <para><b>Inheritance-aware match expression for query filters.</b><br/>
+    /// Matches <b>Plain</b> Components of the given type <i>or any type derived from it</i> (base classes
+    /// discovered from each Component type's inheritance chain).</para>
+    /// <para>Usable in <see cref="QueryBuilder{C1}"/> Has/Not/Any clauses and filters on ordinary streams.
+    /// As a Stream Type, derived Component storages are available through read-only iteration with
+    /// <c>ForRead</c> or enumeration; writable runners and filtered views are not supported.</para>
+    /// </summary>
+    public static Match Family => new(Key.Family);
+
+
+    /// <summary>
     /// <para><b>Plain Component match expression for Entity iteration.</b><br/> This matches only <b>Plain</b> Components of the given Stream Type.
     /// </para>
     /// <para>This expression is free when applied to a Filter expression, see <see cref="Query"/>.

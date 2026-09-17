@@ -122,15 +122,20 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
     {
         if (other._set == default!) return 1;
 
-        var minCount = Math.Min(_set.Count, other._set.Count);
+        // Lexicographic over the sorted elements; enumerators avoid ElementAt's O(log n) per index.
+        using var mine = _set.GetEnumerator();
+        using var theirs = other._set.GetEnumerator();
 
-        for (var i = 0; i < minCount; i++)
+        while (true)
         {
-            var cmp = _set.ElementAt(i).CompareTo(other._set.ElementAt(i));
+            var mineNext = mine.MoveNext();
+            var theirsNext = theirs.MoveNext();
+
+            if (!mineNext || !theirsNext) return mineNext.CompareTo(theirsNext);
+
+            var cmp = mine.Current.CompareTo(theirs.Current);
             if (cmp != 0) return cmp;
         }
-
-        return _set.Count.CompareTo(other._set.Count);
     }
 
     /// <inheritdoc />
@@ -162,20 +167,4 @@ internal readonly record struct Signature : IEnumerable<TypeExpression>, ICompar
 
     /// <inheritdoc cref="Enumerable.ElementAt{TSource}(System.Collections.Generic.IEnumerable{TSource},System.Index)"/>
     public TypeExpression this[int index] => _set.ElementAt(index);
-
-
-
-
-    /// <summary>
-    /// Create a copy of set with its Wildcards expanded.
-    /// </summary>
-    internal Signature Expand()
-    {
-        var expanded = _set.ToBuilder();
-
-        var expansions = _set.SelectMany(type => type.Expand());
-        expanded.UnionWith(expansions);
-
-        return new(expanded.ToImmutable());
-    }
 }
