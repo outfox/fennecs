@@ -71,8 +71,10 @@ const vitePressConfigs : UserConfig = {
     ],
 
     footer: {
-      message: '<a href="https://github.com/outfox/fennecs/?tab=MIT-1-ov-file#readme"><b>fenn</b>ecs</a> is released under the MIT License. <a href="https://volpeon.ink/emojis/neofox/">Neofox</a> is released under the CC BY-NC-SA 4.0 License.<br/>🤖 Agents: <a href="/llms.txt">llms.txt</a> · <a href="/downloads/fennecs-skill.zip">fennecs skill (zip)</a> · <a href="/cookbook/mise-en-place/Agents.html">install guide</a>',
-      copyright: '<b>fenn</b>ecs is made with love & foxes, copyright © 2025 <a href="https://github.com/outfox/fennecs/graphs/contributors"> its contributors</a>'
+      message: '<a href="https://github.com/outfox/fennecs/?tab=MIT-1-ov-file#readme"><b>fenn</b>ecs</a> is released under the MIT License. <a href="https://volpeon.ink/emojis/neofox/">Neofox</a> is released under the CC BY-NC-SA 4.0 License.',
+      copyright: '<b>fenn</b>ecs is made with love & foxes, copyright © 2023-2026 <a href="https://github.com/outfox/fennecs/graphs/contributors"> its contributors</a>' +
+        // Visually hidden: kept in the DOM and accessibility tree for agents, invisible to human readers.
+        '<span class="agents" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0">🤖 Agents: <a tabindex="-1" href="/llms.txt">llms.txt</a> · <a tabindex="-1" href="/downloads/fennecs-skill.zip">fennecs skill (zip)</a> · <a tabindex="-1" href="/cookbook/mise-en-place/Agents.html">install guide</a></span>'
     },
   }
 };
