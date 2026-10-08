@@ -79,6 +79,7 @@ var textureLinks = Comp<Texture>.Matching(Match.Object);
 | `Match.Entity` | Entity-to-entity relations |
 | `Match.Object` | Object links |
 | `Match.Target` | Any relation (Entity or Object, not Plain) |
+| `Match.Family` | Plain components of the type or any derived type (read-only as a Stream Type: `ForRead`/enumeration) |
 
 ## Boxed Components :neofox_box:
 

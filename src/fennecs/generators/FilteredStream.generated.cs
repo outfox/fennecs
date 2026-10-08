@@ -37,9 +37,9 @@ namespace fennecs
         private readonly ImmutableSortedSet<Comp> _has;
         private readonly ImmutableSortedSet<Comp> _not;
 
-        // The above, projected to TypeExpressions once at construction for Archetype matching.
-        private readonly ImmutableSortedSet<TypeExpression> _hasExpressions;
-        private readonly ImmutableSortedSet<TypeExpression> _notExpressions;
+        // The above, compiled to bit-testable clauses once at construction for Archetype matching.
+        private readonly ClauseBits _hasBits;
+        private readonly ClauseBits _notBits;
 
         // Per-entity predicate for C0; null means unset (all entities pass).
         private readonly ComponentFilter<C0>? _filter0;
@@ -103,8 +103,8 @@ namespace fennecs
             Stream = stream;
             _has = has;
             _not = not;
-            _hasExpressions = has.Select(comp => comp.Expression).ToImmutableSortedSet();
-            _notExpressions = not.Select(comp => comp.Expression).ToImmutableSortedSet();
+            _hasBits = ClauseBits.Of(has.Select(comp => comp.Expression));
+            _notBits = ClauseBits.Of(not.Select(comp => comp.Expression));
             _filter0 = filter0;
         }
         #endregion
@@ -141,8 +141,7 @@ namespace fennecs
 
         // Archetype-level inclusion: must have ALL of Has, and NONE of Not.
         private bool Includes(Archetype candidate) =>
-            candidate.MatchSignature.IsSupersetOf(_hasExpressions) &&
-            !candidate.MatchSignature.Overlaps(_notExpressions);
+            candidate.Bits.IsSupersetOf(_hasBits) && !candidate.Bits.Overlaps(_notBits);
 
         private int CountPass(Span<C0> span0)
         {
@@ -868,9 +867,9 @@ namespace fennecs
         private readonly ImmutableSortedSet<Comp> _has;
         private readonly ImmutableSortedSet<Comp> _not;
 
-        // The above, projected to TypeExpressions once at construction for Archetype matching.
-        private readonly ImmutableSortedSet<TypeExpression> _hasExpressions;
-        private readonly ImmutableSortedSet<TypeExpression> _notExpressions;
+        // The above, compiled to bit-testable clauses once at construction for Archetype matching.
+        private readonly ClauseBits _hasBits;
+        private readonly ClauseBits _notBits;
 
         // Per-entity predicate for C0; null means unset (all entities pass).
         private readonly ComponentFilter<C0>? _filter0;
@@ -936,8 +935,8 @@ namespace fennecs
             Stream = stream;
             _has = has;
             _not = not;
-            _hasExpressions = has.Select(comp => comp.Expression).ToImmutableSortedSet();
-            _notExpressions = not.Select(comp => comp.Expression).ToImmutableSortedSet();
+            _hasBits = ClauseBits.Of(has.Select(comp => comp.Expression));
+            _notBits = ClauseBits.Of(not.Select(comp => comp.Expression));
             _filter0 = filter0;
             _filter1 = filter1;
         }
@@ -982,8 +981,7 @@ namespace fennecs
 
         // Archetype-level inclusion: must have ALL of Has, and NONE of Not.
         private bool Includes(Archetype candidate) =>
-            candidate.MatchSignature.IsSupersetOf(_hasExpressions) &&
-            !candidate.MatchSignature.Overlaps(_notExpressions);
+            candidate.Bits.IsSupersetOf(_hasBits) && !candidate.Bits.Overlaps(_notBits);
 
         private int CountPass(Span<C0> span0, Span<C1> span1)
         {
@@ -1722,9 +1720,9 @@ namespace fennecs
         private readonly ImmutableSortedSet<Comp> _has;
         private readonly ImmutableSortedSet<Comp> _not;
 
-        // The above, projected to TypeExpressions once at construction for Archetype matching.
-        private readonly ImmutableSortedSet<TypeExpression> _hasExpressions;
-        private readonly ImmutableSortedSet<TypeExpression> _notExpressions;
+        // The above, compiled to bit-testable clauses once at construction for Archetype matching.
+        private readonly ClauseBits _hasBits;
+        private readonly ClauseBits _notBits;
 
         // Per-entity predicate for C0; null means unset (all entities pass).
         private readonly ComponentFilter<C0>? _filter0;
@@ -1792,8 +1790,8 @@ namespace fennecs
             Stream = stream;
             _has = has;
             _not = not;
-            _hasExpressions = has.Select(comp => comp.Expression).ToImmutableSortedSet();
-            _notExpressions = not.Select(comp => comp.Expression).ToImmutableSortedSet();
+            _hasBits = ClauseBits.Of(has.Select(comp => comp.Expression));
+            _notBits = ClauseBits.Of(not.Select(comp => comp.Expression));
             _filter0 = filter0;
             _filter1 = filter1;
             _filter2 = filter2;
@@ -1846,8 +1844,7 @@ namespace fennecs
 
         // Archetype-level inclusion: must have ALL of Has, and NONE of Not.
         private bool Includes(Archetype candidate) =>
-            candidate.MatchSignature.IsSupersetOf(_hasExpressions) &&
-            !candidate.MatchSignature.Overlaps(_notExpressions);
+            candidate.Bits.IsSupersetOf(_hasBits) && !candidate.Bits.Overlaps(_notBits);
 
         private int CountPass(Span<C0> span0, Span<C1> span1, Span<C2> span2)
         {
@@ -2599,9 +2596,9 @@ namespace fennecs
         private readonly ImmutableSortedSet<Comp> _has;
         private readonly ImmutableSortedSet<Comp> _not;
 
-        // The above, projected to TypeExpressions once at construction for Archetype matching.
-        private readonly ImmutableSortedSet<TypeExpression> _hasExpressions;
-        private readonly ImmutableSortedSet<TypeExpression> _notExpressions;
+        // The above, compiled to bit-testable clauses once at construction for Archetype matching.
+        private readonly ClauseBits _hasBits;
+        private readonly ClauseBits _notBits;
 
         // Per-entity predicate for C0; null means unset (all entities pass).
         private readonly ComponentFilter<C0>? _filter0;
@@ -2671,8 +2668,8 @@ namespace fennecs
             Stream = stream;
             _has = has;
             _not = not;
-            _hasExpressions = has.Select(comp => comp.Expression).ToImmutableSortedSet();
-            _notExpressions = not.Select(comp => comp.Expression).ToImmutableSortedSet();
+            _hasBits = ClauseBits.Of(has.Select(comp => comp.Expression));
+            _notBits = ClauseBits.Of(not.Select(comp => comp.Expression));
             _filter0 = filter0;
             _filter1 = filter1;
             _filter2 = filter2;
@@ -2733,8 +2730,7 @@ namespace fennecs
 
         // Archetype-level inclusion: must have ALL of Has, and NONE of Not.
         private bool Includes(Archetype candidate) =>
-            candidate.MatchSignature.IsSupersetOf(_hasExpressions) &&
-            !candidate.MatchSignature.Overlaps(_notExpressions);
+            candidate.Bits.IsSupersetOf(_hasBits) && !candidate.Bits.Overlaps(_notBits);
 
         private int CountPass(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3)
         {
@@ -3499,9 +3495,9 @@ namespace fennecs
         private readonly ImmutableSortedSet<Comp> _has;
         private readonly ImmutableSortedSet<Comp> _not;
 
-        // The above, projected to TypeExpressions once at construction for Archetype matching.
-        private readonly ImmutableSortedSet<TypeExpression> _hasExpressions;
-        private readonly ImmutableSortedSet<TypeExpression> _notExpressions;
+        // The above, compiled to bit-testable clauses once at construction for Archetype matching.
+        private readonly ClauseBits _hasBits;
+        private readonly ClauseBits _notBits;
 
         // Per-entity predicate for C0; null means unset (all entities pass).
         private readonly ComponentFilter<C0>? _filter0;
@@ -3573,8 +3569,8 @@ namespace fennecs
             Stream = stream;
             _has = has;
             _not = not;
-            _hasExpressions = has.Select(comp => comp.Expression).ToImmutableSortedSet();
-            _notExpressions = not.Select(comp => comp.Expression).ToImmutableSortedSet();
+            _hasBits = ClauseBits.Of(has.Select(comp => comp.Expression));
+            _notBits = ClauseBits.Of(not.Select(comp => comp.Expression));
             _filter0 = filter0;
             _filter1 = filter1;
             _filter2 = filter2;
@@ -3643,8 +3639,7 @@ namespace fennecs
 
         // Archetype-level inclusion: must have ALL of Has, and NONE of Not.
         private bool Includes(Archetype candidate) =>
-            candidate.MatchSignature.IsSupersetOf(_hasExpressions) &&
-            !candidate.MatchSignature.Overlaps(_notExpressions);
+            candidate.Bits.IsSupersetOf(_hasBits) && !candidate.Bits.Overlaps(_notBits);
 
         private int CountPass(Span<C0> span0, Span<C1> span1, Span<C2> span2, Span<C3> span3, Span<C4> span4)
         {

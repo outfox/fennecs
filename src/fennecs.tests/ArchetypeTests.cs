@@ -32,8 +32,8 @@ public class ArchetypeTests(ITestOutputHelper output)
         mask.Any(TypeExpression.Of<string>(Match.Plain));
         mask.Any(TypeExpression.Of<double>(Match.Plain));
 
-        Assert.False(world.GetEntityMeta(plain).Archetype.Matches(mask));
-        Assert.True(world.GetEntityMeta(tagged).Archetype.Matches(mask));
+        Assert.False(world.GetEntityMeta(plain).Archetype.Matches(MaskBits.Of(mask)));
+        Assert.True(world.GetEntityMeta(tagged).Archetype.Matches(MaskBits.Of(mask)));
     }
 
 

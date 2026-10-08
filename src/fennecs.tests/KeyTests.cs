@@ -38,6 +38,8 @@ public class KeyTests
         Assert.Equal("wildcard[Target]", Key.Target.ToString());
         Assert.Equal("wildcard[Entity]", Key.AnyEntity.ToString());
         Assert.Equal("wildcard[Object]", Key.AnyObject.ToString());
+        Assert.Equal("wildcard[Family]", Key.Family.ToString());
+        Assert.Equal("wildcard[Family]", Match.Family.ToString());
 
         var entity = new Entity(1, 123, 1);
         Assert.StartsWith("E-", entity.Key.ToString());
@@ -50,11 +52,6 @@ public class KeyTests
     [Fact]
     public void ToString_Describes_Forged_Keys()
     {
-        // A Wildcard nibble outside the recognized categories (reserved: Family).
-        var forgedWildcard = new Key((ulong)SecondaryKind.Family << Key.KindShift);
-        Assert.True(forgedWildcard.IsWildcard);
-        Assert.StartsWith("wildcard[?-", forgedWildcard.ToString());
-
         // A specific (non-wildcard) Key that is neither an Entity nor an Object.
         var forgedKey = new Key(((ulong)SecondaryKind.Family << Key.KindShift) | 42);
         Assert.False(forgedKey.IsWildcard);

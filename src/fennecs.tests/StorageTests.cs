@@ -6,6 +6,8 @@ public class StorageTests
 
     private class ReferenceType;
 
+    private class DerivedReferenceType : ReferenceType;
+
     [Fact]
     public void Storage_Can_Be_Created()
     {
@@ -47,6 +49,18 @@ public class StorageTests
         Assert.Throws<InvalidCastException>(() => storage.Append("Dieter", 69));
         Assert.Throws<InvalidCastException>(() => storage.Append(new object()));
         storage.Append(420);
+    }
+
+    [Fact]
+    public void GetAs_Validates_Type_And_Logical_Bounds()
+    {
+        var value = new DerivedReferenceType();
+        var storage = new Storage<DerivedReferenceType>();
+        storage.Append(value);
+
+        Assert.Same(value, storage.GetAs<ReferenceType>(0));
+        Assert.Throws<InvalidCastException>(() => storage.GetAs<string>(0));
+        Assert.Throws<IndexOutOfRangeException>(() => storage.GetAs<ReferenceType>(storage.Count));
     }
 
     [Fact]
