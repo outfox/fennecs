@@ -4,13 +4,13 @@
 name: xUnit
 
 on:
+  # Build repository branches only; external pull requests must not start builds.
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ['**']
 
 jobs:
   build:
+    if: github.repository == 'outfox/fennecs'
 
     runs-on: ubuntu-latest
 
