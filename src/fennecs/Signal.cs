@@ -132,7 +132,7 @@ public sealed class Signal<T> : Signal where T : notnull
     /// <summary>
     /// Raised just after a matching Component was added to an Entity.
     /// </summary>
-    public event ComponentAdded<T> Added
+    public event ComponentAdded<T> AfterAdded
     {
         add
         {
@@ -154,7 +154,7 @@ public sealed class Signal<T> : Signal where T : notnull
     /// The <see cref="RemoveCause"/> tells the three apart; in particular, whether the Entity
     /// survives the removal.
     /// </summary>
-    public event ComponentRemoved<T> Removed
+    public event ComponentRemoved<T> BeforRemoved
     {
         add
         {
