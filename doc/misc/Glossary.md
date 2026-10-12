@@ -67,9 +67,9 @@ An Identity is a 64-bit number. When associated with a World, the majority of Id
 
 ## Signal
 
-A Signal is **fenn**ecs' observer surface for ==Structural Changes==: subscribe to a Component type via `World.On<T>()`, and its `Added` and `Removed` events tell you whenever an Entity gains or loses that Component.
+A Signal is **fenn**ecs' observer surface for ==Structural Changes==: subscribe to a Component type via `World.On<T>()`, and its `AfterAdded` and `BeforeRemoved` events tell you whenever an Entity gains or loses that Component.
 
-`Removed` also reports a `RemoveCause`, telling apart a plain removal (the Entity lives on), a `Despawn` (the Entity is going away with everything on it), and the cleanup of a Relation whose target was despawned.
+`BeforeRemoved` also reports a `RemoveCause`, telling apart a plain removal (the Entity lives on), a `Despawn` (the Entity is going away with everything on it), and the cleanup of a Relation whose target was despawned.
 
 Anything a handler throws is wrapped in a `SignalException`, so an observer's fault can never be mistaken for a fault in the `Add`, `Remove`, or `Despawn` call that triggered it.
 

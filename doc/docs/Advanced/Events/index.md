@@ -12,11 +12,11 @@ description: 'Component Signals in fennecs - subscribe to a component type with 
 A ==Signal== is fennecs' observer surface for ==structural changes==. You subscribe to a component type, and fennecs tells you whenever an Entity **gains** or **loses** it.
 
 ```csharp
-world.On<Position>().Added   += (entity, ref position) => spatialIndex.Insert(entity, position);
-world.On<Position>().Removed += (entity, in  position, cause) => spatialIndex.Remove(entity);
+world.On<Position>().AfterAdded   += (entity, ref position) => spatialIndex.Insert(entity, position);
+world.On<Position>().BeforeRemoved += (entity, in  position, cause) => spatialIndex.Remove(entity);
 ```
 
-That's the whole idea. `World.On<T>()` hands you the `Signal<T>` for that component type; `Added` and `Removed` are plain C# events, so `+=` and `-=` work exactly as you'd expect.
+That's the whole idea. `World.On<T>()` hands you the `Signal<T>` for that component type; `AfterAdded` and `BeforeRemoved` are plain C# events, so `+=` and `-=` work exactly as you'd expect.
 
 Handlers get an [`EntityRef`](/docs/Basic/Entities/EntityRef.md)  –  the same live, already-located handle the Stream runners hand out. Its accessors read the Archetype storage directly, skipping the liveness check, so poking at the Entity's *other* components inside a handler is cheap.
 
@@ -34,8 +34,8 @@ using var world = new World();
 var spawned = 0;
 var buried = 0;
 
-world.On<Health>().Added   += (_, ref _) => spawned++;
-world.On<Health>().Removed += (_, in _, _) => buried++;
+world.On<Health>().AfterAdded   += (_, ref _) => spawned++;
+world.On<Health>().BeforeRemoved += (_, in _, _) => buried++;
 
 var fox = world.Spawn().Add(new Health(100));  // spawned == 1
 fox.Remove<Health>();                          // buried == 1
@@ -44,8 +44,8 @@ fox.Remove<Health>();                          // buried == 1
 Signals are *memoized per expression*  –  calling `world.On<Health>()` twice returns the very same `Signal<Health>`. Reach for `On<T>()` every time you subscribe; there is no reason to hold on to what it gives you.
 
 ::: danger :neofox_dizzy: DON'T STORE THE SIGNAL, CALL `On<T>()`
-Garbage collections of the World clean up empty Signal. 
-A empty `Signal<T>` you kept in a field survives that drop as an **orphan**: 
+Garbage collections of the World clean up empty Signal.
+A empty `Signal<T>` you kept in a field survives that drop as an **orphan**:
 the World has forgotten it, `On<T>()` will hand out a fresh instance to everyone else, and your `+=` on the stale one is accepted in silence and **never fires again**.
 
 `On<T>()` is a dictionary probe over a handful of entries. Subscribing is not a hot path; pay the lookup, keep the guarantee.
@@ -55,15 +55,15 @@ the World has forgotten it, `On<T>()` will hand out a fresh instance to everyone
 
 This is the important part, and it's simple:
 
-| Event | Fires | Why there |
-|-------|-------|-----------|
-| `Added` | **after** the value is stored | the component exists, so you get a live reference to it |
-| `Removed` | **just before** the value is discarded | it's the last moment the outgoing value can still be read |
+| Event             | Fires                                  | Why there                                                  |
+|-------------------|----------------------------------------|------------------------------------------------------------|
+| `AfterAdded`      | **after** the value is stored          | the component exists, so you get a live reference to it    |
+| `BeforeRemoved`   | **just before** the value is discarded | it's the last moment the outgoing value can still be read  |
 
-Because `Removed` runs just *before* the structural change, the Entity still has the Component, which is what lets you access it.
+Because `BeforeRemoved` runs just *before* the structural change, the Entity still has the Component, which is what lets you access it.
 
 ```csharp
-world.On<Health>().Removed += (entity, in health, cause) =>
+world.On<Health>().BeforeRemoved += (entity, in health, cause) =>
 {
     Console.WriteLine($"{entity} died with {health.Value} HP left"); // the value is still there
     Console.WriteLine(entity.Has<Health>());                         // True
@@ -78,11 +78,11 @@ A Batch only signals what actually *changes*. Re-writing a component that Entiti
 
 A Component can go away for three quite different reasons, and your handler usually cares which. That's the third parameter, `RemoveCause`:
 
-| Cause | What happened | Does the Entity survive? |
-|-------|---------------|--------------------------|
-| `Removed` | the Component was removed on its own  –  `Remove`, a Wildcard removal, a Batch | **yes** |
-| `Despawned` | the Entity itself is going away, and takes everything with it | **no** |
-| `TargetDespawned` | a Relation or Link lost its *target*, so it gets cleaned up | **yes**  –  only the relation dies |
+| Cause             | What happened                                                                     | Does the Entity survive?          |
+|-------------------|-----------------------------------------------------------------------------------|-----------------------------------|
+| `Removed`         | the Component was removed on its own  –  `Remove`, a Wildcard removal, a Batch    | **yes**                           |
+| `Despawned`       | the Entity itself is going away, and takes everything with it                     | **no**                            |
+| `TargetDespawned` | a Relation or Link lost its *target*, so it gets cleaned up                       | **yes** (but the relation dies)   |
 
 The distinction matters the moment your handler wants to *do* something with the Entity:
 
@@ -96,7 +96,7 @@ world.On<Sprite>().Removed += (entity, in sprite, cause) =>
 ```
 
 ::: warning :neofox_angel_pleading: DON'T REMOVE WHAT'S ALREADY LEAVING
-Inside `Removed` the Component is still stored, so `Has<T>()` answers `true`, but a removal is already under way. Calling `Remove<T>()` for *that* Component queues a second removal, which finds nothing once it is applied.
+Inside `BeforeRemoved` the Component is still stored, so `Has<T>()` answers `true`, but a removal is already under way. Calling `Remove<T>()` for *that* Component queues a second removal, which finds nothing once it is applied.
 
 The same logic applies to a despawning Entity: it will be gone by the time the catch-up occurs. That means if the cause is `Despawned`, do not `Add` or `Remove`.
 
@@ -119,7 +119,7 @@ A Wildcard Signal fires once **per concrete expression**, and your handler recei
 ```csharp
 var entity = world.Spawn().Add(new Health(1), alpha).Add(new Health(2), beta);
 
-world.On<Health>(Match.Any).Removed += (_, in health, _) => Console.WriteLine(health.Value);
+world.On<Health>(Match.Any).BeforeRemoved += (_, in health, _) => Console.WriteLine(health.Value);
 
 entity.Remove<Health>(Match.Any);  // prints 1 and 2 - two Signals, one structural change
 ```
@@ -130,8 +130,8 @@ Dispatch happens while a ==World Lock== is held  –  the very same [Manual Worl
 
 ```csharp
 // every Entity that gains a Position gains a Health, and loses it again with the Position
-world.On<Position>().Added   += (entity, ref _) => entity.Add(new Health(100));
-world.On<Position>().Removed += (entity, in  _, _) => entity.Remove<Health>();
+world.On<Position>().AfterAdded   += (entity, ref _) => entity.Add(new Health(100));
+world.On<Position>().BeforeRemoved += (entity, in  _, _) => entity.Remove<Health>();
 ```
 
 ## When a handler throws
@@ -139,7 +139,7 @@ world.On<Position>().Removed += (entity, in  _, _) => entity.Remove<Health>();
 A buggy handler must never look like a bug in the call that triggered it. So anything escaping a Signal is wrapped in a `SignalException`, carrying your original exception as its `InnerException`:
 
 ```csharp
-world.On<Health>().Added += (_, ref _) => throw new InvalidOperationException("boom");
+world.On<Health>().AfterAdded += (_, ref _) => throw new InvalidOperationException("boom");
 
 try
 {
@@ -157,7 +157,7 @@ catch (SignalException e)
 Handlers can fail at two very different moments, and `Deferred` tells them apart: either the handler itself threw, or it queued an invalid Structural Change that only failed later, when the World caught up (the `Deferred` case).
 
 ```csharp
-world.On<Health>().Removed += (entity, in _, _) => entity.Remove<Health>();  // already leaving!
+world.On<Health>().BeforeRemoved += (entity, in _, _) => entity.Remove<Health>();  // already leaving!
 
 entity.Remove<Health>();
 // SignalException { Deferred = true, InnerException = InvalidOperationException }
@@ -178,11 +178,11 @@ Dispatch stops at the first throwing handler  –  the remaining subscribers, an
 
 Measured over 10 000 Entities (`SignalBenchmarks`, .NET 10), against the same operation with no Signals at all:
 
-| Path | Signal elsewhere / unsubscribed | 1 handler | 4 handlers |
-|------|--------------------------------:|----------:|-----------:|
-| `Add` + `Remove`, per Entity | *baseline* | +14 % | +16 % |
-| `Add` + `Remove`, via Batch | *baseline* | ×6 | ×9 |
-| Spawn + Despawn wave | *baseline* | ×2 | ×3 |
+| Path                          | Signal elsewhere / unsubscribed   | 1 handler | 4 handlers |
+|-------------------------------|----------------------------------:|----------:|-----------:|
+| `Add` + `Remove`, per Entity  | *baseline*                        | +14 %     | +16 %      |
+| `Add` + `Remove`, via Batch   | *baseline*                        | ×6        | ×9         |
+| Spawn + Despawn wave          | *baseline*                        | ×2        | ×3         |
 
 The Batch row is the honest worst case, and it is worth understanding rather than fearing: a Batch performs **two** Archetype migrations for ten thousand Entities, but still owes you **ten thousand Signals**. There is no bulk work left for the dispatch to hide behind. In absolute terms it is still about 7 ns per Signal.
 
@@ -191,6 +191,6 @@ Per-Entity CRUD barely notices, because the Archetype move dwarfs the dispatch. 
 To clear out unused Signals, call `World.GC`: it drops every Signal left without subscribers. This is also precisely why a stored `Signal<T>` goes stale  –  always subscribe through [`On<T>()`](#quick-start).
 
 ::: info :neofox_think: MAKE SURE YOU CAN UNSUBSCRIBE
-Use named methods, so you can unsubscribe  –  `world.On<T>().Added -= Handler`. Lambdas are great for prototyping, but hard to clean up afterwards.
+Use named methods, so you can unsubscribe  –  `world.On<T>().AfterAdded -= Handler`. Lambdas are great for prototyping, but hard to clean up afterwards.
 Signal registration is not thread-safe: do not subscribe from another thread.
 :::
