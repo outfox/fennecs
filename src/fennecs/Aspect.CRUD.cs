@@ -2,6 +2,7 @@
 
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 
 // ReSharper disable once RedundantUsingDirective (used by throw helpers)
@@ -227,36 +228,35 @@ public partial class Aspect
 
         var destinationSignature = Destination(operation, archetype);
 
-        World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Except(destinationSignature), RemoveCause.Removed);
-
+        var removals = archetype.Signature.Except(destinationSignature);
         var additions = destinationSignature.Except(archetype.Signature);
 
         // Capturing the Entity handles is the only allocation on this path — skip it entirely
-        // when no Signal is waiting for any of the additions.
-        if (!World.WatchesAny(additions, added: true))
+        // when no Signal is waiting for any of the removals or additions.
+        if (!World.WatchesAny(removals, added: false) && !World.WatchesAny(additions, added: true))
         {
             Commit(operation, archetype);
             return;
         }
 
-        // The handles must be taken before the migration relocates the Entities. Rented, because
-        // this buffer is the only allocation left on the Batch path — and returned even if a
-        // handler throws, which is why the whole dispatch sits in the try.
+        // The handles must be taken before the migration relocates the Entities, and serve both
+        // directions. Rented, because this buffer is the only allocation left on the Batch path —
+        // and returned even if a handler throws, which is why the whole dispatch sits in the try.
         var count = archetype.Count;
-        var entities = ArrayPool<Entity>.Shared.Rent(count);
+        var entities = World.RentArrayForEntities(archetype.EntityStorage.Span);
         try
         {
-            for (var i = 0; i < count; i++) entities[i] = World.EntityFor(archetype.EntityStorage[i]);
+            var span = entities.AsSpan(0, count);
+
+            World.SignalRemoving(this, span, removals, RemoveCause.Removed);
 
             Commit(operation, archetype);
 
-            // Rent may hand back a longer array: only the rows we filled are Entities.
-            World.SignalAddedRows(this, entities.AsSpan(0, count), additions);
+            World.SignalAdded(this, span, additions);
         }
         finally
         {
-            // Entity is a bare 64-bit value, so the pool holds no references worth clearing.
-            ArrayPool<Entity>.Shared.Return(entities);
+            World.ReturnArrayEntities(entities);
         }
     }
 

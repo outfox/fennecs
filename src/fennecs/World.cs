@@ -116,6 +116,22 @@ public partial class World
     internal Entity EntityFor(EntityIndex index) => _entityPool.EntityFor(index.Raw);
 
 
+    /// <summary>
+    /// The Entity handles of a run of Archetype rows (which only know their Entities by index),
+    /// written into a pooled buffer that may be longer than <paramref name="indices"/>.
+    /// Hand it back with <see cref="ReturnArrayEntities"/>, also when a Signal handler throws.
+    /// </summary>
+    internal Entity[] RentArrayForEntities(ReadOnlySpan<EntityIndex> indices)
+    {
+        var rented = System.Buffers.ArrayPool<Entity>.Shared.Rent(indices.Length);
+        for (var i = 0; i < indices.Length; i++) rented[i] = EntityFor(indices[i]);
+        return rented;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static void ReturnArrayEntities(Entity[] rented) => System.Buffers.ArrayPool<Entity>.Shared.Return(rented);
+
+
     private void DespawnImpl(Entity entity)
     {
         AssertAlive(entity);

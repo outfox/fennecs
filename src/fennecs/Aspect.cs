@@ -144,7 +144,7 @@ public sealed partial class Aspect : IEnumerable<Entity>
 
             // Despawn discards every Component stored here: signal them while still readable.
             // (the Archetype answers "is anyone watching?" from a memoized flag)
-            if (World.Signalling && table.WatchedForRemoval) World.SignalRemovingAll(this, entity);
+            if (table.WatchedForRemoval) World.SignalRemovingAll(this, entity);
             table.Delete(meta.Row);
 
             DespawnDependencies(entity);
@@ -208,7 +208,17 @@ public sealed partial class Aspect : IEnumerable<Entity>
 
             // The Entities in this Archetype lose their Relations to the despawned target.
             if (World.Signalling)
-                World.SignalRemovingRows(this, archetype.EntityStorage.Span, archetype.Signature.Intersect(types), RemoveCause.TargetDespawned);
+            {
+                var entities = World.RentArrayForEntities(archetype.EntityStorage.Span);
+                try
+                {
+                    World.SignalRemoving(this, entities.AsSpan(0, archetype.Count), archetype.Signature.Intersect(types), RemoveCause.TargetDespawned);
+                }
+                finally
+                {
+                    World.ReturnArrayEntities(entities);
+                }
+            }
 
             // Lazy membership: losing their last owned Components evicts the Entities from this Aspect.
             if (!IsMain && signatureWithoutTarget.Count == 1)

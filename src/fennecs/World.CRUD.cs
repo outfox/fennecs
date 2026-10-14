@@ -40,7 +40,7 @@ public partial class World
             // Aspect, which is immediate regardless of the World's Mode.
             using var worldLock = Lock();
             aspect.AddComponent(entity, typeExpression, data);
-            SignalAdded(aspect, entity, typeExpression);
+            SignalAdded(aspect, new ReadOnlySpan<Entity>(in entity), typeExpression);
             return;
         }
 
@@ -64,7 +64,7 @@ public partial class World
         {
             // Removed fires before the structural change, while the outgoing values are still readable.
             using var worldLock = Lock();
-            SignalRemoving(aspect, entity, typeExpression);
+            SignalRemoving(aspect, new ReadOnlySpan<Entity>(in entity), typeExpression, RemoveCause.Removed);
             aspect.RemoveComponent(entity, typeExpression, mode);
             return;
         }

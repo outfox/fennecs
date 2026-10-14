@@ -113,9 +113,9 @@ public class SignalBenchmarks
 
 
     // Deliberately trivial: we are measuring fennecs dispatch, not the handler' own work.
-    private void Bump<T>(EntityRef entity, ref T value) => _counter++;
+    private void Bump<T>(ReadOnlySpan<Entity> entities, Span<T> values) => _counter += entities.Length;
 
-    private void Drop<T>(EntityRef entity, in T value, RemoveCause cause) => _counter++;
+    private void Drop<T>(ReadOnlySpan<Entity> entities, ReadOnlySpan<T> values, RemoveCause cause) => _counter += entities.Length;
 
 
     /// <summary>Per-Entity CRUD: one Archetype move per Entity, per direction.</summary>

@@ -3,35 +3,35 @@
 namespace fennecs;
 
 /// <summary>
-/// Handler invoked right <b>after</b> a Component of type <typeparamref name="T"/> was added to an Entity.
+/// Handler invoked right <b>after</b> a Component of type <typeparamref name="T"/> was added to one
+/// or more Entities — once per structural operation, however many Entities it touched
+/// (a single Add is simply a span of length one).
 /// </summary>
 /// <remarks>
-/// The Component is already stored: <paramref name="value"/> is a reference into its Storage, and
-/// writes through it are visible to everyone. The reference is only valid for the duration of the call.
+/// The Components are already stored: <paramref name="values"/> is a slice of their Storage, and
+/// writes through it are visible to everyone. Both spans are only valid for the duration of the call,
+/// and are index-aligned: <c>values[i]</c> belongs to <c>entities[i]</c>.
 /// </remarks>
-/// <param name="entity">
-/// the Entity that received the Component, as a live <see cref="EntityRef"/> — its accessors read the
-/// Archetype storage directly. Convert it to a storable <see cref="fennecs.Entity"/> to keep it around.
-/// </param>
-/// <param name="value">reference to the newly stored Component value</param>
-public delegate void ComponentAdded<T>(EntityRef entity, ref T value);
+/// <param name="entities">the Entities that received the Component</param>
+/// <param name="values">the newly stored Component values, one per Entity</param>
+public delegate void ComponentAdded<T>(ReadOnlySpan<Entity> entities, Span<T> values);
 
 
 /// <summary>
-/// Handler invoked right <b>before</b> a Component of type <typeparamref name="T"/> is removed from an Entity.
+/// Handler invoked right <b>before</b> a Component of type <typeparamref name="T"/> is removed from
+/// one or more Entities — once per structural operation, however many Entities it touched
+/// (a single Remove is simply a span of length one).
 /// </summary>
 /// <remarks>
-/// The Component is still stored when this runs (so its value can be read, and the Entity still
-/// reports <c>Has&lt;T&gt;()</c>). This is what makes the outgoing value observable at all — after the
-/// structural change it is gone. The reference is only valid for the duration of the call.
+/// The Components are still stored when this runs (so their values can be read, and the Entities still
+/// report <c>Has&lt;T&gt;()</c>). This is what makes the outgoing values observable at all — after the
+/// structural change they are gone. Both spans are only valid for the duration of the call, and are
+/// index-aligned: <c>values[i]</c> belongs to <c>entities[i]</c>.
 /// </remarks>
-/// <param name="entity">
-/// the Entity that is losing the Component, as a live <see cref="EntityRef"/> — its accessors read the
-/// Archetype storage directly. Convert it to a storable <see cref="fennecs.Entity"/> to keep it around.
-/// </param>
-/// <param name="value">reference to the Component value about to be discarded</param>
-/// <param name="cause">why the Component is going away — in particular, whether the Entity survives it</param>
-public delegate void ComponentRemoved<T>(EntityRef entity, in T value, RemoveCause cause);
+/// <param name="entities">the Entities that are losing the Component</param>
+/// <param name="values">the Component values about to be discarded, one per Entity</param>
+/// <param name="cause">why the Components are going away — in particular, whether the Entities survive it</param>
+public delegate void ComponentRemoved<T>(ReadOnlySpan<Entity> entities, ReadOnlySpan<T> values, RemoveCause cause);
 
 
 /// <summary>
@@ -91,8 +91,9 @@ public abstract class Signal
     internal abstract bool WantsAdded { get; }
     internal abstract bool WantsRemoved { get; }
 
-    internal abstract void InvokeAdded(EntityRef entity, TypeExpression expression);
-    internal abstract void InvokeRemoved(EntityRef entity, TypeExpression expression, RemoveCause cause);
+    // All Entities live in the same Archetype of `aspect`, in consecutive rows, in this order.
+    internal abstract void InvokeAdded(Aspect aspect, ReadOnlySpan<Entity> entities, TypeExpression expression);
+    internal abstract void InvokeRemoved(Aspect aspect, ReadOnlySpan<Entity> entities, TypeExpression expression, RemoveCause cause);
 
     /// <inheritdoc />
     public override string ToString() => $"Signal<{Type.Name}>({Match})";
@@ -173,21 +174,40 @@ public sealed class Signal<T> : Signal where T : notnull
     internal override bool WantsAdded => _added is not null;
     internal override bool WantsRemoved => _removed is not null;
 
-    internal override void InvokeAdded(EntityRef entity, TypeExpression expression)
+    internal override void InvokeAdded(Aspect aspect, ReadOnlySpan<Entity> entities, TypeExpression expression)
     {
         var handler = _added;
         if (handler is null) return;
 
-        ref var value = ref entity.Ref<T>(expression.Match);
-        handler(entity, ref value);
+        handler(entities, Values(aspect, entities, expression));
     }
 
-    internal override void InvokeRemoved(EntityRef entity, TypeExpression expression, RemoveCause cause)
+    internal override void InvokeRemoved(Aspect aspect, ReadOnlySpan<Entity> entities, TypeExpression expression, RemoveCause cause)
     {
         var handler = _removed;
         if (handler is null) return;
 
-        ref var value = ref entity.Ref<T>(expression.Match);
-        handler(entity, in value, cause);
+        handler(entities, Values(aspect, entities, expression), cause);
+    }
+
+
+    // The stored values of a run of Entities: one slice of one Storage, found with a single lookup.
+    private static Span<T> Values(Aspect aspect, ReadOnlySpan<Entity> entities, TypeExpression expression)
+    {
+        var (archetype, row) = aspect.GetEntityMeta(entities[0]);
+
+        System.Diagnostics.Debug.Assert(AreConsecutive(aspect, entities, archetype, row), "Signalled Entities must occupy consecutive rows of one Archetype.");
+
+        return ((Storage<T>)archetype.GetStorage(expression)).Span.Slice(row, entities.Length);
+    }
+
+    private static bool AreConsecutive(Aspect aspect, ReadOnlySpan<Entity> entities, Archetype archetype, int row)
+    {
+        for (var i = 0; i < entities.Length; i++)
+        {
+            var meta = aspect.GetEntityMeta(entities[i]);
+            if (meta.Archetype != archetype || meta.Row != row + i) return false;
+        }
+        return true;
     }
 }

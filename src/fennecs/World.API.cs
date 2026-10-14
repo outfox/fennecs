@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 using fennecs.pools;
@@ -162,7 +163,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
             if (WatchesAny(components, added: true))
             {
                 using var spawnLock = Lock();
-                SignalSpawned(destination, components);
+                SignalAdded(null, destination, components);
             }
             return;
         }
@@ -197,7 +198,8 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
         }
 
         // (the enclosing worldLock defers whatever the handlers do until the wave is complete)
-        if (WatchesAny(components, added: true)) SignalSpawned(destination, components);
+        if (WatchesAny(components, added: true))
+            SignalAdded(null, destination, components);
     }
 
     /// <summary>

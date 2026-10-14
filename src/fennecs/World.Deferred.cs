@@ -63,7 +63,7 @@ public partial class World
             }
             catch (Exception exception) when (exception is not SignalException)
             {
-                throw new SignalException(op.Describe(), op.Entity, exception);
+                throw new SignalException(op.Describe(), [op.Entity], exception);
             }
         }
     }

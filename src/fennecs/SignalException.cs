@@ -37,10 +37,10 @@ public sealed class SignalException : Exception
     public Signal? Signal { get; }
 
     /// <summary>
-    /// The Entity being signalled, or the Entity the failed deferred operation targeted.
+    /// The Entities being signalled, or the Entities the failed deferred operation targeted.
     /// (<see langword="default"/> for a deferred Batch, which has no single Entity)
     /// </summary>
-    public Entity Entity { get; }
+    public Entity[] Entity { get; }
 
     /// <summary>
     /// <see langword="false"/> if the handler threw while it was running; else <see langword="true"/> if it completed, and
@@ -54,7 +54,7 @@ public sealed class SignalException : Exception
     public bool Deferred { get; }
 
 
-    internal SignalException(Signal signal, Entity entity, string stage, Exception inner)
+    internal SignalException(Signal signal, Entity[] entity, string stage, Exception inner)
         : base($"A {stage} handler of {signal} threw for Entity {entity}. " +
                "The originating call is not at fault. This is a fault in the Signal handler. See InnerException.", inner)
     {
@@ -64,7 +64,7 @@ public sealed class SignalException : Exception
     }
 
 
-    internal SignalException(string operation, Entity entity, Exception inner)
+    internal SignalException(string operation, Entity[] entity, Exception inner)
         : base($"A structural change queued by a Signal handler failed when the World caught up: {operation}. " +
                "The originating call is not at fault. The Signal handler asked for something that no longer applies. See InnerException.", inner)
     {
