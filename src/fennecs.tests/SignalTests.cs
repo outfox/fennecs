@@ -743,7 +743,7 @@ public class SignalTests
 
 
     [Fact]
-    public void GC_Drops_Signals_Once_Everyone_Has_Unsubscribed()
+    public void GC_Drops_Idle_Signals_From_The_Registry_But_A_Kept_One_Is_Revived()
     {
         using var world = new World();
 
@@ -753,10 +753,53 @@ public class SignalTests
         signal.AfterAdded += Handler;
         signal.AfterAdded -= Handler;
 
-        // No subscriber left anywhere, which is exactly when the empty Signal should be collected.
         world.GC();
 
-        Assert.NotSame(signal, world.On<Health>());
+        // Still held by us: the World hands the very same instance back.
+        Assert.Same(signal, world.On<Health>());
+    }
+
+
+    [Fact]
+    public void A_Stored_Signal_Is_Not_An_Orphan_After_GC()
+    {
+        using var world = new World();
+        var seen = 0;
+
+        var stored = world.On<Health>();
+        world.GC();   // never subscribed to: dropped from the registry
+
+        stored.AddedEach((_, _) => seen++);
+        world.Spawn().Add(new Health(1));
+
+        Assert.Equal(1, seen);
+        Assert.Same(stored, world.On<Health>());
+    }
+
+
+    [Fact]
+    public void A_Signal_Nobody_Holds_Is_Collected()
+    {
+        using var world = new World();
+
+        static WeakReference Touch(World world)
+        {
+            var signal = world.On<Health>();
+            return new WeakReference(signal);
+        }
+
+        var weak = Touch(world);
+        world.GC();
+        System.GC.Collect();
+        System.GC.WaitForPendingFinalizers();
+
+        Assert.False(weak.IsAlive);
+
+        // and a fresh one is minted on demand, wired up normally
+        var seen = 0;
+        world.On<Health>().AddedEach((_, _) => seen++);
+        world.Spawn().Add(new Health(1));
+        Assert.Equal(1, seen);
     }
 
     [Fact]

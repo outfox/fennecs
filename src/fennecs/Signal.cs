@@ -71,6 +71,9 @@ public abstract class Signal
     /// <summary>The World that hands out this Signal, and counts its live subscriptions.</summary>
     private protected readonly World World;
 
+    /// <summary>Is this Signal in its World's registry? (the GC takes idle ones out, subscribing puts them back)</summary>
+    internal bool Registered;
+
     internal Signal(World world, TypeExpression expression)
     {
         World = world;
@@ -106,9 +109,9 @@ public abstract class Signal
 /// </summary>
 /// <remarks>
 /// <para>
-/// ⚠️ Obtain one through <see cref="fennecs.World.On{T}()"/> at every subscription, and do not keep it
-/// in a field: <see cref="fennecs.World.GC"/> drops Signals that have no subscribers left, and a stored
-/// one outlives that drop as an orphan — still accepting handlers, never firing again.
+/// Obtain one through <see cref="fennecs.World.On{T}()"/>. Keeping it in a field is safe:
+/// <see cref="fennecs.World.GC"/> only drops Signals without subscribers from the registry weakly, and
+/// subscribing to a kept one registers it again.
 /// </para>
 /// <para>
 /// Signals are dispatched while the World is <b>locked</b>: structural changes made by handlers are
@@ -139,13 +142,13 @@ public sealed class Signal<T> : Signal where T : notnull
         {
             var before = _added;
             _added += value;
-            if (before is null && _added is not null) World.SignalSubscribed();
+            if (before is null && _added is not null) World.SignalSubscribed(this);
         }
         remove
         {
             var before = _added;
             _added -= value;
-            if (before is not null && _added is null) World.SignalUnsubscribed();
+            if (before is not null && _added is null) World.SignalUnsubscribed(this);
         }
     }
 
@@ -161,13 +164,13 @@ public sealed class Signal<T> : Signal where T : notnull
         {
             var before = _removed;
             _removed += value;
-            if (before is null && _removed is not null) World.SignalSubscribed();
+            if (before is null && _removed is not null) World.SignalSubscribed(this);
         }
         remove
         {
             var before = _removed;
             _removed -= value;
-            if (before is not null && _removed is null) World.SignalUnsubscribed();
+            if (before is not null && _removed is null) World.SignalUnsubscribed(this);
         }
     }
 

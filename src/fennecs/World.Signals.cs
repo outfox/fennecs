@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 
+using System.Collections;
+
 namespace fennecs;
 
 public partial class World
@@ -9,6 +11,15 @@ public partial class World
     // TypeID -> Signals watching that Component type. Usually zero or one entry per type;
     // several only when both plain and Wildcard expressions of the same type are watched.
     private readonly Dictionary<TypeID, List<Signal>> _signals = new();
+
+    // Signals the GC dropped from the registry for lack of subscribers. Weak, so they cost
+    // nothing to keep and the runtime collects them once nobody holds them any more.
+    private readonly Dictionary<TypeExpression, WeakReference<Signal>> _idle = new();
+
+    /// <summary>
+    /// tuple of bit with for index the type id. First bit is true if watching added, second for remove.
+    /// </summary>
+    private readonly BitArray _watch = new (LanguageType.MaxTypeId * 2);
 
     // Number of subscribed directions (a Signal's Added and Removed count separately).
     // Maintained by Signal<T>'s event accessors; a registered Signal nobody subscribed to is worth nothing.
@@ -26,42 +37,101 @@ public partial class World
     /// </summary>
     internal int SignalVersion { get; private set; }
 
-    internal void SignalSubscribed()
+    internal void SignalSubscribed(Signal signal)
     {
         _subscribers++;
         SignalVersion++;
+
+        // A Signal kept past a GC is no longer in the registry: subscribing is what brings it back.
+        if (!signal.Registered) Register(signal);
+        Refresh(signal.Expression.TypeId);
     }
 
-    internal void SignalUnsubscribed()
+    internal void SignalUnsubscribed(Signal signal)
     {
         _subscribers--;
         SignalVersion++;
+        Refresh(signal.Expression.TypeId);
     }
+
+
+    // Recomputes the watch bits of one Component type from the Signals that cover it.
+    private void Refresh(TypeID typeId)
+    {
+        if (_signals.TryGetValue(typeId, out var signals))
+        {
+            foreach (var signal in signals)
+            {
+                if (signal.WantsAdded)
+                    _watch[typeId * 2] = true;
+                if (signal.WantsRemoved)
+                    _watch[typeId * 2 + 1] = true;
+            }
+        }
+    }
+
+    private void Register(Signal signal)
+    {
+        if (!_signals.TryGetValue(signal.Expression.TypeId, out var signals))
+        {
+            signals = [];
+            _signals[signal.Expression.TypeId] = signals;
+        }
+
+        signals.Add(signal);
+        signal.Registered = true;
+        _idle.Remove(signal.Expression);
+    }
+
+
+    /// <summary>
+    /// Drops every Signal nobody subscribes to from the registry. They are not forgotten outright:
+    /// the World keeps a weak reference, so <see cref="On{T}(Match)"/> hands the very same instance
+    /// to whoever still holds it, and subscribing to it re-registers it. Whatever nobody holds
+    /// is collected by the runtime.
+    /// </summary>
+    internal void CollectIdleSignals()
+    {
+        foreach (var (expression, reference) in _idle)
+        {
+            if (!reference.TryGetTarget(out _)) _idle.Remove(expression);
+        }
+
+        if (_signals.Count == 0) return;
+
+        var toClear = new List<TypeID>();
+
+        foreach (var (type, signals) in _signals)
+        {
+            foreach (var signal in signals)
+            {
+                if (signal.WantsAdded || signal.WantsRemoved) continue;
+
+                signal.Registered = false;
+                _idle[signal.Expression] = new(signal);
+            }
+
+            signals.RemoveAll(static signal => !signal.Registered);
+            if (signals.Count == 0) toClear.Add(type);
+        }
+
+        foreach (var key in toClear) _signals.Remove(key);
+        _signals.TrimExcess();
+    }
+
 
     internal void ResetSubscribers()
     {
         _subscribers = 0;
         SignalVersion++;
+        _watch.SetAll(false);
     }
 
 
     /// <summary>
-    /// Could a Component of this type fire anything in this direction? An over-approximation by
-    /// design: it ignores relation targets, so it stays a probe and a short scan — cheaper than
-    /// the World Lock it saves the caller from taking.
+    /// Fast lookup (using an array) to check if there is any event watching the <paramref name="typeId"/>.
     /// </summary>
-    internal bool Watching(TypeID typeId, bool added)
-    {
-        if (_subscribers == 0) return false;
-        if (!_signals.TryGetValue(typeId, out var signals)) return false;
-
-        foreach (var signal in signals)
-        {
-            if (added ? signal.WantsAdded : signal.WantsRemoved) return true;
-        }
-        return false;
-    }
-
+    internal bool Watching(TypeID typeId, bool added) => added ? _watch[typeId * 2] : _watch[typeId * 2 + 1];
 
     /// <summary>
     /// Would despawning this Entity fire anything? Scans what each Aspect stores for it,
@@ -113,9 +183,9 @@ public partial class World
     /// <see cref="Signal{T}"/></b>.
     /// </para>
     /// <para>
-    /// The memoization holds only between garbage collections: <see cref="GC"/> drops every Signal
-    /// left without subscribers, and a stored one survives that drop as an orphan the World no
-    /// longer knows about. Subscribing to it still succeeds — and never fires again.
+    /// <see cref="GC"/> drops every Signal left without subscribers from the World's registry, but
+    /// only weakly: a <see cref="Signal{T}"/> you kept is handed out again by this method, and
+    /// subscribing to it re-registers it. Storing one is therefore safe; it is merely unnecessary.
     /// </para>
     /// </remarks>
     public Signal<T> On<T>() where T : notnull => On<T>(default);
@@ -141,7 +211,15 @@ public partial class World
             if (existing.Expression == expression) return (Signal<T>)existing;
         }
 
+        // Still held by someone since the last GC: the same instance goes back into service.
+        if (_idle.TryGetValue(expression, out var weak) && weak.TryGetTarget(out var revived))
+        {
+            Register(revived);
+            return (Signal<T>)revived;
+        }
+
         var signal = new Signal<T>(this, expression);
+        signal.Registered = true;
         signals.Add(signal);
         return signal;
     }

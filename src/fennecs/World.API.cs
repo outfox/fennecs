@@ -326,21 +326,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     {
         if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
 
-        // Not Signalling: that asks whether anyone is subscribed, and the Signals worth dropping
-        // here are exactly the ones nobody subscribes to any more.
-        if (_signals.Count > 0)
-        {
-            var toClear = new List<TypeID>();
-
-            foreach (var (type, signals) in _signals)
-            {
-                signals.RemoveAll(static signal => !signal.WantsRemoved && !signal.WantsAdded);
-                if (signals.Count == 0) toClear.Add(type);
-            }
-
-            foreach (var key in toClear) _signals.Remove(key);
-            _signals.TrimExcess();
-        }
+        CollectIdleSignals();
 
         foreach (var aspect in _aspects) aspect.GC();
     }
@@ -354,6 +340,7 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     {
         //TODO: Dispose all Object Links, Queries, etc.?
         _signals.Clear();
+        _idle.Clear();
         ResetSubscribers();
         ReleaseTag();
     }

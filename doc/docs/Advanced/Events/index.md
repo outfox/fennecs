@@ -43,12 +43,10 @@ fox.Remove<Health>();                          // buried == 1
 
 Signals are *memoized per expression*  –  calling `world.On<Health>()` twice returns the very same `Signal<Health>`. Reach for `On<T>()` every time you subscribe; there is no reason to hold on to what it gives you.
 
-::: danger :neofox_dizzy: DON'T STORE THE SIGNAL, CALL `On<T>()`
-Garbage collections of the World clean up empty Signal.
-A empty `Signal<T>` you kept in a field survives that drop as an **orphan**:
-the World has forgotten it, `On<T>()` will hand out a fresh instance to everyone else, and your `+=` on the stale one is accepted in silence and **never fires again**.
-
-`On<T>()` is a dictionary probe over a handful of entries. Subscribing is not a hot path; pay the lookup, keep the guarantee.
+::: tip :neofox_think: STORING THE SIGNAL IS SAFE
+Garbage collections of the World drop empty Signals from its registry, but only *weakly*.
+A `Signal<T>` you kept in a field is handed out again by `On<T>()`, and subscribing to it re-registers it, so it never ends up deaf.
+Signals nobody holds are simply collected by the runtime.
 :::
 
 ## When exactly do they fire?
