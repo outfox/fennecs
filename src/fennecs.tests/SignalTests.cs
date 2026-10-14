@@ -31,7 +31,7 @@ public class SignalTests
         using var world = new World();
 
         var seen = new List<(Entity entity, Position position)>();
-        world.On<Position>().Added += (e, ref p) => seen.Add((e.Entity, p));
+        world.On<Position>().AfterAdded += (e, ref p) => seen.Add((e.Entity, p));
 
         var entity = world.Spawn().Add(new Position(1, 2));
 
@@ -46,7 +46,7 @@ public class SignalTests
     {
         using var world = new World();
 
-        world.On<Position>().Added += (_, ref p) => p = new(p.X * 10, p.Y * 10);
+        world.On<Position>().AfterAdded += (_, ref p) => p = new(p.X * 10, p.Y * 10);
 
         var entity = world.Spawn().Add(new Position(1, 2));
 
@@ -62,7 +62,7 @@ public class SignalTests
         var entity = world.Spawn().Add(new Position(3, 4));
 
         var seen = new List<Position>();
-        world.On<Position>().Removed += (e, in p, _) =>
+        world.On<Position>().BeforRemoved += (e, in p, _) =>
         {
             seen.Add(p);
             Assert.True(e.Has<Position>());
@@ -82,7 +82,7 @@ public class SignalTests
         using var world = new World();
 
         var added = 0;
-        world.On<Position>().Added += (_, ref _) => added++;
+        world.On<Position>().AfterAdded += (_, ref _) => added++;
 
         world.Spawn().Add(new Health(100));
 
@@ -96,7 +96,7 @@ public class SignalTests
         using var world = new World();
 
         var removed = 0;
-        world.On<Position>().Removed += (_, in _, _) => removed++;
+        world.On<Position>().BeforRemoved += (_, in _, _) => removed++;
 
         world.Spawn().Remove<Position>(default, RemoveConflict.Allow);
 
@@ -113,8 +113,8 @@ public class SignalTests
 
         var positions = 0;
         var healths = 0;
-        world.On<Position>().Removed += (_, in _, _) => positions++;
-        world.On<Health>().Removed += (_, in h, _) =>
+        world.On<Position>().BeforRemoved += (_, in _, _) => positions++;
+        world.On<Health>().BeforRemoved += (_, in h, _) =>
         {
             Assert.Equal(50, h.Value);
             healths++;
@@ -135,7 +135,7 @@ public class SignalTests
         var target = world.Spawn();
 
         var seen = 0;
-        world.On<Health>(Match.Any).Added += (EntityRef _, ref Health _) => seen++;
+        world.On<Health>(Match.Any).AfterAdded += (EntityRef _, ref Health _) => seen++;
 
         world.Spawn().Add(new Health(1)).Add(new Health(2), target);
 
@@ -151,7 +151,7 @@ public class SignalTests
         var target = world.Spawn();
 
         var added = 0;
-        world.On<Health>().Added += (_, ref _) => added++;
+        world.On<Health>().AfterAdded += (_, ref _) => added++;
 
         world.Spawn().Add(new Health(2), target);
 
@@ -169,7 +169,7 @@ public class SignalTests
         var entity = world.Spawn().Add(new Health(1), alpha).Add(new Health(2), beta);
 
         var seen = new List<int>();
-        world.On<Health>(Match.Any).Removed += (_, in h, _) => seen.Add(h.Value);
+        world.On<Health>(Match.Any).BeforRemoved += (_, in h, _) => seen.Add(h.Value);
 
         entity.Remove<Health>(Match.Any);
 
@@ -188,7 +188,7 @@ public class SignalTests
         var entity = world.Spawn().Add(new Health(7), target);
 
         var seen = new List<(Entity entity, int value)>();
-        world.On<Health>(Match.Any).Removed += (e, in h, _) => seen.Add((e.Entity, h.Value));
+        world.On<Health>(Match.Any).BeforRemoved += (e, in h, _) => seen.Add((e.Entity, h.Value));
 
         target.Despawn();
 
@@ -208,8 +208,8 @@ public class SignalTests
         var added = 0;
         var removed = 0;
         var signal = world.On<Sprite>(Match.Any);
-        signal.Added += (_, ref _) => added++;
-        signal.Removed += (_, in _, _) => removed++;
+        signal.AfterAdded += (_, ref _) => added++;
+        signal.BeforRemoved += (_, in _, _) => removed++;
 
         var entity = world.Spawn().Add(Link.With(sprite));
         Assert.Equal(1, added);
@@ -228,8 +228,8 @@ public class SignalTests
 
         var added = 0;
         var removed = 0;
-        world.On<Position>().Added += (_, ref _) => added++;
-        world.On<Health>().Removed += (_, in _, _) => removed++;
+        world.On<Position>().AfterAdded += (_, ref _) => added++;
+        world.On<Health>().BeforRemoved += (_, in _, _) => removed++;
 
         using (var _ = world.Lock())
         {
@@ -251,8 +251,8 @@ public class SignalTests
         using var world = new World();
 
         // Every Entity that gains a Position also gains a Health, and loses it with the Position.
-        world.On<Position>().Added += (e, ref _) => e.Add(new Health(100));
-        world.On<Position>().Removed += (e, in _, _) => e.Remove<Health>();
+        world.On<Position>().AfterAdded += (e, ref _) => e.Add(new Health(100));
+        world.On<Position>().BeforRemoved += (e, in _, _) => e.Remove<Health>();
 
         var entity = world.Spawn().Add(new Position(1, 2));
         Assert.True(entity.Has<Health>());
@@ -261,7 +261,7 @@ public class SignalTests
         Assert.False(entity.Has<Health>());
         Assert.False(entity.Has<Position>());
 
-        world.On<Health>().Added += (EntityRef e, ref Health _) => e.Remove<Health>();
+        world.On<Health>().AfterAdded += (EntityRef e, ref Health _) => e.Remove<Health>();
         entity.Add<Health>();
 
         Assert.False(entity.Has<Health>());
@@ -274,7 +274,7 @@ public class SignalTests
         using var world = new World();
 
         var seen = new List<Position>();
-        world.On<Position>().Added += (_, ref p) => seen.Add(p);
+        world.On<Position>().AfterAdded += (_, ref p) => seen.Add(p);
 
         world.Template()
             .Add(new Position(1, 2))
@@ -295,8 +295,8 @@ public class SignalTests
 
         var positions = 0;
         var healths = 0;
-        world.On<Position>().Added += (_, ref _) => positions++;
-        world.On<Health>().Added += (_, ref _) => healths++;
+        world.On<Position>().AfterAdded += (_, ref _) => positions++;
+        world.On<Health>().AfterAdded += (_, ref _) => healths++;
 
         world.Template()
             .Add(new Position(1, 2))
@@ -318,8 +318,8 @@ public class SignalTests
 
         var added = new List<Position>();
         var removed = new List<int>();
-        world.On<Position>().Added += (_, ref p) => added.Add(p);
-        world.On<Health>().Removed += (_, in h, _) => removed.Add(h.Value);
+        world.On<Position>().AfterAdded += (_, ref p) => added.Add(p);
+        world.On<Health>().BeforRemoved += (_, in h, _) => removed.Add(h.Value);
 
         world.Query<Health>().Not<Position>().Compile()
             .Batch()
@@ -342,7 +342,7 @@ public class SignalTests
         for (var i = 0; i < 4; i++) world.Spawn().Add(new Health(i)).Add(new Position(0, 0));
 
         var added = 0;
-        world.On<Position>().Added += (_, ref _) => added++;
+        world.On<Position>().AfterAdded += (_, ref _) => added++;
 
         // Replacing a value on Entities that already have the Component is not an addition.
         world.Query<Health>().Compile()
@@ -362,7 +362,7 @@ public class SignalTests
         for (var i = 0; i < 10; i++) world.Spawn().Add(new Health(i));
 
         var removed = 0;
-        world.On<Health>().Removed += (_, in _, _) => removed++;
+        world.On<Health>().BeforRemoved += (_, in _, _) => removed++;
 
         world.Query<Health>().Compile().Truncate(4);
 
@@ -379,11 +379,11 @@ public class SignalTests
         var added = 0;
         void Handler(EntityRef entity, ref Position position) => added++;
 
-        world.On<Position>().Added += Handler;
+        world.On<Position>().AfterAdded += Handler;
         world.Spawn().Add(new Position(1, 2));
         Assert.Equal(1, added);
 
-        world.On<Position>().Added -= Handler;
+        world.On<Position>().AfterAdded -= Handler;
         world.Spawn().Add(new Position(3, 4));
         Assert.Equal(1, added);
     }
@@ -397,10 +397,10 @@ public class SignalTests
         void Handler(EntityRef entity, ref Position position)
         {
             added++;
-            world.On<Position>().Added -= Handler;
+            world.On<Position>().AfterAdded -= Handler;
         }
 
-        world.On<Position>().Added += Handler;
+        world.On<Position>().AfterAdded += Handler;
         world.Spawn().Add(new Position(1, 2));
         Assert.Equal(1, added);
 
@@ -414,7 +414,7 @@ public class SignalTests
         using var world = new World();
 
         var added = 0;
-        world.On<Position>().Added += (_, ref _) => added++;
+        world.On<Position>().AfterAdded += (_, ref _) => added++;
 
         using (world.Lock())
         {
@@ -441,7 +441,7 @@ public class SignalTests
         using var world = new World();
 
         var causes = new List<RemoveCause>();
-        world.On<Health>().Removed += (_, in _, cause) => causes.Add(cause);
+        world.On<Health>().BeforRemoved += (_, in _, cause) => causes.Add(cause);
 
         // per-Entity CRUD
         world.Spawn().Add(new Health(1)).Remove<Health>();
@@ -460,7 +460,7 @@ public class SignalTests
         using var world = new World();
 
         var causes = new List<RemoveCause>();
-        world.On<Health>().Removed += (_, in _, cause) => causes.Add(cause);
+        world.On<Health>().BeforRemoved += (_, in _, cause) => causes.Add(cause);
 
         world.Spawn().Add(new Health(1)).Despawn();
 
@@ -481,7 +481,7 @@ public class SignalTests
         var entity = world.Spawn().Add(new Health(7), target);
 
         var causes = new List<RemoveCause>();
-        world.On<Health>(Match.Any).Removed += (_, in _, cause) => causes.Add(cause);
+        world.On<Health>(Match.Any).BeforRemoved += (_, in _, cause) => causes.Add(cause);
 
         target.Despawn();
 
@@ -501,7 +501,7 @@ public class SignalTests
         var entity = world.Spawn().Add(new Health(1)).Add(new Health(2), target);
 
         var causes = new List<RemoveCause>();
-        world.On<Health>(Match.Any).Removed += (_, in _, cause) => causes.Add(cause);
+        world.On<Health>(Match.Any).BeforRemoved += (_, in _, cause) => causes.Add(cause);
 
         entity.Despawn();
 
@@ -517,7 +517,7 @@ public class SignalTests
         // Signal dispatch takes a World Lock of its own; releasing it must not start a nested
         // drain of the deferred queue, or a bulk despawn recurses one stack frame per Entity.
         var removed = 0;
-        world.On<Health>().Removed += (_, in _, _) => removed++;
+        world.On<Health>().BeforRemoved += (_, in _, _) => removed++;
 
         for (var i = 0; i < 10_000; i++) world.Spawn().Add(new Health(i));
 
@@ -534,7 +534,7 @@ public class SignalTests
 
         var boom = new InvalidOperationException("boom");
         var signal = world.On<Health>();
-        signal.Added += (_, ref _) => throw boom;
+        signal.AfterAdded += (_, ref _) => throw boom;
 
         var entity = world.Spawn();
         var thrown = Assert.Throws<SignalException>(() => entity.Add(new Health(1)));
@@ -552,7 +552,7 @@ public class SignalTests
         using var world = new World();
 
         var signal = world.On<Health>();
-        signal.Removed += (_, in _, _) => throw new InvalidOperationException("boom");
+        signal.BeforRemoved += (_, in _, _) => throw new InvalidOperationException("boom");
 
         var entity = world.Spawn().Add(new Health(1));
         var thrown = Assert.Throws<SignalException>(() => entity.Despawn());
@@ -568,7 +568,7 @@ public class SignalTests
         using var world = new World();
 
         // Removing the Component that is already on its way out: legal to ask for, impossible to apply.
-        world.On<Health>().Removed += (e, in _, _) => e.Remove<Health>();
+        world.On<Health>().BeforRemoved += (e, in _, _) => e.Remove<Health>();
 
         var entity = world.Spawn().Add(new Health(1));
         var thrown = Assert.Throws<SignalException>(() => entity.Remove<Health>());
@@ -585,8 +585,8 @@ public class SignalTests
     {
         using var world = new World();
 
-        world.On<Health>().Added += (_, ref _) => { };
-        world.On<Health>().Removed += (_, in _, _) => { };
+        world.On<Health>().AfterAdded += (_, ref _) => { };
+        world.On<Health>().BeforRemoved += (_, in _, _) => { };
 
         var entity = world.Spawn().Add(new Health(1));
 
@@ -601,8 +601,8 @@ public class SignalTests
     {
         using var world = new World();
 
-        world.On<Position>().Added += (e, ref _) => e.Add(new Health(1));
-        world.On<Health>().Added += (_, ref _) => throw new InvalidOperationException("boom");
+        world.On<Position>().AfterAdded += (e, ref _) => e.Add(new Health(1));
+        world.On<Health>().AfterAdded += (_, ref _) => throw new InvalidOperationException("boom");
 
         var entity = world.Spawn();
         var thrown = Assert.Throws<SignalException>(() => entity.Add(new Position(1, 2)));
@@ -629,7 +629,7 @@ public class SignalTests
         // Deliberately a plain increment, not Interlocked: if dispatch were concurrent, this
         // would lose counts and the test would fail - which is exactly the guarantee under test.
         var added = 0;
-        world.On<Position>().Added += (_, ref _) =>
+        world.On<Position>().AfterAdded += (_, ref _) =>
         {
             dispatchThreads.TryAdd(Environment.CurrentManagedThreadId, 0);
             added++;
@@ -657,7 +657,7 @@ public class SignalTests
         world.Spawn().Add(new Position(0, 0)).Despawn();
 
         var whileWorking = 0;
-        world.On<Position>().Added += (_, ref _) =>
+        world.On<Position>().AfterAdded += (_, ref _) =>
         {
             if (Volatile.Read(ref work.Active) > 0) whileWorking++;
         };
@@ -693,7 +693,7 @@ public class SignalTests
         // Nothing watches what the *target* holds — only the relation on the other Entity. The
         // Despawn must still take the Lock, or this handler would mutate the relating Entity in
         // the middle of the dependency migration.
-        world.On<Health>(Match.Any).Removed += (e, in _, cause) =>
+        world.On<Health>(Match.Any).BeforRemoved += (e, in _, cause) =>
         {
             Assert.Equal(RemoveCause.TargetDespawned, cause);
             e.Add(new Position(1, 2));
@@ -713,7 +713,7 @@ public class SignalTests
         using var world = new World();
 
         // Subscribing from inside a handler appends to the very list the dispatch is walking.
-        world.On<Health>().Added += (_, ref _) => world.On<Health>(Match.Any);
+        world.On<Health>().AfterAdded += (_, ref _) => world.On<Health>(Match.Any);
 
         var entity = world.Spawn();
         entity.Add(new Health(1));   // must not throw a bare InvalidOperationException
@@ -730,7 +730,7 @@ public class SignalTests
         for (var i = 0; i < 4; i++) world.Spawn().Add(new Index(i)).Add(new Health(i));
 
         var removed = 0;
-        world.On<Health>().Removed += (_, in _, _) => removed++;
+        world.On<Health>().BeforRemoved += (_, in _, _) => removed++;
 
         // The Batch pattern is a Wildcard; the plain Signal still covers what it actually strips.
         world.Query<Index>().Has<Health>(Match.Any).Compile()
@@ -750,8 +750,8 @@ public class SignalTests
         void Handler(EntityRef entity, ref Health health) { }
 
         var signal = world.On<Health>();
-        signal.Added += Handler;
-        signal.Added -= Handler;
+        signal.AfterAdded += Handler;
+        signal.AfterAdded -= Handler;
 
         // No subscriber left anywhere, which is exactly when the empty Signal should be collected.
         world.GC();

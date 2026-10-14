@@ -80,28 +80,28 @@ public class SignalBenchmarks
                 break;
 
             case Watchers.OtherType:
-                _world.On<Unwatched>().Added += Bump;
-                _world.On<Unwatched>().Removed += Drop;
+                _world.On<Unwatched>().AfterAdded += Bump;
+                _world.On<Unwatched>().BeforRemoved += Drop;
                 break;
 
             case Watchers.Idle:
                 _world.On<Position>();  // materializes the Signal without subscribing
                 // Without a subscriber somewhere, the World would not be Signalling at all and this
                 // case would silently measure the very same path as None.
-                _world.On<Unwatched>().Added += Bump;
-                _world.On<Unwatched>().Removed += Drop;
+                _world.On<Unwatched>().AfterAdded += Bump;
+                _world.On<Unwatched>().BeforRemoved += Drop;
                 break;
 
             case Watchers.One:
-                _world.On<Position>().Added += Bump;
-                _world.On<Position>().Removed += Drop;
+                _world.On<Position>().AfterAdded += Bump;
+                _world.On<Position>().BeforRemoved += Drop;
                 break;
 
             case Watchers.Four:
                 for (var i = 0; i < 4; i++)
                 {
-                    _world.On<Position>().Added += Bump;
-                    _world.On<Position>().Removed += Drop;
+                    _world.On<Position>().AfterAdded += Bump;
+                    _world.On<Position>().BeforRemoved += Drop;
                 }
                 break;
         }
