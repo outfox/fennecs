@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 using fennecs.pools;
@@ -158,6 +159,12 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
             var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);
             var archetype = Main.GetArchetype(signature);
             archetype.Spawn(destination, components, values);
+
+            if (WatchesAny(components, added: true))
+            {
+                using var spawnLock = Lock();
+                SignalAdded(null, destination, components);
+            }
             return;
         }
 
@@ -189,6 +196,10 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
             aspect.EnsureCapacity(_entityPool.Created + 1);
             aspect.GetArchetype(signature).SpawnWith(destination, group.components, group.values);
         }
+
+        // (the enclosing worldLock defers whatever the handlers do until the wave is complete)
+        if (WatchesAny(components, added: true))
+            SignalAdded(null, destination, components);
     }
 
     /// <summary>
@@ -309,11 +320,13 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
 
 
     /// <summary>
-    ///  Runs the World's Garbage Collection (placeholder for future GC - currently removes all empty Archetypes).
+    ///  Runs the World's Garbage Collection (placeholder for future GC - currently removes all empty Archetypes and Signal).
     /// </summary>
     public void GC()
     {
         if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
+
+        CollectIdleSignals();
 
         foreach (var aspect in _aspects) aspect.GC();
     }
@@ -326,6 +339,9 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     public void Dispose()
     {
         //TODO: Dispose all Object Links, Queries, etc.?
+        _signals.Clear();
+        _idle.Clear();
+        ResetSubscribers();
         ReleaseTag();
     }
 

@@ -40,6 +40,7 @@ You can store entities anywhere: in variables, collections, or even as component
 | Read/Write | [`Entity.Ref<C>()`](ComponentRefGet.md) | Get reference to component |
 | Get or Create | [`Entity.Ensure<C>()`](ComponentEnsure.md) | Ensure component exists |
 | Check alive | [`Entity.Alive`](Liveness.md) | Is entity still valid? |
+| Live handle | [`EntityRef`](EntityRef.md) | The located Entity runners & Signals hand you |
 
 ## Lifecycle :neofox_snug:
 
