@@ -1,21 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <!--
-      Browser (wasm) host: your C# code hosts the Godot engine in the browser.
-
-      Publish:  dotnet publish fennecs.demos.godot.web   (from the project root;
-                the root global.json pins a wasm-capable SDK. Defaults to
-                Release via Directory.Build.props; pass -c Debug to override.)
-      Output:   AppBundle/ - serve with any static file server.
-
-      Requires the wasm-tools workload:  dotnet workload install wasm-tools
-      The 2dog.browser-wasm package statically links the Godot engine into
-      dotnet.native.wasm during publish and exports the Godot project's
-      content as godot.pck (using the desktop editor packages on this machine).
-    -->
+    <!-- Browser (wasm) host; requires `dotnet workload install wasm-tools`. Publish from the project root:
+         dotnet publish fennecs.demos.godot.web2 -> AppBundle/ (engine linked in, content exported as godot.pck) -->
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <OutputType>Exe</OutputType>
         <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+        <WasmEnableThreads Condition="'$(WasmEnableThreads)' == ''">$(TwoDogWebThreads)</WasmEnableThreads>        
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
@@ -31,8 +21,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="2dog.engine" Version="4.7.1.46"/>
-        <PackageReference Include="2dog.browser-wasm" Version="[4.7.1.17]"/>
+        <PackageReference Include="2dog.engine" Version="$(TwoDogVersion)"/>
+        <PackageReference Include="2dog.browser-wasm" Version="[$(TwoDogNativesVersion)]"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="../fennecs.demos.godot.csproj"/>

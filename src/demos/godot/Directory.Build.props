@@ -1,0 +1,26 @@
+<Project>
+    <!-- Keep a Directory.Build.props above the project in effect (this file would otherwise shadow it). -->
+    <PropertyGroup>
+        <_TwoDogParentProps>$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))</_TwoDogParentProps>
+    </PropertyGroup>
+    <Import Project="$(_TwoDogParentProps)" Condition="'$(_TwoDogParentProps)' != ''" />
+
+    <!-- The package versions every host references. `2dog update` rewrites this block, `2dog doctor` checks it;
+         the game project's Godot.NET.Sdk version stays in its csproj (SDK resolution runs before this file). -->
+    <PropertyGroup Label="2dog">
+        <TwoDogVersion>4.7.2.126</TwoDogVersion>
+        <TwoDogNativesVersion>4.7.2.31</TwoDogNativesVersion>
+        <TwoDogGodotVersion>4.7.2</TwoDogGodotVersion>
+        <TwoDogAvaloniaVersion>12.1.1</TwoDogAvaloniaVersion>
+        <TwoDogMauiVersion>10.0.110</TwoDogMauiVersion>
+        <TwoDogWindowsAppSdkVersion>2.4.0</TwoDogWindowsAppSdkVersion>
+        <TwoDogAspNetCoreVersion>10.0.*</TwoDogAspNetCoreVersion>
+        <TwoDogPrecision Condition="'$(TwoDogPrecision)' == ''">single</TwoDogPrecision>
+        <GodotFloat64 Condition="'$(TwoDogPrecision)' == 'double'">true</GodotFloat64>
+        <TwoDogWebThreads Condition="'$(TwoDogWebThreads)' == ''">false</TwoDogWebThreads>
+    </PropertyGroup>
+    <!-- build settings selected with the 2dog tool -->
+    <PropertyGroup Label="2dog build">
+        <TwoDogWebThreads>true</TwoDogWebThreads>
+    </PropertyGroup>
+</Project>

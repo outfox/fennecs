@@ -12,7 +12,7 @@
     <!-- 2dog packages (2dog.xunit pulls in 2dog.engine for the fixtures and ships the xUnit
          collection definitions as compile-in source) -->
     <ItemGroup>
-        <PackageReference Include="2dog.xunit" Version="4.7.1.46"/>
+        <PackageReference Include="2dog.xunit" Version="$(TwoDogVersion)"/>
     </ItemGroup>
 
     <!-- Native library packages arrive transitively: 2dog exact-pins the platform
@@ -53,6 +53,6 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(Configuration)' == 'Editor'">
-        <PackageReference Include="GodotSharpEditor" Version="4.7.1" />
+        <PackageReference Include="GodotSharpEditor" Version="$(TwoDogGodotVersion)" />
     </ItemGroup>
 </Project>

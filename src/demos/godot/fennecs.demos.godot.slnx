@@ -13,5 +13,6 @@
   </Project>
   <Project Path="fennecs.demos.godot.web/fennecs.demos.godot.web.csproj">
     <BuildType Project="Debug" />
+    <Build Project="false" />
   </Project>
 </Solution>

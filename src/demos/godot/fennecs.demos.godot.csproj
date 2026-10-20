@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.7.1">
+<Project Sdk="Godot.NET.Sdk/4.7.2">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
@@ -19,5 +19,15 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <DefineConstants>$(DefineConstants);LIBGODOT_ENABLED</DefineConstants>
         <DefaultItemExcludes>$(DefaultItemExcludes);fennecs.demos.godot.2dog/**;fennecs.demos.godot.web/**;fennecs.demos.godot.tests/**</DefaultItemExcludes>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="2dog.godotsharp" Version="$(TwoDogVersion)" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="2dog.godotsharp.editor" Version="$(TwoDogVersion)" Condition="'$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Editor'" />
+    </ItemGroup>
+    <!-- added by the 2dog tool: properties 2dog hosts need that were not already set -->
+    <PropertyGroup>
+        <DefaultItemExcludes>$(DefaultItemExcludes);fennecs.demos.godot.web2/**</DefaultItemExcludes>
     </PropertyGroup>
 </Project>

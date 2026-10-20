@@ -86,7 +86,7 @@ public partial class SimFennecsMultimesh : Node
         // The same static method either runs on one core (For) or all of them (Job).
         // Job is unsupported on browser/WASM, where this mode degrades to For.
         // ----------------------------------------------------------------------------------------
-        if (UseJobs && !OperatingSystem.IsBrowser()) _stream.Job(uniform, UpdateCube);
+        if (UseJobs) _stream.Job(uniform, UpdateCube);
         else _stream.For(uniform, UpdateCube);
 
         // Engine: Communicate the number of visible Entities to Godot's MultiMesh.
