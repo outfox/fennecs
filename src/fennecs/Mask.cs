@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+using System.Diagnostics;
 using fennecs.pools;
 
 namespace fennecs;
@@ -10,13 +11,22 @@ internal sealed class Mask : IDisposable
     internal readonly SortedSet<TypeExpression> NotTypes = [];
     internal readonly SortedSet<TypeExpression> AnyTypes = [];
 
-    public bool SafeForAddition(TypeExpression typeExpression) => typeExpression.Matches(NotTypes);
-    public bool SafeForRemoval(TypeExpression typeExpression) => typeExpression.Matches(HasTypes) || typeExpression.Matches(AnyTypes);
+    // Compiled lazily; invalidated on mutation (Masks are pooled and mutable).
+    private MaskBits? _bits;
+
+    internal MaskBits Bits => _bits ??= MaskBits.Of(this);
+
+
+    public bool SafeForAddition(TypeExpression typeExpression) => Bits.Not.MatchesBidirectional(typeExpression);
+
+    public bool SafeForRemoval(TypeExpression typeExpression) =>
+        Bits.Has.MatchesBidirectional(typeExpression) || Bits.Any.MatchesBidirectional(typeExpression);
 
 
     public Mask Has(TypeExpression typeExpression)
     {
         HasTypes.Add(typeExpression);
+        _bits = null;
         return this;
     }
 
@@ -24,6 +34,7 @@ internal sealed class Mask : IDisposable
     public Mask Not(TypeExpression typeExpression)
     {
         NotTypes.Add(typeExpression);
+        _bits = null;
         return this;
     }
 
@@ -31,6 +42,7 @@ internal sealed class Mask : IDisposable
     public Mask Any(TypeExpression typeExpression)
     {
         AnyTypes.Add(typeExpression);
+        _bits = null;
         return this;
     }
 
@@ -40,6 +52,7 @@ internal sealed class Mask : IDisposable
         HasTypes.Clear();
         NotTypes.Clear();
         AnyTypes.Clear();
+        _bits = null;
     }
 
 
@@ -77,6 +90,7 @@ internal sealed class Mask : IDisposable
         mask.HasTypes.UnionWith(HasTypes);
         mask.NotTypes.UnionWith(NotTypes);
         mask.AnyTypes.UnionWith(AnyTypes);
+        mask._bits = null;
         return mask;
     }
 }

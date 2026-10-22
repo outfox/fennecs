@@ -38,11 +38,33 @@ internal class LanguageType
     // live here instead of inside the packed TypeExpression)
     private static readonly TypeFlags[] FlagTable = new TypeFlags[AnyId + 1];
 
+    // Side-table of base classes per TypeId, nearest first; null = none.
+    // Feeds Match.Family (inheritance-aware) matching. Interfaces are not seeded (policy choice).
+    private static readonly Type[]?[] AncestorTable = new Type[]?[AnyId + 1];
+
 
     /// <summary>
     /// The <see cref="TypeFlags"/> of the type registered with the given TypeId.
     /// </summary>
     internal static TypeFlags FlagsById(TypeID typeId) => FlagTable[typeId];
+
+
+    /// <summary>
+    /// The registered type's base classes, nearest first. (empty for structs)
+    /// </summary>
+    internal static ReadOnlySpan<Type> AncestorsById(TypeID typeId) => AncestorTable[typeId] ?? [];
+
+
+    internal static bool IsInFamily(TypeID baseId, TypeID candidateId)
+    {
+        if (baseId == candidateId) return true;
+
+        var baseType = Resolve(baseId);
+        foreach (var ancestor in AncestorsById(candidateId))
+            if (ancestor == baseType) return true;
+
+        return false;
+    }
 
 
     protected internal static TypeID Identify(Type type)
@@ -101,6 +123,23 @@ internal class LanguageType
     }
 
     protected static void StoreFlags(TypeID id, TypeFlags flags) => FlagTable[id] = flags;
+
+
+    // Walks the base-class chain without registering ancestors as Components.
+    protected static void StoreAncestors(TypeID id, Type type)
+    {
+        List<Type>? ancestors = null;
+
+        for (var baseType = type.BaseType;
+             baseType is not null
+             && baseType != typeof(object) && baseType != typeof(ValueType) && baseType != typeof(Enum);
+             baseType = baseType.BaseType)
+        {
+            (ancestors ??= []).Add(baseType);
+        }
+
+        if (ancestors is not null) AncestorTable[id] = ancestors.ToArray();
+    }
 }
 
 internal class LanguageType<T> : LanguageType
@@ -132,6 +171,7 @@ internal class LanguageType<T> : LanguageType
             }
 
             StoreFlags(Id, ComputeFlags<T>());
+            StoreAncestors(Id, typeof(T));
         }
     }
 }

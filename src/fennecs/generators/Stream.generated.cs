@@ -26,6 +26,10 @@ namespace fennecs
         // The component TypeExpressions that this Stream operates on.
         internal readonly ImmutableArray<TypeExpression> StreamTypes;
 
+        // True if any stream type is a Family expression: components then come from covariant
+        // (derived-type) storages and are only accessible read-only. (see AssertNotFamily)
+        private readonly bool _family;
+
         /// <summary>
         /// The Query this Stream is associated with.
         /// </summary>
@@ -56,6 +60,11 @@ namespace fennecs
             StreamTypes = ImmutableArray.Create(
                 TypeExpression.Of<C0>(match0)
 );
+
+            var family = false;
+            foreach (var type in StreamTypes) family |= type.Key == Key.Family;
+            _family = family;
+
             Query = query;
         }
         #endregion
@@ -66,28 +75,38 @@ namespace fennecs
         /// Creates a <see cref="FilteredStream{C0}"/> narrowed to Archetypes
         /// that have ALL of the given components.
         /// </summary>
-        public FilteredStream<C0> Has(params Comp[] components) =>
-            new(this, [.. components], [], null);
+        public FilteredStream<C0> Has(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [.. components], [], null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0}"/> narrowed to Archetypes
         /// that have NONE of the given components.
         /// </summary>
-        public FilteredStream<C0> Not(params Comp[] components) =>
-            new(this, [], [.. components], null);
+        public FilteredStream<C0> Not(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [], [.. components], null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0}"/> with a per-entity
         /// predicate for Component <c>C0</c>.
         /// </summary>
-        public FilteredStream<C0> Where(ComponentFilter<C0> filter0) =>
-            new(this, [], [], filter0);
+        public FilteredStream<C0> Where(ComponentFilter<C0> filter0)
+        {
+            AssertNotFamily();
+            return new(this, [], [], filter0);
+        }
         #endregion
 
         #region For
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -105,6 +124,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -122,6 +142,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -139,6 +160,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -154,11 +176,78 @@ namespace fennecs
         }
         #endregion
 
+        #region For (read-only)
+        /// <summary>
+        /// Read-only For: components arrive as <c>in</c> (readonly) references. Serves all Stream Types,
+        /// including <see cref="Match.Family"/>, whose derived components arrive viewed as their base type.
+        /// Mutate class components through their members; component slots cannot be reassigned.
+        /// </summary>
+        public void ForRead(ComponentActionI<C0> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopRead(join.Span<C0>(0), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionI{C0})"/>
+        public void ForRead<U>(U uniform, UniformComponentActionI<U, C0> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformRead(join.Span<C0>(0), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionI{C0})"/>
+        public void ForRead(EntityComponentActionI<C0> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopEntityRead(table, join.Span<C0>(0), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionI{C0})"/>
+        public void ForRead<U>(U uniform, UniformEntityComponentActionI<U, C0> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformEntityRead(table, join.Span<C0>(0), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+        #endregion
+
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -243,6 +332,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -330,6 +420,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -348,6 +439,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -367,7 +459,9 @@ namespace fennecs
 
         #region IEnumerable
         /// <inheritdoc />
-        public IEnumerator<(Entity, C0)> GetEnumerator()
+        public IEnumerator<(Entity, C0)> GetEnumerator() => _family ? EnumerateRead() : Enumerate();
+
+        private IEnumerator<(Entity, C0)> Enumerate()
         {
             foreach (var table in Archetypes)
             {
@@ -385,6 +479,25 @@ namespace fennecs
                 } while (join.Iterate());
             }
         }
+
+        // Family variant: elements come from covariant (derived-type) storages, one indirection per element.
+        private IEnumerator<(Entity, C0)> EnumerateRead()
+        {
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                var snapshot = table.Version;
+                do
+                {
+                    for (var i=0; i<table.Count; i++)
+                    {
+                        yield return (table[i], join.Get<C0>(0, i));
+                        if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    }
+                } while (join.Iterate());
+            }
+        }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
@@ -395,6 +508,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C0 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -437,6 +551,42 @@ namespace fennecs
                 action(uniform, new EntityRef(table, i), ref span0[i]);
             }
         }
+
+        private static void LoopRead(ReadOnlySpan<C0> span0, ComponentActionI<C0> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(in span0[i]);
+            }
+        }
+
+        private static void LoopUniformRead<U>(ReadOnlySpan<C0> span0, UniformComponentActionI<U, C0> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, in span0[i]);
+            }
+        }
+
+        private static void LoopEntityRead(Archetype table, ReadOnlySpan<C0> span0, EntityComponentActionI<C0> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(new EntityRef(table, i), in span0[i]);
+            }
+        }
+
+        private static void LoopUniformEntityRead<U>(Archetype table, ReadOnlySpan<C0> span0, UniformEntityComponentActionI<U, C0> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, new EntityRef(table, i), in span0[i]);
+            }
+        }
         #endregion
 
         #region Assertions
@@ -445,6 +595,14 @@ namespace fennecs
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
                     $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+        }
+
+        private void AssertNotFamily()
+        {
+            if (!_family) return;
+            throw new InvalidOperationException(
+                "Match.Family Stream Types provide read-only component access: writable-ref runners, Raw, Blit, " +
+                "and FilteredStream views cannot serve them. Use the ForRead overloads (in-parameters) or enumeration.");
         }
         #endregion
 
@@ -478,6 +636,10 @@ namespace fennecs
         // The component TypeExpressions that this Stream operates on.
         internal readonly ImmutableArray<TypeExpression> StreamTypes;
 
+        // True if any stream type is a Family expression: components then come from covariant
+        // (derived-type) storages and are only accessible read-only. (see AssertNotFamily)
+        private readonly bool _family;
+
         /// <summary>
         /// The Query this Stream is associated with.
         /// </summary>
@@ -509,6 +671,11 @@ namespace fennecs
                 TypeExpression.Of<C0>(match0),
                 TypeExpression.Of<C1>(match1)
 );
+
+            var family = false;
+            foreach (var type in StreamTypes) family |= type.Key == Key.Family;
+            _family = family;
+
             Query = query;
         }
         #endregion
@@ -519,35 +686,48 @@ namespace fennecs
         /// Creates a <see cref="FilteredStream{C0, C1}"/> narrowed to Archetypes
         /// that have ALL of the given components.
         /// </summary>
-        public FilteredStream<C0, C1> Has(params Comp[] components) =>
-            new(this, [.. components], [], null, null);
+        public FilteredStream<C0, C1> Has(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [.. components], [], null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1}"/> narrowed to Archetypes
         /// that have NONE of the given components.
         /// </summary>
-        public FilteredStream<C0, C1> Not(params Comp[] components) =>
-            new(this, [], [.. components], null, null);
+        public FilteredStream<C0, C1> Not(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [], [.. components], null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1}"/> with a per-entity
         /// predicate for Component <c>C0</c>.
         /// </summary>
-        public FilteredStream<C0, C1> Where(ComponentFilter<C0> filter0) =>
-            new(this, [], [], filter0, null);
+        public FilteredStream<C0, C1> Where(ComponentFilter<C0> filter0)
+        {
+            AssertNotFamily();
+            return new(this, [], [], filter0, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1}"/> with a per-entity
         /// predicate for Component <c>C1</c>.
         /// </summary>
-        public FilteredStream<C0, C1> Where(ComponentFilter<C1> filter1) =>
-            new(this, [], [], null, filter1);
+        public FilteredStream<C0, C1> Where(ComponentFilter<C1> filter1)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, filter1);
+        }
         #endregion
 
         #region For
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0, C1> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -565,6 +745,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0, C1> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -582,6 +763,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0, C1> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -599,6 +781,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -614,11 +797,78 @@ namespace fennecs
         }
         #endregion
 
+        #region For (read-only)
+        /// <summary>
+        /// Read-only For: components arrive as <c>in</c> (readonly) references. Serves all Stream Types,
+        /// including <see cref="Match.Family"/>, whose derived components arrive viewed as their base type.
+        /// Mutate class components through their members; component slots cannot be reassigned.
+        /// </summary>
+        public void ForRead(ComponentActionII<C0, C1> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopRead(join.Span<C0>(0), join.Span<C1>(1), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionII{C0, C1})"/>
+        public void ForRead<U>(U uniform, UniformComponentActionII<U, C0, C1> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformRead(join.Span<C0>(0), join.Span<C1>(1), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionII{C0, C1})"/>
+        public void ForRead(EntityComponentActionII<C0, C1> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopEntityRead(table, join.Span<C0>(0), join.Span<C1>(1), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionII{C0, C1})"/>
+        public void ForRead<U>(U uniform, UniformEntityComponentActionII<U, C0, C1> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformEntityRead(table, join.Span<C0>(0), join.Span<C1>(1), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+        #endregion
+
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -705,6 +955,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -794,6 +1045,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0, C1> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -813,6 +1065,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -834,7 +1087,9 @@ namespace fennecs
 
         #region IEnumerable
         /// <inheritdoc />
-        public IEnumerator<(Entity, C0, C1)> GetEnumerator()
+        public IEnumerator<(Entity, C0, C1)> GetEnumerator() => _family ? EnumerateRead() : Enumerate();
+
+        private IEnumerator<(Entity, C0, C1)> Enumerate()
         {
             foreach (var table in Archetypes)
             {
@@ -852,6 +1107,25 @@ namespace fennecs
                 } while (join.Iterate());
             }
         }
+
+        // Family variant: elements come from covariant (derived-type) storages, one indirection per element.
+        private IEnumerator<(Entity, C0, C1)> EnumerateRead()
+        {
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                var snapshot = table.Version;
+                do
+                {
+                    for (var i=0; i<table.Count; i++)
+                    {
+                        yield return (table[i], join.Get<C0>(0, i), join.Get<C1>(1, i));
+                        if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    }
+                } while (join.Iterate());
+            }
+        }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
@@ -862,6 +1136,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C0 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -872,6 +1147,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C1 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C1>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -914,6 +1190,42 @@ namespace fennecs
                 action(uniform, new EntityRef(table, i), ref span0[i], ref span1[i]);
             }
         }
+
+        private static void LoopRead(ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1, ComponentActionII<C0, C1> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(in span0[i], in span1[i]);
+            }
+        }
+
+        private static void LoopUniformRead<U>(ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1, UniformComponentActionII<U, C0, C1> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, in span0[i], in span1[i]);
+            }
+        }
+
+        private static void LoopEntityRead(Archetype table, ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1, EntityComponentActionII<C0, C1> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(new EntityRef(table, i), in span0[i], in span1[i]);
+            }
+        }
+
+        private static void LoopUniformEntityRead<U>(Archetype table, ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1, UniformEntityComponentActionII<U, C0, C1> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, new EntityRef(table, i), in span0[i], in span1[i]);
+            }
+        }
         #endregion
 
         #region Assertions
@@ -922,6 +1234,14 @@ namespace fennecs
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
                     $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+        }
+
+        private void AssertNotFamily()
+        {
+            if (!_family) return;
+            throw new InvalidOperationException(
+                "Match.Family Stream Types provide read-only component access: writable-ref runners, Raw, Blit, " +
+                "and FilteredStream views cannot serve them. Use the ForRead overloads (in-parameters) or enumeration.");
         }
         #endregion
 
@@ -956,6 +1276,10 @@ namespace fennecs
         // The component TypeExpressions that this Stream operates on.
         internal readonly ImmutableArray<TypeExpression> StreamTypes;
 
+        // True if any stream type is a Family expression: components then come from covariant
+        // (derived-type) storages and are only accessible read-only. (see AssertNotFamily)
+        private readonly bool _family;
+
         /// <summary>
         /// The Query this Stream is associated with.
         /// </summary>
@@ -988,6 +1312,11 @@ namespace fennecs
                 TypeExpression.Of<C1>(match1),
                 TypeExpression.Of<C2>(match2)
 );
+
+            var family = false;
+            foreach (var type in StreamTypes) family |= type.Key == Key.Family;
+            _family = family;
+
             Query = query;
         }
         #endregion
@@ -998,42 +1327,58 @@ namespace fennecs
         /// Creates a <see cref="FilteredStream{C0, C1, C2}"/> narrowed to Archetypes
         /// that have ALL of the given components.
         /// </summary>
-        public FilteredStream<C0, C1, C2> Has(params Comp[] components) =>
-            new(this, [.. components], [], null, null, null);
+        public FilteredStream<C0, C1, C2> Has(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [.. components], [], null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2}"/> narrowed to Archetypes
         /// that have NONE of the given components.
         /// </summary>
-        public FilteredStream<C0, C1, C2> Not(params Comp[] components) =>
-            new(this, [], [.. components], null, null, null);
+        public FilteredStream<C0, C1, C2> Not(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [], [.. components], null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2}"/> with a per-entity
         /// predicate for Component <c>C0</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2> Where(ComponentFilter<C0> filter0) =>
-            new(this, [], [], filter0, null, null);
+        public FilteredStream<C0, C1, C2> Where(ComponentFilter<C0> filter0)
+        {
+            AssertNotFamily();
+            return new(this, [], [], filter0, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2}"/> with a per-entity
         /// predicate for Component <c>C1</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2> Where(ComponentFilter<C1> filter1) =>
-            new(this, [], [], null, filter1, null);
+        public FilteredStream<C0, C1, C2> Where(ComponentFilter<C1> filter1)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, filter1, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2}"/> with a per-entity
         /// predicate for Component <c>C2</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2> Where(ComponentFilter<C2> filter2) =>
-            new(this, [], [], null, null, filter2);
+        public FilteredStream<C0, C1, C2> Where(ComponentFilter<C2> filter2)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, null, filter2);
+        }
         #endregion
 
         #region For
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0, C1, C2> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1051,6 +1396,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1068,6 +1414,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0, C1, C2> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1085,6 +1432,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1100,11 +1448,78 @@ namespace fennecs
         }
         #endregion
 
+        #region For (read-only)
+        /// <summary>
+        /// Read-only For: components arrive as <c>in</c> (readonly) references. Serves all Stream Types,
+        /// including <see cref="Match.Family"/>, whose derived components arrive viewed as their base type.
+        /// Mutate class components through their members; component slots cannot be reassigned.
+        /// </summary>
+        public void ForRead(ComponentActionIII<C0, C1, C2> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopRead(join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIII{C0, C1, C2})"/>
+        public void ForRead<U>(U uniform, UniformComponentActionIII<U, C0, C1, C2> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformRead(join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIII{C0, C1, C2})"/>
+        public void ForRead(EntityComponentActionIII<C0, C1, C2> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopEntityRead(table, join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIII{C0, C1, C2})"/>
+        public void ForRead<U>(U uniform, UniformEntityComponentActionIII<U, C0, C1, C2> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformEntityRead(table, join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+        #endregion
+
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -1193,6 +1608,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -1284,6 +1700,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0, C1, C2> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1304,6 +1721,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1327,7 +1745,9 @@ namespace fennecs
 
         #region IEnumerable
         /// <inheritdoc />
-        public IEnumerator<(Entity, C0, C1, C2)> GetEnumerator()
+        public IEnumerator<(Entity, C0, C1, C2)> GetEnumerator() => _family ? EnumerateRead() : Enumerate();
+
+        private IEnumerator<(Entity, C0, C1, C2)> Enumerate()
         {
             foreach (var table in Archetypes)
             {
@@ -1345,6 +1765,25 @@ namespace fennecs
                 } while (join.Iterate());
             }
         }
+
+        // Family variant: elements come from covariant (derived-type) storages, one indirection per element.
+        private IEnumerator<(Entity, C0, C1, C2)> EnumerateRead()
+        {
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                var snapshot = table.Version;
+                do
+                {
+                    for (var i=0; i<table.Count; i++)
+                    {
+                        yield return (table[i], join.Get<C0>(0, i), join.Get<C1>(1, i), join.Get<C2>(2, i));
+                        if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    }
+                } while (join.Iterate());
+            }
+        }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
@@ -1355,6 +1794,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C0 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -1365,6 +1805,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C1 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C1>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -1375,6 +1816,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C2 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C2>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -1417,6 +1859,42 @@ namespace fennecs
                 action(uniform, new EntityRef(table, i), ref span0[i], ref span1[i], ref span2[i]);
             }
         }
+
+        private static void LoopRead(ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2, ComponentActionIII<C0, C1, C2> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(in span0[i], in span1[i], in span2[i]);
+            }
+        }
+
+        private static void LoopUniformRead<U>(ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2, UniformComponentActionIII<U, C0, C1, C2> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, in span0[i], in span1[i], in span2[i]);
+            }
+        }
+
+        private static void LoopEntityRead(Archetype table, ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2, EntityComponentActionIII<C0, C1, C2> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(new EntityRef(table, i), in span0[i], in span1[i], in span2[i]);
+            }
+        }
+
+        private static void LoopUniformEntityRead<U>(Archetype table, ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2, UniformEntityComponentActionIII<U, C0, C1, C2> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, new EntityRef(table, i), in span0[i], in span1[i], in span2[i]);
+            }
+        }
         #endregion
 
         #region Assertions
@@ -1425,6 +1903,14 @@ namespace fennecs
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
                     $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+        }
+
+        private void AssertNotFamily()
+        {
+            if (!_family) return;
+            throw new InvalidOperationException(
+                "Match.Family Stream Types provide read-only component access: writable-ref runners, Raw, Blit, " +
+                "and FilteredStream views cannot serve them. Use the ForRead overloads (in-parameters) or enumeration.");
         }
         #endregion
 
@@ -1460,6 +1946,10 @@ namespace fennecs
         // The component TypeExpressions that this Stream operates on.
         internal readonly ImmutableArray<TypeExpression> StreamTypes;
 
+        // True if any stream type is a Family expression: components then come from covariant
+        // (derived-type) storages and are only accessible read-only. (see AssertNotFamily)
+        private readonly bool _family;
+
         /// <summary>
         /// The Query this Stream is associated with.
         /// </summary>
@@ -1493,6 +1983,11 @@ namespace fennecs
                 TypeExpression.Of<C2>(match2),
                 TypeExpression.Of<C3>(match3)
 );
+
+            var family = false;
+            foreach (var type in StreamTypes) family |= type.Key == Key.Family;
+            _family = family;
+
             Query = query;
         }
         #endregion
@@ -1503,49 +1998,68 @@ namespace fennecs
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3}"/> narrowed to Archetypes
         /// that have ALL of the given components.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3> Has(params Comp[] components) =>
-            new(this, [.. components], [], null, null, null, null);
+        public FilteredStream<C0, C1, C2, C3> Has(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [.. components], [], null, null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3}"/> narrowed to Archetypes
         /// that have NONE of the given components.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3> Not(params Comp[] components) =>
-            new(this, [], [.. components], null, null, null, null);
+        public FilteredStream<C0, C1, C2, C3> Not(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [], [.. components], null, null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3}"/> with a per-entity
         /// predicate for Component <c>C0</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3> Where(ComponentFilter<C0> filter0) =>
-            new(this, [], [], filter0, null, null, null);
+        public FilteredStream<C0, C1, C2, C3> Where(ComponentFilter<C0> filter0)
+        {
+            AssertNotFamily();
+            return new(this, [], [], filter0, null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3}"/> with a per-entity
         /// predicate for Component <c>C1</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3> Where(ComponentFilter<C1> filter1) =>
-            new(this, [], [], null, filter1, null, null);
+        public FilteredStream<C0, C1, C2, C3> Where(ComponentFilter<C1> filter1)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, filter1, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3}"/> with a per-entity
         /// predicate for Component <c>C2</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3> Where(ComponentFilter<C2> filter2) =>
-            new(this, [], [], null, null, filter2, null);
+        public FilteredStream<C0, C1, C2, C3> Where(ComponentFilter<C2> filter2)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, null, filter2, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3}"/> with a per-entity
         /// predicate for Component <c>C3</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3> Where(ComponentFilter<C3> filter3) =>
-            new(this, [], [], null, null, null, filter3);
+        public FilteredStream<C0, C1, C2, C3> Where(ComponentFilter<C3> filter3)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, null, null, filter3);
+        }
         #endregion
 
         #region For
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1563,6 +2077,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1580,6 +2095,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1597,6 +2113,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1612,11 +2129,78 @@ namespace fennecs
         }
         #endregion
 
+        #region For (read-only)
+        /// <summary>
+        /// Read-only For: components arrive as <c>in</c> (readonly) references. Serves all Stream Types,
+        /// including <see cref="Match.Family"/>, whose derived components arrive viewed as their base type.
+        /// Mutate class components through their members; component slots cannot be reassigned.
+        /// </summary>
+        public void ForRead(ComponentActionIIII<C0, C1, C2, C3> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopRead(join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), join.Span<C3>(3), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIIII{C0, C1, C2, C3})"/>
+        public void ForRead<U>(U uniform, UniformComponentActionIIII<U, C0, C1, C2, C3> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformRead(join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), join.Span<C3>(3), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIIII{C0, C1, C2, C3})"/>
+        public void ForRead(EntityComponentActionIIII<C0, C1, C2, C3> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopEntityRead(table, join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), join.Span<C3>(3), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIIII{C0, C1, C2, C3})"/>
+        public void ForRead<U>(U uniform, UniformEntityComponentActionIIII<U, C0, C1, C2, C3> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformEntityRead(table, join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), join.Span<C3>(3), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+        #endregion
+
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -1707,6 +2291,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -1800,6 +2385,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1821,6 +2407,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2, C3> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -1846,7 +2433,9 @@ namespace fennecs
 
         #region IEnumerable
         /// <inheritdoc />
-        public IEnumerator<(Entity, C0, C1, C2, C3)> GetEnumerator()
+        public IEnumerator<(Entity, C0, C1, C2, C3)> GetEnumerator() => _family ? EnumerateRead() : Enumerate();
+
+        private IEnumerator<(Entity, C0, C1, C2, C3)> Enumerate()
         {
             foreach (var table in Archetypes)
             {
@@ -1864,6 +2453,25 @@ namespace fennecs
                 } while (join.Iterate());
             }
         }
+
+        // Family variant: elements come from covariant (derived-type) storages, one indirection per element.
+        private IEnumerator<(Entity, C0, C1, C2, C3)> EnumerateRead()
+        {
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                var snapshot = table.Version;
+                do
+                {
+                    for (var i=0; i<table.Count; i++)
+                    {
+                        yield return (table[i], join.Get<C0>(0, i), join.Get<C1>(1, i), join.Get<C2>(2, i), join.Get<C3>(3, i));
+                        if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    }
+                } while (join.Iterate());
+            }
+        }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
@@ -1874,6 +2482,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C0 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -1884,6 +2493,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C1 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C1>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -1894,6 +2504,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C2 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C2>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -1904,6 +2515,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C3 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C3>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -1946,6 +2558,42 @@ namespace fennecs
                 action(uniform, new EntityRef(table, i), ref span0[i], ref span1[i], ref span2[i], ref span3[i]);
             }
         }
+
+        private static void LoopRead(ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2,ReadOnlySpan<C3> span3, ComponentActionIIII<C0, C1, C2, C3> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(in span0[i], in span1[i], in span2[i], in span3[i]);
+            }
+        }
+
+        private static void LoopUniformRead<U>(ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2,ReadOnlySpan<C3> span3, UniformComponentActionIIII<U, C0, C1, C2, C3> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, in span0[i], in span1[i], in span2[i], in span3[i]);
+            }
+        }
+
+        private static void LoopEntityRead(Archetype table, ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2,ReadOnlySpan<C3> span3, EntityComponentActionIIII<C0, C1, C2, C3> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(new EntityRef(table, i), in span0[i], in span1[i], in span2[i], in span3[i]);
+            }
+        }
+
+        private static void LoopUniformEntityRead<U>(Archetype table, ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2,ReadOnlySpan<C3> span3, UniformEntityComponentActionIIII<U, C0, C1, C2, C3> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, new EntityRef(table, i), in span0[i], in span1[i], in span2[i], in span3[i]);
+            }
+        }
         #endregion
 
         #region Assertions
@@ -1954,6 +2602,14 @@ namespace fennecs
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
                     $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+        }
+
+        private void AssertNotFamily()
+        {
+            if (!_family) return;
+            throw new InvalidOperationException(
+                "Match.Family Stream Types provide read-only component access: writable-ref runners, Raw, Blit, " +
+                "and FilteredStream views cannot serve them. Use the ForRead overloads (in-parameters) or enumeration.");
         }
         #endregion
 
@@ -1990,6 +2646,10 @@ namespace fennecs
         // The component TypeExpressions that this Stream operates on.
         internal readonly ImmutableArray<TypeExpression> StreamTypes;
 
+        // True if any stream type is a Family expression: components then come from covariant
+        // (derived-type) storages and are only accessible read-only. (see AssertNotFamily)
+        private readonly bool _family;
+
         /// <summary>
         /// The Query this Stream is associated with.
         /// </summary>
@@ -2024,6 +2684,11 @@ namespace fennecs
                 TypeExpression.Of<C3>(match3),
                 TypeExpression.Of<C4>(match4)
 );
+
+            var family = false;
+            foreach (var type in StreamTypes) family |= type.Key == Key.Family;
+            _family = family;
+
             Query = query;
         }
         #endregion
@@ -2034,56 +2699,78 @@ namespace fennecs
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3, C4}"/> narrowed to Archetypes
         /// that have ALL of the given components.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3, C4> Has(params Comp[] components) =>
-            new(this, [.. components], [], null, null, null, null, null);
+        public FilteredStream<C0, C1, C2, C3, C4> Has(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [.. components], [], null, null, null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3, C4}"/> narrowed to Archetypes
         /// that have NONE of the given components.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3, C4> Not(params Comp[] components) =>
-            new(this, [], [.. components], null, null, null, null, null);
+        public FilteredStream<C0, C1, C2, C3, C4> Not(params Comp[] components)
+        {
+            AssertNotFamily();
+            return new(this, [], [.. components], null, null, null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3, C4}"/> with a per-entity
         /// predicate for Component <c>C0</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C0> filter0) =>
-            new(this, [], [], filter0, null, null, null, null);
+        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C0> filter0)
+        {
+            AssertNotFamily();
+            return new(this, [], [], filter0, null, null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3, C4}"/> with a per-entity
         /// predicate for Component <c>C1</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C1> filter1) =>
-            new(this, [], [], null, filter1, null, null, null);
+        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C1> filter1)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, filter1, null, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3, C4}"/> with a per-entity
         /// predicate for Component <c>C2</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C2> filter2) =>
-            new(this, [], [], null, null, filter2, null, null);
+        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C2> filter2)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, null, filter2, null, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3, C4}"/> with a per-entity
         /// predicate for Component <c>C3</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C3> filter3) =>
-            new(this, [], [], null, null, null, filter3, null);
+        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C3> filter3)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, null, null, filter3, null);
+        }
 
         /// <summary>
         /// Creates a <see cref="FilteredStream{C0, C1, C2, C3, C4}"/> with a per-entity
         /// predicate for Component <c>C4</c>.
         /// </summary>
-        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C4> filter4) =>
-            new(this, [], [], null, null, null, null, filter4);
+        public FilteredStream<C0, C1, C2, C3, C4> Where(ComponentFilter<C4> filter4)
+        {
+            AssertNotFamily();
+            return new(this, [], [], null, null, null, null, filter4);
+        }
         #endregion
 
         #region For
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:For"]'/>
         public void For(ComponentAction<C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -2101,6 +2788,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForU"]'/>
         public void For<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -2118,6 +2806,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForE"]'/>
         public void For(EntityComponentAction<C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -2135,6 +2824,7 @@ namespace fennecs
         /// <include file='../XMLdoc.xml' path='members/member[@name="T:ForEU"]'/>
         public void For<U>(U uniform, UniformEntityComponentAction<U, C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -2150,11 +2840,78 @@ namespace fennecs
         }
         #endregion
 
+        #region For (read-only)
+        /// <summary>
+        /// Read-only For: components arrive as <c>in</c> (readonly) references. Serves all Stream Types,
+        /// including <see cref="Match.Family"/>, whose derived components arrive viewed as their base type.
+        /// Mutate class components through their members; component slots cannot be reassigned.
+        /// </summary>
+        public void ForRead(ComponentActionIIIII<C0, C1, C2, C3, C4> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopRead(join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), join.Span<C3>(3), join.Span<C4>(4), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIIIII{C0, C1, C2, C3, C4})"/>
+        public void ForRead<U>(U uniform, UniformComponentActionIIIII<U, C0, C1, C2, C3, C4> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformRead(join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), join.Span<C3>(3), join.Span<C4>(4), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIIIII{C0, C1, C2, C3, C4})"/>
+        public void ForRead(EntityComponentActionIIIII<C0, C1, C2, C3, C4> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopEntityRead(table, join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), join.Span<C3>(3), join.Span<C4>(4), action);
+                } while (join.Iterate());
+            }
+        }
+
+        /// <inheritdoc cref="ForRead(ComponentActionIIIII{C0, C1, C2, C3, C4})"/>
+        public void ForRead<U>(U uniform, UniformEntityComponentActionIIIII<U, C0, C1, C2, C3, C4> action)
+        {
+            using var worldLock = World.Lock();
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                do
+                {
+                    LoopUniformEntityRead(table, join.Span<C0>(0), join.Span<C1>(1), join.Span<C2>(2), join.Span<C3>(3), join.Span<C4>(4), action, uniform);
+                } while (join.Iterate());
+            }
+        }
+        #endregion
+
         #region Job
         /// <inheritdoc cref="Stream{C0}.Job"/>
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job(ComponentAction<C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -2247,6 +3004,7 @@ namespace fennecs
         [UnsupportedOSPlatform("browser", "browser-wasm runtime is single-threaded")]
         public void Job<U>(U uniform, UniformComponentAction<U, C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             AssertNoWildcards(StreamTypes);
             using var worldLock = World.Lock();
             var chunkSize = Math.Max(1, Count / Concurrency);
@@ -2342,6 +3100,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw"/>
         public void Raw(MemoryAction<C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -2364,6 +3123,7 @@ namespace fennecs
         /// <inheritdoc cref="Stream{C0}.Raw{U}"/>
         public void Raw<U>(U uniform, MemoryUniformAction<U, C0, C1, C2, C3, C4> action)
         {
+            AssertNotFamily();
             using var worldLock = World.Lock();
             foreach (var table in Archetypes)
             {
@@ -2391,7 +3151,9 @@ namespace fennecs
 
         #region IEnumerable
         /// <inheritdoc />
-        public IEnumerator<(Entity, C0, C1, C2, C3, C4)> GetEnumerator()
+        public IEnumerator<(Entity, C0, C1, C2, C3, C4)> GetEnumerator() => _family ? EnumerateRead() : Enumerate();
+
+        private IEnumerator<(Entity, C0, C1, C2, C3, C4)> Enumerate()
         {
             foreach (var table in Archetypes)
             {
@@ -2409,6 +3171,25 @@ namespace fennecs
                 } while (join.Iterate());
             }
         }
+
+        // Family variant: elements come from covariant (derived-type) storages, one indirection per element.
+        private IEnumerator<(Entity, C0, C1, C2, C3, C4)> EnumerateRead()
+        {
+            foreach (var table in Archetypes)
+            {
+                using var join = table.CrossJoinRead(StreamTypes.AsSpan());
+                if (join.Empty) continue;
+                var snapshot = table.Version;
+                do
+                {
+                    for (var i=0; i<table.Count; i++)
+                    {
+                        yield return (table[i], join.Get<C0>(0, i), join.Get<C1>(1, i), join.Get<C2>(2, i), join.Get<C3>(3, i), join.Get<C4>(4, i));
+                        if (table.Version != snapshot) throw new InvalidOperationException("Collection was modified during iteration.");
+                    }
+                } while (join.Iterate());
+            }
+        }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
@@ -2419,6 +3200,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C0 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C0>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -2429,6 +3211,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C1 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C1>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -2439,6 +3222,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C2 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C2>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -2449,6 +3233,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C3 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C3>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -2459,6 +3244,7 @@ namespace fennecs
         /// </summary>
         public void Blit(C4 value, Match match = default)
         {
+            AssertNotFamily();
             var typeExpression = TypeExpression.Of<C4>(match);
             foreach (var table in Archetypes)
                 table.Fill(typeExpression, value);
@@ -2501,6 +3287,42 @@ namespace fennecs
                 action(uniform, new EntityRef(table, i), ref span0[i], ref span1[i], ref span2[i], ref span3[i], ref span4[i]);
             }
         }
+
+        private static void LoopRead(ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2,ReadOnlySpan<C3> span3,ReadOnlySpan<C4> span4, ComponentActionIIIII<C0, C1, C2, C3, C4> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(in span0[i], in span1[i], in span2[i], in span3[i], in span4[i]);
+            }
+        }
+
+        private static void LoopUniformRead<U>(ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2,ReadOnlySpan<C3> span3,ReadOnlySpan<C4> span4, UniformComponentActionIIIII<U, C0, C1, C2, C3, C4> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, in span0[i], in span1[i], in span2[i], in span3[i], in span4[i]);
+            }
+        }
+
+        private static void LoopEntityRead(Archetype table, ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2,ReadOnlySpan<C3> span3,ReadOnlySpan<C4> span4, EntityComponentActionIIIII<C0, C1, C2, C3, C4> action)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(new EntityRef(table, i), in span0[i], in span1[i], in span2[i], in span3[i], in span4[i]);
+            }
+        }
+
+        private static void LoopUniformEntityRead<U>(Archetype table, ReadOnlySpan<C0> span0,ReadOnlySpan<C1> span1,ReadOnlySpan<C2> span2,ReadOnlySpan<C3> span3,ReadOnlySpan<C4> span4, UniformEntityComponentActionIIIII<U, C0, C1, C2, C3, C4> action, U uniform)
+        {
+            var length = span0.Length;
+            for (var i=0;i<length;i++)
+            {
+                action(uniform, new EntityRef(table, i), in span0[i], in span1[i], in span2[i], in span3[i], in span4[i]);
+            }
+        }
         #endregion
 
         #region Assertions
@@ -2509,6 +3331,14 @@ namespace fennecs
             if (streamTypes.Any(t => t.isWildcard))
                 throw new InvalidOperationException(
                     $"Cannot run this operation on wildcard Stream Types (write destination Aliasing). {streamTypes}");
+        }
+
+        private void AssertNotFamily()
+        {
+            if (!_family) return;
+            throw new InvalidOperationException(
+                "Match.Family Stream Types provide read-only component access: writable-ref runners, Raw, Blit, " +
+                "and FilteredStream views cannot serve them. Use the ForRead overloads (in-parameters) or enumeration.");
         }
         #endregion
 

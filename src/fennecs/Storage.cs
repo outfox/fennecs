@@ -98,6 +98,17 @@ internal interface IStorage
     /// </remarks>
     /// <throws><see cref="IndexOutOfRangeException"/>if the row index is out of range</throws>
     object Get(int row);
+
+    /// <summary>
+    /// A read-only view of the storage as a base type of its element type (or the exact type).
+    /// Sound because read-only spans permit covariant arrays; used by Family stream runners.
+    /// </summary>
+    ReadOnlySpan<TBase> ReadAs<TBase>();
+
+    /// <summary>
+    /// The element at the given row, as a base type of the element type (or the exact type).
+    /// </summary>
+    TBase GetAs<TBase>(int row);
 }
 
 /// <summary>
@@ -335,6 +346,16 @@ internal class Storage<T> : IStorage
     /// Returns a span representation of the actually contained data.
     /// </summary>
     public Span<T> Span => _data.AsSpan(0, Count);
+
+    /// <inheritdoc cref="IStorage.ReadAs{TBase}"/>
+    /// <remarks>
+    /// The array cast enforces the base-of-<typeparamref name="T"/> (or exact type) requirement at runtime;
+    /// the ReadOnlySpan constructor accepts the covariant array because it cannot be written through.
+    /// </remarks>
+    public ReadOnlySpan<TBase> ReadAs<TBase>() => new((TBase[])(object)_data, 0, Count);
+
+    /// <inheritdoc cref="IStorage.GetAs{TBase}"/>
+    public TBase GetAs<TBase>(int row) => ReadAs<TBase>()[row];
 
     private Span<T> FullSpan => _data.AsSpan();
 

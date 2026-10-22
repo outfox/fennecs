@@ -100,6 +100,7 @@ otherwise:
 | `Match.Target` | any relation or link (excludes plain) |
 | `Match.Entity` | any entity-entity relation |
 | `Match.Object` | any object link |
+| `Match.Family` | plain components of the type OR any derived type (self included; base classes only, no interfaces). As a stream type: read-only — use `ForRead` (`in` params) or enumeration; ref runners/Job/Raw/Blit/filter views throw |
 | an `Entity` (implicit) / `Match.Relation(e)` | relation to that specific entity |
 | `Link.With(obj)` / `Match.Link(obj)` | link to that specific object |
 

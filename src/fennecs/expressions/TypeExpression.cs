@@ -39,6 +39,9 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     }
 
 
+    /// <summary>The raw packed 64-bit value; used for hashing into <see cref="KeyBloom"/> patterns.</summary>
+    internal ulong Raw => _value;
+
     /// <summary>The storage kind of this expression. (always <see cref="PrimaryKind.Data"/> today)</summary>
     internal PrimaryKind Kind => (PrimaryKind)(_value >> 60);
 
@@ -73,39 +76,6 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// Get the backing Component type that this <see cref="TypeExpression"/> represents.
     /// </summary>
     public Type Type => LanguageType.Resolve(TypeId);
-
-
-    /// <summary>
-    /// TODO: Remove me.
-    /// A method to check if a TypeExpression matches any of the given type expressions in an IEnumerable.
-    /// Does this <see cref="TypeExpression"/> match any of the given type expressions?
-    /// </summary>
-    /// <param name="other">a collection of type expressions</param>
-    /// <returns>true if matched</returns>
-    public bool Matches(IEnumerable<TypeExpression> other)
-    {
-        var self = this;
-
-        //TODO: HUGE OPTIMIZATION POTENTIAL! (set comparison is way faster than linear search, etc.) FIXME!!
-        foreach (var type in other)
-        {
-            // Identical expressions always match; the pairwise check below is not reflexive
-            // for the Entity/Object Wildcards (their category arms admit only specific keys).
-            if (self.Equals(type)) return true;
-            if (self.Matches(type)) return true;
-            if (type.Matches(self)) return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>
-    /// Fast O(1) Matching against (expanded) Signature.
-    /// </summary>
-    /// <remarks>
-    /// The other signature must be a Wildcard-Expanded signature.
-    /// </remarks>
-    public bool Matches(Signature expandedSignature) => expandedSignature.Matches(this);
 
 
     /// <summary>
@@ -156,6 +126,10 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
             SecondaryKind.Entity => otherKey.IsEntity,
             SecondaryKind.Object => otherKey.IsObject,
 
+            // Family matches Plain of its own type here; derived types differ in TypeId and are
+            // rejected by the header check above — inheritance matching is ArchetypeBits' job.
+            SecondaryKind.Family => otherKey == default,
+
             _ => key == otherKey,
         };
     }
@@ -190,39 +164,6 @@ internal readonly record struct TypeExpression : IComparable<TypeExpression>
     /// Replaces the Key of this expression, keeping its type header.
     /// </summary>
     internal TypeExpression WithKey(Key key) => new((_value & TypeHeaderMask) | key.Value);
-
-    /// <summary>
-    /// Expands this TypeExpression into a set of TypeExpressions that are Equivalent but unique.
-    /// </summary>
-    /// <remarks>
-    /// <ul>
-    /// <li>wild Any -> [ Plain, wild Entity, wild Object, wild Target ]</li>
-    /// <li>wild Target -> [ wild Any, wild Entity, wild Object ]</li>
-    /// <li>wild Entity / wild Object -> [ wild Any, wild Target ]</li>
-    /// <li>specific Object -> [ wild Any, wild Target, wild Object ]</li>
-    /// <li>specific Entity -> [ wild Any, wild Target, wild Entity ]</li>
-    /// <li>Plain -> [ wild Any ]</li>
-    /// </ul>
-    /// </remarks>
-    public ImmutableHashSet<TypeExpression> Expand()
-    {
-        var key = Key;
-
-        if (key == Key.Any) return [WithKey(default), WithKey(Key.AnyEntity), WithKey(Key.AnyObject), WithKey(Key.Target)];
-
-        if (key == Key.Target) return [WithKey(Key.Any), WithKey(Key.AnyEntity), WithKey(Key.AnyObject)];
-
-        if (key == Key.AnyEntity) return [WithKey(Key.Any), WithKey(Key.Target)];
-
-        if (key == Key.AnyObject) return [WithKey(Key.Any), WithKey(Key.Target)];
-
-        if (key.IsObject) return [WithKey(Key.Any), WithKey(Key.Target), WithKey(Key.AnyObject)];
-
-        if (key.IsEntity) return [WithKey(Key.Any), WithKey(Key.Target), WithKey(Key.AnyEntity)];
-
-        return [WithKey(Key.Any)];
-    }
-
 
     /// <inheritdoc />
     public int CompareTo(TypeExpression other) => _value.CompareTo(other._value);

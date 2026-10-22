@@ -14,6 +14,7 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
 
     private Mask _mask = MaskPool.Rent();
     private bool _disposed;
+    private readonly Lock _gate = new();
 
     private readonly World _world;
 
@@ -27,8 +28,12 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// </summary>
     internal QB Within(Aspect aspect)
     {
-        _aspect = aspect;
-        return (QB)this;
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _aspect = aspect;
+            return (QB)this;
+        }
     }
 
     /// <summary>
@@ -56,7 +61,14 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// or any of its overloads.
     /// </remarks>
     /// <returns>compiled query (you can compile more than one query from the same builder)</returns>
-    public Query Compile() => _aspect?.CompileQuery(_mask) ?? _world.CompileQuery(_mask);
+    public Query Compile()
+    {
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            return _aspect?.CompileQuery(_mask) ?? _world.CompileQuery(_mask);
+        }
+    }
 
     #endregion
 
@@ -71,8 +83,12 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Has<T>(Match match = default)
     {
-        _mask.Has(TypeExpression.Of<T>(match));
-        return (QB)this;
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _mask.Has(TypeExpression.Of<T>(match));
+            return (QB)this;
+        }
     }
 
 
@@ -85,8 +101,12 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Has<T>(Link<T> link) where T : class
     {
-        _mask.Has(TypeExpression.Of<T>(link));
-        return (QB)this;
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _mask.Has(TypeExpression.Of<T>(link));
+            return (QB)this;
+        }
     }
 
 
@@ -100,8 +120,12 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Not<T>(Match match = default)
     {
-        _mask.Not(TypeExpression.Of<T>(match));
-        return (QB)this;
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _mask.Not(TypeExpression.Of<T>(match));
+            return (QB)this;
+        }
     }
 
     /// <summary>
@@ -113,8 +137,12 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Not<T>(Link<T> link) where T : class
     {
-        _mask.Not(TypeExpression.Of<T>(link));
-        return (QB)this;
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _mask.Not(TypeExpression.Of<T>(link));
+            return (QB)this;
+        }
     }
 
     /// <summary>
@@ -127,8 +155,12 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Any<T>(Match match = default)
     {
-        _mask.Any(TypeExpression.Of<T>(match));
-        return (QB)this;
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _mask.Any(TypeExpression.Of<T>(match));
+            return (QB)this;
+        }
     }
 
     /// <summary>
@@ -141,8 +173,12 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <exception cref="InvalidOperationException">if the StreamTypes already cover this or conflict with it</exception>
     public QB Any<T>(Link<T> link) where T : class
     {
-        _mask.Any(TypeExpression.Of<T>(link));
-        return (QB)this;
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _mask.Any(TypeExpression.Of<T>(link));
+            return (QB)this;
+        }
     }
 
     #endregion
@@ -152,12 +188,15 @@ public abstract class QueryBuilderBase<QB> : IDisposable where QB : QueryBuilder
     /// <inheritdoc cref="IDisposable"/>
     public void Dispose()
     {
-        ObjectDisposedException.ThrowIf(_disposed, this);
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
 
-        GC.SuppressFinalize(this);
-        _disposed = true;
-        _mask.Dispose();
-        _mask = null!;
+            GC.SuppressFinalize(this);
+            _disposed = true;
+            _mask.Dispose();
+            _mask = null!;
+        }
     }
 
     #endregion

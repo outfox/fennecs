@@ -26,9 +26,28 @@ Every `Has/Not/Any` accepts an optional `Match` (see SKILL.md table) or a
 .Has<Damage>(Match.Entity)       // any entity relation
 .Has(Link.With(sharedTexture))   // specific object link
 .Not<Owes>(Entity.Any)           // no entity relation of this type at all
+.Has<Animal>(Match.Family)       // plain Animal OR any type derived from it
 ```
 
 `Entity.Any` ≡ `Match.Entity`; `Link.Any` ≡ `Match.Object`.
+
+`Match.Family` is inheritance-aware: it matches plain components of the named
+type or any type derived from it (self included; base-class chains only,
+interfaces don't participate; structs degrade to self-only). Legal in
+`Has/Not/Any` and stream filters (`Comp<T>.Matching(Match.Family)`), and as a
+*stream type* with **read-only** data access: derived components arrive viewed
+as their base type via the `ForRead` runners (`in` parameters — mutate class
+components through their members; the slot can't be reassigned) or enumeration.
+The writable surfaces (`ref`-based `For`, `Job`, `Raw`, `Blit`, and
+`Has/Not/Where` filter views) throw on Family streams, because a writable
+`ref Base` over a `Storage<Derived>` could store a non-derived instance:
+
+```csharp
+var animals = world.Query<Animal>(Match.Family).Stream();
+animals.ForRead((in Animal a) => a.Tick());          // Fox, Fennec arrive as Animal
+animals.ForRead(dt, (float dt, in Animal a) => …);   // uniform variant
+animals.ForRead((in EntityRef e, in Animal a) => …); // entity variant (4 overloads total)
+```
 
 - Queries are cached per world: compiling an identical expression returns the
   cached instance. Hold streams/queries in fields; don't rebuild per frame
