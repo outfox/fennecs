@@ -167,6 +167,69 @@ public sealed partial class Aspect : IEnumerable<Entity>
     }
 
 
+    /// <summary>
+    /// Emits Removed for everything a Despawn of this Entity discards here: the Components this
+    /// Aspect stores for it, and the Relations other Entities hold to it.
+    /// </summary>
+    /// <remarks>
+    /// Signals only, no structural change: the World signals every Aspect first and deletes rows
+    /// after, so a throwing handler aborts the Despawn before anything was changed.
+    /// </remarks>
+    internal void SignalDespawn(Entity entity)
+    {
+        // (the Archetype answers "is anyone watching?" from a memoized flag)
+        if (Contains(entity) && _meta[entity.Index].Archetype.WatchedForRemoval) World.SignalRemovingAll(this, entity);
+
+        SignalDependencies(entity);
+    }
+
+
+    /// <summary>
+    /// Emits <see cref="RemoveCause.TargetDespawned"/> for the Relations that <see cref="DespawnDependencies"/>
+    /// will strip from other Entities. Must be called <i>before</i> the Despawn changes anything.
+    /// </summary>
+    internal void SignalDependencies(Entity entity)
+    {
+        if (!_typesByRelationTarget.TryGetValue(entity.Key, out var types)) return;
+
+        // Same Archetypes as DespawnDependencies, so exactly what it strips is what gets signalled.
+        var homeArchetype = entity.Index < (uint)_meta.Length ? _meta[entity.Index].Archetype : null;
+        var relating = _archetypes.Where(a => a.Signature.Matches(types)).ToList();
+
+        foreach (var archetype in relating)
+        {
+            if (archetype == homeArchetype) continue;
+            if (archetype.Count <= 0) continue;
+
+            var entities = World.RentArrayForEntities(archetype.EntityStorage.Span);
+            try
+            {
+                World.SignalRemoving(this, entities.AsSpan(0, archetype.Count), archetype.Signature.Intersect(types), RemoveCause.TargetDespawned);
+            }
+            finally
+            {
+                World.ReturnArrayEntities(entities);
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Would despawning this Entity strip Relations that something is watching, from Entities
+    /// other than itself? (<see cref="DespawnDependencies"/> emits <see cref="RemoveCause.TargetDespawned"/>)
+    /// </summary>
+    internal bool WatchedDependencies(Entity entity)
+    {
+        if (!_typesByRelationTarget.TryGetValue(entity.Key, out var types)) return false;
+
+        foreach (var type in types)
+        {
+            if (World.Watching(type.TypeId, added: false)) return true;
+        }
+        return false;
+    }
+
+
     private void DespawnDependencies(Entity entity)
     {
         // Find entity-entity relation reverse lookup (if applicable)
@@ -185,6 +248,8 @@ public sealed partial class Aspect : IEnumerable<Entity>
             if (archetype.Count <= 0) continue;
 
             var signatureWithoutTarget = archetype.Signature.Except(types);
+
+            // (the TargetDespawned Signals for these Relations were raised by SignalDependencies)
 
             // Lazy membership: losing their last owned Components evicts the Entities from this Aspect.
             if (!IsMain && signatureWithoutTarget.Count == 1)

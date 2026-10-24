@@ -20,6 +20,33 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
     internal readonly Signature Signature;
 
     /// <summary>
+    /// The expressions of <see cref="Signature"/> as a plain array, built once: what code that
+    /// walks an Archetype's types per call (Signals) reads instead of enumerating the immutable set.
+    /// </summary>
+    internal readonly TypeExpression[] Types;
+
+    // Memoized answer to "would despawning an Entity of this shape emit anything?", keyed on the
+    // World's subscription version. Every Entity here has the same Components, so it is asked once
+    // per Archetype per subscription change instead of once per Despawn.
+    private int _signalVersion = -1;
+    private bool _watchedForRemoval;
+
+
+    /// <summary>Does any subscribed Signal cover a Component stored in this Archetype?</summary>
+    internal bool WatchedForRemoval
+    {
+        get
+        {
+            var version = World.SignalVersion;
+            if (_signalVersion == version) return _watchedForRemoval;
+
+            _signalVersion = version;
+            _watchedForRemoval = World.WatchesAny(Types, added: false);
+            return _watchedForRemoval;
+        }
+    }
+
+    /// <summary>
     /// Expanded Signature with all Wildcards resolved for fast, set-level matching.
     /// </summary>
     internal readonly Signature MatchSignature;
@@ -68,6 +95,7 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
         Storages = new IStorage[signature.Count];
 
         Signature = signature;
+        Types = signature.ToArray();
         MatchSignature = signature.Expand();
 
         // Types are sorted by TypeID first, so we can iterate them in order to add them to Wildcard buckets.
@@ -164,6 +192,38 @@ public sealed class Archetype : IEnumerable<Entity>, IComparable<Archetype>
 
         var toDelete = ((ReadOnlySpan<EntityIndex>)EntityStorage.Span).Slice(Count - excess, excess);
 
+        if (World.Signalling)
+        {
+            // Truncation despawns these Entities: signal everything they lose — here, in the other
+            // Aspects, and the Relations targeting them — before a single row is deleted, so a
+            // throwing handler leaves the World untouched. The lock spans all of it.
+            using var worldLock = World.Lock();
+            var entities = World.RentArrayForEntities(toDelete);
+            try
+            {
+                var span = entities.AsSpan(0, toDelete.Length);
+
+                // This Archetype's rows in one go.
+                // (the Entity column is in Types too; no Signal can watch it, so it is skipped by the type filter)
+                if (WatchedForRemoval) World.SignalRemoving(Aspect, span, Types, RemoveCause.Despawned);
+
+                foreach (var entity in span) World.SignalDespawn(Aspect, entity);
+            }
+            finally
+            {
+                World.ReturnArrayEntities(entities);
+            }
+
+            TruncateRows(excess, toDelete);
+            return;
+        }
+
+        TruncateRows(excess, toDelete);
+    }
+
+
+    private void TruncateRows(int excess, ReadOnlySpan<EntityIndex> toDelete)
+    {
         foreach (var storage in Storages)
         {
             // HACK...

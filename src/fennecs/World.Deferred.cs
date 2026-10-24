@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace fennecs;
 
@@ -48,26 +49,53 @@ public partial class World
     private void CatchUp(ConcurrentQueue<DeferredOperation> operations)
     {
         while (operations.TryDequeue(out var op))
-            switch (op.Opcode)
-            {
-                case Opcode.Add:
-                    AddComponent(op.Entity, op.TypeExpression, op.Data);
-                    break;
+        {
+            // The try/catch lives in its own method: inside this loop, it would cost every
+            // operation, Signal or not, the JIT optimizations an exception region forbids.
+            if (op.FromSignal) ApplyFromSignal(op);
+            else Apply(op);
+        }
+    }
 
-                case Opcode.Remove:
-                    RemoveComponent(op.Entity, op.TypeExpression, op.RemoveMode);
-                    break;
 
-                case Opcode.Despawn:
-                    DespawnImpl(op.Entity);
-                    break;
+    // Queued by a Signal handler: a failure here belongs to that handler, not to whoever
+    // took out the Lock (they are usually several stack frames apart by now).
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private void ApplyFromSignal(in DeferredOperation op)
+    {
+        try
+        {
+            Apply(op);
+        }
+        catch (Exception exception) when (exception is not SignalException)
+        {
+            throw new SignalException(op.Describe(), op.Opcode == Opcode.Batch ? [] : [op.Entity], exception);
+        }
+    }
 
-                case Opcode.Batch:
-                    var batch = (Batch)op.Data;
-                    Commit(batch);
-                    batch.Dispose();
-                    break;
-            }
+
+    private void Apply(in DeferredOperation op)
+    {
+        switch (op.Opcode)
+        {
+            case Opcode.Add:
+                AddComponent(op.Entity, op.TypeExpression, op.Data);
+                break;
+
+            case Opcode.Remove:
+                RemoveComponent(op.Entity, op.TypeExpression, op.RemoveMode);
+                break;
+
+            case Opcode.Despawn:
+                DespawnImpl(op.Entity);
+                break;
+
+            case Opcode.Batch:
+                var batch = (Batch)op.Data;
+                Commit(batch);
+                batch.Dispose();
+                break;
+        }
     }
 
 
@@ -79,6 +107,18 @@ public partial class World
         internal object Data;
         internal Archetype Archetype;
         internal RemoveConflict RemoveMode;
+
+        internal bool FromSignal;
+
+        // Human-readable form of this operation, for diagnostics.
+        internal readonly string Describe() => Opcode switch
+        {
+            Opcode.Add => $"Add {TypeExpression} to {Entity}",
+            Opcode.Remove => $"Remove {TypeExpression} from {Entity}",
+            Opcode.Despawn => $"Despawn {Entity}",
+            Opcode.Batch => "Batch",
+            _ => Opcode.ToString(),
+        };
 
 
         [SetsRequiredMembers]
@@ -95,7 +135,9 @@ public partial class World
     }
 
 
-    internal enum Opcode
+    // A byte, so Opcode and FromSignal share the padding RemoveMode leaves: DeferredOperation stays
+    // the size it had before FromSignal existed, and a bulk deferred Despawn copies no more than it did.
+    internal enum Opcode : byte
     {
         // Entity operations
         Add,

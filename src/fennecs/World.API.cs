@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 using fennecs.pools;
@@ -153,11 +154,19 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
 
         if (destination.IsEmpty) return;
 
+        if (Mode == WorldMode.Deferred)
+        {
+            SpawnDeferred(destination, components, values);
+            return;
+        }
+
         if (_aspects.Count == 1)
         {
             var signature = new Signature(components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);
             var archetype = Main.GetArchetype(signature);
             archetype.Spawn(destination, components, values);
+
+            if (Signalling) SignalSpawned(destination, components);
             return;
         }
 
@@ -188,6 +197,43 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
             var signature = new Signature(group.components.ToImmutableSortedSet()).Add(Comp<EntityIndex>.Plain.Expression);
             aspect.EnsureCapacity(_entityPool.Created + 1);
             aspect.GetArchetype(signature).SpawnWith(destination, group.components, group.values);
+        }
+
+        // (the enclosing worldLock defers whatever the handlers do until the wave is complete)
+        if (WatchesAny(components, added: true))
+            SignalAdded(null, destination, components);
+    }
+
+
+    // Kept out of Spawn on purpose: the lock's try/finally, inlined there, made every Template spawn
+    // ~30 % slower even with nobody subscribed.
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private void SignalSpawned(ReadOnlySpan<Entity> destination, IReadOnlyList<TypeExpression> components)
+    {
+        if (!WatchesAny(components, added: true)) return;
+
+        using var spawnLock = Lock();
+        SignalAdded(null, destination, components);
+    }
+
+
+    /// <summary>
+    /// Template spawn while the World is locked. Appending to an Archetype can grow its Storages,
+    /// which would pull them out from under live references (a runner's refs, a Signal's span).
+    /// The Entities are minted now, because the caller needs their handles, and join only the
+    /// Root; their Components follow as deferred Adds once the World catches up.
+    /// </summary>
+    private void SpawnDeferred(Span<Entity> destination, IReadOnlyList<TypeExpression> components, IReadOnlyList<object> values)
+    {
+        for (var i = 0; i < destination.Length; i++)
+        {
+            var entity = NewEntity();
+            destination[i] = entity;
+
+            for (var c = 0; c < components.Count; c++)
+            {
+                _deferredOperations.Enqueue(new DeferredOperation { Opcode = Opcode.Add, Entity = entity, TypeExpression = components[c], Data = values[c], FromSignal = InSignalDispatch });
+            }
         }
     }
 
@@ -309,11 +355,13 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
 
 
     /// <summary>
-    ///  Runs the World's Garbage Collection (placeholder for future GC - currently removes all empty Archetypes).
+    ///  Runs the World's Garbage Collection (placeholder for future GC - currently removes all empty Archetypes and Signal).
     /// </summary>
     public void GC()
     {
         if (Mode != WorldMode.Immediate) throw new InvalidOperationException("Cannot run GC while in Deferred mode.");
+
+        CollectIdleSignals();
 
         foreach (var aspect in _aspects) aspect.GC();
     }
@@ -326,6 +374,10 @@ public partial class World : IDisposable, IEnumerable<Entity>, IAspect
     public void Dispose()
     {
         //TODO: Dispose all Object Links, Queries, etc.?
+        // (Signals first, while the registry still knows them all)
+        ResetSubscribers();
+        _signals.Clear();
+        _idle.Clear();
         ReleaseTag();
     }
 
